@@ -44,8 +44,8 @@ To run the server on a Docker container, please execute the following from the r
 
 ```bash
 # building the image
-docker build -t uji_server .
+docker build -t fuji_server .
 
 # starting up a container
-docker run -p 1071:1071 uji_server
+docker run -p 1071:1071 fuji_server
 ```
