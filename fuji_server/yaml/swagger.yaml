@@ -6,8 +6,8 @@ info:
   contact:
     email: adevaraju@marum.de
   license:
-    name: GNU GENERAL PUBLIC LICENSE
-    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
   version: 1.0.0
 externalDocs:
   description: Find out more about FUJI (FAIR Data Assessment Service)
