@@ -1,0 +1,99 @@
+# LIST OF FARISFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
+metrics:
+  ## ---------------- FINDABILITY ---------------- ##
+- metric_identifier: FsF-F1-01D
+  metric_name: Globally unique identifier
+  description: The data is assigned with a globally unique identifier such that it can be referenced unambiguously on the Web. In other words, the identifier should be associated with only one dataset at any time. Examples of unique identifiers of data are Uniform Resource Identifier (URI), Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). We make a distinction between persistence (FsF-F1-02D) and uniqueness of an identifier. An HTTP URL is globally unique, but is not persistent, whereas a DOI is both globally unique and persistent.
+  fair_principle: F1
+  question_type: single-choice
+  evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1
+
+- metric_identifier: FsF-F1-02D
+  metric_name: Persistent identifier
+  description: The data is assigned with a persistent identifier to ensure the resolvability of the identifier in the long term. The identifier may be resolved to its digital object (e.g., a data file or a web service that returns the data), or to a data proxy (e.g., an online page that contains metadata, including the link to access the data).
+  fair_principle: F1
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1
+
+- metric_identifier: FsF-F2-01M
+  metric_name: Descriptive (core) metadata
+  description: Metadata is descriptive information of data. Since the metadata required depends on users and their applications, this metric focuses on core metadata, which are the minimum metadata required for data citation and discoverability. We determine the required metadata based on the existing data citation guidelines, e.g., DataCite, ESIP, and IASSIST, and metadata recommendations for data discovery, e.g., DataCite Metadata Schema and RDA Metadata Interest Group. This metric focuses on domain-agnostic core metadata; we address domain or discipline-specific metadata through the metric FsF-R1-01M.
+  fair_principle: F2
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 2
+  passed: false
+
+- metric_identifier: FsF-F3-01M
+  metric_name: Inclusion of data identifier in metadata
+  description: The metadata includes the identifier of the data such that users can access the data through the metadata.
+  fair_principle: F3
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1
+
+- metric_identifier: FsF-F4-01M
+  metric_name: Searchable metadata
+  description: This metric refers to various ways through which the metadata of data is exposed or offered in a machine-readable format. For example, metadata may be offered through a general or domain/discipline specific metadata registry. It may be embedded as structured data (e.g., schema.org implementation)  on a data page for use by web search engines such as Google and Bing.
+  fair_principle: F4
+  question_type: multiple-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 3
+
+- metric_identifier: FsF-I1-01M
+  metric_name: Semantic representation of metadata
+  description: To make metadata more understandable to humans and machines, they are described with semantic vocabularies. Ontology, thesaurus, taxonomy are kinds of semantic vocabularies, and they come with different degrees of expressiveness, structure, and inferential power. Metadata may use semantic vocabularies in various ways. For example, semantic vocabularies may be embedded as controlled vocabularies in the metadata or the metadata web page (e.g., microformats and RDFa or JSON-LD). Metadata may also be published as linked data using semantic vocabularies.
+  fair_principle: I1
+  question_type: multiple-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 2
+
+- metric_identifier: FsF-I3-01M
+  metric_name: Qualified references to related entities
+  description: Linking data to its related entities will increase its FAIRness, and the linking information should be captured as part of the metadata. A rich research graph (e.g., PID graph) can be formed by aggregating the entities connections from different data providers. A data object may be linked to its prior version, other datasets in the same data collection, related publications, source (instrument), data creators or collectors and organization (e.g., funder and hosting institution). Qualified references refer to the meaningful links between data and its related entities expressed through relation types. It is also essential to test if the URL of the related entities are active.
+  fair_principle: R1.1
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1
+
+- metric_identifier: FsF-R1.1-01M
+  metric_name: Data Usage License
+  description: In general, all data should be licensed because otherwise, users cannot easily reuse them in a legally sound way. This includes standard (e.g., Creative Commons) or bespoke licenses, and rights statement which indicate the conditions under which data can be reused. It is highly recommended to use a standard, machine-readable license such that it can be interpreted by machines and humans. In order to inform users about what rights they have to use a dataset, the license information should be specified as part of the dataset’s metadata.
+  fair_principle: R1.1
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1

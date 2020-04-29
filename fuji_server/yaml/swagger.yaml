@@ -1,0 +1,399 @@
+openapi: 3.0.1
+info:
+  title: FUJI (FAIR Data Assessment Service)
+  description: Evaluate Data Objects Based on FAIRsFAIR Metrics
+  termsOfService: http://yaml.io/terms/
+  contact:
+    email: adevaraju@marum.de
+  license:
+    name: GNU GENERAL PUBLIC LICENSE
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about FUJI (FAIR Data Assessment Service)
+  url: http://yaml.io
+servers:
+- url: http://localhost:1071/fuji/api/v1
+security:
+- basicAuth: []
+tags:
+- name: FAIR object
+  description: FAIRness assessment of a data object
+  externalDocs:
+    description: Find out more
+    url: http://yaml.io
+- name: FAIR metric
+  description: FAIRsFAIR assessment metrics
+  externalDocs:
+    description: Find out more
+    url: http://yaml.io
+paths:
+  /evaluate:
+    post:
+      tags:
+      - FAIR object
+      description: Evaluate FAIRness of a data object based on its identifier
+      operationId: assess_by_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+            example:
+              object_identifier: https://doi.org/10.1594/PANGAEA.902845
+              oaipmh_provider: http://ws.pangaea.de/oai/provider
+              test_debug: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FAIRResults'
+        "400":
+          description: Invalid identifier supplied
+        "401":
+          description: Authentication information is missing or invalid
+          headers:
+            WWW_Authenticate:
+              style: simple
+              explode: false
+              schema:
+                type: string
+        "404":
+          description: Object not found
+      x-openapi-router-controller: fuji_server.controllers.fair_object_controller
+  /metrics:
+    get:
+      tags:
+      - FAIR metric
+      summary: Return all metrics and their definitions
+      operationId: get_metrics
+      responses:
+        "200":
+          description: Metrics are successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metrics'
+        "400":
+          description: Invalid request supplied
+        "401":
+          description: Authentication information is missing or invalid
+          headers:
+            WWW_Authenticate:
+              style: simple
+              explode: false
+              schema:
+                type: string
+        "404":
+          description: Object not found
+      x-openapi-router-controller: fuji_server.controllers.fair_metric_controller
+components:
+  schemas:
+    FAIRResults:
+      type: array
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/Uniqueness'
+        - $ref: '#/components/schemas/Persistence'
+        - $ref: '#/components/schemas/CoreMetadata'
+        - $ref: '#/components/schemas/IdentifierIncluded'
+        - $ref: '#/components/schemas/Searchable'
+        - $ref: '#/components/schemas/RelatedResource'
+        - $ref: '#/components/schemas/License'
+    FAIRResultCommon:
+      required:
+      - id
+      - metric_identifier
+      - metric_name
+      - passed
+      - score
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        metric_identifier:
+          type: string
+        metric_name:
+          type: string
+        passed:
+          type: boolean
+          default: false
+        score:
+          $ref: '#/components/schemas/FAIRResultCommon_score'
+    Uniqueness:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/Uniqueness_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    Persistence:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/Persistence_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    CoreMetadata:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/CoreMetadata_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    IdentifierIncluded:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/IdentifierIncluded_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    Searchable:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/Searchable_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    License:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/License_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    RelatedResource:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/RelatedResource_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    FAIRResultCommon_score:
+      type: object
+      properties:
+        earned:
+          type: integer
+          format: int32
+          default: 0
+        total:
+          type: integer
+          format: int32
+          default: 0
+    Uniqueness_output:
+      type: object
+      properties:
+        guid:
+          type: string
+        guid_scheme:
+          type: string
+    Persistence_output:
+      type: object
+      properties:
+        pid:
+          type: string
+        pid_scheme:
+          type: string
+        resolvable_status:
+          type: boolean
+          default: false
+        resolved_url:
+          type: string
+    output_core_metadata_found:
+      required:
+      - creator
+      - keywords
+      - publication_date
+      - publisher
+      - summary
+      - title
+      type: object
+      properties:
+        creator:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        publisher:
+          type: string
+        publication_date:
+          type: string
+          format: date
+        summary:
+          type: string
+        keywords:
+          type: string
+    CoreMetadata_output:
+      type: object
+      properties:
+        core_metadata_status:
+          type: string
+          enum:
+          - no metadata
+          - partial metadata
+          - all metadata
+        core_metadata_found:
+          $ref: '#/components/schemas/output_core_metadata_found'
+        core_metadata_source:
+          type: array
+          items:
+            type: string
+    IdentifierIncluded_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/IdentifierIncluded_output_inner'
+    output_search_mechanisms:
+      type: object
+      properties:
+        mechanism:
+          type: string
+          enum:
+          - metadata registry
+          - structured data
+        mechanism_info:
+          type: string
+    Searchable_output:
+      type: object
+      properties:
+        search_mechanisms:
+          type: array
+          items:
+            $ref: '#/components/schemas/output_search_mechanisms'
+    License_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/License_output_inner'
+    RelatedResource_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/RelatedResource_output_inner'
+    Metrics:
+      type: object
+      properties:
+        total:
+          type: integer
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Metric'
+      example:
+        total: 0
+        metrics:
+          date_updated: {}
+          metric_name: Globally unique identifier
+          fair_principle: F1
+          date_created: {}
+          description: The data is assigned with a globally unique identifier.
+          evaluation_mechanism: Identifier is considered unique if its scheme is successfully
+            validated through https://pythonhosted.org/IDUtils/. Supported schemes
+            are DOI, Handle, EAN8, ......
+          total_score: 1
+          created_by: FAIRsFAIR
+          version: 1
+          metric_identifier: FsF-F1-01D
+    Metric:
+      type: object
+      properties:
+        metric_identifier:
+          type: string
+        metric_name:
+          type: string
+        description:
+          type: string
+        fair_principle:
+          type: string
+        evaluation_mechanism:
+          type: string
+        date_created:
+          type: string
+          format: date
+        date_updated:
+          type: string
+          format: date
+        created_by:
+          type: string
+        version:
+          type: number
+          format: double
+        total_score:
+          type: integer
+          format: int32
+    Debug:
+      type: array
+      items:
+        type: string
+    body:
+      required:
+      - object_identifier
+      type: object
+      properties:
+        object_identifier:
+          type: string
+          description: The full identifier of data object that needs to be evaluated
+        oaipmh_provider:
+          type: string
+          description: The endpoint of oai-pmh provider
+          format: uri
+        test_debug:
+          type: boolean
+          description: Indicate if the detailed evaluation procedure of the metrics
+            should to be included in the response
+          default: false
+    IdentifierIncluded_output_inner:
+      type: object
+      properties:
+        data_identifier_included:
+          type: string
+        data_identifier_active:
+          type: boolean
+          default: false
+    License_output_inner:
+      type: object
+      properties:
+        license:
+          type: string
+        OSI_approved:
+          type: boolean
+          default: false
+        details_url:
+          type: string
+    RelatedResource_output_inner:
+      type: object
+      properties:
+        related_resource:
+          type: string
+        relation_type:
+          type: string
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        WWW_Authenticate:
+          style: simple
+          explode: false
+          schema:
+            type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
+
