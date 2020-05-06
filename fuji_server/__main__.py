@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import configparser as ConfigParser
 import os
 from logging.config import fileConfig

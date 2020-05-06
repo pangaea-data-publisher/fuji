@@ -3,8 +3,10 @@ extruct
 jmespath
 idutils
 requests
-PyYAML
 connexion >= 2.2.0
 python_dateutil >= 2.6.0
 setuptools >= 21.0.0
 swagger-ui-bundle
+Jinja2>=2.10.1
+PyYAML>=5.1
+configparser
