@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
-import connexion
-from logging.config import fileConfig
-import logging
-import os
-import configparser as ConfigParser
 import argparse
-from flask_swagger_ui import get_swaggerui_blueprint
+import configparser as ConfigParser
+import os
+from logging.config import fileConfig
 
 # # Create a URL route in our application for "/"
 # @app.route("/")
@@ -21,6 +18,7 @@ from fuji_server import encoder
 from fuji_server.controllers import *
 from fuji_server.controllers.preprocessor import Preprocessor
 
+
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,14 +32,12 @@ def main():
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
 
-
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR+'/'+config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api(API_YAML, arguments={'title': 'FUJI - FAIR Data Assessment Service'}, validate_responses=False)
     #app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Data Assessment Service'},validate_responses=False,pythonic_params=True)
     app.run(port=int(config['SERVICE']['service_port']))
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -1,8 +1,9 @@
-import logging
 import json
+import logging
+
 import requests
 import yaml
-import logging
+
 
 class Preprocessor(object):
 

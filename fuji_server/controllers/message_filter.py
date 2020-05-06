@@ -1,5 +1,5 @@
 import logging
-from collections import defaultdict
+
 logger = logging.getLogger(__name__)
 
 
@@ -9,7 +9,7 @@ class MessageFilter(logging.Filter):
         self.messages = {}
 
     def filter(self, record):
-        # Intercept log messages
+        # Intercept logs messages
         if record.getMessage().startswith('FsF-'):
             level = record.levelname
             m = record.getMessage().split(":", 1)

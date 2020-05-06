@@ -369,7 +369,7 @@ class FAIRTest:
             did_output.data_identifier_included = self.metadata['data_identifier']
             if self.landing_url:
                 did_output.data_identifier_active = True
-                did_result.passed = True # test is passed if identifier included in metadata and the identifier is web-accessible
+                did_result.passed = True # tests is passed if identifier included in metadata and the identifier is web-accessible
                 did_score.earned = did_sc
         else:
             self.logger.warning('FsF-F3-01M: No data identifier is included in metadata - {}'.format(list(self.metadata_sources)))

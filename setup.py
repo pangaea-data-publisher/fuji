@@ -1,6 +1,3 @@
-# coding: utf-8
-
-import sys
 from setuptools import setup, find_packages
 
 NAME = "fuji_server"
@@ -17,17 +14,17 @@ REQUIRES = ["connexion"]
 setup(
     name=NAME,
     version=VERSION,
+    license='MIT License',
     description="FUJI (FAIRsFAIR Data Assessment Service)",
+    author="Anusuriya Devaraju",
     author_email="adevaraju@marum.de",
-    url="",
+    url="http://www.anusuriya.com",
     keywords=["Swagger", "PANGAEA", "FAIRsFAIR", "FAIR Principles", "Data Object Assessment"],
     install_requires=REQUIRES,
-    packages=find_packages(),
-    package_data={'': ['yaml/swagger.yaml']},
+    packages=find_packages(exclude=["tests", "logs"]),
+    package_data={'': ['yaml/*.yaml','config/*']},
     include_package_data=True,
     entry_points={
         'console_scripts': ['fuji_server=fuji_server.app:main']},
-    long_description="""\
-    Evaluate Data Objects Based on FAIRsFAIR Metrics
-    """
+    long_description="A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 )
