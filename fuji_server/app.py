@@ -40,12 +40,17 @@ def main():
     app.run(port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    #parser = argparse.ArgumentParser()
     # add a new command line option, call it '-c' and set its destination to 'config_file'
-    parser.add_argument("-c", action="store", help='specify the path of the config file (server.ini)', dest="config_file",required=True)
+    #parser.add_argument("-c", action="store", help='specify the path of the config file (server.ini)', dest="config_file",required=True)
     # get the result
     config = ConfigParser.ConfigParser()
-    config.read(parser.parse_args().config_file)
-    fileConfig(config['SERVICE']['log_config_path'])
+    #config.read(parser.parse_args().config_file)
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    ini_path = os.path.join(my_path,'config','server.ini')
+    config.read(ini_path)
+    log_config_path = os.path.join(my_path,'config','logging.ini')
+    log_file_path = os.path.join(my_path, 'logs', 'fuji.log')
+    fileConfig(log_config_path, defaults={'logfilename': log_file_path.replace("\\", "/")} )
     logger = logging.getLogger() # use this form to initialize the root logger
     main()
