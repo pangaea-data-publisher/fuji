@@ -31,3 +31,5 @@ Your Swagger definition lives here:
 ```
 http://localhost:1071/uji/api/v1/swagger.json
 ```
+## License
+This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
