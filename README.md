@@ -13,11 +13,11 @@ The service uses the [Connexion](https://github.com/zalando/connexion) library o
 Python 3.5.2+
 
 ## Usage
-To run the server, please execute the following from the root directory:
+To run the server (default port 1071), please execute the following from the root directory:
 
 ```
 pip3 install -r requirements.txt
-python3 -m fuji_server
+python3 fuji_server/app.py -c /path/to/config/server.ini
 ```
 
 and open your browser to here:
@@ -30,22 +30,4 @@ Your Swagger definition lives here:
 
 ```
 http://localhost:1071/uji/api/v1/swagger.json
-```
-
-To launch the integration tests, use tox:
-```
-sudo pip install tox
-tox
-```
-
-## Running with Docker
-
-To run the server on a Docker container, please execute the following from the root directory:
-
-```bash
-# building the image
-docker build -t fuji_server .
-
-# starting up a container
-docker run -p 1071:1071 fuji_server
 ```
