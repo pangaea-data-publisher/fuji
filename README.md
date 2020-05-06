@@ -17,7 +17,7 @@ To run the server (default port 1071), please execute the following from the roo
 
 ```
 pip3 install -r requirements.txt
-python3 fuji_server/app.py -c /path/to/config/server.ini
+python3 -m fuji_server
 ```
 
 and open your browser to here:
