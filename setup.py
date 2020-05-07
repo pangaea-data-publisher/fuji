@@ -25,6 +25,6 @@ setup(
     package_data={'': ['yaml/*.yaml','config/*']},
     include_package_data=True,
     entry_points={
-        'console_scripts': ['fuji_server=fuji_server.app:main']},
+        'console_scripts': ['fuji_server=fuji_server.__main__:main']},
     long_description="A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 )
