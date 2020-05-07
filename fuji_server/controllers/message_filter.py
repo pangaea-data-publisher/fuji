@@ -9,7 +9,7 @@ class MessageFilter(logging.Filter):
         self.messages = {}
 
     def filter(self, record):
-        # Intercept logs messages
+        # Intercept logs messages #TODO - do not write FsF-* messages into a log file
         if record.getMessage().startswith('FsF-'):
             level = record.levelname
             m = record.getMessage().split(":", 1)

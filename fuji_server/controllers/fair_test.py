@@ -21,8 +21,8 @@ from fuji_server.models import CoreMetadataOutput
 
 
 class FAIRTest:
-    METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
-    SPDX_LICENSES = Preprocessor.get_licenses()
+    METRICS = None
+    SPDX_LICENSES = None
     def __init__(self, uid, oai, test_debug):
         self.oai_pmh = oai
         self.id = uid
@@ -39,6 +39,15 @@ class FAIRTest:
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
+            self.logger.setLevel(logging.INFO)
+        FAIRTest.load_predata()
+
+    @classmethod
+    def load_predata(cls):
+        if not cls.METRICS:
+            cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
+        if not cls.SPDX_LICENSES:
+            cls.SPDX_LICENSES = Preprocessor.get_licenses()
 
     def check_unique_persistent(self):
         uid_metric_identifier = 'FsF-F1-01D'  # FsF-F1-01D: Globally unique identifier
@@ -299,7 +308,6 @@ class FAIRTest:
                                         jsnld_metadata['creator'] = names
                                 else:
                                     jsnld_metadata['creator'] = [first + " " + last]
-
                         except Exception as err:
                             self.logger.debug('Failed to parse JSON-LD schema.org - {}'.format(err))
             except Exception as e:

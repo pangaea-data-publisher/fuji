@@ -22,7 +22,6 @@ def assess_by_id(body):  # noqa: E501
         identifier=body.object_identifier
         oai_pmh = body.oaipmh_provider
         debug = body.test_debug
-
         ft = FAIRTest(uid=identifier,oai=oai_pmh,test_debug=debug)
 
         uid_result, pid_result = ft.check_unique_persistent()

@@ -23,7 +23,7 @@ def main():
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     YAML_DIR = config['SERVICE']['yaml_directory']
     METRIC_YAML = config['SERVICE']['metrics_yaml']
-    METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR+'/'+METRIC_YAML)
+    METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR,METRIC_YAML)
     SPDX_URL = config['EXTERNAL']['spdx_license_github']
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
@@ -32,7 +32,7 @@ def main():
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
 
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
-    API_YAML = os.path.join(ROOT_DIR, YAML_DIR+'/'+config['SERVICE']['swagger_yaml'])
+    API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api(API_YAML, arguments={'title': 'FUJI - FAIR Data Assessment Service'}, validate_responses=False)
     #app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Data Assessment Service'},validate_responses=False,pythonic_params=True)
