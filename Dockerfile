@@ -13,4 +13,4 @@ EXPOSE 1071
 
 ENTRYPOINT ["python3"]
 
-CMD ["-m", "uji_server"]
+CMD ["-m", "fuji_server"]

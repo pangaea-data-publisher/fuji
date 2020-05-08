@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
 import configparser as ConfigParser
+import logging
 import os
 from logging.config import fileConfig
+
+import connexion
+
+from fuji_server import encoder
+from fuji_server.controllers.preprocessor import Preprocessor
 
 # # Create a URL route in our application for "/"
 # @app.route("/")
@@ -13,10 +19,6 @@ from logging.config import fileConfig
 #     :return:        the rendered template "home.html"
 #     """
 #     return render_template("home.html")
-from fuji_server import encoder
-from fuji_server.controllers import *
-from fuji_server.controllers.preprocessor import Preprocessor
-
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
