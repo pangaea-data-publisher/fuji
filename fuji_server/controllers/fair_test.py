@@ -138,7 +138,7 @@ class FAIRTest:
             not_null_og = [k for k, v in opengraph_dict.items() if v is not None]
             self.logger.info('FsF-F2-01M: Found Embedded OpenGraph metadata {}'.format(not_null_og))
             if self.isDebug: # TODO - maintain one reference of sources of metadata elements
-                if 'data_identifier' in not_null_og:
+                if 'object_identifier' in not_null_og:
                     self.identifier_sources.add(source_og)
                 if 'license' in not_null_og:
                     self.license_sources.add(source_og)
@@ -152,7 +152,7 @@ class FAIRTest:
             not_null_dc = [k for k, v in dc_dict.items() if v is not None]
             self.logger.info('FsF-F2-01M: Found Embedded DublinCore metadata - {}'.format(not_null_dc))
             if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
-                if 'data_identifier' in not_null_dc:
+                if 'object_identifier' in not_null_dc:
                     self.identifier_sources.add(source_dc)
                 if 'license' in not_null_dc:
                     self.license_sources.add(source_dc)
@@ -166,7 +166,7 @@ class FAIRTest:
             not_null_sco = [k for k,v in schameorg_dict.items() if v is not None]
             self.logger.info('FsF-F2-01M: Found Schema.org metadata {} '.format(not_null_sco))
             if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
-                if 'data_identifier' in not_null_sco:
+                if 'object_identifier' in not_null_sco:
                     self.identifier_sources.add(source_schemaorg)
                 if 'license' in not_null_sco:
                     self.license_sources.add(source_schemaorg)
@@ -181,7 +181,7 @@ class FAIRTest:
                 not_null_dcite = [k for k,v in dcitejsn_dict.items() if v is not None]
                 self.logger.info('FsF-F2-01M: Found Datacite metadata {} '.format(not_null_dcite))
                 if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
-                    if 'data_identifier' in not_null_dcite:
+                    if 'object_identifier' in not_null_dcite:
                         self.identifier_sources.add(source_dcitejsn)
                     if 'license' in not_null_dcite:
                         self.license_sources.add(source_dcitejsn)
@@ -373,8 +373,8 @@ class FAIRTest:
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutputInner()
 
-        if self.metadata.get('data_identifier') is not None: # TODO additional check if provided identifier == identifier in metadata
-            did_output.data_identifier_included = self.metadata['data_identifier']
+        if self.metadata.get('object_content_identifier') is not None: # TODO additional check if provided identifier == identifier in metadata
+            did_output.data_identifier_included = self.metadata['object_content_identifier']
             if self.landing_url:
                 did_output.data_identifier_active = True
                 did_result.passed = True # tests is passed if identifier included in metadata and the identifier is web-accessible
