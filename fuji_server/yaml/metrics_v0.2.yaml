@@ -75,7 +75,7 @@ metrics:
   total_score: 2
 
 - metric_identifier: FsF-I3-01M
-  metric_name: Qualified references to related entities
+  metric_name: Meaningful links to related entities
   description: Linking data to its related entities will increase its FAIRness, and the linking information should be captured as part of the metadata. A rich research graph (e.g., PID graph) can be formed by aggregating the entities connections from different data providers. A data object may be linked to its prior version, other datasets in the same data collection, related publications, source (instrument), data creators or collectors and organization (e.g., funder and hosting institution). Qualified references refer to the meaningful links between data and its related entities expressed through relation types. It is also essential to tests if the URL of the related entities are active.
   fair_principle: R1.1
   question_type: single-choice
