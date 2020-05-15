@@ -13,13 +13,14 @@ class Sources(enum.Enum):
     DATACITE_JSON = 'Datacite Metadata'
     SIGN_POSTING = 'Signposting Typed Links'
 
-# reference metadata elements
-CORE_METADATA = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
-                 'object_content_identifier', 'access_level', 'embargoe', 'access_info', 'related_resources', 'provenance',
-                 'license','data_file_format', 'type', 'data_size']
+# reference metadata elements (used by FUJI)
+#['creator','license','related_resources'] --> list type
+REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
+                 'object_content_identifier', 'access_level', 'embargoe', 'access_info', 'policy','related_resources','provenance_general',
+                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'type', 'data_size']
 
 # core metadata elements (FsF-F2-01M)
-REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords']
+REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
 
 ## ============================ METADATA MAPPINGS ============================ ##
 
@@ -31,6 +32,7 @@ DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 
               'license': 'license', 'data_file_format': 'format'}
 
 # https://ogp.me/
+# og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
 OG_MAPPING = {'title': 'og:title', 'object_identifier': 'og:url', 'summary': 'og:description',
               'type': 'og:type', 'publisher': 'og:site_name'}
 
@@ -50,4 +52,5 @@ DATACITE_JSON_MAPPING = '{ object_identifier: id, type: types.resourceTypeGenera
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date,' \
                         'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rights || rightsList[*].rightsUri,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
-                        'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
+                        'related_resources: relatedIdentifiers[*]}'
+                        #'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
