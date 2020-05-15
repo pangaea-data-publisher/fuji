@@ -25,16 +25,17 @@ def assess_by_id(body):  # noqa: E501
         ft = FAIRTest(uid=identifier,oai=oai_pmh,test_debug=debug)
 
         uid_result, pid_result = ft.check_unique_persistent()
-        core_metadata_result = ft.check_core_metadata()
-        identifier_included_result = ft.check_data_identifier_included()
+        core_metadata_result = ft.check_minimal_metatadata()
+        content_identifier_included_result = ft.check_content_identifier_included()
         #check_searchable_result = ft.check_searchable()
-        license_result = ft.check_license()
+        #license_result = ft.check_license()
+        #relatedresources_result = ft.check_relatedresources()
 
         results.append(uid_result)
         results.append(pid_result)
         results.append(core_metadata_result)
-        results.append(identifier_included_result)
-        #results.append(check_searchable_result)
-        results.append(license_result)
+        results.append(content_identifier_included_result)
+        #results.append(relatedresources_result)
+        #results.append(license_result)
 
     return results
