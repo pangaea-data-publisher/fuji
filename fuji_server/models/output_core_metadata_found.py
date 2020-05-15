@@ -14,7 +14,7 @@ class OutputCoreMetadataFound(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, creator: List[str]=None, title: str=None, publisher: str=None, publication_date: date=None, summary: str=None, keywords: str=None):  # noqa: E501
+    def __init__(self, creator: List[str]=None, title: str=None, publisher: str=None, publication_date: date=None, summary: str=None, keywords: str=None, object_identifier: str=None):  # noqa: E501
         """OutputCoreMetadataFound - a model defined in Swagger
 
         :param creator: The creator of this OutputCoreMetadataFound.  # noqa: E501
@@ -29,6 +29,8 @@ class OutputCoreMetadataFound(Model):
         :type summary: str
         :param keywords: The keywords of this OutputCoreMetadataFound.  # noqa: E501
         :type keywords: str
+        :param object_identifier: The object_identifier of this OutputCoreMetadataFound.  # noqa: E501
+        :type object_identifier: str
         """
         self.swagger_types = {
             'creator': List[str],
@@ -36,7 +38,8 @@ class OutputCoreMetadataFound(Model):
             'publisher': str,
             'publication_date': date,
             'summary': str,
-            'keywords': str
+            'keywords': str,
+            'object_identifier': str
         }
 
         self.attribute_map = {
@@ -45,7 +48,8 @@ class OutputCoreMetadataFound(Model):
             'publisher': 'publisher',
             'publication_date': 'publication_date',
             'summary': 'summary',
-            'keywords': 'keywords'
+            'keywords': 'keywords',
+            'object_identifier': 'object_identifier'
         }
         self._creator = creator
         self._title = title
@@ -53,6 +57,7 @@ class OutputCoreMetadataFound(Model):
         self._publication_date = publication_date
         self._summary = summary
         self._keywords = keywords
+        self._object_identifier = object_identifier
 
     @classmethod
     def from_dict(cls, dikt) -> 'OutputCoreMetadataFound':
@@ -202,3 +207,26 @@ class OutputCoreMetadataFound(Model):
             raise ValueError("Invalid value for `keywords`, must not be `None`")  # noqa: E501
 
         self._keywords = keywords
+
+    @property
+    def object_identifier(self) -> str:
+        """Gets the object_identifier of this OutputCoreMetadataFound.
+
+
+        :return: The object_identifier of this OutputCoreMetadataFound.
+        :rtype: str
+        """
+        return self._object_identifier
+
+    @object_identifier.setter
+    def object_identifier(self, object_identifier: str):
+        """Sets the object_identifier of this OutputCoreMetadataFound.
+
+
+        :param object_identifier: The object_identifier of this OutputCoreMetadataFound.
+        :type object_identifier: str
+        """
+        if object_identifier is None:
+            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+
+        self._object_identifier = object_identifier

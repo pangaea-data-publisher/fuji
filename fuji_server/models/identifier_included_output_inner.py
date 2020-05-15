@@ -14,25 +14,25 @@ class IdentifierIncludedOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, data_identifier_included: str=None, data_identifier_active: bool=False):  # noqa: E501
+    def __init__(self, content_identifier_included: str=None, content_identifier_active: bool=False):  # noqa: E501
         """IdentifierIncludedOutputInner - a model defined in Swagger
 
-        :param data_identifier_included: The data_identifier_included of this IdentifierIncludedOutputInner.  # noqa: E501
-        :type data_identifier_included: str
-        :param data_identifier_active: The data_identifier_active of this IdentifierIncludedOutputInner.  # noqa: E501
-        :type data_identifier_active: bool
+        :param content_identifier_included: The content_identifier_included of this IdentifierIncludedOutputInner.  # noqa: E501
+        :type content_identifier_included: str
+        :param content_identifier_active: The content_identifier_active of this IdentifierIncludedOutputInner.  # noqa: E501
+        :type content_identifier_active: bool
         """
         self.swagger_types = {
-            'data_identifier_included': str,
-            'data_identifier_active': bool
+            'content_identifier_included': str,
+            'content_identifier_active': bool
         }
 
         self.attribute_map = {
-            'data_identifier_included': 'data_identifier_included',
-            'data_identifier_active': 'data_identifier_active'
+            'content_identifier_included': 'content_identifier_included',
+            'content_identifier_active': 'content_identifier_active'
         }
-        self._data_identifier_included = data_identifier_included
-        self._data_identifier_active = data_identifier_active
+        self._content_identifier_included = content_identifier_included
+        self._content_identifier_active = content_identifier_active
 
     @classmethod
     def from_dict(cls, dikt) -> 'IdentifierIncludedOutputInner':
@@ -46,43 +46,43 @@ class IdentifierIncludedOutputInner(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def data_identifier_included(self) -> str:
-        """Gets the data_identifier_included of this IdentifierIncludedOutputInner.
+    def content_identifier_included(self) -> str:
+        """Gets the content_identifier_included of this IdentifierIncludedOutputInner.
 
 
-        :return: The data_identifier_included of this IdentifierIncludedOutputInner.
+        :return: The content_identifier_included of this IdentifierIncludedOutputInner.
         :rtype: str
         """
-        return self._data_identifier_included
+        return self._content_identifier_included
 
-    @data_identifier_included.setter
-    def data_identifier_included(self, data_identifier_included: str):
-        """Sets the data_identifier_included of this IdentifierIncludedOutputInner.
+    @content_identifier_included.setter
+    def content_identifier_included(self, content_identifier_included: str):
+        """Sets the content_identifier_included of this IdentifierIncludedOutputInner.
 
 
-        :param data_identifier_included: The data_identifier_included of this IdentifierIncludedOutputInner.
-        :type data_identifier_included: str
+        :param content_identifier_included: The content_identifier_included of this IdentifierIncludedOutputInner.
+        :type content_identifier_included: str
         """
 
-        self._data_identifier_included = data_identifier_included
+        self._content_identifier_included = content_identifier_included
 
     @property
-    def data_identifier_active(self) -> bool:
-        """Gets the data_identifier_active of this IdentifierIncludedOutputInner.
+    def content_identifier_active(self) -> bool:
+        """Gets the content_identifier_active of this IdentifierIncludedOutputInner.
 
 
-        :return: The data_identifier_active of this IdentifierIncludedOutputInner.
+        :return: The content_identifier_active of this IdentifierIncludedOutputInner.
         :rtype: bool
         """
-        return self._data_identifier_active
+        return self._content_identifier_active
 
-    @data_identifier_active.setter
-    def data_identifier_active(self, data_identifier_active: bool):
-        """Sets the data_identifier_active of this IdentifierIncludedOutputInner.
+    @content_identifier_active.setter
+    def content_identifier_active(self, content_identifier_active: bool):
+        """Sets the content_identifier_active of this IdentifierIncludedOutputInner.
 
 
-        :param data_identifier_active: The data_identifier_active of this IdentifierIncludedOutputInner.
-        :type data_identifier_active: bool
+        :param content_identifier_active: The content_identifier_active of this IdentifierIncludedOutputInner.
+        :type content_identifier_active: bool
         """
 
-        self._data_identifier_active = data_identifier_active
+        self._content_identifier_active = content_identifier_active
