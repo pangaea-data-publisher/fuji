@@ -13,7 +13,10 @@ class Preprocessor(object):
     logger = logging.getLogger()
     METRIC_YML_PATH = None
     SPDX_URL = None
+    DATACITE_API_REPO = None
+    RE3DATA_API = None
     all_licenses = []
+    re3repositories = {}
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path):
@@ -35,6 +38,25 @@ class Preprocessor(object):
             temp_dict = {k: v for k, v in dictm.items() if k not in unwanted_keys}
             temp_list.append(temp_dict)
         cls.formatted_specification['metrics'] = temp_list
+
+    @classmethod
+    def retrieve_datacite_re3repos(cls, re3data_endpoint, datacite_endpoint):
+        cls.RE3DATA_API = re3data_endpoint
+        cls.DATACITE_API_REPO = datacite_endpoint
+        p = {'query': 're3data_id:*'}
+        header = {"content-type": "application/json"}
+        try:
+            req = requests.get(datacite_endpoint, params=p,headers=header) #application/json
+            raw = req.json()
+            for r in raw["data"]:
+                cls.re3repositories[r['id']] = r['attributes']['re3data']
+            while 'next' in raw['links']:
+                response = requests.get(raw['links']['next']).json()
+                for r in response["data"]:
+                    cls.re3repositories[r['id']] = r['attributes']['re3data'] # TODO - get re3data local id
+                raw['links'] = response['links']
+        except requests.exceptions.RequestException as e:
+            cls.logger.exception(e)
 
     @classmethod
     def retrieve_licenses(cls, license_path):
@@ -64,6 +86,12 @@ class Preprocessor(object):
         if not cls.all_licenses:
             cls.retrieve_licenses(cls.SPDX_URL)
         return cls.all_licenses
+
+    @classmethod
+    def get_re3repositories(cls):
+        if not cls.re3repositories:
+            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO)
+        return cls.re3repositories
 
     @classmethod
     def get_metrics(cls):
