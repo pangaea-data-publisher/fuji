@@ -220,6 +220,7 @@ components:
       required:
       - creator
       - keywords
+      - object_identifier
       - publication_date
       - publisher
       - summary
@@ -240,6 +241,8 @@ components:
         summary:
           type: string
         keywords:
+          type: string
+        object_identifier:
           type: string
     CoreMetadata_output:
       type: object
@@ -360,9 +363,9 @@ components:
     IdentifierIncluded_output_inner:
       type: object
       properties:
-        data_identifier_included:
+        content_identifier_included:
           type: string
-        data_identifier_active:
+        content_identifier_active:
           type: boolean
           default: false
     License_output_inner:
