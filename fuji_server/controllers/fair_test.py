@@ -12,20 +12,19 @@ import jmespath
 import lxml
 import requests
 import urllib.request as urllib
-#from extruct.jsonld import JsonLdExtractor
 import fuji_server.controllers.mapping as fujimap
 from fuji_server.controllers.message_filter import MessageFilter
 from fuji_server.controllers.preprocessor import Preprocessor
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput
-import parslepy
-import collections
-
+import Levenshtein
 
 class FAIRTest:
 
     METRICS = None
     SPDX_LICENSES = None
+    SPDX_LICENSE_NAMES = None
+    SPDX_LICENSE_URLS = None
     DATACITE_REPOS = None
 
     def __init__(self, uid, oai=None, test_debug=False):
@@ -53,7 +52,7 @@ class FAIRTest:
         if not cls.METRICS:
             cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
         if not cls.SPDX_LICENSES:
-            cls.SPDX_LICENSES = Preprocessor.get_licenses()
+            cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
         if not cls.DATACITE_REPOS:
             cls.DATACITE_REPOS = Preprocessor.get_re3repositories()
 
@@ -516,7 +515,7 @@ class FAIRTest:
 
         id_object = self.metadata_merged.get('object_identifier')
         id_object_content = self.metadata_merged.get('object_content_identifier')
-        #if id_object == self.id: http v shttps
+        #if id_object == self.id: http vs shttps
         self.logger.info('FsF-F3-01M: Data object identifier specified {}'.format(id_object))
         if id_object_content is not None:
             self.logger.info('FsF-F3-01M: Data object (content) identifier included {}'.format(id_object_content))
@@ -590,37 +589,33 @@ class FAIRTest:
         license_sc = int(FAIRTest.METRICS.get(license_identifier).get('total_score'))
         license_score = FAIRResultCommonScore(total=license_sc)
         license_result = License(id=6, metric_identifier=license_identifier, metric_name=license_mname)
-        license_output = LicenseOutputInner()
-
-        #https://spdx.org/licenses/0BSD.html#licenseText
-        if self.metadata_merged.get('license') is not None:
-            license_output.license = self.metadata_merged['license']
-            #TODO datacite json "rights": "License: http://dans.knaw.nl/en/about/???
-            if isinstance(self.metadata_merged['license'], list): # TODO license maybe [] of name or uri --> simply it !!!!
-                target_license = self.metadata_merged['license'][0]
-            else:
-                target_license = self.metadata_merged['license']
-
-            isurl = idutils.is_url(target_license)
-            if not isurl: # maybe licence name
-                spdx_html, spdx_osi = self.lookup_license(target_license)
+        licenses_list = []
+        specified_licenses = self.metadata_merged.get('license')
+        if specified_licenses is not None:
+            if isinstance(specified_licenses, str): # licenses maybe string or list depending on metadata schemas
+                specified_licenses = [specified_licenses]
+            for l in specified_licenses:
+                license_output = LicenseOutputInner()
+                license_output.license = l
+                isurl = idutils.is_url(l)
+                if not isurl: # maybe licence name
+                    spdx_html, spdx_osi = self.lookup_license(l)
+                    license_output.details_url = spdx_html
+                    license_output.osi_approved = spdx_osi
+                else:
+                    spdx_html, spdx_osi = self.lookup_license_by_url(l)
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
-            else: # TODO - use url to match spdx information
-                self.logger.info('FsF-R1.1-01M: License url provided, cannot determined spdx "details_url" and "osi_approved"')
-                license_output.details_url = None # TODO - seeAlso from spdx may contain license url specified
-                license_output.osi_approved = None
+                licenses_list.append(license_output)
+            license_result.output = licenses_list
             license_result.passed = True
             license_score.earned = license_sc
         else:
             license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M: No license information is included in metadata - {}'.format(list(self.metadata_sources)))
+            self.logger.warning('FsF-R1.1-01M: No license information is included in metadata')
         license_result.score = license_score
-        license_result.output = license_output
 
         if self.isDebug:
-            self.logger.info(
-                    'FsF-R1.1-01M: License metadata sources - {}'.format(list(self.license_sources)))
             license_result.test_debug = self.msg_filter.getMessage(license_identifier)
         return license_result.to_dict()
 
@@ -649,13 +644,15 @@ class FAIRTest:
             #related_result.test_debug = self.msg_filter.getMessage(related_identifier)
         return related_result.to_dict()
 
-    def lookup_license(self, lname):
+    def lookup_license_by_name(self, lvalue):
         html_url = None
         isOsiApproved = False
-        # TODO - better string matching
-        #  (Creative Commons Attribution 4.0 International vs Creative Commons Attribution 4.0 International (CC BY 4.0))
-        found = next((item for item in FAIRTest.SPDX_LICENSES if item['name'] == lname.lower()), None)
-        self.logger.info('FsF-R1.1-01M: Extract license SPDX details by name - {}'.format(lname))
+        self.logger.info('FsF-R1.1-01M: Extract license SPDX details by licence name - {}'.format(lvalue))
+        #Levenshtein distance similarity ratio between two license name
+        sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRTest.SPDX_LICENSE_NAMES]
+        index_max = max(range(len(sim)), key=sim.__getitem__)
+        sim_license = FAIRTest.SPDX_LICENSE_NAMES[index_max]
+        found = next((item for item in FAIRTest.SPDX_LICENSES if item['name'] == sim_license), None)
         if found:
             self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
             html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
@@ -663,6 +660,28 @@ class FAIRTest:
         else:
             self.logger.info('FsF-R1.1-01M: No SPDX license representation found')
         return html_url , isOsiApproved
+
+    def lookup_license_by_url(self, lurl):
+        #TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
+        html_url = None
+        isOsiApproved = False
+        self.logger.info('FsF-R1.1-01M: Extract license SPDX details by license url - {}'.format(lurl))
+        ref_id = None
+        max_val = 0
+        for key, value in FAIRTest.SPDX_LICENSE_URLS.items():
+            # Levenshtein distance similarity ratio between two license urls
+            sim = max([Levenshtein.ratio(lurl, i) for i in value])
+            if sim > max_val:
+                max_val = sim
+                ref_id = key
+        found = next((item for item in FAIRTest.SPDX_LICENSES if item['referenceNumber'] == ref_id), None)
+        if found:
+            self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
+            html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
+            isOsiApproved = found['isOsiApproved']
+        else:
+            self.logger.info('FsF-R1.1-01M: No SPDX license representation found')
+        return html_url, isOsiApproved
 
     def lookup_re3data(self, re3id):
         url = Preprocessor.RE3DATA_API
