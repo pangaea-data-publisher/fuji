@@ -25,7 +25,7 @@ class FAIRTest:
     METRICS = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
-    SPDX_LICENSE_URLS = None
+    #SPDX_LICENSE_URLS = None
     DATACITE_REPOS = None
 
     def __init__(self, uid, oai=None, test_debug=False):
@@ -53,7 +53,8 @@ class FAIRTest:
         if not cls.METRICS:
             cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
         if not cls.SPDX_LICENSES:
-            cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
+            #cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
+            cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
         if not cls.DATACITE_REPOS:
             cls.DATACITE_REPOS = Preprocessor.get_re3repositories()
 
@@ -140,7 +141,6 @@ class FAIRTest:
 
         # retrieve metadata from landing page and external api (e.g., datacite)
         self.retrieve_metadata()
-        # TODO - license
         return uid_result.to_dict(), pid_result.to_dict()
 
     # def analyze_metadata_old(self):
@@ -161,7 +161,7 @@ class FAIRTest:
     #     if opengraph_dict:
     #         not_null_og = [k for k, v in opengraph_dict.items() if v is not None]
     #         self.logger.info('FsF-F2-01M: Found Embedded OpenGraph metadata {}'.format(not_null_og))
-    #         if self.isDebug: # TODO - maintain one reference of sources of metadata elements
+    #         if self.isDebug:
     #             if 'object_identifier' in not_null_og:
     #                 self.identifier_sources.add(source_og)
     #             if 'license' in not_null_og:
@@ -176,13 +176,13 @@ class FAIRTest:
     #     if dc_dict:
     #         not_null_dc = [k for k, v in dc_dict.items() if v is not None]
     #         self.logger.info('FsF-F2-01M: Found Embedded DublinCore metadata - {}'.format(not_null_dc))
-    #         if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
+    #         if self.isDebug:
     #             if 'object_identifier' in not_null_dc:
     #                 self.identifier_sources.add(source_dc)
     #             if 'license' in not_null_dc:
     #                 self.license_sources.add(source_dc)
     #         self.metadata_sources.add(source_dc)
-    #         #self.metadata.update(dc_dict) #TODO- update or merge? handle different data types, str vs []
+    #         #self.metadata.update(dc_dict)
     #         meta_dicts.append(dc_dict)
     #     else:
     #         self.logger.info('FsF-F2-01M: DublinCore metadata UNAVAILABLE')
@@ -191,7 +191,7 @@ class FAIRTest:
     #     if schameorg_dict:
     #         not_null_sco = [k for k,v in schameorg_dict.items() if v is not None]
     #         self.logger.info('FsF-F2-01M: Found Schema.org metadata {} '.format(not_null_sco))
-    #         if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
+    #         if self.isDebug:
     #             if 'object_identifier' in not_null_sco:
     #                 self.identifier_sources.add(source_schemaorg)
     #             if 'license' in not_null_sco:
@@ -207,7 +207,7 @@ class FAIRTest:
     #         if dcitejsn_dict:
     #             not_null_dcite = [k for k,v in dcitejsn_dict.items() if v is not None]
     #             self.logger.info('FsF-F2-01M: Found Datacite metadata {} '.format(not_null_dcite))
-    #             if self.isDebug:  # TODO - maintain one reference of sources of metadata elements
+    #             if self.isDebug:
     #                 if 'object_identifier' in not_null_dcite:
     #                     self.identifier_sources.add(source_dcitejsn)
     #                 if 'license' in not_null_dcite:
@@ -221,14 +221,14 @@ class FAIRTest:
     #         self.logger.info('FsF-F2-01M: Not a PID, no request sent to datacite metadata api.')
     #
     #     # merge all metadata dicts
-    #     super_dict = collections.defaultdict(list) # TODO - measure performance
+    #     super_dict = collections.defaultdict(list)
     #     for d in meta_dicts:
     #         for k, v in d.items():
     #             if isinstance(d[k], list):
     #                 super_dict[k].extend(v)
     #             else:
     #                 super_dict[k].append(v)
-    #             if k != 'related_resources': #TODO- complex type (list of dicts) !!!!
+    #             if k != 'related_resources':
     #                 super_dict[k] = list(set(super_dict[k]))
     #     self.metadata_merged = dict(super_dict)
     #     self.metadata_merged.update((k, str(v[0])) for k, v in self.metadata_merged.items() if len(v) == 1)
@@ -429,7 +429,7 @@ class FAIRTest:
                 else:
                     if self.pid_scheme:
                         source = fujimap.Sources.SCHEMAORG_NEGOTIATE.value
-                        ext_meta = self.negotiate_datacite('schemaorg_jsonld', 'FsF-F2-01M') # TODO - only if persistent?
+                        ext_meta = self.negotiate_datacite('schemaorg_jsonld', 'FsF-F2-01M')
 
                 if ext_meta:
                     self.logger.info('FsF-F2-01M: Extract metadata from {}'.format(source))
