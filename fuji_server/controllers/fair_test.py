@@ -18,6 +18,7 @@ from fuji_server.controllers.preprocessor import Preprocessor
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput
 import Levenshtein
+import itertools
 
 class FAIRTest:
 
@@ -598,12 +599,12 @@ class FAIRTest:
                 license_output = LicenseOutputInner()
                 license_output.license = l
                 isurl = idutils.is_url(l)
-                if not isurl: # maybe licence name
-                    spdx_html, spdx_osi = self.lookup_license(l)
-                    license_output.details_url = spdx_html
-                    license_output.osi_approved = spdx_osi
-                else:
+                if isurl:
                     spdx_html, spdx_osi = self.lookup_license_by_url(l)
+                else: # maybe licence name
+                    spdx_html, spdx_osi = self.lookup_license_by_name(l)
+                if not spdx_html:
+                    self.logger.warning('FsF-R1.1-01M: No SPDX license representation found')
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
@@ -645,43 +646,60 @@ class FAIRTest:
         return related_result.to_dict()
 
     def lookup_license_by_name(self, lvalue):
+        # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('FsF-R1.1-01M: Extract license SPDX details by licence name - {}'.format(lvalue))
+        self.logger.info('FsF-R1.1-01M: Search license SPDX details by licence name - {}'.format(lvalue))
         #Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRTest.SPDX_LICENSE_NAMES]
-        index_max = max(range(len(sim)), key=sim.__getitem__)
-        sim_license = FAIRTest.SPDX_LICENSE_NAMES[index_max]
-        found = next((item for item in FAIRTest.SPDX_LICENSES if item['name'] == sim_license), None)
-        if found:
+        if max(sim) > 0.85:
+            index_max = max(range(len(sim)), key=sim.__getitem__)
+            sim_license = FAIRTest.SPDX_LICENSE_NAMES[index_max]
+            found = next((item for item in FAIRTest.SPDX_LICENSES if item['name'] == sim_license), None)
             self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
-            html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
+            #html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
+            html_url = found['detailsUrl'].replace(".json", ".html")
             isOsiApproved = found['isOsiApproved']
-        else:
-            self.logger.info('FsF-R1.1-01M: No SPDX license representation found')
         return html_url , isOsiApproved
 
-    def lookup_license_by_url(self, lurl):
-        #TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
-        html_url = None
-        isOsiApproved = False
-        self.logger.info('FsF-R1.1-01M: Extract license SPDX details by license url - {}'.format(lurl))
-        ref_id = None
-        max_val = 0
-        for key, value in FAIRTest.SPDX_LICENSE_URLS.items():
-            # Levenshtein distance similarity ratio between two license urls
-            sim = max([Levenshtein.ratio(lurl, i) for i in value])
-            if sim > max_val:
-                max_val = sim
-                ref_id = key
-        found = next((item for item in FAIRTest.SPDX_LICENSES if item['referenceNumber'] == ref_id), None)
-        if found:
-            self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
-            html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
-            isOsiApproved = found['isOsiApproved']
-        else:
-            self.logger.info('FsF-R1.1-01M: No SPDX license representation found')
-        return html_url, isOsiApproved
+    def lookup_license_by_url(self, u):
+        self.logger.info('FsF-R1.1-01M: Search license SPDX details by licence url - {}'.format(u))
+        for item in FAIRTest.SPDX_LICENSES:
+            #u = u.lower()
+            #if any(u in v.lower() for v in item.values()):
+            seeAlso = item['seeAlso']
+            if any(u in v for v in seeAlso):
+                self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(item['detailsUrl']))
+                #html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
+                html_url = item['detailsUrl'].replace(".json", ".html")
+                isOsiApproved = item['isOsiApproved']
+                return html_url, isOsiApproved
+            else:
+                return None, None
+
+    # def lookup_license_by_url_adv(self, lurl):
+    #     html_url = None
+    #     isOsiApproved = False
+    #     self.logger.info('FsF-R1.1-01M: Extract license SPDX details by license url - {}'.format(lurl))
+    #     ref_id = None
+    #     max_val = 0
+    #     for key, value in FAIRTest.SPDX_LICENSE_URLS.items():
+    #         # Levenshtein distance similarity ratio between two license urls
+    #         sim = max([Levenshtein.ratio(lurl, i) for i in value])
+    #         if sim > max_val:
+    #             max_val = sim
+    #             ref_id = key
+    #     if max_val > 0.85:
+    #         found = next((item for item in FAIRTest.SPDX_LICENSES if item['referenceNumber'] == ref_id), None)
+    #         self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
+    #         #html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
+    #         html_url = found['detailsUrl'].replace(".json", ".html")
+    #         isOsiApproved = found['isOsiApproved']
+    #     else:
+    #         self.logger.info('FsF-R1.1-01M: No SPDX license representation found')
+    #     return html_url, isOsiApproved
+
+
 
     def lookup_re3data(self, re3id):
         url = Preprocessor.RE3DATA_API
