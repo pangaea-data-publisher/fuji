@@ -28,7 +28,7 @@ class FAIRTest:
     SPDX_LICENSES = None
     DATACITE_REPOS = None
 
-    def __init__(self, uid, oai, test_debug):
+    def __init__(self, uid, oai=None, test_debug=False):
         self.oai_pmh = oai
         self.id = uid
         self.pid_url = None  # full pid, e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
@@ -552,16 +552,20 @@ class FAIRTest:
 
     def check_searchable(self):
         searchable_identifier = 'FsF-F4-01M'  # FsF-F4-01M: Searchable metadata
-        searchable_result = Searchable(id=5, metric_identifier=searchable_identifier)
+        searchable_name = FAIRTest.METRICS.get(searchable_identifier).get('metric_name')
+        searchable_result = Searchable(id=5, metric_identifier=searchable_identifier, metric_name=searchable_name )
         searchable_sc = int(FAIRTest.METRICS.get(searchable_identifier).get('total_score'))
         searchable_score = FAIRResultCommonScore(total=searchable_sc)
         searchable_output = SearchableOutput()
         search_mechanisms = []
-        sources_registry = ['Negotiated Schema.org JSON-LD (Datacite)', 'Datacite JsonMetadata']
+        sources_registry = [fujimap.Sources.SCHEMAORG_NEGOTIATE.value, fujimap.Sources.DATACITE_JSON.value]
         # print('self.metadata_sources ', self.metadata_sources)
-        r = 'Embedded Schema.org JSON-LD'
-        if r in self.metadata_sources:
-            search_mechanisms.append(OutputSearchMechanisms(mechanism='structured data', mechanism_info=r))
+        search_engines_support = [fujimap.Sources.SCHEMAORG_EMBED.value, fujimap.Sources.DUBLINCORE.value]
+        #r = 'Embedded Schema.org JSON-LD'
+        #if r in self.metadata_sources:
+        search_engine_support_match=list(set(self.metadata_sources).intersection(search_engines_support))
+        if len(search_engine_support_match)>0:
+            search_mechanisms.append(OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
         if any(x in self.metadata_sources for x in sources_registry):
             search_mechanisms.append(OutputSearchMechanisms(mechanism='metadata registry'))
         # TODO: datacite, oai-pmh
