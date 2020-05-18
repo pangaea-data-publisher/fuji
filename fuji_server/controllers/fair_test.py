@@ -12,6 +12,7 @@ import jmespath
 import lxml
 import requests
 import urllib.request as urllib
+from urllib.parse import urlparse
 #from extruct.jsonld import JsonLdExtractor
 import fuji_server.controllers.mapping as fujimap
 from fuji_server.controllers.message_filter import MessageFilter
@@ -31,9 +32,10 @@ class FAIRTest:
     def __init__(self, uid, oai=None, test_debug=False):
         self.oai_pmh = oai
         self.id = uid
-        self.pid_url = None  # full pid, e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
-        self.landing_url = None  # resolved url (landing page) of self.pid_url
-        self.landing_html = None # contents of html page
+        self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
+        self.landing_url = None  # url of the landing page of self.pid_url
+        self.landing_html = None
+        self.landing_origin = None #schema + authority of the landing page e.g. https://www.pangaea.de
         self.pid_scheme = None
         self.metadata_merged = {}
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -108,6 +110,9 @@ class FAIRTest:
                 self.logger.info('FsF-F1-02D: Request status code - {}'.format(code))
                 if code == 200: #TODO 2XX
                     self.landing_url = r.url
+                    up=urlparse(r.url)
+                    self.landing_origin= '{uri.scheme}://{uri.netloc}'.format(uri=up)
+
                     if re.search('text/html', r.headers['Content-Type'], re.IGNORECASE):
                         self.logger.info('FsF-F1-02D: Found HTML page')
                         self.landing_html = r.text
