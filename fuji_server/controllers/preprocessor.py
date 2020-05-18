@@ -16,6 +16,8 @@ class Preprocessor(object):
     DATACITE_API_REPO = None
     RE3DATA_API = None
     all_licenses = []
+    license_names = []
+    #license_urls = {}
     re3repositories = {}
 
     @classmethod
@@ -25,8 +27,7 @@ class Preprocessor(object):
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as e:
-            cls.logger.exception(e)  # TODO system exit
-
+            cls.logger.exception(e)
         cls.all_metrics_list = specification['metrics']
         cls.total_metrics = len(cls.all_metrics_list)
 
@@ -74,18 +75,23 @@ class Preprocessor(object):
                             d['name'] = d['name'].lower()
                         cls.all_licenses = data
                         cls.total_licenses = len(data)
-                    # v = resp['licenseListVersion'] #TODO track version number, cache json locally;  cls.all_licenses=null if download failed
+                        cls.license_names = [d['name'] for d in data if 'name' in d]
+                        #referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]
+                        #seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
+                        #cls.license_urls = dict(zip(referenceNumber, seeAlso))
+                    # v = resp['licenseListVersion'] #TODO track version number, cache json locally;  cls.all_licenses=null if download fails
                     # d = resp['releaseDate']
             except json.decoder.JSONDecodeError as e1:
                 cls.logger.exception(e1)
-        except requests.exceptions.RequestException as e2:  # TODO system exit
+        except requests.exceptions.RequestException as e2:
             cls.logger.exception(e2)
 
     @classmethod
     def get_licenses(cls):
         if not cls.all_licenses:
             cls.retrieve_licenses(cls.SPDX_URL)
-        return cls.all_licenses
+        #return cls.all_licenses, cls.license_names, cls.license_urls
+        return cls.all_licenses, cls.license_names
 
     @classmethod
     def get_re3repositories(cls):
