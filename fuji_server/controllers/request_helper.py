@@ -37,7 +37,7 @@ class RequestHelper:
 
     def content_negotiate(self, metric_id):
         result = None
-        result_type = 'html'
+        parser_type = 'extruct'
         if self.pid_url is not None:
             try:
                 response = requests.get(self.pid_url, headers={'Accept': self.accept_type})
@@ -54,10 +54,10 @@ class RequestHelper:
                                 elif at.name in {'schemaorg', 'json', 'jsonld', 'datacite_json'}:
                                     result = response.json()
                                     # result = json.loads(response.text)
-                                    result_type = 'json'
+                                    parser_type = 'json'
                                 elif at.name in {'rdf', 'jsonld', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
                                     result = self.parse_rdf(response.text, content_type)
-                                    result_type = 'rdf'
+                                    parser_type = 'rdf'
                                 else:
                                     result = self.parse_html(
                                         response.text)  # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
@@ -65,7 +65,7 @@ class RequestHelper:
             except requests.exceptions.RequestException as e:
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception("%s: , RequestException, accept = %s" % (self.metric_id, self.AcceptTypes))
-        return result, result_type
+        return result, parser_type
 
     def parse_html(self, html_texts):
         # extract contents from the landing page using extruct, which returns a dict with
