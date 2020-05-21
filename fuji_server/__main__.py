@@ -6,7 +6,7 @@ import os
 from logging.config import fileConfig
 import connexion
 from fuji_server import encoder
-from fuji_server.controllers.preprocessor import Preprocessor
+from fuji_server.helper.preprocessor import Preprocessor
 
 # # Create a URL route in our application for "/"
 # @app.route("/")
@@ -33,13 +33,13 @@ def main():
     preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO)
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
-    logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.get_re3repositories())))
+    logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
 
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api(API_YAML, arguments={'title': 'FUJI - FAIR Data Assessment Service'}, validate_responses=False)
-    #app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Data Assessment Service'}, validate_responses=False,pythonic_params=True)
+    #app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Data Assessment Service'}, validate_responses=False, pythonic_params=True)
     app.run(port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
