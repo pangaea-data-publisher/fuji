@@ -1,4 +1,4 @@
-from fuji_server.controllers.preprocessor import Preprocessor
+from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.models.metrics import Metrics  # noqa: E501
 
 
