@@ -2,25 +2,21 @@
 """
 preliminary version: https://github.com/huberrob/fuji/blob/master/fuji.py
 """
-
-import json
 import logging
 import re
-import extruct
 import idutils
 import jmespath
 import lxml
-import rdflib
 import requests
 import urllib.request as urllib
 from urllib.parse import urlparse
-#from extruct.jsonld import JsonLdExtractor
-import fuji_server.controllers.mapping as fujimap
-from fuji_server.controllers.message_filter import MessageFilter
-from fuji_server.controllers.preprocessor import Preprocessor
+import fuji_server.helper.mapper as fujimap
+from fuji_server.helper.message_filter import MessageFilter
+from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput
 import Levenshtein
+
 
 class FAIRTest:
 
@@ -114,8 +110,8 @@ class FAIRTest:
                 self.logger.info('FsF-F1-02D: Request status code - {}'.format(r.status_code))
                 if r.status_code == 200:
                     self.landing_url = r.url
-                    up=urlparse(r.url)
-                    self.landing_origin= '{uri.scheme}://{uri.netloc}'.format(uri=up)
+                    up = urlparse(r.url)
+                    self.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
                     #if re.search('text/html', r.headers['Content-Type'], re.IGNORECASE):
                     if "text/html" in r.headers["Content-Type"]:
                         self.logger.info('FsF-F1-02D: Found HTML page')
@@ -154,84 +150,84 @@ class FAIRTest:
         self.retrieve_metadata_embedded()
         return uid_result.to_dict(), pid_result.to_dict()
 
-    def content_negotiate(self, accept_key, metric_id):
-        # RDF data syntaxes (xml, n3, ntriples, trix, JSON-LD, ...)
-        # Turtle is a simplified, RDF-only subset of N3.
-        # N-Quads media type is application/n-quads and encoding is UTF-8.
-        # N3 (Notation3) media type is text/n3, but text/rdf+n3 is also accepted. Character encoding is UTF-8.
-        # JSON-LD media type is application/ld+json and the encoding is UTF-8.
-        # RDF/JSON media type is application/rdf+json and the encoding is UTF-8.
-        # RDF/XML media type is application/rdf+xml, but application/xml and text/xml are also accepted. The character encoding is UTF-8.
-        # N-Triples media type is application/n-triples and encoding is in UTF-8.
-        # Turtle media type is text/turtle, but application/x-turtle is also accepted. Character encoding is UTF-8.
-        # RDFa media type is application/xhtml+xml and the encoding is UTF-8.
-        # TODO handle 406 Not Acceptable or 300 Multiple Choices
-        # TODO transform accept_types and parser types into a class
-        accept_types = {'datacite_json': 'application/vnd.datacite.datacite+json',
-                  'datacite_xml': 'application/vnd.datacite.datacite+xml',
-                  'schemaorg': 'application/vnd.schemaorg.ld+json',
-                  'html' :'text/html, application/xhtml+xml',
-                  'json': 'application/json, text/json;q=0.5',
-                  'jsonld': 'application/ld+json',
-                  'rdfjson': 'application/rdf+json',
-                  'ntriples': 'text/plain,application/n-triples',
-                  'rdfxml': 'application/rdf+xml, text/rdf;q=0.5, application/xml;q=0.1, text/xml;q=0.1',
-                  'turtle': 'text/turtle, application/turtle, application/x-turtle;q=0.6, text/n3;q=0.3, text/rdf+n3;q=0.3, application/rdf+n3;q=0.3',
-                  'rdf': 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9, '
-                                'application/xhtml+xml;q=0.5, */*;q=0.1'}
-        result = None
-        if accept_key in accept_types:
-            if self.pid_url is not None:
-                accept_values = accept_types.get(accept_key)
-                try:
-                    response = requests.get(self.pid_url, headers={'Accept': accept_values})
-                    self.logger.info(metric_id + ': Content negotiation accept=%s, status=%s ' % (accept_values, str(response.status_code)))
-                    if response.status_code == 200:
-                        content_type = response.headers["Content-Type"]
-                        if content_type is not None:
-                            content_type = content_type.split(";", 1)[0]
-                            for k, v in accept_types.items():
-                                if content_type in v:
-                                    print('content_type ', content_type)
-                                    if k == 'html': # TODO other types (xml)
-                                        result = self.parse_html(response.text)
-                                    elif k in {'schemaorg', 'json', 'jsonld','datacite_json'}:
-                                        result = response.json()
-                                        #result = json.loads(response.text)
-                                    elif k in {'rdf','jsonld', 'rdfjson', 'ntriples', 'rdfxml','turtle'}:
-                                        result = self.parse_rdf(response.text, content_type)
-                                    else:
-                                        result = self.parse_html(response.text) # TODO how to handle the rest e.g., text/plain
-                                    break
-                except requests.exceptions.RequestException as e:
-                    self.logger.exception("RequestException: {}".format(e))
-                    self.logger.exception("%s: , RequestException, accept = %s" % (metric_id, accept_values))
-        return result
+    # def content_negotiate(self, accept_key, metric_id):
+    #     # RDF data syntaxes (xml, n3, ntriples, trix, JSON-LD, ...)
+    #     # Turtle is a simplified, RDF-only subset of N3.
+    #     # N-Quads media type is application/n-quads and encoding is UTF-8.
+    #     # N3 (Notation3) media type is text/n3, but text/rdf+n3 is also accepted. Character encoding is UTF-8.
+    #     # JSON-LD media type is application/ld+json and the encoding is UTF-8.
+    #     # RDF/JSON media type is application/rdf+json and the encoding is UTF-8.
+    #     # RDF/XML media type is application/rdf+xml, but application/xml and text/xml are also accepted. The character encoding is UTF-8.
+    #     # N-Triples media type is application/n-triples and encoding is in UTF-8.
+    #     # Turtle media type is text/turtle, but application/x-turtle is also accepted. Character encoding is UTF-8.
+    #     # RDFa media type is application/xhtml+xml and the encoding is UTF-8.
+    #     # TODO handle 406 Not Acceptable or 300 Multiple Choices
+    #     # TODO transform accept_types and parser types into a class
+    #     accept_types = {'datacite_json': 'application/vnd.datacite.datacite+json',
+    #               'datacite_xml': 'application/vnd.datacite.datacite+xml',
+    #               'schemaorg': 'application/vnd.schemaorg.ld+json',
+    #               'html' :'text/html, application/xhtml+xml',
+    #               'json': 'application/json, text/json;q=0.5',
+    #               'jsonld': 'application/ld+json',
+    #               'rdfjson': 'application/rdf+json',
+    #               'ntriples': 'text/plain,application/n-triples',
+    #               'rdfxml': 'application/rdf+xml, text/rdf;q=0.5, application/xml;q=0.1, text/xml;q=0.1',
+    #               'turtle': 'text/turtle, application/turtle, application/x-turtle;q=0.6, text/n3;q=0.3, text/rdf+n3;q=0.3, application/rdf+n3;q=0.3',
+    #               'rdf': 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9, '
+    #                             'application/xhtml+xml;q=0.5, */*;q=0.1'}
+    #     result = None
+    #     if accept_key in accept_types:
+    #         if self.pid_url is not None:
+    #             accept_values = accept_types.get(accept_key)
+    #             try:
+    #                 response = requests.get(self.pid_url, headers={'Accept': accept_values})
+    #                 self.logger.info(metric_id + ': Content negotiation accept=%s, status=%s ' % (accept_values, str(response.status_code)))
+    #                 if response.status_code == 200:
+    #                     content_type = response.headers["Content-Type"]
+    #                     if content_type is not None:
+    #                         content_type = content_type.split(";", 1)[0]
+    #                         for k, v in accept_types.items():
+    #                             if content_type in v:
+    #                                 print('content_type ', content_type)
+    #                                 if k == 'html': # TODO other types (xml)
+    #                                     result = self.parse_html(response.text)
+    #                                 elif k in {'schemaorg', 'json', 'jsonld','datacite_json'}:
+    #                                     result = response.json()
+    #                                     #result = json.loads(response.text)
+    #                                 elif k in {'rdf','jsonld', 'rdfjson', 'ntriples', 'rdfxml','turtle'}:
+    #                                     result = self.parse_rdf(response.text, content_type)
+    #                                 else:
+    #                                     result = self.parse_html(response.text) # TODO how to handle the rest e.g., text/plain
+    #                                 break
+    #             except requests.exceptions.RequestException as e:
+    #                 self.logger.exception("RequestException: {}".format(e))
+    #                 self.logger.exception("%s: , RequestException, accept = %s" % (metric_id, accept_values))
+    #     return result
 
-    def parse_html(self, html_texts):
-        ## extract contents from the landing page using extruct, keys are 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
-        extracted = extruct.extract(html_texts.encode('utf8'))
-        #filtered = {k: v for k, v in extracted.items() if v is not None}
-        return extracted
-
-    def parse_rdf(self, response, mime_type): #TODO (not complete!!)
-        # https://rdflib.readthedocs.io/en/stable/plugin_parsers.html
-        # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
-        graph = None
-        try:
-            graph = rdflib.Graph()
-            graph.parse(data=response, format=mime_type)
-            #rdf:Description rdf:about=...
-            predicate_query = graph.query("""
-                                 select ?sub ?predicates ?obj
-                                 where {?sub ?predicates ?obj}
-                                 """)
-            #for s, p, o in predicate_query:
-                #print(s, p, o)
-            self.rdf_format = mime_type
-        except rdflib.exceptions.Error as error:
-            self.logger.debug (error)
-        return graph
+    # def parse_html(self, html_texts):
+    #     ## extract contents from the landing page using extruct, keys are 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
+    #     extracted = extruct.extract(html_texts.encode('utf8'))
+    #     #filtered = {k: v for k, v in extracted.items() if v is not None}
+    #     return extracted
+    #
+    # def parse_rdf(self, response, mime_type): #TODO (not complete!!)
+    #     # https://rdflib.readthedocs.io/en/stable/plugin_parsers.html
+    #     # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
+    #     graph = None
+    #     try:
+    #         graph = rdflib.Graph()
+    #         graph.parse(data=response, format=mime_type)
+    #         #rdf:Description rdf:about=...
+    #         predicate_query = graph.query("""
+    #                              select ?sub ?predicates ?obj
+    #                              where {?sub ?predicates ?obj}
+    #                              """)
+    #         #for s, p, o in predicate_query:
+    #             #print(s, p, o)
+    #         self.rdf_format = mime_type
+    #     except rdflib.exceptions.Error as error:
+    #         self.logger.debug (error)
+    #     return graph
 
     def retrieve_metadata_embedded(self):
         # all metadata elements required for FUJI metrics
