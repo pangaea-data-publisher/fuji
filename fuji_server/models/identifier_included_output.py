@@ -15,15 +15,25 @@ class IdentifierIncludedOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self):  # noqa: E501
+    def __init__(self, object_identifier_included: str=None, content: List[IdentifierIncludedOutputInner]=None):  # noqa: E501
         """IdentifierIncludedOutput - a model defined in Swagger
 
+        :param object_identifier_included: The object_identifier_included of this IdentifierIncludedOutput.  # noqa: E501
+        :type object_identifier_included: str
+        :param content: The content of this IdentifierIncludedOutput.  # noqa: E501
+        :type content: List[IdentifierIncludedOutputInner]
         """
         self.swagger_types = {
+            'object_identifier_included': str,
+            'content': List[IdentifierIncludedOutputInner]
         }
 
         self.attribute_map = {
+            'object_identifier_included': 'object_identifier_included',
+            'content': 'content'
         }
+        self._object_identifier_included = object_identifier_included
+        self._content = content
 
     @classmethod
     def from_dict(cls, dikt) -> 'IdentifierIncludedOutput':
@@ -35,3 +45,45 @@ class IdentifierIncludedOutput(Model):
         :rtype: IdentifierIncludedOutput
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def object_identifier_included(self) -> str:
+        """Gets the object_identifier_included of this IdentifierIncludedOutput.
+
+
+        :return: The object_identifier_included of this IdentifierIncludedOutput.
+        :rtype: str
+        """
+        return self._object_identifier_included
+
+    @object_identifier_included.setter
+    def object_identifier_included(self, object_identifier_included: str):
+        """Sets the object_identifier_included of this IdentifierIncludedOutput.
+
+
+        :param object_identifier_included: The object_identifier_included of this IdentifierIncludedOutput.
+        :type object_identifier_included: str
+        """
+
+        self._object_identifier_included = object_identifier_included
+
+    @property
+    def content(self) -> List[IdentifierIncludedOutputInner]:
+        """Gets the content of this IdentifierIncludedOutput.
+
+
+        :return: The content of this IdentifierIncludedOutput.
+        :rtype: List[IdentifierIncludedOutputInner]
+        """
+        return self._content
+
+    @content.setter
+    def content(self, content: List[IdentifierIncludedOutputInner]):
+        """Sets the content of this IdentifierIncludedOutput.
+
+
+        :param content: The content of this IdentifierIncludedOutput.
+        :type content: List[IdentifierIncludedOutputInner]
+        """
+
+        self._content = content

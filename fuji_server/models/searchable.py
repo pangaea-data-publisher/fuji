@@ -18,7 +18,7 @@ class Searchable(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, passed: bool=False, score: FAIRResultCommonScore=None, output: SearchableOutput=None, test_debug: Debug=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, test_status: str='fail', score: FAIRResultCommonScore=None, output: SearchableOutput=None, test_debug: Debug=None):  # noqa: E501
         """Searchable - a model defined in Swagger
 
         :param id: The id of this Searchable.  # noqa: E501
@@ -27,8 +27,8 @@ class Searchable(Model):
         :type metric_identifier: str
         :param metric_name: The metric_name of this Searchable.  # noqa: E501
         :type metric_name: str
-        :param passed: The passed of this Searchable.  # noqa: E501
-        :type passed: bool
+        :param test_status: The test_status of this Searchable.  # noqa: E501
+        :type test_status: str
         :param score: The score of this Searchable.  # noqa: E501
         :type score: FAIRResultCommonScore
         :param output: The output of this Searchable.  # noqa: E501
@@ -40,7 +40,7 @@ class Searchable(Model):
             'id': int,
             'metric_identifier': str,
             'metric_name': str,
-            'passed': bool,
+            'test_status': str,
             'score': FAIRResultCommonScore,
             'output': SearchableOutput,
             'test_debug': Debug
@@ -50,7 +50,7 @@ class Searchable(Model):
             'id': 'id',
             'metric_identifier': 'metric_identifier',
             'metric_name': 'metric_name',
-            'passed': 'passed',
+            'test_status': 'test_status',
             'score': 'score',
             'output': 'output',
             'test_debug': 'test_debug'
@@ -58,7 +58,7 @@ class Searchable(Model):
         self._id = id
         self._metric_identifier = metric_identifier
         self._metric_name = metric_name
-        self._passed = passed
+        self._test_status = test_status
         self._score = score
         self._output = output
         self._test_debug = test_debug
@@ -144,27 +144,31 @@ class Searchable(Model):
         self._metric_name = metric_name
 
     @property
-    def passed(self) -> bool:
-        """Gets the passed of this Searchable.
+    def test_status(self) -> str:
+        """Gets the test_status of this Searchable.
 
 
-        :return: The passed of this Searchable.
-        :rtype: bool
+        :return: The test_status of this Searchable.
+        :rtype: str
         """
-        return self._passed
+        return self._test_status
 
-    @passed.setter
-    def passed(self, passed: bool):
-        """Sets the passed of this Searchable.
+    @test_status.setter
+    def test_status(self, test_status: str):
+        """Sets the test_status of this Searchable.
 
 
-        :param passed: The passed of this Searchable.
-        :type passed: bool
+        :param test_status: The test_status of this Searchable.
+        :type test_status: str
         """
-        if passed is None:
-            raise ValueError("Invalid value for `passed`, must not be `None`")  # noqa: E501
+        allowed_values = ["pass", "fail", "indeterminate"]  # noqa: E501
+        if test_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `test_status` ({0}), must be one of {1}"
+                .format(test_status, allowed_values)
+            )
 
-        self._passed = passed
+        self._test_status = test_status
 
     @property
     def score(self) -> FAIRResultCommonScore:
