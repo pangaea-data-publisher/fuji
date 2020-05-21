@@ -4,8 +4,8 @@ import configparser as ConfigParser
 import json
 import os
 from pathlib import Path
-from fuji_server.controllers.fair_test import FAIRTest
-from fuji_server.controllers.preprocessor import Preprocessor
+from fuji_server.controllers.fair_test_bk import FAIRTest
+from fuji_server.helper.preprocessor import Preprocessor
 
 identifier = 'https://doi.org/10.1594/PANGAEA.902845'
 oai_pmh = 'http://ws.pangaea.de/oai/'
