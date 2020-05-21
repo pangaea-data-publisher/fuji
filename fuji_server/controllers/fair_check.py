@@ -11,6 +11,7 @@ from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
+from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
@@ -408,6 +409,42 @@ class FAIRCheck:
         if self.isDebug:
             related_result.test_debug = self.msg_filter.getMessage(related_identifier)
         return related_result.to_dict()
+
+    def check_searchable(self):
+        searchable_identifier = 'FsF-F4-01M'  # FsF-F4-01M: Searchable metadata
+        searchable_name = FAIRCheck.METRICS.get(searchable_identifier).get('metric_name')
+        searchable_result = Searchable(id=5, metric_identifier=searchable_identifier, metric_name=searchable_name)
+        searchable_sc = int(FAIRCheck.METRICS.get(searchable_identifier).get('total_score'))
+        searchable_score = FAIRResultCommonScore(total=searchable_sc)
+        searchable_output = SearchableOutput()
+        search_mechanisms = []
+        sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value, MetaDataCollector.Sources.DATACITE_JSON.value]
+        # print('self.metadata_sources ', self.metadata_sources)
+        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value, MetaDataCollector.Sources.DUBLINCORE.value]
+        # r = 'Embedded Schema.org JSON-LD'
+        # if r in self.metadata_sources:
+        search_engine_support_match = list(set(self.metadata_sources).intersection(search_engines_support))
+        if len(search_engine_support_match) > 0:
+            search_mechanisms.append(
+                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+        if any(x in self.metadata_sources for x in sources_registry):
+            search_mechanisms.append(OutputSearchMechanisms(mechanism='metadata registry'))
+        # TODO: datacite, oai-pmh
+        # print('search_mechanisms ',search_mechanisms)
+        length = len(search_mechanisms)
+        if length > 0:
+            searchable_result.test_status = 'pass'
+            if length == 2:
+                searchable_score.earned = searchable_sc  # TODO: incremental scoring
+            if length == 1:
+                searchable_score.earned = searchable_sc - 1
+            searchable_result.score = searchable_score
+            searchable_output.search_mechanisms = search_mechanisms
+            searchable_result.output = searchable_output
+        else:
+            self.logger.warning('No search mechanism supported')
+        return searchable_result.to_dict()
+
 
     def test_re3data(self):
         client_id = self.metadata_merged.get('datacite_client')
