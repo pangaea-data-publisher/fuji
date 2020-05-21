@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Dict, Any
 
 import requests
 import yaml
@@ -18,7 +19,7 @@ class Preprocessor(object):
     all_licenses = []
     license_names = []
     #license_urls = {}
-    re3repositories = {}
+    re3repositories: Dict[Any, Any] = {}
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path):
@@ -41,9 +42,10 @@ class Preprocessor(object):
         cls.formatted_specification['metrics'] = temp_list
 
     @classmethod
-    def retrieve_datacite_re3repos(cls, re3data_endpoint, datacite_endpoint):
-        cls.RE3DATA_API = re3data_endpoint
+    def retrieve_datacite_re3repos(cls, re3_endpoint, datacite_endpoint):
+        # retrieve all client id and re3data doi from datacite
         cls.DATACITE_API_REPO = datacite_endpoint
+        cls.RE3DATA_API = re3_endpoint
         p = {'query': 're3data_id:*'}
         header = {"content-type": "application/json"}
         try:
@@ -54,7 +56,7 @@ class Preprocessor(object):
             while 'next' in raw['links']:
                 response = requests.get(raw['links']['next']).json()
                 for r in response["data"]:
-                    cls.re3repositories[r['id']] = r['attributes']['re3data'] # TODO - get re3data local id
+                    cls.re3repositories[r['id']] = r['attributes']['re3data']
                 raw['links'] = response['links']
         except requests.exceptions.RequestException as e:
             cls.logger.exception(e)
@@ -94,7 +96,7 @@ class Preprocessor(object):
         return cls.all_licenses, cls.license_names
 
     @classmethod
-    def get_re3repositories(cls):
+    def getRE3repositories(cls):
         if not cls.re3repositories:
             cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO)
         return cls.re3repositories
