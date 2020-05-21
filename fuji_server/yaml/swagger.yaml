@@ -107,8 +107,8 @@ components:
       - id
       - metric_identifier
       - metric_name
-      - passed
       - score
+      - test_status
       type: object
       properties:
         id:
@@ -118,9 +118,13 @@ components:
           type: string
         metric_name:
           type: string
-        passed:
-          type: boolean
-          default: false
+        test_status:
+          type: string
+          default: fail
+          enum:
+          - pass
+          - fail
+          - indeterminate
         score:
           $ref: '#/components/schemas/FAIRResultCommon_score'
     Uniqueness:
@@ -260,9 +264,14 @@ components:
           items:
             type: string
     IdentifierIncluded_output:
-      type: array
-      items:
-        $ref: '#/components/schemas/IdentifierIncluded_output_inner'
+      type: object
+      properties:
+        object_identifier_included:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentifierIncluded_output_inner'
     output_search_mechanisms:
       type: object
       properties:
