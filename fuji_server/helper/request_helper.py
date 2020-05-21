@@ -1,17 +1,16 @@
 import logging
-from typing import Any, Union
-
+from enum import Enum
 import extruct
 import rdflib
 import requests
-from enum import Enum
 
 
 class AcceptTypes(Enum):
     datacite_json = 'application/vnd.datacite.datacite+json'
     datacite_xml = 'application/vnd.datacite.datacite+xml'
-    schemaorg = 'application/vnd.schemaorg.ld+json',
+    schemaorg = 'application/vnd.schemaorg.ld+json'
     html = 'text/html, application/xhtml+xml'
+    xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
     rdfjson = 'application/rdf+json'
@@ -22,57 +21,72 @@ class AcceptTypes(Enum):
     default = '*/*'
 
 class RequestHelper:
-    def __init__(self, pidurl=None, logger_inst=None):
-        if logger_inst:
-            self.logger = logger_inst
-        else:
+    def __init__(self, url, logInst: object = None):
+        if logInst:
+            self.logger = logInst
+        else :
             self.logger = logging.getLogger(self.__class__.__name__)
-        self.pid_url = pidurl
-        self.accept_type = AcceptTypes.html.value
+        self.request_url = url
+        self.accept_type = AcceptTypes.default.value
+        self.http_response = None
+        self.parse_response = None
 
-    def setAcceptType(self, type):
-        if not isinstance(type, AcceptTypes):
+    def setAcceptType(self, accept_type):
+        if not isinstance(accept_type, AcceptTypes):
             raise TypeError('type must be an instance of AcceptTypes enum')
-        self.accept_type = type.value
+        self.accept_type = accept_type.value
 
-    def content_negotiate(self, metric_id):
-        result = None
-        parser_type = 'extruct'
-        if self.pid_url is not None:
+    def setRequestUrl(self, url):
+        self.request_url = url
+
+    def getHTTPResponse(self):
+        return self.http_response
+
+    def getParsedResponse(self):
+        return self.parse_response
+
+    def content_negotiate(self, metric_id=''):
+        if self.request_url is not None:
             try:
-                response = requests.get(self.pid_url, headers={'Accept': self.accept_type})
-                self.logger.info(metric_id + ': Content negotiation accept=%s, status=%s ' % (
-                    self.accept_type, str(response.status_code)))
-                if response.status_code == 200:
-                    content_type = response.headers["Content-Type"]
+                self.logger.info('%s : Retrieving page %s'% (metric_id, self.request_url))
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
+                status_code = self.http_response.status_code
+                self.logger.info(
+                    '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
+                if status_code == 200:
+                    content_type = self.http_response.headers["Content-Type"]
                     if content_type is not None:
                         content_type = content_type.split(";", 1)[0]
-                        for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
-                            if content_type in at.value:
-                                if at.name == 'html':  # TODO other types (xml)
-                                    result = self.parse_html(response.text)
-                                elif at.name in {'schemaorg', 'json', 'jsonld', 'datacite_json'}:
-                                    result = response.json()
-                                    # result = json.loads(response.text)
-                                    parser_type = 'json'
-                                elif at.name in {'rdf', 'jsonld', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
-                                    result = self.parse_rdf(response.text, content_type)
-                                    parser_type = 'rdf'
-                                else:
-                                    result = self.parse_html(
-                                        response.text)  # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
-                                break
+                        while (True):
+                            for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                if content_type in at.value:
+                                    if at.name == 'html':
+                                        self.logger.info('%s : Found HTML page!' % metric_id)
+                                        self.parse_response  = self.parse_html(self.http_response.text)
+                                        break
+                                    if at.name == 'xml': # TODO other types (xml)
+                                        self.parse_response  = self.http_response.text
+                                        break
+                                    if at.name in {'schemaorg', 'json', 'jsonld', 'datacite_json'}:
+                                        self.parse_response  = self.http_response.json()
+                                        # result = json.loads(response.text)
+                                        break
+                                    if at.name in {'rdf', 'jsonld', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
+                                        self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
+                                        break
+                                    # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
+                            break
             except requests.exceptions.RequestException as e:
                 self.logger.exception("RequestException: {}".format(e))
-                self.logger.exception("%s: , RequestException, accept = %s" % (self.metric_id, self.AcceptTypes))
-        return result, parser_type
+                self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
+        return self.parse_response
 
     def parse_html(self, html_texts):
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         extracted = extruct.extract(html_texts.encode('utf8'))
-        filtered = {k: v for k, v in extracted.items() if v}
-        return filtered
+        #filtered = {k: v for k, v in extracted.items() if v}
+        return extracted
 
     def parse_rdf(self, response, mime_type):  # TODO (not complete!!)
         # https://rdflib.readthedocs.io/en/stable/plugin_parsers.html
