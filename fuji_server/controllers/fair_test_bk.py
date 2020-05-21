@@ -10,8 +10,8 @@ import lxml
 import requests
 import urllib.request as urllib
 from urllib.parse import urlparse
-import fuji_server.helper.mapper as fujimap
-from fuji_server.helper.message_filter import MessageFilter
+import fuji_server.helper.metadata_mapper as fujimap
+from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput
