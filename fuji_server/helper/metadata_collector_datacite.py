@@ -40,7 +40,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
 
                     #TODO customize related resources --> use jmes
                     if dcite_metadata['related_resources']:
-                        self.logger.info('FsF-I3-01M : Extracted related resources from {}'.format(source_name))
+                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(dcite_metadata['related_resources']), source_name))
                         temp_rels = []
                         for r in dcite_metadata['related_resources']:
                             temp_rels.append(dict(related_resource=r.get('relatedIdentifier'), relation_type=r.get('relationType')))
