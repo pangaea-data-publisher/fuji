@@ -9,6 +9,7 @@ class Mapper(Enum):
     # reference metadata elements (used by FUJI)
     #['creator','license','related_resources'] --> list type
     # datacite_client --> retrieve re3data records
+    # TODO include data types of all reference elements
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'embargoe', 'access_info', 'policy','related_resources','provenance_general',
                  'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'object_type', 'data_size','datacite_client']

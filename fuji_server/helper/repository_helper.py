@@ -34,6 +34,17 @@ class RepositoryHelper:
                     q2.setAcceptType(AcceptTypes.xml)
                     self.re3metadata = q2.content_negotiate('RE3DATA')
 
+    def parseRepositoryMetadata(self):
+        #http://schema.re3data.org/3-0/re3data-example-V3-0.xml
+        #r3d:repositoryName, r3d:repositoryURL
+        # [] --> r3d:type
+        # [] Apis <r3d:api apiType="OAI-PMH">http://ws.pangaea.de/oai/</r3d:api>
+        # [] <r3d:metadataStandard>
+        # <r3d:metadataStandardName metadataStandardScheme="DCC">Darwin Core</r3d:metadataStandardName>
+        # <r3d:metadataStandardURL>http://www.dcc.ac.uk/resources/metadata-standards/darwin-core</r3d:metadataStandardURL>
+        # </r3d:metadataStandard>
+        return None
+
     def getRe3Metadata(self):
         return self.re3metadata
 
@@ -53,4 +64,3 @@ class RepositoryHelper:
             # Sample OAI Identifier	oai:pangaea.de:doi:10.1594/PANGAEA.999999
             # Request: An identifier, in combination with a metadataPrefix, is used in the GetRecord request as a means of requesting a record in a specific metadata format from an item.
             # return None
-
