@@ -156,9 +156,9 @@ class FAIRCheck:
         self.retrieve_re3data()
 
         # validate and instatiate oai-pmh harvester if the endpoint is valie
-        if self.oaipmh_endpoint:
-            if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
-                self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
+        #if self.oaipmh_endpoint:
+            #if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
+                #self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
 
     def retrieve_re3data(self):
         client_id = self.metadata_merged.get('datacite_client')
@@ -446,7 +446,7 @@ class FAIRCheck:
         registry_support_match = list(set(self.metadata_sources).intersection(sources_registry))
         if registry_support_match:
             search_mechanisms.append(OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
-
+        # TODO (Important) - search via b2find
         length = len(search_mechanisms)
         if length > 0:
             searchable_result.test_status = 'pass'
