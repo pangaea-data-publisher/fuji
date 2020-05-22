@@ -1,66 +1,71 @@
-import idutils
-from bs4 import BeautifulSoup
+import logging
 
+import idutils
+from lxml import etree
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-
 
 class RepositoryHelper:
 
     DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
+    ns = {"r3d": "http://www.re3data.org/schema/2-2"}
 
     def __init__(self, client, pidscheme):
         self.client_id = client
         self.pid_scheme = pidscheme
-        self.re3metadata = None
+        self.re3metadata_raw = None
+        self.repository_name = None
+        self.repository_url = None
+        self.repo_apis = {}
+        self.repo_standards = []
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def lookup_re3data(self):
-        if self.client_id:
+        if self.client_id and self.pid_scheme:
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
             short_re3doi = idutils.normalize_pid(re3doi, scheme=self.pid_scheme)
-            # from short pid get clientId, use clientId to get local re3id, and query reposiroty metadata from re3api
-            re3link = None
+            # pid -> clientId -> repo doi-> re3id, and query repository metadata from re3api
             if re3doi:
+                self.logger.info('Found match re3data (DOI-based) record')
                 query_url = Preprocessor.RE3DATA_API + '?query=' + short_re3doi  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
-                resp = q.content_negotiate('RE3DATA')  # takes first record
-                soup = BeautifulSoup(resp, "lxml")
-                link_tag = soup.find_all('link')[0]
-                re3link = link_tag.get("href")
-                if re3link:
+                xml = q.content_negotiate('RE3DATA')
+                root = etree.fromstring(xml.content)
+                #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
+                re3link = root.xpath('//link')[0].attrib['href']
+                if re3link is not None:
+                    self.logger.info('Found match re3data metadata record')
                     # query reposiroty metadata
                     q2 = RequestHelper(url=re3link)
                     q2.setAcceptType(AcceptTypes.xml)
-                    self.re3metadata = q2.content_negotiate('RE3DATA')
+                    self.re3metadata_raw = q2.content_negotiate('RE3DATA').content
+                    self.parseRepositoryMetadata()
+            else:
+                self.logger.info('No DOI of client id is available from datacite api')
 
     def parseRepositoryMetadata(self):
         #http://schema.re3data.org/3-0/re3data-example-V3-0.xml
-        #r3d:repositoryName, r3d:repositoryURL
-        # [] --> r3d:type
-        # [] Apis <r3d:api apiType="OAI-PMH">http://ws.pangaea.de/oai/</r3d:api>
-        # [] <r3d:metadataStandard>
-        # <r3d:metadataStandardName metadataStandardScheme="DCC">Darwin Core</r3d:metadataStandardName>
-        # <r3d:metadataStandardURL>http://www.dcc.ac.uk/resources/metadata-standards/darwin-core</r3d:metadataStandardURL>
-        # </r3d:metadataStandard>
-        return None
+        root = etree.fromstring(self.re3metadata_raw)
+        # ns = {k: v for k, v in root.nsmap.items() if k}
+        name = root.xpath('//r3d:repositoryName', namespaces=RepositoryHelper.ns)
+        url = root.xpath('//r3d:repositoryURL', namespaces=RepositoryHelper.ns)
+        if name:
+            self.repository_name = name[0].text
+        if url:
+            self.repository_url = url[0].text
+        apis = root.xpath('//r3d:api', namespaces=RepositoryHelper.ns)
+        for a in apis:
+            self.repo_apis[a.attrib['apiType']] = a.text
+        standards = root.xpath('//r3d:metadataStandard/r3d:metadataStandardName', namespaces=RepositoryHelper.ns)
+        self.repo_standards = [s.text for s in standards]
 
-    def getRe3Metadata(self):
-        return self.re3metadata
+    def getRe3MetadataStandards(self):
+        return self.repo_standards
 
-            # policies
-            # < r3d: metadataStandard >
-            # < r3d: metadataStandardName
-            # metadataStandardScheme = "DCC" > DDI - DataDocumentation itiative < / r3d: metadataStandardName >
-            # < r3d: metadataStandardURL >
-            # http: // www.dcc.ac.uk / resources / metadata - standards / ddi - data - documentation - initiative
-            # < / r3d: metadataStandardURL >
-            # < / r3d: metadataStandard >
-            # <r3d: api apiType = "OAI-PMH" > http: // ws.pangaea.de / oai / < / r3d: api >
-            # http://digitalcollections.uark.edu/oai/oai.php?verb=GetRecord&identifier=oai:digitalcollections.uark.edu:OzarkFolkSong/3092&metadataPrefix=oai_qdc
-            # http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
-            # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
-            # http://arXiv.org/oai2?verb=GetRecord&identifier=oai:arXiv.org:cs/0112017&metadataPrefix=oai_dc
-            # Sample OAI Identifier	oai:pangaea.de:doi:10.1594/PANGAEA.999999
-            # Request: An identifier, in combination with a metadataPrefix, is used in the GetRecord request as a means of requesting a record in a specific metadata format from an item.
-            # return None
+    def getRe3MetadataAPIs(self):
+        return self.repo_apis
+
+    def getRepoNameURL(self):
+        return self.repository_name, self.repository_url
+
