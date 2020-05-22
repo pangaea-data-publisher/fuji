@@ -12,7 +12,7 @@ from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorData
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector import MetaDataCollector
-from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
+#from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
