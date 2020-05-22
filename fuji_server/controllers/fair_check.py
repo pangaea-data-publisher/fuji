@@ -64,7 +64,6 @@ class FAIRCheck:
         except:
             return False
 
-
     def check_unique_persistent(self):
         uid_metric_identifier = 'FsF-F1-01D'  # FsF-F1-01D: Globally unique identifier
         pid_metric_identifier = 'FsF-F1-02D'  # FsF-F1-02D: Persistent identifier
@@ -152,6 +151,16 @@ class FAIRCheck:
             self.retrieve_metadata_external()
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
 
+        # retrieve re3metadata based on pid specified
+        self.retrieve_re3data()
+
+    def retrieve_re3data(self):
+        client_id = self.metadata_merged.get('datacite_client')
+        if client_id and self.pid_scheme:
+            repoHelper = RepositoryHelper(client_id, self.pid_scheme)
+            repoHelper.lookup_re3data()
+            print(repoHelper.getRe3Metadata())
+
     def retrieve_metadata_embedded(self, extruct_metadata):
        # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         isPid = False
@@ -189,7 +198,11 @@ class FAIRCheck:
 
         # ========= retrieve typed links =========
         if self.metadata_merged.get('object_content_identifier') is None:
-            self.metadata_merged ['object_content_identifier'] = self.get_html_typed_links()
+            links = self.get_html_typed_links()
+            if links:
+                self.metadata_merged ['object_content_identifier'] = self.get_html_typed_links()
+                self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
+
 
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
     #  use IANA relations for extracting metadata and meaningful links
@@ -297,7 +310,6 @@ class FAIRCheck:
                 did_output_content = IdentifierIncludedOutputInner()
                 did_output_content.content_identifier_included = content_id
                 try:
-
                     urllib.urlopen(content_id) # only check the status, do not download the content
                 except urllib.HTTPError as e:
                     self.logger.warning('FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_id, e.code))
@@ -315,7 +327,6 @@ class FAIRCheck:
         if self.isDebug:
             did_result.test_debug = self.msg_filter.getMessage(did_included_identifier)
         return did_result.to_dict()
-
 
     def check_license(self):
         license_identifier = 'FsF-R1.1-01M'  # FsF-R1.1-01M: Data Usage Licence
@@ -395,8 +406,6 @@ class FAIRCheck:
         related_output = RelatedResourceOutputInner()
 
         # TODO (important) extend mapping to capture relations (linked types, dc,schema.org)
-        # TODO - debug message, metadata sources, extract relation and related resource identifiers, extraction string vs list (to be fixed)
-        # TODO - <class 'str'> {'relationType': 'References', 'relatedIdentifier': '10.1136/bmjopen-2019-029422', 'relatedIdentifierType': 'DOI'}
         if self.metadata_merged.get('related_resources'):
             related_output = self.metadata_merged['related_resources']
             related_result.test_status = 'pass'
@@ -445,11 +454,3 @@ class FAIRCheck:
             self.logger.warning('No search mechanism supported')
         return searchable_result.to_dict()
 
-
-    def test_re3data(self):
-        client_id = self.metadata_merged.get('datacite_client')
-        print('client_id........... : ',client_id)
-        if client_id and self.pid_scheme:
-            repoHelper = RepositoryHelper(client_id, self.pid_scheme)
-            repoHelper.lookup_re3data()
-            print(repoHelper.getRe3Metadata())
