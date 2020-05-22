@@ -12,6 +12,7 @@ from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorData
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
@@ -28,7 +29,7 @@ class FAIRCheck:
 
     def __init__(self, uid, oai=None, test_debug=False):
         self.id = uid
-        self.oai_pmh = oai
+        self.oaipmh_endpoint = oai
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.landing_html = None
@@ -38,12 +39,12 @@ class FAIRCheck:
         self.metadata_sources = []
         self.isDebug = test_debug
         self.metadata_merged = {}
-        # all metadata elements required for FUJI metrics
-        self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()
+        self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy() # all metadata elements required for FUJI metrics
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
             self.logger.setLevel(logging.INFO) # set to debug in testing environment
+        self.oaipmh_harvester = None
         FAIRCheck.load_predata()
 
     @classmethod
@@ -57,10 +58,10 @@ class FAIRCheck:
             #cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
 
     @staticmethod
-    def uri_validator(u):
+    def uri_validator(u): #TODO integrate into request_helper.py
         try:
             r = urlparse(u)
-            return all([r.scheme, r.netloc, r.path])
+            return all([r.scheme, r.netloc])
         except:
             return False
 
@@ -154,12 +155,16 @@ class FAIRCheck:
         # retrieve re3metadata based on pid specified
         self.retrieve_re3data()
 
+        # validate and instatiate oai-pmh harvester if the endpoint is valie
+        if self.oaipmh_endpoint:
+            if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
+                self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
+
     def retrieve_re3data(self):
         client_id = self.metadata_merged.get('datacite_client')
         if client_id and self.pid_scheme:
             repoHelper = RepositoryHelper(client_id, self.pid_scheme)
             repoHelper.lookup_re3data()
-            print(repoHelper.getRe3Metadata())
 
     def retrieve_metadata_embedded(self, extruct_metadata):
        # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -206,7 +211,7 @@ class FAIRCheck:
 
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
     #  use IANA relations for extracting metadata and meaningful links
-    # TODO (important) - item, https://signposting.org/publication_boundary/
+    # TODO (important) - https://signposting.org/publication_boundary/, create a dict of {'href':URL,'format':FORMAT, 'rel':REL, 'type':TYPE}
     def get_html_typed_links(self):
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # <link rel="item" href="https://doi.pangaea.de/10.1594/PANGAEA.906092?format=zip" type="application/zip">
@@ -240,6 +245,7 @@ class FAIRCheck:
 
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
+            # TODO (Important) - search via b2find
             # TODO (IMPORTANT!) -  try some content negotiation (rdf) + update self.self.metadata_merged
             # self.rdf_graph = self.content_negotiate('rdf','FsF-F2-01M')
         else:
@@ -428,23 +434,24 @@ class FAIRCheck:
         searchable_output = SearchableOutput()
         search_mechanisms = []
         sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value, MetaDataCollector.Sources.DATACITE_JSON.value]
-        # print('self.metadata_sources ', self.metadata_sources)
-        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value, MetaDataCollector.Sources.DUBLINCORE.value]
-        # r = 'Embedded Schema.org JSON-LD'
-        # if r in self.metadata_sources:
+        all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
+        self.logger.info('FsF-F4-01M : Metadata is retrieved/extracted through - {}'.format(all))
+        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value, MetaDataCollector.Sources.DUBLINCORE.value,
+                                  MetaDataCollector.Sources.SIGN_POSTING.value]
+        # Check search mechanisms based on sources of metadata extracted.
         search_engine_support_match = list(set(self.metadata_sources).intersection(search_engines_support))
-        if len(search_engine_support_match) > 0:
-            search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-        if any(x in self.metadata_sources for x in sources_registry):
-            search_mechanisms.append(OutputSearchMechanisms(mechanism='metadata registry'))
-        # TODO: datacite, oai-pmh
-        # print('search_mechanisms ',search_mechanisms)
+        if search_engine_support_match:
+            search_mechanisms.append(OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+
+        registry_support_match = list(set(self.metadata_sources).intersection(sources_registry))
+        if registry_support_match:
+            search_mechanisms.append(OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
+
         length = len(search_mechanisms)
         if length > 0:
             searchable_result.test_status = 'pass'
             if length == 2:
-                searchable_score.earned = searchable_sc  # TODO: incremental scoring
+                searchable_score.earned = searchable_sc
             if length == 1:
                 searchable_score.earned = searchable_sc - 1
             searchable_result.score = searchable_score
@@ -452,5 +459,8 @@ class FAIRCheck:
             searchable_result.output = searchable_output
         else:
             self.logger.warning('No search mechanism supported')
+
+        if self.isDebug:
+            searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
         return searchable_result.to_dict()
 
