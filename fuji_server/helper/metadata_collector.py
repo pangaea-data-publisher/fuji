@@ -15,8 +15,9 @@ class MetaDataCollector(object):
         OPENGRAPH = 'Embedded OpenGraph'
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
         SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Datacite)'
-        DATACITE_JSON = 'Datacite Metadata'
+        DATACITE_JSON = 'Datacite Search'
         SIGN_POSTING = 'Signposting Typed Links'
+        B2FIND = 'B2FIND Metadata Aggregator'
 
     def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
         self.source_metadata = sourcemetadata
