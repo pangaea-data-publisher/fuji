@@ -65,7 +65,7 @@ class RequestHelper:
                                         self.parse_response  = self.parse_html(self.http_response.text)
                                         break
                                     if at.name == 'xml': # TODO other types (xml)
-                                        self.parse_response  = self.http_response.text
+                                        self.parse_response  = self.http_response
                                         break
                                     if at.name in {'schemaorg', 'json', 'jsonld', 'datacite_json'}:
                                         self.parse_response  = self.http_response.json()
