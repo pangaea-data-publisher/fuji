@@ -20,9 +20,10 @@ class Preprocessor(object):
     RE3DATA_API = None
     all_licenses = []
     license_names = []
-    #license_urls = {}
+    metadata_standards = {} #key=subject,value =[standards name]
     re3repositories: Dict[Any, Any] = {}
     fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
+    header = {"Accept": "application/json"}
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path):
@@ -55,9 +56,8 @@ class Preprocessor(object):
                 cls.re3repositories = json.load(f)
         else:
             p = {'query': 're3data_id:*'}
-            header = {"content-type": "application/json"}
             try:
-                req = requests.get(datacite_endpoint, params=p,headers=header) #application/json
+                req = requests.get(datacite_endpoint, params=p, headers=cls.header)
                 raw = req.json()
                 for r in raw["data"]:
                     cls.re3repositories[r['id']] = r['attributes']['re3data']
@@ -105,6 +105,42 @@ class Preprocessor(object):
             # cls.license_urls = dict(zip(referenceNumber, seeAlso))
 
     @classmethod
+    def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
+        data = {}
+        std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
+        # The repository can be found at https://github.com/spdx/license-list-data
+        # https://spdx.org/spdx-license-list/license-list-overview
+        if isDebugMode:  # use local file instead of downloading the file online
+            with open(std_path) as f:
+                data = json.load(f)
+        else:
+            try:
+                r = requests.get(catalog_url)
+                try:
+                    if r.status_code == 200:
+                        resp = r.json()
+                        schemes = resp['metadata-schemes']
+                        for s in schemes:
+                            r2 = requests.get(catalog_url+str(s['id']), headers=cls.header)
+                            if r2.status_code == 200:
+                                std = r2.json()
+                                keywords = std.get('keywords')
+                                standard_title = std.get('title')
+                                if keywords:
+                                    for k in keywords:
+                                        data.setdefault(k.lower(), []).append(standard_title)
+                                else:
+                                    data.setdefault('other', []).append(standard_title)
+                        with open(std_path, 'w') as f:
+                            json.dump(data, f)
+                except json.decoder.JSONDecodeError as e1:
+                    cls.logger.exception(e1)
+            except requests.exceptions.RequestException as e2:
+                cls.logger.exception(e2)
+        if data:
+            cls.metadata_standards = data
+
+    @classmethod
     def get_licenses(cls):
         if not cls.all_licenses:
             cls.retrieve_licenses(cls.SPDX_URL)
@@ -137,3 +173,7 @@ class Preprocessor(object):
         for dictm in cls.all_metrics_list:
             new_dict[dictm['metric_identifier']] = {k: v for k, v in dictm.items() if k in wanted_fields}
         return new_dict
+
+    @classmethod
+    def get_metadata_standards(cls):
+        return cls.metadata_standards
