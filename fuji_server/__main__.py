@@ -29,9 +29,12 @@ def main():
     RE3DATA_API = config['EXTERNAL']['re3data_api']
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
-    preproc.retrieve_licenses(SPDX_URL)
-    preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO)
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
+
+    isDebug = config.getboolean('SERVICE','debug_mode')
+    preproc.retrieve_licenses(SPDX_URL, isDebug)
+    preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
+
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
 

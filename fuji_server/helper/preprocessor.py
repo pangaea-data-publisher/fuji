@@ -1,5 +1,7 @@
 import json
 import logging
+import os
+import sys
 from typing import Dict, Any
 
 import requests
@@ -20,6 +22,7 @@ class Preprocessor(object):
     license_names = []
     #license_urls = {}
     re3repositories: Dict[Any, Any] = {}
+    fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path):
@@ -42,51 +45,64 @@ class Preprocessor(object):
         cls.formatted_specification['metrics'] = temp_list
 
     @classmethod
-    def retrieve_datacite_re3repos(cls, re3_endpoint, datacite_endpoint):
+    def retrieve_datacite_re3repos(cls, re3_endpoint, datacite_endpoint, isDebugMode):
         # retrieve all client id and re3data doi from datacite
         cls.DATACITE_API_REPO = datacite_endpoint
         cls.RE3DATA_API = re3_endpoint
-        p = {'query': 're3data_id:*'}
-        header = {"content-type": "application/json"}
-        try:
-            req = requests.get(datacite_endpoint, params=p,headers=header) #application/json
-            raw = req.json()
-            for r in raw["data"]:
-                cls.re3repositories[r['id']] = r['attributes']['re3data']
-            while 'next' in raw['links']:
-                response = requests.get(raw['links']['next']).json()
-                for r in response["data"]:
+        re3dict_path = os.path.join(cls.fuji_server_dir, 'data', 'repodois.json')
+        if isDebugMode:
+            with open(re3dict_path) as f:
+                cls.re3repositories = json.load(f)
+        else:
+            p = {'query': 're3data_id:*'}
+            header = {"content-type": "application/json"}
+            try:
+                req = requests.get(datacite_endpoint, params=p,headers=header) #application/json
+                raw = req.json()
+                for r in raw["data"]:
                     cls.re3repositories[r['id']] = r['attributes']['re3data']
-                raw['links'] = response['links']
-        except requests.exceptions.RequestException as e:
-            cls.logger.exception(e)
+                while 'next' in raw['links']:
+                    response = requests.get(raw['links']['next']).json()
+                    for r in response["data"]:
+                        cls.re3repositories[r['id']] = r['attributes']['re3data']
+                    raw['links'] = response['links']
+                with open(re3dict_path, 'w') as f2:
+                    json.dump(cls.re3repositories, f2)
+            except requests.exceptions.RequestException as e:
+                cls.logger.exception(e)
 
     @classmethod
-    def retrieve_licenses(cls, license_path):
+    def retrieve_licenses(cls, license_path, isDebugMode):
+        data = None
+        jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'licenses.json')
         # The repository can be found at https://github.com/spdx/license-list-data
         # https://spdx.org/spdx-license-list/license-list-overview
-        cls.SPDX_URL = license_path
-        try:
-            r = requests.get(cls.SPDX_URL)
+        if isDebugMode: # use local file instead of downloading the file online
+            with open(jsn_path) as f:
+                data = json.load(f)
+        else:
+            cls.SPDX_URL = license_path
             try:
-                if r.status_code == 200:
-                    resp = r.json()
-                    data = resp['licenses']
-                    if data:
-                        for d in data:  # convert license name to lowercase
-                            d['name'] = d['name'].lower()
-                        cls.all_licenses = data
-                        cls.total_licenses = len(data)
-                        cls.license_names = [d['name'] for d in data if 'name' in d]
-                        #referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]
-                        #seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
-                        #cls.license_urls = dict(zip(referenceNumber, seeAlso))
-                    # v = resp['licenseListVersion'] #TODO track version number, cache json locally;  cls.all_licenses=null if download fails
-                    # d = resp['releaseDate']
-            except json.decoder.JSONDecodeError as e1:
-                cls.logger.exception(e1)
-        except requests.exceptions.RequestException as e2:
-            cls.logger.exception(e2)
+                r = requests.get(cls.SPDX_URL)
+                try:
+                    if r.status_code == 200:
+                        resp = r.json()
+                        data = resp['licenses']
+                        for d in data:
+                            d['name'] = d['name'].lower()  # convert license name to lowercase
+                        with open(jsn_path, 'w') as f:
+                            json.dump(data, f)
+                except json.decoder.JSONDecodeError as e1:
+                    cls.logger.exception(e1)
+            except requests.exceptions.RequestException as e2:
+                cls.logger.exception(e2)
+        if data:
+            cls.all_licenses = data
+            cls.total_licenses = len(data)
+            cls.license_names = [d['name'] for d in data if 'name' in d]
+            # referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]
+            # seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
+            # cls.license_urls = dict(zip(referenceNumber, seeAlso))
 
     @classmethod
     def get_licenses(cls):
