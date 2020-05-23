@@ -1,5 +1,5 @@
 # FUJI (FAIRsFAIR Data Assessment Service)
-Developers: Anusuriya Devaraju, Robert Huber, Uwe Schindler 
+Developers: Anusuriya Devaraju, Robert Huber
 
 ## Overview
 FUJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
