@@ -4,7 +4,7 @@ import configparser as ConfigParser
 import json
 import os
 from pathlib import Path
-from fuji_server.controllers.fair_check import FAIRCheck
+from fuji_server.controllers.fair_test_bk import FAIRTest
 from fuji_server.helper.preprocessor import Preprocessor
 
 identifier = 'https://doi.org/10.1594/PANGAEA.902845'
@@ -20,32 +20,18 @@ def main():
     METRIC_YAML = config['SERVICE']['metrics_yaml']
     METRIC_YML_PATH = os.path.join(my_path, YAML_DIR , METRIC_YAML)
     SPDX_URL = config['EXTERNAL']['spdx_license_github']
-    DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
-    RE3DATA_API = config['EXTERNAL']['re3data_api']
-    METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']
-    isDebug = config.getboolean('SERVICE', 'debug_mode')
-
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
+    preproc.retrieve_licenses(SPDX_URL)
     print('Total metrics defined: {}'.format(preproc.get_total_metrics()))
-
-    isDebug = config.getboolean('SERVICE', 'debug_mode')
-    preproc.retrieve_licenses(SPDX_URL, isDebug)
-    preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
-    preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
-
     print('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
-    print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
-    print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
 
-    ft = FAIRCheck(uid=identifier, oai=oai_pmh, test_debug=debug)
+    ft = FAIRTest(uid=identifier, oai=oai_pmh, test_debug=debug)
     uid_result, pid_result = ft.check_unique_persistent()
-    core_metadata_result = ft.check_minimal_metatadata()
-    content_identifier_included_result = ft.check_content_identifier_included()
-    check_searchable_result = ft.check_searchable()
+    core_metadata_result = ft.check_core_metadata()
+    identifier_included_result = ft.check_data_identifier_included()
     license_result = ft.check_license()
-    relatedresources_result = ft.check_relatedresources()
-    results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, license_result]
+    results = [uid_result, pid_result, core_metadata_result, identifier_included_result, license_result]
     print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':

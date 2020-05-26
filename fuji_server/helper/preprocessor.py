@@ -23,7 +23,7 @@ class Preprocessor(object):
     metadata_standards = {} #key=subject,value =[standards name]
     re3repositories: Dict[Any, Any] = {}
     #fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
-    fuji_server_dir =  os.path.dirname(os.path.dirname(__file__)) #project_root
+    fuji_server_dir =os.path.dirname(os.path.dirname(__file__))
     header = {"Accept": "application/json"}
 
     @classmethod
@@ -74,6 +74,7 @@ class Preprocessor(object):
 
     @classmethod
     def retrieve_licenses(cls, license_path, isDebugMode):
+
         data = None
         jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'licenses.json')
         # The repository can be found at https://github.com/spdx/license-list-data
