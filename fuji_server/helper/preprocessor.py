@@ -22,7 +22,8 @@ class Preprocessor(object):
     license_names = []
     metadata_standards = {} #key=subject,value =[standards name]
     re3repositories: Dict[Any, Any] = {}
-    fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
+    #fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
+    fuji_server_dir =  os.path.dirname(os.path.dirname(__file__)) #project_root
     header = {"Accept": "application/json"}
 
     @classmethod
@@ -150,7 +151,7 @@ class Preprocessor(object):
     @classmethod
     def getRE3repositories(cls):
         if not cls.re3repositories:
-            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO)
+            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
         return cls.re3repositories
 
     @classmethod
