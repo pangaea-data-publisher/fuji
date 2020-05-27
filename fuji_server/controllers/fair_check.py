@@ -205,15 +205,31 @@ class FAIRCheck:
 
         # ========= retrieve typed links =========
         if self.metadata_merged.get('object_content_identifier') is None:
-            links = self.get_html_typed_links()
+            links = self.get_html_typed_links(rel='item')
             if links:
-                self.metadata_merged['object_content_identifier'] = self.get_html_typed_links()
+                self.metadata_merged['object_content_identifier'] = self.get_html_typed_links(rel='item')
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
 
+    # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
-    #  use IANA relations for extracting metadata and meaningful links
-    # TODO (important) - https://signposting.org/publication_boundary/, create a dict of {'href':URL,'format':FORMAT, 'rel':REL, 'type':TYPE}
+    # use IANA relations for extracting metadata and meaningful links
+    def get_html_typed_links(self, rel="item"):
+        # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
+        # Use links to find domains specific metadata
+        datalinks = []
+
+        dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
+        links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
+        for l in links:
+            href=l.attrib.get('href')
+            #handle relative paths
+            if href.startswith('/'):
+                href=self.landing_origin+href
+            datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
+        return datalinks
+    '''
     def get_html_typed_links(self):
+
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # <link rel="item" href="https://doi.pangaea.de/10.1594/PANGAEA.906092?format=zip" type="application/zip">
         datalinks = []
@@ -225,7 +241,7 @@ class FAIRCheck:
                 for datalink in header_links_matches:
                     datalinks.append(datalink[2])
         return datalinks
-
+    '''
     def retrieve_metadata_external(self):
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
@@ -314,15 +330,15 @@ class FAIRCheck:
 
         content_list = []
         if contents:
-            for content_id in contents:
-                self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_id))
+            for content_link in contents:
+                self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
                 did_output_content = IdentifierIncludedOutputInner()
-                did_output_content.content_identifier_included = content_id
+                did_output_content.content_identifier_included = content_link
                 try:
-                    urllib.urlopen(content_id)  # only check the status, do not download the content
+                    urllib.urlopen(content_link.get('url'))  # only check the status, do not download the content
                 except urllib.HTTPError as e:
                     self.logger.warning(
-                        'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_id, e.code))
+                        'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
                 except urllib.URLError as e:
                     self.logger.exception(e.reason)
                 else:  # will be executed if there is no exception

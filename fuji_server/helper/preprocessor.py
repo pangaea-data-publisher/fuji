@@ -74,7 +74,6 @@ class Preprocessor(object):
 
     @classmethod
     def retrieve_licenses(cls, license_path, isDebugMode):
-
         data = None
         jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'licenses.json')
         # The repository can be found at https://github.com/spdx/license-list-data

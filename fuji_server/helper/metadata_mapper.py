@@ -40,7 +40,7 @@ class Mapper(Enum):
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
                            'summary: description, keywords: keywords, publication_date: datePublished, data_file_format: encodingFormat,' \
                            'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
-                        'object_content_identifier: (distribution.contentUrl || distribution[*].contentUrl)}'
+                        'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
 
     DATACITE_JSON_MAPPING = '{ object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
@@ -48,5 +48,6 @@ class Mapper(Enum):
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date,' \
                         'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rights || rightsList[*].rightsUri,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
-                        'related_resources: relatedIdentifiers[*], datacite_client: clientId}'
+                        'related_resources: relatedIdentifiers[*], datacite_client: clientId ' \
+                        'object_content_identifier:  [{url: contentUrl}] }'
                         #'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
