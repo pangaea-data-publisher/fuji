@@ -45,10 +45,13 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                                 jsnld_metadata['creator'] = names
                         else:
                             jsnld_metadata['creator'] = [first + " " + last]
-                    contents = jsnld_metadata['object_content_identifier']
-                    if contents:
-                        if isinstance(contents, str):
-                            jsnld_metadata['object_content_identifier'] = [contents]
+                    #contents = jsnld_metadata['object_content_identifier']
+                   # if contents:
+                    #    #if isinstance(contents, str):
+                     #   for content in contents:
+                      #      if content['url']:
+                       #         jsnld_metadata['object_content_identifier'].append({'url':content['url']})
+                #TODO: logger message for invalid context types
             except Exception as err:
                 self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
         return self.source_name, jsnld_metadata
