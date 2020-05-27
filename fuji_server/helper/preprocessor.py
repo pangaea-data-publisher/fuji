@@ -23,7 +23,7 @@ class Preprocessor(object):
     metadata_standards = {} #key=subject,value =[standards name]
     re3repositories: Dict[Any, Any] = {}
     #fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
-    fuji_server_dir =  os.path.dirname(os.path.dirname(__file__))
+    fuji_server_dir =  os.path.dirname(os.path.dirname(__file__)) #project_root
     header = {"Accept": "application/json"}
 
     @classmethod
