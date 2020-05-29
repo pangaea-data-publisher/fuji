@@ -7,6 +7,8 @@ from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsItems
 from fuji_server.models.body import Body
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
+from fuji_server.models.data_access_level import DataAccessLevel
+from fuji_server.models.data_access_output import DataAccessOutput
 from fuji_server.models.debug import Debug
 from fuji_server.models.fair_result_common import FAIRResultCommon
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
