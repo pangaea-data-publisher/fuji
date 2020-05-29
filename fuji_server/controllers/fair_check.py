@@ -319,13 +319,13 @@ class FAIRCheck:
             did_score.earned = did_sc
             did_result.test_status = "pass"
         else:
-            self.logger.warning('FsF-F3-01M : Malformed Identifier!')
+            self.logger.warning('FsF-F3-01M : Malformed Dataset Identifier in Metadata!')
 
         content_list = []
-        if isinstance(contents, dict):
-            contents = [contents]
-        contents = [c for c in contents if c]
         if contents:
+            if isinstance(contents, dict):
+                contents = [contents]
+            contents = [c for c in contents if c]
             for content_link in contents:
                 if content_link.get('url')!=None:
                     self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
