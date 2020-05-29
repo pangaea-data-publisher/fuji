@@ -76,6 +76,8 @@ class RequestHelper:
                                         break
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                             break
+                else:
+                    self.logger.warning('{} : NO successful response received', format(metric_id))
             except requests.exceptions.RequestException as e:
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
