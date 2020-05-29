@@ -62,18 +62,6 @@ metrics:
   version: 1.0
   total_score: 3
 
-- metric_identifier: FsF-A1-01M
-  metric_name: Data access level
-  description: This metric determines if the metadata includes the level of access to the data such as public, embargoed, restricted, or closed access. It is recommended that data should be as open as possible and as closed as necessary.
-  fair_principle: A1
-  question_type: single-choice
-  evaluation_mechanism: to-do
-  created_by: FAIRsFAIR
-  date_created: 2020-02-29
-  date_updated: 2020-02-29
-  version: 1.0
-  total_score: 1
-
 - metric_identifier: FsF-I1-01M
   metric_name: Semantic representation of metadata
   description: To make metadata more understandable to humans and machines, they are described with semantic vocabularies. Ontology, thesaurus, taxonomy are kinds of semantic vocabularies, and they come with different degrees of expressiveness, structure, and inferential power. Metadata may use semantic vocabularies in various ways. For example, semantic vocabularies may be embedded as controlled vocabularies in the metadata or the metadata web page (e.g., microformats and RDFa or JSON-LD). Metadata may also be published as linked data using semantic vocabularies.
