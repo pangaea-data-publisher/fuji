@@ -62,6 +62,18 @@ metrics:
   version: 1.0
   total_score: 3
 
+- metric_identifier: FsF-A1-01M
+  metric_name: Data Access Level
+  description: This metric determines if the metadata includes the level of access to the data such as public, embargoed, restricted, or closed access. It is recommended that data should be as open as possible and as closed as necessary. Datasets should be public domain and openly accessible without restrictions when possible. Embargoed access refers to data that will be made publicly accessible at a specific date which should be specified in the metadata. For example, a data author may release their data after having published their findings from the data. Restricted access refers to data that can be accessed under certain conditions (e.g. because of commercial, sensitive, or other confidentiality reasons or the data is only accessible via a subscription or a fee). Restricted data may be available to a particular group of users or after permission is granted. For restricted data, the metadata should include the conditions of access to the data (e.g., point of contact or instructions to access the data). Closed access refers to data that is not made publicly available and for which only metadata is publicly available.
+  fair_principle: A1
+  question_type: multiple-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 3
+
 - metric_identifier: FsF-I1-01M
   metric_name: Semantic representation of metadata
   description: To make metadata more understandable to humans and machines, they are described with semantic vocabularies. Ontology, thesaurus, taxonomy are kinds of semantic vocabularies, and they come with different degrees of expressiveness, structure, and inferential power. Metadata may use semantic vocabularies in various ways. For example, semantic vocabularies may be embedded as controlled vocabularies in the metadata or the metadata web page (e.g., microformats and RDFa or JSON-LD). Metadata may also be published as linked data using semantic vocabularies.
