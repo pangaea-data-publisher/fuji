@@ -3,10 +3,13 @@ import logging
 import re
 import urllib
 import urllib.request as urllib
+from typing import List, Any
 from urllib.parse import urlparse
 
 import Levenshtein
 import idutils
+import lxml
+
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
@@ -44,6 +47,7 @@ class FAIRCheck:
             self.logger.addFilter(self.msg_filter)
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
         self.oaipmh_harvester = None
+        self.count = 0
         FAIRCheck.load_predata()
 
     @classmethod
@@ -69,8 +73,10 @@ class FAIRCheck:
         pid_metric_identifier = 'FsF-F1-02D'  # FsF-F1-02D: Persistent identifier
         uid_metric_name = FAIRCheck.METRICS.get(uid_metric_identifier).get('metric_name')
         pid_metric_name = FAIRCheck.METRICS.get(pid_metric_identifier).get('metric_name')
-        uid_result = Uniqueness(id=1, metric_identifier=uid_metric_identifier, metric_name=uid_metric_name)
-        pid_result = Persistence(id=2, metric_identifier=pid_metric_identifier, metric_name=pid_metric_name)
+        self.count += 1
+        uid_result = Uniqueness(id=self.count, metric_identifier=uid_metric_identifier, metric_name=uid_metric_name)
+        self.count += 1
+        pid_result = Persistence(id=self.count, metric_identifier=pid_metric_identifier, metric_name=pid_metric_name)
         uid_sc = int(FAIRCheck.METRICS.get(uid_metric_identifier).get('total_score'))
         pid_sc = int(FAIRCheck.METRICS.get(pid_metric_identifier).get('total_score'))
         uid_score = FAIRResultCommonScore(total=uid_sc)
@@ -270,11 +276,12 @@ class FAIRCheck:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
 
     def check_minimal_metatadata(self):
+        self.count += 1
         coremeta_identifier = 'FsF-F2-01M'
         meta_sc = int(FAIRCheck.METRICS.get(coremeta_identifier).get('total_score'))
         meta_score = FAIRResultCommonScore(total=meta_sc)
         coremeta_name = FAIRCheck.METRICS.get(coremeta_identifier).get('metric_name')
-        meta_result = CoreMetadata(id=3, metric_identifier=coremeta_identifier, metric_name=coremeta_name)
+        meta_result = CoreMetadata(id=self.count, metric_identifier=coremeta_identifier, metric_name=coremeta_name)
 
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
         metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
@@ -309,9 +316,10 @@ class FAIRCheck:
         return meta_result.to_dict()
 
     def check_content_identifier_included(self):
+        self.count += 1
         did_included_identifier = 'FsF-F3-01M'  # FsF-F3-01M: Inclusion of data identifier in metadata
         included_name = FAIRCheck.METRICS.get(did_included_identifier).get('metric_name')
-        did_result = IdentifierIncluded(id=4, metric_identifier=did_included_identifier, metric_name=included_name)
+        did_result = IdentifierIncluded(id=self.count, metric_identifier=did_included_identifier, metric_name=included_name)
         did_sc = int(FAIRCheck.METRICS.get(did_included_identifier).get('total_score'))
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutput()
@@ -355,11 +363,12 @@ class FAIRCheck:
         return did_result.to_dict()
 
     def check_license(self):
+        self.count += 1
         license_identifier = 'FsF-R1.1-01M'  # FsF-R1.1-01M: Data Usage Licence
         license_mname = FAIRCheck.METRICS.get(license_identifier).get('metric_name')
         license_sc = int(FAIRCheck.METRICS.get(license_identifier).get('total_score'))
         license_score = FAIRResultCommonScore(total=license_sc)
-        license_result = License(id=12, metric_identifier=license_identifier, metric_name=license_mname)
+        license_result = License(id=self.count, metric_identifier=license_identifier, metric_name=license_mname)
         licenses_list = []
         specified_licenses = self.metadata_merged.get('license')
         if specified_licenses is not None:
@@ -424,11 +433,12 @@ class FAIRCheck:
         return html_url, isOsiApproved
 
     def check_relatedresources(self):
+        self.count += 1
         related_identifier = 'FsF-I3-01M'  # FsF-I3-01M: Meaningful links to related entities
         related_mname = FAIRCheck.METRICS.get(related_identifier).get('metric_name')
         related_sc = int(FAIRCheck.METRICS.get(related_identifier).get('total_score'))
         related_score = FAIRResultCommonScore(total=related_sc)
-        related_result = RelatedResource(id=9, metric_identifier=related_identifier, metric_name=related_mname)
+        related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
         related_output = RelatedResourceOutputInner()
 
         # TODO (important) extend mapping to capture relations (linked types, dc,schema.org)
@@ -446,9 +456,10 @@ class FAIRCheck:
         return related_result.to_dict()
 
     def check_searchable(self):
+        self.count += 1
         searchable_identifier = 'FsF-F4-01M'  # FsF-F4-01M: Searchable metadata
         searchable_name = FAIRCheck.METRICS.get(searchable_identifier).get('metric_name')
-        searchable_result = Searchable(id=5, metric_identifier=searchable_identifier, metric_name=searchable_name)
+        searchable_result = Searchable(id=self.count, metric_identifier=searchable_identifier, metric_name=searchable_name)
         searchable_sc = int(FAIRCheck.METRICS.get(searchable_identifier).get('total_score'))
         searchable_score = FAIRResultCommonScore(total=searchable_sc)
         searchable_output = SearchableOutput()
@@ -461,7 +472,7 @@ class FAIRCheck:
                                   MetaDataCollector.Sources.DUBLINCORE.value,
                                   MetaDataCollector.Sources.SIGN_POSTING.value]
         # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match = list(set(self.metadata_sources).intersection(search_engines_support))
+        search_engine_support_match: List[Any] = list(set(self.metadata_sources).intersection(search_engines_support))
         if search_engine_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
@@ -487,3 +498,13 @@ class FAIRCheck:
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
         return searchable_result.to_dict()
+
+    def check_data_access(self):
+        self.count += 1
+        daccess_identifier = 'FsF-A1-01M'  # FsF-A1-01M: Data Access Level
+        daccess_name = FAIRCheck.METRICS.get(daccess_identifier).get('metric_name')
+        daccess_result = DataAccessLevel(id=self.count, metric_identifier=daccess_identifier, metric_name=daccess_name)
+        daccess_sc = int(FAIRCheck.METRICS.get(daccess_identifier).get('total_score'))
+        daccess_score = FAIRResultCommonScore(total=daccess_sc)
+        daccess_output = DataAccessOutput()
+        return None
