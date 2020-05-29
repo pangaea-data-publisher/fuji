@@ -102,6 +102,7 @@ components:
         - $ref: '#/components/schemas/Searchable'
         - $ref: '#/components/schemas/RelatedResource'
         - $ref: '#/components/schemas/License'
+        - $ref: '#/components/schemas/DataAccessLevel'
     FAIRResultCommon:
       required:
       - id
@@ -179,6 +180,15 @@ components:
         properties:
           output:
             $ref: '#/components/schemas/License_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    DataAccessLevel:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/DataAccess_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     RelatedResource:
@@ -281,7 +291,9 @@ components:
           - metadata registry
           - structured data
         mechanism_info:
-          type: string
+          type: array
+          items:
+            type: string
     Searchable_output:
       type: object
       properties:
@@ -293,6 +305,18 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/License_output_inner'
+    DataAccess_output:
+      type: object
+      properties:
+        access_level:
+          type: string
+          enum:
+          - public
+          - embargoed
+          - restricted
+          - closed_metadataonly
+        access_details:
+          type: object
     RelatedResource_output:
       type: array
       items:
