@@ -14,17 +14,17 @@ class OutputSearchMechanisms(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, mechanism: str=None, mechanism_info: str=None):  # noqa: E501
+    def __init__(self, mechanism: str=None, mechanism_info: List[str]=None):  # noqa: E501
         """OutputSearchMechanisms - a model defined in Swagger
 
         :param mechanism: The mechanism of this OutputSearchMechanisms.  # noqa: E501
         :type mechanism: str
         :param mechanism_info: The mechanism_info of this OutputSearchMechanisms.  # noqa: E501
-        :type mechanism_info: str
+        :type mechanism_info: List[str]
         """
         self.swagger_types = {
             'mechanism': str,
-            'mechanism_info': str
+            'mechanism_info': List[str]
         }
 
         self.attribute_map = {
@@ -73,22 +73,22 @@ class OutputSearchMechanisms(Model):
         self._mechanism = mechanism
 
     @property
-    def mechanism_info(self) -> str:
+    def mechanism_info(self) -> List[str]:
         """Gets the mechanism_info of this OutputSearchMechanisms.
 
 
         :return: The mechanism_info of this OutputSearchMechanisms.
-        :rtype: str
+        :rtype: List[str]
         """
         return self._mechanism_info
 
     @mechanism_info.setter
-    def mechanism_info(self, mechanism_info: str):
+    def mechanism_info(self, mechanism_info: List[str]):
         """Sets the mechanism_info of this OutputSearchMechanisms.
 
 
         :param mechanism_info: The mechanism_info of this OutputSearchMechanisms.
-        :type mechanism_info: str
+        :type mechanism_info: List[str]
         """
 
         self._mechanism_info = mechanism_info
