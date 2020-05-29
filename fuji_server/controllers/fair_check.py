@@ -4,6 +4,7 @@ import re
 import urllib
 import urllib.request as urllib
 from urllib.parse import urlparse
+import lxml
 
 import Levenshtein
 import idutils
@@ -207,7 +208,6 @@ class FAIRCheck:
         if self.metadata_merged.get('object_content_identifier') is None:
             links = self.get_html_typed_links(rel='item')
             if links:
-                self.metadata_merged['object_content_identifier'] = self.get_html_typed_links(rel='item')
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
@@ -217,7 +217,6 @@ class FAIRCheck:
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # Use links to find domains specific metadata
         datalinks = []
-
         dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
         links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
         for l in links:
@@ -227,21 +226,7 @@ class FAIRCheck:
                 href=self.landing_origin+href
             datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
-    '''
-    def get_html_typed_links(self):
 
-        # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
-        # <link rel="item" href="https://doi.pangaea.de/10.1594/PANGAEA.906092?format=zip" type="application/zip">
-        datalinks = []
-        reg_item = '<link rel\s*=\s*\"(item)\"(.*?)href\s*=\s*\"(.*?)\"'
-        if self.landing_html != None:
-            header_links_matches = re.findall(reg_item,
-                                              self.landing_html)  # ('item', ' ', 'https://doi.pangaea.de/10.1594/PANGAEA.906092?format=zip')
-            if len(header_links_matches) > 0:
-                for datalink in header_links_matches:
-                    datalinks.append(datalink[2])
-        return datalinks
-    '''
     def retrieve_metadata_external(self):
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
@@ -329,21 +314,27 @@ class FAIRCheck:
             self.logger.warning('FsF-F3-01M : Malformed Identifier!')
 
         content_list = []
+        if isinstance(contents, dict):
+            contents = [contents]
+        contents = [c for c in contents if c]
         if contents:
             for content_link in contents:
-                self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
-                did_output_content = IdentifierIncludedOutputInner()
-                did_output_content.content_identifier_included = content_link
-                try:
-                    urllib.urlopen(content_link.get('url'))  # only check the status, do not download the content
-                except urllib.HTTPError as e:
-                    self.logger.warning(
-                        'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
-                except urllib.URLError as e:
-                    self.logger.exception(e.reason)
-                else:  # will be executed if there is no exception
-                    did_output_content.content_identifier_active = True
-                    content_list.append(did_output_content)
+                if content_link.get('url')!=None:
+                    self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
+                    did_output_content = IdentifierIncludedOutputInner()
+                    did_output_content.content_identifier_included = content_link
+                    try:
+                        urllib.urlopen(content_link.get('url'))  # only check the status, do not download the content
+                    except urllib.HTTPError as e:
+                        self.logger.warning(
+                            'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
+                    except urllib.URLError as e:
+                        self.logger.exception(e.reason)
+                    else:  # will be executed if there is no exception
+                        did_output_content.content_identifier_active = True
+                        content_list.append(did_output_content)
+                else:
+                    self.logger.warning('FsF-F3-01M : Data (content) url is empty.')
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
         did_output.content = content_list
@@ -353,6 +344,13 @@ class FAIRCheck:
         if self.isDebug:
             did_result.test_debug = self.msg_filter.getMessage(did_included_identifier)
         return did_result.to_dict()
+
+    def check_data_access_level(self):
+        access_identifier = 'FsF-A1-01M'
+        access_name= FAIRCheck.METRICS.get(access_identifier).get('metric_name')
+        access_sc=int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
+        access_score = FAIRResultCommonScore(total=access_sc)
+       # access_result = AccessLevel(id=12, metric_identifier=access_identifier, metric_name=license_mname)
 
     def check_license(self):
         license_identifier = 'FsF-R1.1-01M'  # FsF-R1.1-01M: Data Usage Licence
