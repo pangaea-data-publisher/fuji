@@ -17,14 +17,21 @@ class Mapper(Enum):
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
 
+
     ## ============================ METADATA MAPPINGS ============================ ##
 
+    ACCESS_RIGHT_CODES = {'creativecommons': 'public',
+                    'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
+                    'OpenAccess': 'public', 'ClosedAccess': 'metadata_only', 'RestrictedAccess': 'restricted',
+                    'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
+                    'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
+                    }
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
               'publisher': 'publisher', 'publication_date': 'date', 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type',
-              'license': 'license', 'data_file_format': 'format'}
+              'license': 'license', 'data_file_format': 'format', 'access_level':'rights'}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
@@ -40,14 +47,17 @@ class Mapper(Enum):
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
                            'summary: description, keywords: keywords, publication_date: datePublished, data_file_format: encodingFormat,' \
                            'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
-                        'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
+                            'access_level:  (isAccessibleForFree || free), '\
+                            'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
 
     DATACITE_JSON_MAPPING = '{ object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
                         'creator_last: creators[*].familyName, publisher: publisher, ' \
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date,' \
-                        'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rights || rightsList[*].rightsUri,' \
+                        'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
                         'related_resources: relatedIdentifiers[*], datacite_client: clientId ' \
-                        'object_content_identifier:  {url: contentUrl} }'
+                        'object_content_identifier:  {url: contentUrl} , access_level: rights}'
                         #'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
+    #generic sparql query
+    SPARQL_MAPPING=''
