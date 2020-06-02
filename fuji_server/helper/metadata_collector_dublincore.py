@@ -27,8 +27,9 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         k = dc_meta[2]
                         v = dc_meta[4]
                         # if self.isDebug:
-                        # self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
-                        if k in self.metadata_mapping.value:
+                        #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
+                        if k in self.metadata_mapping.value.values():
+                            self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
                             elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if value == k][0]
                             if elem in dc_core_metadata:
                                 if isinstance(dc_core_metadata[elem], list):
