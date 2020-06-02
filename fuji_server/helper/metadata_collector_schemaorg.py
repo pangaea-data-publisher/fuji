@@ -6,7 +6,7 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class MetaDataCollectorSchemaOrg (MetaDataCollector):
-
+    source_name=None
     def __init__(self, sourcemetadata, mapping, loggerinst, ispid, pidurl):
         self.is_pid = ispid
         self.pid_url = pidurl
@@ -14,6 +14,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
     def parse_metadata(self):
         jsnld_metadata = {}
+        ext_meta=None
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             ext_meta = self.source_metadata[0]
