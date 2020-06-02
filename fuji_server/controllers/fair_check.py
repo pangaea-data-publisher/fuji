@@ -15,6 +15,7 @@ from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
+from fuji_server.helper.metadata_collector_sparql import MetaDataCollectorSparql
 from fuji_server.helper.metadata_collector import MetaDataCollector
 # from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
 from fuji_server.helper.metadata_mapper import Mapper
@@ -252,11 +253,19 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
+        #TODO: find a condition to trigger the rdf request
+        sparql_collector = MetaDataCollectorSparql(mapping=Mapper.SPARQL_MAPPING, loggerinst=self.logger,
+                                                       target_url=self.landing_url)
+        sparql_collector.parse_metadata()
+
+
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
             # TODO (Important) - search via b2find
             # TODO (IMPORTANT!) -  try some content negotiation (rdf) + update self.self.metadata_merged
+            # TODO (IMPORTANT!) -  try some to retrieve metadata via typed html links (alternate or describedby)
             # self.rdf_graph = self.content_negotiate('rdf','FsF-F2-01M')
+
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
 
@@ -313,19 +322,21 @@ class FAIRCheck:
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
         self.logger.info('FsF-F3-01M : Data object identifier specified {}'.format(id_object))
-
+        '''
+        #This is testing the wrong thing...
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
             did_score.earned = did_sc
             did_result.test_status = "pass"
         else:
             self.logger.warning('FsF-F3-01M : Malformed Dataset Identifier in Metadata!')
-
+        '''
         content_list = []
         if contents:
             if isinstance(contents, dict):
                 contents = [contents]
             contents = [c for c in contents if c]
+            did_result.test_status = "fail"
             for content_link in contents:
                 if content_link.get('url')!=None:
                     self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
@@ -333,6 +344,8 @@ class FAIRCheck:
                     did_output_content.content_identifier_included = content_link
                     try:
                         urllib.urlopen(content_link.get('url'))  # only check the status, do not download the content
+                        did_result.test_status = "pass"
+                        did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
                             'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
@@ -354,11 +367,63 @@ class FAIRCheck:
         return did_result.to_dict()
 
     def check_data_access_level(self):
+        #Focus on machine readable rights -> URIs only
+        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/ check for http://purl.org/coar/access_right
+        #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
+        #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
+        #4) CreativeCommons check for https://creativecommons.org/licenses/
+        self.count += 1
         access_identifier = 'FsF-A1-01M'
         access_name= FAIRCheck.METRICS.get(access_identifier).get('metric_name')
         access_sc=int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
         access_score = FAIRResultCommonScore(total=access_sc)
-       # access_result = AccessLevel(id=12, metric_identifier=access_identifier, metric_name=license_mname)
+        access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
+        access_output=DataAccessOutput()
+        rights_regex = r'((creativecommons\.org\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+        access_rights=self.metadata_merged.get('access_level')
+        if access_rights is not None:
+            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+        if isinstance(access_rights,str):
+            access_rights=[access_rights]
+        if isinstance(access_rights,bool):
+            if access_rights:
+                access_output.access_level = "public"
+            else:
+                access_output.access_level = "restricted"
+            access_output.access_details = {'access_right': {'https://schema.org/isAccessibleForFree': access_rights}}
+            access_score.earned = 1
+            access_result.test_status = "pass"
+        else:
+            access_licenses = self.metadata_merged.get('license')
+            if access_licenses is not None:
+                if isinstance(access_licenses, str):
+                    access_licenses=[access_licenses]
+                if access_rights is not None:
+                    access_licenses.extend(access_rights)
+                for access_right in access_licenses:
+                    rights_match = re.search(rights_regex, access_right)
+                    if rights_match is not None:
+                        access_result.test_status = "pass"
+                        for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
+                            if re.search(right_code,rights_match[1]):
+                                access_output.access_level = right_status
+                                access_score.earned = 1
+                                self.logger.info('FsF-A1-01M : Rights information recognized as: '+str(right_status))
+                                break
+                        self.logger.info('FsF-A1-01M : Found access rights information in metadata')
+                        access_output.access_details={'access_right': rights_match[1]}
+                        break
+                if access_score.earned==0:
+                    self.logger.warning('FsF-A1-01M : No rights information is available in metadata')
+                    access_result.test_status = "fail"
+                    access_score.earned = 0
+            else:
+                self.logger.warning('FsF-A1-01M : No rights or licence information is included in metadata')
+        access_result.score=access_score
+        access_result.output=access_output
+        if self.isDebug:
+            access_result.test_debug = self.msg_filter.getMessage(access_identifier)
+        return access_result.to_dict()
 
     def check_license(self):
         self.count += 1
@@ -496,13 +561,3 @@ class FAIRCheck:
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
         return searchable_result.to_dict()
-
-    def check_data_access(self):
-        self.count += 1
-        daccess_identifier = 'FsF-A1-01M'  # FsF-A1-01M: Data Access Level
-        daccess_name = FAIRCheck.METRICS.get(daccess_identifier).get('metric_name')
-        daccess_result = DataAccessLevel(id=self.count, metric_identifier=daccess_identifier, metric_name=daccess_name)
-        daccess_sc = int(FAIRCheck.METRICS.get(daccess_identifier).get('total_score'))
-        daccess_score = FAIRResultCommonScore(total=daccess_sc)
-        daccess_output = DataAccessOutput()
-        return None
