@@ -8,9 +8,25 @@ from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
 
 identifier = 'https://doi.org/10.1594/PANGAEA.902845'
+#identifier='https://doi.org/10.26050/WDCC/MOMERGOMBSCMAQ'
 oai_pmh = 'http://ws.pangaea.de/oai/'
 debug = True
 
+testpids=[
+    '10.15493/DEFF.10000003',
+    'doi:10.1038/nphys1170','doi:10.17882/42182','https://deims.org/sites/default/files/data/elter_va_fruska_gora_temperature_0.xls',
+    '10.25504/FAIRsharing.2bdvmk','http://bio2rdf.org/affymetrix:1415765_at','doi:10.18129/B9.bioc.BiocGenerics',
+    'https://data.noaa.gov/dataset/dataset/w00411-nos-hydrographic-survey-2015-08-15','10.6075/J0513WJD','10.7280/D1P075',
+    '10.1007/s10531-013-0468-6','https://neurovault.org/images/13953/','10.17605/OSF.IO/XFWS6','https://hdl.handle.net/10411/G8MPEI',
+    '10.17870/bathspa.7926890.v1','http://thredds.met.no/thredds/catalog/met.no/observations/stations/catalog.html?dataset=met.no/observations/stations/SN999',
+    'https://hdl.handle.net/11676/Hz8P-d-sstjMXCmWGTY67a2O','10.24435/materialscloud:2019.0013/v2','https://www.gbif.org/dataset/4a65dba1-ff0d-4e72-aa3c-e76e48856930',
+    'hdl:10037.1/10152','https://repo.clarino.uib.no/xmlui/handle/11509/95','https://hunt-db.medisin.ntnu.no/hunt-db/#/studypart/432',
+    'https://www.proteinatlas.org/ENSG000002695','http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/33fa648d-c4d6-4449-ac3c-dbec0f204e1d',
+    'https://data.geus.dk/JupiterWWW/anlaeg.jsp?anlaegid=97389','http://tun.fi/JX.1058739','10.15468/0fxsox',
+    'https://doi.pangaea.de/10.1594/PANGAEA.866933','10.17026/dans-z56-fz75','http://data.europa.eu/89h/jrc-eplca-898618b5-3306-11dd-bd11-0800200c9a66',
+    'https://www.govdata.de/web/guest/suchen/-/details/temperatur-des-meerwassers-20172b0eb','doi:10.26050/WDCC/MOMERGOMBSCMAQ'
+]
+#testpids=['doi:10.25504/FAIRsharing.2bdvmk']
 def main():
     config = ConfigParser.ConfigParser()
     my_path = Path(__file__).parent.parent
@@ -37,16 +53,16 @@ def main():
     print('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
-
-    ft = FAIRCheck(uid=identifier, oai=oai_pmh, test_debug=debug)
-    uid_result, pid_result = ft.check_unique_persistent()
-    core_metadata_result = ft.check_minimal_metatadata()
-    content_identifier_included_result = ft.check_content_identifier_included()
-    check_searchable_result = ft.check_searchable()
-    license_result = ft.check_license()
-    relatedresources_result = ft.check_relatedresources()
-    results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, license_result]
-    print(json.dumps(results, indent=4, sort_keys=True))
+    for identifier in testpids:
+        ft = FAIRCheck(uid=identifier, oai=oai_pmh, test_debug=debug)
+        uid_result, pid_result = ft.check_unique_persistent()
+        core_metadata_result = ft.check_minimal_metatadata()
+        content_identifier_included_result = ft.check_content_identifier_included()
+        check_searchable_result = ft.check_searchable()
+        license_result = ft.check_license()
+        relatedresources_result = ft.check_relatedresources()
+        results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, license_result]
+        print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':
     main()

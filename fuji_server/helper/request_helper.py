@@ -46,6 +46,7 @@ class RequestHelper:
         return self.parse_response
 
     def content_negotiate(self, metric_id=''):
+        self.metric_id=metric_id
         if self.request_url is not None:
             try:
                 self.logger.info('%s : Retrieving page %s'% (metric_id, self.request_url))
@@ -76,8 +77,8 @@ class RequestHelper:
                                         break
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                             break
-                else:
-                    self.logger.warning('{} : NO successful response received', format(metric_id))
+               # else:
+                #    self.logger.warning('{} : NO successful response received', format(metric_id))
             except requests.exceptions.RequestException as e:
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
@@ -86,7 +87,11 @@ class RequestHelper:
     def parse_html(self, html_texts):
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
-        extracted = extruct.extract(html_texts.encode('utf8'))
+        try:
+            extracted = extruct.extract(html_texts.encode('utf8'))
+        except:
+            extracted=None
+            self.logger.warning('%s : Failed to perform parsing on microdata or JSON %s' % (self.metric_id, self.request_url))
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
@@ -98,13 +103,16 @@ class RequestHelper:
             graph = rdflib.Graph()
             graph.parse(data=response, format=mime_type)
             # rdf:Description rdf:about=...
+            '''
             predicate_query = graph.query("""
                                  select ?sub ?predicates ?obj
                                  where {?sub ?predicates ?obj}
                                  """)
+            '''
             # for s, p, o in predicate_query:
             # print(s, p, o)
         except rdflib.exceptions.Error as error:
+            self.logger.warning('%s : Failed to parse RDF %s' % (self.metric_id, self.request_url))
             self.logger.debug(error)
         return graph
 
