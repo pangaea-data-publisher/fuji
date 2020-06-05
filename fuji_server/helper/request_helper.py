@@ -3,7 +3,9 @@ from enum import Enum
 import extruct
 import rdflib
 import requests
-
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class AcceptTypes(Enum):
     datacite_json = 'application/vnd.datacite.datacite+json'
@@ -50,7 +52,7 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('%s : Retrieving page %s'% (metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=False)
                 status_code = self.http_response.status_code
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
@@ -72,7 +74,7 @@ class RequestHelper:
                                         self.parse_response  = self.http_response.json()
                                         # result = json.loads(response.text)
                                         break
-                                    if at.name in {'rdf', 'jsonld', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
+                                    if at.name in {'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
                                         self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
                                         break
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
@@ -95,22 +97,15 @@ class RequestHelper:
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
-    def parse_rdf(self, response, mime_type):  # TODO (not complete!!)
+    def parse_rdf(self, response, type):
+        # TODO (not complete!!)
         # https://rdflib.readthedocs.io/en/stable/plugin_parsers.html
         # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
         graph = None
         try:
             graph = rdflib.Graph()
-            graph.parse(data=response, format=mime_type)
-            # rdf:Description rdf:about=...
-            '''
-            predicate_query = graph.query("""
-                                 select ?sub ?predicates ?obj
-                                 where {?sub ?predicates ?obj}
-                                 """)
-            '''
-            # for s, p, o in predicate_query:
-            # print(s, p, o)
+            graph.parse(data=response, format=type)
+            #queries have to be done in specific metadata collector classes
         except rdflib.exceptions.Error as error:
             self.logger.warning('%s : Failed to parse RDF %s' % (self.metric_id, self.request_url))
             self.logger.debug(error)
