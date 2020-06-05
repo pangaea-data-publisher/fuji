@@ -17,6 +17,7 @@ class MetaDataCollector(object):
         SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Datacite)'
         DATACITE_JSON = 'Datacite Search'
         SIGN_POSTING = 'Signposting Typed Links'
+        LINKED_DATA ='Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
 
     def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
