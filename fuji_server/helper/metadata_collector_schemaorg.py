@@ -52,7 +52,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                      #   for content in contents:
                       #      if content['url']:
                        #         jsnld_metadata['object_content_identifier'].append({'url':content['url']})
-                #TODO: logger message for invalid context types
+                self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
             except Exception as err:
                 self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
         return self.source_name, jsnld_metadata
