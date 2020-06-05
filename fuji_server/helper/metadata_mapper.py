@@ -6,6 +6,7 @@ class Mapper(Enum):
     # List of PIDS
     VALID_PIDS = ['doi', 'handle', 'ark', 'purl', 'lsid']
 
+
     # reference metadata elements (used by FUJI)
     #['creator','license','related_resources'] --> list type
     # datacite_client --> retrieve re3data records
@@ -59,5 +60,3 @@ class Mapper(Enum):
                         'related_resources: relatedIdentifiers[*], datacite_client: clientId ' \
                         'object_content_identifier:  {url: contentUrl} , access_level: rights}'
                         #'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
-    #generic sparql query
-    SPARQL_MAPPING=''
