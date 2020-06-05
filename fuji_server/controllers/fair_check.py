@@ -147,7 +147,7 @@ class FAIRCheck:
         return uid_result.to_dict(), pid_result.to_dict()
 
     def retrieve_metadata(self, extruct_metadata):
-        if extruct_metadata:
+        if isinstance(extruct_metadata,dict):
             embedded_exists = [k for k, v in extruct_metadata.items() if v]
             self.logger.info(
                 'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists))
@@ -160,7 +160,6 @@ class FAIRCheck:
             self.retrieve_metadata_external()
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
             self.metadata_merged.get('object_type')))
-
         # retrieve re3metadata based on pid specified
         self.retrieve_re3data()
 
@@ -253,18 +252,37 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
-        #TODO: find a condition to trigger the rdf request
-        sparql_collector = MetaDataCollectorSparql(mapping=Mapper.SPARQL_MAPPING, loggerinst=self.logger,
-                                                       target_url=self.landing_url)
-        sparql_collector.parse_metadata()
+        found_metadata_link =False
+        typed_metadata_links=self.get_html_typed_links(rel='alternate')
+        for metadata_link in typed_metadata_links:
+            if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
+                self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
+                found_metadata_link=True
+                dcat_collector = MetaDataCollectorSparql(loggerinst=self.logger,
+                                                           target_url=metadata_link['url'])
+                break
 
+        if not found_metadata_link:
+            #TODO: find a condition to trigger the rdf request
+            dcat_collector = MetaDataCollectorSparql( loggerinst=self.logger,
+                                                           target_url=self.landing_url)
+
+        if dcat_collector is not None:
+            source_dcat, dcat_dict =dcat_collector.parse_metadata()
+            if dcat_dict:
+                not_null_dcat = [k for k, v in dcat_dict.items() if v is not None]
+                # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
+                self.metadata_sources.append(source_dcat)
+                for r in not_null_dcat:
+                    if r in self.reference_elements:
+                        self.metadata_merged[r] = dcat_dict[r]
+                        self.reference_elements.remove(r)
+            else:
+                self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
             # TODO (Important) - search via b2find
-            # TODO (IMPORTANT!) -  try some content negotiation (rdf) + update self.self.metadata_merged
-            # TODO (IMPORTANT!) -  try some to retrieve metadata via typed html links (alternate or describedby)
-            # self.rdf_graph = self.content_negotiate('rdf','FsF-F2-01M')
 
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
@@ -276,22 +294,23 @@ class FAIRCheck:
         meta_score = FAIRResultCommonScore(total=meta_sc)
         coremeta_name = FAIRCheck.METRICS.get(coremeta_identifier).get('metric_name')
         meta_result = CoreMetadata(id=self.count, metric_identifier=coremeta_identifier, metric_name=coremeta_name)
-
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
         metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
         self.logger.info('FsF-F2-01M : Required core metadata {}'.format(metadata_required))
+
         partial_elements = ['creator', 'title', 'object_identifier', 'publication_date']
+        #TODO: check the number of metadata elements which metadata_found has in common with metadata_required
+        #set(a) & set(b)
         if set(metadata_found) == set(metadata_required):
             metadata_status = 'all metadata'
             meta_score.earned = meta_sc
             test_status = 'pass'
-        # elif 1 <= len_found_metadata < len_metadata_required: #TODO - determine the threshold between partial and zero
         elif set(partial_elements).issubset(metadata_found):
             metadata_status = 'partial metadata'
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
-            metadata_status = 'no metadata'
+            metadata_status = 'little metadata'
             meta_score.earned = 0
             test_status = 'fail'
 
