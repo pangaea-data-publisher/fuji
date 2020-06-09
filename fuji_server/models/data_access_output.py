@@ -63,7 +63,7 @@ class DataAccessOutput(Model):
         :param access_level: The access_level of this DataAccessOutput.
         :type access_level: str
         """
-        allowed_values = ["public", "embargoed", "restricted", "metadata_only"]  # noqa: E501
+        allowed_values = ["public", "embargoed", "restricted", "closed_metadataonly"]  # noqa: E501
         if access_level not in allowed_values:
             raise ValueError(
                 "Invalid value for `access_level` ({0}), must be one of {1}"

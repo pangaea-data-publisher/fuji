@@ -109,3 +109,15 @@ metrics:
   date_updated: 2020-02-29
   version: 1.0
   total_score: 1
+
+- metric_identifier: FsF-R1.3-02D
+  metric_name: Data File format
+  description: File formats refer to methods for encoding digital information. For example, CSV for tabular data, NetCDF for multidimensional data and GeoTIFF for raster imagery. Data should be made available in a preferred file format that is accepted by the research community to enable data sharing and reuse. Preferred formats are formats that are widely used and supported by the most commonly used software and tools. These formats also should be suitable for long-term storage and archiving. Preferred formats not only give a higher certainty that your data can be read in the future, but they will also help to increase the reusability and interoperability. Using preferred formats enables data to be loaded directly into the software and tools used for data analysis. It makes it possible to easily integrate your data with other data using the same preferred format. The use of preferred formats will also help to transform the format to a newer one, in case a preferred format gets outdated.
+  fair_principle: R1.3
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 1.0
+  total_score: 1
