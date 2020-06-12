@@ -5,19 +5,19 @@ import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
-import lxml
-
+from fuzzywuzzy import process
 import Levenshtein
 import idutils
 import lxml
 
 from fuji_server.helper.log_message_filter import MessageFilter
+from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_sparql import MetaDataCollectorSparql
-from fuji_server.helper.metadata_collector import MetaDataCollector
 # from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
+from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvester
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
@@ -30,10 +30,12 @@ class FAIRCheck:
     METRICS = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
+    COMMUNITY_STANDARDS_NAMES = None
+    COMMUNITY_STANDARDS = None
 
-    def __init__(self, uid, oai=None, test_debug=False):
+    def __init__(self, uid, test_debug=False):
         self.id = uid
-        self.oaipmh_endpoint = oai
+        self.oaipmh_endpoint = None
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.landing_html = None
@@ -43,12 +45,13 @@ class FAIRCheck:
         self.metadata_sources = []
         self.isDebug = test_debug
         self.metadata_merged = {}
+        self.community_standards = []
+        self.community_standards_uri = []
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
-        self.oaipmh_harvester = None
         self.count = 0
         FAIRCheck.load_predata()
 
@@ -59,6 +62,9 @@ class FAIRCheck:
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
+        if not cls.COMMUNITY_STANDARDS:
+            cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
+            cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
         # if not cls.DATACITE_REPOSITORIES:
         # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
 
@@ -161,19 +167,25 @@ class FAIRCheck:
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
             self.metadata_merged.get('object_type')))
 
-        # retrieve re3metadata based on pid specified
-        self.retrieve_re3data()
+        # detect api and standards
+        self.retrieve_apis_standards()
 
-        # validate and instatiate oai-pmh harvester if the endpoint is valie
-        # if self.oaipmh_endpoint:
-        # if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
-        # self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
-
-    def retrieve_re3data(self):
+    def retrieve_apis_standards(self):
         client_id = self.metadata_merged.get('datacite_client')
         if client_id and self.pid_scheme:
             repoHelper = RepositoryHelper(client_id, self.pid_scheme)
             repoHelper.lookup_re3data()
+            self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+            self.community_standards = repoHelper.getRe3MetadataStandards()
+            if self.community_standards:
+                self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
+            else: # fallback get standards defined in api, e.g., oai-pmh
+                self.logger.info(
+                    '{} : Use OAIPMH endpoint from R3DATA to obtain metadata standards {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+                if (self.uri_validator(self.oaipmh_endpoint)):
+                    oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_harvester.getMetadataStandards()
+                    self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -561,3 +573,45 @@ class FAIRCheck:
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
         return searchable_result.to_dict()
+
+    def check_community_metadatastandards(self):
+        self.count += 1
+        communitystd_identifier = 'FsF-R1.3-01M'  # FsF-R1.3-01M: Community-endorsed metadata
+        communitystd_name = FAIRCheck.METRICS.get(communitystd_identifier).get('metric_name')
+        communitystd_result = Searchable(id=self.count, metric_identifier=communitystd_identifier, metric_name=communitystd_name)
+        communitystd_sc = int(FAIRCheck.METRICS.get(communitystd_identifier).get('total_score'))
+        communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
+
+        standards_detected = []
+        if self.community_standards:
+            for s in self.community_standards:
+                standard_found = self.lookup_metadatastandard_by_name(s)
+                subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                if subject and all(elem == "Multidisciplinary" for elem in subject):
+                    self.logger.info('FsF-R1.3-01M : Skipping multi-disciplinary standard - {}'.format(s))
+                else:
+                    out = CommunityEndorsedStandardOutputInner()
+                    out.metadata_standard = s
+                    out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                    #TODO: add standard links
+                    standards_detected.append(out)
+        #else: #TODO
+            # url schema uris defined in oai-pmh
+
+        if standards_detected:
+            communitystd_score.earned = communitystd_sc
+            communitystd_result.test_status = 'pass'
+        else:
+            self.logger.warning('FsF-R1.3-01M : No community standard found')
+
+        communitystd_result.score = communitystd_score
+        communitystd_result.output = standards_detected
+        if self.isDebug:
+            communitystd_result.test_debug = self.msg_filter.getMessage(communitystd_identifier)
+        return communitystd_result.to_dict()
+
+    def lookup_metadatastandard_by_name(self, value):
+        #data[standard_title] = {'subject_areas': keywords, 'urls': urls}
+        # get standard name with the highest matching percentage using fuzzywuzzy
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES)
+        return highest[0]
