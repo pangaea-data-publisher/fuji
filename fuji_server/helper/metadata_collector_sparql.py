@@ -14,6 +14,6 @@ class MetaDataCollectorSparql (MetaDataCollector):
         if rdf_meta is not None:
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
-            rdf_meta.query(self.metadata_mapping.value)
-        print(rdf_meta)
+            #rdf_meta.query(self.metadata_mapping.value)
+            print(rdf_meta)
         return None
