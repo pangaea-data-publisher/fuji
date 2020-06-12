@@ -19,9 +19,8 @@ def assess_by_id(body):  # noqa: E501
         results = []
         body = Body.from_dict(connexion.request.get_json())  # noqa: E501
         identifier=body.object_identifier
-        oai_pmh = body.oaipmh_provider
         debug = body.test_debug
-        ft = FAIRCheck(uid=identifier,oai=oai_pmh,test_debug=debug)
+        ft = FAIRCheck(uid=identifier, test_debug=debug)
 
         uid_result, pid_result = ft.check_unique_persistent()
         core_metadata_result = ft.check_minimal_metatadata()
@@ -29,6 +28,7 @@ def assess_by_id(body):  # noqa: E501
         check_searchable_result = ft.check_searchable()
         license_result = ft.check_license()
         relatedresources_result = ft.check_relatedresources()
+        community_standards_result = ft.check_community_metadatastandards()
 
         results.append(uid_result)
         results.append(pid_result)
@@ -37,8 +37,7 @@ def assess_by_id(body):  # noqa: E501
         results.append(check_searchable_result)
         results.append(license_result)
         results.append(relatedresources_result)
-
-
+        results.append(community_standards_result)
 
     return results
 

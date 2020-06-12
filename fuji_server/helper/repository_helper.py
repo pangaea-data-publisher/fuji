@@ -9,6 +9,7 @@ class RepositoryHelper:
 
     DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
     ns = {"r3d": "http://www.re3data.org/schema/2-2"}
+    RE3DATA_APITYPES =['OAI-PMH','SOAP','SPARQL','SWORD','OpenDAP']
 
     def __init__(self, client, pidscheme):
         self.client_id = client
@@ -30,7 +31,7 @@ class RepositoryHelper:
                 query_url = Preprocessor.RE3DATA_API + '?query=' + short_re3doi  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
-                xml = q.content_negotiate('RE3DATA')
+                xml = q.content_negotiate(metric_id='RE3DATA')
                 root = etree.fromstring(xml.content)
                 #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
                 re3link = root.xpath('//link')[0].attrib['href']
@@ -39,7 +40,7 @@ class RepositoryHelper:
                     # query reposiroty metadata
                     q2 = RequestHelper(url=re3link)
                     q2.setAcceptType(AcceptTypes.xml)
-                    self.re3metadata_raw = q2.content_negotiate('RE3DATA').content
+                    self.re3metadata_raw = q2.content_negotiate(metric_id='RE3DATA').content
                     self.parseRepositoryMetadata()
             else:
                 self.logger.info('No DOI of client id is available from datacite api')
@@ -56,7 +57,9 @@ class RepositoryHelper:
             self.repository_url = url[0].text
         apis = root.xpath('//r3d:api', namespaces=RepositoryHelper.ns)
         for a in apis:
-            self.repo_apis[a.attrib['apiType']] = a.text
+            apiType = a.attrib['apiType']
+            if apiType in RepositoryHelper.RE3DATA_APITYPES:
+                self.repo_apis[a.attrib['apiType']] = a.text
         standards = root.xpath('//r3d:metadataStandard/r3d:metadataStandardName', namespaces=RepositoryHelper.ns)
         self.repo_standards = [s.text for s in standards]
 

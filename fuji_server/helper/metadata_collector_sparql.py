@@ -28,6 +28,7 @@ class MetaDataCollectorSparql (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
+
             if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in dict(list(rdf_response.namespaces())).values():
                 self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
                 rdf_metadata = self.get_dcat_metadata(rdf_response)
@@ -92,3 +93,6 @@ class MetaDataCollectorSparql (MetaDataCollector):
             dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
             #TODO: add provenance metadata retrieval
         return dcat_metadata
+            #rdf_meta.query(self.metadata_mapping.value)
+            #print(rdf_meta)
+        #return None

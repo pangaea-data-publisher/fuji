@@ -14,29 +14,24 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, oaipmh_provider: str=None, test_debug: bool=False):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
         :type object_identifier: str
-        :param oaipmh_provider: The oaipmh_provider of this Body.  # noqa: E501
-        :type oaipmh_provider: str
         :param test_debug: The test_debug of this Body.  # noqa: E501
         :type test_debug: bool
         """
         self.swagger_types = {
             'object_identifier': str,
-            'oaipmh_provider': str,
             'test_debug': bool
         }
 
         self.attribute_map = {
             'object_identifier': 'object_identifier',
-            'oaipmh_provider': 'oaipmh_provider',
             'test_debug': 'test_debug'
         }
         self._object_identifier = object_identifier
-        self._oaipmh_provider = oaipmh_provider
         self._test_debug = test_debug
 
     @classmethod
@@ -74,29 +69,6 @@ class Body(Model):
             raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
 
         self._object_identifier = object_identifier
-
-    @property
-    def oaipmh_provider(self) -> str:
-        """Gets the oaipmh_provider of this Body.
-
-        The endpoint of oai-pmh provider  # noqa: E501
-
-        :return: The oaipmh_provider of this Body.
-        :rtype: str
-        """
-        return self._oaipmh_provider
-
-    @oaipmh_provider.setter
-    def oaipmh_provider(self, oaipmh_provider: str):
-        """Sets the oaipmh_provider of this Body.
-
-        The endpoint of oai-pmh provider  # noqa: E501
-
-        :param oaipmh_provider: The oaipmh_provider of this Body.
-        :type oaipmh_provider: str
-        """
-
-        self._oaipmh_provider = oaipmh_provider
 
     @property
     def test_debug(self) -> bool:
