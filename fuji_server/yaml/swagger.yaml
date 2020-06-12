@@ -41,7 +41,6 @@ paths:
               $ref: '#/components/schemas/body'
             example:
               object_identifier: https://doi.org/10.1594/PANGAEA.902845
-              oaipmh_provider: http://ws.pangaea.de/oai/provider
               test_debug: true
       responses:
         "200":
@@ -103,6 +102,7 @@ components:
         - $ref: '#/components/schemas/RelatedResource'
         - $ref: '#/components/schemas/License'
         - $ref: '#/components/schemas/DataAccessLevel'
+        - $ref: '#/components/schemas/CommunityEndorsedStandard'
         - $ref: '#/components/schemas/DataFileFormat'
     FAIRResultCommon:
       required:
@@ -199,6 +199,15 @@ components:
         properties:
           output:
             $ref: '#/components/schemas/RelatedResource_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    CommunityEndorsedStandard:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/CommunityEndorsedStandard_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     DataFileFormat:
@@ -335,6 +344,10 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/DataFileFormat_output_inner'
+    CommunityEndorsedStandard_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/CommunityEndorsedStandard_output_inner'
     Metrics:
       type: object
       properties:
@@ -347,17 +360,17 @@ components:
       example:
         total: 0
         metrics:
-          date_updated: {}
+          date_updated: 2020-02-29
           metric_name: Globally unique identifier
           fair_principle: F1
-          date_created: {}
+          date_created: 2020-02-29
           description: The data is assigned with a globally unique identifier.
           evaluation_mechanism: Identifier is considered unique if its scheme is successfully
             validated through https://pythonhosted.org/IDUtils/. Supported schemes
             are DOI, Handle, EAN8, ......
           total_score: 1
           created_by: FAIRsFAIR
-          version: 1
+          version: 0.2
           metric_identifier: FsF-F1-01D
     Metric:
       type: object
@@ -398,10 +411,6 @@ components:
         object_identifier:
           type: string
           description: The full identifier of data object that needs to be evaluated
-        oaipmh_provider:
-          type: string
-          description: The endpoint of oai-pmh provider
-          format: uri
         test_debug:
           type: boolean
           description: Indicate if the detailed evaluation procedure of the metrics
@@ -432,6 +441,15 @@ components:
           type: string
         relation_type:
           type: string
+    CommunityEndorsedStandard_output_inner:
+      type: object
+      properties:
+        metadata_standard:
+          type: string
+        subject_areas:
+          type: array
+          items:
+            type: string
     DataFileFormat_output_inner:
       type: object
       properties:

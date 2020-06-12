@@ -10,7 +10,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-F1-02D
@@ -22,7 +22,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-F2-01M
@@ -34,7 +34,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 2
   passed: false
 
@@ -47,7 +47,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-F4-01M
@@ -59,7 +59,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 3
 
 - metric_identifier: FsF-A1-01M
@@ -71,7 +71,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-I1-01M
@@ -83,7 +83,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 2
 
 - metric_identifier: FsF-I3-01M
@@ -95,7 +95,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-R1.1-01M
@@ -107,7 +107,19 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
+  total_score: 1
+
+- metric_identifier: FsF-R1.3-01M
+  metric_name: Community-Endorsed Metadata
+  description: In addition to core metadata required to support data finding covered under metric FsF-F2-01M, metadata to support data reusability should be made available following community-endorsed metadata standards. Community metadata standards may exhibit different levels of readiness. Some communities have well-established metadata standards (e.g., geospatial - ISO19115, biodiversity - DarwinCore, ABCD, EML, social science - DDI, astronomy - International Virtual Observatory Alliance Technical Specifications). In contrast, others, including new domains, may have limited standards or standards that are under development (e.g., engineering and linguistics). The use of community-endorsed metadata standards is usually encouraged and supported by domain and discipline-specific repositories.
+  fair_principle: R1.3
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 0.2
   total_score: 1
 
 - metric_identifier: FsF-R1.3-02D
@@ -119,5 +131,5 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-02-29
   date_updated: 2020-02-29
-  version: 1.0
+  version: 0.2
   total_score: 1
