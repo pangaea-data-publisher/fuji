@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import mimetypes
 import re
 import urllib
 import urllib.request as urllib
@@ -43,6 +44,7 @@ class FAIRCheck:
         self.metadata_sources = []
         self.isDebug = test_debug
         self.metadata_merged = {}
+        self.content_identifier=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         if self.isDebug:
             self.msg_filter = MessageFilter()
@@ -223,14 +225,15 @@ class FAIRCheck:
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # Use links to find domains specific metadata
         datalinks = []
-        dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
-        links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
-        for l in links:
-            href=l.attrib.get('href')
-            #handle relative paths
-            if href.startswith('/'):
-                href=self.landing_origin+href
-            datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
+        if isinstance(self.landing_html, str):
+            dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
+            links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
+            for l in links:
+                href=l.attrib.get('href')
+                #handle relative paths
+                if href.startswith('/'):
+                    href=self.landing_origin+href
+                datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
 
     def retrieve_metadata_external(self):
@@ -258,17 +261,18 @@ class FAIRCheck:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                 self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                 found_metadata_link=True
-                dcat_collector = MetaDataCollectorSparql(loggerinst=self.logger,
+                rdf_collector = MetaDataCollectorSparql(loggerinst=self.logger,
                                                            target_url=metadata_link['url'])
                 break
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
-            dcat_collector = MetaDataCollectorSparql( loggerinst=self.logger,
+            rdf_collector = MetaDataCollectorSparql( loggerinst=self.logger,
                                                            target_url=self.landing_url)
 
-        if dcat_collector is not None:
-            source_dcat, dcat_dict =dcat_collector.parse_metadata()
+        if rdf_collector is not None:
+            source_dcat, dcat_dict =rdf_collector.parse_metadata()
+            #TODO: change dcat to rdf it's more generic now..
             if dcat_dict:
                 not_null_dcat = [k for k, v in dcat_dict.items() if v is not None]
                 # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
@@ -362,7 +366,19 @@ class FAIRCheck:
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
                     try:
-                        urllib.urlopen(content_link.get('url'))  # only check the status, do not download the content
+                        # only check the status, do not download the content
+                        response=urllib.urlopen(content_link.get('url'))
+                        content_link['header_content_type']=response.getheader('Content-Type')
+                        content_link['header_content_length'] = response.getheader('Content-Length')
+                        '''
+                        if content_link['header_content_type']!= content_link.get('type'):
+                            print(content_link.get('type'))
+                            content_link['type']=content_link['header_content_type']
+                            print(content_link.get('type'))
+                            self.logger.warning('FsF-F3-01M : Content type given in metadata differs from Header response')
+                            #Accept-Ranges
+                        '''
+                        #will pass even if the url cannot be accessed which is OK
                         did_result.test_status = "pass"
                         did_score.earned=1
                     except urllib.HTTPError as e:
@@ -371,6 +387,7 @@ class FAIRCheck:
                     except urllib.URLError as e:
                         self.logger.exception(e.reason)
                     else:  # will be executed if there is no exception
+                        self.content_identifier.append(content_link)
                         did_output_content.content_identifier_active = True
                         content_list.append(did_output_content)
                 else:
@@ -580,3 +597,41 @@ class FAIRCheck:
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
         return searchable_result.to_dict()
+
+    def check_data_file_format(self):
+        open_formats=['image/apng','text/csv','application/json']
+        open_format_regex=r'text\/.+'
+        self.count += 1
+        data_file_format_identifier = 'FsF-R1.3-02D'
+        data_file_format_name = FAIRCheck.METRICS.get(data_file_format_identifier).get('metric_name')
+        data_file_format_sc = int(FAIRCheck.METRICS.get(data_file_format_identifier).get('total_score'))
+        data_file_format_score = FAIRResultCommonScore(total=data_file_format_sc)
+        data_file_format_result = DataFileFormat(id=self.count, metric_identifier=data_file_format_identifier, metric_name=data_file_format_name)
+        data_file_format_output = DataFileFormatOutput()
+        data_file_list=[]
+        if len(self.content_identifier) > 0:
+            self.logger.info('FsF-R1.3-02D : Found some object content identifiers')
+            for data_file in self.content_identifier:
+                mime_type=data_file.get('type')
+                if mime_type is None:
+                    # if mime type not given try to guess it based on the file name
+                    guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
+                    mime_type=guessed_mime_type[0]
+                if mime_type is not None:
+                    data_file_output = DataFileFormatOutputInner()
+                    data_file_output.mime_type=mime_type
+                    data_file_output.file_uri=data_file.get('url')
+                    data_file_list.append(data_file_output)
+                    if re.search(open_format_regex,mime_type):
+                        data_file_output.is_open_format=True
+                    #if mime_type in open_formats:
+
+        else:
+            data_file_format_result.test_status='fail'
+        data_file_format_output=data_file_list
+        data_file_format_result.output = data_file_format_output
+        if self.isDebug:
+            data_file_format_result.test_debug = self.msg_filter.getMessage(data_file_format_identifier)
+
+        return data_file_format_result.to_dict()
+
