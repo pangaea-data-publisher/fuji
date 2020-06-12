@@ -5,6 +5,9 @@ from __future__ import absolute_import
 # import models into model package
 from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsItems
 from fuji_server.models.body import Body
+from fuji_server.models.community_endorsed_standard import CommunityEndorsedStandard
+from fuji_server.models.community_endorsed_standard_output import CommunityEndorsedStandardOutput
+from fuji_server.models.community_endorsed_standard_output_inner import CommunityEndorsedStandardOutputInner
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
 from fuji_server.models.data_access_level import DataAccessLevel
