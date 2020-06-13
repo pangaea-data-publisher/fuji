@@ -82,7 +82,9 @@ class RequestHelper:
 
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            if self.http_response.text.find('<rdf:RDF'):
+                                            #if self.http_response.text.find('<rdf:RDF'):
+                                            # boolean value (-1) = true
+                                            if self.http_response.text.find('<rdf:RDF') >= 0:
                                                 self.logger.info('%s : Found RDF document!' % metric_id)
                                                 self.parse_response = self.parse_rdf(self.http_response.text,at.name)
                                             else:
