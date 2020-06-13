@@ -31,16 +31,19 @@ class RepositoryHelper:
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
                 xml = q.content_negotiate('RE3DATA')
-                root = etree.fromstring(xml.content)
-                #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
-                re3link = root.xpath('//link')[0].attrib['href']
-                if re3link is not None:
-                    self.logger.info('Found match re3data metadata record')
-                    # query reposiroty metadata
-                    q2 = RequestHelper(url=re3link)
-                    q2.setAcceptType(AcceptTypes.xml)
-                    self.re3metadata_raw = q2.content_negotiate('RE3DATA').content
-                    self.parseRepositoryMetadata()
+                if xml.content:
+                    root = etree.fromstring(xml.content)
+                    #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
+                    re3link = root.xpath('//link')[0].attrib['href']
+                    if re3link is not None:
+                        self.logger.info('Found match re3data metadata record')
+                        # query reposiroty metadata
+                        q2 = RequestHelper(url=re3link)
+                        q2.setAcceptType(AcceptTypes.xml)
+                        self.re3metadata_raw = q2.content_negotiate('RE3DATA').content
+                        self.parseRepositoryMetadata()
+                else:
+                    self.logger.info('No DOI metadata available at re3data')
             else:
                 self.logger.info('No DOI of client id is available from datacite api')
 
