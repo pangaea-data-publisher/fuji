@@ -14,24 +14,29 @@ class CommunityEndorsedStandardOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metadata_standard: str=None, subject_areas: List[str]=None):  # noqa: E501
+    def __init__(self, metadata_standard: str=None, urls: List[str]=None, subject_areas: List[str]=None):  # noqa: E501
         """CommunityEndorsedStandardOutputInner - a model defined in Swagger
 
         :param metadata_standard: The metadata_standard of this CommunityEndorsedStandardOutputInner.  # noqa: E501
         :type metadata_standard: str
+        :param urls: The urls of this CommunityEndorsedStandardOutputInner.  # noqa: E501
+        :type urls: List[str]
         :param subject_areas: The subject_areas of this CommunityEndorsedStandardOutputInner.  # noqa: E501
         :type subject_areas: List[str]
         """
         self.swagger_types = {
             'metadata_standard': str,
+            'urls': List[str],
             'subject_areas': List[str]
         }
 
         self.attribute_map = {
             'metadata_standard': 'metadata_standard',
+            'urls': 'urls',
             'subject_areas': 'subject_areas'
         }
         self._metadata_standard = metadata_standard
+        self._urls = urls
         self._subject_areas = subject_areas
 
     @classmethod
@@ -65,6 +70,27 @@ class CommunityEndorsedStandardOutputInner(Model):
         """
 
         self._metadata_standard = metadata_standard
+
+    @property
+    def urls(self) -> List[str]:
+        """Gets the urls of this CommunityEndorsedStandardOutputInner.
+
+
+        :return: The urls of this CommunityEndorsedStandardOutputInner.
+        :rtype: List[str]
+        """
+        return self._urls
+
+    @urls.setter
+    def urls(self, urls: List[str]):
+        """Sets the urls of this CommunityEndorsedStandardOutputInner.
+
+
+        :param urls: The urls of this CommunityEndorsedStandardOutputInner.
+        :type urls: List[str]
+        """
+
+        self._urls = urls
 
     @property
     def subject_areas(self) -> List[str]:
