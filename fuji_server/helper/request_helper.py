@@ -97,7 +97,6 @@ class RequestHelper:
                                             self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
                                             break
 
-
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                                 break
                # else:

@@ -125,13 +125,20 @@ class Preprocessor(object):
                             r2 = requests.get(catalog_url+str(s['id']), headers=cls.header)
                             if r2.status_code == 200:
                                 std = r2.json()
+                                urls = None
                                 keywords = std.get('keywords')
                                 standard_title = std.get('title')
-                                if keywords:
-                                    for k in keywords:
-                                        data.setdefault(k.lower(), []).append(standard_title)
-                                else:
-                                    data.setdefault('other', []).append(standard_title)
+                                locations = std.get('locations')
+                                if locations:
+                                    urls = [d['url'] for d in std.get('locations') if 'url' in d]
+                                #if keywords:
+                                    #for k in keywords:
+                                        #data.setdefault(k.lower(), []).append(standard_title)
+                                #else:
+                                    #data.setdefault('other', []).append(standard_title)
+                                if standard_title:
+                                    data[standard_title] = {'subject_areas': keywords, 'urls': urls}
+
                         with open(std_path, 'w') as f:
                             json.dump(data, f)
                 except json.decoder.JSONDecodeError as e1:
@@ -176,5 +183,5 @@ class Preprocessor(object):
         return new_dict
 
     @classmethod
-    def get_metadata_standards(cls):
+    def get_metadata_standards(cls) -> object:
         return cls.metadata_standards
