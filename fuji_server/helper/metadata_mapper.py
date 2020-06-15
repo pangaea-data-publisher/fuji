@@ -32,7 +32,7 @@ class Mapper(Enum):
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
               'publisher': 'publisher', 'publication_date': 'date', 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type',
-              'license': 'license', 'data_file_format': 'format', 'access_level':'rights'}
+              'license': 'license', 'data_file_format': 'format', 'access_level':'rights','related_resources':['relation','source']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
