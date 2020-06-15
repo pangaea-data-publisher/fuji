@@ -1,3 +1,4 @@
+import ast
 import re
 
 from fuji_server.helper.metadata_mapper import Mapper
@@ -18,19 +19,35 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                 # get core metadat from dublin core meta tags:
                 # < meta name = "DCTERMS.element" content = "Value" / >
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)
-                exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)\"(.*?)content\s*=\s*\"(.*?)\"'
+                exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
                 meta_dc_matches = re.findall(exp, self.source_metadata)
                 if len(meta_dc_matches) > 0:
                     source = self.getEnumSourceNames().DUBLINCORE.value
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
                         k = dc_meta[2]
-                        v = dc_meta[4]
+                        #type
+                        t = dc_meta[3]
+                        v = dc_meta[5]
                         # if self.isDebug:
                         #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
-                        if k in self.metadata_mapping.value.values():
+                        dcterms =[]
+                        #flatten the dcterms list:
+                        for dcitems in self.metadata_mapping.value.values():
+                            if isinstance(dcitems,list):
+                                dcterms.extend(dcitems)
+                            else:
+                                dcterms.append(dcitems)
+                        if k in dcterms:
                             self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
-                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if value == k][0]
+                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value][0]
+                            if elem == 'related_resources':
+                                # tuple of type and relation
+                                if k == 'source':
+                                    t = 'IsBasedOn'
+                                if t in [None, '']:
+                                    t = 'RelatedTo'
+                                v = (v, t)
                             if elem in dc_core_metadata:
                                 if isinstance(dc_core_metadata[elem], list):
                                     dc_core_metadata[elem].append(v)
