@@ -61,6 +61,7 @@ class MetaDataCollectorSparql (MetaDataCollector):
         return meta
 
     def get_ontology_metadata(self, graph):
+        ont_metadata=dict()
         OWL=Namespace("http://www.w3.org/2002/07/owl#")
         SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
         ontologies=list(graph[: RDF.type: OWL.Ontology])
@@ -77,6 +78,7 @@ class MetaDataCollectorSparql (MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
+        dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         datasets = list(graph[: RDF.type: DCAT.Dataset])
         dcat_metadata = self.get_metadata(graph, datasets[0],type='Dataset')
