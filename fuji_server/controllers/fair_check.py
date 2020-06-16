@@ -23,8 +23,11 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+#from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
+from fuji_server.models.data_provenance import DataProvenance
+from fuji_server.models.data_provenance_output import DataProvenanceOutput
 
 
 class FAIRCheck:
@@ -166,6 +169,12 @@ class FAIRCheck:
 
         if self.reference_elements:  # this will be always true as we need datacite client id
             self.retrieve_metadata_external()
+
+        # ========= clean merged metadata, delete all entries which are None or ''
+        for mk, mv in list(self.metadata_merged.items()):
+            if mv == '' or mv is None:
+                del self.metadata_merged[mk]
+
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
             self.metadata_merged.get('object_type')))
 
@@ -240,6 +249,7 @@ class FAIRCheck:
             links = self.get_html_typed_links(rel='item')
             if links:
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
+
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -563,7 +573,6 @@ class FAIRCheck:
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
         related_output = RelatedResourceOutputInner()
 
-        # TODO (important) extend mapping to capture relations (linked types, dc,schema.org)
         if self.metadata_merged.get('related_resources'):
             related_output = self.metadata_merged['related_resources']
             related_result.test_status = 'pass'
@@ -680,7 +689,7 @@ class FAIRCheck:
                         out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
                         out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                         standards_detected.append(out)
-        
+
         if not standards_detected and self.community_standards_uri:
         #use schems declared in oai-pmh end point instead
             self.logger.info(
@@ -711,3 +720,59 @@ class FAIRCheck:
             found = highest[0]
         return found
 
+    def check_data_provenance(self):
+        data_provenance_identifier = 'FsF-R1.2-01M'
+        data_provenance_name = FAIRCheck.METRICS.get(data_provenance_identifier).get('metric_name')
+        data_provenance_sc = int(FAIRCheck.METRICS.get(data_provenance_identifier).get('total_score'))
+        data_provenance_score = FAIRResultCommonScore(total=data_provenance_sc)
+        data_provenance_result = DataProvenance(id=self.count, metric_identifier=data_provenance_identifier,
+                                                 metric_name=data_provenance_name)
+        data_provenance_output = DataProvenanceOutput()
+        data_provenance_score=0
+        has_creation_provenance = False
+        provenance_elements = []
+        provenance_status = 'fail'
+
+        if 'title' in self.metadata_merged:
+            provenance_elements.append('title')
+            if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
+                provenance_elements.append('creation_date')
+                if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
+                    provenance_elements.append('creator or contributor')
+                provenance_status = 'pass'
+                data_provenance_score=data_provenance_score+0.5
+                data_provenance_output.creation_provenance_included=True
+
+        modified_indicators=['modified_date','version']
+        modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
+        if len(modified_intersect)>0:
+            provenance_elements.extend(modified_intersect)
+            #provenance_status = 'pass'
+            data_provenance_score = data_provenance_score+0.5
+            data_provenance_output.modification_provenance_included = True
+
+        #TODO: add method etc..
+        if 'measured_variable' in self.metadata_merged:
+            provenance_elements.append('measured_variable')
+            data_provenance_score = data_provenance_score + 0.5
+            data_provenance_output.processes_provenance_included = True
+        #TODO: check if this list is complete
+        process_indicators=['isVersionOf, isBasedOn, isFormatOf','IsNewVersionOf','IsVariantFormOf','IsDerivedFrom','Obsoletes']
+        if 'related_resources' in self.metadata_merged:
+            has_relations=False
+            for rr in self.metadata_merged['related_resources']:
+                if rr['relation_type'] in process_indicators:
+                    has_relations=True
+                    data_provenance_output.provenance_relations_included = True
+                    provenance_elements.append('relation: '+str(rr['relation_type']))
+            if has_relations:
+                data_provenance_score = data_provenance_score + 0.5
+
+        #use of sosa.vocabulary is indicator for method or instruments or variables
+
+        data_provenance_output.provenance_metadata_found=provenance_elements
+        data_provenance_result.test_status=provenance_status
+        data_provenance_result.score = data_provenance_score
+        data_provenance_result.output = data_provenance_output
+
+        return data_provenance_result.to_dict()

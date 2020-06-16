@@ -32,10 +32,12 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
-            check_context_type = {"@context": ["http://schema.org/","http://schema.org"] , "@type": ["Dataset", "Collection"] }
+            # TODO replace check_context_type list context comparison by regex
+            check_context_type = {"@context": ["http://schema.org/","http://schema.org",'https://schema.org/','https://schema.org'] , "@type": ["Dataset", "Collection"] }
             try:
                 if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type[
                     "@type"]:
+
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     if jsnld_metadata['creator'] is None:
                         first = jsnld_metadata['creator_first']
@@ -46,13 +48,9 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                                 jsnld_metadata['creator'] = names
                         else:
                             jsnld_metadata['creator'] = [first + " " + last]
-                    #contents = jsnld_metadata['object_content_identifier']
-                   # if contents:
-                    #    #if isinstance(contents, str):
-                     #   for content in contents:
-                      #      if content['url']:
-                       #         jsnld_metadata['object_content_identifier'].append({'url':content['url']})
+
                 self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
             except Exception as err:
                 self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+
         return self.source_name, jsnld_metadata

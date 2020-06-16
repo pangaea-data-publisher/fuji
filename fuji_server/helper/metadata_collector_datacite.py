@@ -45,12 +45,13 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                         for r in dcite_metadata['related_resources']:
                             temp_rels.append(dict(related_resource=r.get('relatedIdentifier'), relation_type=r.get('relationType')))
                         dcite_metadata['related_resources'] = temp_rels
-
+                    #print(dcite_metadata)
                     # convert all values (list type) into string except 'creator','license','related_resources'
                     for key, value in dcite_metadata.items():
                         if key not in self.exclude_conversion and isinstance(value, list):
                             flat = ', '.join(map(str, value))
                             dcite_metadata[key] = flat
+                #print(dcite_metadata)
             except Exception as e:
                 self.logger.exception('Failed to extract Datacite Json - {}'.format(e))
         return source_name, dcite_metadata

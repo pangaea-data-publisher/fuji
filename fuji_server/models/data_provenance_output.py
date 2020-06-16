@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server import util
+from fuji_server.models.base_model_ import Model
+from fuji_server import util
 
 
 class DataProvenanceOutput(Model):
@@ -14,7 +14,7 @@ class DataProvenanceOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, creation_provenance_included: bool=None, modification_provenance_included: bool=None, processes_provenance_included: bool=None, provenance_relations_included: bool=None, structured_provenance_available: bool=None, provenance_metadata_found: List[str]=None):  # noqa: E501
+    def __init__(self, creation_provenance_included: bool=False, modification_provenance_included: bool=False, processes_provenance_included: bool=False, provenance_relations_included: bool=False, structured_provenance_available: bool=False, provenance_metadata_found: List[str]=None):  # noqa: E501
         """DataProvenanceOutput - a model defined in Swagger
 
         :param creation_provenance_included: The creation_provenance_included of this DataProvenanceOutput.  # noqa: E501
