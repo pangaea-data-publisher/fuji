@@ -13,7 +13,7 @@ class Mapper(Enum):
     # TODO include data types of all reference elements
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'embargoe', 'access_info', 'policy','related_resources','provenance_general',
-                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'object_type', 'data_size','datacite_client']
+                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'object_type', 'data_size','datacite_client', 'modified_date']
 
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
@@ -31,8 +31,9 @@ class Mapper(Enum):
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
               'publisher': 'publisher', 'publication_date': 'date', 'summary': 'abstract',
-              'keywords': 'subject', 'object_type': 'type',
-              'license': 'license', 'data_file_format': 'format', 'access_level':'rights','related_resources':['relation','source']}
+              'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
+              'license': 'license', 'data_file_format': 'format', 'access_level':'rights',
+                'related_resources':['relation','source']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
@@ -41,7 +42,9 @@ class Mapper(Enum):
 
     # Schema.org
     ## A license document that applies to this content, typically indicated by URL.
-    SCHEMAORG_MAPPING = '{title: name, object_type: "@type", date: datePublished."@value" ||datePublished , ' \
+    SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
+                            'publication_date: datePublished."@value" || datePublished , '\
+                            'modified_date: dateModified."@value" ||dateModified, ' \
                            'creator: creator[*].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
@@ -49,14 +52,17 @@ class Mapper(Enum):
                            'summary: description, keywords: keywords, publication_date: datePublished, data_file_format: encodingFormat,' \
                            'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
                             'access_level:  (isAccessibleForFree || free), '\
+                            'measured_variable: variableMeasured[*].name || variableMeasured , '\
+                            'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'},{related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
 
-    DATACITE_JSON_MAPPING = '{ object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
+    DATACITE_JSON_MAPPING = '{object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
                         'creator_last: creators[*].familyName, publisher: publisher, ' \
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date,' \
                         'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
-                        'related_resources: relatedIdentifiers[*], datacite_client: clientId ' \
+                        'related_resources: relatedIdentifiers[*], datacite_client: clientId, ' \
+                        'modified_date: dates[?dateType == \'Updated\'].date, '\
                         'object_content_identifier:  {url: contentUrl} , access_level: rights}'
-                        #'related_resources: relatedIdentifiers[*].[relationType, relatedIdentifier]}'
+                        #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
