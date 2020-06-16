@@ -23,8 +23,10 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+#from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
-from fuji_server.models import CoreMetadataOutput
+from fuji_server.models.data_provenance import DataProvenance
+from fuji_server.models.data_provenance_output import DataProvenanceOutput
 
 
 class FAIRCheck:
@@ -166,6 +168,12 @@ class FAIRCheck:
 
         if self.reference_elements:  # this will be always true as we need datacite client id
             self.retrieve_metadata_external()
+
+        # ========= clean merged metadata, delete all entries which are None or ''
+        for mk, mv in list(self.metadata_merged.items()):
+            if mv == '' or mv is None:
+                del self.metadata_merged[mk]
+
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
             self.metadata_merged.get('object_type')))
 
@@ -238,6 +246,7 @@ class FAIRCheck:
             links = self.get_html_typed_links(rel='item')
             if links:
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
+
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -698,3 +707,37 @@ class FAIRCheck:
         highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES)
         return highest[0]
 
+    def check_data_provenance(self):
+        data_provenance_identifier = 'FsF-R1.2-01M'
+        data_provenance_name = FAIRCheck.METRICS.get(data_provenance_identifier).get('metric_name')
+        data_provenance_sc = int(FAIRCheck.METRICS.get(data_provenance_identifier).get('total_score'))
+        data_provenance_score = FAIRResultCommonScore(total=data_provenance_sc)
+        data_provenance_result = DataProvenance(id=self.count, metric_identifier=data_provenance_identifier,
+                                                 metric_name=data_provenance_name)
+        data_provenance_output = DataProvenanceOutput()
+        data_provenance_score=0
+        has_creation_provenance = False
+        provenance_elements = []
+        provenance_status = 'fail'
+
+        if 'title' in self.metadata_merged:
+            provenance_elements.append('title')
+            if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
+                provenance_elements.append('creation_date')
+                if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
+                    provenance_elements.append('creator or contributor')
+                provenance_status = 'pass'
+                data_provenance_score=data_provenance_score+0.5
+                data_provenance_output.creation_provenance_included=True
+
+        if 'version' in self.metadata_merged or 'modified_date' in self.metadata_merged:
+            provenance_elements.append('modified_date or version')
+            #provenance_status = 'pass'
+            data_provenance_score = data_provenance_score+0.5
+            data_provenance_output.modification_provenance_included = True
+        data_provenance_output.provenance_metadata_found=provenance_elements
+        data_provenance_result.test_status=provenance_status
+        data_provenance_result.score = data_provenance_score
+        data_provenance_result.output = data_provenance_output
+
+        return data_provenance_result.to_dict()
