@@ -47,7 +47,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     t = 'IsBasedOn'
                                 if t in [None, '']:
                                     t = 'RelatedTo'
-                                v = (v, t)
+                                v = dict(related_resource=v, relation_type=t)
                             if elem in dc_core_metadata:
                                 if isinstance(dc_core_metadata[elem], list):
                                     dc_core_metadata[elem].append(v)
