@@ -1,4 +1,5 @@
 import logging
+import sys
 from enum import Enum
 import extruct
 import rdflib
@@ -82,8 +83,8 @@ class RequestHelper:
 
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            if self.http_response.text.find('<rdf:RDF'):
-                                                self.logger.info('%s : Found RDF document!' % metric_id)
+                                            if self.http_response.text.find('<rdf:RDF') > -1:
+                                                self.logger.info('%s : Found RDF document by tag!' % metric_id)
                                                 self.parse_response = self.parse_rdf(self.http_response.text,at.name)
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)
@@ -127,8 +128,9 @@ class RequestHelper:
             graph = rdflib.Graph()
             graph.parse(data=response, format=type)
             #queries have to be done in specific metadata collector classes
-        except rdflib.exceptions.Error as error:
-            self.logger.warning('%s : Failed to parse RDF %s' % (self.metric_id, self.request_url))
+        except:
+            error = sys.exc_info()[0]
+            self.logger.warning('%s : Failed to parse RDF %s %s' % (self.metric_id, self.request_url, str(error)))
             self.logger.debug(error)
         return graph
 
