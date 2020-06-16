@@ -392,9 +392,7 @@ components:
           fair_principle: F1
           date_created: {}
           description: The data is assigned with a globally unique identifier.
-          evaluation_mechanism: Identifier is considered unique if its scheme is successfully
-            validated through https://pythonhosted.org/IDUtils/. Supported schemes
-            are DOI, Handle, EAN8, ......
+          evaluation_mechanism: Identifier is considered unique if its scheme is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are DOI, Handle, EAN8, ......
           total_score: 1
           created_by: FAIRsFAIR
           version: 0.2
@@ -473,6 +471,10 @@ components:
       properties:
         metadata_standard:
           type: string
+        urls:
+          type: array
+          items:
+            type: string
         subject_areas:
           type: array
           items:
@@ -505,5 +507,4 @@ components:
     basicAuth:
       type: http
       scheme: basic
-      x-basicInfoFunc: swagger_server.controllers.authorization_controller.check_basicAuth
-
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
