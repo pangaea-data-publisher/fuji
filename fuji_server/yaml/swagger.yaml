@@ -104,6 +104,7 @@ components:
         - $ref: '#/components/schemas/DataAccessLevel'
         - $ref: '#/components/schemas/CommunityEndorsedStandard'
         - $ref: '#/components/schemas/DataFileFormat'
+        - $ref: '#/components/schemas/DataProvenance'
     FAIRResultCommon:
       required:
       - id
@@ -217,6 +218,15 @@ components:
         properties:
           output:
             $ref: '#/components/schemas/DataFileFormat_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    DataProvenance:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/DataProvenance_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
@@ -348,6 +358,23 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CommunityEndorsedStandard_output_inner'
+    DataProvenance_output:
+      type: object
+      properties:
+        creation_provenance_included:
+          type: boolean
+        modification_provenance_included:
+          type: boolean
+        processes_provenance_included:
+          type: boolean
+        provenance_relations_included:
+          type: boolean
+        structured_provenance_available:
+          type: boolean
+        provenance_metadata_found:
+          type: array
+          items:
+            type: string
     Metrics:
       type: object
       properties:
@@ -360,10 +387,10 @@ components:
       example:
         total: 0
         metrics:
-          date_updated: 2020-02-29
+          date_updated: {}
           metric_name: Globally unique identifier
           fair_principle: F1
-          date_created: 2020-02-29
+          date_created: {}
           description: The data is assigned with a globally unique identifier.
           evaluation_mechanism: Identifier is considered unique if its scheme is successfully
             validated through https://pythonhosted.org/IDUtils/. Supported schemes
@@ -478,5 +505,5 @@ components:
     basicAuth:
       type: http
       scheme: basic
-      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
+      x-basicInfoFunc: swagger_server.controllers.authorization_controller.check_basicAuth
 
