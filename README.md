@@ -1,4 +1,4 @@
-# FUJI (FAIRsFAIR Data Assessment Service)
+# F-UJI (FAIRsFAIR Data Assessment Service)
 Developers: Anusuriya Devaraju, Robert Huber
 
 ## Overview
