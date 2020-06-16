@@ -23,6 +23,7 @@ class OAIMetadataHarvester:
     def getMetadataStandards(self):
         filter =['datacite.org','openarchives.org','purl.org/dc/'] # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
+        self.oai_endpoint = self.oai_endpoint.split('?')[0]
         self.oai_endpoint = self.oai_endpoint.rstrip('/')
         oai_listmetadata_url = self.oai_endpoint+'?verb=ListMetadataFormats'
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
@@ -30,12 +31,15 @@ class OAIMetadataHarvester:
         xml = requestHelper.content_negotiate(self.metric_id)
         root = etree.fromstring(xml.content)
         metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataHarvester.oai_namespaces)
-        schemas = []
+        schemas = {}
         for node in metadata_nodes:
             ele = etree.XPathEvaluator(node, namespaces=OAIMetadataHarvester.oai_namespaces).evaluate
             metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
             metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+            # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
             if not any(s in metadata_schema for s in filter):
-                schemas.append(metadata_schema)
+                schemas[metadata_prefix]= [metadata_schema]
+            else:
+                self.logger.info('FsF-R1.3-01M : Skipping non-disciplinary standard listed in OAIPMH - {}'.format(metadata_prefix))
         return schemas
 

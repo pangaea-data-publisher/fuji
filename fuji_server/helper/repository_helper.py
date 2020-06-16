@@ -43,7 +43,7 @@ class RepositoryHelper:
                     self.re3metadata_raw = q2.content_negotiate(metric_id='RE3DATA').content
                     self.parseRepositoryMetadata()
             else:
-                self.logger.info('No DOI of client id is available from datacite api')
+                self.logger.warning('No DOI of client id is available from datacite api')
 
     def parseRepositoryMetadata(self):
         #http://schema.re3data.org/3-0/re3data-example-V3-0.xml

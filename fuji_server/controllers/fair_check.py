@@ -6,7 +6,7 @@ import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
-from fuzzywuzzy import process
+from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
 import lxml
@@ -25,6 +25,7 @@ from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 #from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
+from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 
@@ -50,7 +51,7 @@ class FAIRCheck:
         self.metadata_merged = {}
         self.content_identifier=[]
         self.community_standards = []
-        self.community_standards_uri = []
+        self.community_standards_uri = {}
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         if self.isDebug:
             self.msg_filter = MessageFilter()
@@ -189,7 +190,9 @@ class FAIRCheck:
         self.retrieve_apis_standards()
 
     def retrieve_apis_standards(self):
+        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from R3DATA')
         client_id = self.metadata_merged.get('datacite_client')
+        self.logger.info('FsF-R1.3-01M : R3DATA/Datacite client id - {}'.format(client_id))
         if client_id and self.pid_scheme:
             repoHelper = RepositoryHelper(client_id, self.pid_scheme)
             repoHelper.lookup_re3data()
@@ -199,7 +202,7 @@ class FAIRCheck:
                 self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
             else: # fallback get standards defined in api, e.g., oai-pmh
                 self.logger.info(
-                    '{} : Use OAIPMH endpoint from R3DATA to obtain metadata standards {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+                    '{} : OAIPMH endpoint from R3DATA {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
                     self.community_standards_uri = oai_harvester.getMetadataStandards()
@@ -344,7 +347,7 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
-            metadata_status = 'little metadata'
+            metadata_status = 'no metadata' # status should follow enumeration in yaml
             meta_score.earned = 0
             test_status = 'fail'
 
@@ -673,21 +676,30 @@ class FAIRCheck:
         communitystd_sc = int(FAIRCheck.METRICS.get(communitystd_identifier).get('total_score'))
         communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
 
-        standards_detected = []
+        standards_detected: List[CommunityEndorsedStandardOutputInner] = []
         if self.community_standards:
             for s in self.community_standards:
                 standard_found = self.lookup_metadatastandard_by_name(s)
-                subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
-                if subject and all(elem == "Multidisciplinary" for elem in subject):
-                    self.logger.info('FsF-R1.3-01M : Skipping multi-disciplinary standard - {}'.format(s))
-                else:
-                    out = CommunityEndorsedStandardOutputInner()
-                    out.metadata_standard = s
-                    out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
-                    #TODO: add standard links
-                    standards_detected.append(out)
-        #else: #TODO
-            # url schema uris defined in oai-pmh
+                if standard_found:
+                    subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                    if subject and all(elem == "Multidisciplinary" for elem in subject):
+                        self.logger.info('FsF-R1.3-01M : Skipping non-disciplinary standard listed in OAIPMH - {}'.format(s))
+                    else:
+                        out = CommunityEndorsedStandardOutputInner()
+                        out.metadata_standard = s
+                        out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                        out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
+                        standards_detected.append(out)
+
+        if not standards_detected and self.community_standards_uri:
+        #use schems declared in oai-pmh end point instead
+            self.logger.info(
+                '{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
+            for k,v in self.community_standards_uri.items():
+                out = CommunityEndorsedStandardOutputInner()
+                out.metadata_standard = k
+                out.urls = v
+                standards_detected.append(out)
 
         if standards_detected:
             communitystd_score.earned = communitystd_sc
@@ -702,10 +714,12 @@ class FAIRCheck:
         return communitystd_result.to_dict()
 
     def lookup_metadatastandard_by_name(self, value):
-        #data[standard_title] = {'subject_areas': keywords, 'urls': urls}
+        found = None
         # get standard name with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES)
-        return highest[0]
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
+        if highest[1] > 80:
+            found = highest[0]
+        return found
 
     def check_data_provenance(self):
         data_provenance_identifier = 'FsF-R1.2-01M'
