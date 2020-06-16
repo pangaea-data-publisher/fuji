@@ -573,7 +573,6 @@ class FAIRCheck:
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
         related_output = RelatedResourceOutputInner()
 
-        # TODO (important) extend mapping to capture relations (linked types, dc,schema.org)
         if self.metadata_merged.get('related_resources'):
             related_output = self.metadata_merged['related_resources']
             related_result.test_status = 'pass'
@@ -744,11 +743,33 @@ class FAIRCheck:
                 data_provenance_score=data_provenance_score+0.5
                 data_provenance_output.creation_provenance_included=True
 
-        if 'version' in self.metadata_merged or 'modified_date' in self.metadata_merged:
-            provenance_elements.append('modified_date or version')
+        modified_indicators=['modified_date','version']
+        modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
+        if len(modified_intersect)>0:
+            provenance_elements.extend(modified_intersect)
             #provenance_status = 'pass'
             data_provenance_score = data_provenance_score+0.5
             data_provenance_output.modification_provenance_included = True
+
+        #TODO: add method etc..
+        if 'measured_variable' in self.metadata_merged:
+            provenance_elements.append('measured_variable')
+            data_provenance_score = data_provenance_score + 0.5
+            data_provenance_output.processes_provenance_included = True
+        #TODO: check if this list is complete
+        process_indicators=['isVersionOf, isBasedOn, isFormatOf','IsNewVersionOf','IsVariantFormOf','IsDerivedFrom','Obsoletes']
+        if 'related_resources' in self.metadata_merged:
+            has_relations=False
+            for rr in self.metadata_merged['related_resources']:
+                if rr['relation_type'] in process_indicators:
+                    has_relations=True
+                    data_provenance_output.provenance_relations_included = True
+                    provenance_elements.append('relation: '+str(rr['relation_type']))
+            if has_relations:
+                data_provenance_score = data_provenance_score + 0.5
+
+        #use of sosa.vocabulary is indicator for method or instruments or variables
+
         data_provenance_output.provenance_metadata_found=provenance_elements
         data_provenance_result.test_status=provenance_status
         data_provenance_result.score = data_provenance_score
