@@ -363,16 +363,22 @@ components:
       properties:
         creation_provenance_included:
           type: boolean
+          default: false
         modification_provenance_included:
           type: boolean
+          default: false
         processes_provenance_included:
           type: boolean
+          default: false
         provenance_relations_included:
           type: boolean
+          default: false
         structured_provenance_available:
           type: boolean
+          default: false
         provenance_metadata_found:
           type: array
+          default: false
           items:
             type: string
     Metrics:
@@ -505,5 +511,5 @@ components:
     basicAuth:
       type: http
       scheme: basic
-      x-basicInfoFunc: swagger_server.controllers.authorization_controller.check_basicAuth
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
 
