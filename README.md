@@ -1,4 +1,4 @@
-# F-UJI (FAIRsFAIR Data Assessment Service)
+# F-UJI (FAIRsFAIR Research Data Object Assessment Service)
 Developers: Anusuriya Devaraju, Robert Huber
 
 ![alt text](https://github.com/pangaea-data-publisher/fuji/blob/master/fuji_server/static/main.png?raw=true)
