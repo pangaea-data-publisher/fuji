@@ -6,6 +6,8 @@ import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
+
+import requests
 from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
@@ -374,27 +376,35 @@ class FAIRCheck:
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutput()
 
+        id_object = None
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
         self.logger.info('FsF-F3-01M : Data object identifier specified {}'.format(id_object))
-        '''
-        #This is testing the wrong thing...
+
+        score = 0
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
-            did_score.earned = did_sc
-            did_result.test_status = "pass"
+            # check resolving status
+            try:
+                request = requests.get(id_object)
+                if request.status_code == 200:
+                    self.logger.info('FsF-F3-01M : Data object identifier active (status code = 200)')
+                    score += 1
+                else:
+                    self.logger.warning("Identifier returned response code: {code}".format(code=request.status_code))
+            except ConnectionError:
+                self.logger.warning('FsF-F3-01M : Object identifier does not exist {}'.format(id_object))
         else:
-            self.logger.warning('FsF-F3-01M : Malformed Dataset Identifier in Metadata!')
-        '''
+            self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
+
         content_list = []
         if contents:
             if isinstance(contents, dict):
                 contents = [contents]
             contents = [c for c in contents if c]
-            did_result.test_status = "fail"
             for content_link in contents:
-                if content_link.get('url')!=None:
+                if content_link.get('url'):
                     self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
@@ -412,8 +422,8 @@ class FAIRCheck:
                             #Accept-Ranges
                         '''
                         #will pass even if the url cannot be accessed which is OK
-                        did_result.test_status = "pass"
-                        did_score.earned=1
+                        #did_result.test_status = "pass"
+                        #did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
                             'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
@@ -424,9 +434,17 @@ class FAIRCheck:
                         did_output_content.content_identifier_active = True
                         content_list.append(did_output_content)
                 else:
-                    self.logger.warning('FsF-F3-01M : Data (content) url is empty.')
+                    self.logger.warning('FsF-F3-01M : Data (content) url is empty - {}'.format(content_link))
+
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
+
+        if content_list:
+            score += 1
+        did_score.earned = score
+        if score > 0: # 1 or 2 assumed to be 'pass'
+            did_result.test_status = "pass"
+
         did_output.content = content_list
         did_result.output = did_output
         did_result.score = did_score
