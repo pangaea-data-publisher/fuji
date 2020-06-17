@@ -3,9 +3,11 @@ from enum import Enum
 
 class Mapper(Enum):
     ## ============================ CONFIGURATIONS ============================ ##
-    # List of PIDS
-    VALID_PIDS = ['doi', 'handle', 'ark', 'purl', 'lsid']
-
+    # List of PIDS e.g. those listed in datacite schema
+    VALID_PIDS = ['doi', 'handle', 'ark', 'purl', 'lsid','sra','biosample','ensembl','uniprot','genome']
+    #identifiers.org pattern
+    #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
+    IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
 
     # reference metadata elements (used by FUJI)
     #['creator','license','related_resources'] --> list type
