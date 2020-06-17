@@ -1,6 +1,8 @@
 # F-UJI (FAIRsFAIR Data Assessment Service)
 Developers: Anusuriya Devaraju, Robert Huber
 
+![alt text](https://github.com/pangaea-data-publisher/fuji/blob/master/fuji_server/static/main.png?raw=true)
+
 ## Overview
 F-UJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
 The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.  
