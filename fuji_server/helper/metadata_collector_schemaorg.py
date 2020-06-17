@@ -37,7 +37,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             try:
                 if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type[
                     "@type"]:
-
+                    self.namespaces.append('http://schema.org/')
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     if jsnld_metadata['creator'] is None:
                         first = jsnld_metadata['creator_first']
