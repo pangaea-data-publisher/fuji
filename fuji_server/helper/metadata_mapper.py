@@ -55,8 +55,9 @@ class Mapper(Enum):
                            'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
                             'access_level:  (isAccessibleForFree || free), '\
                             'measured_variable: variableMeasured[*].name || variableMeasured , '\
-                            'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'},{related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
+                            'related_resources: [{related_resource: isPartOf."@id" || isPartOf.url || isPartOf, relation_type: \'isPartOf\'}, {related_resource: "@reverse".isBasedOn."@id" || "@reverse".isBasedOn.url || isBasedOn , relation_type: \'isBasedOn\'}], ' \
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
+    # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
     DATACITE_JSON_MAPPING = '{object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
