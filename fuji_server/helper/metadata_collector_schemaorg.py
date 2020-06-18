@@ -48,8 +48,18 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                                 jsnld_metadata['creator'] = names
                         else:
                             jsnld_metadata['creator'] = [first + " " + last]
-
-                self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                    # filter out None values of related_resources
+                    if jsnld_metadata['related_resources']:
+                        relateds =  [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                        if relateds:
+                            jsnld_metadata['related_resources'] = relateds
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
+                                len(jsnld_metadata['related_resources']), self.source_name))
+                        else:
+                            del jsnld_metadata['related_resources']
+                            self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+                else:
+                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
             except Exception as err:
                 self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 
