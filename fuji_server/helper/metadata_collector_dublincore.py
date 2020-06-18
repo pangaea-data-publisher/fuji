@@ -24,6 +24,12 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
+                    dcterms = []
+                    for dcitems in self.metadata_mapping.value.values():
+                        if isinstance(dcitems, list):
+                            dcterms.extend(dcitems)
+                        else:
+                            dcterms.append(dcitems)
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
                         k = dc_meta[2]
@@ -32,26 +38,23 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         v = dc_meta[5]
                         # if self.isDebug:
                         #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
-                        dcterms =[]
-                        #flatten the dcterms list:
-                        for dcitems in self.metadata_mapping.value.values():
-                            if isinstance(dcitems,list):
-                                dcterms.extend(dcitems)
-                            else:
-                                dcterms.append(dcitems)
                         if k in dcterms:
-                            self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
-                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value][0]
+                            #self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
+                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value][0] # fuji ref fields
                             if elem == 'related_resources':
                                 # tuple of type and relation
                                 if k == 'source':
-                                    t = 'IsBasedOn'
+                                    t = 'isBasedOn'
                                 if t in [None, '']:
                                     t = 'RelatedTo'
-                                v = dict(related_resource=v, relation_type=t)
+                                if v:
+                                    v = [dict(related_resource=v, relation_type=t)] #TODO better handling of different data types (str, dict, list)
                             if elem in dc_core_metadata:
                                 if isinstance(dc_core_metadata[elem], list):
-                                    dc_core_metadata[elem].append(v)
+                                    if isinstance(v, list):
+                                        dc_core_metadata[elem].extend(v)
+                                    else:
+                                        dc_core_metadata[elem].append(v)
                                 else:  # string
                                     temp_list = []
                                     temp_list.append(dc_core_metadata[elem])
@@ -59,6 +62,11 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     dc_core_metadata[elem] = temp_list
                             else:
                                 dc_core_metadata[elem] = v
+
+                    if dc_core_metadata.get('related_resources'):
+                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(dc_core_metadata['related_resources']),source))
+                    else:
+                        self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
             except Exception as e:
                 self.logger.exception('Failed to extract DublinCore - {}'.format(e))
         return source, dc_core_metadata
