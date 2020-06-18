@@ -28,6 +28,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
             try:
                 dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                 if dcite_metadata:
+                    self.namespaces.append('http://datacite.org/schema/')
                     source_name = self.getEnumSourceNames().DATACITE_JSON.value
                     if dcite_metadata['creator'] is None:
                         first = dcite_metadata['creator_first']
@@ -51,7 +52,6 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                         if key not in self.exclude_conversion and isinstance(value, list):
                             flat = ', '.join(map(str, value))
                             dcite_metadata[key] = flat
-                #print(dcite_metadata)
             except Exception as e:
                 self.logger.exception('Failed to extract Datacite Json - {}'.format(e))
         return source_name, dcite_metadata

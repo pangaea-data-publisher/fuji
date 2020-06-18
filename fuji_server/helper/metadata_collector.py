@@ -25,6 +25,7 @@ class MetaDataCollector(object):
         self.metadata_mapping = mapping
         self.logger = logger
         self.target_metadata = {}
+        self.namespaces = []
 
     @classmethod
     def getEnumSourceNames(cls) -> Sources:
@@ -50,3 +51,6 @@ class MetaDataCollector(object):
 
     def getTargetMetadata(self):
         return self.target_metadata
+
+    def getNamespaces(self):
+        return self.namespaces

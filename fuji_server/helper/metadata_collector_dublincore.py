@@ -22,6 +22,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                 exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
                 meta_dc_matches = re.findall(exp, self.source_metadata)
                 if len(meta_dc_matches) > 0:
+                    self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')

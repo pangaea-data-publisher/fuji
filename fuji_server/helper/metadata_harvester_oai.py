@@ -10,6 +10,7 @@ class OAIMetadataHarvester:
         #self.resource_identifier = resourceidentifier
         self.metric_id = metricid
         self.logger = loggerinst
+        self.namespaces=[]
 
     def getMetadataDC(self):
         #Resource Identifier	[]
@@ -36,6 +37,7 @@ class OAIMetadataHarvester:
             ele = etree.XPathEvaluator(node, namespaces=OAIMetadataHarvester.oai_namespaces).evaluate
             metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
             metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+            self.namespaces.append(metadata_schema)
             # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
             if not any(s in metadata_schema for s in filter):
                 schemas[metadata_prefix]= [metadata_schema]
@@ -43,3 +45,5 @@ class OAIMetadataHarvester:
                 self.logger.info('FsF-R1.3-01M : Skipping non-disciplinary standard listed in OAIPMH - {}'.format(metadata_prefix))
         return schemas
 
+    def getNamespaces(self):
+        return self.namespaces
