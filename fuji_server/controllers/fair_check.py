@@ -55,6 +55,7 @@ class FAIRCheck:
         self.community_standards = []
         self.community_standards_uri = {}
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
+        self.related_resources = []
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -177,16 +178,7 @@ class FAIRCheck:
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
 
-        self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
-            self.metadata_merged.get('object_type')))
-
-        # retrieve re3metadata based on pid specified
-        # self.retrieve_re3data()
-
-        # validate and instatiate oai-pmh harvester if the endpoint is valie
-        # if self.oaipmh_endpoint:
-        # if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
-        # self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
+        self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
 
         # detect api and standards
         self.retrieve_apis_standards()
@@ -223,6 +215,8 @@ class FAIRCheck:
         if schemaorg_dict:
             not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
             self.metadata_sources.append(source_schemaorg)
+            if schemaorg_dict.get('related_resources'):
+                self.related_resources.extend(schemaorg_dict.get('related_resources'))
             # add object type for future reference
             for i in not_null_sco:
                 if i in self.reference_elements:
@@ -239,6 +233,8 @@ class FAIRCheck:
             if dc_dict:
                 not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                 self.metadata_sources.append(source_dc)
+                if dc_dict.get('related_resources'):
+                    self.related_resources.extend(dc_dict.get('related_resources'))
                 for d in not_null_dc:
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
@@ -281,6 +277,8 @@ class FAIRCheck:
                 not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
                 self.metadata_sources.append(source_dcitejsn)
+                if dcitejsn_dict.get('related_resources'):
+                    self.related_resources.extend(dcitejsn_dict.get('related_resources'))
                 for r in not_null_dcite:
                     if r in self.reference_elements:
                         self.metadata_merged[r] = dcitejsn_dict[r]
@@ -589,15 +587,14 @@ class FAIRCheck:
         related_sc = int(FAIRCheck.METRICS.get(related_identifier).get('total_score'))
         related_score = FAIRResultCommonScore(total=related_sc)
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
-        related_output = RelatedResourceOutputInner()
+        related_output = IdentifierIncludedOutput()
 
-        if self.metadata_merged.get('related_resources'):
-            related_output = self.metadata_merged['related_resources']
+        #if self.metadata_merged.get('related_resources'):
+        if self.related_resources: #TODO include source of relation
+            related_output = self.related_resources
             related_result.test_status = 'pass'
             related_score.earned = related_sc
-        else:
-            related_score.earned = 0
-            self.logger.warning('FsF-I3-01M : No related resources found in metadata')
+
         related_result.score = related_score
         related_result.output = related_output
         if self.isDebug:
