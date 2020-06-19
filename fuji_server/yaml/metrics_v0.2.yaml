@@ -72,7 +72,7 @@ metrics:
   date_created: 2020-02-29
   date_updated: 2020-02-29
   version: 0.2
-  total_score: 1
+  total_score: 2
 
 - metric_identifier: FsF-I1-01M
   metric_name: Semantic representation of metadata
