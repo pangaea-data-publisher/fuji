@@ -39,6 +39,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                     "@type"]:
                     self.namespaces.append('http://schema.org/')
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                    # TODO all properties with null values extracted through jmespath should be excluded
                     if jsnld_metadata['creator'] is None:
                         first = jsnld_metadata['creator_first']
                         last = jsnld_metadata['creator_last']
