@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -14,45 +15,35 @@ class DataProvenanceOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, creation_provenance_included: bool=False, modification_provenance_included: bool=False, processes_provenance_included: bool=False, provenance_relations_included: bool=False, structured_provenance_included: bool=False, provenance_metadata_found: List[str]=None):  # noqa: E501
+    def __init__(self, creation_provenance_included: DataProvenanceOutputInner=None, modification_provenance_included: DataProvenanceOutputInner=None, provenance_relations_included: DataProvenanceOutputInner=None, structured_provenance_available: DataProvenanceOutputInner=None):  # noqa: E501
         """DataProvenanceOutput - a model defined in Swagger
 
         :param creation_provenance_included: The creation_provenance_included of this DataProvenanceOutput.  # noqa: E501
-        :type creation_provenance_included: bool
+        :type creation_provenance_included: DataProvenanceOutputInner
         :param modification_provenance_included: The modification_provenance_included of this DataProvenanceOutput.  # noqa: E501
-        :type modification_provenance_included: bool
-        :param processes_provenance_included: The processes_provenance_included of this DataProvenanceOutput.  # noqa: E501
-        :type processes_provenance_included: bool
+        :type modification_provenance_included: DataProvenanceOutputInner
         :param provenance_relations_included: The provenance_relations_included of this DataProvenanceOutput.  # noqa: E501
-        :type provenance_relations_included: bool
-        :param structured_provenance_included: The structured_provenance_included of this DataProvenanceOutput.  # noqa: E501
-        :type structured_provenance_included: bool
-        :param provenance_metadata_found: The provenance_metadata_found of this DataProvenanceOutput.  # noqa: E501
-        :type provenance_metadata_found: List[str]
+        :type provenance_relations_included: DataProvenanceOutputInner
+        :param structured_provenance_available: The structured_provenance_available of this DataProvenanceOutput.  # noqa: E501
+        :type structured_provenance_available: DataProvenanceOutputInner
         """
         self.swagger_types = {
-            'creation_provenance_included': bool,
-            'modification_provenance_included': bool,
-            'processes_provenance_included': bool,
-            'provenance_relations_included': bool,
-            'structured_provenance_included': bool,
-            'provenance_metadata_found': List[str]
+            'creation_provenance_included': DataProvenanceOutputInner,
+            'modification_provenance_included': DataProvenanceOutputInner,
+            'provenance_relations_included': DataProvenanceOutputInner,
+            'structured_provenance_available': DataProvenanceOutputInner
         }
 
         self.attribute_map = {
             'creation_provenance_included': 'creation_provenance_included',
             'modification_provenance_included': 'modification_provenance_included',
-            'processes_provenance_included': 'processes_provenance_included',
             'provenance_relations_included': 'provenance_relations_included',
-            'structured_provenance_included': 'structured_provenance_included',
-            'provenance_metadata_found': 'provenance_metadata_found'
+            'structured_provenance_available': 'structured_provenance_available'
         }
         self._creation_provenance_included = creation_provenance_included
         self._modification_provenance_included = modification_provenance_included
-        self._processes_provenance_included = processes_provenance_included
         self._provenance_relations_included = provenance_relations_included
-        self._structured_provenance_included = structured_provenance_included
-        self._provenance_metadata_found = provenance_metadata_found
+        self._structured_provenance_available = structured_provenance_available
 
     @classmethod
     def from_dict(cls, dikt) -> 'DataProvenanceOutput':
@@ -66,127 +57,86 @@ class DataProvenanceOutput(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def creation_provenance_included(self) -> bool:
+    def creation_provenance_included(self) -> DataProvenanceOutputInner:
         """Gets the creation_provenance_included of this DataProvenanceOutput.
 
 
         :return: The creation_provenance_included of this DataProvenanceOutput.
-        :rtype: bool
+        :rtype: DataProvenanceOutputInner
         """
         return self._creation_provenance_included
 
     @creation_provenance_included.setter
-    def creation_provenance_included(self, creation_provenance_included: bool):
+    def creation_provenance_included(self, creation_provenance_included: DataProvenanceOutputInner):
         """Sets the creation_provenance_included of this DataProvenanceOutput.
 
 
         :param creation_provenance_included: The creation_provenance_included of this DataProvenanceOutput.
-        :type creation_provenance_included: bool
+        :type creation_provenance_included: DataProvenanceOutputInner
         """
 
         self._creation_provenance_included = creation_provenance_included
 
     @property
-    def modification_provenance_included(self) -> bool:
+    def modification_provenance_included(self) -> DataProvenanceOutputInner:
         """Gets the modification_provenance_included of this DataProvenanceOutput.
 
 
         :return: The modification_provenance_included of this DataProvenanceOutput.
-        :rtype: bool
+        :rtype: DataProvenanceOutputInner
         """
         return self._modification_provenance_included
 
     @modification_provenance_included.setter
-    def modification_provenance_included(self, modification_provenance_included: bool):
+    def modification_provenance_included(self, modification_provenance_included: DataProvenanceOutputInner):
         """Sets the modification_provenance_included of this DataProvenanceOutput.
 
 
         :param modification_provenance_included: The modification_provenance_included of this DataProvenanceOutput.
-        :type modification_provenance_included: bool
+        :type modification_provenance_included: DataProvenanceOutputInner
         """
 
         self._modification_provenance_included = modification_provenance_included
 
     @property
-    def processes_provenance_included(self) -> bool:
-        """Gets the processes_provenance_included of this DataProvenanceOutput.
-
-
-        :return: The processes_provenance_included of this DataProvenanceOutput.
-        :rtype: bool
-        """
-        return self._processes_provenance_included
-
-    @processes_provenance_included.setter
-    def processes_provenance_included(self, processes_provenance_included: bool):
-        """Sets the processes_provenance_included of this DataProvenanceOutput.
-
-
-        :param processes_provenance_included: The processes_provenance_included of this DataProvenanceOutput.
-        :type processes_provenance_included: bool
-        """
-
-        self._processes_provenance_included = processes_provenance_included
-
-    @property
-    def provenance_relations_included(self) -> bool:
+    def provenance_relations_included(self) -> DataProvenanceOutputInner:
         """Gets the provenance_relations_included of this DataProvenanceOutput.
 
 
         :return: The provenance_relations_included of this DataProvenanceOutput.
-        :rtype: bool
+        :rtype: DataProvenanceOutputInner
         """
         return self._provenance_relations_included
 
     @provenance_relations_included.setter
-    def provenance_relations_included(self, provenance_relations_included: bool):
+    def provenance_relations_included(self, provenance_relations_included: DataProvenanceOutputInner):
         """Sets the provenance_relations_included of this DataProvenanceOutput.
 
 
         :param provenance_relations_included: The provenance_relations_included of this DataProvenanceOutput.
-        :type provenance_relations_included: bool
+        :type provenance_relations_included: DataProvenanceOutputInner
         """
 
         self._provenance_relations_included = provenance_relations_included
 
     @property
-    def structured_provenance_included(self) -> bool:
-        """Gets the structured_provenance_included of this DataProvenanceOutput.
+    def structured_provenance_available(self) -> DataProvenanceOutputInner:
+        """Gets the structured_provenance_available of this DataProvenanceOutput.
 
 
-        :return: The structured_provenance_included of this DataProvenanceOutput.
-        :rtype: bool
+        :return: The structured_provenance_available of this DataProvenanceOutput.
+        :rtype: DataProvenanceOutputInner
         """
         return self._structured_provenance_included
 
-    @structured_provenance_included.setter
-    def structured_provenance_included(self, structured_provenance_included: bool):
-        """Sets the structured_provenance_included of this DataProvenanceOutput.
+
+    @structured_provenance_available.setter
+    def structured_provenance_available(self, structured_provenance_available: DataProvenanceOutputInner):
+        """Sets the structured_provenance_available of this DataProvenanceOutput.
 
 
-        :param structured_provenance_included: The structured_provenance_included of this DataProvenanceOutput.
-        :type structured_provenance_included: bool
+        :param structured_provenance_available: The structured_provenance_available of this DataProvenanceOutput.
+        :type structured_provenance_available: DataProvenanceOutputInner
         """
 
-        self._structured_provenance_included = structured_provenance_included
-
-    @property
-    def provenance_metadata_found(self) -> List[str]:
-        """Gets the provenance_metadata_found of this DataProvenanceOutput.
-
-
-        :return: The provenance_metadata_found of this DataProvenanceOutput.
-        :rtype: List[str]
-        """
-        return self._provenance_metadata_found
-
-    @provenance_metadata_found.setter
-    def provenance_metadata_found(self, provenance_metadata_found: List[str]):
-        """Sets the provenance_metadata_found of this DataProvenanceOutput.
-
-
-        :param provenance_metadata_found: The provenance_metadata_found of this DataProvenanceOutput.
-        :type provenance_metadata_found: List[str]
-        """
-
-        self._provenance_metadata_found = provenance_metadata_found
+        self._structured_provenance_available = structured_provenance_available

@@ -33,7 +33,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             # TODO replace check_context_type list context comparison by regex
-            check_context_type = {"@context": ["http://schema.org/","http://schema.org",'https://schema.org/','https://schema.org'] , "@type": ["Dataset", "Collection"] }
+            check_context_type =  ["Dataset", "Collection"]
             try:
                 if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type[
                     "@type"]:
@@ -62,6 +62,6 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 else:
                     self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
             except Exception as err:
-                self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 
         return self.source_name, jsnld_metadata
