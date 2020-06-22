@@ -33,24 +33,26 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             # TODO replace check_context_type list context comparison by regex
-            check_context_type = {"@context": ["http://schema.org/","http://schema.org",'https://schema.org/','https://schema.org'] , "@type": ["Dataset", "Collection"] }
+            check_context_type =  ["Dataset", "Collection"]
             try:
-                if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type[
-                    "@type"]:
-                    self.namespaces.append('http://schema.org/')
-                    jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
-                    if jsnld_metadata['creator'] is None:
-                        first = jsnld_metadata['creator_first']
-                        last = jsnld_metadata['creator_last']
-                        if isinstance(first, list) and isinstance(last, list):
-                            if len(first) == len(last):
-                                names = [i + " " + j for i, j in zip(first, last)]
-                                jsnld_metadata['creator'] = names
-                        else:
-                            jsnld_metadata['creator'] = [first + " " + last]
-
-                self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                if str(ext_meta['@context']).find('://schema.org') > -1:
+                    if ext_meta['@type'] in check_context_type:
+                        self.namespaces.append('http://schema.org/')
+                        jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                        if jsnld_metadata['creator'] is None:
+                            first = jsnld_metadata['creator_first']
+                            last = jsnld_metadata['creator_last']
+                            if isinstance(first, list) and isinstance(last, list):
+                                if len(first) == len(last):
+                                    names = [i + " " + j for i, j in zip(first, last)]
+                                    jsnld_metadata['creator'] = names
+                            else:
+                                jsnld_metadata['creator'] = [first + " " + last]
+                    else:
+                        self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                else:
+                    self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object')
             except Exception as err:
-                self.logger.debug('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 
         return self.source_name, jsnld_metadata
