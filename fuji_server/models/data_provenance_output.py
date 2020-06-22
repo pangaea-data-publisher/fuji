@@ -127,7 +127,8 @@ class DataProvenanceOutput(Model):
         :return: The structured_provenance_available of this DataProvenanceOutput.
         :rtype: DataProvenanceOutputInner
         """
-        return self._structured_provenance_available
+        return self._structured_provenance_included
+
 
     @structured_provenance_available.setter
     def structured_provenance_available(self, structured_provenance_available: DataProvenanceOutputInner):

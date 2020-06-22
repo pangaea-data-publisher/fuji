@@ -35,23 +35,32 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             # TODO replace check_context_type list context comparison by regex
             check_context_type =  ["Dataset", "Collection"]
             try:
-                if str(ext_meta['@context']).find('://schema.org') > -1:
-                    if ext_meta['@type'] in check_context_type:
-                        self.namespaces.append('http://schema.org/')
-                        jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
-                        if jsnld_metadata['creator'] is None:
-                            first = jsnld_metadata['creator_first']
-                            last = jsnld_metadata['creator_last']
-                            if isinstance(first, list) and isinstance(last, list):
-                                if len(first) == len(last):
-                                    names = [i + " " + j for i, j in zip(first, last)]
-                                    jsnld_metadata['creator'] = names
-                            else:
-                                jsnld_metadata['creator'] = [first + " " + last]
-                    else:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type[
+                    "@type"]:
+                    self.namespaces.append('http://schema.org/')
+                    jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                    # TODO all properties with null values extracted through jmespath should be excluded
+                    if jsnld_metadata['creator'] is None:
+                        first = jsnld_metadata['creator_first']
+                        last = jsnld_metadata['creator_last']
+                        if isinstance(first, list) and isinstance(last, list):
+                            if len(first) == len(last):
+                                names = [i + " " + j for i, j in zip(first, last)]
+                                jsnld_metadata['creator'] = names
+                        else:
+                            jsnld_metadata['creator'] = [first + " " + last]
+                    # filter out None values of related_resources
+                    if jsnld_metadata['related_resources']:
+                        relateds =  [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                        if relateds:
+                            jsnld_metadata['related_resources'] = relateds
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
+                                len(jsnld_metadata['related_resources']), self.source_name))
+                        else:
+                            del jsnld_metadata['related_resources']
+                            self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
                 else:
-                    self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object')
+                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
             except Exception as err:
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 

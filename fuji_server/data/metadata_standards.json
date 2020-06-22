@@ -1,5 +1,6 @@
 {
   "ABCD (Access to Biological Collection Data)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m1",
     "subject_areas": [
       "Biological diversity",
       "Botany",
@@ -15,6 +16,7 @@
     ]
   },
   "AgMES (Agricultural Metadata Element Set)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m2",
     "subject_areas": [
       "Agricultural economics",
       "Agriculture",
@@ -27,6 +29,7 @@
     ]
   },
   "AVM (Astronomy Visualization Metadata)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m3",
     "subject_areas": [
       "Astronomy"
     ],
@@ -36,6 +39,7 @@
     ]
   },
   "CERIF (Common European Research Information Format)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m4",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -45,6 +49,7 @@
     ]
   },
   "CF (Climate and Forecast) Metadata Conventions": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m5",
     "subject_areas": [
       "Climatology",
       "Meteorology",
@@ -56,6 +61,7 @@
     ]
   },
   "CIF (Crystallographic Information Framework)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m6",
     "subject_areas": [
       "Chemistry",
       "Crystallography",
@@ -67,6 +73,7 @@
     ]
   },
   "CIM (Common Information Model)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m7",
     "subject_areas": [
       "Climatology"
     ],
@@ -76,6 +83,7 @@
     ]
   },
   "CSMD (Core Scientific Metadata Model)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m8",
     "subject_areas": [
       "Biochemistry",
       "Chemistry",
@@ -87,6 +95,7 @@
     ]
   },
   "Darwin Core": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m9",
     "subject_areas": [
       "Biogeography",
       "Biological diversity",
@@ -107,6 +116,7 @@
     ]
   },
   "Data Package": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m10",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -116,6 +126,7 @@
     ]
   },
   "DataCite Metadata Schema": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m11",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -124,6 +135,7 @@
     ]
   },
   "DCAT (Data Catalog Vocabulary)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m12",
     "subject_areas": null,
     "urls": [
       "http://www.w3.org/TR/vocab-dcat/",
@@ -132,6 +144,7 @@
     ]
   },
   "DDI (Data Documentation Initiative)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m13",
     "subject_areas": [
       "Demography",
       "Economics",
@@ -151,6 +164,7 @@
     ]
   },
   "DIF (Directory Interchange Format)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m14",
     "subject_areas": [
       "Agriculture",
       "Biochemistry",
@@ -168,6 +182,7 @@
     ]
   },
   "Dublin Core": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m15",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -177,6 +192,7 @@
     ]
   },
   "EML (Ecological Metadata Language)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m16",
     "subject_areas": [
       "Biological diversity",
       "Botany",
@@ -189,6 +205,7 @@
     ]
   },
   "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m17",
     "subject_areas": [
       "Biochemistry",
       "Cartography",
@@ -207,6 +224,7 @@
     ]
   },
   "FITS (Flexible Image Transport System)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m18",
     "subject_areas": [
       "Astronomy",
       "Astrophysics",
@@ -218,6 +236,7 @@
     ]
   },
   "Genome Metadata": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m19",
     "subject_areas": [
       "Genetics"
     ],
@@ -226,6 +245,7 @@
     ]
   },
   "International Virtual Observatory Alliance Technical Specifications": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m20",
     "subject_areas": [
       "Astronomy"
     ],
@@ -235,6 +255,7 @@
     ]
   },
   "ISA-Tab": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m21",
     "subject_areas": [
       "Biochemicals",
       "Biochemistry",
@@ -251,6 +272,7 @@
     ]
   },
   "ISO 19115": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m22",
     "subject_areas": [
       "Cartography",
       "Climatology",
@@ -270,6 +292,7 @@
     ]
   },
   "MIBBI (Minimum Information for Biological and Biomedical Investigations)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m23",
     "subject_areas": [
       "Biochemistry",
       "Biology",
@@ -287,6 +310,7 @@
     ]
   },
   "MIDAS-Heritage": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m24",
     "subject_areas": [
       "Archaeology",
       "Architecture",
@@ -300,6 +324,7 @@
     ]
   },
   "NeXus": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m25",
     "subject_areas": [
       "Chemistry",
       "Crystallography",
@@ -311,6 +336,7 @@
     ]
   },
   "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m26",
     "subject_areas": [
       "Anthropology",
       "History",
@@ -322,6 +348,7 @@
     ]
   },
   "Observ-OM": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m27",
     "subject_areas": [
       "Biology"
     ],
@@ -330,6 +357,7 @@
     ]
   },
   "Observations and Measurements": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m28",
     "subject_areas": [
       "Chemistry",
       "Geology",
@@ -342,6 +370,7 @@
     ]
   },
   "OME-XML (Open Microscopy Environment XML)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m29",
     "subject_areas": [
       "Animal diseases",
       "Cell biology",
@@ -356,6 +385,7 @@
     ]
   },
   "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m30",
     "subject_areas": [
       "Biology",
       "Chemistry",
@@ -370,6 +400,7 @@
     ]
   },
   "PREMIS": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m31",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -379,6 +410,7 @@
     ]
   },
   "Protocol Data Element Definitions": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m32",
     "subject_areas": [
       "Clinical medicine"
     ],
@@ -388,6 +420,7 @@
     ]
   },
   "PROV": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m33",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -397,6 +430,7 @@
     ]
   },
   "QuDEx (Qualitative Data Exchange Format)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m34",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -406,6 +440,7 @@
     ]
   },
   "RDF Data Cube Vocabulary": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m35",
     "subject_areas": [
       "Statistics"
     ],
@@ -414,6 +449,7 @@
     ]
   },
   "Repository-Developed Metadata Schemas": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m36",
     "subject_areas": [
       "Biochemistry",
       "Cartography",
@@ -430,6 +466,7 @@
     "urls": null
   },
   "SDAC (Standard for Documentation of Astronomical Catalogues)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m37",
     "subject_areas": [
       "Astronomy",
       "Astrophysics"
@@ -440,6 +477,7 @@
     ]
   },
   "SDMX (Statistical Data and Metadata Exchange)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m38",
     "subject_areas": [
       "Demography",
       "Economics",
@@ -453,6 +491,7 @@
     ]
   },
   "SPASE Data Model": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m39",
     "subject_areas": [
       "Astronomical systems",
       "Astronomy",
@@ -464,6 +503,7 @@
     ]
   },
   "UKEOF": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m40",
     "subject_areas": [
       "Biogeography",
       "Biological diversity",
@@ -481,6 +521,7 @@
     ]
   },
   "ABCDDNA": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m42",
     "subject_areas": [
       "Genetics"
     ],
@@ -489,6 +530,7 @@
     ]
   },
   "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m43",
     "subject_areas": [
       "Earth sciences",
       "Mineralogy",
@@ -499,6 +541,7 @@
     ]
   },
   "AGLS Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m44",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -507,6 +550,7 @@
     ]
   },
   "AGRIS Application Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m45",
     "subject_areas": [
       "Agricultural economics",
       "Agriculture",
@@ -518,6 +562,7 @@
     ]
   },
   "ANZLIC Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m46",
     "subject_areas": [
       "Cartography",
       "Geography",
@@ -528,6 +573,7 @@
     ]
   },
   "Apple Core": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m47",
     "subject_areas": [
       "Botany"
     ],
@@ -536,6 +582,7 @@
     ]
   },
   "Asset Description Metadata Schema (ADMS)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m48",
     "subject_areas": [
       "Social policy"
     ],
@@ -544,6 +591,7 @@
     ]
   },
   "CARARE metadata schema": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m49",
     "subject_areas": [
       "Archaeology",
       "Architecture",
@@ -556,6 +604,7 @@
     ]
   },
   "CESSDA MLI - Council of European Social Science Data Archives Minimum Level of Information": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m50",
     "subject_areas": [
       "Demography",
       "Economics",
@@ -567,6 +616,7 @@
     ]
   },
   "COARDS Conventions": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m51",
     "subject_areas": [
       "Climatology",
       "Meteorology",
@@ -577,6 +627,7 @@
     ]
   },
   "Cruise Summary Reports": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m52",
     "subject_areas": [
       "Climatology",
       "Earth sciences",
@@ -590,6 +641,7 @@
     ]
   },
   "CSDGM Extensions for Remote Sensing Metadata": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m53",
     "subject_areas": [
       "Climatology",
       "Hydrology",
@@ -601,6 +653,7 @@
     ]
   },
   "Darwin Core Geospatial Extension": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m54",
     "subject_areas": [
       "Biogeography",
       "Cartography",
@@ -611,6 +664,7 @@
     ]
   },
   "Dryad Metadata Application Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m55",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -619,6 +673,7 @@
     ]
   },
   "DwC Germplasm": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m56",
     "subject_areas": [
       "Botany"
     ],
@@ -627,6 +682,7 @@
     ]
   },
   "eBank UK Metadata Application Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m57",
     "subject_areas": [
       "Crystallography"
     ],
@@ -635,6 +691,7 @@
     ]
   },
   "EDMED Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m58",
     "subject_areas": [
       "Climatology",
       "Ecology",
@@ -651,6 +708,7 @@
     ]
   },
   "FGDC/CSDGM Biological Data Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m59",
     "subject_areas": [
       "Biogeography"
     ],
@@ -659,6 +717,7 @@
     ]
   },
   "FITS World Coordinate System (WCS)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m60",
     "subject_areas": [
       "Astronomy",
       "Astrophysics",
@@ -669,6 +728,7 @@
     ]
   },
   "GBIF Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m61",
     "subject_areas": [
       "Biogeography",
       "Biological diversity",
@@ -681,6 +741,7 @@
     ]
   },
   "GESMES/TS (Generic Statistical Message for Time Series)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m62",
     "subject_areas": [
       "Economics",
       "Social policy",
@@ -691,6 +752,7 @@
     ]
   },
   "GSIM (Generic Statistical Information Model)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m63",
     "subject_areas": [
       "Statistics"
     ],
@@ -699,6 +761,7 @@
     ]
   },
   "HISPID (Herbarium Information Standards and Protocols for Interchange of Data)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m64",
     "subject_areas": [
       "Botany"
     ],
@@ -707,6 +770,7 @@
     ]
   },
   "IMPEx Data Model": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m65",
     "subject_areas": [
       "Astronomical systems",
       "Astronomy",
@@ -717,6 +781,7 @@
     ]
   },
   "INSPIRE Metadata Regulation": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m66",
     "subject_areas": [
       "Cartography",
       "Climatology",
@@ -734,6 +799,7 @@
     ]
   },
   "ISA-TAB Nano": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m67",
     "subject_areas": [
       "Biochemicals",
       "Biotechnology"
@@ -743,6 +809,7 @@
     ]
   },
   "isaconfig-diXa": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m68",
     "subject_areas": [
       "Genetics",
       "Toxicology"
@@ -752,6 +819,7 @@
     ]
   },
   "ISO 19115-2 - Imagery and gridded data": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m69",
     "subject_areas": [
       "Cartography",
       "Climatology",
@@ -769,6 +837,7 @@
     ]
   },
   "ISO 19115 North American Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m70",
     "subject_areas": [
       "Cartography",
       "Geography",
@@ -779,6 +848,7 @@
     ]
   },
   "Marine Community Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m71",
     "subject_areas": [
       "Climatology",
       "Earth sciences",
@@ -792,6 +862,7 @@
     ]
   },
   "MIBBI Portal": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m72",
     "subject_areas": [
       "Genetics"
     ],
@@ -800,6 +871,7 @@
     ]
   },
   "OME-TIFF (Open Microscopy Environment TIFF)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m73",
     "subject_areas": [
       "Animal diseases",
       "Cell biology",
@@ -813,6 +885,7 @@
     ]
   },
   "Resource Metadata for the Virtual Observatory": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m74",
     "subject_areas": [
       "Astronomy"
     ],
@@ -821,6 +894,7 @@
     ]
   },
   "Shoreline Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m75",
     "subject_areas": [
       "Hydrology",
       "Oceanography"
@@ -830,6 +904,7 @@
     ]
   },
   "SNRNASM ISA-Tab": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m76",
     "subject_areas": [
       "Biochemistry",
       "Cell biology"
@@ -839,6 +914,7 @@
     ]
   },
   "Tabular Data Package": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m77",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -847,6 +923,7 @@
     ]
   },
   "TIDCC (Towards an International Data Commons for Crystallography)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m78",
     "subject_areas": [
       "Crystallography"
     ],
@@ -855,6 +932,7 @@
     ]
   },
   "UK AGMAP (Academic Geospatial Metadata Application Profile)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m79",
     "subject_areas": [
       "Cartography",
       "Geography",
@@ -865,6 +943,7 @@
     ]
   },
   "UK Gemini": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m80",
     "subject_areas": [
       "Cartography",
       "Geography",
@@ -875,6 +954,7 @@
     ]
   },
   "USGIN (US Geoscience Information Network) Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m81",
     "subject_areas": [
       "Earth sciences"
     ],
@@ -884,6 +964,7 @@
     ]
   },
   "VarioML": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m82",
     "subject_areas": [
       "Genetics"
     ],
@@ -892,6 +973,7 @@
     ]
   },
   "WaterML": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m83",
     "subject_areas": [
       "Hydrology"
     ],
@@ -900,6 +982,7 @@
     ]
   },
   "WMO Core Metadata Profile": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m84",
     "subject_areas": [
       "Meteorology"
     ],
@@ -908,20 +991,24 @@
     ]
   },
   "EURISCO Descriptors": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m85",
     "subject_areas": null,
     "urls": [
       "http://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/upload/MISC/EURISCO_Descriptors.pdf"
     ]
   },
   "IDF (International DOI Foundation) Metadata Kernel": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m86",
     "subject_areas": null,
     "urls": null
   },
   "MAGE-TAB": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m87",
     "subject_areas": null,
     "urls": null
   },
   "MARC (Machine-Readable Cataloging)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m88",
     "subject_areas": [
       "Bibliographic standards",
       "Information/library standards"
@@ -933,18 +1020,22 @@
     ]
   },
   "NetCDF Attribute Convention for Dataset Discovery": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m89",
     "subject_areas": null,
     "urls": null
   },
   "OECD Dataset Metadata": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m90",
     "subject_areas": null,
     "urls": null
   },
   "OECD Minimum Data Set": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m91",
     "subject_areas": null,
     "urls": null
   },
   "OpenAIRE Guidelines": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m92",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -953,6 +1044,7 @@
     ]
   },
   "CEDAR Template Model": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m94",
     "subject_areas": [
       "Administration",
       "Agricultural research",
@@ -965,6 +1057,7 @@
     ]
   },
   "JSON-LD (JavaScript Object Notation for Linked Data)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m95",
     "subject_areas": [
       "Information/library standards",
       "Standards"
@@ -972,6 +1065,7 @@
     "urls": null
   },
   "EAD (Encoded Archival Description)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m96",
     "subject_areas": [
       "History"
     ],
@@ -980,6 +1074,7 @@
     ]
   },
   "MODS (Metadata Object Description Schema)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m97",
     "subject_areas": [
       "Bibliographic standards",
       "Information/library standards"
@@ -989,6 +1084,7 @@
     ]
   },
   "RIF-CS (Registry Interchange Format \u2013 Collections and Services)": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m98",
     "subject_areas": [
       "Multidisciplinary"
     ],
@@ -999,6 +1095,7 @@
     ]
   },
   "TEI (Text Encoding Initiative) Guidelines": {
+    "identifier": "https://rdamsc.bath.ac.uk/api/m99",
     "subject_areas": [
       "History",
       "Languages"

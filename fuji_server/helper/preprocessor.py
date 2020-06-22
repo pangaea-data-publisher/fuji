@@ -122,7 +122,8 @@ class Preprocessor(object):
                         resp = r.json()
                         schemes = resp['metadata-schemes']
                         for s in schemes:
-                            r2 = requests.get(catalog_url+str(s['id']), headers=cls.header)
+                            path = catalog_url+str(s['id'])
+                            r2 = requests.get(path, headers=cls.header)
                             if r2.status_code == 200:
                                 std = r2.json()
                                 urls = None
@@ -137,7 +138,7 @@ class Preprocessor(object):
                                 #else:
                                     #data.setdefault('other', []).append(standard_title)
                                 if standard_title:
-                                    data[standard_title] = {'subject_areas': keywords, 'urls': urls}
+                                    data[standard_title] = {'identifier':path, 'subject_areas': keywords, 'urls': urls}
 
                         with open(std_path, 'w') as f:
                             json.dump(data, f)

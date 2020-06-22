@@ -39,15 +39,18 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                                 names = [i + " " + j for i, j in zip(first, last)]
                                 dcite_metadata['creator'] = names
 
-                    #TODO customize related resources --> use jmes
-                    if dcite_metadata['related_resources']:
-                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(dcite_metadata['related_resources']), source_name))
+                    if dcite_metadata.get('related_resources'):
+                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
+                            len(dcite_metadata['related_resources']), source_name))
                         temp_rels = []
 
                         for r in dcite_metadata['related_resources']:
-                            temp_rels.append(dict(related_resource=r.get('relatedIdentifier'), relation_type=r.get('relationType')))
+                            filtered = {k: v for k, v in r.items() if v is not None}
+                            temp_rels.append(filtered)
                         dcite_metadata['related_resources'] = temp_rels
-                    #print(dcite_metadata)
+                    else:
+                        self.logger.info('FsF-I3-01M : No related resource(s) found in Datacite metadata')
+
                     # convert all values (list type) into string except 'creator','license','related_resources'
                     for key, value in dcite_metadata.items():
                         if key not in self.exclude_conversion and isinstance(value, list):
