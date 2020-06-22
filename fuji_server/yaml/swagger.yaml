@@ -362,25 +362,14 @@ components:
       type: object
       properties:
         creation_provenance_included:
-          type: boolean
-          default: false
+          $ref: '#/components/schemas/DataProvenance_output_inner'
         modification_provenance_included:
-          type: boolean
-          default: false
-        processes_provenance_included:
-          type: boolean
-          default: false
+          $ref: '#/components/schemas/DataProvenance_output_inner'
         provenance_relations_included:
-          type: boolean
-          default: false
+          $ref: '#/components/schemas/DataProvenance_output_inner'
         structured_provenance_available:
-          type: boolean
-          default: false
-        provenance_metadata_found:
-          type: array
-          default: false
-          items:
-            type: string
+          $ref: '#/components/schemas/DataProvenance_output_inner'
+
     Metrics:
       type: object
       properties:
@@ -500,6 +489,18 @@ components:
         is_open_format:
           type: boolean
           default: false
+    DataProvenance_output_inner:
+      type: object
+      properties:
+        is_available:
+          type: boolean
+          default: True
+        provenance_metadata:
+          type: object
+          additionalProperties:
+            type: string
+
+
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
