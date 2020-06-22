@@ -36,11 +36,12 @@ class MetaDataCollectorSparql (MetaDataCollector):
                 rdf_metadata = self.get_ontology_metadata(rdf_response)
             #add found namespaces URIs to namespace
             for ns in rdf_response.namespaces():
-                self.namespaces.append(ns[1])
+                self.namespaces.append(str(ns[1]))
         else:
             self.logger.info('FsF-F2-01M : Expected RDF Graph but received:'+str(type(rdf_response)))
         return self.source_name, rdf_metadata
 
+    #TODO rename to: get_core_metadata
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
