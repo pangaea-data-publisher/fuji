@@ -42,11 +42,13 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             #self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
                             elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value][0] # fuji ref fields
                             if elem == 'related_resources':
+                                dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
                                 if k == 'source':
                                     t = 'isBasedOn'
                                 if t in [None, '']:
-                                    t = 'RelatedTo'
+                                    t = 'isRelatedTo'
+                                #v = dict(related_resource=v, relation_type=t)
                                 if v:
                                     v = [dict(related_resource=v, relation_type=t)] #TODO better handling of different data types (str, dict, list)
                             if elem in dc_core_metadata:

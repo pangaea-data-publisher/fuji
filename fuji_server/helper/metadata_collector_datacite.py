@@ -43,6 +43,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                         self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
                             len(dcite_metadata['related_resources']), source_name))
                         temp_rels = []
+
                         for r in dcite_metadata['related_resources']:
                             filtered = {k: v for k, v in r.items() if v is not None}
                             temp_rels.append(filtered)
