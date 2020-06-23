@@ -152,7 +152,7 @@ class Preprocessor(object):
     @classmethod
     def get_licenses(cls):
         if not cls.all_licenses:
-            cls.retrieve_licenses(cls.SPDX_URL)
+            cls.retrieve_licenses(cls.SPDX_URL, True)
         #return cls.all_licenses, cls.license_names, cls.license_urls
         return cls.all_licenses, cls.license_names
 
