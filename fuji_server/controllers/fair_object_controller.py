@@ -30,6 +30,7 @@ def assess_by_id(body):  # noqa: E501
         relatedresources_result = ft.check_relatedresources()
         license_result = ft.check_license()
         community_standards_result = ft.check_community_metadatastandards()
+        ft.check_formal_metadata()
 
         results.append(uid_result)
         results.append(pid_result)

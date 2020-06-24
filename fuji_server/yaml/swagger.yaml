@@ -1,7 +1,9 @@
 openapi: 3.0.1
 info:
   title: F-UJI
-  description: A Service for Evaluating Research Data Objects Based on FAIRsFAIR Metrics <p> This work was supported by the <a href='https://www.fairsfair.eu/'>FAIRsFAIR </a> project (H2020-INFRAEOSC-2018-2020 Grant Agreement 831558).
+  description: A Service for Evaluating Research Data Objects Based on FAIRsFAIR Metrics
+    <p> This work was supported by the <a href='https://www.fairsfair.eu/'>FAIRsFAIR
+    </a> project (H2020-INFRAEOSC-2018-2020 Grant Agreement 831558).
   contact:
     email: adevaraju@marum.de
   license:
@@ -93,12 +95,14 @@ components:
         - $ref: '#/components/schemas/CoreMetadata'
         - $ref: '#/components/schemas/IdentifierIncluded'
         - $ref: '#/components/schemas/Searchable'
+        - $ref: '#/components/schemas/DataAccessLevel'
+        - $ref: '#/components/schemas/FormalMetadata'
+        - $ref: '#/components/schemas/SemanticVocabulary'
         - $ref: '#/components/schemas/RelatedResource'
         - $ref: '#/components/schemas/License'
-        - $ref: '#/components/schemas/DataAccessLevel'
+        - $ref: '#/components/schemas/DataProvenance'
         - $ref: '#/components/schemas/CommunityEndorsedStandard'
         - $ref: '#/components/schemas/DataFileFormat'
-        - $ref: '#/components/schemas/DataProvenance'
     FAIRResultCommon:
       required:
       - id
@@ -221,6 +225,24 @@ components:
         properties:
           output:
             $ref: '#/components/schemas/DataProvenance_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    FormalMetadata:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/FormalMetadata_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    SemanticVocabulary:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/SemanticVocabulary_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
@@ -363,7 +385,14 @@ components:
           $ref: '#/components/schemas/DataProvenance_output_inner'
         structured_provenance_available:
           $ref: '#/components/schemas/DataProvenance_output_inner'
-
+    FormalMetadata_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/FormalMetadata_output_inner'
+    SemanticVocabulary_output:
+      type: array
+      items:
+        $ref: '#/components/schemas/SemanticVocabulary_output_inner'
     Metrics:
       type: object
       properties:
@@ -376,10 +405,10 @@ components:
       example:
         total: 0
         metrics:
-          date_updated: {}
+          date_updated: 2020-02-29
           metric_name: Globally unique identifier
           fair_principle: F1
-          date_created: {}
+          date_created: 2020-02-29
           description: The data is assigned with a globally unique identifier.
           evaluation_mechanism: Identifier is considered unique if its scheme is successfully
             validated through https://pythonhosted.org/IDUtils/. Supported schemes
@@ -490,13 +519,34 @@ components:
       properties:
         is_available:
           type: boolean
-          default: True
+          default: true
         provenance_metadata:
           type: object
           additionalProperties:
             type: string
-
-
+    FormalMetadata_output_inner:
+      type: object
+      properties:
+        serialization_format:
+          type: string
+        source:
+          type: string
+          enum:
+          - typed_link
+          - content_negotiate
+          - structured_data
+          - sparql_endpoint
+        is_metadata_found:
+          type: boolean
+          default: false
+    SemanticVocabulary_output_inner:
+      type: object
+      properties:
+        namespace:
+          type: string
+        is_namespace_active:
+          type: boolean
+          default: false
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
