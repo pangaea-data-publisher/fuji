@@ -37,7 +37,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta['@context']).find('://schema.org') > -1:
-                    if ext_meta['@type'] in check_context_type["@type"]:
+                    if ext_meta['@type'] in check_context_type:
                         self.namespaces.append('http://schema.org/')
                         jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                         # TODO all properties with null values extracted through jmespath should be excluded
@@ -64,6 +64,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 else:
                     self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object')
             except Exception as err:
+                print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 
         return self.source_name, jsnld_metadata
