@@ -64,7 +64,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 else:
                     self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object')
             except Exception as err:
-                print(err.with_traceback())
+                #print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
 
         return self.source_name, jsnld_metadata
