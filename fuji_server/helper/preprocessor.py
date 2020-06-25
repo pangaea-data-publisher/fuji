@@ -21,6 +21,9 @@ class Preprocessor(object):
     all_licenses = []
     license_names = []
     metadata_standards = {} #key=subject,value =[standards name]
+    science_file_formats = {}
+    long_term_file_formats = {}
+    open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
     #fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir =  os.path.dirname(os.path.dirname(__file__)) #project_root
@@ -122,8 +125,7 @@ class Preprocessor(object):
                         resp = r.json()
                         schemes = resp['metadata-schemes']
                         for s in schemes:
-                            path = catalog_url+str(s['id'])
-                            r2 = requests.get(path, headers=cls.header)
+                            r2 = requests.get(catalog_url+str(s['id']), headers=cls.header)
                             if r2.status_code == 200:
                                 std = r2.json()
                                 urls = None
@@ -138,7 +140,7 @@ class Preprocessor(object):
                                 #else:
                                     #data.setdefault('other', []).append(standard_title)
                                 if standard_title:
-                                    data[standard_title] = {'identifier':path, 'subject_areas': keywords, 'urls': urls}
+                                    data[standard_title] = {'subject_areas': keywords, 'urls': urls}
 
                         with open(std_path, 'w') as f:
                             json.dump(data, f)
@@ -148,6 +150,32 @@ class Preprocessor(object):
                 cls.logger.exception(e2)
         if data:
             cls.metadata_standards = data
+
+    @classmethod
+    def retrieve_science_file_formats(cls, isDebugMode):
+        data = {}
+        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'science_formats.json')
+        with open(sci_file_path) as f:
+            data = json.load(f)
+        if data:
+            cls.science_file_formats = data
+
+    @classmethod
+    def retrieve_long_term_file_formats(cls, isDebugMode):
+        data = {}
+        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'longterm_formats.json')
+        with open(sci_file_path) as f:
+            data = json.load(f)
+        if data:
+            cls.long_term_file_formats = data
+    @classmethod
+    def retrieve_open_file_formats(cls, isDebugMode):
+        data = {}
+        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'open_formats.json')
+        with open(sci_file_path) as f:
+            data = json.load(f)
+        if data:
+            cls.open_file_formats = data
 
     @classmethod
     def get_licenses(cls):
@@ -186,3 +214,15 @@ class Preprocessor(object):
     @classmethod
     def get_metadata_standards(cls) -> object:
         return cls.metadata_standards
+
+    @classmethod
+    def get_science_file_formats(cls) -> object:
+        return cls.science_file_formats
+
+    @classmethod
+    def get_long_term_file_formats(cls) -> object:
+        return cls.long_term_file_formats
+
+    @classmethod
+    def get_open_file_formats(cls) -> object:
+        return cls.open_file_formats

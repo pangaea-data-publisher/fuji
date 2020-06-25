@@ -41,6 +41,8 @@ class FAIRCheck:
     COMMUNITY_STANDARDS_NAMES = None
     COMMUNITY_STANDARDS = None
     SCIENCE_FILE_FORMATS = None
+    LONG_TERM_FILE_FORMATS = None
+    OPEN_FILE_FORMATS = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -79,6 +81,10 @@ class FAIRCheck:
             cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
         if not cls.SCIENCE_FILE_FORMATS:
             cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
+        if not cls.LONG_TERM_FILE_FORMATS:
+            cls.LONG_TERM_FILE_FORMATS = Preprocessor.get_long_term_file_formats()
+        if not cls.OPEN_FILE_FORMATS:
+            cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
         # if not cls.DATACITE_REPOSITORIES:
         # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
 
@@ -402,8 +408,8 @@ class FAIRCheck:
                     score += 1
                 else:
                     self.logger.warning("Identifier returned response code: {code}".format(code=request.status_code))
-            except ConnectionError:
-                self.logger.warning('FsF-F3-01M : Object identifier does not exist {}'.format(id_object))
+            except:
+                self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
         else:
             self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
 
@@ -420,16 +426,15 @@ class FAIRCheck:
                     try:
                         # only check the status, do not download the content
                         response=urllib.urlopen(content_link.get('url'))
-                        content_link['header_content_type']=response.getheader('Content-Type')
+                        content_link['header_content_type'] = response.getheader('Content-Type')
+                        content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
-                        '''
-                        if content_link['header_content_type']!= content_link.get('type'):
-                            print(content_link.get('type'))
+
+                        if content_link['header_content_type'] != content_link.get('type'):
                             content_link['type']=content_link['header_content_type']
-                            print(content_link.get('type'))
-                            self.logger.warning('FsF-F3-01M : Content type given in metadata differs from Header response')
-                            #Accept-Ranges
-                        '''
+                            self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response')
+                            self.logger.info('FsF-F3-01M : Replacing content type with content type from Header response')
+
                         #will pass even if the url cannot be accessed which is OK
                         #did_result.test_status = "pass"
                         #did_score.earned=1
@@ -438,6 +443,8 @@ class FAIRCheck:
                             'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
                     except urllib.URLError as e:
                         self.logger.exception(e.reason)
+                    except:
+                        self.logger.warning('FsF-F3-01M : Could not access the resource')
                     else:  # will be executed if there is no exception
                         self.content_identifier.append(content_link)
                         did_output_content.content_identifier_active = True
@@ -477,8 +484,9 @@ class FAIRCheck:
         access_output=DataAccessOutput()
         rights_regex = r'((purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
         access_rights=self.metadata_merged.get('access_level')
-        if access_rights is not None:
-            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+        #print(access_rights)
+        #if access_rights is not None:
+        #    self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
         if isinstance(access_rights,str):
             access_rights=[access_rights]
         if isinstance(access_rights,bool):
@@ -657,7 +665,7 @@ class FAIRCheck:
         return searchable_result.to_dict()
 
     def check_data_file_format(self):
-        open_formats=['image/apng','text/csv','application/json']
+        #open_formats=['image/apng','text/csv','application/json']
         #TODO: add xml txt csv
         text_format_regex=r'(^text)[\/]|[\/\+](xml|text|json)'
         self.count += 1
@@ -668,9 +676,11 @@ class FAIRCheck:
         data_file_format_result = DataFileFormat(id=self.count, metric_identifier=data_file_format_identifier, metric_name=data_file_format_name)
         data_file_format_output = DataFileFormatOutput()
         data_file_list=[]
+        data_file_format_result.score = 0
         if len(self.content_identifier) > 0:
             self.logger.info('FsF-R1.3-02D : Found some object content identifiers')
             for data_file in self.content_identifier:
+                data_file_output = DataFileFormatOutputInner()
                 preferance_reason=[]
                 subject_area=[]
                 mime_type=data_file.get('type')
@@ -678,18 +688,37 @@ class FAIRCheck:
                 # is_prefered_format: boolean
                 # type: list of e.g.['long term format','science format']
                 # domain: list of scientific domains, default: 'General'
-                if mime_type is None:
+                if mime_type is None or mime_type in ['application/octet-stream']:
                     # if mime type not given try to guess it based on the file name
                     guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
                     mime_type=guessed_mime_type[0]
                 if mime_type is not None:
                     # FILE FORMAT CHECKS....
-                    #check if format is a scientific one:
+                    # check if format is a scientific one:
                     if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
-                        preferance_reason.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
+                        if FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type) == 'Generic':
+                            subject_area.append('General')
+                            preferance_reason.append('generic science format')
+                        else:
+                            subject_area.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
+                            preferance_reason.append('science format')
                         data_file_output.is_preferred_format= True
                         data_file_format_result.test_status = 'pass'
-                    data_file_output = DataFileFormatOutputInner()
+
+                    # check if long term format
+                    if mime_type in FAIRCheck.LONG_TERM_FILE_FORMATS:
+                        preferance_reason.append('long term format')
+                        subject_area.append('General')
+                        data_file_output.is_preferred_format = True
+                        data_file_format_result.test_status = 'pass'
+
+                    #TODO: check if open format
+                    if mime_type in FAIRCheck.OPEN_FILE_FORMATS:
+                        preferance_reason.append('open format')
+                        subject_area.append('General')
+                        data_file_output.is_preferred_format = True
+                        data_file_format_result.test_status = 'pass'
+
                     data_file_output.mime_type=mime_type
                     data_file_output.file_uri=data_file.get('url')
                     data_file_list.append(data_file_output)
@@ -700,6 +729,8 @@ class FAIRCheck:
                         data_file_output.is_preferred_format= True
                         data_file_format_result.test_status = 'pass'
 
+                if data_file_format_result.test_status == 'pass':
+                    data_file_format_result.score = 1
                 data_file_output.preference_reason=preferance_reason
                 data_file_output.subject_areas=subject_area
 
@@ -708,6 +739,7 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
             data_file_format_result.test_status='fail'
+
         data_file_format_output=data_file_list
         data_file_format_result.output = data_file_format_output
         if self.isDebug:
