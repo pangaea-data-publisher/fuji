@@ -474,7 +474,7 @@ components:
           type: array
           items:
             type: string
-    DataFileFormat_output_inner:
+DataFileFormat_output_inner:
       type: object
       properties:
         file_uri:
@@ -483,12 +483,17 @@ components:
           type: string
         file_type:
           type: string
-        is_long_term_format:
+        is_preferred_format:
           type: boolean
           default: false
-        is_open_format:
-          type: boolean
-          default: false
+        preference_reason:
+          type: array
+          items:
+            type: string
+        subject_areas:
+          type: array
+          items:
+            type: string
     DataProvenance_output_inner:
       type: object
       properties:

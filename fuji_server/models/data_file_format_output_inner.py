@@ -14,7 +14,7 @@ class DataFileFormatOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, file_uri: str=None, mime_type: str=None, file_type: str=None, is_long_term_format: bool=False, is_open_format: bool=False):  # noqa: E501
+    def __init__(self, file_uri: str=None, mime_type: str=None, file_type: str=None, is_preferred_format: bool=False, preference_reason: List[str]=None, subject_areas: List[str]=None):  # noqa: E501
         """DataFileFormatOutputInner - a model defined in Swagger
 
         :param file_uri: The file_uri of this DataFileFormatOutputInner.  # noqa: E501
@@ -23,31 +23,36 @@ class DataFileFormatOutputInner(Model):
         :type mime_type: str
         :param file_type: The file_type of this DataFileFormatOutputInner.  # noqa: E501
         :type file_type: str
-        :param is_long_term_format: The is_long_term_format of this DataFileFormatOutputInner.  # noqa: E501
-        :type is_long_term_format: bool
-        :param is_open_format: The is_open_format of this DataFileFormatOutputInner.  # noqa: E501
-        :type is_open_format: bool
+        :param is_preferred_format: The is_preferred_format of this DataFileFormatOutputInner.  # noqa: E501
+        :type is_preferred_format: bool
+        :param preference_reason: The preference_reason of this DataFileFormatOutputInner.  # noqa: E501
+        :type preference_reason: List[str]
+        :param subject_areas: The subject_areas of this DataFileFormatOutputInner.  # noqa: E501
+        :type subject_areas: List[str]
         """
         self.swagger_types = {
             'file_uri': str,
             'mime_type': str,
             'file_type': str,
-            'is_long_term_format': bool,
-            'is_open_format': bool
+            'is_preferred_format': bool,
+            'preference_reason': List[str],
+            'subject_areas': List[str]
         }
 
         self.attribute_map = {
             'file_uri': 'file_uri',
             'mime_type': 'mime_type',
             'file_type': 'file_type',
-            'is_long_term_format': 'is_long_term_format',
-            'is_open_format': 'is_open_format'
+            'is_preferred_format': 'is_preferred_format',
+            'preference_reason': 'preference_reason',
+            'subject_areas': 'subject_areas'
         }
         self._file_uri = file_uri
         self._mime_type = mime_type
         self._file_type = file_type
-        self._is_long_term_format = is_long_term_format
-        self._is_open_format = is_open_format
+        self._is_preferred_format = is_preferred_format
+        self._preference_reason = preference_reason
+        self._subject_areas = subject_areas
 
     @classmethod
     def from_dict(cls, dikt) -> 'DataFileFormatOutputInner':
@@ -124,43 +129,64 @@ class DataFileFormatOutputInner(Model):
         self._file_type = file_type
 
     @property
-    def is_long_term_format(self) -> bool:
-        """Gets the is_long_term_format of this DataFileFormatOutputInner.
+    def is_preferred_format(self) -> bool:
+        """Gets the is_preferred_format of this DataFileFormatOutputInner.
 
 
-        :return: The is_long_term_format of this DataFileFormatOutputInner.
+        :return: The is_preferred_format of this DataFileFormatOutputInner.
         :rtype: bool
         """
-        return self._is_long_term_format
+        return self._is_preferred_format
 
-    @is_long_term_format.setter
-    def is_long_term_format(self, is_long_term_format: bool):
-        """Sets the is_long_term_format of this DataFileFormatOutputInner.
+    @is_preferred_format.setter
+    def is_preferred_format(self, is_preferred_format: bool):
+        """Sets the is_preferred_format of this DataFileFormatOutputInner.
 
 
-        :param is_long_term_format: The is_long_term_format of this DataFileFormatOutputInner.
-        :type is_long_term_format: bool
+        :param is_preferred_format: The is_preferred_format of this DataFileFormatOutputInner.
+        :type is_preferred_format: bool
         """
 
-        self._is_long_term_format = is_long_term_format
+        self._is_preferred_format = is_preferred_format
 
     @property
-    def is_open_format(self) -> bool:
-        """Gets the is_open_format of this DataFileFormatOutputInner.
+    def preference_reason(self) -> List[str]:
+        """Gets the preference_reason of this DataFileFormatOutputInner.
 
 
-        :return: The is_open_format of this DataFileFormatOutputInner.
-        :rtype: bool
+        :return: The preference_reason of this DataFileFormatOutputInner.
+        :rtype: List[str]
         """
-        return self._is_open_format
+        return self._preference_reason
 
-    @is_open_format.setter
-    def is_open_format(self, is_open_format: bool):
-        """Sets the is_open_format of this DataFileFormatOutputInner.
+    @preference_reason.setter
+    def preference_reason(self, preference_reason: List[str]):
+        """Sets the preference_reason of this DataFileFormatOutputInner.
 
 
-        :param is_open_format: The is_open_format of this DataFileFormatOutputInner.
-        :type is_open_format: bool
+        :param preference_reason: The preference_reason of this DataFileFormatOutputInner.
+        :type preference_reason: List[str]
         """
 
-        self._is_open_format = is_open_format
+        self._preference_reason = preference_reason
+
+    @property
+    def subject_areas(self) -> List[str]:
+        """Gets the subject_areas of this DataFileFormatOutputInner.
+
+
+        :return: The subject_areas of this DataFileFormatOutputInner.
+        :rtype: List[str]
+        """
+        return self._subject_areas
+
+    @subject_areas.setter
+    def subject_areas(self, subject_areas: List[str]):
+        """Sets the subject_areas of this DataFileFormatOutputInner.
+
+
+        :param subject_areas: The subject_areas of this DataFileFormatOutputInner.
+        :type subject_areas: List[str]
+        """
+
+        self._subject_areas = subject_areas
