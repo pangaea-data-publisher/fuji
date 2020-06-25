@@ -38,6 +38,7 @@ class FAIRCheck:
     SPDX_LICENSE_NAMES = None
     COMMUNITY_STANDARDS_NAMES = None
     COMMUNITY_STANDARDS = None
+    SCIENCE_FILE_FORMATS = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -73,6 +74,8 @@ class FAIRCheck:
         if not cls.COMMUNITY_STANDARDS:
             cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
+        if not cls.SCIENCE_FILE_FORMATS:
+            cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         # if not cls.DATACITE_REPOSITORIES:
         # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
 
@@ -640,7 +643,8 @@ class FAIRCheck:
 
     def check_data_file_format(self):
         open_formats=['image/apng','text/csv','application/json']
-        open_format_regex=r'text\/.+'
+        #TODO: add xml txt csv
+        text_format_regex=r'(^text)[\/]|[\/\+](xml|text|json)'
         self.count += 1
         data_file_format_identifier = 'FsF-R1.3-02D'
         data_file_format_name = FAIRCheck.METRICS.get(data_file_format_identifier).get('metric_name')
@@ -652,21 +656,42 @@ class FAIRCheck:
         if len(self.content_identifier) > 0:
             self.logger.info('FsF-R1.3-02D : Found some object content identifiers')
             for data_file in self.content_identifier:
+                preferance_reason=[]
+                subject_area=[]
                 mime_type=data_file.get('type')
+                #TODO: change output type instead of is_long_term_format etc use:
+                # is_prefered_format: boolean
+                # type: list of e.g.['long term format','science format']
+                # domain: list of scientific domains, default: 'General'
                 if mime_type is None:
                     # if mime type not given try to guess it based on the file name
                     guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
                     mime_type=guessed_mime_type[0]
                 if mime_type is not None:
+                    # FILE FORMAT CHECKS....
+                    #check if format is a scientific one:
+                    if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
+                        preferance_reason.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
+                        data_file_output.is_preferred_format= True
+                        data_file_format_result.test_status = 'pass'
                     data_file_output = DataFileFormatOutputInner()
                     data_file_output.mime_type=mime_type
                     data_file_output.file_uri=data_file.get('url')
                     data_file_list.append(data_file_output)
-                    if re.search(open_format_regex,mime_type):
-                        data_file_output.is_open_format=True
+                    #generic text/xml/json file check
+                    if re.search(text_format_regex,mime_type):
+                        preferance_reason.extend(['long term format','open format','generic science format'])
+                        subject_area.append('General')
+                        data_file_output.is_preferred_format= True
+                        data_file_format_result.test_status = 'pass'
+
+                data_file_output.preference_reason=preferance_reason
+                data_file_output.subject_areas=subject_area
+
                     #if mime_type in open_formats:
 
         else:
+            self.logger.info('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
             data_file_format_result.test_status='fail'
         data_file_format_output=data_file_list
         data_file_format_result.output = data_file_format_output
