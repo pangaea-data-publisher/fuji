@@ -499,7 +499,7 @@ components:
           type: array
           items:
             type: string
-DataFileFormat_output_inner:
+    DataFileFormat_output_inner:
       type: object
       properties:
         file_uri:
@@ -566,4 +566,3 @@ DataFileFormat_output_inner:
       type: http
       scheme: basic
       x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
-
