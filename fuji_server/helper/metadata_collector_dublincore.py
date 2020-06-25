@@ -48,7 +48,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     t = 'isBasedOn'
                                 if t in [None, '']:
                                     t = 'isRelatedTo'
-                                v = {'related_resource':v, 'relation_type':t}
+                                v = [{'related_resource':v, 'relation_type':t}] # must be a list of dict
                                 #v = dict(related_resource=v, relation_type=t)
                             if v:
                                 if elem in dc_core_metadata:
@@ -64,7 +64,6 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                         dc_core_metadata[elem] = temp_list
                                 else:
                                     dc_core_metadata[elem] = v
-
                     if dc_core_metadata.get('related_resources'):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
                         self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(count, source))
