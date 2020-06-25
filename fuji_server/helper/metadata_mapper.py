@@ -22,7 +22,7 @@ class Mapper(Enum):
 
 
     ## ============================ METADATA MAPPINGS ============================ ##
-
+    #https://www.dublincore.org/webinars/2015/openaire_guidelines_promoting_repositories_interoperability_and_supporting_open_access_funder_mandates/slides.pdf
     ACCESS_RIGHT_CODES = {'creativecommons': 'public',
                     'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
                     'OpenAccess': 'public', 'ClosedAccess': 'metadata_only', 'RestrictedAccess': 'restricted',
@@ -30,11 +30,12 @@ class Mapper(Enum):
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
                     }
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+    # dc: rights, dcterm: accessRights, rightsHolder?
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
               'publisher': 'publisher', 'publication_date': 'date', 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
-              'license': 'license', 'data_file_format': 'format', 'access_level':'rights',
+              'license': 'license', 'data_file_format': 'format', 'access_level':['rights','accessRights'],
                 'related_resources':['relation','source']}
 
     # https://ogp.me/
@@ -43,6 +44,7 @@ class Mapper(Enum):
               'object_type': 'og:type', 'publisher': 'og:site_name'}
 
     # Schema.org
+    # conditionsOfAccess, usageInfo?, isAccessibleForFree
     ## A license document that applies to this content, typically indicated by URL.
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
@@ -53,11 +55,13 @@ class Mapper(Enum):
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
                            'summary: description, keywords: keywords, publication_date: datePublished, data_file_format: encodingFormat,' \
                            'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
-                            'access_level:  (isAccessibleForFree || free), '\
+                            'access_level:  (conditionsOfAccess || isAccessibleForFree || free), '\
                             'measured_variable: variableMeasured[*].name || variableMeasured , '\
-                            'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'},{related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
+                            'related_resources: [{related_resource: isPartOf."@id" || isPartOf.url || isPartOf, relation_type: \'isPartOf\'}, {related_resource: "@reverse".isBasedOn."@id" || "@reverse".isBasedOn.url || isBasedOn , relation_type: \'isBasedOn\'}], ' \
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
+    # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
+    # <rightsList><rights>
     DATACITE_JSON_MAPPING = '{object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
                         'creator_last: creators[*].familyName, publisher: publisher, ' \

@@ -6,6 +6,8 @@ import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
+
+import requests
 from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
@@ -57,6 +59,7 @@ class FAIRCheck:
         self.community_standards_uri = {}
         self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
+        self.related_resources = []
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -181,16 +184,7 @@ class FAIRCheck:
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
 
-        self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(
-            self.metadata_merged.get('object_type')))
-
-        # retrieve re3metadata based on pid specified
-        # self.retrieve_re3data()
-
-        # validate and instatiate oai-pmh harvester if the endpoint is valie
-        # if self.oaipmh_endpoint:
-        # if (self.uri_validator(self.oaipmh_endpoint)) and self.pid_url:
-        # self.oaipmh_harvester = OAIMetadataHarvesters(endpoint=self.oaipmh_endpoint, resourceidentifier=self.pid_url)
+        self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
 
         # detect api and standards
         self.retrieve_apis_standards()
@@ -230,6 +224,8 @@ class FAIRCheck:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
             not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
             self.metadata_sources.append(source_schemaorg)
+            if schemaorg_dict.get('related_resources'):
+                self.related_resources.extend(schemaorg_dict.get('related_resources'))
             # add object type for future reference
             for i in not_null_sco:
                 if i in self.reference_elements:
@@ -247,6 +243,8 @@ class FAIRCheck:
                 self.namespace_uri.extend(dc_collector.namespaces)
                 not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                 self.metadata_sources.append(source_dc)
+                if dc_dict.get('related_resources'):
+                    self.related_resources.extend(dc_dict.get('related_resources'))
                 for d in not_null_dc:
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
@@ -289,6 +287,8 @@ class FAIRCheck:
                 not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
                 self.metadata_sources.append(source_dcitejsn)
+                if dcitejsn_dict.get('related_resources'):
+                    self.related_resources.extend(dcitejsn_dict.get('related_resources'))
                 for r in not_null_dcite:
                     if r in self.reference_elements:
                         self.metadata_merged[r] = dcitejsn_dict[r]
@@ -385,27 +385,35 @@ class FAIRCheck:
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutput()
 
+        id_object = None
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
         self.logger.info('FsF-F3-01M : Data object identifier specified {}'.format(id_object))
-        '''
-        #This is testing the wrong thing...
+
+        score = 0
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
-            did_score.earned = did_sc
-            did_result.test_status = "pass"
+            # check resolving status
+            try:
+                request = requests.get(id_object)
+                if request.status_code == 200:
+                    self.logger.info('FsF-F3-01M : Data object identifier active (status code = 200)')
+                    score += 1
+                else:
+                    self.logger.warning("Identifier returned response code: {code}".format(code=request.status_code))
+            except ConnectionError:
+                self.logger.warning('FsF-F3-01M : Object identifier does not exist {}'.format(id_object))
         else:
-            self.logger.warning('FsF-F3-01M : Malformed Dataset Identifier in Metadata!')
-        '''
+            self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
+
         content_list = []
         if contents:
             if isinstance(contents, dict):
                 contents = [contents]
             contents = [c for c in contents if c]
-            did_result.test_status = "fail"
             for content_link in contents:
-                if content_link.get('url')!=None:
+                if content_link.get('url'):
                     self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
@@ -423,8 +431,8 @@ class FAIRCheck:
                             #Accept-Ranges
                         '''
                         #will pass even if the url cannot be accessed which is OK
-                        did_result.test_status = "pass"
-                        did_score.earned=1
+                        #did_result.test_status = "pass"
+                        #did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
                             'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
@@ -435,9 +443,17 @@ class FAIRCheck:
                         did_output_content.content_identifier_active = True
                         content_list.append(did_output_content)
                 else:
-                    self.logger.warning('FsF-F3-01M : Data (content) url is empty.')
+                    self.logger.warning('FsF-F3-01M : Data (content) url is empty - {}'.format(content_link))
+
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
+
+        if content_list:
+            score += 1
+        did_score.earned = score
+        if score > 0: # 1 or 2 assumed to be 'pass'
+            did_result.test_status = "pass"
+
         did_output.content = content_list
         did_result.output = did_output
         did_result.score = did_score
@@ -582,15 +598,14 @@ class FAIRCheck:
         related_sc = int(FAIRCheck.METRICS.get(related_identifier).get('total_score'))
         related_score = FAIRResultCommonScore(total=related_sc)
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
-        related_output = RelatedResourceOutputInner()
+        related_output = IdentifierIncludedOutput()
 
-        if self.metadata_merged.get('related_resources'):
-            related_output = self.metadata_merged['related_resources']
+        #if self.metadata_merged.get('related_resources'):
+        if self.related_resources: #TODO include source of relation
+            related_output = self.related_resources
             related_result.test_status = 'pass'
             related_score.earned = related_sc
-        else:
-            related_score.earned = 0
-            self.logger.warning('FsF-I3-01M : No related resources found in metadata')
+
         related_result.score = related_score
         related_result.output = related_output
         if self.isDebug:

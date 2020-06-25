@@ -13,3 +13,4 @@ swagger-ui-bundle
 Jinja2>=2.10.1
 PyYAML>=5.1
 configparser
+pyopenssl
