@@ -124,7 +124,7 @@ class RequestHelper:
         # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
         graph = None
         try:
-            self.logger.info('%s : Try to parse RDF %s' % (self.metric_id, self.request_url))
+            self.logger.info('%s : Try to parse RDF from %s' % (self.metric_id, self.request_url))
             graph = rdflib.Graph()
             graph.parse(data=response, format=type)
             #queries have to be done in specific metadata collector classes
