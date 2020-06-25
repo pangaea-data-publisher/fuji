@@ -9,6 +9,7 @@ from typing import List, Any
 from urllib.parse import urlparse
 
 import requests
+from SPARQLWrapper import SPARQLWrapper
 from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
@@ -58,12 +59,14 @@ class FAIRCheck:
         self.community_standards_uri = {}
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
+        self.rdf_graph = None
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
         self.count = 0
         FAIRCheck.load_predata()
+        self.extruct = None
 
     @classmethod
     def load_predata(cls):
@@ -165,12 +168,13 @@ class FAIRCheck:
         return uid_result.to_dict(), pid_result.to_dict()
 
     def retrieve_metadata(self, extruct_metadata):
-        if isinstance(extruct_metadata,dict):
-            embedded_exists = [k for k, v in extruct_metadata.items() if v]
+        if isinstance(extruct_metadata, dict):
+            embedded_exists = {k: v for k, v in extruct_metadata.items() if v}
+            self.extruct = embedded_exists.copy()
             self.logger.info(
-                'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists))
+                'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists.keys()))
             if embedded_exists:  # retrieve metadata from landing page
-                self.retrieve_metadata_embedded(extruct_metadata)
+                self.retrieve_metadata_embedded(embedded_exists)
         else:
             self.logger.warning('FsF-F2-01M : No structured metadata embedded in HTML')
 
@@ -195,6 +199,7 @@ class FAIRCheck:
             repoHelper = RepositoryHelper(client_id, self.pid_scheme)
             repoHelper.lookup_re3data()
             self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+            self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
             self.community_standards = repoHelper.getRe3MetadataStandards()
             if self.community_standards:
                 self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
@@ -263,6 +268,7 @@ class FAIRCheck:
         if isinstance(self.landing_html, str):
             dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
+
             for l in links:
                 href=l.attrib.get('href')
                 #handle relative paths
@@ -776,7 +782,7 @@ class FAIRCheck:
                 mime_type=data_file.get('type')
                 #TODO: change output type instead of is_long_term_format etc use:
                 # is_prefered_format: boolean
-                # type: list of e.g.['long term format','science format']
+                # type: ['long term format','science format']
                 # domain: list of scientific domains, default: 'General'
                 if mime_type is None:
                     # if mime type not given try to guess it based on the file name
@@ -852,7 +858,7 @@ class FAIRCheck:
             communitystd_score.earned = communitystd_sc
             communitystd_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-01M : No community standard found')
+            self.logger.warning('FsF-R1.3-01M : Unable to determine community standard')
 
         communitystd_result.score = communitystd_score
         communitystd_result.output = standards_detected
@@ -924,3 +930,114 @@ class FAIRCheck:
         data_provenance_result.output = data_provenance_output
 
         return data_provenance_result.to_dict()
+
+
+    def check_formal_metadata(self):
+        self.count += 1
+        formal_meta_identifier = 'FsF-I1-01M'
+        formal_meta_name = FAIRCheck.METRICS.get(formal_meta_identifier).get('metric_name')
+        formal_meta_sc = int(FAIRCheck.METRICS.get(formal_meta_identifier).get('total_score'))
+        formal_meta_score = FAIRResultCommonScore(total=formal_meta_sc)
+        formal_meta_result = DataProvenance(id=self.count, metric_identifier=formal_meta_identifier, metric_name=formal_meta_name)
+
+        outputs = []
+        score = 0
+        test_status = 'fail'
+        search_values = [self.metadata_merged.get('object_identifier'), self.landing_url, self.metadata_merged.get('title')]
+        search_values= [str(x) for x in search_values if x is not None]
+        #source = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"] # allowed values
+
+        #1. light-weight check (structured_data), expected keys from extruct ['json-ld','rdfa']
+        self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
+        if MetaDataCollector.Sources.SCHEMAORG_EMBED.value in self.metadata_sources:
+            outputs.append(FormalMetadataOutputInner(serialization_format='JSON-LD', source='structured_data', is_metadata_found=True))
+            self.logger.info('{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'JSON-LD'))
+            score += 1
+        else:
+            if self.extruct:
+                if 'rdfa' in self.extruct.keys():
+                    self.logger.info('{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'RDFa'))
+                    self.logger.info('{0} : Searching \'proxy\' values in RDFa representation - {1}'.format(formal_meta_identifier, search_values))
+                    rdfa_doc = str(self.extruct.get('rdfa')).lower()
+                    for s in search_values:
+                        #  takes in the shortest string (s) and the matches with all substrings of the other string (rdfa_doc)
+                        partial_ratio = fuzz.partial_ratio(s.lower(), rdfa_doc)
+                        if partial_ratio > 70: # heuristic score
+                            self.logger.info('{0} : RDFa document seems to represent the data object, proxy found'.format(formal_meta_identifier))
+                            outputs.append(FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data', is_metadata_found=True))
+                            score += 1
+                            break
+        if len(outputs)==0:
+            self.logger.warning('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
+
+        # 2. hard check (typed-link, content negotiate)
+        # 2a. in the object page, you may find a <link rel="alternate" type="application/rdf+xml" … />
+        rdf_datalinks = self.get_html_typed_links("alternate")
+        self.logger.info('{0} : Check if RDF-based typed link included'.format(formal_meta_identifier))
+        if rdf_datalinks:
+            for rdoc in rdf_datalinks:
+                #type = rdoc.get('type')
+                url = rdoc.get('url')
+                self.logger.info('{0} : RDF-based typed link found - {1}'.format(formal_meta_identifier, url))
+                requestHelper = RequestHelper(url, self.logger)
+                requestHelper.setAcceptType(AcceptTypes.default)
+                response = requestHelper.content_negotiate(formal_meta_identifier)
+                content_type = requestHelper.getHTTPResponse().headers['content-type']
+                content_type = content_type.split(";", 1)[0]
+                #status_code = requestHelper.getHTTPResponse().status_code
+                if response:
+                    self.logger.info('{0} : RDF graph retrieved, content type - {1}'.format(formal_meta_identifier, content_type))
+                    outputs.append(FormalMetadataOutputInner(serialization_format=content_type, source='typed_link',
+                                                         is_metadata_found=True))
+                    self.rdf_graph = response
+                    score += 1
+                    break
+                else:
+                    self.logger.info('{0} : Typed link included, but not accessible'.format(formal_meta_identifier))
+        else:
+            self.logger.warning('{0} : NO RDF-based typed link found'.format(formal_meta_identifier))
+
+        #2b.content negotiate
+        #if not rdf_graph and self.pid_scheme:
+        rdf_mime_types = AcceptTypes.rdf.value
+        if not self.rdf_graph:
+            self.logger.info('{0} : Check if RDF metadata available through content negotiation'.format(formal_meta_identifier))
+            requestHelper = RequestHelper(self.pid_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.rdf)
+            response_nego = requestHelper.content_negotiate(formal_meta_identifier)
+            type_nego = requestHelper.getHTTPResponse().headers['content-type']
+            type_nego = type_nego.split(";", 1)[0]
+            if any(type_nego in item for item in rdf_mime_types) and response_nego:
+                outputs.append(FormalMetadataOutputInner(serialization_format=type_nego, source='content_negotiate',
+                                                         is_metadata_found=True))
+                self.rdf_graph = response_nego
+                score += 1
+            else:
+                self.logger.warning('{0} : Seems like non-rdf response retrieved, content type - {1}'.format(formal_meta_identifier, type_nego))
+
+        # 2c. try to retrieve via sparql endpoint (if available)
+        if not self.rdf_graph:
+            self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
+            #self.sparql_endpoint = 'https://isidore.science/sparql' #test endpoint
+
+            if self.sparql_endpoint: #TODO, reuse dcat?
+                queryString = ""
+                sparql = SPARQLWrapper(self.sparql_endpoint)
+                sparql.setQuery(queryString)
+                #sparql.setReturnFormat(JSON)
+                try:
+                    self.rdf_graph = sparql.query().convert()
+                except Exception as e:
+                    self.logger.warning(e)
+            else:
+                self.logger.warning('{0} : No SPARQL endpoint found through the object URI provided'.format(formal_meta_identifier))
+
+        if score > 0:
+            test_status = 'pass'
+        formal_meta_result.test_status = test_status
+        formal_meta_score.earned = score
+        formal_meta_result.score = formal_meta_score
+        formal_meta_result.output = outputs
+        if self.isDebug:
+            formal_meta_result.test_debug = self.msg_filter.getMessage(formal_meta_identifier)
+        return formal_meta_result.to_dict()
