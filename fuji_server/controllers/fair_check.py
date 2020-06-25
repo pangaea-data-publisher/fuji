@@ -60,6 +60,7 @@ class FAIRCheck:
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
         self.rdf_graph = None
+        self.sparql_endpoint = None
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -78,8 +79,8 @@ class FAIRCheck:
         if not cls.COMMUNITY_STANDARDS:
             cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
-        if not cls.SCIENCE_FILE_FORMATS:
-            cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
+        #if not cls.SCIENCE_FILE_FORMATS:
+            #cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         # if not cls.DATACITE_REPOSITORIES:
         # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
 
@@ -970,7 +971,7 @@ class FAIRCheck:
         if len(outputs)==0:
             self.logger.warning('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
 
-        # 2. hard check (typed-link, content negotiate)
+        # 2. hard check (typed-link, content negotiate, sparql endpoint)
         # 2a. in the object page, you may find a <link rel="alternate" type="application/rdf+xml" … />
         rdf_datalinks = self.get_html_typed_links("alternate")
         self.logger.info('{0} : Check if RDF-based typed link included'.format(formal_meta_identifier))
@@ -1007,7 +1008,8 @@ class FAIRCheck:
             response_nego = requestHelper.content_negotiate(formal_meta_identifier)
             type_nego = requestHelper.getHTTPResponse().headers['content-type']
             type_nego = type_nego.split(";", 1)[0]
-            if any(type_nego in item for item in rdf_mime_types) and response_nego:
+            #if any(type_nego in item for item in rdf_mime_types) and response_nego:
+            if response_nego and type_nego in AcceptTypes.rdf.value:
                 outputs.append(FormalMetadataOutputInner(serialization_format=type_nego, source='content_negotiate',
                                                          is_metadata_found=True))
                 self.rdf_graph = response_nego
@@ -1019,7 +1021,6 @@ class FAIRCheck:
         if not self.rdf_graph:
             self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
             #self.sparql_endpoint = 'https://isidore.science/sparql' #test endpoint
-
             if self.sparql_endpoint: #TODO, reuse dcat?
                 queryString = ""
                 sparql = SPARQLWrapper(self.sparql_endpoint)
