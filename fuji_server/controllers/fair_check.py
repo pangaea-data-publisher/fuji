@@ -1076,7 +1076,7 @@ class FAIRCheck:
             response_nego = requestHelper.content_negotiate(formal_meta_identifier)
             type_nego = requestHelper.getHTTPResponse().headers['content-type']
             type_nego = type_nego.split(";", 1)[0]
-            #if any(type_nego in item for item in rdf_mime_types) and response_nego:
+
             if response_nego and type_nego in AcceptTypes.rdf.value:
                 outputs.append(FormalMetadataOutputInner(serialization_format=type_nego, source='content_negotiate',
                                                          is_metadata_found=True))
@@ -1099,7 +1099,7 @@ class FAIRCheck:
                 except Exception as e:
                     self.logger.warning(e)
             else:
-                self.logger.warning('{0} : No SPARQL endpoint found through the object URI provided'.format(formal_meta_identifier))
+                self.logger.warning('{0} : No SPARQL endpoint found through re3data based on the object URI provided'.format(formal_meta_identifier))
 
         if score > 0:
             test_status = 'pass'
@@ -1110,3 +1110,16 @@ class FAIRCheck:
         if self.isDebug:
             formal_meta_result.test_debug = self.msg_filter.getMessage(formal_meta_identifier)
         return formal_meta_result.to_dict()
+
+    def check_semantic_vocabulary(self):
+        self.count += 1
+        semanticvocab_identifier = 'FsF-I1-02M'
+        semanticvocab_name = FAIRCheck.METRICS.get(semanticvocab_identifier).get('metric_name')
+        semanticvocab_sc = int(FAIRCheck.METRICS.get(semanticvocab_identifier).get('total_score'))
+        semanticvocab_score = FAIRResultCommonScore(total=semanticvocab_sc)
+        semanticvocab_result = DataProvenance(id=self.count, metric_identifier=semanticvocab_identifier, metric_name=semanticvocab_name)
+
+        if self.isDebug:
+            semanticvocab_result.test_debug = self.msg_filter.getMessage(semanticvocab_identifier)
+        return semanticvocab_result.to_dict()
+
