@@ -146,3 +146,9 @@ class RequestHelper:
     # RDFa media type is application/xhtml+xml and the encoding is UTF-8.
     # TODO handle 406 Not Acceptable or 300 Multiple Choices
     # TODO transform accept_types and parser types into a class
+
+    def parse_xml(self, response, type):
+        # TODO: implement a generic XML parsing which checks domain specific
+        # document schema and performs a XSLT to get metadata elements
+        # write some domain specific XSLTs and/or parsers
+        print('Not yet implemented')
