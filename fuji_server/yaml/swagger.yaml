@@ -223,6 +223,15 @@ components:
             $ref: '#/components/schemas/DataProvenance_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
+    DataContentMetadata:
+      allOf:
+        - $ref: '#/components/schemas/FAIRResultCommon'
+        - type: object
+          properties:
+            output:
+              $ref: '#/components/schemas/DataContentMetadata_output'
+            test_debug:
+              $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
       type: object
       properties:
@@ -363,7 +372,17 @@ components:
           $ref: '#/components/schemas/DataProvenance_output_inner'
         structured_provenance_available:
           $ref: '#/components/schemas/DataProvenance_output_inner'
-
+    DataContentMetadata_output:
+      type: object
+      properties:
+        has_content_descriptors:
+          type: boolean
+          default: False
+        data_content_descriptor:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/DataContentMetadata_output_inner'
     Metrics:
       type: object
       properties:
@@ -501,6 +520,16 @@ DataFileFormat_output_inner:
           additionalProperties:
             type: string
 
+    DataContentMetadata_output_inner:
+      type: object
+      properties:
+        descriptor_name:
+          type: string
+        descriptor_type:
+          type: string
+        matchescontent:
+          type: boolean
+          default: False
 
   responses:
     UnauthorizedError:

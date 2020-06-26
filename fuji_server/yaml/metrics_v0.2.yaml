@@ -72,7 +72,7 @@ metrics:
   date_created: 2020-02-29
   date_updated: 2020-02-29
   version: 0.2
-  total_score: 2
+  total_score: 1
 
 - metric_identifier: FsF-I1-01M
   metric_name: Semantic representation of metadata
@@ -137,6 +137,18 @@ metrics:
 - metric_identifier: FsF-R1.2-01M
   metric_name: Data Provenance
   description: Metadata includes provenance information about data collection or generation. It is essential to provide provenance information about your data to enable its use and reuse. Data provenance (also known as lineage) represents its history, including people, entities, and processes involved in the data creation.
+  fair_principle: R1.2
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 0.2
+  total_score: 2
+
+- metric_identifier: FsF-R1-01MD
+  metric_name: Metadata of Data Content
+  description: Metadata includes the descriptions of the content of the data.
   fair_principle: R1.2
   question_type: single-choice
   evaluation_mechanism: to-do

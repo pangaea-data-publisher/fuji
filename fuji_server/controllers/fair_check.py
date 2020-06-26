@@ -28,6 +28,9 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 #from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
+from fuji_server.models.data_content_metadata import DataContentMetadata
+from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
+from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 
@@ -55,6 +58,7 @@ class FAIRCheck:
         self.logger = logging.getLogger(self.__class__.__name__)
         self.metadata_sources = []
         self.isDebug = test_debug
+        self.isRestricted = False
         self.metadata_merged = {}
         self.content_identifier=[]
         self.community_standards = []
@@ -62,6 +66,7 @@ class FAIRCheck:
         self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
+        self.test_data_content_text = None# a helper to check metadata against content
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -404,9 +409,14 @@ class FAIRCheck:
             try:
                 request = requests.get(id_object)
                 if request.status_code == 200:
+                    #TODO: handle binary content
+                    if self.test_data_content_text == None:
+                        self.test_data_content_text = request.text
                     self.logger.info('FsF-F3-01M : Data object identifier active (status code = 200)')
                     score += 1
                 else:
+                    if request.status_code in [401,402,403]:
+                        self.isRestricted = True
                     self.logger.warning("Identifier returned response code: {code}".format(code=request.status_code))
             except:
                 self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
@@ -431,10 +441,9 @@ class FAIRCheck:
                         content_link['header_content_length'] = response.getheader('Content-Length')
 
                         if content_link['header_content_type'] != content_link.get('type'):
-                            content_link['type']=content_link['header_content_type']
-                            self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response')
-                            self.logger.info('FsF-F3-01M : Replacing content type with content type from Header response')
-
+                            self.logger.warning('FsF-F3-01M : Content type given in metadata ('+str(content_link.get('type'))+') differs from content type given in Header response ('+str(content_link['header_content_type'])+')')
+                            self.logger.info('FsF-F3-01M : Replacing metadata content type with content type from Header response: '+str(content_link['header_content_type']))
+                            content_link['type'] = content_link['header_content_type']
                         #will pass even if the url cannot be accessed which is OK
                         #did_result.test_status = "pass"
                         #did_score.earned=1
@@ -521,6 +530,10 @@ class FAIRCheck:
                     self.logger.warning('FsF-A1-01M : No access rights information is available in metadata')
                     access_result.test_status = "fail"
                     access_score.earned = 0
+                else:
+                    if self.isRestricted and right_status == 'public':
+                        self.logger.warning('FsF-A1-01M : Public access claimed in metadata but object content access is restricted (response status in [401,402,403])')
+                        access_score.earned = 0
             else:
                 self.logger.warning('FsF-A1-01M : No access rights or licence information is included in metadata')
         access_result.score=access_score
@@ -887,3 +900,32 @@ class FAIRCheck:
         data_provenance_result.output = data_provenance_output
 
         return data_provenance_result.to_dict()
+
+    def check_data_content_metadata(self):
+        #initially verification is restricted to the first file:
+        data_content_metadata_identifier = 'FsF-R1-01MD'
+        data_content_metadata_name = FAIRCheck.METRICS.get(data_content_metadata_identifier).get('metric_name')
+        data_content_metadata_sc = int(FAIRCheck.METRICS.get(data_content_metadata_identifier).get('total_score'))
+        data_content_metadata_score = FAIRResultCommonScore(total=data_content_metadata_sc)
+        data_content_metadata_result = DataContentMetadata(id=self.count, metric_identifier=data_content_metadata_identifier,
+                                                metric_name=data_content_metadata_name)
+        data_content_metadata_output = DataContentMetadataOutput()
+        data_content_metadata_result.score = 0
+        data_content_metadata_output.data_content_descriptor=[]
+        if 'measured_variable' in self.metadata_merged:
+            self.logger.info('FsF-R1-01MD : Found measured variables as content descriptor')
+            data_content_metadata_result.score = 1
+            data_content_metadata_result.test_status = 'pass'
+            data_content_metadata_output.has_content_descriptors= True
+            for variable in self.metadata_merged['measured_variable']:
+                data_content_metadata_inner = DataContentMetadataOutputInner()
+                data_content_metadata_inner.descriptor_name=variable
+                data_content_metadata_inner.descriptor_type='measured_variable'
+                if variable in self.test_data_content_text:
+                    data_content_metadata_inner.matchescontent = True
+                    data_content_metadata_result.score = 2
+                data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
+
+        data_content_metadata_result.output=data_content_metadata_output
+
+        return data_content_metadata_result.to_dict()
