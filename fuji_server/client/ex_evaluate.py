@@ -26,7 +26,29 @@ testpids=[
     'https://doi.pangaea.de/10.1594/PANGAEA.866933','10.17026/dans-z56-fz75','http://data.europa.eu/89h/jrc-eplca-898618b5-3306-11dd-bd11-0800200c9a66',
     'https://www.govdata.de/web/guest/suchen/-/details/temperatur-des-meerwassers-20172b0eb','doi:10.26050/WDCC/MOMERGOMBSCMAQ'
 ]
-#testpids=['doi:10.25504/FAIRsharing.2bdvmk']
+
+#testpids=['https://lithologs.net/?action=view&oid=470']
+# rdf links:
+#testpids=['http://bio2rdf.org/affymetrix:1415765_at','https://www.data.gv.at/katalog/dataset/b8dac7af-5c8a-4936-9abe-e1dbbdd8dd4f','https://identifiers.org/ena.embl:BN000065','https://www.ebi.ac.uk/biosamples/samples/SAMN14168013']
+testpids=['https://data.gov.lv/dati/lv/dataset/covid-19','https://www.data.gouv.fr/datasets/5e7e104ace2080d9162b61d8','https://www.data.gv.at/katalog/dataset/b8dac7af-5c8a-4936-9abe-e1dbbdd8dd4f','https://datos.gob.es/es/catalogo/e05070101-evolucion-de-enfermedad-por-el-coronavirus-covid-19']
+#testpids=['https://doi.org/10.26050/WDCC/MOMERGOMBSCMAQ']
+#testpids=['https://data.gov.lv/dati/lv/dataset/covid-19']
+#ontologies
+#testpids=['https://raw.githubusercontent.com/obi-ontology/obi/v2020-04-23/obi.owl']
+#testpids=['http://vocab.nerc.ac.uk/collection/L22/current/','http://purl.org/vocommons/voaf','http://purl.obolibrary.org/obo/bfo.owl']
+#testpids=['http://purl.obolibrary.org/obo/bfo.owl']
+#testpids=['https://raw.githubusercontent.com/BFO-ontology/BFO/v2019-08-26/bfo_classes_only.owl']
+#testpids=['http://vocab.nerc.ac.uk/collection/L05/current/']
+#social sciences
+#testpids=['https://doi.org/10.4232/1.13491','http://dx.doi.org/10.18712/NSD-NSD2202-2-v1','http://doi.org/10.5255/UKDA-SN-854270']
+#testpids=['https://doi.org/10.1594/PANGAEA.896660']
+#testpids=['http://sweetontology.net/matrRockIgneous']
+#clarin linguistics
+#testpids=['http://hdl.handle.net/20.500.12124/7','http://hdl.handle.net/11495/DAB8-B44B-E8C8-2']
+#restricted
+#testpids=['https://doi.pangaea.de/10.1594/PANGAEA.919306']
+
+startpid=None
 def main():
     config = ConfigParser.ConfigParser()
     my_path = Path(__file__).parent.parent
@@ -49,20 +71,33 @@ def main():
     preproc.retrieve_licenses(SPDX_URL, isDebug)
     preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
+    preproc.retrieve_science_file_formats(isDebug)
+    preproc.retrieve_long_term_file_formats(isDebug)
 
     print('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
+    start=False
     for identifier in testpids:
-        ft = FAIRCheck(uid=identifier, oai=oai_pmh, test_debug=debug)
-        uid_result, pid_result = ft.check_unique_persistent()
-        core_metadata_result = ft.check_minimal_metatadata()
-        content_identifier_included_result = ft.check_content_identifier_included()
-        check_searchable_result = ft.check_searchable()
-        license_result = ft.check_license()
-        relatedresources_result = ft.check_relatedresources()
-        results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, license_result]
-        print(json.dumps(results, indent=4, sort_keys=True))
+        print (identifier)
+        if identifier==startpid or not startpid:
+            start=True
+        if start:
+            ft = FAIRCheck(uid=identifier,  test_debug=debug)
+            uid_result, pid_result = ft.check_unique_persistent()
+            core_metadata_result = ft.check_minimal_metatadata()
+            content_identifier_included_result = ft.check_content_identifier_included()
+            check_searchable_result = ft.check_searchable()
+            license_result = ft.check_license()
+            relatedresources_result = ft.check_relatedresources()
+            access_level_result=ft.check_data_access_level()
+            data_file_format_result=ft.check_data_file_format()
+            data_provenance_result=ft.check_data_provenance()
+            community_standards_result=ft.check_community_metadatastandards()
+            data_content_metadata = ft.check_data_content_metadata()
+            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, license_result, data_file_format_result,data_provenance_result,community_standards_result,data_content_metadata]
+            #results=[data_file_format_result]
+            print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':
     main()
