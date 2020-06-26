@@ -15,7 +15,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
     def __init__(self, mapping, pid_url=None, loggerinst=None):
         super().__init__(logger=loggerinst, mapping=mapping)
         self.pid_url = pid_url
-        self.exclude_conversion = ['creator', 'license', 'related_resources']
+        self.exclude_conversion = ['creator', 'license', 'related_resources', 'access_level']
 
     def parse_metadata(self):
         source_name = None

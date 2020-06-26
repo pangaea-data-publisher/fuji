@@ -58,6 +58,10 @@ class MetaDataCollectorSparql (MetaDataCollector):
         #TODO creators, contributors
         meta['creator'] = g.value(item, DC.creator)
         meta['license'] = g.value(item, DCTERMS.license)
+        # quick fix (avoid rdflib literal type exception)
+        for v in [meta['title'],meta['summary'], meta['publisher']]:
+            if v:
+                v = v.toPython()
         return meta
 
     def get_ontology_metadata(self, graph):

@@ -5,7 +5,6 @@ metrics:
   metric_name: Globally unique identifier
   description: The data is assigned with a globally unique identifier such that it can be referenced unambiguously on the Web. In other words, the identifier should be associated with only one dataset at any time. Examples of unique identifiers of data are Uniform Resource Identifier (URI), Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). We make a distinction between persistence (FsF-F1-02D) and uniqueness of an identifier. An HTTP URL is globally unique, but is not persistent, whereas a DOI is both globally unique and persistent.
   fair_principle: F1
-  question_type: single-choice
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -17,7 +16,6 @@ metrics:
   metric_name: Persistent identifier
   description: The data is assigned with a persistent identifier to ensure the resolvability of the identifier in the long term. The identifier may be resolved to its digital object (e.g., a data file or a web service that returns the data), or to a data proxy (e.g., an online page that contains metadata, including the link to access the data).
   fair_principle: F1
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -29,7 +27,6 @@ metrics:
   metric_name: Descriptive (core) metadata
   description: Metadata is descriptive information of data. Since the metadata required depends on users and their applications, this metric focuses on core metadata, which are the minimum metadata required for data citation and discoverability. We determine the required metadata based on the existing data citation guidelines, e.g., DataCite, ESIP, and IASSIST, and metadata recommendations for data discovery, e.g., DataCite Metadata Schema and RDA Metadata Interest Group. This metric focuses on domain-agnostic core metadata; we address domain or discipline-specific metadata through the metric FsF-R1-01M.
   fair_principle: F2
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -42,7 +39,6 @@ metrics:
   metric_name: Inclusion of data identifier in metadata
   description: The metadata includes the identifier of the data such that users can access the data through the metadata.
   fair_principle: F3
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -54,7 +50,6 @@ metrics:
   metric_name: Searchable metadata
   description: This metric refers to various ways through which the metadata of data is exposed or offered in a machine-readable format. For example, metadata may be offered through a general or domain/discipline specific metadata registry. It may be embedded as structured data (e.g., schema.org implementation)  on a data page for use by web search engines such as Google and Bing.
   fair_principle: F4
-  question_type: multiple-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -66,7 +61,6 @@ metrics:
   metric_name: Data Access Level
   description: This metric determines if the metadata includes the level of access to the data such as public, embargoed, restricted, or closed access. It is recommended that data should be as open as possible and as closed as necessary. Datasets should be public domain and openly accessible without restrictions when possible. Embargoed access refers to data that will be made publicly accessible at a specific date which should be specified in the metadata. For example, a data author may release their data after having published their findings from the data. Restricted access refers to data that can be accessed under certain conditions (e.g. because of commercial, sensitive, or other confidentiality reasons or the data is only accessible via a subscription or a fee). Restricted data may be available to a particular group of users or after permission is granted. For restricted data, the metadata should include the conditions of access to the data (e.g., point of contact or instructions to access the data). Closed access refers to data that is not made publicly available and for which only metadata is publicly available.
   fair_principle: A1
-  question_type: multiple-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -75,10 +69,9 @@ metrics:
   total_score: 1
 
 - metric_identifier: FsF-I1-01M
-  metric_name: Semantic representation of metadata
-  description: To make metadata more understandable to humans and machines, they are described with semantic vocabularies. Ontology, thesaurus, taxonomy are kinds of semantic vocabularies, and they come with different degrees of expressiveness, structure, and inferential power. Metadata may use semantic vocabularies in various ways. For example, semantic vocabularies may be embedded as controlled vocabularies in the metadata or the metadata web page (e.g., microformats and RDFa or JSON-LD). Metadata may also be published as linked data using semantic vocabularies.
+  metric_name: Formal Representation of Metadata
+  description: Knowledge representation is vital for machine-interpretation of the knowledge of a domain. Expressing the metadata of a data object using a formal knowledge representation will enable machines to interpret it in a meaningful way and enable more data exchange possibilities. Examples of knowledge representation languages are RDF, RDFS, and OWL. These languages may be serialized (written) in different formats. For instance, RDF/XML, RDFa, Notation3, Turtle, N-Triples and N-Quads, and JSON-LD are RDF serialization formats.
   fair_principle: I1
-  question_type: multiple-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -86,11 +79,21 @@ metrics:
   version: 0.2
   total_score: 2
 
+- metric_identifier: FsF-I1-02M
+  metric_name: Metadata with Semantic Vocabularies
+  description: A metadata document or selected parts of the document may incorporate additional terms from semantic resources (also referred as semantic artefacts) so that the contents are unambiguous and can be interpreted automatically by machines. This enrichment facilitates enhanced data search and interoperability of data from different sources. Ontology, thesaurus, and taxonomy are kinds of semantic resources, and they come with varying degrees of expressiveness and computational complexity. Knowledge organization schemes such as thesaurus and taxonomy are semantically less formal than ontologies.
+  fair_principle: I1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 0.2
+  total_score: 1
+
 - metric_identifier: FsF-I3-01M
   metric_name: Links to related entities
   description: Linking data to its related entities will increase its FAIRness, and the linking information should be captured as part of the metadata. A rich research graph (e.g., PID graph) can be formed by aggregating the entities connections from different data providers. A data object may be linked to its prior version, other datasets in the same data collection, related publications, source (instrument), data creators or collectors and organization (e.g., funder and hosting institution). Qualified references refer to the meaningful links between data and its related entities expressed through relation types. It is also essential to tests if the URL of the related entities are active.
   fair_principle: R1.1
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -102,7 +105,6 @@ metrics:
   metric_name: Data Usage License
   description: In general, all data should be licensed because otherwise, users cannot easily reuse them in a legally sound way. This includes standard (e.g., Creative Commons) or bespoke licenses, and rights statement which indicate the conditions under which data can be reused. It is highly recommended to use a standard, machine-readable license such that it can be interpreted by machines and humans. In order to inform users about what rights they have to use a dataset, the license information should be specified as part of the dataset’s metadata.
   fair_principle: R1.1
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -114,7 +116,6 @@ metrics:
   metric_name: Community-Endorsed Metadata
   description: In addition to core metadata required to support data finding covered under metric FsF-F2-01M, metadata to support data reusability should be made available following community-endorsed metadata standards. Community metadata standards may exhibit different levels of readiness. Some communities have well-established metadata standards (e.g., geospatial - ISO19115, biodiversity - DarwinCore, ABCD, EML, social science - DDI, astronomy - International Virtual Observatory Alliance Technical Specifications). In contrast, others, including new domains, may have limited standards or standards that are under development (e.g., engineering and linguistics). The use of community-endorsed metadata standards is usually encouraged and supported by domain and discipline-specific repositories.
   fair_principle: R1.3
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -126,7 +127,6 @@ metrics:
   metric_name: Data File format
   description: File formats refer to methods for encoding digital information. For example, CSV for tabular data, NetCDF for multidimensional data and GeoTIFF for raster imagery. Data should be made available in a preferred file format that is accepted by the research community to enable data sharing and reuse. Preferred formats are formats that are widely used and supported by the most commonly used software and tools. These formats also should be suitable for long-term storage and archiving. Preferred formats not only give a higher certainty that your data can be read in the future, but they will also help to increase the reusability and interoperability. Using preferred formats enables data to be loaded directly into the software and tools used for data analysis. It makes it possible to easily integrate your data with other data using the same preferred format. The use of preferred formats will also help to transform the format to a newer one, in case a preferred format gets outdated.
   fair_principle: R1.3
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29
@@ -138,7 +138,6 @@ metrics:
   metric_name: Data Provenance
   description: Metadata includes provenance information about data collection or generation. It is essential to provide provenance information about your data to enable its use and reuse. Data provenance (also known as lineage) represents its history, including people, entities, and processes involved in the data creation.
   fair_principle: R1.2
-  question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-02-29

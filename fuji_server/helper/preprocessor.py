@@ -41,13 +41,14 @@ class Preprocessor(object):
         cls.total_metrics = len(cls.all_metrics_list)
 
         # expected output format of http://localhost:1071/uji/api/v1/metrics
-        unwanted_keys = ['question_type']
+        #unwanted_keys = ['question_type']
         cls.formatted_specification['total'] = cls.total_metrics
-        temp_list = []
-        for dictm in cls.all_metrics_list:
-            temp_dict = {k: v for k, v in dictm.items() if k not in unwanted_keys}
-            temp_list.append(temp_dict)
-        cls.formatted_specification['metrics'] = temp_list
+        #temp_list = []
+        #for dictm in cls.all_metrics_list:
+            #temp_dict = {k: v for k, v in dictm.items() if k not in unwanted_keys}
+            #temp_list.append(dictm)
+        #cls.formatted_specification['metrics'] = temp_list
+        cls.formatted_specification['metrics'] = cls.all_metrics_list
 
     @classmethod
     def retrieve_datacite_re3repos(cls, re3_endpoint, datacite_endpoint, isDebugMode):
@@ -180,7 +181,7 @@ class Preprocessor(object):
     @classmethod
     def get_licenses(cls):
         if not cls.all_licenses:
-            cls.retrieve_licenses(cls.SPDX_URL)
+            cls.retrieve_licenses(cls.SPDX_URL, True)
         #return cls.all_licenses, cls.license_names, cls.license_urls
         return cls.all_licenses, cls.license_names
 

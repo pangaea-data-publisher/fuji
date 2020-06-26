@@ -8,7 +8,6 @@ import connexion
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
 
-
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

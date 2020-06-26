@@ -25,7 +25,7 @@ class Mapper(Enum):
     #https://www.dublincore.org/webinars/2015/openaire_guidelines_promoting_repositories_interoperability_and_supporting_open_access_funder_mandates/slides.pdf
     ACCESS_RIGHT_CODES = {'creativecommons': 'public', 'creative commons': 'public',
                     'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
-                    'OpenAccess': 'public', 'ClosedAccess': 'metadata_only', 'RestrictedAccess': 'restricted',
+                    'OpenAccess': 'public', 'ClosedAccess': 'closed_metadataonly', 'RestrictedAccess': 'restricted',
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
                     }
@@ -36,6 +36,7 @@ class Mapper(Enum):
               'publisher': 'publisher', 'publication_date': ['date','available'], 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
               'license': 'license', 'data_file_format': 'format', 'access_level':['rights','accessRights'],
+                  'date_available':'available',
                 'related_resources':['relation','source']}
 
     # https://ogp.me/

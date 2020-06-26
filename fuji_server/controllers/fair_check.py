@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import logging
 import mimetypes
 import re
@@ -8,6 +9,7 @@ from typing import List, Any
 from urllib.parse import urlparse
 
 import requests
+from SPARQLWrapper import SPARQLWrapper
 from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
@@ -33,8 +35,6 @@ from fuji_server.models.data_content_metadata_output import DataContentMetadataO
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
-
-from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner
 
 
 class FAIRCheck:
@@ -63,16 +63,18 @@ class FAIRCheck:
         self.content_identifier=[]
         self.community_standards = []
         self.community_standards_uri = {}
-        self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
         self.test_data_content_text = None# a helper to check metadata against content
+        self.rdf_graph = None
+        self.sparql_endpoint = None
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
         self.count = 0
         FAIRCheck.load_predata()
+        self.extruct = None
 
     @classmethod
     def load_predata(cls):
@@ -178,12 +180,13 @@ class FAIRCheck:
         return uid_result.to_dict(), pid_result.to_dict()
 
     def retrieve_metadata(self, extruct_metadata):
-        if isinstance(extruct_metadata,dict):
-            embedded_exists = [k for k, v in extruct_metadata.items() if v]
+        if isinstance(extruct_metadata, dict):
+            embedded_exists = {k: v for k, v in extruct_metadata.items() if v}
+            self.extruct = embedded_exists.copy()
             self.logger.info(
-                'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists))
+                'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists.keys()))
             if embedded_exists:  # retrieve metadata from landing page
-                self.retrieve_metadata_embedded(extruct_metadata)
+                self.retrieve_metadata_embedded(embedded_exists)
         else:
             self.logger.warning('FsF-F2-01M : No structured metadata embedded in HTML')
 
@@ -208,8 +211,8 @@ class FAIRCheck:
             repoHelper = RepositoryHelper(client_id, self.pid_scheme)
             repoHelper.lookup_re3data()
             self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+            self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
             self.community_standards = repoHelper.getRe3MetadataStandards()
-            #self.community_standards=False
             if self.community_standards:
                 self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
             else: # fallback get standards defined in api, e.g., oai-pmh
@@ -218,7 +221,6 @@ class FAIRCheck:
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
                     self.community_standards_uri = oai_harvester.getMetadataStandards()
-                    self.namespace_uri.extend(oai_harvester.getNamespaces())
                     self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
@@ -232,7 +234,6 @@ class FAIRCheck:
                                                          ispid=isPid, pidurl=self.pid_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
         if schemaorg_dict:
-            self.namespace_uri.extend(schemaorg_collector.namespaces)
             not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
             self.metadata_sources.append(source_schemaorg)
             if schemaorg_dict.get('related_resources'):
@@ -251,7 +252,6 @@ class FAIRCheck:
                                                        mapping=Mapper.DC_MAPPING)
             source_dc, dc_dict = dc_collector.parse_metadata()
             if dc_dict:
-                self.namespace_uri.extend(dc_collector.namespaces)
                 not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                 self.metadata_sources.append(source_dc)
                 if dc_dict.get('related_resources'):
@@ -280,6 +280,7 @@ class FAIRCheck:
         if isinstance(self.landing_html, str):
             dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
+
             for l in links:
                 href=l.attrib.get('href')
                 #handle relative paths
@@ -326,7 +327,6 @@ class FAIRCheck:
 
         if rdf_collector is not None:
             source_dcat, dcat_dict =rdf_collector.parse_metadata()
-            self.namespace_uri.extend(rdf_collector.getNamespaces())
             #TODO: change dcat to rdf it's more generic now..
             if dcat_dict:
                 not_null_dcat = [k for k, v in dcat_dict.items() if v is not None]
@@ -484,63 +484,165 @@ class FAIRCheck:
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
         #4) CreativeCommons check for https://creativecommons.org/licenses/
+        #5) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
         self.count += 1
         access_identifier = 'FsF-A1-01M'
-        access_name= FAIRCheck.METRICS.get(access_identifier).get('metric_name')
-        access_sc=int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
+        access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
+        access_sc = int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
         access_score = FAIRResultCommonScore(total=access_sc)
         access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
-        access_output=DataAccessOutput()
-        rights_regex = r'((purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        access_rights=self.metadata_merged.get('access_level')
-        #print(access_rights)
-        #if access_rights is not None:
-        #    self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-        if isinstance(access_rights,str):
-            access_rights=[access_rights]
-        if isinstance(access_rights,bool):
-            if access_rights:
-                access_output.access_level = "public"
-            else:
-                access_output.access_level = "restricted"
-            access_output.access_details = {'access_right': {'https://schema.org/isAccessibleForFree': access_rights}}
-            access_score.earned = 1
-            access_result.test_status = "pass"
-        else:
-            access_licenses = self.metadata_merged.get('license')
-            if access_licenses is not None:
-                if isinstance(access_licenses, str):
-                    access_licenses=[access_licenses]
-                if access_rights is not None:
-                    access_licenses.extend(access_rights)
-                for access_right in access_licenses:
-                    rights_match = re.search(rights_regex, access_right)
+        access_output = DataAccessOutput()
+        #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+        rights_regex = r'((creativecommons\.org|purl\.org|\/coar\access_right|purl\.org\/eprint\/accessRights|europa\.eu|\/resource\/authority\/access-right)\/{1}(\S*)|info\:eu-repo\/semantics\/\w+)'
+
+        access_level = None
+        access_details = {}
+        score = 0
+        test_status = "fail"
+        exclude = []
+        access_rights = self.metadata_merged.get('access_level')
+        if access_rights is not None:
+            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            if isinstance(access_rights, str):
+                access_rights = [access_rights]
+            for access_right in access_rights:
+                self.logger.info('FsF-A1-01M : Access information specified - {}'.format(access_right))
+                if not self.isLicense(access_right, access_identifier):  # exclude license-based text from access_rights
+                    rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
-                        access_result.test_status = "pass"
                         for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code,rights_match[1]):
-                                access_output.access_level = right_status
-                                access_score.earned = 1
-                                self.logger.info('FsF-A1-01M : Access rights information recognized as: '+str(right_status))
+                            if re.search(right_code, rights_match[1], re.IGNORECASE):
+                                access_level = right_status
+                                access_details['access_condition'] = rights_match[1] #overwrite existing condition
+                                self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
                                 break
-                        self.logger.info('FsF-A1-01M : Found access rights information in metadata')
-                        access_output.access_details={'access_right': rights_match[1]}
                         break
-                if access_score.earned==0:
-                    self.logger.warning('FsF-A1-01M : No access rights information is available in metadata')
-                    access_result.test_status = "fail"
-                    access_score.earned = 0
                 else:
-                    if self.isRestricted and right_status == 'public':
-                        self.logger.warning('FsF-A1-01M : Public access claimed in metadata but object content access is restricted (response status in [401,402,403])')
-                        access_score.earned = 0
+                    self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored - {}'.format(access_right))
+                    exclude.append(access_right)
+            if not access_details and access_rights:
+                access_rights = set(access_rights) - set(exclude)
+                if access_rights :
+                    access_details['access_condition'] = ', '.join(access_rights)
+        else:
+            self.logger.warning('FsF-A1-01M : No access information is available in metadata')
+            score = 0
+
+        if access_level is None:
+            # fall back - use binary access
+            access_free = self.metadata_merged.get('access_free')
+            if access_free is not None:
+                self.logger.info('FsF-A1-01M : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)')
+                if access_free: # schema.org: isAccessibleForFree || free
+                    access_level = "public"
+                else:
+                    access_level = "restricted"
+                access_details['accessible_free'] = access_free
+            #TODO assume access_level = restricted if access_rights provided?
+
+        #if embargoed, publication date must be specified (for now score is not deducted, just outputs warning message)
+        if access_level == 'embargoed':
+            available_date = self.metadata_merged.get('publication_date')
+            if available_date:
+                self.logger.info('FsF-A1-01M : Embargoed access, available date - {}'.format(available_date))
+                access_details['available_date'] = available_date
             else:
-                self.logger.warning('FsF-A1-01M : No access rights or licence information is included in metadata')
-        access_result.score=access_score
-        access_result.output=access_output
+                self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
+
+        if access_level or access_details:
+            score = 1
+            test_status = "pass"
+        #if access_details:
+            #score += 1
+        #if score > 1:
+            #test_status = "pass"
+
+        access_score.earned = score
+        access_result.score = access_score
+        access_result.test_status = test_status
+        if access_level: #must be one of ['public', 'embargoed', 'restricted', 'closed_metadataonly']
+            access_output.access_level = access_level
+        else:
+            self.logger.warning('FsF-A1-01M : Unable to determine the access level')
+        access_output.access_details = access_details
+        access_result.output = access_output
         if self.isDebug:
             access_result.test_debug = self.msg_filter.getMessage(access_identifier)
         return access_result.to_dict()
+
+    def isLicense (self, value, metric_id):
+        islicense = False
+        isurl = idutils.is_url(value)
+        spdx_html = None
+        spdx_osi = None
+        if isurl:
+            spdx_html, spdx_osi = self.lookup_license_by_url(value, metric_id)
+        else:
+            spdx_html, spdx_osi = self.lookup_license_by_name(value, metric_id)
+        if spdx_html or spdx_osi:
+            islicense = True
+        return islicense
+
+    # def check_data_access_level_old(self):
+    #     #Focus on machine readable rights -> URIs only
+    #     #1) http://vocabularies.coar-repositories.org/documentation/access_rights/ check for http://purl.org/coar/access_right
+    #     #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
+    #     #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
+    #     #4) CreativeCommons check for https://creativecommons.org/licenses/
+    #     #5) <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+    #     self.count += 1
+    #     access_identifier = 'FsF-A1-01M'
+    #     access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
+    #     access_sc = int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
+    #     access_score = FAIRResultCommonScore(total=access_sc)
+    #     access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
+    #     access_output = DataAccessOutput()
+    #     rights_regex = r'((creativecommons\.org\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+    #     access_rights = self.metadata_merged.get('access_level')
+    #
+    #     if access_rights is not None:
+    #         self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+    #     if isinstance(access_rights, str):
+    #         access_rights = [access_rights]
+    #     if isinstance(access_rights, bool):
+    #         if access_rights:
+    #             access_output.access_level = "public"
+    #         else:
+    #             access_output.access_level = "restricted"
+    #         access_output.access_details = {'access_right': {'https://schema.org/isAccessibleForFree': access_rights}}
+    #         access_score.earned = 1
+    #         access_result.test_status = "pass"
+    #     else:
+    #         access_licenses = self.metadata_merged.get('license')
+    #         if access_licenses is not None:
+    #             if isinstance(access_licenses, str):
+    #                 access_licenses=[access_licenses]
+    #             if access_rights is not None:
+    #                 access_licenses.extend(access_rights)
+    #             for access_right in access_licenses:
+    #                 rights_match = re.search(rights_regex, access_right)
+    #                 if rights_match is not None:
+    #                     access_result.test_status = "pass"
+    #                     for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
+    #                         if re.search(right_code,rights_match[1]):
+    #                             access_output.access_level = right_status
+    #                             access_score.earned = 1
+    #                             self.logger.info('FsF-A1-01M : Rights information recognized as: '+str(right_status))
+    #                             break
+    #                     self.logger.info('FsF-A1-01M : Found access rights information in metadata')
+    #                     access_output.access_details={'access_right': rights_match[1]}
+    #                     break
+    #             if access_score.earned==0:
+    #                 self.logger.warning('FsF-A1-01M : No rights information is available in metadata')
+    #                 access_result.test_status = "fail"
+    #                 access_score.earned = 0
+    #         else:
+    #             self.logger.warning('FsF-A1-01M : No rights or licence information is included in metadata')
+    #     access_result.score=access_score
+    #     access_result.output=access_output
+    #     if self.isDebug:
+    #         access_result.test_debug = self.msg_filter.getMessage(access_identifier)
+    #     return access_result.to_dict()
 
     def check_license(self):
         self.count += 1
@@ -559,9 +661,9 @@ class FAIRCheck:
                 license_output.license = l
                 isurl = idutils.is_url(l)
                 if isurl:
-                    spdx_html, spdx_osi = self.lookup_license_by_url(l)
+                    spdx_html, spdx_osi = self.lookup_license_by_url(l, license_identifier)
                 else:  # maybe licence name
-                    spdx_html, spdx_osi = self.lookup_license_by_name(l)
+                    spdx_html, spdx_osi = self.lookup_license_by_name(l, license_identifier)
                 if not spdx_html:
                     self.logger.warning('FsF-R1.1-01M : No SPDX license representation (spdx url, osi_approved) found')
                 license_output.details_url = spdx_html
@@ -579,8 +681,8 @@ class FAIRCheck:
             license_result.test_debug = self.msg_filter.getMessage(license_identifier)
         return license_result.to_dict()
 
-    def lookup_license_by_url(self, u):
-        self.logger.info('FsF-R1.1-01M : Search license SPDX details by licence url - {}'.format(u))
+    def lookup_license_by_url(self, u, metric_id):
+        self.logger.info('{0} : Search license SPDX details by url - {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
         for item in FAIRCheck.SPDX_LICENSES:
@@ -588,18 +690,18 @@ class FAIRCheck:
             # if any(u in v.lower() for v in item.values()):
             seeAlso = item['seeAlso']
             if any(u in v for v in seeAlso):
-                self.logger.info('FsF-R1.1-01M : Found SPDX license representation - {}'.format(item['detailsUrl']))
+                self.logger.info('{0} : Found SPDX license representation - {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
                 html_url = item['detailsUrl'].replace(".json", ".html")
                 isOsiApproved = item['isOsiApproved']
                 break
         return html_url, isOsiApproved
 
-    def lookup_license_by_name(self, lvalue):
+    def lookup_license_by_name(self, lvalue, metric_id):
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('FsF-R1.1-01M: Search license SPDX details by licence name - {}'.format(lvalue))
+        self.logger.info('{0} : Search license SPDX details by name - {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRCheck.SPDX_LICENSE_NAMES]
         if max(sim) > 0.85:
@@ -699,7 +801,7 @@ class FAIRCheck:
                 mime_type=data_file.get('type')
                 #TODO: change output type instead of is_long_term_format etc use:
                 # is_prefered_format: boolean
-                # type: list of e.g.['long term format','science format']
+                # type: ['long term format','science format']
                 # domain: list of scientific domains, default: 'General'
                 if mime_type is None or mime_type in ['application/octet-stream']:
                     # if mime type not given try to guess it based on the file name
@@ -797,7 +899,7 @@ class FAIRCheck:
             communitystd_score.earned = communitystd_sc
             communitystd_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-01M : No community standard found')
+            self.logger.warning('FsF-R1.3-01M : Unable to determine community standard')
 
         communitystd_result.score = communitystd_score
         communitystd_result.output = standards_detected
@@ -824,77 +926,46 @@ class FAIRCheck:
         data_provenance_score=0
         has_creation_provenance = False
         provenance_elements = []
-        provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
         provenance_status = 'fail'
-        creation_metadata_output = DataProvenanceOutputInner()
-        creation_metadata_output.provenance_metadata = []
-        creation_metadata_output.is_available = False
 
-        #creation info
         if 'title' in self.metadata_merged:
-            creation_metadata_output.provenance_metadata.append({'title' : self.metadata_merged['title']})
+            provenance_elements.append('title')
             if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
-                if 'creation_date' in self.metadata_merged:
-                    creation_metadata_output.provenance_metadata.append({'creation_date' : self.metadata_merged['creation_date']})
-                else:
-                    creation_metadata_output.provenance_metadata.append({'publication_date' : self.metadata_merged['publication_date']})
+                provenance_elements.append('creation_date')
                 if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
-                    creation_metadata_output.is_available=True
-                    if 'creator' in self.metadata_merged:
-                        creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
-                    else:
-                        creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
+                    provenance_elements.append('creator or contributor')
                 provenance_status = 'pass'
-                self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
                 data_provenance_score=data_provenance_score+0.5
-        data_provenance_output.creation_provenance_included=creation_metadata_output
+                data_provenance_output.creation_provenance_included=True
 
-        #modification versioning info
         modified_indicators=['modified_date','version']
         modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
-        modified_metadata_output = DataProvenanceOutputInner()
-        modified_metadata_output.provenance_metadata = []
-        modified_metadata_output.is_available = False
         if len(modified_intersect)>0:
-            self.logger.info('FsF-R1.2-01M : Found basic versioning-related provenance information')
-            modified_metadata_output.is_available = True
-            for modified_element in modified_intersect:
-                modified_metadata_output.provenance_metadata.append({modified_element: self.metadata_merged[modified_element]})
-            provenance_status = 'pass'
+            provenance_elements.extend(modified_intersect)
+            #provenance_status = 'pass'
             data_provenance_score = data_provenance_score+0.5
-        data_provenance_output.modification_provenance_included = modified_metadata_output
+            data_provenance_output.modification_provenance_included = True
 
-        #process, origin derved from relations
-        process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf',
-                            'IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
-        relations_metadata_output = DataProvenanceOutputInner()
-        relations_metadata_output.provenance_metadata = []
-        relations_metadata_output.is_available = False
+        #TODO: add method etc..
+        if 'measured_variable' in self.metadata_merged:
+            provenance_elements.append('measured_variable')
+            data_provenance_score = data_provenance_score + 0.5
+            data_provenance_output.processes_provenance_included = True
+        #TODO: check if this list is complete
+        process_indicators=['isVersionOf, isBasedOn, isFormatOf','IsNewVersionOf','IsVariantFormOf','IsDerivedFrom','Obsoletes']
         if 'related_resources' in self.metadata_merged:
             has_relations=False
             for rr in self.metadata_merged['related_resources']:
-                if rr.get('relation_type') in process_indicators:
+                if rr['relation_type'] in process_indicators:
                     has_relations=True
-                    relations_metadata_output.provenance_metadata.append({rr.get('relation_type') : rr.get('related_resource')})
+                    data_provenance_output.provenance_relations_included = True
+                    provenance_elements.append('relation: '+str(rr['relation_type']))
             if has_relations:
-                relations_metadata_output.is_available = True
                 data_provenance_score = data_provenance_score + 0.5
-                self.logger.info('FsF-R1.2-01M : Found basic process-related provenance information')
-        data_provenance_output.provenance_relations_included = relations_metadata_output
 
-        #structured provenance metadata available
-        structured_metadata_output = DataProvenanceOutputInner()
-        structured_metadata_output.provenance_metadata = []
-        structured_metadata_output.is_available = False
-        used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.namespace_uri)))
-        if used_provenance_namespace:
-            data_provenance_score = data_provenance_score + 0.5
-            structured_metadata_output.is_available = True
-            for used_prov_ns in used_provenance_namespace:
-                structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
-            self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
-        data_provenance_output.structured_provenance_available = structured_metadata_output
+        #use of sosa.vocabulary is indicator for method or instruments or variables
 
+        data_provenance_output.provenance_metadata_found=provenance_elements
         data_provenance_result.test_status=provenance_status
         data_provenance_result.score = data_provenance_score
         data_provenance_result.output = data_provenance_output
@@ -929,3 +1000,113 @@ class FAIRCheck:
         data_content_metadata_result.output=data_content_metadata_output
 
         return data_content_metadata_result.to_dict()
+
+    def check_formal_metadata(self):
+        self.count += 1
+        formal_meta_identifier = 'FsF-I1-01M'
+        formal_meta_name = FAIRCheck.METRICS.get(formal_meta_identifier).get('metric_name')
+        formal_meta_sc = int(FAIRCheck.METRICS.get(formal_meta_identifier).get('total_score'))
+        formal_meta_score = FAIRResultCommonScore(total=formal_meta_sc)
+        formal_meta_result = DataProvenance(id=self.count, metric_identifier=formal_meta_identifier, metric_name=formal_meta_name)
+
+        outputs = []
+        score = 0
+        test_status = 'fail'
+        search_values = [self.metadata_merged.get('object_identifier'), self.landing_url, self.metadata_merged.get('title')]
+        search_values= [str(x) for x in search_values if x is not None]
+        #source = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"] # allowed values
+
+        #1. light-weight check (structured_data), expected keys from extruct ['json-ld','rdfa']
+        self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
+        if MetaDataCollector.Sources.SCHEMAORG_EMBED.value in self.metadata_sources:
+            outputs.append(FormalMetadataOutputInner(serialization_format='JSON-LD', source='structured_data', is_metadata_found=True))
+            self.logger.info('{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'JSON-LD'))
+            score += 1
+        else:
+            if self.extruct:
+                if 'rdfa' in self.extruct.keys():
+                    self.logger.info('{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'RDFa'))
+                    self.logger.info('{0} : Searching \'proxy\' values in RDFa representation - {1}'.format(formal_meta_identifier, search_values))
+                    rdfa_doc = str(self.extruct.get('rdfa')).lower()
+                    for s in search_values:
+                        #  takes in the shortest string (s) and the matches with all substrings of the other string (rdfa_doc)
+                        partial_ratio = fuzz.partial_ratio(s.lower(), rdfa_doc)
+                        if partial_ratio > 70: # heuristic score
+                            self.logger.info('{0} : RDFa document seems to represent the data object, proxy found'.format(formal_meta_identifier))
+                            outputs.append(FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data', is_metadata_found=True))
+                            score += 1
+                            break
+        if len(outputs)==0:
+            self.logger.warning('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
+
+        # 2. hard check (typed-link, content negotiate, sparql endpoint)
+        # 2a. in the object page, you may find a <link rel="alternate" type="application/rdf+xml" … />
+        rdf_datalinks = self.get_html_typed_links("alternate")
+        self.logger.info('{0} : Check if RDF-based typed link included'.format(formal_meta_identifier))
+        if rdf_datalinks:
+            for rdoc in rdf_datalinks:
+                #type = rdoc.get('type')
+                url = rdoc.get('url')
+                self.logger.info('{0} : RDF-based typed link found - {1}'.format(formal_meta_identifier, url))
+                requestHelper = RequestHelper(url, self.logger)
+                requestHelper.setAcceptType(AcceptTypes.default)
+                response = requestHelper.content_negotiate(formal_meta_identifier)
+                content_type = requestHelper.getHTTPResponse().headers['content-type']
+                content_type = content_type.split(";", 1)[0]
+                #status_code = requestHelper.getHTTPResponse().status_code
+                if response:
+                    self.logger.info('{0} : RDF graph retrieved, content type - {1}'.format(formal_meta_identifier, content_type))
+                    outputs.append(FormalMetadataOutputInner(serialization_format=content_type, source='typed_link',
+                                                         is_metadata_found=True))
+                    self.rdf_graph = response
+                    score += 1
+                    break
+                else:
+                    self.logger.info('{0} : Typed link included, but not accessible'.format(formal_meta_identifier))
+        else:
+            self.logger.warning('{0} : NO RDF-based typed link found'.format(formal_meta_identifier))
+
+        #2b.content negotiate
+        #if not rdf_graph and self.pid_scheme:
+        rdf_mime_types = AcceptTypes.rdf.value
+        if not self.rdf_graph:
+            self.logger.info('{0} : Check if RDF metadata available through content negotiation'.format(formal_meta_identifier))
+            requestHelper = RequestHelper(self.pid_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.rdf)
+            response_nego = requestHelper.content_negotiate(formal_meta_identifier)
+            type_nego = requestHelper.getHTTPResponse().headers['content-type']
+            type_nego = type_nego.split(";", 1)[0]
+            #if any(type_nego in item for item in rdf_mime_types) and response_nego:
+            if response_nego and type_nego in AcceptTypes.rdf.value:
+                outputs.append(FormalMetadataOutputInner(serialization_format=type_nego, source='content_negotiate',
+                                                         is_metadata_found=True))
+                self.rdf_graph = response_nego
+                score += 1
+            else:
+                self.logger.warning('{0} : Seems like non-rdf response retrieved, content type - {1}'.format(formal_meta_identifier, type_nego))
+
+        # 2c. try to retrieve via sparql endpoint (if available)
+        if not self.rdf_graph:
+            self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
+            #self.sparql_endpoint = 'https://isidore.science/sparql' #test endpoint
+            if self.sparql_endpoint: #TODO, reuse dcat?
+                queryString = ""
+                sparql = SPARQLWrapper(self.sparql_endpoint)
+                sparql.setQuery(queryString)
+                #sparql.setReturnFormat(JSON)
+                try:
+                    self.rdf_graph = sparql.query().convert()
+                except Exception as e:
+                    self.logger.warning(e)
+            else:
+                self.logger.warning('{0} : No SPARQL endpoint found through the object URI provided'.format(formal_meta_identifier))
+
+        if score > 0:
+            test_status = 'pass'
+        formal_meta_result.test_status = test_status
+        formal_meta_score.earned = score
+        formal_meta_result.score = formal_meta_score
+        formal_meta_result.output = outputs
+        if self.isDebug:
+            formal_meta_result.test_debug = self.msg_filter.getMessage(formal_meta_identifier)
+        return formal_meta_result.to_dict()

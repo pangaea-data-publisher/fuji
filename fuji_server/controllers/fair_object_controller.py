@@ -27,6 +27,7 @@ def assess_by_id(body):  # noqa: E501
         content_identifier_included_result = ft.check_content_identifier_included()
         check_searchable_result = ft.check_searchable()
         access_result = ft.check_data_access_level()
+        formal_metadata_result = ft.check_formal_metadata()
         relatedresources_result = ft.check_relatedresources()
         license_result = ft.check_license()
         community_standards_result = ft.check_community_metadatastandards()
@@ -37,10 +38,10 @@ def assess_by_id(body):  # noqa: E501
         results.append(content_identifier_included_result)
         results.append(check_searchable_result)
         results.append(access_result)
+        results.append(formal_metadata_result)
         results.append(relatedresources_result)
         results.append(license_result)
         results.append(community_standards_result)
-
 
     return results
 

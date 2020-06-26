@@ -21,7 +21,7 @@ class AcceptTypes(Enum):
     nt = 'text/n3, application/n-triples'
     rdfxml = 'application/rdf+xml, text/rdf;q=0.5, application/xml;q=0.1, text/xml;q=0.1'
     turtle = 'text/ttl, text/turtle, application/turtle, application/x-turtle;q=0.6, text/n3;q=0.3, text/rdf+n3;q=0.3, application/rdf+n3;q=0.3'
-    rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9, application/xhtml+xml;q=0.5, */*;q=0.1'
+    rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9'
     default = '*/*'
 
 class RequestHelper:
@@ -124,7 +124,7 @@ class RequestHelper:
         # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
         graph = None
         try:
-            self.logger.info('%s : Try to parse RDF %s' % (self.metric_id, self.request_url))
+            self.logger.info('%s : Try to parse RDF from %s' % (self.metric_id, self.request_url))
             graph = rdflib.Graph()
             graph.parse(data=response, format=type)
             #queries have to be done in specific metadata collector classes

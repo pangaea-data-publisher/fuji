@@ -17,10 +17,14 @@ from fuji_server.models.data_file_format_output import DataFileFormatOutput
 from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
+from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner
 from fuji_server.models.debug import Debug
 from fuji_server.models.fair_result_common import FAIRResultCommon
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_results import FAIRResults
+from fuji_server.models.formal_metadata import FormalMetadata
+from fuji_server.models.formal_metadata_output import FormalMetadataOutput
+from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner
 from fuji_server.models.identifier_included import IdentifierIncluded
 from fuji_server.models.identifier_included_output import IdentifierIncludedOutput
 from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner
@@ -38,5 +42,8 @@ from fuji_server.models.related_resource_output import RelatedResourceOutput
 from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
+from fuji_server.models.semantic_vocabulary import SemanticVocabulary
+from fuji_server.models.semantic_vocabulary_output import SemanticVocabularyOutput
+from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
