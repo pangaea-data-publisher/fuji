@@ -14,17 +14,17 @@ class DataProvenanceOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, is_available: bool=True, provenance_metadata: Dict[str, str]=None):  # noqa: E501
+    def __init__(self, is_available: bool=True, provenance_metadata: List[Dict[str, str]]=None):  # noqa: E501
         """DataProvenanceOutputInner - a model defined in Swagger
 
         :param is_available: The is_available of this DataProvenanceOutputInner.  # noqa: E501
         :type is_available: bool
         :param provenance_metadata: The provenance_metadata of this DataProvenanceOutputInner.  # noqa: E501
-        :type provenance_metadata: Dict[str, str]
+        :type provenance_metadata: List[Dict[str, str]]
         """
         self.swagger_types = {
             'is_available': bool,
-            'provenance_metadata': Dict[str, str]
+            'provenance_metadata': List[Dict[str, str]]
         }
 
         self.attribute_map = {
@@ -67,22 +67,22 @@ class DataProvenanceOutputInner(Model):
         self._is_available = is_available
 
     @property
-    def provenance_metadata(self) -> Dict[str, str]:
+    def provenance_metadata(self) -> List[Dict[str, str]]:
         """Gets the provenance_metadata of this DataProvenanceOutputInner.
 
 
         :return: The provenance_metadata of this DataProvenanceOutputInner.
-        :rtype: Dict[str, str]
+        :rtype: List[Dict[str, str]]
         """
         return self._provenance_metadata
 
     @provenance_metadata.setter
-    def provenance_metadata(self, provenance_metadata: Dict[str, str]):
+    def provenance_metadata(self, provenance_metadata: List[Dict[str, str]]):
         """Sets the provenance_metadata of this DataProvenanceOutputInner.
 
 
         :param provenance_metadata: The provenance_metadata of this DataProvenanceOutputInner.
-        :type provenance_metadata: Dict[str, str]
+        :type provenance_metadata: List[Dict[str, str]]
         """
 
         self._provenance_metadata = provenance_metadata

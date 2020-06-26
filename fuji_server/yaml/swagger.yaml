@@ -227,6 +227,15 @@ components:
             $ref: '#/components/schemas/DataProvenance_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
+    DataContentMetadata:
+      allOf:
+        - $ref: '#/components/schemas/FAIRResultCommon'
+        - type: object
+          properties:
+            output:
+              $ref: '#/components/schemas/DataContentMetadata_output'
+            test_debug:
+              $ref: '#/components/schemas/Debug'
     FormalMetadata:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'
@@ -385,6 +394,17 @@ components:
           $ref: '#/components/schemas/DataProvenance_output_inner'
         structured_provenance_available:
           $ref: '#/components/schemas/DataProvenance_output_inner'
+    DataContentMetadata_output:
+      type: object
+      properties:
+        has_content_descriptors:
+          type: boolean
+          default: False
+        data_content_descriptor:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/DataContentMetadata_output_inner'
     FormalMetadata_output:
       type: array
       items:
@@ -524,11 +544,25 @@ components:
       properties:
         is_available:
           type: boolean
-          default: true
+          default: True
         provenance_metadata:
-          type: object
-          additionalProperties:
-            type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+
+    DataContentMetadata_output_inner:
+      type: object
+      properties:
+        descriptor_name:
+          type: string
+        descriptor_type:
+          type: string
+        matchescontent:
+          type: boolean
+          default: False
+
     FormalMetadata_output_inner:
       type: object
       properties:

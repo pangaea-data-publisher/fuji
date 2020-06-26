@@ -144,3 +144,15 @@ metrics:
   date_updated: 2020-02-29
   version: 0.2
   total_score: 2
+
+- metric_identifier: FsF-R1-01MD
+  metric_name: Metadata of Data Content
+  description: Metadata includes the descriptions of the content of the data.
+  fair_principle: R1.2
+  question_type: single-choice
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-02-29
+  date_updated: 2020-02-29
+  version: 0.2
+  total_score: 2
