@@ -21,13 +21,11 @@ from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorData
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
-# from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
-from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvester
+from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-#from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
 from fuji_server.models.data_content_metadata import DataContentMetadata
@@ -220,9 +218,9 @@ class FAIRCheck:
                 self.logger.info(
                     '{} : OAIPMH endpoint from R3DATA {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
                 if (self.uri_validator(self.oaipmh_endpoint)):
-                    oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
-                    self.community_standards_uri = oai_harvester.getMetadataStandards()
-                    self.namespace_uri.extend(oai_harvester.getNamespaces())
+                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_provider.getMetadataStandards()
+                    self.namespace_uri.extend(oai_provider.getNamespaces())
                     self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
@@ -1153,6 +1151,8 @@ class FAIRCheck:
         semanticvocab_sc = int(FAIRCheck.METRICS.get(semanticvocab_identifier).get('total_score'))
         semanticvocab_score = FAIRResultCommonScore(total=semanticvocab_sc)
         semanticvocab_result = DataProvenance(id=self.count, metric_identifier=semanticvocab_identifier, metric_name=semanticvocab_name)
+
+        print('self.namespace_uri.................',self.namespace_uri)
 
         if self.isDebug:
             semanticvocab_result.test_debug = self.msg_filter.getMessage(semanticvocab_identifier)

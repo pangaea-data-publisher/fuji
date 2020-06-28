@@ -28,6 +28,7 @@ def assess_by_id(body):  # noqa: E501
         check_searchable_result = ft.check_searchable()
         access_result = ft.check_data_access_level()
         formal_metadata_result = ft.check_formal_metadata()
+        semantic_vocab_result = ft.check_semantic_vocabulary()
         relatedresources_result = ft.check_relatedresources()
         license_result = ft.check_license()
         community_standards_result = ft.check_community_metadatastandards()

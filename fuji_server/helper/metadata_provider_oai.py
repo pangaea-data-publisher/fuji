@@ -1,19 +1,13 @@
+from fuji_server.helper.metadata_provider import MetadataProvider
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from lxml import etree
 
-class OAIMetadataHarvester:
+class OAIMetadataProvider(MetadataProvider):
 
     oai_namespaces = {'oai': 'http://www.openarchives.org/OAI/2.0/'}
 
-    def __init__(self, endpoint:str=None, loggerinst=None, metricid=None):
-        self.oai_endpoint = endpoint
-        #self.resource_identifier = resourceidentifier
-        self.metric_id = metricid
-        self.logger = loggerinst
-        self.namespaces=[]
-
-    def getMetadataDC(self):
-        #Resource Identifier	[]
+    def getMetadata(self):
+        # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
         #The nature of a resource identifier is outside the scope of the OAI-PMH.
         #To facilitate access to the resource associated with harvested metadata, repositories should use an element in
         # #metadata records to establish a linkage between the record (and the identifier of its item) and the identifier
@@ -24,17 +18,17 @@ class OAIMetadataHarvester:
     def getMetadataStandards(self):
         filter =['datacite.org','openarchives.org','purl.org/dc/'] # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
-        self.oai_endpoint = self.oai_endpoint.split('?')[0]
-        self.oai_endpoint = self.oai_endpoint.rstrip('/')
-        oai_listmetadata_url = self.oai_endpoint+'?verb=ListMetadataFormats'
+        oai_endpoint = self.endpoint.split('?')[0]
+        oai_endpoint = oai_endpoint.rstrip('/')
+        oai_listmetadata_url = oai_endpoint+'?verb=ListMetadataFormats'
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
         xml = requestHelper.content_negotiate(self.metric_id)
         root = etree.fromstring(xml.content)
-        metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataHarvester.oai_namespaces)
+        metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataProvider.oai_namespaces)
         schemas = {}
         for node in metadata_nodes:
-            ele = etree.XPathEvaluator(node, namespaces=OAIMetadataHarvester.oai_namespaces).evaluate
+            ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
             metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
             metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
             self.namespaces.append(metadata_schema)
@@ -42,7 +36,7 @@ class OAIMetadataHarvester:
             if not any(s in metadata_schema for s in filter):
                 schemas[metadata_prefix]= [metadata_schema]
             else:
-                self.logger.info('FsF-R1.3-01M : Skipping non-disciplinary standard listed in OAIPMH - {}'.format(metadata_prefix))
+                self.logger.info('{0} : Skipping domain-agnostic standard listed in OAI-PMH - {1}'.format(self.metric_id,metadata_prefix))
         return schemas
 
     def getNamespaces(self):
