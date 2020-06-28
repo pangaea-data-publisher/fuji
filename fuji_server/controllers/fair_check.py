@@ -63,6 +63,7 @@ class FAIRCheck:
         self.content_identifier=[]
         self.community_standards = []
         self.community_standards_uri = {}
+        self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
         self.test_data_content_text = None# a helper to check metadata against content
@@ -221,6 +222,7 @@ class FAIRCheck:
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
                     self.community_standards_uri = oai_harvester.getMetadataStandards()
+                    self.namespace_uri.extend(oai_harvester.getNamespaces())
                     self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
@@ -234,6 +236,7 @@ class FAIRCheck:
                                                          ispid=isPid, pidurl=self.pid_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
         if schemaorg_dict:
+            self.namespace_uri.extend(schemaorg_collector.namespaces)
             not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
             self.metadata_sources.append(source_schemaorg)
             if schemaorg_dict.get('related_resources'):
@@ -252,6 +255,7 @@ class FAIRCheck:
                                                        mapping=Mapper.DC_MAPPING)
             source_dc, dc_dict = dc_collector.parse_metadata()
             if dc_dict:
+                self.namespace_uri.extend(dc_collector.namespaces)
                 not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                 self.metadata_sources.append(source_dc)
                 if dc_dict.get('related_resources'):
@@ -280,7 +284,6 @@ class FAIRCheck:
         if isinstance(self.landing_html, str):
             dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
-
             for l in links:
                 href=l.attrib.get('href')
                 #handle relative paths
@@ -327,6 +330,7 @@ class FAIRCheck:
 
         if rdf_collector is not None:
             source_dcat, dcat_dict =rdf_collector.parse_metadata()
+            self.namespace_uri.extend(rdf_collector.getNamespaces())
             #TODO: change dcat to rdf it's more generic now..
             if dcat_dict:
                 not_null_dcat = [k for k, v in dcat_dict.items() if v is not None]
@@ -926,46 +930,77 @@ class FAIRCheck:
         data_provenance_score=0
         has_creation_provenance = False
         provenance_elements = []
+        provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
         provenance_status = 'fail'
+        creation_metadata_output = DataProvenanceOutputInner()
+        creation_metadata_output.provenance_metadata = []
+        creation_metadata_output.is_available = False
 
+        #creation info
         if 'title' in self.metadata_merged:
-            provenance_elements.append('title')
+            creation_metadata_output.provenance_metadata.append({'title' : self.metadata_merged['title']})
             if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
-                provenance_elements.append('creation_date')
+                if 'creation_date' in self.metadata_merged:
+                    creation_metadata_output.provenance_metadata.append({'creation_date' : self.metadata_merged['creation_date']})
+                else:
+                    creation_metadata_output.provenance_metadata.append({'publication_date' : self.metadata_merged['publication_date']})
                 if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
-                    provenance_elements.append('creator or contributor')
+                    creation_metadata_output.is_available=True
+                    if 'creator' in self.metadata_merged:
+                        creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
+                    else:
+                        creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
                 provenance_status = 'pass'
+                self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
                 data_provenance_score=data_provenance_score+0.5
-                data_provenance_output.creation_provenance_included=True
+        data_provenance_output.creation_provenance_included=creation_metadata_output
 
+        #modification versioning info
         modified_indicators=['modified_date','version']
         modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
+        modified_metadata_output = DataProvenanceOutputInner()
+        modified_metadata_output.provenance_metadata = []
+        modified_metadata_output.is_available = False
         if len(modified_intersect)>0:
-            provenance_elements.extend(modified_intersect)
-            #provenance_status = 'pass'
+            self.logger.info('FsF-R1.2-01M : Found basic versioning-related provenance information')
+            modified_metadata_output.is_available = True
+            for modified_element in modified_intersect:
+                modified_metadata_output.provenance_metadata.append({modified_element: self.metadata_merged[modified_element]})
+            provenance_status = 'pass'
             data_provenance_score = data_provenance_score+0.5
-            data_provenance_output.modification_provenance_included = True
+        data_provenance_output.modification_provenance_included = modified_metadata_output
 
-        #TODO: add method etc..
-        if 'measured_variable' in self.metadata_merged:
-            provenance_elements.append('measured_variable')
-            data_provenance_score = data_provenance_score + 0.5
-            data_provenance_output.processes_provenance_included = True
-        #TODO: check if this list is complete
-        process_indicators=['isVersionOf, isBasedOn, isFormatOf','IsNewVersionOf','IsVariantFormOf','IsDerivedFrom','Obsoletes']
+        #process, origin derved from relations
+        process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf',
+                            'IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
+        relations_metadata_output = DataProvenanceOutputInner()
+        relations_metadata_output.provenance_metadata = []
+        relations_metadata_output.is_available = False
         if 'related_resources' in self.metadata_merged:
             has_relations=False
             for rr in self.metadata_merged['related_resources']:
-                if rr['relation_type'] in process_indicators:
+                if rr.get('relation_type') in process_indicators:
                     has_relations=True
-                    data_provenance_output.provenance_relations_included = True
-                    provenance_elements.append('relation: '+str(rr['relation_type']))
+                    relations_metadata_output.provenance_metadata.append({rr.get('relation_type') : rr.get('related_resource')})
             if has_relations:
+                relations_metadata_output.is_available = True
                 data_provenance_score = data_provenance_score + 0.5
+                self.logger.info('FsF-R1.2-01M : Found basic process-related provenance information')
+        data_provenance_output.provenance_relations_included = relations_metadata_output
 
-        #use of sosa.vocabulary is indicator for method or instruments or variables
+        #structured provenance metadata available
+        structured_metadata_output = DataProvenanceOutputInner()
+        structured_metadata_output.provenance_metadata = []
+        structured_metadata_output.is_available = False
+        used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.namespace_uri)))
+        if used_provenance_namespace:
+            data_provenance_score = data_provenance_score + 0.5
+            structured_metadata_output.is_available = True
+            for used_prov_ns in used_provenance_namespace:
+                structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
+            self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
+        data_provenance_output.structured_provenance_available = structured_metadata_output
 
-        data_provenance_output.provenance_metadata_found=provenance_elements
         data_provenance_result.test_status=provenance_status
         data_provenance_result.score = data_provenance_score
         data_provenance_result.output = data_provenance_output
