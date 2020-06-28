@@ -10,7 +10,7 @@ from rdflib.namespace import DC
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
-class MetaDataCollectorSparql (MetaDataCollector):
+class MetaDataCollectorRdf (MetaDataCollector):
     target_url=None
     def __init__(self,  loggerinst, target_url):
         self.target_url=target_url

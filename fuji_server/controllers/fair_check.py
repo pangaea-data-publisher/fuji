@@ -20,7 +20,7 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
-from fuji_server.helper.metadata_collector_sparql import MetaDataCollectorSparql
+from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 # from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
 from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvester
 from fuji_server.helper.metadata_mapper import Mapper
@@ -319,13 +319,13 @@ class FAIRCheck:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                 self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                 found_metadata_link=True
-                rdf_collector = MetaDataCollectorSparql(loggerinst=self.logger,
+                rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                            target_url=metadata_link['url'])
                 break
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
-            rdf_collector = MetaDataCollectorSparql( loggerinst=self.logger,
+            rdf_collector = MetaDataCollectorRdf( loggerinst=self.logger,
                                                            target_url=self.landing_url)
 
         if rdf_collector is not None:
