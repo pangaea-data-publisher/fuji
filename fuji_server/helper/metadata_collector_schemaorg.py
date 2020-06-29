@@ -28,7 +28,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 requestHelper.setAcceptType(AcceptTypes.schemaorg)
                 ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
-        if ext_meta:
+        if ext_meta is not None:
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
@@ -66,5 +66,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             except Exception as err:
                 #print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+        else:
+            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
 
         return self.source_name, jsnld_metadata
