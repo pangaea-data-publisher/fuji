@@ -1,3 +1,4 @@
+SPARQLWrapper
 beautifulsoup4
 lxml
 rdflib
