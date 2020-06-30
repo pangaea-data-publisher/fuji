@@ -14,7 +14,7 @@ class MetaDataCollector(object):
         DUBLINCORE = 'Embedded DublinCore'
         OPENGRAPH = 'Embedded OpenGraph'
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
-        SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Datacite)'
+        SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Negotiated)'
         DATACITE_JSON = 'Datacite Search'
         SIGN_POSTING = 'Signposting Typed Links'
         RDF_SIGN_POSTING = 'RDF-based Typed Links'

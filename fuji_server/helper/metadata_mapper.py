@@ -55,7 +55,7 @@ class Mapper(Enum):
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
                            'summary: description, keywords: keywords, data_file_format: encodingFormat,' \
-                           'object_identifier: (identifier || "@id" || identifier.value ) || (url || url."@id") , ' \
+                           'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \
                             'measured_variable: variableMeasured[*].name || variableMeasured , '\
