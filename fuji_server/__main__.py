@@ -33,11 +33,13 @@ def main():
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    preproc.retrieve_common_namespaces()
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     logger.info('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
     logger.info('Total LD vocabs imported : {}'.format(len(preproc.getLinkedVocabs())))
+    logger.info('Total common namespaces : {}'.format(len(preproc.getCommonNamespaces())))
 
     #you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)

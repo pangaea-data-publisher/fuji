@@ -28,6 +28,7 @@ class Preprocessor(object):
     open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
+    common_namespaces = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
@@ -184,6 +185,15 @@ class Preprocessor(object):
             cls.open_file_formats = data
 
     @classmethod
+    def retrieve_common_namespaces(cls):
+        ns = []
+        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'common_namespaces.txt')
+        with open(ns_file_path) as f:
+            ns = [line.split(':',1)[1].strip() for line in f]
+        if ns:
+            cls.common_namespaces = ns
+
+    @classmethod
     def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
     #def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
     # may take around 20 minutes to test and import all vocabs
@@ -316,6 +326,12 @@ class Preprocessor(object):
             #cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, cls.BIOPORTAL_API, cls.BIOPORTAL_KEY, True)
             cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, True)
         return cls.linked_vocabs
+
+    @classmethod
+    def getCommonNamespaces(cls):
+        if not cls.common_namespaces:
+            cls.retrieve_common_namespaces()
+        return cls.common_namespaces
 
     @classmethod
     def get_metrics(cls):
