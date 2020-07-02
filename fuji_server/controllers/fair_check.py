@@ -43,6 +43,7 @@ class FAIRCheck:
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
+    COMMON_NAMESPACES = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -90,8 +91,8 @@ class FAIRCheck:
             cls.LONG_TERM_FILE_FORMATS = Preprocessor.get_long_term_file_formats()
         if not cls.OPEN_FILE_FORMATS:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
-        # if not cls.DATACITE_REPOSITORIES:
-        # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
+        if not cls.COMMON_NAMESPACES:
+            cls.COMMON_NAMESPACES = Preprocessor.getCommonNamespaces()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -1100,10 +1101,10 @@ class FAIRCheck:
 
         # 2c. try to retrieve via sparql endpoint (if available)
         if not formalExists:
-            self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
-            # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
+            #self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
+            #self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/query/' #test web sparql form
-            # self.pid_url = 'http://data.archaeologydataservice.ac.uk/10.5284/1000011' #test uri
+            self.pid_url = 'http://data.archaeologydataservice.ac.uk/10.5284/1000011' #test uri
             # self.sparql_endpoint = 'https://meta.icos-cp.eu/sparqlclient/' #test endpoint
             # self.pid_url = 'https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm' #test uri
             if self.sparql_endpoint:
