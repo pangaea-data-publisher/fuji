@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
 import mimetypes
 import re
@@ -8,21 +7,20 @@ import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
 
-import requests
-from SPARQLWrapper import SPARQLWrapper
-from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
 import lxml
+import requests
+from fuzzywuzzy import process, fuzz
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
-from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
-from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
+from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
