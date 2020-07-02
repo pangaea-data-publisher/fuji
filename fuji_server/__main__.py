@@ -32,7 +32,7 @@ def main():
     preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
-    preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=False)
+    preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
