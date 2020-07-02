@@ -44,6 +44,7 @@ class FAIRCheck:
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
     COMMON_NAMESPACES = None
+    VOCAB_NAMESPACES = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -93,6 +94,8 @@ class FAIRCheck:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
         if not cls.COMMON_NAMESPACES:
             cls.COMMON_NAMESPACES = Preprocessor.getCommonNamespaces()
+        if not cls.VOCAB_NAMESPACES:
+            cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
