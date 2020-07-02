@@ -222,7 +222,6 @@ class Preprocessor(object):
                 cls.logger.error(e1)
 
             all_uris = [d['uri'] for d in vocabs if 'uri' in d]
-            print('1..............',len(vocabs))
             #2a. retrieve vocabs from https://lod-cloud.net/lod-data.json
             #1440 vocabs specified of which 1008 broken, so this source may be excluded in future
             try:
