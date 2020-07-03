@@ -43,7 +43,7 @@ class FAIRCheck:
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
-    COMMON_NAMESPACES = None
+    DEFAULT_NAMESPACES = None
     VOCAB_NAMESPACES = None
 
     def __init__(self, uid, test_debug=False):
@@ -92,8 +92,8 @@ class FAIRCheck:
             cls.LONG_TERM_FILE_FORMATS = Preprocessor.get_long_term_file_formats()
         if not cls.OPEN_FILE_FORMATS:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
-        if not cls.COMMON_NAMESPACES:
-            cls.COMMON_NAMESPACES = Preprocessor.getCommonNamespaces()
+        if not cls.DEFAULT_NAMESPACES:
+            cls.DEFAULT_NAMESPACES = Preprocessor.getDefaultNamespaces()
         if not cls.VOCAB_NAMESPACES:
             cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
 
@@ -1107,7 +1107,7 @@ class FAIRCheck:
             #self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
             #self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/query/' #test web sparql form
-            self.pid_url = 'http://data.archaeologydataservice.ac.uk/10.5284/1000011' #test uri
+            #self.pid_url = 'http://data.archaeologydataservice.ac.uk/10.5284/1000011' #test uri
             # self.sparql_endpoint = 'https://meta.icos-cp.eu/sparqlclient/' #test endpoint
             # self.pid_url = 'https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm' #test uri
             if self.sparql_endpoint:
@@ -1146,13 +1146,47 @@ class FAIRCheck:
 
         #remove duplicates
         self.namespace_uri = list(set(self.namespace_uri))
-        # filter out common namespaces, starts with
-        self.namespace_uri = [x for x in self.namespace_uri if not x.startswith('http://www.w3.org')] #TODO whitelist
-        self.logger.info('{0} : Number of namespaces included in all RDF-based metadata - {1}'.format(semanticvocab_identifier, len(self.namespace_uri)))
+        self.namespace_uri = [x.strip() for x in self.namespace_uri]
+        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata - {1}'.format(semanticvocab_identifier, len(self.namespace_uri)))
 
-        print(self.namespace_uri)
-        # cross check with linked data cloud list
+        # exclude white list
+        excluded = []
+        for n in self.namespace_uri:
+            for i in self.DEFAULT_NAMESPACES:
+                if n.startswith(i):
+                    excluded.append(n)
+        self.namespace_uri[:] = [x for x in self.namespace_uri if x not in excluded]
+        if excluded:
+            self.logger.info('{0} : Default vocabulary namespace(s) excluded - {1}'.format(semanticvocab_identifier, excluded))
 
+        outputs = []
+        score = 0
+        # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
+        if self.namespace_uri:
+            lod_namespaces = [d['namespace'] for d in self.VOCAB_NAMESPACES if 'namespace' in d]
+            exists = list(set(lod_namespaces) & set(self.namespace_uri))
+            self.logger.info(
+                '{0} : Check the remaining namespace(s) exists in LOD - {1}'.format(semanticvocab_identifier, exists))
+            if exists:
+                score = semanticvocab_sc
+                self.logger.info('{0} : Namespace matches found - {1}'.format(semanticvocab_identifier, exists))
+                for e in exists:
+                    outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
+            else:
+                self.logger.warning('{0} : NO vocabulary namespace match is found'.format(semanticvocab_identifier))
+
+            not_exists = [x for x in self.namespace_uri if x not in exists]
+            if not_exists:
+                self.logger.warning('{0} : Vocabulary namespace (s) specified but no match is found in LOD reference list - {1}'.format(semanticvocab_identifier, not_exists))
+        else:
+            self.logger.warning('{0} : NO namespaces of semantic vocabularies found in the metadata'.format(semanticvocab_identifier))
+
+        if score > 0:
+            test_status = 'pass'
+        semanticvocab_result.test_status = test_status
+        semanticvocab_result.earned = score
+        semanticvocab_result.score = semanticvocab_score
+        semanticvocab_result.output = outputs
         if self.isDebug:
             semanticvocab_result.test_debug = self.msg_filter.getMessage(semanticvocab_identifier)
         return semanticvocab_result.to_dict()

@@ -40,6 +40,7 @@ def assess_by_id(body):  # noqa: E501
         results.append(check_searchable_result)
         results.append(access_result)
         results.append(formal_metadata_result)
+        results.append(semantic_vocab_result)
         results.append(relatedresources_result)
         results.append(license_result)
         results.append(community_standards_result)
