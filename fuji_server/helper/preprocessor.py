@@ -28,7 +28,7 @@ class Preprocessor(object):
     open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
-    common_namespaces = []
+    default_namespaces = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
@@ -185,13 +185,14 @@ class Preprocessor(object):
             cls.open_file_formats = data
 
     @classmethod
-    def retrieve_common_namespaces(cls):
+    def retrieve_default_namespaces(cls):
         ns = []
-        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'common_namespaces.txt')
+        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'default_namespaces.txt')
         with open(ns_file_path) as f:
-            ns = [line.split(':',1)[1].strip() for line in f]
+            #ns = [line.split(':',1)[1].strip() for line in f]
+            ns = [line.rstrip() for line in f]
         if ns:
-            cls.common_namespaces = ns
+            cls.default_namespaces = ns
 
     @classmethod
     def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
@@ -328,10 +329,10 @@ class Preprocessor(object):
         return cls.linked_vocabs
 
     @classmethod
-    def getCommonNamespaces(cls):
-        if not cls.common_namespaces:
-            cls.retrieve_common_namespaces()
-        return cls.common_namespaces
+    def getDefaultNamespaces(cls):
+        if not cls.default_namespaces:
+            cls.retrieve_default_namespaces()
+        return cls.default_namespaces
 
     @classmethod
     def get_metrics(cls):
