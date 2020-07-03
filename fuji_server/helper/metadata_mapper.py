@@ -74,3 +74,4 @@ class Mapper(Enum):
                         'modified_date: dates[?dateType == \'Updated\'].date,'\
                         'object_content_identifier:  {url: contentUrl} , access_level: rightsList[*].rightsUri || rightsList[*].rights }'
                         #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
+

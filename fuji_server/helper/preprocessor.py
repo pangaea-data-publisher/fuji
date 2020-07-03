@@ -1,9 +1,8 @@
 import json
 import logging
 import os
-import sys
 from typing import Dict, Any
-
+from urllib.parse import urlparse
 import requests
 import yaml
 
@@ -13,21 +12,27 @@ class Preprocessor(object):
     formatted_specification = {}
     total_metrics = 0
     total_licenses = 0
-    logger = logging.getLogger()
     METRIC_YML_PATH = None
     SPDX_URL = None
     DATACITE_API_REPO = None
     RE3DATA_API = None
+    LOV_API = None
+    LOD_CLOUDNET = None
+    BIOPORTAL_API = None
+    BIOPORTAL_KEY = None
     all_licenses = []
     license_names = []
-    metadata_standards = {} #key=subject,value =[standards name]
+    metadata_standards = {}  # key=subject,value =[standards name]
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
-    #fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
-    fuji_server_dir =  os.path.dirname(os.path.dirname(__file__)) #project_root
+    linked_vocabs = {}
+    default_namespaces = []
+    # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
+    fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
+    logger = logging.getLogger()
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path):
@@ -36,18 +41,18 @@ class Preprocessor(object):
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as e:
-            cls.logger.exception(e)
+            cls.logger.error(e)
         cls.all_metrics_list = specification['metrics']
         cls.total_metrics = len(cls.all_metrics_list)
 
         # expected output format of http://localhost:1071/uji/api/v1/metrics
-        #unwanted_keys = ['question_type']
+        # unwanted_keys = ['question_type']
         cls.formatted_specification['total'] = cls.total_metrics
-        #temp_list = []
-        #for dictm in cls.all_metrics_list:
-            #temp_dict = {k: v for k, v in dictm.items() if k not in unwanted_keys}
-            #temp_list.append(dictm)
-        #cls.formatted_specification['metrics'] = temp_list
+        # temp_list = []
+        # for dictm in cls.all_metrics_list:
+        # temp_dict = {k: v for k, v in dictm.items() if k not in unwanted_keys}
+        # temp_list.append(dictm)
+        # cls.formatted_specification['metrics'] = temp_list
         cls.formatted_specification['metrics'] = cls.all_metrics_list
 
     @classmethod
@@ -74,7 +79,7 @@ class Preprocessor(object):
                 with open(re3dict_path, 'w') as f2:
                     json.dump(cls.re3repositories, f2)
             except requests.exceptions.RequestException as e:
-                cls.logger.exception(e)
+                cls.logger.error(e)
 
     @classmethod
     def retrieve_licenses(cls, license_path, isDebugMode):
@@ -82,7 +87,7 @@ class Preprocessor(object):
         jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'licenses.json')
         # The repository can be found at https://github.com/spdx/license-list-data
         # https://spdx.org/spdx-license-list/license-list-overview
-        if isDebugMode: # use local file instead of downloading the file online
+        if isDebugMode:  # use local file instead of downloading the file online
             with open(jsn_path) as f:
                 data = json.load(f)
         else:
@@ -98,9 +103,9 @@ class Preprocessor(object):
                         with open(jsn_path, 'w') as f:
                             json.dump(data, f)
                 except json.decoder.JSONDecodeError as e1:
-                    cls.logger.exception(e1)
+                    cls.logger.error(e1)
             except requests.exceptions.RequestException as e2:
-                cls.logger.exception(e2)
+                cls.logger.error(e2)
         if data:
             cls.all_licenses = data
             cls.total_licenses = len(data)
@@ -126,7 +131,7 @@ class Preprocessor(object):
                         resp = r.json()
                         schemes = resp['metadata-schemes']
                         for s in schemes:
-                            r2 = requests.get(catalog_url+str(s['id']), headers=cls.header)
+                            r2 = requests.get(catalog_url + str(s['id']), headers=cls.header)
                             if r2.status_code == 200:
                                 std = r2.json()
                                 urls = None
@@ -135,20 +140,20 @@ class Preprocessor(object):
                                 locations = std.get('locations')
                                 if locations:
                                     urls = [d['url'] for d in std.get('locations') if 'url' in d]
-                                #if keywords:
-                                    #for k in keywords:
-                                        #data.setdefault(k.lower(), []).append(standard_title)
-                                #else:
-                                    #data.setdefault('other', []).append(standard_title)
+                                # if keywords:
+                                # for k in keywords:
+                                # data.setdefault(k.lower(), []).append(standard_title)
+                                # else:
+                                # data.setdefault('other', []).append(standard_title)
                                 if standard_title:
                                     data[standard_title] = {'subject_areas': keywords, 'urls': urls}
 
                         with open(std_path, 'w') as f:
                             json.dump(data, f)
                 except json.decoder.JSONDecodeError as e1:
-                    cls.logger.exception(e1)
+                    cls.logger.error(e1)
             except requests.exceptions.RequestException as e2:
-                cls.logger.exception(e2)
+                cls.logger.error(e2)
         if data:
             cls.metadata_standards = data
 
@@ -169,6 +174,7 @@ class Preprocessor(object):
             data = json.load(f)
         if data:
             cls.long_term_file_formats = data
+
     @classmethod
     def retrieve_open_file_formats(cls, isDebugMode):
         data = {}
@@ -179,17 +185,154 @@ class Preprocessor(object):
             cls.open_file_formats = data
 
     @classmethod
+    def retrieve_default_namespaces(cls):
+        ns = []
+        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'default_namespaces.txt')
+        with open(ns_file_path) as f:
+            #ns = [line.split(':',1)[1].strip() for line in f]
+            ns = [line.rstrip() for line in f]
+        if ns:
+            cls.default_namespaces = ns
+
+    @classmethod
+    def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
+    #def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
+    # may take around 20 minutes to test and import all vocabs
+        cls.LOV_API = lov_api
+        cls.LOD_CLOUDNET = lodcloud_api
+        #cls.BIOPORTAL_API = bioportal_api
+        #cls.BIOPORTAL_KEY = bioportal_key
+        ld_path = os.path.join(cls.fuji_server_dir, 'data', 'linked_vocab.json')
+        vocabs = []
+        if isDebugMode:
+            with open(ld_path) as f:
+                cls.linked_vocabs = json.load(f)
+        else:
+            #1. retrieve records from https://lov.linkeddata.es/dataset/lov/api
+            #714 vocabs, of which 104 vocabs uri specified are broken (02072020)
+            try:
+                req = requests.get(lov_api, headers=cls.header)
+                raw_lov = req.json()
+                broken = []
+                cls.logger.info('{0} vocabs specified at {1}'.format(len(raw_lov), lov_api))
+                for lov in raw_lov:
+                    title = [i.get('value') for i in lov.get('titles') if i.get('lang') == 'en'][0]
+                    uri = lov.get('uri')
+                    nsp = lov.get('nsp')
+                    if uri and nsp:
+                      if cls.isURIActive(uri):
+                          vocabs.append({'title': title, 'namespace': nsp, 'uri': uri, 'prefix': lov.get('prefix')})
+                      else:
+                          broken.append(uri)
+                    else:
+                        broken.append(uri)
+                cls.logger.info('{0} vocabs uri specified are broken'.format(len(broken)))
+            except requests.exceptions.RequestException as e:
+                cls.logger.error(e)
+            except requests.exceptions.ConnectionError as e1:
+                cls.logger.error(e1)
+
+            all_uris = [d['uri'] for d in vocabs if 'uri' in d]
+            #2a. retrieve vocabs from https://lod-cloud.net/lod-data.json
+            #1440 vocabs specified of which 1008 broken, so this source may be excluded in future
+            try:
+                r = requests.get(lodcloud_api, headers=cls.header)
+                raw = r.json()
+                cls.logger.info('{0} vocabs specified at {1}'.format(len(raw), lodcloud_api))
+                broken_lod = []
+                for r in raw:
+                    d = raw.get(r)
+                    website = d.get('website')
+                    ns = d.get('namespace')
+                    if website and ns:
+                        if cls.isURIActive(website):
+                            if website not in all_uris:
+                                temp = {'title': d['title'], 'namespace': ns, 'uri': website, 'prefix': d.get('identifier')}
+                                vocabs.append(temp)
+                        else:
+                            broken_lod.append(website)
+                    else:
+                        broken_lod.append(website)
+                cls.logger.info('{0} vocabs uri specified are broken'.format(len(broken_lod)))
+            except requests.exceptions.RequestException as e:
+                cls.logger.error(e)
+            except requests.exceptions.ConnectionError as e1:
+                cls.logger.error(e1)
+
+            #2b retrieve from BioPortal (excluded for now as the namespace in the ontology not necessarily use bioportal uri)
+            # try:
+            #     params = dict()
+            #     params["apikey"] = bioportal_key
+            #     r = requests.get(bioportal_api, params=params)
+            #     onto_path = r.json()["links"]["ontologies"]
+            #     resp = requests.get(onto_path, params=params)
+            #     ontologies = resp.json()
+            #     cls.logger.info('{0} vocabs specified at {1}'.format(len(ontologies), bioportal_api))
+            #     broken_lod = []
+            #     for onto in ontologies:
+            #         title_onto = onto['name']
+            #         prefix_onto = onto['acronym']
+            #         uri_onto = onto['ui']
+            # except requests.exceptions.RequestException as e:
+            #     cls.logger.exception(e)
+            # except requests.exceptions.ConnectionError as e1:
+            #     cls.logger.exception(e1)
+
+            #3. write to a local file
+            try:
+                with open(ld_path, 'w') as f:
+                    json.dump(vocabs, f)
+                    cls.linked_vocabs = vocabs
+            except IOError as e:
+                cls.logger.error("Couldn't write to file {}.".format(ld_path))
+
+    @staticmethod
+    def uri_validator(u):
+        try:
+            r = urlparse(u)
+            return all([r.scheme, r.netloc])
+        except:
+            return False
+
+    @classmethod
+    def isURIActive(cls, url):
+        isActive = False
+        if cls.uri_validator(url):
+            try:
+                r = requests.head(url)
+                if not (400 <= r.status_code < 600):
+                    isActive = True
+            except requests.exceptions.RequestException as e:
+                cls.logger.error(e)
+            except requests.exceptions.ConnectionError as e1:
+                cls.logger.error(e1)
+        return isActive
+
+    @classmethod
     def get_licenses(cls):
         if not cls.all_licenses:
             cls.retrieve_licenses(cls.SPDX_URL, True)
-        #return cls.all_licenses, cls.license_names, cls.license_urls
+        # return cls.all_licenses, cls.license_names, cls.license_urls
         return cls.all_licenses, cls.license_names
 
     @classmethod
     def getRE3repositories(cls):
         if not cls.re3repositories:
-            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
+            cls.retrieve_retrieve_linkeddata(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
         return cls.re3repositories
+
+    @classmethod
+    def getLinkedVocabs(cls):
+        if not cls.linked_vocabs:
+            #cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, cls.BIOPORTAL_API, cls.BIOPORTAL_KEY, True)
+            cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, True)
+        return cls.linked_vocabs
+
+    @classmethod
+    def getDefaultNamespaces(cls):
+        if not cls.default_namespaces:
+            cls.retrieve_default_namespaces()
+        return cls.default_namespaces
 
     @classmethod
     def get_metrics(cls):

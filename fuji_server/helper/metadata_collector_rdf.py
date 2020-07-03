@@ -10,19 +10,25 @@ from rdflib.namespace import DC
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
-class MetaDataCollectorSparql (MetaDataCollector):
+class MetaDataCollectorRdf (MetaDataCollector):
     target_url=None
-    def __init__(self,  loggerinst, target_url):
-        self.target_url=target_url
+    def __init__(self,  loggerinst, target_url, source):
+        self.target_url = target_url
+        self.content_type = None
+        self.source_name = source
         super().__init__(logger=loggerinst)
 
     def parse_metadata(self):
-        self.source_name = self.getEnumSourceNames().LINKED_DATA.value
+        #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
         self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
         rdf_metadata=dict()
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.rdf)
         rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+        #required for metric knowledge representation
+        self.content_type = requestHelper.getHTTPResponse().headers['content-type']
+        self.content_type = self.content_type.split(";", 1)[0]
+
         ontology_indicator=[rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')]
         if isinstance(rdf_response,rdflib.graph.Graph):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
@@ -38,7 +44,7 @@ class MetaDataCollectorSparql (MetaDataCollector):
             for ns in rdf_response.namespaces():
                 self.namespaces.append(str(ns[1]))
         else:
-            self.logger.info('FsF-F2-01M : Expected RDF Graph but received:'+str(type(rdf_response)))
+            self.logger.info('FsF-F2-01M : Expected RDF Graph but received - {0}'.format(self.content_type))
         return self.source_name, rdf_metadata
 
     #TODO rename to: get_core_metadata
@@ -102,3 +108,6 @@ class MetaDataCollectorSparql (MetaDataCollector):
             #rdf_meta.query(self.metadata_mapping.value)
             #print(rdf_meta)
         #return None
+
+    def get_content_type(self):
+        return self.content_type

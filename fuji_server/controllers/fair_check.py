@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
 import mimetypes
 import re
@@ -8,26 +7,24 @@ import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse
 
-import requests
-from SPARQLWrapper import SPARQLWrapper
-from fuzzywuzzy import process, fuzz
 import Levenshtein
 import idutils
 import lxml
+import requests
+from fuzzywuzzy import process, fuzz
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
+from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
-from fuji_server.helper.metadata_collector_sparql import MetaDataCollectorSparql
-# from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
-from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvester
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
+from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-#from fuji_server.models import CoreMetadataOutput
 from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
 from fuji_server.models.data_content_metadata import DataContentMetadata
@@ -46,6 +43,8 @@ class FAIRCheck:
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
+    DEFAULT_NAMESPACES = None
+    VOCAB_NAMESPACES = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -66,9 +65,9 @@ class FAIRCheck:
         self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
-       # self.test_data_content_text = None# a helper to check metadata against content
-        self.rdf_graph = None
+        self.test_data_content_text = None# a helper to check metadata against content
         self.sparql_endpoint = None
+        self.rdf_collector = None
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -93,8 +92,10 @@ class FAIRCheck:
             cls.LONG_TERM_FILE_FORMATS = Preprocessor.get_long_term_file_formats()
         if not cls.OPEN_FILE_FORMATS:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
-        # if not cls.DATACITE_REPOSITORIES:
-        # cls.DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
+        if not cls.DEFAULT_NAMESPACES:
+            cls.DEFAULT_NAMESPACES = Preprocessor.getDefaultNamespaces()
+        if not cls.VOCAB_NAMESPACES:
+            cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -233,9 +234,9 @@ class FAIRCheck:
                 self.logger.info(
                     '{} : OAIPMH endpoint from R3DATA {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
                 if (self.uri_validator(self.oaipmh_endpoint)):
-                    oai_harvester = OAIMetadataHarvester(endpoint=self.oaipmh_endpoint, loggerinst=self.logger, metricid='FsF-R1.3-01M')
-                    self.community_standards_uri = oai_harvester.getMetadataStandards()
-                    self.namespace_uri.extend(oai_harvester.getNamespaces())
+                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_provider.getMetadataStandards()
+                    self.namespace_uri.extend(oai_provider.getNamespaces())
                     self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
@@ -326,32 +327,31 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
-        found_metadata_link =False
-        typed_metadata_links=self.get_html_typed_links(rel='alternate')
+        found_metadata_link = False
+        typed_metadata_links = self.get_html_typed_links(rel='alternate')
         for metadata_link in typed_metadata_links:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                 self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                 found_metadata_link=True
-                rdf_collector = MetaDataCollectorSparql(loggerinst=self.logger,
-                                                           target_url=metadata_link['url'])
+                source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
+                self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
-            rdf_collector = MetaDataCollectorSparql( loggerinst=self.logger,
-                                                           target_url=self.landing_url)
+            source = MetaDataCollector.Sources.LINKED_DATA.value
+            self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
 
-        if rdf_collector is not None:
-            source_dcat, dcat_dict =rdf_collector.parse_metadata()
-            self.namespace_uri.extend(rdf_collector.getNamespaces())
-            #TODO: change dcat to rdf it's more generic now..
-            if dcat_dict:
-                not_null_dcat = [k for k, v in dcat_dict.items() if v is not None]
+        if self.rdf_collector is not None:
+            source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
+            self.namespace_uri.extend(self.rdf_collector.getNamespaces())
+            if rdf_dict:
+                not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
                 # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
-                self.metadata_sources.append(source_dcat)
-                for r in not_null_dcat:
+                self.metadata_sources.append(source_rdf)
+                for r in not_null_rdf:
                     if r in self.reference_elements:
-                        self.metadata_merged[r] = dcat_dict[r]
+                        self.metadata_merged[r] = rdf_dict[r]
                         self.reference_elements.remove(r)
             else:
                 self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
@@ -359,7 +359,6 @@ class FAIRCheck:
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
             # TODO (Important) - search via b2find
-
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
 
@@ -763,7 +762,7 @@ class FAIRCheck:
         sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                             MetaDataCollector.Sources.DATACITE_JSON.value]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Metadata is retrieved/extracted through - {}'.format(all))
+        self.logger.info('FsF-F4-01M : Supported metadata retrieval/extraction - {}'.format(all))
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
                                   MetaDataCollector.Sources.SIGN_POSTING.value]
@@ -772,11 +771,15 @@ class FAIRCheck:
         if search_engine_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+        else:
+            self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(search_engines_support))
 
         registry_support_match = list(set(self.metadata_sources).intersection(sources_registry))
         if registry_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
+        else:
+            self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
         # TODO (Important) - search via b2find
         length = len(search_mechanisms)
         if length > 0:
@@ -1101,9 +1104,9 @@ class FAIRCheck:
         outputs = []
         score = 0
         test_status = 'fail'
-        search_values = [self.metadata_merged.get('object_identifier'), self.landing_url, self.metadata_merged.get('title')]
+        search_values = [self.pid_url, self.landing_url, self.metadata_merged.get('title')]
         search_values= [str(x) for x in search_values if x is not None]
-        #source = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"] # allowed values
+        # note: 'source' allowed values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]
 
         #1. light-weight check (structured_data), expected keys from extruct ['json-ld','rdfa']
         self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
@@ -1126,69 +1129,56 @@ class FAIRCheck:
                             score += 1
                             break
         if len(outputs)==0:
-            self.logger.warning('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
+            self.logger.info('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
 
         # 2. hard check (typed-link, content negotiate, sparql endpoint)
         # 2a. in the object page, you may find a <link rel="alternate" type="application/rdf+xml" … />
-        rdf_datalinks = self.get_html_typed_links("alternate")
+        # 2b.content negotiate
+        formalExists = False
         self.logger.info('{0} : Check if RDF-based typed link included'.format(formal_meta_identifier))
-        if rdf_datalinks:
-            for rdoc in rdf_datalinks:
-                #type = rdoc.get('type')
-                url = rdoc.get('url')
-                self.logger.info('{0} : RDF-based typed link found - {1}'.format(formal_meta_identifier, url))
-                requestHelper = RequestHelper(url, self.logger)
-                requestHelper.setAcceptType(AcceptTypes.default)
-                response = requestHelper.content_negotiate(formal_meta_identifier)
-                #status_code = requestHelper.getHTTPResponse().status_code
-                if response:
-                    content_type = requestHelper.getHTTPResponse().headers['content-type']
-                    content_type = content_type.split(";", 1)[0]
-                    self.logger.info('{0} : RDF graph retrieved, content type - {1}'.format(formal_meta_identifier, content_type))
-                    outputs.append(FormalMetadataOutputInner(serialization_format=content_type, source='typed_link',
-                                                         is_metadata_found=True))
-                    self.rdf_graph = response
-                    score += 1
-                    break
-                else:
-                    self.logger.info('{0} : Typed link included, but not accessible'.format(formal_meta_identifier))
+        if MetaDataCollector.Sources.RDF_SIGN_POSTING.value in self.metadata_sources:
+            contenttype = self.rdf_collector.get_content_type()
+            self.logger.info('{0} : RDF graph retrieved, content type - {1}'.format(formal_meta_identifier, contenttype))
+            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='typed_link', is_metadata_found=True))
+            score += 1
+            formalExists = True
         else:
-            self.logger.warning('{0} : NO RDF-based typed link found'.format(formal_meta_identifier))
-
-        #2b.content negotiate
-        #if not rdf_graph and self.pid_scheme:
-        rdf_mime_types = AcceptTypes.rdf.value
-        if not self.rdf_graph:
+            self.logger.info('{0} : NO RDF-based typed link found'.format(formal_meta_identifier))
             self.logger.info('{0} : Check if RDF metadata available through content negotiation'.format(formal_meta_identifier))
-            requestHelper = RequestHelper(self.pid_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.rdf)
-            response_nego = requestHelper.content_negotiate(formal_meta_identifier)
-            type_nego = requestHelper.getHTTPResponse().headers['content-type']
-            type_nego = type_nego.split(";", 1)[0]
-            #if any(type_nego in item for item in rdf_mime_types) and response_nego:
-            if response_nego and type_nego in AcceptTypes.rdf.value:
-                outputs.append(FormalMetadataOutputInner(serialization_format=type_nego, source='content_negotiate',
+            if MetaDataCollector.Sources.LINKED_DATA.value in self.metadata_sources:
+                contenttype = self.rdf_collector.get_content_type()
+                self.logger.info(
+                    '{0} : RDF graph retrieved, content type - {1}'.format(formal_meta_identifier, contenttype))
+                outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
                                                          is_metadata_found=True))
-                self.rdf_graph = response_nego
                 score += 1
+                formalExists = True
             else:
-                self.logger.warning('{0} : Seems like non-rdf response retrieved, content type - {1}'.format(formal_meta_identifier, type_nego))
+                self.logger.info('{0} : NO RDF metadata available through content negotiation'.format(formal_meta_identifier))
 
         # 2c. try to retrieve via sparql endpoint (if available)
-        if not self.rdf_graph:
-            self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
-            #self.sparql_endpoint = 'https://isidore.science/sparql' #test endpoint
-            if self.sparql_endpoint: #TODO, reuse dcat?
-                queryString = ""
-                sparql = SPARQLWrapper(self.sparql_endpoint)
-                sparql.setQuery(queryString)
-                #sparql.setReturnFormat(JSON)
-                try:
-                    self.rdf_graph = sparql.query().convert()
-                except Exception as e:
-                    self.logger.warning(e)
+        if not formalExists:
+            #self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
+            #self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
+            # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/query/' #test web sparql form
+            #self.pid_url = 'http://data.archaeologydataservice.ac.uk/10.5284/1000011' #test uri
+            # self.sparql_endpoint = 'https://meta.icos-cp.eu/sparqlclient/' #test endpoint
+            # self.pid_url = 'https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm' #test uri
+            if self.sparql_endpoint:
+                self.logger.info('{0} : SPARQL endpoint found - {1}'.format(formal_meta_identifier, self.sparql_endpoint))
+                sparql_provider = SPARQLMetadataProvider(endpoint=self.sparql_endpoint, logger=self.logger,metric_id=formal_meta_identifier)
+                query = "CONSTRUCT {{?dataURI ?property ?value}} where {{ VALUES ?dataURI {{ <{}> }} ?dataURI ?property ?value }}".format(self.pid_url)
+                self.logger.info('{0} : Executing SPARQL - {1}'.format(formal_meta_identifier, query))
+                rdfgraph, contenttype = sparql_provider.getMetadata(query)
+                if rdfgraph:
+                    outputs.append(
+                        FormalMetadataOutputInner(serialization_format=contenttype, source='sparql_endpoint', is_metadata_found=True))
+                    score += 1
+                    self.namespace_uri.extend(sparql_provider.getNamespaces())
+                else:
+                    self.logger.warning('{0} : NO RDF metadata retrieved through the sparql endpoint'.format(formal_meta_identifier))
             else:
-                self.logger.warning('{0} : No SPARQL endpoint found through the object URI provided'.format(formal_meta_identifier))
+                self.logger.warning('{0} : No SPARQL endpoint found through re3data based on the object URI provided'.format(formal_meta_identifier))
 
         if score > 0:
             test_status = 'pass'
@@ -1199,3 +1189,59 @@ class FAIRCheck:
         if self.isDebug:
             formal_meta_result.test_debug = self.msg_filter.getMessage(formal_meta_identifier)
         return formal_meta_result.to_dict()
+
+    def check_semantic_vocabulary(self):
+        self.count += 1
+        semanticvocab_identifier = 'FsF-I1-02M'
+        semanticvocab_name = FAIRCheck.METRICS.get(semanticvocab_identifier).get('metric_name')
+        semanticvocab_sc = int(FAIRCheck.METRICS.get(semanticvocab_identifier).get('total_score'))
+        semanticvocab_score = FAIRResultCommonScore(total=semanticvocab_sc)
+        semanticvocab_result = DataProvenance(id=self.count, metric_identifier=semanticvocab_identifier, metric_name=semanticvocab_name)
+
+        #remove duplicates
+        self.namespace_uri = list(set(self.namespace_uri))
+        self.namespace_uri = [x.strip() for x in self.namespace_uri]
+        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata - {1}'.format(semanticvocab_identifier, len(self.namespace_uri)))
+
+        # exclude white list
+        excluded = []
+        for n in self.namespace_uri:
+            for i in self.DEFAULT_NAMESPACES:
+                if n.startswith(i):
+                    excluded.append(n)
+        self.namespace_uri[:] = [x for x in self.namespace_uri if x not in excluded]
+        if excluded:
+            self.logger.info('{0} : Default vocabulary namespace(s) excluded - {1}'.format(semanticvocab_identifier, excluded))
+
+        outputs = []
+        score = 0
+        # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
+        if self.namespace_uri:
+            lod_namespaces = [d['namespace'] for d in self.VOCAB_NAMESPACES if 'namespace' in d]
+            exists = list(set(lod_namespaces) & set(self.namespace_uri))
+            self.logger.info(
+                '{0} : Check the remaining namespace(s) exists in LOD - {1}'.format(semanticvocab_identifier, exists))
+            if exists:
+                score = semanticvocab_sc
+                self.logger.info('{0} : Namespace matches found - {1}'.format(semanticvocab_identifier, exists))
+                for e in exists:
+                    outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
+            else:
+                self.logger.warning('{0} : NO vocabulary namespace match is found'.format(semanticvocab_identifier))
+
+            not_exists = [x for x in self.namespace_uri if x not in exists]
+            if not_exists:
+                self.logger.warning('{0} : Vocabulary namespace (s) specified but no match is found in LOD reference list - {1}'.format(semanticvocab_identifier, not_exists))
+        else:
+            self.logger.warning('{0} : NO namespaces of semantic vocabularies found in the metadata'.format(semanticvocab_identifier))
+
+        if score > 0:
+            test_status = 'pass'
+        semanticvocab_result.test_status = test_status
+        semanticvocab_result.earned = score
+        semanticvocab_result.score = semanticvocab_score
+        semanticvocab_result.output = outputs
+        if self.isDebug:
+            semanticvocab_result.test_debug = self.msg_filter.getMessage(semanticvocab_identifier)
+        return semanticvocab_result.to_dict()
+

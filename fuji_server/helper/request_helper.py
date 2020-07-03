@@ -4,9 +4,8 @@ from enum import Enum
 import extruct
 import rdflib
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from requests.packages.urllib3.exceptions import *
 from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
@@ -54,8 +53,8 @@ class RequestHelper:
         self.metric_id=metric_id
         if self.request_url is not None:
             try:
-                self.logger.info('%s : Retrieving page %s'% (metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=False)
+                self.logger.info('{0}: Retrieving page {1}'.format(metric_id, self.request_url))
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=True)
                 status_code = self.http_response.status_code
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
@@ -85,16 +84,16 @@ class RequestHelper:
                                             # quick one:
                                             if self.http_response.text.find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
-                                                self.parse_response = self.parse_rdf(self.http_response.text,at.name)
+                                                self.parse_response = self.parse_rdf(self.http_response.text, at.name)
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)
                                                 self.parse_response  = self.http_response
                                             break
-                                        if at.name in {'schemaorg', 'json', 'jsonld', 'datacite_json'}:
+                                        if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
                                             self.parse_response  = self.http_response.json()
                                             # result = json.loads(response.text)
                                             break
-                                        if at.name in {'nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle'}:
+                                        if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
                                             self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
                                             break
 
