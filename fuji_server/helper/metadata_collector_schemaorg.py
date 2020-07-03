@@ -41,15 +41,17 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         self.namespaces.append('http://schema.org/')
                         jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                         # TODO all properties with null values extracted through jmespath should be excluded
-                        if jsnld_metadata['creator'] is None:
-                            first = jsnld_metadata['creator_first']
-                            last = jsnld_metadata['creator_last']
+                        if jsnld_metadata.get('creator') is None:
+                            #TODO: handle None values for first and last name
+                            first = jsnld_metadata.get('creator_first')
+                            last = jsnld_metadata.get('creator_last')
                             if isinstance(first, list) and isinstance(last, list):
                                 if len(first) == len(last):
-                                    names = [i + " " + j for i, j in zip(first, last)]
+                                    names = [str(i) + " " + str(j) for i, j in zip(first, last)]
                                     jsnld_metadata['creator'] = names
                             else:
-                                jsnld_metadata['creator'] = [first + " " + last]
+                                jsnld_metadata['creator'] = [str(first) + " " + str(last)]
+
                         # filter out None values of related_resources
                         if jsnld_metadata['related_resources']:
                             relateds =  [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]

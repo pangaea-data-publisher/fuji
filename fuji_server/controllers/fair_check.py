@@ -169,6 +169,11 @@ class FAIRCheck:
                         pid_result.test_status = 'pass'
                     pid_output.resolved_url = self.landing_url  # url is active, although the identifier is not based on a pid scheme
                     pid_output.resolvable_status = True
+                    self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                else:
+                    if r.status_code in [401, 402, 403]:
+                        self.isRestricted = True
+                    self.logger.warning("Identifier returned response code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
 
@@ -196,9 +201,17 @@ class FAIRCheck:
             self.retrieve_metadata_external()
 
         # ========= clean merged metadata, delete all entries which are None or ''
+        data_objects = self.metadata_merged.get('object_content_identifier')
+        if data_objects == {'url': None} or data_objects == [None]:
+            data_objects = self.metadata_merged['object_content_identifier'] = None
+        if data_objects is not None:
+            if not isinstance(data_objects, list):
+                self.metadata_merged['object_content_identifier']=[data_objects]
         for mk, mv in list(self.metadata_merged.items()):
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
+
+
 
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
 
@@ -399,23 +412,23 @@ class FAIRCheck:
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutput()
 
-        id_object = None
+        #id_object = None
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
-        self.logger.info('FsF-F3-01M : Data object identifier specified {}'.format(id_object))
-
+        if contents is not None:
+            self.logger.info('FsF-F3-01M : Object content identifier specified {}'.format(id_object))
         score = 0
+        # This (check if object id is active) is already done ein check_unique_persistent
+        '''
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
             # check resolving status
             try:
                 request = requests.get(id_object)
                 if request.status_code == 200:
-                    #TODO: handle binary content
-                    if self.test_data_content_text == None:
-                        self.test_data_content_text = request.text
-                    self.logger.info('FsF-F3-01M : Data object identifier active (status code = 200)')
+
+                    self.logger.info('FsF-F3-01M : Object identifier active (status code = 200)')
                     score += 1
                 else:
                     if request.status_code in [401,402,403]:
@@ -425,7 +438,7 @@ class FAIRCheck:
                 self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
         else:
             self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
-
+        '''
         content_list = []
         if contents:
             if isinstance(contents, dict):
@@ -433,7 +446,7 @@ class FAIRCheck:
             contents = [c for c in contents if c]
             for content_link in contents:
                 if content_link.get('url'):
-                    self.logger.info('FsF-F3-01M : Data object (content) identifier included {}'.format(content_link.get('url')))
+                    self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
                     try:
@@ -442,7 +455,6 @@ class FAIRCheck:
                         content_link['header_content_type'] = response.getheader('Content-Type')
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
-
                         if content_link['header_content_type'] != content_link.get('type'):
                             self.logger.warning('FsF-F3-01M : Content type given in metadata ('+str(content_link.get('type'))+') differs from content type given in Header response ('+str(content_link['header_content_type'])+')')
                             self.logger.info('FsF-F3-01M : Replacing metadata content type with content type from Header response: '+str(content_link['header_content_type']))
@@ -826,15 +838,13 @@ class FAIRCheck:
                             preferance_reason.append('science format')
                         data_file_output.is_preferred_format= True
                         data_file_format_result.test_status = 'pass'
-
                     # check if long term format
                     if mime_type in FAIRCheck.LONG_TERM_FILE_FORMATS:
                         preferance_reason.append('long term format')
                         subject_area.append('General')
                         data_file_output.is_preferred_format = True
                         data_file_format_result.test_status = 'pass'
-
-                    #TODO: check if open format
+                    #check if open format
                     if mime_type in FAIRCheck.OPEN_FILE_FORMATS:
                         preferance_reason.append('open format')
                         subject_area.append('General')
@@ -855,9 +865,6 @@ class FAIRCheck:
                     data_file_format_result.score = 1
                 data_file_output.preference_reason=preferance_reason
                 data_file_output.subject_areas=subject_area
-
-                    #if mime_type in open_formats:
-
         else:
             self.logger.info('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
             data_file_format_result.test_status='fail'
@@ -1007,6 +1014,8 @@ class FAIRCheck:
         data_provenance_result.test_status=provenance_status
         data_provenance_result.score = data_provenance_score
         data_provenance_result.output = data_provenance_output
+        if self.isDebug:
+            data_provenance_result.test_debug = self.msg_filter.getMessage(data_provenance_identifier)
 
         return data_provenance_result.to_dict()
 
@@ -1021,20 +1030,65 @@ class FAIRCheck:
         data_content_metadata_output = DataContentMetadataOutput()
         data_content_metadata_result.score = 0
         data_content_metadata_output.data_content_descriptor=[]
-        if 'measured_variable' in self.metadata_merged:
-            self.logger.info('FsF-R1-01MD : Found measured variables as content descriptor')
-            data_content_metadata_result.score = 1
-            data_content_metadata_result.test_status = 'pass'
-            data_content_metadata_output.has_content_descriptors= True
-            for variable in self.metadata_merged['measured_variable']:
-                data_content_metadata_inner = DataContentMetadataOutputInner()
-                data_content_metadata_inner.descriptor_name=variable
-                data_content_metadata_inner.descriptor_type='measured_variable'
-                if variable in self.test_data_content_text:
-                    data_content_metadata_inner.matchescontent = True
-                    data_content_metadata_result.score = 2
-                data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
+        #download the last content object for testing content vs. metadata matching
+        test_data_content_text = ''
+        if isinstance(self.content_identifier, list):
+            if len(self.content_identifier) > 0:
+                test_data_content_url = self.content_identifier[-1].get('url')
+                try:
+                    r = requests.get(test_data_content_url)
+                    test_data_content_text = r.text
+                except:
+                    self.logger.warning('FsF-R1-01MD : Could not download content object')
+        if self.metadata_merged.get('object_content_identifier') is not None:
+            #check file type and size descriptors
+            for data_object in self.metadata_merged.get('object_content_identifier'):
+                fileinfoscore = 0
+                if data_object.get('type') is not None and data_object.get('size') is not None:
+                    self.logger.info('FsF-R1-01MD : Found file type and size info as content decriptor for: '+str(data_object.get('url')))
+                    data_content_metadata_output.has_content_descriptors = True
+                    data_content_metadata_result.test_status = 'pass'
+                    fileinfoscore = 0.5
+                    data_content_filetype_inner = DataContentMetadataOutputInner()
+                    data_content_filetype_inner.descriptor_type = 'file type'
+                    data_content_filetype_inner.descriptor_name = data_object.get('type')
+                    data_content_metadata_output.data_content_descriptor.append(data_content_filetype_inner)
+                    data_content_filesize_inner = DataContentMetadataOutputInner()
+                    data_content_filesize_inner.descriptor_type = 'file size'
+                    data_content_filesize_inner.descriptor_name = data_object.get('size')
+                    data_content_metadata_output.data_content_descriptor.append(data_content_filesize_inner)
+                    if data_object.get('header_content_type') == data_object.get('type'):
+                        data_content_filetype_inner.matchescontent = True
+                        fileinfoscore = 1
+                else:
+                    self.logger.warning('FsF-R1-01MD : No file type and size info available for: '+str(data_object.get('url')))
 
+            data_content_metadata_result.score = fileinfoscore
+                    #check measured variables
+            if 'measured_variable' in self.metadata_merged:
+                self.logger.info('FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
+                variablescore = 1
+                data_content_metadata_result.test_status = 'pass'
+                data_content_metadata_output.has_content_descriptors= True
+
+                for variable in self.metadata_merged['measured_variable']:
+                    data_content_metadata_inner = DataContentMetadataOutputInner()
+                    data_content_metadata_inner.descriptor_name=variable
+                    data_content_metadata_inner.descriptor_type='measured_variable'
+
+                    if variable in test_data_content_text:
+                        self.logger.info('FsF-R1-01MD : Measured variables in metadata also found in file content')
+                        data_content_metadata_inner.matchescontent = True
+                        variablescore = 2
+                    data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
+                data_content_metadata_result.score = data_content_metadata_result.score + variablescore
+            else:
+                self.logger.warning('FsF-R1-01MD : No measured variables or observations (aka parameters) found as content descriptor')
+        else:
+            self.logger.warning('FsF-R1-01MD : No object content available to perform the test')
+
+        if self.isDebug:
+            data_content_metadata_result.test_debug = self.msg_filter.getMessage(data_content_metadata_identifier)
         data_content_metadata_result.output=data_content_metadata_output
 
         return data_content_metadata_result.to_dict()
