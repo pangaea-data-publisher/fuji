@@ -66,7 +66,7 @@ class FAIRCheck:
         self.namespace_uri=[]
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()  # all metadata elements required for FUJI metrics
         self.related_resources = []
-        self.test_data_content_text = None# a helper to check metadata against content
+       # self.test_data_content_text = None# a helper to check metadata against content
         self.rdf_graph = None
         self.sparql_endpoint = None
         if self.isDebug:
@@ -168,6 +168,11 @@ class FAIRCheck:
                         pid_result.test_status = 'pass'
                     pid_output.resolved_url = self.landing_url  # url is active, although the identifier is not based on a pid scheme
                     pid_output.resolvable_status = True
+                    self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                else:
+                    if r.status_code in [401, 402, 403]:
+                        self.isRestricted = True
+                    self.logger.warning("Identifier returned response code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
 
@@ -408,23 +413,23 @@ class FAIRCheck:
         did_score = FAIRResultCommonScore(total=did_sc)
         did_output = IdentifierIncludedOutput()
 
-        id_object = None
+        #id_object = None
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
-        self.logger.info('FsF-F3-01M : Object content identifier specified {}'.format(id_object))
-
+        if contents is not None:
+            self.logger.info('FsF-F3-01M : Object content identifier specified {}'.format(id_object))
         score = 0
+        # This (check if object id is active) is already done ein check_unique_persistent
+        '''
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
             # check resolving status
             try:
                 request = requests.get(id_object)
                 if request.status_code == 200:
-                    #TODO: handle binary content
-                    if self.test_data_content_text == None:
-                        self.test_data_content_text = request.text
-                    self.logger.info('FsF-F3-01M : Object content identifier active (status code = 200)')
+
+                    self.logger.info('FsF-F3-01M : Object identifier active (status code = 200)')
                     score += 1
                 else:
                     if request.status_code in [401,402,403]:
@@ -434,7 +439,7 @@ class FAIRCheck:
                 self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
         else:
             self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
-
+        '''
         content_list = []
         if contents:
             if isinstance(contents, dict):
@@ -451,7 +456,6 @@ class FAIRCheck:
                         content_link['header_content_type'] = response.getheader('Content-Type')
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
-
                         if content_link['header_content_type'] != content_link.get('type'):
                             self.logger.warning('FsF-F3-01M : Content type given in metadata ('+str(content_link.get('type'))+') differs from content type given in Header response ('+str(content_link['header_content_type'])+')')
                             self.logger.info('FsF-F3-01M : Replacing metadata content type with content type from Header response: '+str(content_link['header_content_type']))
@@ -1023,6 +1027,16 @@ class FAIRCheck:
         data_content_metadata_output = DataContentMetadataOutput()
         data_content_metadata_result.score = 0
         data_content_metadata_output.data_content_descriptor=[]
+        #download the last content object for testing content vs. metadata matching
+        test_data_content_text = ''
+        if isinstance(self.content_identifier, list):
+            if len(self.content_identifier) > 0:
+                test_data_content_url = self.content_identifier[-1].get('url')
+                try:
+                    r = requests.get(test_data_content_url)
+                    test_data_content_text = r.text
+                except:
+                    self.logger.warning('FsF-R1-01MD : Could not download content object')
         if self.metadata_merged.get('object_content_identifier') is not None:
             #check file type and size descriptors
             for data_object in self.metadata_merged.get('object_content_identifier'):
@@ -1053,11 +1067,13 @@ class FAIRCheck:
                 variablescore = 1
                 data_content_metadata_result.test_status = 'pass'
                 data_content_metadata_output.has_content_descriptors= True
+
                 for variable in self.metadata_merged['measured_variable']:
                     data_content_metadata_inner = DataContentMetadataOutputInner()
                     data_content_metadata_inner.descriptor_name=variable
                     data_content_metadata_inner.descriptor_type='measured_variable'
-                    if variable in self.test_data_content_text:
+
+                    if variable in test_data_content_text:
                         self.logger.info('FsF-R1-01MD : Measured variables in metadata also found in file content')
                         data_content_metadata_inner.matchescontent = True
                         variablescore = 2
