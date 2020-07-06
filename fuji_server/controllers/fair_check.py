@@ -951,7 +951,6 @@ class FAIRCheck:
         return found
 
     def check_data_provenance(self):
-        #https://www.w3.org/TR/prov-dc/
         data_provenance_identifier = 'FsF-R1.2-01M'
         data_provenance_name = FAIRCheck.METRICS.get(data_provenance_identifier).get('metric_name')
         data_provenance_sc = int(FAIRCheck.METRICS.get(data_provenance_identifier).get('total_score'))
@@ -959,7 +958,7 @@ class FAIRCheck:
         data_provenance_result = DataProvenance(id=self.count, metric_identifier=data_provenance_identifier,
                                                  metric_name=data_provenance_name)
         data_provenance_output = DataProvenanceOutput()
-        data_provenance_score=0
+        score=0
         has_creation_provenance = False
         provenance_elements = []
         provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
@@ -969,6 +968,7 @@ class FAIRCheck:
         creation_metadata_output.is_available = False
 
         #creation info
+        #TODO extend provenance properties (what,who,when) as declared at https://www.w3.org/TR/prov-dc/
         if 'title' in self.metadata_merged:
             creation_metadata_output.provenance_metadata.append({'title' : self.metadata_merged['title']})
             if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
@@ -976,21 +976,25 @@ class FAIRCheck:
                     creation_metadata_output.provenance_metadata.append({'creation_date' : self.metadata_merged['creation_date']})
                 else:
                     creation_metadata_output.provenance_metadata.append({'publication_date' : self.metadata_merged['publication_date']})
-                if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
+                if {'creator','contributor','publisher'}.intersection(set(self.metadata_merged.keys())):
                     creation_metadata_output.is_available=True
                     if 'creator' in self.metadata_merged:
                         #creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
                         creation_metadata_output.provenance_metadata.append({'creator' : ', '.join(self.metadata_merged['creator'])})
-                    else:
+                    elif 'contributor' in self.metadata_merged:
                         #creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
                         creation_metadata_output.provenance_metadata.append({'contributor' : ', '.join(self.metadata_merged['contributor'])})
+                    else:
+                        creation_metadata_output.provenance_metadata.append({'publisher': self.metadata_merged['publisher']})
                 provenance_status = 'pass'
                 self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
-                data_provenance_score=data_provenance_score+0.5
+                score=score+0.5
+        if score ==0:
+            self.logger.warning('FsF-R1.2-01M : Basic creation-related provenance (who, when) NOT found')
         data_provenance_output.creation_provenance_included=creation_metadata_output
 
         #modification versioning info
-        modified_indicators=['modified_date','version']
+        modified_indicators=['modified_date','version', 'provenance_general']
         modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
         modified_metadata_output = DataProvenanceOutputInner()
         modified_metadata_output.provenance_metadata = []
@@ -1001,26 +1005,34 @@ class FAIRCheck:
             for modified_element in modified_intersect:
                 modified_metadata_output.provenance_metadata.append({modified_element: self.metadata_merged[modified_element]})
             provenance_status = 'pass'
-            data_provenance_score = data_provenance_score+0.5
+            score=score+0.5
+        else:
+            self.logger.warning('FsF-R1.2-01M : Data modification/versioning information NOT found.')
         data_provenance_output.modification_provenance_included = modified_metadata_output
 
         #process, origin derived from relations
-        # isFormatOf, isPartOf, isReferencedBy, isReplacedBy, isRequiredBy, issued, isVersionOf,references
-        process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf',
-                            'IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
+        # TODO dc: isPartOf, isReferencedBy, isReplacedBy, isRequiredBy, issued, references
+        # TODO: check datacite relations
+        # TODO: same relation name may exists in different schemas
+        dc_process_indicators = ['hasFormat','hasVersion','isFormatOf','isVersionOf','isReferencedBy','isReplacedBy','references','replaces','source']
+        other_process_indicators = ['isPartOf','HasPart','isBasedOn', 'IsContinuedBy','Continues','HasVersion','IsVersionOf','IsPreviousVersionOf','IsNewVersionOf',
+                                    'IsVariantFormOf','IsOriginalFormOf', 'IsDerivedFrom', 'IsSourceOf','Obsoletes', 'IsIdenticalTo']
+        #process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf','IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
+        process_indicators = dc_process_indicators + other_process_indicators
         relations_metadata_output = DataProvenanceOutputInner()
         relations_metadata_output.provenance_metadata = []
         relations_metadata_output.is_available = False
-        if 'related_resources' in self.metadata_merged:
-            has_relations=False
-            for rr in self.metadata_merged['related_resources']:
-                if rr.get('relation_type') in process_indicators:
-                    has_relations=True
-                    relations_metadata_output.provenance_metadata.append({rr.get('relation_type') : rr.get('related_resource')})
-            if has_relations:
-                relations_metadata_output.is_available = True
-                data_provenance_score = data_provenance_score + 0.5
-                self.logger.info('FsF-R1.2-01M : Found basic process-related provenance information')
+        #if 'related_resources' in self.metadata_merged:
+        has_relations=False
+        #for rr in self.metadata_merged['related_resources']:
+        for rr in self.related_resources:
+            if rr.get('relation_type') in process_indicators:
+                has_relations=True
+                relations_metadata_output.provenance_metadata.append({rr.get('relation_type') : rr.get('related_resource')})
+        if has_relations:
+            relations_metadata_output.is_available = True
+            score=score+0.5
+            self.logger.info('FsF-R1.2-01M : Found basic process-related provenance information')
         data_provenance_output.provenance_relations_included = relations_metadata_output
 
         #structured provenance metadata available
@@ -1029,7 +1041,7 @@ class FAIRCheck:
         structured_metadata_output.is_available = False
         used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.namespace_uri)))
         if used_provenance_namespace:
-            data_provenance_score = data_provenance_score + 0.5
+            score=score+0.5
             structured_metadata_output.is_available = True
             for used_prov_ns in used_provenance_namespace:
                 structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
@@ -1037,11 +1049,11 @@ class FAIRCheck:
         data_provenance_output.structured_provenance_available = structured_metadata_output
 
         data_provenance_result.test_status=provenance_status
-        data_provenance_result.score = data_provenance_score
+        data_provenance_score.earned = score
         data_provenance_result.output = data_provenance_output
+        data_provenance_result.score = data_provenance_score
         if self.isDebug:
             data_provenance_result.test_debug = self.msg_filter.getMessage(data_provenance_identifier)
-
         return data_provenance_result.to_dict()
 
     def check_data_content_metadata(self):
