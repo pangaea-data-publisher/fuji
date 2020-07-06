@@ -78,4 +78,5 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         dc_core_metadata['file_format_only'] = format_str
             except Exception as e:
                 self.logger.exception('Failed to extract DublinCore - {}'.format(e))
+
         return source, dc_core_metadata

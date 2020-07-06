@@ -41,7 +41,7 @@ class Mapper(Enum):
               'publisher': 'publisher', 'publication_date': ['date','available'], 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
               'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
-                  'date_available':'available',
+                  'date_available':'available', 'provenance_general':'provenance',
                 'related_resources':['relation','source']}
 
     # https://ogp.me/
@@ -54,7 +54,7 @@ class Mapper(Enum):
     ## A license document that applies to this content, typically indicated by URL.
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
-                            'modified_date: dateModified."@value" ||dateModified, ' \
+                            'modified_date: dateModified."@value" || dateModified, ' \
                            'creator: creator[*].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
