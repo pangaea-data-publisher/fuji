@@ -883,7 +883,7 @@ class FAIRCheck:
                         data_file_format_result.test_status = 'pass'
 
                 if data_file_format_result.test_status == 'pass':
-                    data_file_format_result.score = 1
+                    data_file_format_score.earned = 1
                 data_file_output.preference_reason=preferance_reason
                 data_file_output.subject_areas=subject_area
         else:
@@ -892,6 +892,7 @@ class FAIRCheck:
 
         data_file_format_output=data_file_list
         data_file_format_result.output = data_file_format_output
+        data_file_format_result.score = data_file_format_score
         if self.isDebug:
             data_file_format_result.test_debug = self.msg_filter.getMessage(data_file_format_identifier)
         return data_file_format_result.to_dict()
@@ -950,6 +951,7 @@ class FAIRCheck:
         return found
 
     def check_data_provenance(self):
+        #https://www.w3.org/TR/prov-dc/
         data_provenance_identifier = 'FsF-R1.2-01M'
         data_provenance_name = FAIRCheck.METRICS.get(data_provenance_identifier).get('metric_name')
         data_provenance_sc = int(FAIRCheck.METRICS.get(data_provenance_identifier).get('total_score'))
@@ -977,9 +979,11 @@ class FAIRCheck:
                 if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
                     creation_metadata_output.is_available=True
                     if 'creator' in self.metadata_merged:
-                        creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
+                        #creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
+                        creation_metadata_output.provenance_metadata.append({'creator' : ', '.join(self.metadata_merged['creator'])})
                     else:
-                        creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
+                        #creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
+                        creation_metadata_output.provenance_metadata.append({'contributor' : ', '.join(self.metadata_merged['contributor'])})
                 provenance_status = 'pass'
                 self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
                 data_provenance_score=data_provenance_score+0.5
@@ -1000,7 +1004,8 @@ class FAIRCheck:
             data_provenance_score = data_provenance_score+0.5
         data_provenance_output.modification_provenance_included = modified_metadata_output
 
-        #process, origin derved from relations
+        #process, origin derived from relations
+        # isFormatOf, isPartOf, isReferencedBy, isReplacedBy, isRequiredBy, issued, isVersionOf,references
         process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf',
                             'IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
         relations_metadata_output = DataProvenanceOutputInner()
