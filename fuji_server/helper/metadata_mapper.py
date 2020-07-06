@@ -15,7 +15,7 @@ class Mapper(Enum):
     # TODO include data types of all reference elements
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'access_free','policy','related_resources','provenance_general',
-                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'object_type', 'data_size','datacite_client', 'modified_date']
+                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','file_format_only', 'object_type', 'data_size','datacite_client', 'modified_date']
 
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
@@ -29,13 +29,18 @@ class Mapper(Enum):
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
                     }
+
+    #https://en.wikipedia.org/wiki/List_of_archive_formats#cite_ref-MIME_type_2-3
+    # only consider mime types registered with IANA: https://www.iana.org/assignments/media-types/media-types.xhtml
+    ARCHIVE_COMPRESS_MIMETYPES =['application/gzip','application/zstd','application/octet-stream','application/vnd.ms-cab-compressed','application/zip']
+
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
               'publisher': 'publisher', 'publication_date': ['date','available'], 'summary': 'abstract',
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
-              'license': 'license', 'data_file_format': 'format', 'access_level':['rights','accessRights'],
+              'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
                   'date_available':'available',
                 'related_resources':['relation','source']}
 
@@ -54,7 +59,7 @@ class Mapper(Enum):
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
-                           'summary: description, keywords: keywords, data_file_format: encodingFormat,' \
+                           'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \
@@ -68,10 +73,10 @@ class Mapper(Enum):
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
                         'creator_last: creators[*].familyName, publisher: publisher, ' \
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date || publicationYear,' \
-                        'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rightsUri || rightsList[*].rights ,' \
+                        'data_size:sizes[0], license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
                         'related_resources: relatedIdentifiers[*], datacite_client: clientId, ' \
                         'modified_date: dates[?dateType == \'Updated\'].date,'\
-                        'object_content_identifier:  {url: contentUrl} , access_level: rightsList[*].rightsUri || rightsList[*].rights }'
+                        'object_content_identifier:  {url: contentUrl, type:formats[0], size: sizes[0], profile: schemaVersion} , access_level: rightsList[*].rightsUri || rightsList[*].rights }'
                         #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
 
