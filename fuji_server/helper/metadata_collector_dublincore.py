@@ -69,6 +69,13 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(count, source))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
+
+                    # process string-based file format
+                    # https://www.dublincore.org/specifications/dublin-core/dcmi-dcsv/
+                    if dc_core_metadata.get('file_format_only'):
+                        format_str = dc_core_metadata.get('file_format_only')
+                        format_str = re.split(';|,',format_str)[0].strip() # assume first value as media type #TODO use regex to extract mimetype
+                        dc_core_metadata['file_format_only'] = format_str
             except Exception as e:
                 self.logger.exception('Failed to extract DublinCore - {}'.format(e))
         return source, dc_core_metadata
