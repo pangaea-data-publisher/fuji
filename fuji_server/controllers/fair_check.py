@@ -45,6 +45,7 @@ class FAIRCheck:
     OPEN_FILE_FORMATS = None
     DEFAULT_NAMESPACES = None
     VOCAB_NAMESPACES = None
+    ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -211,8 +212,6 @@ class FAIRCheck:
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
 
-
-
         self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
 
         # detect api and standards
@@ -263,7 +262,7 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
 
-        # ========= retrieve dublin core embedded in html page =========
+        #========= retrieve dublin core embedded in html page =========
         if self.reference_elements:
             dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
                                                        mapping=Mapper.DC_MAPPING)
@@ -281,12 +280,12 @@ class FAIRCheck:
             else:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
-        # ========= retrieve typed links =========
+        #========= retrieve typed links =========
         if self.metadata_merged.get('object_content_identifier') is None:
             links = self.get_html_typed_links(rel='item')
             if links:
+                self.metadata_merged['object_content_identifier'] = links
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
-
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -318,8 +317,10 @@ class FAIRCheck:
                 self.metadata_sources.append(source_dcitejsn)
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
+
                 for r in not_null_dcite:
-                    if r in self.reference_elements:
+                    # only merge when the value cannot be retrived from embedded metadata
+                    if r in self.reference_elements and not self.metadata_merged.get(r):
                         self.metadata_merged[r] = dcitejsn_dict[r]
                         self.reference_elements.remove(r)
             else:
@@ -416,8 +417,8 @@ class FAIRCheck:
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
-        if contents is not None:
-            self.logger.info('FsF-F3-01M : Object content identifier specified {}'.format(id_object))
+        if id_object is not None:
+            self.logger.info('FsF-F3-01M : Object identifier specified {}'.format(id_object))
         score = 0
         # This (check if object id is active) is already done ein check_unique_persistent
         '''
@@ -474,7 +475,7 @@ class FAIRCheck:
                         did_output_content.content_identifier_active = True
                         content_list.append(did_output_content)
                 else:
-                    self.logger.warning('FsF-F3-01M : Data (content) url is empty - {}'.format(content_link))
+                    self.logger.warning('FsF-F3-01M : Object (content) url is empty - {}'.format(content_link))
 
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
@@ -811,22 +812,42 @@ class FAIRCheck:
         data_file_format_output = DataFileFormatOutput()
         data_file_list=[]
         data_file_format_result.score = 0
+
+        #TODO: format may be specified in the metadata. but the data content uri is missing. will this pass the test?
+        if not self.content_identifier: #self.content_identifier only includes uris that are accessible
+            contents = self.metadata_merged.get('object_content_identifier')
+            if contents:
+                for c in contents:
+                    if c.get('type'):
+                        self.logger.info('FsF-R1.3-02D : Object content identifier is missing, but data format specified - {}'.format(c.get('type')))
+        #if self.metadata_merged.get('file_format_only'):
+            #self.logger.info('FsF-R1.3-02D : Format is specified in data page (through DC.format) - {}'.format(self.metadata_merged.get('file_format_only')))
+
         if len(self.content_identifier) > 0:
-            self.logger.info('FsF-R1.3-02D : Found some object content identifiers')
+            self.logger.info('FsF-R1.3-02D : Object content identifier is provided, checking file format..')
             for data_file in self.content_identifier:
                 data_file_output = DataFileFormatOutputInner()
                 preferance_reason=[]
                 subject_area=[]
                 mime_type=data_file.get('type')
-                #TODO: change output type instead of is_long_term_format etc use:
-                # is_prefered_format: boolean
-                # type: ['long term format','science format']
-                # domain: list of scientific domains, default: 'General'
                 if mime_type is None or mime_type in ['application/octet-stream']:
+                    self.logger.info('FsF-R1.3-02D : Guessing  the type of a file based on its filename or URL - {}'.format(data_file.get('url')))
                     # if mime type not given try to guess it based on the file name
                     guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
-                    mime_type=guessed_mime_type[0]
-                if mime_type is not None:
+                    self.logger.info('FsF-R1.3-02D : Guess return value - {}'.format(guessed_mime_type))
+                    mime_type=guessed_mime_type[0] #the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
+
+                if mime_type is None:
+                    continue
+                else:
+                    #check archive&compress media type
+                    if mime_type and mime_type in FAIRCheck.ARCHIVE_MIMETYPES:
+                        self.logger.warning('FsF-R1.3-02D : Actual file format cannot be determined, archiving/compression format specified - {}'.format(mime_type))
+
+                    #TODO: change output type instead of is_long_term_format etc use:
+                    # is_prefered_format: boolean
+                    # type: ['long term format','science format']
+                    # domain: list of scientific domains, default: 'General'
                     # FILE FORMAT CHECKS....
                     # check if format is a scientific one:
                     if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
@@ -873,7 +894,6 @@ class FAIRCheck:
         data_file_format_result.output = data_file_format_output
         if self.isDebug:
             data_file_format_result.test_debug = self.msg_filter.getMessage(data_file_format_identifier)
-
         return data_file_format_result.to_dict()
 
     def check_community_metadatastandards(self):
@@ -1215,6 +1235,7 @@ class FAIRCheck:
 
         outputs = []
         score = 0
+        test_status = 'fail'
         # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
         if self.namespace_uri:
             lod_namespaces = [d['namespace'] for d in self.VOCAB_NAMESPACES if 'namespace' in d]
