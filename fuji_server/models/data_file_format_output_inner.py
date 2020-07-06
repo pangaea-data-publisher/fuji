@@ -14,15 +14,13 @@ class DataFileFormatOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, file_uri: str=None, mime_type: str=None, file_type: str=None, is_preferred_format: bool=False, preference_reason: List[str]=None, subject_areas: List[str]=None):  # noqa: E501
+    def __init__(self, file_uri: str=None, mime_type: str=None, is_preferred_format: bool=False, preference_reason: List[str]=None, subject_areas: List[str]=None):  # noqa: E501
         """DataFileFormatOutputInner - a model defined in Swagger
 
         :param file_uri: The file_uri of this DataFileFormatOutputInner.  # noqa: E501
         :type file_uri: str
         :param mime_type: The mime_type of this DataFileFormatOutputInner.  # noqa: E501
         :type mime_type: str
-        :param file_type: The file_type of this DataFileFormatOutputInner.  # noqa: E501
-        :type file_type: str
         :param is_preferred_format: The is_preferred_format of this DataFileFormatOutputInner.  # noqa: E501
         :type is_preferred_format: bool
         :param preference_reason: The preference_reason of this DataFileFormatOutputInner.  # noqa: E501
@@ -33,7 +31,6 @@ class DataFileFormatOutputInner(Model):
         self.swagger_types = {
             'file_uri': str,
             'mime_type': str,
-            'file_type': str,
             'is_preferred_format': bool,
             'preference_reason': List[str],
             'subject_areas': List[str]
@@ -42,14 +39,12 @@ class DataFileFormatOutputInner(Model):
         self.attribute_map = {
             'file_uri': 'file_uri',
             'mime_type': 'mime_type',
-            'file_type': 'file_type',
             'is_preferred_format': 'is_preferred_format',
             'preference_reason': 'preference_reason',
             'subject_areas': 'subject_areas'
         }
         self._file_uri = file_uri
         self._mime_type = mime_type
-        self._file_type = file_type
         self._is_preferred_format = is_preferred_format
         self._preference_reason = preference_reason
         self._subject_areas = subject_areas
@@ -106,27 +101,6 @@ class DataFileFormatOutputInner(Model):
         """
 
         self._mime_type = mime_type
-
-    @property
-    def file_type(self) -> str:
-        """Gets the file_type of this DataFileFormatOutputInner.
-
-
-        :return: The file_type of this DataFileFormatOutputInner.
-        :rtype: str
-        """
-        return self._file_type
-
-    @file_type.setter
-    def file_type(self, file_type: str):
-        """Sets the file_type of this DataFileFormatOutputInner.
-
-
-        :param file_type: The file_type of this DataFileFormatOutputInner.
-        :type file_type: str
-        """
-
-        self._file_type = file_type
 
     @property
     def is_preferred_format(self) -> bool:

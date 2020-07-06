@@ -12,6 +12,9 @@ from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
 from fuji_server.models.data_access_level import DataAccessLevel
 from fuji_server.models.data_access_output import DataAccessOutput
+from fuji_server.models.data_content_metadata import DataContentMetadata
+from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
+from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
 from fuji_server.models.data_file_format import DataFileFormat
 from fuji_server.models.data_file_format_output import DataFileFormatOutput
 from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner
