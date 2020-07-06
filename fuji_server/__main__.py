@@ -58,7 +58,7 @@ if __name__ == '__main__':
     config = ConfigParser.ConfigParser()
     # config.read(parser.parse_args().config_file)
     my_path = os.path.abspath(os.path.dirname(__file__))
-    ini_path = os.path.join(my_path, 'config', 'server_local.ini')
+    ini_path = os.path.join(my_path, 'config', 'server.ini')
     config.read(ini_path)
     log_config_path = os.path.join(my_path, 'config', 'logging.ini')
     log_directory = os.path.join(my_path, 'logs')
