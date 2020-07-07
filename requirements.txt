@@ -1,4 +1,5 @@
-fuzzywuzzy
+tika
+rapidfuzz
 SPARQLWrapper
 beautifulsoup4
 lxml
