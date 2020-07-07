@@ -120,7 +120,7 @@ metrics:
   date_created: 2020-07-08
   date_updated: 2020-07-08
   version: 0.3
-  total_score: 2
+  total_score: 4
 
 - metric_identifier: FsF-R1.1-01M
   metric_short_name: Data Usage License
