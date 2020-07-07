@@ -14,30 +14,30 @@ class DataContentMetadataOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, descriptor_name: str=None, descriptor_type: str=None, matchescontent: bool=False):  # noqa: E501
+    def __init__(self, descriptor: str=None, descriptor_value: str=None, matches_content: bool=False):  # noqa: E501
         """DataContentMetadataOutputInner - a model defined in Swagger
 
-        :param descriptor_name: The descriptor_name of this DataContentMetadataOutputInner.  # noqa: E501
-        :type descriptor_name: str
-        :param descriptor_type: The descriptor_type of this DataContentMetadataOutputInner.  # noqa: E501
-        :type descriptor_type: str
-        :param matchescontent: The matchescontent of this DataContentMetadataOutputInner.  # noqa: E501
-        :type matchescontent: bool
+        :param descriptor: The descriptor of this DataContentMetadataOutputInner.  # noqa: E501
+        :type descriptor: str
+        :param descriptor_value: The descriptor_value of this DataContentMetadataOutputInner.  # noqa: E501
+        :type descriptor_value: str
+        :param matches_content: The matches_content of this DataContentMetadataOutputInner.  # noqa: E501
+        :type matches_content: bool
         """
         self.swagger_types = {
-            'descriptor_name': str,
-            'descriptor_type': str,
-            'matchescontent': bool
+            'descriptor': str,
+            'descriptor_value': str,
+            'matches_content': bool
         }
 
         self.attribute_map = {
-            'descriptor_name': 'descriptor_name',
-            'descriptor_type': 'descriptor_type',
-            'matchescontent': 'matchescontent'
+            'descriptor': 'descriptor',
+            'descriptor_value': 'descriptor_value',
+            'matches_content': 'matches_content'
         }
-        self._descriptor_name = descriptor_name
-        self._descriptor_type = descriptor_type
-        self._matchescontent = matchescontent
+        self._descriptor = descriptor
+        self._descriptor_value = descriptor_value
+        self._matches_content = matches_content
 
     @classmethod
     def from_dict(cls, dikt) -> 'DataContentMetadataOutputInner':
@@ -51,64 +51,64 @@ class DataContentMetadataOutputInner(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def descriptor_name(self) -> str:
-        """Gets the descriptor_name of this DataContentMetadataOutputInner.
+    def descriptor(self) -> str:
+        """Gets the descriptor of this DataContentMetadataOutputInner.
 
 
-        :return: The descriptor_name of this DataContentMetadataOutputInner.
+        :return: The descriptor of this DataContentMetadataOutputInner.
         :rtype: str
         """
-        return self._descriptor_name
+        return self._descriptor
 
-    @descriptor_name.setter
-    def descriptor_name(self, descriptor_name: str):
-        """Sets the descriptor_name of this DataContentMetadataOutputInner.
+    @descriptor.setter
+    def descriptor(self, descriptor: str):
+        """Sets the descriptor of this DataContentMetadataOutputInner.
 
 
-        :param descriptor_name: The descriptor_name of this DataContentMetadataOutputInner.
-        :type descriptor_name: str
+        :param descriptor: The descriptor of this DataContentMetadataOutputInner.
+        :type descriptor: str
         """
 
-        self._descriptor_name = descriptor_name
+        self._descriptor = descriptor
 
     @property
-    def descriptor_type(self) -> str:
-        """Gets the descriptor_type of this DataContentMetadataOutputInner.
+    def descriptor_value(self) -> str:
+        """Gets the descriptor_value of this DataContentMetadataOutputInner.
 
 
-        :return: The descriptor_type of this DataContentMetadataOutputInner.
+        :return: The descriptor_value of this DataContentMetadataOutputInner.
         :rtype: str
         """
-        return self._descriptor_type
+        return self._descriptor_value
 
-    @descriptor_type.setter
-    def descriptor_type(self, descriptor_type: str):
-        """Sets the descriptor_type of this DataContentMetadataOutputInner.
+    @descriptor_value.setter
+    def descriptor_value(self, descriptor_value: str):
+        """Sets the descriptor_value of this DataContentMetadataOutputInner.
 
 
-        :param descriptor_type: The descriptor_type of this DataContentMetadataOutputInner.
-        :type descriptor_type: str
+        :param descriptor_value: The descriptor_value of this DataContentMetadataOutputInner.
+        :type descriptor_value: str
         """
 
-        self._descriptor_type = descriptor_type
+        self._descriptor_value = descriptor_value
 
     @property
-    def matchescontent(self) -> bool:
-        """Gets the matchescontent of this DataContentMetadataOutputInner.
+    def matches_content(self) -> bool:
+        """Gets the matches_content of this DataContentMetadataOutputInner.
 
 
-        :return: The matchescontent of this DataContentMetadataOutputInner.
+        :return: The matches_content of this DataContentMetadataOutputInner.
         :rtype: bool
         """
-        return self._matchescontent
+        return self._matches_content
 
-    @matchescontent.setter
-    def matchescontent(self, matchescontent: bool):
-        """Sets the matchescontent of this DataContentMetadataOutputInner.
+    @matches_content.setter
+    def matches_content(self, matches_content: bool):
+        """Sets the matches_content of this DataContentMetadataOutputInner.
 
 
-        :param matchescontent: The matchescontent of this DataContentMetadataOutputInner.
-        :type matchescontent: bool
+        :param matches_content: The matches_content of this DataContentMetadataOutputInner.
+        :type matches_content: bool
         """
 
-        self._matchescontent = matchescontent
+        self._matches_content = matches_content
