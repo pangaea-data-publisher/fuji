@@ -17,7 +17,7 @@ def assess_by_id(body):  # noqa: E501
 
     if connexion.request.is_json:
         results = []
-        body = Body.from_dict(connexion.request.get_json())  # noqa: E501
+        body = Body.from_dict(connexion.request.get_json())
         identifier=body.object_identifier
         debug = body.test_debug
         ft = FAIRCheck(uid=identifier, test_debug=debug)
@@ -30,8 +30,11 @@ def assess_by_id(body):  # noqa: E501
         formal_metadata_result = ft.check_formal_metadata()
         semantic_vocab_result = ft.check_semantic_vocabulary()
         relatedresources_result = ft.check_relatedresources()
+        datacontent_result = ft.check_data_content_metadata()
         license_result = ft.check_license()
+        provenance_result = ft.check_data_provenance()
         community_standards_result = ft.check_community_metadatastandards()
+        fileformat_result = ft.check_data_file_format()
 
         results.append(uid_result)
         results.append(pid_result)
@@ -42,8 +45,11 @@ def assess_by_id(body):  # noqa: E501
         results.append(formal_metadata_result)
         results.append(semantic_vocab_result)
         results.append(relatedresources_result)
+        results.append(datacontent_result)
         results.append(license_result)
+        results.append(provenance_result)
         results.append(community_standards_result)
+        results.append(fileformat_result)
 
     return results
 
