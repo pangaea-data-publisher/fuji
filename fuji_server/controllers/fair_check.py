@@ -10,9 +10,11 @@ from urllib.parse import urlparse
 import Levenshtein
 import idutils
 import lxml
-import requests
-from fuzzywuzzy import process, fuzz
-
+from rapidfuzz import fuzz
+from rapidfuzz import process
+from tika import parser
+import tika
+tika.TikaClientOnly = True #You can set Tika to use Client only mode by setting
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -29,7 +31,6 @@ from fuji_server.models import *
 from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
 from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
-from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 
@@ -196,7 +197,7 @@ class FAIRCheck:
             if embedded_exists:  # retrieve metadata from landing page
                 self.retrieve_metadata_embedded(embedded_exists)
         else:
-            self.logger.warning('FsF-F2-01M : No structured metadata embedded in HTML')
+            self.logger.warning('FsF-F2-01M : NO structured metadata embedded in HTML')
 
         if self.reference_elements:  # this will be always true as we need datacite client id
             self.retrieve_metadata_external()
@@ -541,7 +542,7 @@ class FAIRCheck:
                 if access_rights :
                     access_details['access_condition'] = ', '.join(access_rights)
         else:
-            self.logger.warning('FsF-A1-01M : No access information is available in metadata')
+            self.logger.warning('FsF-A1-01M : NO access information is available in metadata')
             score = 0
 
         if access_level is None:
@@ -681,7 +682,7 @@ class FAIRCheck:
                 else:  # maybe licence name
                     spdx_html, spdx_osi = self.lookup_license_by_name(l, license_identifier)
                 if not spdx_html:
-                    self.logger.warning('FsF-R1.1-01M : No SPDX license representation (spdx url, osi_approved) found')
+                    self.logger.warning('FsF-R1.1-01M : NO SPDX license representation (spdx url, osi_approved) found')
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
@@ -689,7 +690,7 @@ class FAIRCheck:
             license_score.earned = license_sc
         else:
             license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : No license information is included in metadata')
+            self.logger.warning('FsF-R1.1-01M : NO license information is included in metadata')
         license_result.output = licenses_list
         license_result.score = license_score
 
@@ -793,7 +794,7 @@ class FAIRCheck:
             searchable_output.search_mechanisms = search_mechanisms
             searchable_result.output = searchable_output
         else:
-            self.logger.warning('No search mechanism supported')
+            self.logger.warning('NO search mechanism supported')
 
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
@@ -989,7 +990,7 @@ class FAIRCheck:
                 provenance_status = 'pass'
                 self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
                 score=score+0.5
-        if score ==0:
+        if score == 0:
             self.logger.warning('FsF-R1.2-01M : Basic creation-related provenance (who, when) NOT found')
         data_provenance_output.creation_provenance_included=creation_metadata_output
 
@@ -1056,78 +1057,183 @@ class FAIRCheck:
             data_provenance_result.test_debug = self.msg_filter.getMessage(data_provenance_identifier)
         return data_provenance_result.to_dict()
 
+    # def check_data_content_metadata_old(self):
+    #     #initially verification is restricted to the first file:
+    #     data_content_metadata_identifier = 'FsF-R1-01MD'
+    #     data_content_metadata_name = FAIRCheck.METRICS.get(data_content_metadata_identifier).get('metric_name')
+    #     data_content_metadata_sc = int(FAIRCheck.METRICS.get(data_content_metadata_identifier).get('total_score'))
+    #     data_content_metadata_score = FAIRResultCommonScore(total=data_content_metadata_sc)
+    #     data_content_metadata_result = DataContentMetadata(id=self.count, metric_identifier=data_content_metadata_identifier, metric_name=data_content_metadata_name)
+    #     data_content_metadata_output = DataContentMetadataOutput()
+    #     data_content_metadata_output.data_content_descriptor=[]
+    #     #download the last content object for testing content vs. metadata matching
+    #     test_data_content_text = ''
+    #     if isinstance(self.content_identifier, list):
+    #         content_uris = [d['url'] for d in self.content_identifier if 'url' in d]
+    #         self.logger.info('FsF-R1-01MD : Data content URI(s) specified - {}'.format(content_uris))
+    #         if len(self.content_identifier) > 0:
+    #             test_data_content_url = self.content_identifier[-1].get('url')
+    #             self.logger.info('FsF-R1-01MD : Content URI that will be analyzed - {}'.format(test_data_content_url))
+    #             try:
+    #                 r = requests.get(test_data_content_url)
+    #                 if r.status_code == 200:
+    #                     test_data_content_text = r.text
+    #             except:
+    #                 self.logger.warning('FsF-R1-01MD : Could not download content object')
+    #
+    #     if self.metadata_merged.get('object_content_identifier') is not None:
+    #         #check file type and size descriptors
+    #         for data_object in self.metadata_merged.get('object_content_identifier'):
+    #             fileinfoscore = 0
+    #             if data_object.get('type') is not None and data_object.get('size') is not None:
+    #                 self.logger.info('FsF-R1-01MD : Found file type and size info as content decriptor for: '+str(data_object.get('url')))
+    #                 data_content_metadata_output.has_content_descriptors = True
+    #                 data_content_metadata_result.test_status = 'pass'
+    #                 fileinfoscore = 0.5
+    #                 data_content_filetype_inner = DataContentMetadataOutputInner()
+    #                 data_content_filetype_inner.descriptor_type = 'file type'
+    #                 data_content_filetype_inner.descriptor_name = data_object.get('type')
+    #                 data_content_metadata_output.data_content_descriptor.append(data_content_filetype_inner)
+    #                 data_content_filesize_inner = DataContentMetadataOutputInner()
+    #                 data_content_filesize_inner.descriptor_type = 'file size'
+    #                 data_content_filesize_inner.descriptor_name = data_object.get('size')
+    #                 data_content_metadata_output.data_content_descriptor.append(data_content_filesize_inner)
+    #                 if data_object.get('header_content_type') == data_object.get('type'):
+    #                     data_content_filetype_inner.matchescontent = True
+    #                     fileinfoscore = 1
+    #             else:
+    #                 self.logger.warning('FsF-R1-01MD : No file type and size info available for: '+str(data_object.get('url')))
+    #
+    #         data_content_metadata_score.earned = fileinfoscore
+    #                 #check measured variables
+    #         if 'measured_variable' in self.metadata_merged:
+    #             self.logger.info('FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
+    #             variablescore = 1
+    #             data_content_metadata_result.test_status = 'pass'
+    #             data_content_metadata_output.has_content_descriptors= True
+    #
+    #             for variable in self.metadata_merged['measured_variable']:
+    #                 data_content_metadata_inner = DataContentMetadataOutputInner()
+    #                 data_content_metadata_inner.descriptor_name=variable
+    #                 data_content_metadata_inner.descriptor_type='measured_variable'
+    #
+    #                 if variable in test_data_content_text:
+    #                     self.logger.info('FsF-R1-01MD : Measured variables in metadata also found in file content')
+    #                     data_content_metadata_inner.matchescontent = True
+    #                     variablescore = 2
+    #                 data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
+    #             data_content_metadata_score.earned = data_content_metadata_score.earned + variablescore
+    #         else:
+    #             self.logger.warning('FsF-R1-01MD : No measured variables or observations (aka parameters) found as content descriptor')
+    #     else:
+    #         self.logger.warning('FsF-R1-01MD : No object content available to perform the test')
+    #
+    #     data_content_metadata_result.score = data_content_metadata_score
+    #
+    #     if self.isDebug:
+    #         data_content_metadata_result.test_debug = self.msg_filter.getMessage(data_content_metadata_identifier)
+    #     data_content_metadata_result.output=data_content_metadata_output
+    #
+    #     return data_content_metadata_result.to_dict()
+
     def check_data_content_metadata(self):
-        #initially verification is restricted to the first file:
         data_content_metadata_identifier = 'FsF-R1-01MD'
         data_content_metadata_name = FAIRCheck.METRICS.get(data_content_metadata_identifier).get('metric_name')
         data_content_metadata_sc = int(FAIRCheck.METRICS.get(data_content_metadata_identifier).get('total_score'))
         data_content_metadata_score = FAIRResultCommonScore(total=data_content_metadata_sc)
-        data_content_metadata_result = DataContentMetadata(id=self.count, metric_identifier=data_content_metadata_identifier,
-                                                metric_name=data_content_metadata_name)
+        data_content_metadata_result = DataContentMetadata(id=self.count, metric_identifier=data_content_metadata_identifier, metric_name=data_content_metadata_name)
         data_content_metadata_output = DataContentMetadataOutput()
-        data_content_metadata_result.score = 0
-        data_content_metadata_output.data_content_descriptor=[]
-        #download the last content object for testing content vs. metadata matching
-        test_data_content_text = ''
-        if isinstance(self.content_identifier, list):
-            if len(self.content_identifier) > 0:
-                test_data_content_url = self.content_identifier[-1].get('url')
-                try:
-                    r = requests.get(test_data_content_url)
-                    test_data_content_text = r.text
-                except:
-                    self.logger.warning('FsF-R1-01MD : Could not download content object')
-        if self.metadata_merged.get('object_content_identifier') is not None:
-            #check file type and size descriptors
-            for data_object in self.metadata_merged.get('object_content_identifier'):
-                fileinfoscore = 0
-                if data_object.get('type') is not None and data_object.get('size') is not None:
-                    self.logger.info('FsF-R1-01MD : Found file type and size info as content decriptor for: '+str(data_object.get('url')))
-                    data_content_metadata_output.has_content_descriptors = True
-                    data_content_metadata_result.test_status = 'pass'
-                    fileinfoscore = 0.5
-                    data_content_filetype_inner = DataContentMetadataOutputInner()
-                    data_content_filetype_inner.descriptor_type = 'file type'
-                    data_content_filetype_inner.descriptor_name = data_object.get('type')
-                    data_content_metadata_output.data_content_descriptor.append(data_content_filetype_inner)
-                    data_content_filesize_inner = DataContentMetadataOutputInner()
-                    data_content_filesize_inner.descriptor_type = 'file size'
-                    data_content_filesize_inner.descriptor_name = data_object.get('size')
-                    data_content_metadata_output.data_content_descriptor.append(data_content_filesize_inner)
-                    if data_object.get('header_content_type') == data_object.get('type'):
-                        data_content_filetype_inner.matchescontent = True
-                        fileinfoscore = 1
-                else:
-                    self.logger.warning('FsF-R1-01MD : No file type and size info available for: '+str(data_object.get('url')))
+        data_content_descriptors = []
+        test_data_content_text = None
+        test_data_content_url = None
+        test_status = 'fail'
+        score = 0
 
-            data_content_metadata_result.score = fileinfoscore
-                    #check measured variables
-            if 'measured_variable' in self.metadata_merged:
-                self.logger.info('FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
-                variablescore = 1
-                data_content_metadata_result.test_status = 'pass'
-                data_content_metadata_output.has_content_descriptors= True
-
-                for variable in self.metadata_merged['measured_variable']:
-                    data_content_metadata_inner = DataContentMetadataOutputInner()
-                    data_content_metadata_inner.descriptor_name=variable
-                    data_content_metadata_inner.descriptor_type='measured_variable'
-
-                    if variable in test_data_content_text:
-                        self.logger.info('FsF-R1-01MD : Measured variables in metadata also found in file content')
-                        data_content_metadata_inner.matchescontent = True
-                        variablescore = 2
-                    data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
-                data_content_metadata_result.score = data_content_metadata_result.score + variablescore
-            else:
-                self.logger.warning('FsF-R1-01MD : No measured variables or observations (aka parameters) found as content descriptor')
+        # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
+        resource_type = self.metadata_merged.get('object_type')
+        if resource_type:
+            self.logger.info('FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
+            data_content_metadata_output.object_type = resource_type
+            score += 1
         else:
-            self.logger.warning('FsF-R1-01MD : No object content available to perform the test')
+            self.logger.warning('FsF-R1-01MD : NO resource type specified ')
 
+        # 2. initially verification is restricted to the first file and only use object content uri that is accessible (self.content_identifier)
+        if isinstance(self.content_identifier, list):
+            content_uris = [d['url'] for d in self.content_identifier if 'url' in d]
+            if len(self.content_identifier) > 0:
+                self.logger.info('FsF-R1-01MD : Data content URI(s) specified - {}'.format(content_uris))
+                test_data_content_url = self.content_identifier[-1].get('url')
+                self.logger.info('FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))
+                try:
+                    # Use Tika to parse the file
+                    parsedFile = parser.from_file(test_data_content_url)
+                    status = parsedFile.get("status")
+                    #metadata_contenttype = parsedFile.get("metadata").get('Content-Type').split(';')
+                    #if metadata_contenttype:
+                        #content_type = metadata_contenttype[0]
+                    # Extract the text content from the parsed file and convert to string
+                    self.logger.info('{0} : File request status code {1}'.format(data_content_metadata_identifier, status))
+                    parsed_content = parsedFile["content"]
+                    test_data_content_text = str(parsed_content)
+                    # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
+                    if test_data_content_text:
+                        parsed_files = parsedFile.get("metadata").get('resourceName')
+                        self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
+                except Exception as e:
+                    self.logger.warning('{0} : Could not retrive/parse content object - {1}'.format(data_content_metadata_identifier, e))
+            else:
+                self.logger.warning('FsF-R1-01MD : NO object content available to perform file descriptors (type and size) tests')
+
+        # 3. check file type and size descriptors of parsed data file only (ref:test_data_content_url)
+        if test_data_content_url:
+            descriptors = ['type','size']  # default keys ['url', 'type', 'size', 'profile', 'header_content_type', 'header_content_length']
+            data_object = next(item for item in self.metadata_merged.get('object_content_identifier') if item["url"] == test_data_content_url)
+            for d in descriptors:
+                type = 'file '+ d
+                if d in data_object.keys() and data_object.get(d):
+                    descriptor = type
+                    descriptor_value = data_object.get(d)
+                    matches_content = False
+                    if data_object.get('header_content_type') == data_object.get('type'):  #TODO: variation of mime type (text/tsv vs text/tab-separated-values)
+                        matches_content = True
+                        score += 1
+                    data_content_filetype_inner = DataContentMetadataOutputInner()
+                    data_content_filetype_inner.descriptor = descriptor
+                    data_content_filetype_inner.descriptor_value = descriptor_value
+                    data_content_filetype_inner.matches_content = matches_content
+                    data_content_descriptors.append(data_content_filetype_inner)
+                else:
+                    self.logger.warning('{0} : NO {1} info available'.format(data_content_metadata_identifier, type))
+
+        #4. check if varibles specified in the data file
+        is_variable_scored = False
+        if self.metadata_merged.get('measured_variable'):
+            self.logger.info('FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
+            if test_data_content_text:
+                for variable in self.metadata_merged['measured_variable']:
+                    variable_metadata_inner = DataContentMetadataOutputInner()
+                    variable_metadata_inner.descriptor = 'measured_variable'
+                    variable_metadata_inner.descriptor_value = variable
+                    if variable in test_data_content_text: #TODO use rapidfuzz (fuzzy search)
+                        self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
+                        variable_metadata_inner.matches_content = True
+                        if not is_variable_scored: # only increase once
+                            score += 1
+                            is_variable_scored = True
+                    data_content_descriptors.append(variable_metadata_inner)
+        else:
+            self.logger.warning('FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
+
+        if score >= data_content_metadata_sc/2: # more than half of total score, consider the test as pass
+            test_status = 'pass'
+        data_content_metadata_output.data_content_descriptor = data_content_descriptors
+        data_content_metadata_result.output = data_content_metadata_output
+        data_content_metadata_score.earned = score
+        data_content_metadata_result.score = data_content_metadata_score
+        data_content_metadata_result.test_status = test_status
         if self.isDebug:
             data_content_metadata_result.test_debug = self.msg_filter.getMessage(data_content_metadata_identifier)
-        data_content_metadata_result.output=data_content_metadata_output
-
         return data_content_metadata_result.to_dict()
 
     def check_formal_metadata(self):
@@ -1215,7 +1321,7 @@ class FAIRCheck:
                 else:
                     self.logger.warning('{0} : NO RDF metadata retrieved through the sparql endpoint'.format(formal_meta_identifier))
             else:
-                self.logger.warning('{0} : No SPARQL endpoint found through re3data based on the object URI provided'.format(formal_meta_identifier))
+                self.logger.warning('{0} : NO SPARQL endpoint found through re3data based on the object URI provided'.format(formal_meta_identifier))
 
         if score > 0:
             test_status = 'pass'
