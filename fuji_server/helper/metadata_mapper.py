@@ -55,7 +55,7 @@ class Mapper(Enum):
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
                             'modified_date: dateModified."@value" || dateModified, ' \
-                           'creator: creator[?"@type" ==\'@Person\'].name || author[*].name || creator.name || author.name, ' \
+                           'creator: creator[?"@type" ==\'Person\'].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
