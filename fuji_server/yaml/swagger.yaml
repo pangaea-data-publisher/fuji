@@ -386,11 +386,7 @@ components:
     DataProvenance_output:
       type: object
       properties:
-        creation_provenance_included:
-          $ref: '#/components/schemas/DataProvenance_output_inner'
-        modification_provenance_included:
-          $ref: '#/components/schemas/DataProvenance_output_inner'
-        provenance_relations_included:
+        provenance_metadata_included:
           $ref: '#/components/schemas/DataProvenance_output_inner'
         structured_provenance_available:
           $ref: '#/components/schemas/DataProvenance_output_inner'
