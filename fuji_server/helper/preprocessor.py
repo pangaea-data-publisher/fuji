@@ -113,8 +113,8 @@ class Preprocessor(object):
     def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
         data = {}
         std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
-        # The repository can be found at https://github.com/spdx/license-list-data
-        # https://spdx.org/spdx-license-list/license-list-overview
+        # The repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
+        # or at https://github.com/rd-alliance/metadata-catalog-dev
         if isDebugMode:  # use local file instead of downloading the file online
             with open(std_path) as f:
                 data = json.load(f)
