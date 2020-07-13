@@ -19,6 +19,7 @@ class MetaDataCollector(object):
         SIGN_POSTING = 'Signposting Typed Links'
         LINKED_DATA ='Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
+        GUESSED_XML = 'Guessed XML Link'
 
     def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
         self.source_metadata = sourcemetadata
