@@ -25,6 +25,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
                     dcterms = []
+
                     for dcitems in self.metadata_mapping.value.values():
                         if isinstance(dcitems, list):
                             dcterms.extend(dcitems)
@@ -36,6 +37,12 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         #type
                         t = dc_meta[3]
                         v = dc_meta[5]
+                        if k == 'date':
+                            if t =='dateAccepted':
+                                dc_core_metadata['accepted_date'] = v
+                            elif t == 'dateSubmitted':
+                                dc_core_metadata['submitted_date'] = v
+
                         # if self.isDebug:
                         #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
                         if k in dcterms:
@@ -44,8 +51,10 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
-                                if k == 'source':
+                                if k in ['source']:
                                     t = 'isBasedOn'
+                                if k == 'references':
+                                    t = 'References'
                                 if t in [None, '']:
                                     t = 'isRelatedTo'
                                 v = [{'related_resource':v, 'relation_type':t}] # must be a list of dict
