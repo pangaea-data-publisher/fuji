@@ -22,6 +22,7 @@ from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDu
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_sparql import MetaDataCollectorSparql
 # from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
+from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvester
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
@@ -302,8 +303,25 @@ class FAIRCheck:
                 #handle relative paths
                 if href.startswith('/'):
                     href=self.landing_origin+href
-                datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
+                datalinks.append({'type':'embedded','url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('formats')})
         return datalinks
+
+    def get_guessed_xml_link(self):
+        # in case object landing page URL ends with '.html' or '/html'
+        # try to find out if there is some xml content if suffix is replaced by 'xml
+        datalink = None
+        suff_res = re.search(r".*[\.\/](html?)?$", self.landing_url)
+        if suff_res is not None:
+            guessed_link = self.landing_url.replace(suff_res[1],'xml')
+            try:
+                response=urllib.urlopen(guessed_link)
+                if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
+                    datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
+                    self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
+
+            except:
+                self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
+        return datalink
 
     def retrieve_metadata_external(self):
         # ========= retrieve datacite json metadata based on pid =========
@@ -327,7 +345,11 @@ class FAIRCheck:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
         found_metadata_link =False
-        typed_metadata_links=self.get_html_typed_links(rel='alternate')
+        typed_metadata_links = self.get_html_typed_links(rel='alternate')
+        guessed_metadata_link = self.get_guessed_xml_link()
+        if guessed_metadata_link is not None:
+            typed_metadata_links.append(guessed_metadata_link)
+
         for metadata_link in typed_metadata_links:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                 self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
@@ -335,6 +357,11 @@ class FAIRCheck:
                 rdf_collector = MetaDataCollectorSparql(loggerinst=self.logger,
                                                            target_url=metadata_link['url'])
                 break
+            # TODO: Also handle XML and nor only RDF
+            elif metadata_link['type'] == 'text/xml':
+                xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                           target_url=metadata_link['url'], link_type=metadata_link['source'])
+                xml_collector.parse_metadata()
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
@@ -815,48 +842,45 @@ class FAIRCheck:
                 preferance_reason=[]
                 subject_area=[]
                 mime_type=data_file.get('type')
-                #TODO: change output type instead of is_long_term_format etc use:
-                # is_prefered_format: boolean
-                # type: ['long term format','science format']
-                # domain: list of scientific domains, default: 'General'
-                if mime_type is None or mime_type in ['application/octet-stream']:
-                    # if mime type not given try to guess it based on the file name
-                    guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
-                    mime_type=guessed_mime_type[0]
-                if mime_type is not None:
-                    # FILE FORMAT CHECKS....
-                    # check if format is a scientific one:
-                    if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
-                        if FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type) == 'Generic':
+                if data_file.get('url') is not None:
+                    if mime_type is None or mime_type in ['application/octet-stream']:
+                        # if mime type not given try to guess it based on the file name
+                        guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
+                        mime_type=guessed_mime_type[0]
+                    if mime_type is not None:
+                        # FILE FORMAT CHECKS....
+                        # check if format is a scientific one:
+                        if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
+                            if FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type) == 'Generic':
+                                subject_area.append('General')
+                                preferance_reason.append('generic science format')
+                            else:
+                                subject_area.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
+                                preferance_reason.append('science format')
+                            data_file_output.is_preferred_format= True
+                            data_file_format_result.test_status = 'pass'
+                        # check if long term format
+                        if mime_type in FAIRCheck.LONG_TERM_FILE_FORMATS:
+                            preferance_reason.append('long term format')
                             subject_area.append('General')
-                            preferance_reason.append('generic science format')
-                        else:
-                            subject_area.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
-                            preferance_reason.append('science format')
-                        data_file_output.is_preferred_format= True
-                        data_file_format_result.test_status = 'pass'
-                    # check if long term format
-                    if mime_type in FAIRCheck.LONG_TERM_FILE_FORMATS:
-                        preferance_reason.append('long term format')
-                        subject_area.append('General')
-                        data_file_output.is_preferred_format = True
-                        data_file_format_result.test_status = 'pass'
-                    #check if open format
-                    if mime_type in FAIRCheck.OPEN_FILE_FORMATS:
-                        preferance_reason.append('open format')
-                        subject_area.append('General')
-                        data_file_output.is_preferred_format = True
-                        data_file_format_result.test_status = 'pass'
+                            data_file_output.is_preferred_format = True
+                            data_file_format_result.test_status = 'pass'
+                        #check if open format
+                        if mime_type in FAIRCheck.OPEN_FILE_FORMATS:
+                            preferance_reason.append('open format')
+                            subject_area.append('General')
+                            data_file_output.is_preferred_format = True
+                            data_file_format_result.test_status = 'pass'
 
-                    data_file_output.mime_type=mime_type
-                    data_file_output.file_uri=data_file.get('url')
-                    data_file_list.append(data_file_output)
-                    #generic text/xml/json file check
-                    if re.search(text_format_regex,mime_type):
-                        preferance_reason.extend(['long term format','open format','generic science format'])
-                        subject_area.append('General')
-                        data_file_output.is_preferred_format= True
-                        data_file_format_result.test_status = 'pass'
+                        data_file_output.mime_type=mime_type
+                        data_file_output.file_uri=data_file.get('url')
+                        data_file_list.append(data_file_output)
+                        #generic text/xml/json file check
+                        if re.search(text_format_regex,mime_type):
+                            preferance_reason.extend(['long term format','open format','generic science format'])
+                            subject_area.append('General')
+                            data_file_output.is_preferred_format= True
+                            data_file_format_result.test_status = 'pass'
 
                 if data_file_format_result.test_status == 'pass':
                     data_file_format_result.score = 1
@@ -939,61 +963,30 @@ class FAIRCheck:
         provenance_elements = []
         provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
         provenance_status = 'fail'
-        creation_metadata_output = DataProvenanceOutputInner()
-        creation_metadata_output.provenance_metadata = []
-        creation_metadata_output.is_available = False
+        provenance_metadata_output = DataProvenanceOutputInner()
+        provenance_metadata_output.provenance_metadata = []
+        provenance_metadata_output.is_available = False
 
-        #creation info
-        if 'title' in self.metadata_merged:
-            creation_metadata_output.provenance_metadata.append({'title' : self.metadata_merged['title']})
-            if 'publication_date' in self.metadata_merged or 'creation_date' in self.metadata_merged:
-                if 'creation_date' in self.metadata_merged:
-                    creation_metadata_output.provenance_metadata.append({'creation_date' : self.metadata_merged['creation_date']})
-                else:
-                    creation_metadata_output.provenance_metadata.append({'publication_date' : self.metadata_merged['publication_date']})
-                if 'creator' in self.metadata_merged or 'contributor' in self.metadata_merged:
-                    creation_metadata_output.is_available=True
-                    if 'creator' in self.metadata_merged:
-                        creation_metadata_output.provenance_metadata.append({'creator' : self.metadata_merged['creator'][0]})
-                    else:
-                        creation_metadata_output.provenance_metadata.append({'contributor' : self.metadata_merged['contributor'][0]})
-                provenance_status = 'pass'
-                self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
-                data_provenance_score=data_provenance_score+0.5
-        data_provenance_output.creation_provenance_included=creation_metadata_output
+        for md in self.metadata_merged:
+            if md in Mapper.PROVENANCE_MAPPING.value:
+                provenance_metadata_output.is_available = True
+                provenance_metadata_output.provenance_metadata.append(
+                    { 'prov_o_mapping': Mapper.PROVENANCE_MAPPING.value.get(md),'metadata_element': md,'metadata_value': self.metadata_merged.get(md)}
+                )
 
-        #modification versioning info
-        modified_indicators=['modified_date','version']
-        modified_intersect=list(set(modified_indicators).intersection(self.metadata_merged))
-        modified_metadata_output = DataProvenanceOutputInner()
-        modified_metadata_output.provenance_metadata = []
-        modified_metadata_output.is_available = False
-        if len(modified_intersect)>0:
-            self.logger.info('FsF-R1.2-01M : Found basic versioning-related provenance information')
-            modified_metadata_output.is_available = True
-            for modified_element in modified_intersect:
-                modified_metadata_output.provenance_metadata.append({modified_element: self.metadata_merged[modified_element]})
+        relateds = self.metadata_merged.get('related_resources')
+        if isinstance(relateds, list):
+            for rm in relateds:
+                if rm.get('relation_type') in Mapper.PROVENANCE_MAPPING.value:
+                    provenance_metadata_output.provenance_metadata.append(
+                        {'prov_o_mapping': Mapper.PROVENANCE_MAPPING.value.get(rm.get('relation_type')), 'metadata_element': 'related.'+str(rm.get('relation_type')),
+                        'metadata_value': rm.get('related_resource')}
+                    )
+                #self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
+        if provenance_metadata_output.is_available:
             provenance_status = 'pass'
-            data_provenance_score = data_provenance_score+0.5
-        data_provenance_output.modification_provenance_included = modified_metadata_output
-
-        #process, origin derved from relations
-        process_indicators=['isVersionOf', 'isBasedOn', 'isFormatOf', 'IsNewVersionOf',
-                            'IsVariantFormOf', 'IsDerivedFrom', 'Obsoletes']
-        relations_metadata_output = DataProvenanceOutputInner()
-        relations_metadata_output.provenance_metadata = []
-        relations_metadata_output.is_available = False
-        if 'related_resources' in self.metadata_merged:
-            has_relations=False
-            for rr in self.metadata_merged['related_resources']:
-                if rr.get('relation_type') in process_indicators:
-                    has_relations=True
-                    relations_metadata_output.provenance_metadata.append({rr.get('relation_type') : rr.get('related_resource')})
-            if has_relations:
-                relations_metadata_output.is_available = True
-                data_provenance_score = data_provenance_score + 0.5
-                self.logger.info('FsF-R1.2-01M : Found basic process-related provenance information')
-        data_provenance_output.provenance_relations_included = relations_metadata_output
+            data_provenance_score = data_provenance_score + 0.5
+        data_provenance_output.provenance_metadata_included = provenance_metadata_output
 
         #structured provenance metadata available
         structured_metadata_output = DataProvenanceOutputInner()
