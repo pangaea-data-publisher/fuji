@@ -148,7 +148,7 @@ metrics:
 - metric_identifier: FsF-R1-01MD
   metric_name: Metadata of Data Content
   description: Metadata includes the descriptions of the content of the data.
-  fair_principle: R1.2
+  fair_principle: R1
   question_type: single-choice
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR

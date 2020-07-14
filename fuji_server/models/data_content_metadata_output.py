@@ -15,24 +15,24 @@ class DataContentMetadataOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, has_content_descriptors: bool=False, data_content_descriptor: List[DataContentMetadataOutputInner]=None):  # noqa: E501
+    def __init__(self, object_type: str=None, data_content_descriptor: List[DataContentMetadataOutputInner]=None):  # noqa: E501
         """DataContentMetadataOutput - a model defined in Swagger
 
-        :param has_content_descriptors: The has_content_descriptors of this DataContentMetadataOutput.  # noqa: E501
-        :type has_content_descriptors: bool
+        :param object_type: The object_type of this DataContentMetadataOutput.  # noqa: E501
+        :type object_type: str
         :param data_content_descriptor: The data_content_descriptor of this DataContentMetadataOutput.  # noqa: E501
         :type data_content_descriptor: List[DataContentMetadataOutputInner]
         """
         self.swagger_types = {
-            'has_content_descriptors': bool,
+            'object_type': str,
             'data_content_descriptor': List[DataContentMetadataOutputInner]
         }
 
         self.attribute_map = {
-            'has_content_descriptors': 'has_content_descriptors',
+            'object_type': 'object_type',
             'data_content_descriptor': 'data_content_descriptor'
         }
-        self._has_content_descriptors = has_content_descriptors
+        self._object_type = object_type
         self._data_content_descriptor = data_content_descriptor
 
     @classmethod
@@ -47,25 +47,25 @@ class DataContentMetadataOutput(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def has_content_descriptors(self) -> bool:
-        """Gets the has_content_descriptors of this DataContentMetadataOutput.
+    def object_type(self) -> str:
+        """Gets the object_type of this DataContentMetadataOutput.
 
 
-        :return: The has_content_descriptors of this DataContentMetadataOutput.
-        :rtype: bool
+        :return: The object_type of this DataContentMetadataOutput.
+        :rtype: str
         """
-        return self._has_content_descriptors
+        return self._object_type
 
-    @has_content_descriptors.setter
-    def has_content_descriptors(self, has_content_descriptors: bool):
-        """Sets the has_content_descriptors of this DataContentMetadataOutput.
+    @object_type.setter
+    def object_type(self, object_type: str):
+        """Sets the object_type of this DataContentMetadataOutput.
 
 
-        :param has_content_descriptors: The has_content_descriptors of this DataContentMetadataOutput.
-        :type has_content_descriptors: bool
+        :param object_type: The object_type of this DataContentMetadataOutput.
+        :type object_type: str
         """
 
-        self._has_content_descriptors = has_content_descriptors
+        self._object_type = object_type
 
     @property
     def data_content_descriptor(self) -> List[DataContentMetadataOutputInner]:

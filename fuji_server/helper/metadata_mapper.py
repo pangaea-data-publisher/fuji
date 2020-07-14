@@ -15,7 +15,7 @@ class Mapper(Enum):
     # TODO include data types of all reference elements
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'access_free','policy','related_resources','provenance_general',
-                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format',
+                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'file_format_only',
                  'object_type', 'data_size','datacite_client', 'modified_date','created_date','right_holder']
 
     # core metadata elements (FsF-F2-01M)
@@ -33,13 +33,12 @@ class Mapper(Enum):
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
-    # !!!! Please note that some more mappings e.g. the attribution of the relation_type for related_resources or date type is done
-    # in metadata_collector_dublincore.py !
     DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title', 'contributor' : 'contributor',
-              'publisher': 'publisher', 'publication_date': ['date','available','issued'], 'summary': 'abstract',
-              'keywords': 'subject', 'object_type': 'type','modified_date': 'modified', 'created_date' : 'created',
-              'license': 'license', 'data_file_format': 'format', 'access_level':['rights','accessRights'], 'right_holder':'rightsHolder',
-              'related_resources':['relation','source','references']}
+              'publisher': 'publisher', 'publication_date': ['date','available', 'issued'], 'summary': 'abstract',
+              'keywords': 'subject', 'object_type': 'type','modified_date': 'modified','created_date' : 'created',
+              'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
+                  'date_available':'available','provenance_general':'provenance',
+                'related_resources':['relation','source','references']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
@@ -51,14 +50,14 @@ class Mapper(Enum):
     ## A license document that applies to this content, typically indicated by URL.
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
-                            'modified_date: dateModified."@value" ||dateModified, created_date: dateCreated."@value" || dateCreated, ' \
-                           'creator: creator[*].name || author[*].name || creator.name || author.name, ' \
+                            'modified_date: dateModified."@value" ||dateModified, ' \
+                           'creator: creator[?"@type" ==\'Person\'].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
                            'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
-                           'summary: description, keywords: keywords, data_file_format: encodingFormat,' \
+                           'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \

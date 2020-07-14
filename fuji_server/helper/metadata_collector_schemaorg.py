@@ -70,5 +70,4 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
-
         return self.source_name, jsnld_metadata

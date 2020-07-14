@@ -18,6 +18,10 @@ def main():
     DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = config['EXTERNAL']['re3data_api']
     METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']
+    LOV_API = config['EXTERNAL']['lov_api']
+    LOD_CLOUDNET = config['EXTERNAL']['lod_cloudnet']
+    #BIOPORTAL_REST = config['EXTERNAL']['bioportal_rest']
+    #BIOPORTAL_APIKEY = config['EXTERNAL']['bioportal_apikey']
 
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
@@ -27,10 +31,15 @@ def main():
     preproc.retrieve_licenses(SPDX_URL, isDebug)
     preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
+    #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
+    preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    preproc.retrieve_default_namespaces()
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     logger.info('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
+    logger.info('Total LD vocabs imported : {}'.format(len(preproc.getLinkedVocabs())))
+    logger.info('Total default namespaces specified : {}'.format(len(preproc.getDefaultNamespaces())))
 
     #you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)

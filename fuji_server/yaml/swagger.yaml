@@ -1,9 +1,9 @@
 openapi: 3.0.1
 info:
   title: F-UJI
-  description: A Service for Evaluating Research Data Objects Based on FAIRsFAIR Metrics
-    <p> This work was supported by the <a href='https://www.fairsfair.eu/'>FAIRsFAIR
-    </a> project (H2020-INFRAEOSC-2018-2020 Grant Agreement 831558).
+  description: A Service for Evaluating Research Data Objects Based on <a href ='https://doi.org/10.5281/zenodo.3775793'>FAIRsFAIR
+    Metrics</a>. <p> This work was supported by the <a href='https://www.fairsfair.eu/'>FAIRsFAIR</a>
+    project (H2020-INFRAEOSC-2018-2020 Grant Agreement 831558).
   contact:
     email: adevaraju@marum.de
   license:
@@ -17,7 +17,7 @@ servers:
 - url: https://localhost:1071/fuji/api/v1
   description: Development Server
 security:
-- basicAuth: []
+- UserLogin: []
 tags:
 - name: FAIR object
   description: FAIRness assessment of a data object
@@ -36,7 +36,7 @@ paths:
             schema:
               $ref: '#/components/schemas/body'
             example:
-              object_identifier: https://doi.org/10.1594/PANGAEA.902845
+              object_identifier: https://doi.org/10.1594/PANGAEA.908011
               test_debug: true
       responses:
         "200":
@@ -99,6 +99,7 @@ components:
         - $ref: '#/components/schemas/FormalMetadata'
         - $ref: '#/components/schemas/SemanticVocabulary'
         - $ref: '#/components/schemas/RelatedResource'
+        - $ref: '#/components/schemas/DataContentMetadata'
         - $ref: '#/components/schemas/License'
         - $ref: '#/components/schemas/DataProvenance'
         - $ref: '#/components/schemas/CommunityEndorsedStandard'
@@ -229,13 +230,13 @@ components:
             $ref: '#/components/schemas/Debug'
     DataContentMetadata:
       allOf:
-        - $ref: '#/components/schemas/FAIRResultCommon'
-        - type: object
-          properties:
-            output:
-              $ref: '#/components/schemas/DataContentMetadata_output'
-            test_debug:
-              $ref: '#/components/schemas/Debug'
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/DataContentMetadata_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
     FormalMetadata:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'
@@ -393,13 +394,11 @@ components:
     DataContentMetadata_output:
       type: object
       properties:
-        has_content_descriptors:
-          type: boolean
-          default: False
+        object_type:
+          type: string
         data_content_descriptor:
           type: array
           items:
-            type: object
             $ref: '#/components/schemas/DataContentMetadata_output_inner'
     FormalMetadata_output:
       type: array
@@ -421,18 +420,17 @@ components:
       example:
         total: 0
         metrics:
-          date_updated: 2020-02-29
-          metric_name: Globally unique identifier
-          fair_principle: F1
-          date_created: 2020-02-29
-          description: The data is assigned with a globally unique identifier.
-          evaluation_mechanism: Identifier is considered unique if its scheme is successfully
-            validated through https://pythonhosted.org/IDUtils/. Supported schemes
-            are DOI, Handle, EAN8, ......
-          total_score: 1
-          created_by: FAIRsFAIR
-          version: 0.2
           metric_identifier: FsF-F1-01D
+          metric_short_name: Globally Unique Identifier
+          metric_name: Data is assigned with a globally unique identifier.
+          description: A data object may be assigned with a globally unique identifier such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your data or metadata when you publish and make it available through their services.
+          fair_principle: F1
+          evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+          created_by: FAIRsFAIR
+          date_created: 2020-07-08
+          date_updated: 2020-07-08
+          version: 0.3
+          total_score: 1
     Metric:
       type: object
       properties:
@@ -522,8 +520,6 @@ components:
           type: string
         mime_type:
           type: string
-        file_type:
-          type: string
         is_preferred_format:
           type: boolean
           default: false
@@ -540,25 +536,23 @@ components:
       properties:
         is_available:
           type: boolean
-          default: True
+          default: true
         provenance_metadata:
           type: array
           items:
             type: object
             additionalProperties:
               type: string
-
     DataContentMetadata_output_inner:
       type: object
       properties:
-        descriptor_name:
+        descriptor:
           type: string
-        descriptor_type:
+        descriptor_value:
           type: string
-        matchescontent:
+        matches_content:
           type: boolean
-          default: False
-
+          default: false
     FormalMetadata_output_inner:
       type: object
       properties:
@@ -592,7 +586,8 @@ components:
           schema:
             type: string
   securitySchemes:
-    basicAuth:
+    UserLogin:
       type: http
       scheme: basic
-      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_basicAuth
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_UserLogin
+
