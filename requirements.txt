@@ -16,3 +16,5 @@ pyopenssl
 tika
 rapidfuzz
 SPARQLWrapper
+python-Levenshtein
+swagger_ui_bundle
