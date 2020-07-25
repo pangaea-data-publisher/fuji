@@ -387,6 +387,7 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
+            self.logger.info('FsF-F2-01M : Not all required partial metadata {} exists, so set status as = no metadata'.format(partial_elements))
             metadata_status = 'no metadata' # status should follow enumeration in yaml
             meta_score.earned = 0
             test_status = 'fail'
@@ -484,7 +485,7 @@ class FAIRCheck:
         if content_list:
             score += 1
         did_score.earned = score
-        if score > 0: # 1 or 2 assumed to be 'pass'
+        if score > 0:
             did_result.test_status = "pass"
 
         did_output.content = content_list
@@ -497,7 +498,7 @@ class FAIRCheck:
 
     def check_data_access_level(self):
         #Focus on machine readable rights -> URIs only
-        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/ check for http://purl.org/coar/access_right
+        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
         #4) CreativeCommons check for https://creativecommons.org/licenses/
@@ -764,7 +765,7 @@ class FAIRCheck:
         sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                             MetaDataCollector.Sources.DATACITE_JSON.value]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Supported metadata retrieval/extraction - {}'.format(all))
+        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction - {}'.format(all))
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
                                   MetaDataCollector.Sources.SIGN_POSTING.value]
@@ -773,6 +774,7 @@ class FAIRCheck:
         if search_engine_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+            self.logger.warning('FsF-F4-01M : Metadata found through - structured data')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(search_engines_support))
 
@@ -780,6 +782,7 @@ class FAIRCheck:
         if registry_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
+            self.logger.warning('FsF-F4-01M : Metadata found through - metadata registry')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
         # TODO (Important) - search via b2find
@@ -1381,8 +1384,9 @@ class FAIRCheck:
 
         if score > 0:
             test_status = 'pass'
+
         semanticvocab_result.test_status = test_status
-        semanticvocab_result.earned = score
+        semanticvocab_score.earned = score
         semanticvocab_result.score = semanticvocab_score
         semanticvocab_result.output = outputs
         if self.isDebug:
