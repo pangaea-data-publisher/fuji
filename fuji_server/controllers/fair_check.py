@@ -14,7 +14,6 @@ from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
 import tika
-tika.TikaClientOnly = True #You can set Tika to use Client only mode by setting
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -741,7 +740,14 @@ class FAIRCheck:
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
         related_output = IdentifierIncludedOutput()
 
+        self.logger.info('{0} : Total number of related resources extracted - {1}'.format(related_identifier, len(self.related_resources)))
+
         #if self.metadata_merged.get('related_resources'):
+        if self.related_resources:
+            #QC check: exclude potential incorrect relation
+            self.related_resources = [item for item in self.related_resources if item.get('related_resource') != self.pid_url]
+            self.logger.info('{0} : Number of related resources after QC step - {1}'.format(related_identifier, len(self.related_resources)))
+
         if self.related_resources: #TODO include source of relation
             related_output = self.related_resources
             related_result.test_status = 'pass'
@@ -990,7 +996,7 @@ class FAIRCheck:
                         creation_metadata_output.provenance_metadata.append({'contributor' : ', '.join(self.metadata_merged['contributor'])})
                     else:
                         creation_metadata_output.provenance_metadata.append({'publisher': self.metadata_merged['publisher']})
-                provenance_status = 'pass'
+                #provenance_status = 'pass'
                 self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
                 score=score+0.5
         if score == 0:
@@ -1008,7 +1014,7 @@ class FAIRCheck:
             modified_metadata_output.is_available = True
             for modified_element in modified_intersect:
                 modified_metadata_output.provenance_metadata.append({modified_element: self.metadata_merged[modified_element]})
-            provenance_status = 'pass'
+            #provenance_status = 'pass'
             score=score+0.5
         else:
             self.logger.warning('FsF-R1.2-01M : Data modification/versioning information NOT found.')
@@ -1052,6 +1058,8 @@ class FAIRCheck:
             self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
         data_provenance_output.structured_provenance_available = structured_metadata_output
 
+        if score >= 2:
+            provenance_status = 'pass'
         data_provenance_result.test_status=provenance_status
         data_provenance_score.earned = score
         data_provenance_result.output = data_provenance_output
