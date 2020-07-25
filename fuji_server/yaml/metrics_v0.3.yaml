@@ -48,7 +48,7 @@ metrics:
   date_created: 2020-07-08
   date_updated: 2020-07-08
   version: 0.3
-  total_score: 2
+  total_score: 1
 
 - metric_identifier: FsF-F4-01M
   metric_short_name: Searchable Metadata
@@ -60,7 +60,7 @@ metrics:
   date_created: 2020-07-08
   date_updated: 2020-07-08
   version: 0.3
-  total_score: 3
+  total_score: 2
 
 - metric_identifier: FsF-A1-01M
   metric_short_name: Data Access Information
