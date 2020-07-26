@@ -40,7 +40,7 @@ Your Swagger definition lives here:
 ```
 http://localhost:1071/uji/api/v1/swagger.json
 ```
-## Other
+Note:
 To avoid tika startup warning message, set environment variable TIKA_LOG_PATH. For more information, see [https://github.com/chrismattmann/tika-python](https://github.com/chrismattmann/tika-python)
 
 
