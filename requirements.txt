@@ -1,6 +1,6 @@
 beautifulsoup4
 lxml
-rdflib
+rdflib<5.0.0
 six
 extruct
 jmespath
