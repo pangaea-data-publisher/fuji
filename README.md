@@ -40,5 +40,9 @@ Your Swagger definition lives here:
 ```
 http://localhost:1071/uji/api/v1/swagger.json
 ```
+Note:
+To avoid tika startup warning message, set environment variable TIKA_LOG_PATH. For more information, see [https://github.com/chrismattmann/tika-python](https://github.com/chrismattmann/tika-python)
+
+
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
