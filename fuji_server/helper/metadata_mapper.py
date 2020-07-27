@@ -30,6 +30,11 @@ class Mapper(Enum):
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
                     }
+
+    #https://en.wikipedia.org/wiki/List_of_archive_formats#cite_ref-MIME_type_2-3
+    # only consider mime types registered with IANA: https://www.iana.org/assignments/media-types/media-types.xhtml
+    ARCHIVE_COMPRESS_MIMETYPES =['application/gzip','application/zstd','application/octet-stream','application/vnd.ms-cab-compressed','application/zip']
+
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
