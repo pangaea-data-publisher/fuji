@@ -1018,7 +1018,7 @@ class FAIRCheck:
                 #self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
         if provenance_metadata_output.is_available:
             provenance_status = 'pass'
-            data_provenance_score = data_provenance_score + 0.5
+            score=score+1
         data_provenance_output.provenance_metadata_included = provenance_metadata_output
 
         #structured provenance metadata available
@@ -1027,7 +1027,7 @@ class FAIRCheck:
         structured_metadata_output.is_available = False
         used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.namespace_uri)))
         if used_provenance_namespace:
-            score=score+0.5
+            score=score+1
             structured_metadata_output.is_available = True
             for used_prov_ns in used_provenance_namespace:
                 structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
