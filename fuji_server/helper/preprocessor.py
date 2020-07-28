@@ -318,7 +318,7 @@ class Preprocessor(object):
     @classmethod
     def getRE3repositories(cls):
         if not cls.re3repositories:
-            cls.retrieve_retrieve_linkeddata(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
+            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
         return cls.re3repositories
 
     @classmethod
