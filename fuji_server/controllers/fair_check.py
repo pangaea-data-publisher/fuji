@@ -313,17 +313,18 @@ class FAIRCheck:
         # in case object landing page URL ends with '.html' or '/html'
         # try to find out if there is some xml content if suffix is replaced by 'xml
         datalink = None
-        suff_res = re.search(r".*[\.\/](html?)?$", self.landing_url)
-        if suff_res is not None:
-            guessed_link = self.landing_url.replace(suff_res[1],'xml')
-            try:
-                response=urllib.urlopen(guessed_link)
-                if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
-                    datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
-                    self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
+        if self.landing_url is not None:
+            suff_res = re.search(r".*[\.\/](html?)?$", self.landing_url)
+            if suff_res is not None:
+                guessed_link = self.landing_url.replace(suff_res[1],'xml')
+                try:
+                    response=urllib.urlopen(guessed_link)
+                    if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
+                        datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
+                        self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
 
-            except:
-                self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
+                except:
+                    self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
         return datalink
 
     def retrieve_metadata_external(self):
@@ -373,7 +374,8 @@ class FAIRCheck:
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
             source = MetaDataCollector.Sources.LINKED_DATA.value
-            self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
+            if self.landing_url is not None:
+                self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
 
         if self.rdf_collector is not None:
             source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
