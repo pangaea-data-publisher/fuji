@@ -15,7 +15,8 @@ class Mapper(Enum):
     # TODO include data types of all reference elements
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'access_free','policy','related_resources','provenance_general',
-                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','file_format_only', 'object_type', 'data_size','datacite_client', 'modified_date']
+                 'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'file_format_only',
+                 'object_type', 'data_size','datacite_client', 'modified_date','created_date','right_holder']
 
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
@@ -37,12 +38,12 @@ class Mapper(Enum):
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?
     # license: Recommended practice is to identify the license document with a URI. If this is not possible or feasible, a literal value that identifies the license may be provided.
-    DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title',
-              'publisher': 'publisher', 'publication_date': ['date','available'], 'summary': 'abstract',
-              'keywords': 'subject', 'object_type': 'type','modified_date': 'modified',
+    DC_MAPPING = {'object_identifier': 'identifier', 'creator': 'creator', 'title': 'title', 'contributor' : 'contributor',
+              'publisher': 'publisher', 'publication_date': ['date','available', 'issued'], 'summary': 'abstract',
+              'keywords': 'subject', 'object_type': 'type','modified_date': 'modified','created_date' : 'created',
               'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
-                  'date_available':'available', 'provenance_general':'provenance',
-                'related_resources':['relation','source']}
+                  'date_available':'available','provenance_general':'provenance',
+                'related_resources':['relation','source','references']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
@@ -54,10 +55,12 @@ class Mapper(Enum):
     ## A license document that applies to this content, typically indicated by URL.
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
-                            'modified_date: dateModified."@value" || dateModified, ' \
+                            'modified_date: dateModified."@value" ||dateModified, ' \
                            'creator: creator[?"@type" ==\'Person\'].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
+                           'contributor: contributor[*].name || contributor[*].familyName, ' \
+                           'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
                            'publisher: publisher.name, license: (license."@id" || license.license."@id") || license, ' \
                            'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
@@ -72,11 +75,21 @@ class Mapper(Enum):
     DATACITE_JSON_MAPPING = '{object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \
                         'creator_last: creators[*].familyName, publisher: publisher, ' \
+                        'contributor: contributors[*].name || contributors[*].familyName, '\
+                        'right_holder: contributors[?contributorType == \'RightsHolder\'], '\
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date || publicationYear,' \
-                        'data_size:sizes[0], license: rightsList[*].rightsUri || rightsList[*].rights ,' \
+                        'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
                         'related_resources: relatedIdentifiers[*], datacite_client: clientId, ' \
-                        'modified_date: dates[?dateType == \'Updated\'].date,'\
-                        'object_content_identifier:  {url: contentUrl, type:formats[0], size: sizes[0], profile: schemaVersion} , access_level: rightsList[*].rightsUri || rightsList[*].rights }'
+                        'modified_date: dates[?dateType == \'Updated\'].date,' \
+                        'created_date: dates[?dateType == \'Created\'].date,' \
+                        'accepted_date: dates[?dateType == \'Accepted\'].date,' \
+                        'submitted_date: dates[?dateType == \'Submitted\'].date,' \
+                        'object_content_identifier:  {url: contentUrl} , access_level: rightsList[*].rightsUri || rightsList[*].rights }'
                         #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
 
+    PROVENANCE_MAPPING = {'contributor':'prov:wasAttributedTo', 'creator':'prov:wasAttributedTo', 'publisher':'prov:wasAttributedTo', 'right_holder':'prov:wasAttributedTo','created_date':'prov:generatedAtTime', 'publication_date':'prov:generatedAtTime',
+                          'accepted_date':'prov:generatedAtTime' ,'submitted_date':'prov:generatedAtTime' ,'modified_date':'prov:generatedAtTime',
+                          'hasFormat' :'prov:alternateOf', 'isFormatOf':'prov:alternateOf','isVersionOf':'prov:wasRevisionOf','isNewVersionOf':'prov:wasRevisionOf',
+                          'isReferencedBy':'prov:hadDerivation', 'isReplacedBy':'prov:wasRevisionOf', 'References': 'prov:wasDerivedFrom','IsDerivedFrom': 'prov:wasDerivedFrom',
+                          'isBasedOn':'prov:hadPrimarySource','hasVersion':'prov:hadRevision','Obsoletes':'prov:wasRevisionOf'}
