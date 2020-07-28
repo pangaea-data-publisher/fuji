@@ -14,7 +14,6 @@ from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
 import tika
-tika.TikaClientOnly = True #You can set Tika to use Client only mode by setting
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -421,6 +420,7 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
+            self.logger.info('FsF-F2-01M : Not all required partial metadata {} exists, so set status as = no metadata'.format(partial_elements))
             metadata_status = 'no metadata' # status should follow enumeration in yaml
             meta_score.earned = 0
             test_status = 'fail'
@@ -518,7 +518,7 @@ class FAIRCheck:
         if content_list:
             score += 1
         did_score.earned = score
-        if score > 0: # 1 or 2 assumed to be 'pass'
+        if score > 0:
             did_result.test_status = "pass"
 
         did_output.content = content_list
@@ -531,7 +531,7 @@ class FAIRCheck:
 
     def check_data_access_level(self):
         #Focus on machine readable rights -> URIs only
-        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/ check for http://purl.org/coar/access_right
+        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
         #4) CreativeCommons check for https://creativecommons.org/licenses/
@@ -774,7 +774,14 @@ class FAIRCheck:
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
         related_output = IdentifierIncludedOutput()
 
+        self.logger.info('{0} : Total number of related resources extracted - {1}'.format(related_identifier, len(self.related_resources)))
+
         #if self.metadata_merged.get('related_resources'):
+        if self.related_resources:
+            #QC check: exclude potential incorrect relation
+            self.related_resources = [item for item in self.related_resources if item.get('related_resource') != self.pid_url]
+            self.logger.info('{0} : Number of related resources after QC step - {1}'.format(related_identifier, len(self.related_resources)))
+
         if self.related_resources: #TODO include source of relation
             related_output = self.related_resources
             related_result.test_status = 'pass'
@@ -798,7 +805,7 @@ class FAIRCheck:
         sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                             MetaDataCollector.Sources.DATACITE_JSON.value]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Supported metadata retrieval/extraction - {}'.format(all))
+        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction - {}'.format(all))
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
                                   MetaDataCollector.Sources.SIGN_POSTING.value]
@@ -807,6 +814,7 @@ class FAIRCheck:
         if search_engine_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+            self.logger.warning('FsF-F4-01M : Metadata found through - structured data')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(search_engines_support))
 
@@ -814,6 +822,7 @@ class FAIRCheck:
         if registry_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
+            self.logger.warning('FsF-F4-01M : Metadata found through - metadata registry')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
         # TODO (Important) - search via b2find
@@ -998,6 +1007,8 @@ class FAIRCheck:
         provenance_elements = []
         provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
         provenance_status = 'fail'
+
+        
         provenance_metadata_output = DataProvenanceOutputInner()
         provenance_metadata_output.provenance_metadata = []
         provenance_metadata_output.is_available = False
@@ -1023,6 +1034,7 @@ class FAIRCheck:
             score=score+1
         data_provenance_output.provenance_metadata_included = provenance_metadata_output
 
+
         #structured provenance metadata available
         structured_metadata_output = DataProvenanceOutputInner()
         structured_metadata_output.provenance_metadata = []
@@ -1036,6 +1048,8 @@ class FAIRCheck:
             self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
         data_provenance_output.structured_provenance_available = structured_metadata_output
 
+        if score >= 2:
+            provenance_status = 'pass'
         data_provenance_result.test_status=provenance_status
         data_provenance_score.earned = score
         data_provenance_result.output = data_provenance_output
@@ -1369,8 +1383,9 @@ class FAIRCheck:
 
         if score > 0:
             test_status = 'pass'
+
         semanticvocab_result.test_status = test_status
-        semanticvocab_result.earned = score
+        semanticvocab_score.earned = score
         semanticvocab_result.score = semanticvocab_score
         semanticvocab_result.output = outputs
         if self.isDebug:
