@@ -349,8 +349,6 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
-        found_metadata_link = False
-        typed_metadata_links = self.get_html_typed_links(rel='alternate')
         found_metadata_link =False
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
         guessed_metadata_link = self.get_guessed_xml_link()
@@ -1002,13 +1000,12 @@ class FAIRCheck:
         data_provenance_result = DataProvenance(id=self.count, metric_identifier=data_provenance_identifier,
                                                  metric_name=data_provenance_name)
         data_provenance_output = DataProvenanceOutput()
-        score=0
+        score = 0
         has_creation_provenance = False
         provenance_elements = []
         provenance_namespaces=['http://www.w3.org/ns/prov#','http://purl.org/pav/']
         provenance_status = 'fail'
 
-        
         provenance_metadata_output = DataProvenanceOutputInner()
         provenance_metadata_output.provenance_metadata = []
         provenance_metadata_output.is_available = False
@@ -1034,7 +1031,6 @@ class FAIRCheck:
             score=score+1
         data_provenance_output.provenance_metadata_included = provenance_metadata_output
 
-
         #structured provenance metadata available
         structured_metadata_output = DataProvenanceOutputInner()
         structured_metadata_output.provenance_metadata = []
@@ -1048,7 +1044,7 @@ class FAIRCheck:
             self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
         data_provenance_output.structured_provenance_available = structured_metadata_output
 
-        if score >= 2:
+        if score >= 1:
             provenance_status = 'pass'
         data_provenance_result.test_status=provenance_status
         data_provenance_score.earned = score
@@ -1056,7 +1052,6 @@ class FAIRCheck:
         data_provenance_result.score = data_provenance_score
         if self.isDebug:
             data_provenance_result.test_debug = self.msg_filter.getMessage(data_provenance_identifier)
-
         return data_provenance_result.to_dict()
 
     # def check_data_content_metadata_old(self):
