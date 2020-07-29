@@ -13,7 +13,6 @@ import lxml
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
-import tika
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -851,8 +850,7 @@ class FAIRCheck:
         data_file_format_score = FAIRResultCommonScore(total=data_file_format_sc)
         data_file_format_result = DataFileFormat(id=self.count, metric_identifier=data_file_format_identifier, metric_name=data_file_format_name)
         data_file_format_output = DataFileFormatOutput()
-        data_file_list=[]
-        data_file_format_result.score = 0
+        data_file_list = []
 
         #TODO: format may be specified in the metadata. but the data content uri is missing. will this pass the test?
         if not self.content_identifier: #self.content_identifier only includes uris that are accessible
@@ -865,12 +863,13 @@ class FAIRCheck:
             #self.logger.info('FsF-R1.3-02D : Format is specified in data page (through DC.format) - {}'.format(self.metadata_merged.get('file_format_only')))
 
         if len(self.content_identifier) > 0:
-            self.logger.info('FsF-R1.3-02D : Object content identifier is provided, checking file format..')
+            content_urls = [item.get('url') for item in self.content_identifier]
+            self.logger.info('FsF-R1.3-02D : Object content identifier provided - {}'.format(content_urls))
             for data_file in self.content_identifier:
                 data_file_output = DataFileFormatOutputInner()
-                preferance_reason=[]
-                subject_area=[]
-                mime_type=data_file.get('type')
+                preferance_reason = []
+                subject_area = []
+                mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream']:
                         self.logger.info('FsF-R1.3-02D : Guessing  the type of a file based on its filename or URL - {}'.format(data_file.get('url')))
@@ -924,7 +923,7 @@ class FAIRCheck:
                             data_file_format_result.test_status = 'pass'
 
                 if data_file_format_result.test_status == 'pass':
-                    data_file_format_result.score = 1
+                    data_file_format_score.earned = 1
                 data_file_output.preference_reason=preferance_reason
                 data_file_output.subject_areas=subject_area
         else:
