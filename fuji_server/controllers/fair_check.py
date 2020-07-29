@@ -770,8 +770,7 @@ class FAIRCheck:
         related_sc = int(FAIRCheck.METRICS.get(related_identifier).get('total_score'))
         related_score = FAIRResultCommonScore(total=related_sc)
         related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
-        related_output = IdentifierIncludedOutput()
-
+        related_output = RelatedResourceOutput()
         self.logger.info('{0} : Total number of related resources extracted - {1}'.format(related_identifier, len(self.related_resources)))
 
         #if self.metadata_merged.get('related_resources'):
