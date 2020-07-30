@@ -34,6 +34,8 @@ from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
 from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
+from fuji_server.models.metadata_preserved import MetadataPreserved
+from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 
 
 class FAIRCheck:
@@ -802,11 +804,11 @@ class FAIRCheck:
         searchable_score = FAIRResultCommonScore(total=searchable_sc)
         searchable_output = SearchableOutput()
         search_mechanisms = []
-        sources_registry = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
-                            MetaDataCollector.Sources.DATACITE_JSON.value]
+        sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
         self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction - {}'.format(all))
-        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
+        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
+                                  MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
                                   MetaDataCollector.Sources.SIGN_POSTING.value]
         # Check search mechanisms based on sources of metadata extracted.
@@ -1391,4 +1393,34 @@ class FAIRCheck:
         if self.isDebug:
             semanticvocab_result.test_debug = self.msg_filter.getMessage(semanticvocab_identifier)
         return semanticvocab_result.to_dict()
+
+    def check_metadata_preservation(self):
+        self.count += 1
+        registry_bound_pid=['doi']
+        preservation_identifier = 'FsF-A2-01M'
+        preservation_name = FAIRCheck.METRICS.get(preservation_identifier).get('metric_name')
+        preservation_sc = int(FAIRCheck.METRICS.get(preservation_identifier).get('total_score'))
+        preservation_score = FAIRResultCommonScore(total=preservation_sc)
+        preservation_result = MetadataPreserved(id=self.count, metric_identifier=preservation_identifier,
+                                              metric_name=preservation_name)
+        outputs = []
+        test_status = 'fail'
+        score = 0
+        if self.pid_scheme:
+            if self.pid_scheme in registry_bound_pid:
+                test_status = 'pass'
+                outputs.append(MetadataPreservedOutput(metadata_preservation_method='datacite'))
+                score = 1
+                self.logger.info(
+                    '{0} : Metadata registry bound PID system used: '+self.pid_scheme.format(preservation_identifier))
+            else:
+                self.logger.info(
+                    '{0} : NO metadata registry bound PID system used'.format(preservation_identifier))
+        preservation_score.earned = score
+        preservation_result.score = preservation_score
+        preservation_result.output = outputs
+        preservation_result.test_status = test_status
+        if self.isDebug:
+            preservation_result.test_debug = self.msg_filter.getMessage(preservation_identifier)
+        return preservation_result.to_dict()
 
