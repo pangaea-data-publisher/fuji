@@ -43,6 +43,7 @@ class FAIRCheck:
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
     COMMUNITY_STANDARDS_NAMES = None
+    COMMUNITY_METADATA_STANDARDS_URIS = None
     COMMUNITY_STANDARDS = None
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
@@ -89,6 +90,8 @@ class FAIRCheck:
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
+        if not cls.COMMUNITY_METADATA_STANDARDS_URIS:
+            cls.COMMUNITY_METADATA_STANDARDS_URIS = Preprocessor.get_metadata_standards_uris()
         if not cls.COMMUNITY_STANDARDS:
             cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
@@ -231,7 +234,8 @@ class FAIRCheck:
             repoHelper.lookup_re3data()
             self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
             self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-            self.community_standards = repoHelper.getRe3MetadataStandards()
+            self.community_standards.extend(repoHelper.getRe3MetadataStandards())
+            #print(self.community_standards )
             if self.community_standards:
                 self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
             else: # fallback get standards defined in api, e.g., oai-pmh
@@ -317,15 +321,16 @@ class FAIRCheck:
         if self.landing_url is not None:
             suff_res = re.search(r".*[\.\/](html?)?$", self.landing_url)
             if suff_res is not None:
-                guessed_link = self.landing_url.replace(suff_res[1],'xml')
-                try:
-                    response=urllib.urlopen(guessed_link)
-                    if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
-                        datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
-                        self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
+                if suff_res[1] is not None:
+                    guessed_link = self.landing_url.replace(suff_res[1],'xml')
+                    try:
+                        response=urllib.urlopen(guessed_link)
+                        if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
+                            datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
+                            self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
 
-                except:
-                    self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
+                    except:
+                        self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
         return datalink
 
     def retrieve_metadata_external(self):
@@ -371,6 +376,16 @@ class FAIRCheck:
                 xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
                 xml_collector.parse_metadata()
+                xml_namespaces = xml_collector.getNamespaces()
+                found_standard_xml = False
+                for namespace_uri in xml_namespaces:
+                    if namespace_uri in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
+                        #TODO: IMPORTANT!!!! check if thi sworks
+                        self.community_standards.append(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS[namespace_uri].get('title'))
+                        found_standard_xml = True
+                        print(self.community_standards)
+                if found_standard_xml:
+                    self.logger.info('FsF-R1.3-01M : Found community metadata standard conform XML file: '+metadata_link['url'])
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
@@ -706,7 +721,8 @@ class FAIRCheck:
         license_result = License(id=self.count, metric_identifier=license_identifier, metric_name=license_mname)
         licenses_list = []
         specified_licenses = self.metadata_merged.get('license')
-        if specified_licenses is not None:
+        #can be both:empty list and None
+        if specified_licenses is not None and specified_licenses !=[]:
             if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
                 specified_licenses = [specified_licenses]
             for l in specified_licenses:
@@ -966,8 +982,8 @@ class FAIRCheck:
                         out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                         standards_detected.append(out)
 
-        if not standards_detected and self.community_standards_uri:
-        #use schems declared in oai-pmh end point instead
+        if not standards_detected and self.community_standards_uri or 1==1:
+            #use schems declared in oai-pmh end point instead
             self.logger.info(
                 '{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
             for k,v in self.community_standards_uri.items():
@@ -997,6 +1013,7 @@ class FAIRCheck:
         return found
 
     def check_data_provenance(self):
+        self.count += 1
         data_provenance_identifier = 'FsF-R1.2-01M'
         data_provenance_name = FAIRCheck.METRICS.get(data_provenance_identifier).get('metric_name')
         data_provenance_sc = int(FAIRCheck.METRICS.get(data_provenance_identifier).get('total_score'))
@@ -1141,6 +1158,7 @@ class FAIRCheck:
     #     return data_content_metadata_result.to_dict()
 
     def check_data_content_metadata(self):
+        self.count+=1
         data_content_metadata_identifier = 'FsF-R1-01MD'
         data_content_metadata_name = FAIRCheck.METRICS.get(data_content_metadata_identifier).get('metric_name')
         data_content_metadata_sc = int(FAIRCheck.METRICS.get(data_content_metadata_identifier).get('total_score'))
