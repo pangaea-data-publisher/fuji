@@ -23,6 +23,7 @@ class Preprocessor(object):
     all_licenses = []
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
+    metadata_standards_uris = {} #some additional namespace uris and all uris from above as key
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
@@ -113,9 +114,18 @@ class Preprocessor(object):
             # referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]
             # seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
             # cls.license_urls = dict(zip(referenceNumber, seeAlso))
+    @classmethod
+    def retrieve_metadata_standards_uris(cls, isDebugMode):
+        data = {}
+        std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards_uris.json')
+        with open(std_uri_path) as f:
+            data = json.load(f)
+        if data:
+            cls.metadata_standards_uris  = data
 
     @classmethod
     def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
+        cls.retrieve_metadata_standards_uris(isDebugMode)
         data = {}
         std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
         # The repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
@@ -354,6 +364,10 @@ class Preprocessor(object):
         for dictm in cls.all_metrics_list:
             new_dict[dictm['metric_identifier']] = {k: v for k, v in dictm.items() if k in wanted_fields}
         return new_dict
+
+    @classmethod
+    def get_metadata_standards_uris(cls) -> object:
+        return cls.metadata_standards_uris
 
     @classmethod
     def get_metadata_standards(cls) -> object:
