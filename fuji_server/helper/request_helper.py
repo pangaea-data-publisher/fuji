@@ -101,7 +101,12 @@ class RequestHelper:
                                 break
                # else:
                 #    self.logger.warning('{} : NO successful response received', format(metric_id))
+            except requests.exceptions.SSLError as e:
+                self.logger.warning('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
+                self.logger.exception("SSLError: {}".format(e))
+                self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
             except requests.exceptions.RequestException as e:
+                self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
         return self.parse_response
