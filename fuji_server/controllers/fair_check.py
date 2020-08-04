@@ -19,7 +19,6 @@ from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorData
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
-# from fuji_server.helper.metadata_harvester_oai import OAIMetadataHarvesters
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
@@ -81,6 +80,7 @@ class FAIRCheck:
         self.count = 0
         FAIRCheck.load_predata()
         self.extruct = None
+        self.tika_content_types_list = []
 
     @classmethod
     def load_predata(cls):
@@ -877,16 +877,12 @@ class FAIRCheck:
                 for c in contents:
                     if c.get('type'):
                         self.logger.info('FsF-R1.3-02D : Object content identifier is missing, but data format specified - {}'.format(c.get('type')))
-        #if self.metadata_merged.get('file_format_only'):
-            #self.logger.info('FsF-R1.3-02D : Format is specified in data page (through DC.format) - {}'.format(self.metadata_merged.get('file_format_only')))
 
+        mime_url_pair = {}
         if len(self.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.content_identifier]
             self.logger.info('FsF-R1.3-02D : Object content identifier provided - {}'.format(content_urls))
             for data_file in self.content_identifier:
-                data_file_output = DataFileFormatOutputInner()
-                preferance_reason = []
-                subject_area = []
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream']:
@@ -895,60 +891,66 @@ class FAIRCheck:
                         guessed_mime_type=mimetypes.guess_type(data_file.get('url'))
                         self.logger.info('FsF-R1.3-02D : Guess return value - {}'.format(guessed_mime_type))
                         mime_type=guessed_mime_type[0] #the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
-                    if mime_type is None:
-                        continue
+
+                    if mime_type:
+                        if mime_type in FAIRCheck.ARCHIVE_MIMETYPES: #check archive&compress media type
+                            self.logger.warning('FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
+                            # exclude archieve format
+                            self.tika_content_types_list = [n for n in self.tika_content_types_list if n not in FAIRCheck.ARCHIVE_MIMETYPES]
+                            self.logger.warning('FsF-R1.3-02D : Extracted file formats - {}'.format(self.tika_content_types_list))
+                            for t in self.tika_content_types_list:
+                                mime_url_pair[t] = data_file.get('url')
+                        else:
+                            mime_url_pair[mime_type] = data_file.get('url')
+
+            #TODO: change output type instead of is_long_term_format etc use:
+            # is_prefered_format: boolean
+            # type: ['long term format','science format']
+            # domain: list of scientific domains, default: 'General'
+            # FILE FORMAT CHECKS....
+            # check if format is a scientific one:
+            for mimetype, url in mime_url_pair.items():
+                data_file_output = DataFileFormatOutputInner()
+                preferance_reason = []
+                subject_area = []
+                if mimetype in FAIRCheck.SCIENCE_FILE_FORMATS:
+                    if FAIRCheck.SCIENCE_FILE_FORMATS.get(mimetype) == 'Generic':
+                        subject_area.append('General')
+                        preferance_reason.append('generic science format')
                     else:
-                        #check archive&compress media type
-                        if mime_type and mime_type in FAIRCheck.ARCHIVE_MIMETYPES:
-                            self.logger.warning('FsF-R1.3-02D : Actual file format cannot be determined, archiving/compression format specified - {}'.format(mime_type))
+                        subject_area.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mimetype))
+                        preferance_reason.append('science format')
+                    data_file_output.is_preferred_format= True
+                # check if long term format
+                if mimetype in FAIRCheck.LONG_TERM_FILE_FORMATS:
+                    preferance_reason.append('long term format')
+                    subject_area.append('General')
+                    data_file_output.is_preferred_format = True
+                #check if open format
+                if mimetype in FAIRCheck.OPEN_FILE_FORMATS:
+                    preferance_reason.append('open format')
+                    subject_area.append('General')
+                    data_file_output.is_preferred_format = True
+                #generic text/xml/json file check
+                if re.search(text_format_regex,mimetype):
+                    preferance_reason.extend(['long term format','open format','generic science format'])
+                    subject_area.append('General')
+                    data_file_output.is_preferred_format= True
 
-                        #TODO: change output type instead of is_long_term_format etc use:
-                        # is_prefered_format: boolean
-                        # type: ['long term format','science format']
-                        # domain: list of scientific domains, default: 'General'
-                        # FILE FORMAT CHECKS....
-                        # check if format is a scientific one:
-                        if mime_type in FAIRCheck.SCIENCE_FILE_FORMATS:
-                            if FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type) == 'Generic':
-                                subject_area.append('General')
-                                preferance_reason.append('generic science format')
-                            else:
-                                subject_area.append(FAIRCheck.SCIENCE_FILE_FORMATS.get(mime_type))
-                                preferance_reason.append('science format')
-                            data_file_output.is_preferred_format= True
-                            data_file_format_result.test_status = 'pass'
-                        # check if long term format
-                        if mime_type in FAIRCheck.LONG_TERM_FILE_FORMATS:
-                            preferance_reason.append('long term format')
-                            subject_area.append('General')
-                            data_file_output.is_preferred_format = True
-                            data_file_format_result.test_status = 'pass'
-                        #check if open format
-                        if mime_type in FAIRCheck.OPEN_FILE_FORMATS:
-                            preferance_reason.append('open format')
-                            subject_area.append('General')
-                            data_file_output.is_preferred_format = True
-                            data_file_format_result.test_status = 'pass'
+                data_file_output.mime_type = mimetype
+                data_file_output.file_uri = url
+                data_file_output.preference_reason = list(set(preferance_reason))
+                data_file_output.subject_areas = list(set(subject_area))
+                data_file_list.append(data_file_output)
 
-                        data_file_output.mime_type=mime_type
-                        data_file_output.file_uri=data_file.get('url')
-                        data_file_list.append(data_file_output)
-                        #generic text/xml/json file check
-                        if re.search(text_format_regex,mime_type):
-                            preferance_reason.extend(['long term format','open format','generic science format'])
-                            subject_area.append('General')
-                            data_file_output.is_preferred_format= True
-                            data_file_format_result.test_status = 'pass'
-
-                if data_file_format_result.test_status == 'pass':
-                    data_file_format_score.earned = 1
-                data_file_output.preference_reason=preferance_reason
-                data_file_output.subject_areas=subject_area
+            if len(data_file_list) >0 :
+                data_file_format_score.earned = 1
+                data_file_format_result.test_status = 'pass'
         else:
-            self.logger.info('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
+            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
             data_file_format_result.test_status='fail'
 
-        data_file_format_output=data_file_list
+        data_file_format_output = data_file_list
         data_file_format_result.output = data_file_format_output
         data_file_format_result.score = data_file_format_score
         if self.isDebug:
@@ -978,7 +980,7 @@ class FAIRCheck:
                         out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                         standards_detected.append(out)
 
-        if not standards_detected and self.community_standards_uri or 1==1:
+        if not standards_detected and len(self.community_standards_uri)> 0:
             #use schems declared in oai-pmh end point instead
             self.logger.info(
                 '{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
@@ -1042,8 +1044,9 @@ class FAIRCheck:
                         {'prov_o_mapping': Mapper.PROVENANCE_MAPPING.value.get(rm.get('relation_type')), 'metadata_element': 'related.'+str(rm.get('relation_type')),
                         'metadata_value': rm.get('related_resource')}
                     )
-                #self.logger.info('FsF-R1.2-01M : Found basic creation-related provenance information')
+
         if provenance_metadata_output.is_available:
+            self.logger.info('FsF-R1.2-01M : Found data creation-related provenance information')
             provenance_status = 'pass'
             score=score+1
         data_provenance_output.provenance_metadata_included = provenance_metadata_output
@@ -1184,9 +1187,13 @@ class FAIRCheck:
                     # Use Tika to parse the file
                     parsedFile = parser.from_file(test_data_content_url)
                     status = parsedFile.get("status")
-                    #metadata_contenttype = parsedFile.get("metadata").get('Content-Type').split(';')
-                    #if metadata_contenttype:
-                        #content_type = metadata_contenttype[0]
+                    tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                    if isinstance(tika_content_types, list):
+                        self.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
+                    else:
+                        content_types_str = tika_content_types.split(';')[0]
+                        self.tika_content_types_list.append(content_types_str)
+
                     # Extract the text content from the parsed file and convert to string
                     self.logger.info('{0} : File request status code {1}'.format(data_content_metadata_identifier, status))
                     parsed_content = parsedFile["content"]
