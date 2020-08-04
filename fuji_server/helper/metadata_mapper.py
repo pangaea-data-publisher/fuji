@@ -92,4 +92,4 @@ class Mapper(Enum):
                           'accepted_date':'prov:generatedAtTime' ,'submitted_date':'prov:generatedAtTime' ,'modified_date':'prov:generatedAtTime',
                           'hasFormat' :'prov:alternateOf', 'isFormatOf':'prov:alternateOf','isVersionOf':'prov:wasRevisionOf','isNewVersionOf':'prov:wasRevisionOf',
                           'isReferencedBy':'prov:hadDerivation', 'isReplacedBy':'prov:wasRevisionOf', 'References': 'prov:wasDerivedFrom','IsDerivedFrom': 'prov:wasDerivedFrom',
-                          'isBasedOn':'prov:hadPrimarySource','hasVersion':'prov:hadRevision','Obsoletes':'prov:wasRevisionOf'}
+                          'isBasedOn':'prov:hadPrimarySource','hasVersion':'prov:hadRevision','Obsoletes':'prov:wasRevisionOf','Replaces':'prov:wasDerivedFrom'}

@@ -104,6 +104,7 @@ components:
         - $ref: '#/components/schemas/DataProvenance'
         - $ref: '#/components/schemas/CommunityEndorsedStandard'
         - $ref: '#/components/schemas/DataFileFormat'
+        - $ref: '#/components/schemas/MetadataPreserved'
     FAIRResultCommon:
       required:
       - id
@@ -255,6 +256,15 @@ components:
             $ref: '#/components/schemas/SemanticVocabulary_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
+    MetadataPreserved:
+      allOf:
+        - $ref: '#/components/schemas/FAIRResultCommon'
+        - type: object
+          properties:
+            output:
+              $ref: '#/components/schemas/MetadataPreserved_output'
+            test_debug:
+              $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
       type: object
       properties:
@@ -408,6 +418,16 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/SemanticVocabulary_output_inner'
+    MetadataPreserved_output:
+      type: object
+      properties:
+        metadata_preservation_method:
+          type: array
+          items:
+            type: string
+            enum:
+              - datacite
+              - tombstone
     Metrics:
       type: object
       properties:

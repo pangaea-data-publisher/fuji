@@ -74,6 +74,18 @@ metrics:
   version: 0.3
   total_score: 1
 
+- metric_identifier: FsF-A2-01M
+  metric_short_name: Metadata Preservation
+  metric_name: Metadata remains available, even if the data is no longer available.
+  description: This metric determines if the metadata will be preserved even when the data they represent are no longer available, replaced or lost.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-07-08
+  date_updated: 2020-07-08
+  version: 0.3
+  total_score: 1
+
 - metric_identifier: FsF-I1-01M
   metric_short_name: Formal Representation of Metadata
   metric_name: Metadata is represented using a formal knowledge representation language.
@@ -168,6 +180,9 @@ metrics:
   metric_short_name: Data File format
   metric_name: Data is available in a file format recommended by the target research community.
   description: File formats refer to methods for encoding digital information. For example, CSV for tabular data, NetCDF for multidimensional data and GeoTIFF for raster imagery. Data should be made available in a file format that is backed by the research community to enable data sharing and reuse. Consider for example, file formats that are widely used and supported by the most commonly used software and tools. These formats also should be suitable for long-term storage and archiving, which are usually recommended by a data repository. The formats not only give a higher certainty that your data can be read in the future, but they will also help to increase the reusability and interoperability. Using community-endorsed formats enables data to be loaded directly into the software and tools used for data analysis. It makes it possible to easily integrate your data with other data using the same preferred format. The use of preferred formats will also help to transform the format to a newer one, in case a preferred format gets outdated.
+    Similar to metric FsF-F4-01M, answering this metric will require an understanding of the capabilities offered, data preservation plan and policies implemented by the data repository and data services (e.g., Datacite PID service).
+    Continued access to metadata depends on a data repository’s preservation practice which is usually documented in the repository’s service policies or statements.
+    A trustworthy data repository offering DOIs and implementing a PID Policy should guarantee that metadata will remain accessible even when data is no longer available for any reason (e.g., by providing a tombstone page).
   fair_principle: R1.3
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
