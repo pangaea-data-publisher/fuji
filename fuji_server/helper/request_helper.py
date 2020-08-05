@@ -53,7 +53,7 @@ class RequestHelper:
         self.metric_id=metric_id
         if self.request_url is not None:
             try:
-                self.logger.info('{0}: Retrieving page {1}'.format(metric_id, self.request_url))
+                self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
                 self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=True)
                 status_code = self.http_response.status_code
                 self.logger.info(
