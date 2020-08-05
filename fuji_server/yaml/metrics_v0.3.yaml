@@ -74,6 +74,18 @@ metrics:
   version: 0.3
   total_score: 1
 
+- metric_identifier: FsF-A1-02MD
+  metric_short_name: Standardized Communications Protocol
+  metric_name: Metadata as well as data are retrievable by their identifier using a standardized communications protocol.
+  description: tbd.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-07-08
+  date_updated: 2020-07-08
+  version: 0.3
+  total_score: 2
+
 - metric_identifier: FsF-A2-01M
   metric_short_name: Metadata Preservation
   metric_name: Metadata remains available, even if the data is no longer available.

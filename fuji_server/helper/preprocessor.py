@@ -30,6 +30,7 @@ class Preprocessor(object):
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
     default_namespaces = []
+    standard_protocols = {}
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
@@ -193,6 +194,15 @@ class Preprocessor(object):
             data = json.load(f)
         if data:
             cls.open_file_formats = data
+
+    @classmethod
+    def retrieve_standard_protocols(cls, isDebugMode):
+        data = {}
+        protocols_path = os.path.join(cls.fuji_server_dir, 'data', 'standard_uri_protocols.json')
+        with open(protocols_path) as f:
+            data = json.load(f)
+        if data:
+            cls.standard_protocols = data
 
     @classmethod
     def retrieve_default_namespaces(cls):
@@ -367,20 +377,36 @@ class Preprocessor(object):
 
     @classmethod
     def get_metadata_standards_uris(cls) -> object:
+        if not cls.metadata_standards_uris:
+            cls.retrieve_metadata_standards_uris()
         return cls.metadata_standards_uris
 
     @classmethod
     def get_metadata_standards(cls) -> object:
+        if not cls.metadata_standards:
+            cls.retrieve_metadata_standards()
         return cls.metadata_standards
 
     @classmethod
     def get_science_file_formats(cls) -> object:
+        if not cls.science_file_formats:
+            cls.retrieve_science_file_formats(True)
         return cls.science_file_formats
 
     @classmethod
     def get_long_term_file_formats(cls) -> object:
+        if not cls.long_term_file_formats:
+            cls.retrieve_long_term_file_formats(True)
         return cls.long_term_file_formats
 
     @classmethod
     def get_open_file_formats(cls) -> object:
+        if not cls.open_file_formats:
+            cls.retrieve_open_file_formats(True)
         return cls.open_file_formats
+
+    @classmethod
+    def get_standard_protocols(cls) -> object:
+        if not cls.standard_protocols:
+            cls.retrieve_standard_protocols(True)
+        return cls.standard_protocols

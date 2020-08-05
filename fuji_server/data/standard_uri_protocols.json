@@ -1,0 +1,13 @@
+{"ftp": "File Transfer Protocol", 
+  "gopher": "Gopher",
+  "http": "Hyper Text Transfer Protocol",
+  "https": "Hyper Text Transfer Protocol Secure",
+  "rtsp": "Real Time Streaming Protocol",
+  "rtspu": "Real Time Streaming Protocol",
+  "sftp": "Secure File Transfer Protocol",
+  "shttp": "Secure Hypertext Transfer Protocol",
+  "svn": "Subversion",
+  "ssh": "Secure Shell",
+  "telnet": "Telnet",
+  "ws": "WebSocket",
+  "wss":"WebSocket Secure"}
