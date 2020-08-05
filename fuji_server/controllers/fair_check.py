@@ -466,6 +466,7 @@ class FAIRCheck:
         id_object = self.metadata_merged.get('object_identifier')
         did_output.object_identifier_included = id_object
         contents = self.metadata_merged.get('object_content_identifier')
+
         if id_object is not None:
             self.logger.info('FsF-F3-01M : Object identifier specified {}'.format(id_object))
         score = 0
