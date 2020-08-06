@@ -105,6 +105,7 @@ components:
         - $ref: '#/components/schemas/CommunityEndorsedStandard'
         - $ref: '#/components/schemas/DataFileFormat'
         - $ref: '#/components/schemas/MetadataPreserved'
+        - $ref: '#/components/schemas/StandardisedProtocol'
     FAIRResultCommon:
       required:
       - id
@@ -263,6 +264,15 @@ components:
           properties:
             output:
               $ref: '#/components/schemas/MetadataPreserved_output'
+            test_debug:
+              $ref: '#/components/schemas/Debug'
+    StandardisedProtocol:
+      allOf:
+        - $ref: '#/components/schemas/FAIRResultCommon'
+        - type: object
+          properties:
+            output:
+              $ref: '#/components/schemas/StandardisedProtocol_output'
             test_debug:
               $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
@@ -596,6 +606,13 @@ components:
         is_namespace_active:
           type: boolean
           default: false
+    StandardisedProtocol_output:
+      type: object
+      properties:
+        standard_data_protocol:
+          type: string
+        standard_metadata_protocol:
+          type: string
   responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid

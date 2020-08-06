@@ -33,7 +33,7 @@ class Mapper(Enum):
 
     #https://en.wikipedia.org/wiki/List_of_archive_formats#cite_ref-MIME_type_2-3
     # only consider mime types registered with IANA: https://www.iana.org/assignments/media-types/media-types.xhtml
-    ARCHIVE_COMPRESS_MIMETYPES =['application/gzip','application/zstd','application/octet-stream','application/vnd.ms-cab-compressed','application/zip']
+    ARCHIVE_COMPRESS_MIMETYPES =['application/gzip','application/zstd','application/octet-stream','application/vnd.ms-cab-compressed','application/zip','application/x-gzip']
 
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?

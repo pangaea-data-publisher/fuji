@@ -23,7 +23,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
         self.logger.info('FsF-F2-01M : Extract datacite metadata')
         requestHelper = RequestHelper(self.pid_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.datacite_json)
-        ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+        neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
         if ext_meta:
             try:
                 dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)

@@ -34,6 +34,8 @@ from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 from fuji_server.models.metadata_preserved import MetadataPreserved
 from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
+from fuji_server.models.standardised_protocol import StandardisedProtocol
+from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
 
 
 class FAIRCheck:
@@ -49,6 +51,7 @@ class FAIRCheck:
     DEFAULT_NAMESPACES = None
     VOCAB_NAMESPACES = None
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
+    STANDARD_PROTOCOLS = None
 
     def __init__(self, uid, test_debug=False):
         self.id = uid
@@ -104,6 +107,8 @@ class FAIRCheck:
             cls.DEFAULT_NAMESPACES = Preprocessor.getDefaultNamespaces()
         if not cls.VOCAB_NAMESPACES:
             cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
+        if not cls.STANDARD_PROTOCOLS:
+            cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -162,7 +167,8 @@ class FAIRCheck:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
-            result = requestHelper.content_negotiate('FsF-F1-02D')
+            neg_source, result = requestHelper.content_negotiate('FsF-F1-02D')
+            #TODO: what if other protocols are used e.g. FTP etc..
             r = requestHelper.getHTTPResponse()
             if r:
                 if r.status_code == 200:
@@ -333,6 +339,11 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
+        # ========= retrieve xml metadata by nontent negotiation ========
+        if self.landing_url is not None:
+            negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                           target_url=self.landing_url, link_type='negotiated')
+            source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
@@ -368,7 +379,6 @@ class FAIRCheck:
                 source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
-            # TODO: Also handle XML and nor only RDF
             elif metadata_link['type'] == 'text/xml':
                 xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
@@ -1442,4 +1452,56 @@ class FAIRCheck:
         if self.isDebug:
             preservation_result.test_debug = self.msg_filter.getMessage(preservation_identifier)
         return preservation_result.to_dict()
+
+    def check_standardised_protocol(self):
+        self.count += 1
+        protocol_identifier = 'FsF-A1-02MD'
+        protocol_name = FAIRCheck.METRICS.get(protocol_identifier).get('metric_name')
+        protocol_sc = int(FAIRCheck.METRICS.get(protocol_identifier).get('total_score'))
+        protocol_score = FAIRResultCommonScore(total=protocol_sc)
+        protocol_result = StandardisedProtocol(id=self.count, metric_identifier=protocol_identifier,
+                                                metric_name=protocol_name)
+        metadata_output = data_output = None
+        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
+        metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
+        test_status = 'fail'
+        score = 0
+        if self.landing_url is not None:
+            # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
+            metadata_parsed_url = urlparse(self.landing_url)
+            metadata_url_scheme = metadata_parsed_url.scheme
+
+            if metadata_url_scheme in FAIRCheck.STANDARD_PROTOCOLS:
+                metadata_output= {metadata_url_scheme:FAIRCheck.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
+                test_status = 'pass'
+                score += 1
+            if set(metadata_found) != set(metadata_required):
+                self.logger.info(
+                    '{0} : NOT all required metadata given, see: FsF-F2-01M'.format(protocol_identifier))
+                #parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
+        else:
+            self.logger.info(
+                '{0} : Metadata Identifier is not actionable or protocol errors occured'.format(protocol_identifier))
+
+        if len(self.content_identifier) > 0:
+            #here we only test the first content identifier
+            data_url = self.content_identifier[0].get('url')
+            data_parsed_url = urlparse(data_url)
+            data_url_scheme = data_parsed_url.scheme
+
+            if data_url_scheme in FAIRCheck.STANDARD_PROTOCOLS:
+                data_output = {data_url_scheme: FAIRCheck.STANDARD_PROTOCOLS.get(data_url_scheme)}
+                test_status = 'pass'
+                score += 1
+        else:
+            self.logger.info(
+                '{0} : NO content (data) identifier is given in metadata'.format(protocol_identifier))
+
+        protocol_score.earned = score
+        protocol_result.score = protocol_score
+        protocol_result.output = StandardisedProtocolOutput(standard_metadata_protocol=metadata_output,standard_data_protocol=data_output)
+        protocol_result.test_status = test_status
+        if self.isDebug:
+            protocol_result.test_debug = self.msg_filter.getMessage(protocol_identifier)
+        return protocol_result.to_dict()
 
