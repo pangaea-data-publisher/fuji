@@ -31,7 +31,7 @@ class RepositoryHelper:
                 query_url = Preprocessor.RE3DATA_API + '?query=' + short_re3doi  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
-                xml = q.content_negotiate(metric_id='RE3DATA')
+                re_source, xml = q.content_negotiate(metric_id='RE3DATA')
                 root = etree.fromstring(xml.content)
                 #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
                 re3link = root.xpath('//link')[0].attrib['href']
@@ -40,7 +40,8 @@ class RepositoryHelper:
                     # query reposiroty metadata
                     q2 = RequestHelper(url=re3link)
                     q2.setAcceptType(AcceptTypes.xml)
-                    self.re3metadata_raw = q2.content_negotiate(metric_id='RE3DATA').content
+                    re3_source, re3_response = q2.content_negotiate(metric_id='RE3DATA')
+                    self.re3metadata_raw = re3_response.content
                     self.parseRepositoryMetadata()
             else:
                 self.logger.warning('No DOI of client id is available from datacite api')

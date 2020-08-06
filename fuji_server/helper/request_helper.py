@@ -51,6 +51,7 @@ class RequestHelper:
     def content_negotiate(self, metric_id=''):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id=metric_id
+        source = 'html'
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
@@ -63,11 +64,13 @@ class RequestHelper:
                     #TODO content type is sometimes wrongly given.. try to infer the type from request
                     if content_type is not None:
                         if 'text/plain' in content_type:
+                            source= 'text'
                             self.logger.info('%s : Plain text has been responded as content type!' % metric_id)
                             #try to find type by url
                             guessed_format = rdflib.util.guess_format(self.request_url)
                             if guessed_format is not None:
                                 self.parse_response  = self.parse_rdf(self.http_response.text, guessed_format)
+                                source='rdf'
                                   #content_type = content_type.split(";", 1)[0]
                         else:
                             content_type = content_type.split(";", 1)[0]
@@ -76,25 +79,29 @@ class RequestHelper:
                                     if content_type in at.value:
                                         if at.name == 'html':
                                             self.logger.info('%s : Found HTML page!' % metric_id)
-                                            self.parse_response  = self.parse_html(self.http_response.text)
+                                            self.parse_response = self.parse_html(self.http_response.text)
+                                            source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
-
                                             #in case the XML indeed is a RDF:
                                             # quick one:
                                             if self.http_response.text.find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
                                                 self.parse_response = self.parse_rdf(self.http_response.text, at.name)
+                                                source='rdf'
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)
                                                 self.parse_response  = self.http_response
+                                                source='xml'
                                             break
                                         if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
                                             self.parse_response  = self.http_response.json()
+                                            source='json'
                                             # result = json.loads(response.text)
                                             break
                                         if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
                                             self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
+                                            source='rdf'
                                             break
 
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
@@ -109,7 +116,7 @@ class RequestHelper:
                 self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
-        return self.parse_response
+        return source, self.parse_response
 
     def parse_html(self, html_texts):
         # extract contents from the landing page using extruct, which returns a dict with
@@ -156,3 +163,4 @@ class RequestHelper:
         # document schema and performs a XSLT to get metadata elements
         # write some domain specific XSLTs and/or parsers
         print('Not yet implemented')
+        return None

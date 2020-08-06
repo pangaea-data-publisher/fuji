@@ -24,7 +24,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         rdf_metadata=dict()
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.rdf)
-        rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+        neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
         #required for metric knowledge representation
         self.content_type = requestHelper.getHTTPResponse().headers['content-type']
         self.content_type = self.content_type.split(";", 1)[0]

@@ -26,7 +26,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 # fallback, request (doi) metadata specified in schema.org JSON-LD
                 requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
                 requestHelper.setAcceptType(AcceptTypes.schemaorg)
-                ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+                neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
         if ext_meta is not None:
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))

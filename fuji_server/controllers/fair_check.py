@@ -167,7 +167,8 @@ class FAIRCheck:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
-            result = requestHelper.content_negotiate('FsF-F1-02D')
+            neg_source, result = requestHelper.content_negotiate('FsF-F1-02D')
+            #TODO: what if other protocols are used e.g. FTP etc..
             r = requestHelper.getHTTPResponse()
             if r:
                 if r.status_code == 200:
@@ -338,6 +339,11 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
+        # ========= retrieve xml metadata by nontent negotiation ========
+        if self.landing_url is not None:
+            negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                           target_url=self.landing_url, link_type='negotiated')
+            source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
@@ -373,7 +379,6 @@ class FAIRCheck:
                 source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
-            # TODO: Also handle XML and nor only RDF
             elif metadata_link['type'] == 'text/xml':
                 xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
