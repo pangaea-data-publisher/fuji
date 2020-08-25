@@ -16,7 +16,7 @@ class Mapper(Enum):
     REFERENCE_METADATA_LIST = ['object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
                  'object_content_identifier', 'access_level', 'access_free','policy','related_resources','provenance_general',
                  'measured_variable', 'method', 'creation_date', 'contributor','version', 'license','data_file_format', 'file_format_only',
-                 'object_type', 'data_size','datacite_client', 'modified_date','created_date','right_holder']
+                 'object_type', 'data_size','datacite_client', 'modified_date','created_date','right_holder', 'object_size']
 
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
@@ -66,9 +66,9 @@ class Mapper(Enum):
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \
-                            'measured_variable: variableMeasured[*].name || variableMeasured , '\
+                            'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
                             'related_resources: [{related_resource: isPartOf."@id" || isPartOf.url || isPartOf, relation_type: \'isPartOf\'}, {related_resource: "@reverse".isBasedOn."@id" || "@reverse".isBasedOn.url || isBasedOn , relation_type: \'isBasedOn\'} ], ' \
-                            'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: contentSize, profile: schemaVersion}])}'
+                            'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}])}'
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
     # <rightsList><rights>

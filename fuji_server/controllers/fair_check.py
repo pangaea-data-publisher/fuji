@@ -53,9 +53,9 @@ class FAIRCheck:
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
 
-    def __init__(self, uid, test_debug=False):
+    def __init__(self, uid, test_debug=False, oaipmh=None):
         self.id = uid
-        self.oaipmh_endpoint = None
+        self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.landing_html = None
@@ -221,6 +221,13 @@ class FAIRCheck:
         if data_objects is not None:
             if not isinstance(data_objects, list):
                 self.metadata_merged['object_content_identifier']=[data_objects]
+
+        # TODO quick-fix to merge size information - should do it at mapper
+        if self.metadata_merged['object_content_identifier']:
+            for c in self.metadata_merged['object_content_identifier']:
+                if not c.get('size') and self.metadata_merged['object_size']:
+                    c['size'] = self.metadata_merged['object_size']
+
         for mk, mv in list(self.metadata_merged.items()):
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
@@ -234,23 +241,25 @@ class FAIRCheck:
         self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from R3DATA')
         client_id = self.metadata_merged.get('datacite_client')
         self.logger.info('FsF-R1.3-01M : R3DATA/Datacite client id - {}'.format(client_id))
-        if client_id and self.pid_scheme:
-            repoHelper = RepositoryHelper(client_id, self.pid_scheme)
-            repoHelper.lookup_re3data()
-            self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
-            self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-            self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-            #print(self.community_standards )
-            if self.community_standards:
-                self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M',self.community_standards))
-            else: # fallback get standards defined in api, e.g., oai-pmh
-                self.logger.info(
-                    '{} : OAIPMH endpoint from R3DATA {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
-                if (self.uri_validator(self.oaipmh_endpoint)):
-                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
-                    self.community_standards_uri = oai_provider.getMetadataStandards()
-                    self.namespace_uri.extend(oai_provider.getNamespaces())
-                    self.logger.info('{} : Metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+        if self.oaipmh_endpoint:
+            self.logger.info('{} : OAIPMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
+        else:
+            if client_id and self.pid_scheme:
+                repoHelper = RepositoryHelper(client_id, self.pid_scheme)
+                repoHelper.lookup_re3data()
+                self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+                self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
+                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
+
+        if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
+            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+            if (self.uri_validator(self.oaipmh_endpoint)):
+                oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
+                self.community_standards_uri = oai_provider.getMetadataStandards()
+                self.namespace_uri.extend(oai_provider.getNamespaces())
+                self.logger.info('{} : All metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+            else:
+                self.logger.info('{} : Invalid endpoint {}'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -593,6 +602,8 @@ class FAIRCheck:
                                 self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
                                 break
                         break
+                    else:
+                        self.logger.info('FsF-A1-01M : Not a standardized access level')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored - {}'.format(access_right))
                     exclude.append(access_right)
@@ -1222,6 +1233,7 @@ class FAIRCheck:
         if test_data_content_url:
             descriptors = ['type','size']  # default keys ['url', 'type', 'size', 'profile', 'header_content_type', 'header_content_length']
             data_object = next(item for item in self.metadata_merged.get('object_content_identifier') if item["url"] == test_data_content_url)
+            missing_descriptors = []
             for d in descriptors:
                 type = 'file '+ d
                 if d in data_object.keys() and data_object.get(d):
@@ -1238,6 +1250,17 @@ class FAIRCheck:
                     data_content_descriptors.append(data_content_filetype_inner)
                 else:
                     self.logger.warning('{0} : NO {1} info available'.format(data_content_metadata_identifier, type))
+        #             missing_descriptors.append(d)
+        #
+        #
+        # if 'size' in missing_descriptors:
+        #     sizeobj = self.metadata_merged.get('object_size')
+        #     if sizeobj:
+        #         data_content_filetype_inner = DataContentMetadataOutputInner()
+        #         data_content_filetype_inner.descriptor = 'file size'
+        #         data_content_filetype_inner.descriptor_value = sizeobj
+        #         data_content_descriptors.append(data_content_filetype_inner)
+        #         score += 1
 
         #4. check if varibles specified in the data file
         is_variable_scored = False

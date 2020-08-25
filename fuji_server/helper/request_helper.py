@@ -34,10 +34,13 @@ class RequestHelper:
         self.http_response = None
         self.parse_response = None
 
-    def setAcceptType(self, accept_type):
-        if not isinstance(accept_type, AcceptTypes):
+    def setAcceptType(self, accepttype):
+        if not isinstance(accepttype, AcceptTypes):
             raise TypeError('type must be an instance of AcceptTypes enum')
-        self.accept_type = accept_type.value
+        self.accept_type = accepttype.value
+
+    def getAcceptType(self):
+        return self.accept_type
 
     def setRequestUrl(self, url):
         self.request_url = url
@@ -64,7 +67,7 @@ class RequestHelper:
                     #TODO content type is sometimes wrongly given.. try to infer the type from request
                     if content_type is not None:
                         if 'text/plain' in content_type:
-                            source= 'text'
+                            source = 'text'
                             self.logger.info('%s : Plain text has been responded as content type!' % metric_id)
                             #try to find type by url
                             guessed_format = rdflib.util.guess_format(self.request_url)

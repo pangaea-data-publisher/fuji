@@ -23,7 +23,7 @@ class OAIMetadataProvider(MetadataProvider):
         oai_listmetadata_url = oai_endpoint+'?verb=ListMetadataFormats'
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
-        xml = requestHelper.content_negotiate(self.metric_id)
+        response_type, xml = requestHelper.content_negotiate(self.metric_id)
         root = etree.fromstring(xml.content)
         metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataProvider.oai_namespaces)
         schemas = {}

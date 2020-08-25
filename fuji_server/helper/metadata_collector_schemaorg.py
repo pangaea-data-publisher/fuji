@@ -61,6 +61,11 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             else:
                                 del jsnld_metadata['related_resources']
                                 self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+
+                        # TODO quick-fix, expand mapping expression instead
+                        if jsnld_metadata.get('object_size'):
+                            jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+
                     else:
                         self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
                 else:
@@ -70,4 +75,5 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
+
         return self.source_name, jsnld_metadata

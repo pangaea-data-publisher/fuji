@@ -34,6 +34,8 @@ from fuji_server.models.identifier_included_output_inner import IdentifierInclud
 from fuji_server.models.license import License
 from fuji_server.models.license_output import LicenseOutput
 from fuji_server.models.license_output_inner import LicenseOutputInner
+from fuji_server.models.metadata_preserved import MetadataPreserved
+from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 from fuji_server.models.metric import Metric
 from fuji_server.models.metrics import Metrics
 from fuji_server.models.output_core_metadata_found import OutputCoreMetadataFound
@@ -48,5 +50,7 @@ from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
 from fuji_server.models.semantic_vocabulary_output import SemanticVocabularyOutput
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
+from fuji_server.models.standardised_protocol import StandardisedProtocol
+from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput

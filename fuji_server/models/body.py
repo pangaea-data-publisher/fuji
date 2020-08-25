@@ -14,25 +14,30 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, oaipmh_endpoint: str=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
         :type object_identifier: str
         :param test_debug: The test_debug of this Body.  # noqa: E501
         :type test_debug: bool
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
+        :type oaipmh_endpoint: str
         """
         self.swagger_types = {
             'object_identifier': str,
-            'test_debug': bool
+            'test_debug': bool,
+            'oaipmh_endpoint': str
         }
 
         self.attribute_map = {
             'object_identifier': 'object_identifier',
-            'test_debug': 'test_debug'
+            'test_debug': 'test_debug',
+            'oaipmh_endpoint': 'oaipmh_endpoint'
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
+        self._oaipmh_endpoint = oaipmh_endpoint
 
     @classmethod
     def from_dict(cls, dikt) -> 'Body':
@@ -92,3 +97,26 @@ class Body(Model):
         """
 
         self._test_debug = test_debug
+
+    @property
+    def oaipmh_endpoint(self) -> str:
+        """Gets the oaipmh_endpoint of this Body.
+
+        The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :return: The oaipmh_endpoint of this Body.
+        :rtype: str
+        """
+        return self._oaipmh_endpoint
+
+    @oaipmh_endpoint.setter
+    def oaipmh_endpoint(self, oaipmh_endpoint: str):
+        """Sets the oaipmh_endpoint of this Body.
+
+        The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.
+        :type oaipmh_endpoint: str
+        """
+
+        self._oaipmh_endpoint = oaipmh_endpoint

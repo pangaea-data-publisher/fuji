@@ -20,7 +20,8 @@ def assess_by_id(body):  # noqa: E501
         body = Body.from_dict(connexion.request.get_json())
         identifier=body.object_identifier
         debug = body.test_debug
-        ft = FAIRCheck(uid=identifier, test_debug=debug)
+        oai = body.oaipmh_endpoint
+        ft = FAIRCheck(uid=identifier, test_debug=debug, oaipmh=oai)
 
         uid_result, pid_result = ft.check_unique_persistent()
         core_metadata_result = ft.check_minimal_metatadata()

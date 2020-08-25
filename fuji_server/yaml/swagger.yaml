@@ -38,6 +38,7 @@ paths:
             example:
               object_identifier: https://doi.org/10.1594/PANGAEA.908011
               test_debug: true
+              oaipmh_endpoint: http://ws.pangaea.de/oai/provider
       responses:
         "200":
           description: successful operation
@@ -505,6 +506,9 @@ components:
           description: Indicate if the detailed evaluation procedure of the metrics
             should to be included in the response
           default: false
+        oaipmh_endpoint:
+          type: string
+          description: The URL of the OAI-PMH data-provider
     IdentifierIncluded_output_inner:
       type: object
       properties:
@@ -627,4 +631,3 @@ components:
       type: http
       scheme: basic
       x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_UserLogin
-
