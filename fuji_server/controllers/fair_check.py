@@ -64,7 +64,7 @@ class FAIRCheck:
         self.logger = logging.getLogger(self.__class__.__name__)
         self.metadata_sources = []
         self.isDebug = test_debug
-        self.isRestricted = False
+        self.isMetadataAccessible = None
         self.metadata_merged = {}
         self.content_identifier=[]
         self.community_standards = []
@@ -184,9 +184,10 @@ class FAIRCheck:
                     pid_output.resolved_url = self.landing_url  # url is active, although the identifier is not based on a pid scheme
                     pid_output.resolvable_status = True
                     self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                    self.isMetadataAccessible = True
                 else:
                     if r.status_code in [401, 402, 403]:
-                        self.isRestricted = True
+                        self.isMetadataAccessible = False
                     self.logger.warning("Identifier returned response code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
@@ -223,10 +224,11 @@ class FAIRCheck:
                 self.metadata_merged['object_content_identifier']=[data_objects]
 
         # TODO quick-fix to merge size information - should do it at mapper
-        if self.metadata_merged['object_content_identifier']:
-            for c in self.metadata_merged['object_content_identifier']:
-                if not c.get('size') and self.metadata_merged['object_size']:
-                    c['size'] = self.metadata_merged['object_size']
+        if 'object_content_identifier' in self.metadata_merged:
+            if self.metadata_merged['object_content_identifier']:
+                for c in self.metadata_merged['object_content_identifier']:
+                    if not c.get('size') and self.metadata_merged['object_size']:
+                        c['size'] = self.metadata_merged['object_size']
 
         for mk, mv in list(self.metadata_merged.items()):
             if mv == '' or mv is None:
@@ -253,13 +255,14 @@ class FAIRCheck:
 
         if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
             self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
-            if (self.uri_validator(self.oaipmh_endpoint)):
-                oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
-                self.community_standards_uri = oai_provider.getMetadataStandards()
-                self.namespace_uri.extend(oai_provider.getNamespaces())
-                self.logger.info('{} : All metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
-            else:
-                self.logger.info('{} : Invalid endpoint {}'.format('FsF-R1.3-01M'))
+            if self.oaipmh_endpoint:
+                if (self.uri_validator(self.oaipmh_endpoint)):
+                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_provider.getMetadataStandards()
+                    self.namespace_uri.extend(oai_provider.getNamespaces())
+                    self.logger.info('{} : All metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+                else:
+                    self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -348,7 +351,7 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
-        # ========= retrieve xml metadata by nontent negotiation ========
+        # ========= retrieve xml metadata by content negotiation ========
         if self.landing_url is not None:
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=self.landing_url, link_type='negotiated')
@@ -425,8 +428,6 @@ class FAIRCheck:
 
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
-            # TODO (Important) - search via b2find
-
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
 
@@ -1188,6 +1189,8 @@ class FAIRCheck:
         test_data_content_url = None
         test_status = 'fail'
         score = 0
+
+        self.logger.info('FsF-R1-01MD : Metadata accessible status - {}'.format(self.isMetadataAccessible))
 
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
         resource_type = self.metadata_merged.get('object_type')
