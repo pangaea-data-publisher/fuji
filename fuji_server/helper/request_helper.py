@@ -55,6 +55,7 @@ class RequestHelper:
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id=metric_id
         source = 'html'
+        status_code = None
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
@@ -109,13 +110,14 @@ class RequestHelper:
 
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                                 break
-               # else:
-                #    self.logger.warning('{} : NO successful response received', format(metric_id))
+                else:
+                    self.logger.warning('{0} : NO successful response received, status code = {1}', format(metric_id, status_code))
             except requests.exceptions.SSLError as e:
                 self.logger.warning('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("SSLError: {}".format(e))
                 self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
             except requests.exceptions.RequestException as e:
+                #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
