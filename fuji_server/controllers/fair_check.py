@@ -862,7 +862,6 @@ class FAIRCheck:
             self.logger.warning('FsF-F4-01M : Metadata found through - metadata registry')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
-        # TODO (Important) - search via b2find
         length = len(search_mechanisms)
         if length > 0:
             searchable_result.test_status = 'pass'
