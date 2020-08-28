@@ -111,7 +111,7 @@ class RequestHelper:
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                                 break
                 else:
-                    self.logger.warning('{0} : NO successful response received, status code = {1}', format(metric_id, status_code))
+                    self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
             except requests.exceptions.SSLError as e:
                 self.logger.warning('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("SSLError: {}".format(e))
