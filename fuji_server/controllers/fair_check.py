@@ -352,10 +352,10 @@ class FAIRCheck:
 
     def retrieve_metadata_external(self):
         # ========= retrieve xml metadata by content negotiation ========
-        if self.landing_url is not None:
-            negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
-                                                           target_url=self.landing_url, link_type='negotiated')
-            source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
+        #if self.landing_url is not None:
+            #negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
+            #source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
+
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
@@ -870,11 +870,12 @@ class FAIRCheck:
                 searchable_score.earned = searchable_sc
             if length == 1:
                 searchable_score.earned = searchable_sc - 1
-            searchable_result.score = searchable_score
-            searchable_output.search_mechanisms = search_mechanisms
-            searchable_result.output = searchable_output
         else:
             self.logger.warning('NO search mechanism supported')
+
+        searchable_result.score = searchable_score
+        searchable_output.search_mechanisms = search_mechanisms
+        searchable_result.output = searchable_output
 
         if self.isDebug:
             searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
