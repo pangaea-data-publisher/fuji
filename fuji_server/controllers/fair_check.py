@@ -588,7 +588,8 @@ class FAIRCheck:
         exclude = []
         access_rights = self.metadata_merged.get('access_level')
 
-        if len(access_rights) != 0:
+        #access_rights can be None or []
+        if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
