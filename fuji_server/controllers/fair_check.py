@@ -587,7 +587,8 @@ class FAIRCheck:
         test_status = "fail"
         exclude = []
         access_rights = self.metadata_merged.get('access_level')
-        if access_rights is not None:
+
+        if len(access_rights) != 0:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
@@ -851,7 +852,7 @@ class FAIRCheck:
         if search_engine_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-            self.logger.warning('FsF-F4-01M : Metadata found through - structured data')
+            self.logger.info('FsF-F4-01M : Metadata found through - structured data')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(search_engines_support))
 
@@ -859,7 +860,7 @@ class FAIRCheck:
         if registry_support_match:
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
-            self.logger.warning('FsF-F4-01M : Metadata found through - metadata registry')
+            self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
         else:
             self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
         length = len(search_mechanisms)
