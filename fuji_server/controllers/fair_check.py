@@ -351,10 +351,10 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
-        # ========= retrieve xml metadata by content negotiation ========
-        #if self.landing_url is not None:
-            #negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
-            #source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
+        # ========= retrieve xml metadata namespaces by content negotiation ========
+        if self.landing_url is not None:
+            negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
+            source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
 
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
