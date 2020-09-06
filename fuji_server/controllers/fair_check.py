@@ -515,9 +515,16 @@ class FAIRCheck:
             if isinstance(contents, dict):
                 contents = [contents]
             contents = [c for c in contents if c]
+            number_of_contents = len(contents)
+            self.logger.info('FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
+            limit = 3
+            if number_of_contents >= limit:
+                self.logger.info('FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first {} content identifiers'.format(limit))
+                contents = contents[:limit]
+
             for content_link in contents:
                 if content_link.get('url'):
-                    self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
+                    #self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
                     try:
@@ -922,7 +929,7 @@ class FAIRCheck:
                             self.logger.warning('FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
                             # exclude archieve format
                             self.tika_content_types_list = [n for n in self.tika_content_types_list if n not in FAIRCheck.ARCHIVE_MIMETYPES]
-                            self.logger.warning('FsF-R1.3-02D : Extracted file formats - {}'.format(self.tika_content_types_list))
+                            self.logger.info('FsF-R1.3-02D : Extracted file formats - {}'.format(self.tika_content_types_list))
                             for t in self.tika_content_types_list:
                                 mime_url_pair[t] = data_file.get('url')
                         else:
@@ -1206,8 +1213,9 @@ class FAIRCheck:
         # 2. initially verification is restricted to the first file and only use object content uri that is accessible (self.content_identifier)
         if isinstance(self.content_identifier, list):
             content_uris = [d['url'] for d in self.content_identifier if 'url' in d]
-            if len(self.content_identifier) > 0:
-                self.logger.info('FsF-R1-01MD : Data content URI(s) specified - {}'.format(content_uris))
+            content_length = len(self.content_identifier)
+            if content_length > 0:
+                self.logger.info('FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
                 test_data_content_url = self.content_identifier[-1].get('url')
                 self.logger.info('FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))
                 try:
@@ -1228,7 +1236,7 @@ class FAIRCheck:
                     # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                     if test_data_content_text:
                         parsed_files = parsedFile.get("metadata").get('resourceName')
-                        self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
+                        self.logger.info('FsF-R1-01MD : Succesfully parsed number of data file(s) - {}'.format(len(parsed_files)))
                 except Exception as e:
                     self.logger.warning('{0} : Could not retrive/parse content object - {1}'.format(data_content_metadata_identifier, e))
             else:
@@ -1255,17 +1263,6 @@ class FAIRCheck:
                     data_content_descriptors.append(data_content_filetype_inner)
                 else:
                     self.logger.warning('{0} : NO {1} info available'.format(data_content_metadata_identifier, type))
-        #             missing_descriptors.append(d)
-        #
-        #
-        # if 'size' in missing_descriptors:
-        #     sizeobj = self.metadata_merged.get('object_size')
-        #     if sizeobj:
-        #         data_content_filetype_inner = DataContentMetadataOutputInner()
-        #         data_content_filetype_inner.descriptor = 'file size'
-        #         data_content_filetype_inner.descriptor_value = sizeobj
-        #         data_content_descriptors.append(data_content_filetype_inner)
-        #         score += 1
 
         #4. check if varibles specified in the data file
         is_variable_scored = False
@@ -1277,7 +1274,7 @@ class FAIRCheck:
                     variable_metadata_inner.descriptor = 'measured_variable'
                     variable_metadata_inner.descriptor_value = variable
                     if variable in test_data_content_text: #TODO use rapidfuzz (fuzzy search)
-                        self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
+                        #self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
                         if not is_variable_scored: # only increase once
                             score += 1
