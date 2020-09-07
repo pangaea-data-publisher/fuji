@@ -35,10 +35,12 @@ class Preprocessor(object):
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
     logger = logging.getLogger()
+    data_files_limit = 3
 
     @classmethod
-    def retrieve_metrics_yaml(cls, yaml_metric_path):
+    def retrieve_metrics_yaml(cls, yaml_metric_path, limit):
         cls.METRIC_YML_PATH = yaml_metric_path
+        cls.data_files_limit = limit
         stream = open(cls.METRIC_YML_PATH, 'r')
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)

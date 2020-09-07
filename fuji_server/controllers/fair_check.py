@@ -52,6 +52,7 @@ class FAIRCheck:
     VOCAB_NAMESPACES = None
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
+    FILES_LIMIT = None
 
     def __init__(self, uid, test_debug=False, oaipmh=None):
         self.id = uid
@@ -87,6 +88,7 @@ class FAIRCheck:
 
     @classmethod
     def load_predata(cls):
+        cls.FILES_LIMIT = Preprocessor.data_files_limit
         if not cls.METRICS:
             cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
         if not cls.SPDX_LICENSES:
@@ -274,6 +276,7 @@ class FAIRCheck:
                                                          mapping=Mapper.SCHEMAORG_MAPPING,
                                                          ispid=isPid, pidurl=self.pid_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
             not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
@@ -517,10 +520,10 @@ class FAIRCheck:
             contents = [c for c in contents if c]
             number_of_contents = len(contents)
             self.logger.info('FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
-            limit = 3
-            if number_of_contents >= limit:
-                self.logger.info('FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first {} content identifiers'.format(limit))
-                contents = contents[:limit]
+
+            if number_of_contents >= FAIRCheck.FILES_LIMIT:
+                self.logger.info('FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first {} content identifiers'.format(FAIRCheck.FILES_LIMIT))
+                contents = contents[:FAIRCheck.FILES_LIMIT]
 
             for content_link in contents:
                 if content_link.get('url'):
@@ -1094,6 +1097,8 @@ class FAIRCheck:
             for used_prov_ns in used_provenance_namespace:
                 structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
             self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
+        else:
+            self.logger.warning('FsF-R1.2-01M : Formal provenance metadata is unavailable')
         data_provenance_output.structured_provenance_available = structured_metadata_output
 
         if score >= 1:
@@ -1236,7 +1241,7 @@ class FAIRCheck:
                     # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                     if test_data_content_text:
                         parsed_files = parsedFile.get("metadata").get('resourceName')
-                        self.logger.info('FsF-R1-01MD : Succesfully parsed number of data file(s) - {}'.format(len(parsed_files)))
+                        self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
                 except Exception as e:
                     self.logger.warning('{0} : Could not retrive/parse content object - {1}'.format(data_content_metadata_identifier, e))
             else:
