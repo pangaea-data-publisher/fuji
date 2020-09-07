@@ -22,9 +22,10 @@ def main():
     LOD_CLOUDNET = config['EXTERNAL']['lod_cloudnet']
     #BIOPORTAL_REST = config['EXTERNAL']['bioportal_rest']
     #BIOPORTAL_APIKEY = config['EXTERNAL']['bioportal_apikey']
+    data_files_limit = int(config['SERVICE']['data_files_limit'])
 
     preproc = Preprocessor()
-    preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
+    preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit)
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
 
     isDebug = config.getboolean('SERVICE', 'debug_mode')
