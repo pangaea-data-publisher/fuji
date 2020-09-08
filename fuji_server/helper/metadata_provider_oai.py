@@ -19,7 +19,7 @@ class OAIMetadataProvider(MetadataProvider):
         filter =['datacite.org','openarchives.org','purl.org/dc/'] # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
         oai_endpoint = self.endpoint.split('?')[0]
-        oai_endpoint = oai_endpoint.rstrip('/')
+        #oai_endpoint = oai_endpoint.rstrip('/')
         oai_listmetadata_url = oai_endpoint+'?verb=ListMetadataFormats'
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)

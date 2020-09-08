@@ -16,6 +16,7 @@ def assess_by_id(body):  # noqa: E501
     """
 
     if connexion.request.is_json:
+        debug = True
         results = []
         body = Body.from_dict(connexion.request.get_json())
         identifier=body.object_identifier
