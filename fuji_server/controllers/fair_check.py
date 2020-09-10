@@ -276,15 +276,15 @@ class FAIRCheck:
                                                          mapping=Mapper.SCHEMAORG_MAPPING,
                                                          ispid=isPid, pidurl=self.pid_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
-
+        schemaorg_dict = self.exclude_null(schemaorg_dict)
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
-            not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
+            #not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
             self.metadata_sources.append(source_schemaorg)
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             # add object type for future reference
-            for i in not_null_sco:
+            for i in schemaorg_dict.keys():
                 if i in self.reference_elements:
                     self.metadata_merged[i] = schemaorg_dict[i]
                     self.reference_elements.remove(i)
@@ -296,13 +296,14 @@ class FAIRCheck:
             dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
                                                        mapping=Mapper.DC_MAPPING)
             source_dc, dc_dict = dc_collector.parse_metadata()
+            dc_dict = self.exclude_null(dc_dict)
             if dc_dict:
                 self.namespace_uri.extend(dc_collector.namespaces)
-                not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                 self.metadata_sources.append(source_dc)
                 if dc_dict.get('related_resources'):
                     self.related_resources.extend(dc_dict.get('related_resources'))
-                for d in not_null_dc:
+                for d in dc_dict.keys():
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
                         self.reference_elements.remove(d)
@@ -364,14 +365,14 @@ class FAIRCheck:
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
                                                         pid_url=self.pid_url)
             source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
+            dcitejsn_dict = self.exclude_null(dcitejsn_dict)
             if dcitejsn_dict:
-                not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
-                # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
+                # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append(source_dcitejsn)
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
 
-                for r in not_null_dcite:
+                for r in dcitejsn_dict.keys():
                     # only merge when the value cannot be retrived from embedded metadata
                     if r in self.reference_elements and not self.metadata_merged.get(r):
                         self.metadata_merged[r] = dcitejsn_dict[r]
@@ -405,7 +406,6 @@ class FAIRCheck:
                         #TODO: IMPORTANT!!!! check if thi sworks
                         self.community_standards.append(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS[namespace_uri].get('title'))
                         found_standard_xml = True
-                        print(self.community_standards)
                 if found_standard_xml:
                     self.logger.info('FsF-R1.3-01M : Found community metadata standard conform XML file: '+metadata_link['url'])
 
@@ -418,11 +418,12 @@ class FAIRCheck:
         if self.rdf_collector is not None:
             source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
             self.namespace_uri.extend(self.rdf_collector.getNamespaces())
+            rdf_dict = self.exclude_null(rdf_dict)
             if rdf_dict:
-                not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
+                # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
                 # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
                 self.metadata_sources.append(source_rdf)
-                for r in not_null_rdf:
+                for r in rdf_dict.keys():
                     if r in self.reference_elements:
                         self.metadata_merged[r] = rdf_dict[r]
                         self.reference_elements.remove(r)
@@ -433,6 +434,14 @@ class FAIRCheck:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
+
+    def exclude_null(self, dt):
+        if type(dt) is dict:
+            return dict((k, self.exclude_null(v)) for k, v in dt.items() if v and self.exclude_null(v))
+        elif type(dt) is list:
+            return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
+        else:
+            return dt
 
     def check_minimal_metatadata(self):
         self.count += 1
@@ -1204,7 +1213,7 @@ class FAIRCheck:
         test_status = 'fail'
         score = 0
 
-        self.logger.info('FsF-R1-01MD : Metadata accessible status - {}'.format(self.isMetadataAccessible))
+        self.logger.info('FsF-R1-01MD : Object landing page accessible status - {}'.format(self.isMetadataAccessible))
 
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
         resource_type = self.metadata_merged.get('object_type')
