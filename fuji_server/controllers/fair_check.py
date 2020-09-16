@@ -229,7 +229,7 @@ class FAIRCheck:
         if 'object_content_identifier' in self.metadata_merged:
             if self.metadata_merged['object_content_identifier']:
                 for c in self.metadata_merged['object_content_identifier']:
-                    if not c.get('size') and self.metadata_merged['object_size']:
+                    if not c.get('size') and self.metadata_merged.get('object_size'):
                         c['size'] = self.metadata_merged['object_size']
 
         for mk, mv in list(self.metadata_merged.items()):
@@ -768,6 +768,7 @@ class FAIRCheck:
                 specified_licenses = [specified_licenses]
             for l in specified_licenses:
                 license_output = LicenseOutputInner()
+                #license can be dict or
                 license_output.license = l
                 isurl = idutils.is_url(l)
                 if isurl:
