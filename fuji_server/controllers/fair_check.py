@@ -242,9 +242,9 @@ class FAIRCheck:
         self.retrieve_apis_standards()
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from R3DATA')
+        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from re3data')
         client_id = self.metadata_merged.get('datacite_client')
-        self.logger.info('FsF-R1.3-01M : R3DATA/Datacite client id - {}'.format(client_id))
+        self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
         if self.oaipmh_endpoint:
             self.logger.info('{} : OAIPMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
         else:
@@ -262,7 +262,7 @@ class FAIRCheck:
                     oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
                     self.community_standards_uri = oai_provider.getMetadataStandards()
                     self.namespace_uri.extend(oai_provider.getNamespaces())
-                    self.logger.info('{} : All metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+                    self.logger.info('{} : All metadata standards defined in re3data - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
 
