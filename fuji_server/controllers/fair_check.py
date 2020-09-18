@@ -770,7 +770,8 @@ class FAIRCheck:
                 license_output = LicenseOutputInner()
                 #license can be dict or
                 license_output.license = l
-                isurl = idutils.is_url(l)
+                if isinstance(l, str):
+                    isurl = idutils.is_url(l)
                 if isurl:
                     spdx_html, spdx_osi = self.lookup_license_by_url(l, license_identifier)
                 else:  # maybe licence name
