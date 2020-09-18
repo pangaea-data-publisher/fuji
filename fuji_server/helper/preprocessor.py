@@ -36,11 +36,13 @@ class Preprocessor(object):
     header = {"Accept": "application/json"}
     logger = logging.getLogger()
     data_files_limit = 3
+    metric_specification = None
 
     @classmethod
-    def retrieve_metrics_yaml(cls, yaml_metric_path, limit):
+    def retrieve_metrics_yaml(cls, yaml_metric_path, limit, specification_uri):
         cls.METRIC_YML_PATH = yaml_metric_path
         cls.data_files_limit = limit
+        cls.metric_specification = specification_uri
         stream = open(cls.METRIC_YML_PATH, 'r')
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
