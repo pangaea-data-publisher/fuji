@@ -61,7 +61,7 @@ class Mapper(Enum):
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
                            'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
-                           'publisher: publisher.name, license: (license."@id" || license[*].id || license[*].url || license[*].name) || license, ' \
+                           'publisher: publisher.name, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
                            'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
