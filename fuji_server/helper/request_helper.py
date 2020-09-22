@@ -59,7 +59,7 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=True)
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=False)
                 status_code = self.http_response.status_code
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
@@ -113,13 +113,13 @@ class RequestHelper:
                 else:
                     self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
             except requests.exceptions.SSLError as e:
-                self.logger.warning('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
+                self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("SSLError: {}".format(e))
                 self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
             except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.exception("RequestException: {}".format(e))
+                self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
         return source, self.parse_response
 
