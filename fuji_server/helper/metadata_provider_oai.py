@@ -31,6 +31,7 @@ class OAIMetadataProvider(MetadataProvider):
             ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
             metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
             metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+            metadata_schema = metadata_schema.strip()
             self.namespaces.append(metadata_schema)
             # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
             if not any(s in metadata_schema for s in filter):
