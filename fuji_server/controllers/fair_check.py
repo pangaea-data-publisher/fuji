@@ -229,7 +229,7 @@ class FAIRCheck:
         if 'object_content_identifier' in self.metadata_merged:
             if self.metadata_merged['object_content_identifier']:
                 for c in self.metadata_merged['object_content_identifier']:
-                    if not c.get('size') and self.metadata_merged['object_size']:
+                    if not c.get('size') and self.metadata_merged.get('object_size'):
                         c['size'] = self.metadata_merged['object_size']
 
         for mk, mv in list(self.metadata_merged.items()):
@@ -242,9 +242,9 @@ class FAIRCheck:
         self.retrieve_apis_standards()
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from R3DATA')
+        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from re3data')
         client_id = self.metadata_merged.get('datacite_client')
-        self.logger.info('FsF-R1.3-01M : R3DATA/Datacite client id - {}'.format(client_id))
+        self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
         if self.oaipmh_endpoint:
             self.logger.info('{} : OAIPMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
         else:
@@ -262,7 +262,7 @@ class FAIRCheck:
                     oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
                     self.community_standards_uri = oai_provider.getMetadataStandards()
                     self.namespace_uri.extend(oai_provider.getNamespaces())
-                    self.logger.info('{} : All metadata standards defined in R3DATA - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+                    self.logger.info('{} : All metadata standards defined in re3data - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
 
@@ -768,8 +768,10 @@ class FAIRCheck:
                 specified_licenses = [specified_licenses]
             for l in specified_licenses:
                 license_output = LicenseOutputInner()
+                #license can be dict or
                 license_output.license = l
-                isurl = idutils.is_url(l)
+                if isinstance(l, str):
+                    isurl = idutils.is_url(l)
                 if isurl:
                     spdx_html, spdx_osi = self.lookup_license_by_url(l, license_identifier)
                 else:  # maybe licence name

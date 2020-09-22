@@ -88,25 +88,36 @@ paths:
 components:
   schemas:
     FAIRResults:
-      type: array
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/Uniqueness'
-        - $ref: '#/components/schemas/Persistence'
-        - $ref: '#/components/schemas/CoreMetadata'
-        - $ref: '#/components/schemas/IdentifierIncluded'
-        - $ref: '#/components/schemas/Searchable'
-        - $ref: '#/components/schemas/DataAccessLevel'
-        - $ref: '#/components/schemas/FormalMetadata'
-        - $ref: '#/components/schemas/SemanticVocabulary'
-        - $ref: '#/components/schemas/RelatedResource'
-        - $ref: '#/components/schemas/DataContentMetadata'
-        - $ref: '#/components/schemas/License'
-        - $ref: '#/components/schemas/DataProvenance'
-        - $ref: '#/components/schemas/CommunityEndorsedStandard'
-        - $ref: '#/components/schemas/DataFileFormat'
-        - $ref: '#/components/schemas/MetadataPreserved'
-        - $ref: '#/components/schemas/StandardisedProtocol'
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        metric_specification:
+          type: string
+          format: uri
+        total_metrics:
+          type: integer
+        results:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/Uniqueness'
+            - $ref: '#/components/schemas/Persistence'
+            - $ref: '#/components/schemas/CoreMetadata'
+            - $ref: '#/components/schemas/IdentifierIncluded'
+            - $ref: '#/components/schemas/Searchable'
+            - $ref: '#/components/schemas/DataAccessLevel'
+            - $ref: '#/components/schemas/FormalMetadata'
+            - $ref: '#/components/schemas/SemanticVocabulary'
+            - $ref: '#/components/schemas/RelatedResource'
+            - $ref: '#/components/schemas/DataContentMetadata'
+            - $ref: '#/components/schemas/License'
+            - $ref: '#/components/schemas/DataProvenance'
+            - $ref: '#/components/schemas/CommunityEndorsedStandard'
+            - $ref: '#/components/schemas/DataFileFormat'
+            - $ref: '#/components/schemas/MetadataPreserved'
+            - $ref: '#/components/schemas/StandardisedProtocol'
     FAIRResultCommon:
       required:
       - id

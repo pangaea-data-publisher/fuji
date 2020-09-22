@@ -52,8 +52,13 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             else:
                                 jsnld_metadata['creator'] = [str(first) + " " + str(last)]
 
+                        if jsnld_metadata.get('license'):
+                            if isinstance(jsnld_metadata.get('license'), list):
+                                #self.logger.info('FsF-R1.1-01M : Non-string license metadata is specified - {0}'.format(jsnld_metadata.get('license')))
+                                jsnld_metadata['license'] = jsnld_metadata.get('license')[0]
+
                         # filter out None values of related_resources
-                        if jsnld_metadata['related_resources']:
+                        if jsnld_metadata.get('related_resources'):
                             relateds =  [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                             if relateds:
                                 jsnld_metadata['related_resources'] = relateds
