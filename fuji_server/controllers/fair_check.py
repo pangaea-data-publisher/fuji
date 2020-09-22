@@ -190,7 +190,9 @@ class FAIRCheck:
                 else:
                     if r.status_code in [401, 402, 403]:
                         self.isMetadataAccessible = False
-                    self.logger.warning("Identifier returned response code: {code}".format(code=r.status_code))
+                    #if r.status_code == 401:
+                        #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
+                    self.logger.warning("Resource unaccessible, identifier returned http status code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
 
@@ -256,7 +258,7 @@ class FAIRCheck:
                 self.community_standards.extend(repoHelper.getRe3MetadataStandards())
 
         if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
-            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
             if self.oaipmh_endpoint:
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
@@ -554,7 +556,7 @@ class FAIRCheck:
                         #did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
-                            'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
+                            'FsF-F3-01M : Content identifier {0} unaccessible, HTTPError code {1} '.format(content_link.get('url'), e.code))
                     except urllib.URLError as e:
                         self.logger.exception(e.reason)
                     except:
@@ -922,12 +924,12 @@ class FAIRCheck:
             if contents:
                 for c in contents:
                     if c.get('type'):
-                        self.logger.info('FsF-R1.3-02D : Object content identifier is missing, but data format specified - {}'.format(c.get('type')))
+                        self.logger.info('FsF-R1.3-02D : Data content identifier is missing, but its format specified - {}'.format(c.get('type')))
 
         mime_url_pair = {}
         if len(self.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.content_identifier]
-            self.logger.info('FsF-R1.3-02D : Object content identifier provided - {}'.format(content_urls))
+            self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
             for data_file in self.content_identifier:
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
@@ -993,7 +995,7 @@ class FAIRCheck:
                 data_file_format_score.earned = 1
                 data_file_format_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
+            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as no data content identifier(s) available')
             data_file_format_result.test_status='fail'
 
         data_file_format_output = data_file_list
