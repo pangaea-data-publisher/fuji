@@ -2,6 +2,7 @@
 import logging
 import mimetypes
 import re
+import sys
 import urllib
 import urllib.request as urllib
 from typing import List, Any
@@ -10,6 +11,7 @@ from urllib.parse import urlparse
 import Levenshtein
 import idutils
 import lxml
+import rdflib
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
@@ -267,10 +269,38 @@ class FAIRCheck:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
-        # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         isPid = False
         if self.pid_scheme:
             isPid = True
+        # ========= retrieve embedded rdfa and microdata metadata ========
+        micro_meta = extruct_metadata.get('microdata')
+        print(micro_meta)
+        rdfasource = MetaDataCollector.Sources.RDFA.value
+        rdfagraph = None
+        try:
+            rdfagraph = rdflib.Graph()
+            rdfagraph.parse(data=self.landing_html, format='rdfa')
+            #print(rdfagraph.publicID)
+        except:
+            pass
+
+        if rdfagraph is not None:
+            rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
+                                                  rdf_graph=rdfagraph)
+            source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
+            self.metadata_sources.append(rdfasource)
+            self.namespace_uri.extend(rdfa_collector.getNamespaces())
+            rdfa_dict['object_identifier']=self.pid_url
+            rdfa_dict = self.exclude_null(rdfa_dict)
+            for i in rdfa_dict.keys():
+                if i in self.reference_elements:
+                    self.metadata_merged[i] = rdfa_dict[i]
+                    self.reference_elements.remove(i)
+        else:
+            self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
+
+
+        # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
         schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
                                                          mapping=Mapper.SCHEMAORG_MAPPING,
@@ -1331,6 +1361,13 @@ class FAIRCheck:
             outputs.append(FormalMetadataOutputInner(serialization_format='JSON-LD', source='structured_data', is_metadata_found=True))
             self.logger.info('{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'JSON-LD'))
             score += 1
+        elif MetaDataCollector.Sources.RDFA.value in self.metadata_sources:
+            outputs.append(FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data',
+                                                     is_metadata_found=True))
+            self.logger.info(
+                '{0} : RDF Serialization found in the data page - {1}'.format(formal_meta_identifier, 'RDFa'))
+            score += 1
+        '''
         else:
             if self.extruct:
                 if 'rdfa' in self.extruct.keys():
@@ -1345,6 +1382,7 @@ class FAIRCheck:
                             outputs.append(FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data', is_metadata_found=True))
                             score += 1
                             break
+        '''
         if len(outputs)==0:
             self.logger.info('{0} : NO structured data (RDF serialization) embedded in the data page'.format(formal_meta_identifier))
 

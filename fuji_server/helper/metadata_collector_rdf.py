@@ -12,22 +12,27 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 class MetaDataCollectorRdf (MetaDataCollector):
     target_url=None
-    def __init__(self,  loggerinst, target_url, source):
+    def __init__(self,  loggerinst, target_url, source, rdf_graph=None):
         self.target_url = target_url
         self.content_type = None
         self.source_name = source
+        self.rdf_graph=rdf_graph
         super().__init__(logger=loggerinst)
+
 
     def parse_metadata(self):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
         self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
         rdf_metadata=dict()
-        requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
-        requestHelper.setAcceptType(AcceptTypes.rdf)
-        neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
-        #required for metric knowledge representation
-        self.content_type = requestHelper.getHTTPResponse().headers['content-type']
-        self.content_type = self.content_type.split(";", 1)[0]
+        if self.rdf_graph is None:
+            requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.rdf)
+            neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            #required for metric knowledge representation
+            self.content_type = requestHelper.getHTTPResponse().headers['content-type']
+            self.content_type = self.content_type.split(";", 1)[0]
+        else:
+            neg_source, rdf_response = 'html' , self.rdf_graph
 
         ontology_indicator=[rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')]
         if isinstance(rdf_response,rdflib.graph.Graph):

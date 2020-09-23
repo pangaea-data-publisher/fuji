@@ -47,7 +47,31 @@ testpids=['https://data.gov.lv/dati/lv/dataset/covid-19','https://www.data.gouv.
 #testpids=['http://hdl.handle.net/20.500.12124/7','http://hdl.handle.net/11495/DAB8-B44B-E8C8-2']
 #restricted
 #testpids=['https://doi.pangaea.de/10.1594/PANGAEA.919306']
-
+#!!!!!!iana, ddi etc RDF graph, DOI not registered at datacite:
+#testpids=['https://doi.org/10.7302/Z24Q7S64']
+#testpids=['10.5676/DWD_GPCC/MP_M_V6_100']
+#testpids=['10.6092/84cb588d-97e5-4c64-91bb-ba6109dfa530']
+#FAIRsFAIR selected repositories
+#testpids=['https://doi.org/10.17863/CAM.14473','doi:10.5441/001/1.44cb3946','https://doi.org/10.25704/Z5Y2-QPYE']
+#testpids=['https://cera-www.dkrz.de/WDCC/ui/cerasearch/entry?acronym=CMAQ_t_det_w_atmos_tot_N_17']
+#testpids=['http://doi.org/10.25914/5eaa30de53244']
+# EML by guessed XML
+#testpids=['http://dx.doi.org/10.4227/05/5344F1159A1A9']
+#testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f']
+#testpids=['https://hdl.handle.net/11676/Ok72Hfm8xlJkhg-9lOQpsZGr']
+#testpids=['https://data.neonscience.org/data-products/DP1.20066.001']
+#not found
+#testpids=['https://doi.pangaea.de/10.1594/PANGAEA.920063']
+testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
+'https://dx.doi.org/10.4227/05/5344F1159A1A9',
+'https://doi.org/10.4225/08/563869A931CFE',
+'https://data.neonscience.org/data-products/DP1.00001.001',
+'https://dx.doi.org/10.11922/sciencedb.293',
+'https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f',
+'https://meta.icos-cp.eu/objects/8YwZj8CQEj87IuI9P6QkZiKX',
+'http://doi.org/10.22033/ESGF/CMIP6.4397',
+'http://doi.org/10.25914/5eaa30de53244']
+testpids=['http://dda.dk/catalogue/150']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()
@@ -62,9 +86,11 @@ def main():
     RE3DATA_API = config['EXTERNAL']['re3data_api']
     METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']
     isDebug = config.getboolean('SERVICE', 'debug_mode')
+    data_files_limit = int(config['SERVICE']['data_files_limit'])
+    metric_specification = config['SERVICE']['metric_specification']
 
     preproc = Preprocessor()
-    preproc.retrieve_metrics_yaml(METRIC_YML_PATH)
+    preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit,metric_specification)
     print('Total metrics defined: {}'.format(preproc.get_total_metrics()))
 
     isDebug = config.getboolean('SERVICE', 'debug_mode')
@@ -91,12 +117,17 @@ def main():
             license_result = ft.check_license()
             relatedresources_result = ft.check_relatedresources()
             access_level_result=ft.check_data_access_level()
+            formal_representation_result=ft.check_formal_metadata()
             data_file_format_result=ft.check_data_file_format()
             data_provenance_result=ft.check_data_provenance()
             community_standards_result=ft.check_community_metadatastandards()
             data_content_metadata = ft.check_data_content_metadata()
-            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, license_result, data_file_format_result,data_provenance_result,community_standards_result,data_content_metadata]
-            #results=[data_file_format_result]
+            metadata_preserved_result = ft.check_metadata_preservation()
+
+            standard_protocol_result = ft.check_standardised_protocol()
+            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,license_result, data_file_format_result,data_provenance_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_result]
+            #results=[uid_result, pid_result, core_metadata_result,data_file_format_result]
+            #print(ft.metadata_merged)
             print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':
