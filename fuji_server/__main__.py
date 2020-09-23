@@ -49,7 +49,7 @@ def main():
     app.add_api(API_YAML, arguments={'title': 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=False)
     # app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=False, pythonic_params=True)
     #app.run(port=int(config['SERVICE']['service_port']), ssl_context='adhoc')
-    app.run(port=int(config['SERVICE']['service_port']))
+    app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
     # parser = argparse.ArgumentParser()
