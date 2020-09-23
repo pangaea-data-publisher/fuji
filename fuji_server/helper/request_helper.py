@@ -59,7 +59,7 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=False)
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
                 status_code = self.http_response.status_code
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
