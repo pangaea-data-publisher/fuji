@@ -248,7 +248,7 @@ class FAIRCheck:
         client_id = self.metadata_merged.get('datacite_client')
         self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
         if self.oaipmh_endpoint:
-            self.logger.info('{} : OAIPMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
+            self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
         else:
             if client_id and self.pid_scheme:
                 repoHelper = RepositoryHelper(client_id, self.pid_scheme)
@@ -258,7 +258,7 @@ class FAIRCheck:
                 self.community_standards.extend(repoHelper.getRe3MetadataStandards())
 
         if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
-            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+            self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
             if self.oaipmh_endpoint:
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
@@ -274,13 +274,12 @@ class FAIRCheck:
             isPid = True
         # ========= retrieve embedded rdfa and microdata metadata ========
         micro_meta = extruct_metadata.get('microdata')
-        print(micro_meta)
+        #print(micro_meta)
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
         try:
             rdfagraph = rdflib.Graph()
             rdfagraph.parse(data=self.landing_html, format='rdfa')
-            #print(rdfagraph.publicID)
         except:
             pass
 
@@ -290,7 +289,7 @@ class FAIRCheck:
             source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
             self.metadata_sources.append(rdfasource)
             self.namespace_uri.extend(rdfa_collector.getNamespaces())
-            rdfa_dict['object_identifier']=self.pid_url
+            #rdfa_dict['object_identifier']=self.pid_url
             rdfa_dict = self.exclude_null(rdfa_dict)
             for i in rdfa_dict.keys():
                 if i in self.reference_elements:
@@ -430,14 +429,6 @@ class FAIRCheck:
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
                 xml_collector.parse_metadata()
                 xml_namespaces = xml_collector.getNamespaces()
-                found_standard_xml = False
-                for namespace_uri in xml_namespaces:
-                    if namespace_uri in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
-                        #TODO: IMPORTANT!!!! check if thi sworks
-                        self.community_standards.append(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS[namespace_uri].get('title'))
-                        found_standard_xml = True
-                if found_standard_xml:
-                    self.logger.info('FsF-R1.3-01M : Found community metadata standard conform XML file: '+metadata_link['url'])
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
@@ -898,7 +889,11 @@ class FAIRCheck:
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                                   MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
-                                  MetaDataCollector.Sources.SIGN_POSTING.value]
+                                  MetaDataCollector.Sources.SIGN_POSTING.value,
+                                  MetaDataCollector.Sources.RDFA.value,
+                                  MetaDataCollector.Sources.LINKED_DATA.value,
+                                  MetaDataCollector.Sources.LINKED_DATA.RDF_SIGN_POSTING.value]
+
         # Check search mechanisms based on sources of metadata extracted.
         search_engine_support_match: List[Any] = list(set(self.metadata_sources).intersection(search_engines_support))
         if search_engine_support_match:
@@ -1034,6 +1029,7 @@ class FAIRCheck:
         return data_file_format_result.to_dict()
 
     def check_community_metadatastandards(self):
+
         self.count += 1
         communitystd_identifier = 'FsF-R1.3-01M'  # FsF-R1.3-01M: Community-endorsed metadata
         communitystd_name = FAIRCheck.METRICS.get(communitystd_identifier).get('metric_name')
@@ -1041,7 +1037,23 @@ class FAIRCheck:
         communitystd_sc = int(FAIRCheck.METRICS.get(communitystd_identifier).get('total_score'))
         communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
 
+
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
+        # ============== retrieve community standards by collected namespace uris
+        for std_ns in self.namespace_uri:
+            if std_ns in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
+                subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
+                std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('title')
+                if subject and all(elem == "Multidisciplinary" for elem in subject):
+                    self.logger.info(
+                        'FsF-R1.3-01M : Skipping non-disciplinary standard found in namespaces - {}'.format(std_name))
+                else:
+                    nsout = CommunityEndorsedStandardOutputInner()
+                    nsout.metadata_standard = std_name
+                    nsout.subject_areas = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
+                    nsout.urls = [std_ns]
+                    standards_detected.append(nsout)
+
         if self.community_standards:
             for s in self.community_standards:
                 standard_found = self.lookup_metadatastandard_by_name(s)

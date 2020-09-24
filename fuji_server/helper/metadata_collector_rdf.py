@@ -1,11 +1,13 @@
 import sys
 
+import idutils
 import rdflib
 from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 from rdflib import Namespace
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
+from rdflib.namespace import FOAF
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
@@ -56,12 +58,14 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
-        meta['object_identifier'] = str(item)
-        meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
+        meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
+        if self.source_name != self.getEnumSourceNames().RDFA.value:
+            meta['object_identifier'] = str(item)
+            meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         meta['object_type'] = type
         meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title))
         meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description))
-        meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date))
+        meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date)  or g.value(item, DCTERMS.issued))
         meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher))
         meta['keywords']=[]
         for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.keyword)) + list(g.objects(item, DC.keyword))):
@@ -97,6 +101,28 @@ class MetaDataCollectorRdf (MetaDataCollector):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         datasets = list(graph[: RDF.type: DCAT.Dataset])
         dcat_metadata = self.get_metadata(graph, datasets[0],type='Dataset')
+
+        # publisher
+        if idutils.is_url(dcat_metadata.get('publisher')) or dcat_metadata.get('publisher') is None:
+            publisher = graph.value(datasets[0], DCTERMS.publisher)
+            # FOAF preferred DCAT compliant
+            publisher_name = graph.value(publisher, FOAF.name)
+            dcat_metadata['publisher'] = publisher_name
+            # in some cases a dc title is used (not exactly DCAT compliant)
+            if dcat_metadata.get('publisher') is None:
+                publisher_title = graph.value(publisher, DCTERMS.title)
+                dcat_metadata['publisher'] = publisher_title
+
+        # creator
+        if idutils.is_url(dcat_metadata.get('creator')) or dcat_metadata.get('creator') is None:
+            creators = graph.objects(datasets[0], DCTERMS.creator)
+            creator_name = []
+            for creator in creators:
+                creator_name.append(graph.value(creator, FOAF.name))
+            if len(creator_name) > 0:
+                dcat_metadata['creator'] = creator_name
+
+        # distribution
         distribution = graph.objects(datasets[0], DCAT.distribution)
         dcat_metadata['object_content_identifier']=[]
         for dist in distribution:
