@@ -21,17 +21,18 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import configparser as ConfigParser
+import argparse
+import configparser
 import logging
 import os
 from logging.config import fileConfig
+
 import connexion
-from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
-from werkzeug.middleware.proxy_fix import ProxyFix
+import fuji_server.controllers.authorization_controller as authen
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
@@ -49,6 +50,13 @@ def main():
     #BIOPORTAL_APIKEY = config['EXTERNAL']['bioportal_apikey']
     data_files_limit = int(config['SERVICE']['data_files_limit'])
     metric_specification = config['SERVICE']['metric_specification']
+
+    #TODO further implementation on authentication needed
+    usr = config['USER']['usr']
+    pwd = config['USER']['pwd']
+    authen.service_username = usr
+    authen.service_password = pwd
+
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit, metric_specification)
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
@@ -71,28 +79,25 @@ def main():
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
-    app.add_api(API_YAML, arguments={'title': 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=False)
-    #proxied.init_app(app)
-    # app.add_api(API_YAML, arguments={'title': 'FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=False, pythonic_params=True)
-    #app.run(port=int(config['SERVICE']['service_port']), ssl_context='adhoc')
+    app.add_api(API_YAML, arguments={'title': 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=True)
     app.app.wsgi_app = ProxyFix(app.app.wsgi_app)
     app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser()
-    # add a new command line option, call it '-c' and set its destination to 'config_file'
-    # parser.add_argument("-c", action="store", help='specify the path of the config file (server.ini)', dest="config_file",required=True)
-    # get the result
-    config = ConfigParser.ConfigParser()
-    # config.read(parser.parse_args().config_file)
+    global config
     my_path = os.path.abspath(os.path.dirname(__file__))
-    ini_path = os.path.join(my_path, 'config', 'server.ini')
-    config.read(ini_path)
-    log_config_path = os.path.join(my_path, 'config', 'logging.ini')
-    log_directory = os.path.join(my_path, 'logs')
+    parser = argparse.ArgumentParser()
+    # add a new command line option, call it '-c' and set its destination to 'config_file'
+    parser.add_argument("-c", "--config", required=True, help="Path to server.ini config file")
+    args = parser.parse_args()
+    config = configparser.ConfigParser()
+    config.read(args.config)
+    log_file = config['SERVICE']['logfile']
+    log_dir = config['SERVICE']['logdir']
+    log_directory = os.path.join(my_path, log_dir)
     log_file_path = os.path.join(log_directory, 'fuji.log')
-    if not os.path.exists(log_directory):  # FileHandler will create the log file if it does not exist, not directory
+    if not os.path.exists(log_directory):
         os.makedirs(log_directory, exist_ok=True)
-    fileConfig(log_config_path, defaults={'logfilename': log_file_path.replace("\\", "/")})
+    fileConfig(log_file, defaults={'logfilename': log_file_path.replace("\\", "/")})
     logger = logging.getLogger()  # use this form to initialize the root logger
     main()

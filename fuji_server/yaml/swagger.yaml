@@ -16,8 +16,6 @@ externalDocs:
 servers:
 - url: http://localhost:1071/fuji/api/v1
   description: Development Server
-security:
-- UserLogin: []
 tags:
 - name: FAIR object
   description: FAIRness assessment of a data object
@@ -86,6 +84,11 @@ paths:
           description: Object not found
       x-openapi-router-controller: fuji_server.controllers.fair_metric_controller
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.checkUser
   schemas:
     FAIRResults:
       type: object
@@ -637,8 +640,6 @@ components:
           explode: false
           schema:
             type: string
-  securitySchemes:
-    UserLogin:
-      type: http
-      scheme: basic
-      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_UserLogin
+
+security:
+- basicAuth: []
