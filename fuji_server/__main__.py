@@ -26,13 +26,14 @@ import configparser
 import logging
 import os
 from logging.config import fileConfig
-
+from os import path
 import connexion
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
 import fuji_server.controllers.authorization_controller as authen
+from sys import argv
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
@@ -92,12 +93,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     config = configparser.ConfigParser()
     config.read(args.config)
-    log_file = config['SERVICE']['logfile']
+    log_configfile = os.path.join(my_path,config['SERVICE']['log_config'])
     log_dir = config['SERVICE']['logdir']
     log_directory = os.path.join(my_path, log_dir)
     log_file_path = os.path.join(log_directory, 'fuji.log')
     if not os.path.exists(log_directory):
         os.makedirs(log_directory, exist_ok=True)
-    fileConfig(log_file, defaults={'logfilename': log_file_path.replace("\\", "/")})
+    fileConfig(log_configfile, defaults={'logfilename': log_file_path.replace("\\", "/")})
     logger = logging.getLogger()  # use this form to initialize the root logger
     main()
