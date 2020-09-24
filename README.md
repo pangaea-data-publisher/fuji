@@ -23,7 +23,7 @@ The service uses the [Connexion](https://github.com/zalando/connexion) library o
 
 ## Usage
 Before running the service, please set user details in the config file, see config/server.ini
-To run the server, please execute the following from the root directory:
+To start the service, please execute the following from the root directory:
 ```
 pip3 install -r requirements.txt
 python3 -m fuji_server -c <path_to_server.ini>
