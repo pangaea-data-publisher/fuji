@@ -26,14 +26,12 @@ import configparser
 import logging
 import os
 from logging.config import fileConfig
-from os import path
 import connexion
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
 import fuji_server.controllers.authorization_controller as authen
-from sys import argv
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
