@@ -71,6 +71,12 @@ class Mapper(Enum):
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}])}'
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
+    #TODO: more real life examples are needed to provide a valid mapping for microdata
+    MICRODATA_MAPPING = '{object_type: type, title: properties.name, summary: properties.description, publication_date: properties.datePublished, ' \
+                        'publisher: (properties.publisher.properties.name || properties.publisher),' \
+                        'creator: (properties.creator.properties.name || properties.author.properties.name)' \
+                        '}'
+
     # <rightsList><rights>
     DATACITE_JSON_MAPPING = '{object_identifier: id, object_type: types.resourceTypeGeneral,  ' \
                         'creator: creators[*].name, creator_first: creators[*].givenName,' \

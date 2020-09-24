@@ -130,7 +130,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
             #taking only one just to check if licence is available
             dcat_metadata['license']=graph.value(dist, DCTERMS.license)
             # TODO: check if this really works..
-            dcat_metadata['access_rights']=graph.value(dist, DCTERMS.accessRights)
+            dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
             dtype=graph.value(dist, DCAT.mediaType)
             dsize=graph.value(dist, DCAT.bytesSize)
             dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})

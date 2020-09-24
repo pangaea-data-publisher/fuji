@@ -71,7 +71,10 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'https://meta.icos-cp.eu/objects/8YwZj8CQEj87IuI9P6QkZiKX',
 'http://doi.org/10.22033/ESGF/CMIP6.4397',
 'http://doi.org/10.25914/5eaa30de53244']
+#DCAT DDI
 testpids=['http://dda.dk/catalogue/150']
+#perfect DCAT
+#testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()

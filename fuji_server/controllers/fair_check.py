@@ -19,6 +19,7 @@ from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
+from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMicroData
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
@@ -274,7 +275,18 @@ class FAIRCheck:
             isPid = True
         # ========= retrieve embedded rdfa and microdata metadata ========
         micro_meta = extruct_metadata.get('microdata')
-        #print(micro_meta)
+        microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
+                                                   mapping=Mapper.MICRODATA_MAPPING)
+        source_micro, micro_dict = microdata_collector.parse_metadata()
+        if micro_dict:
+            self.metadata_sources.append(source_micro)
+            self.namespace_uri.extend(microdata_collector.getNamespaces())
+            micro_dict = self.exclude_null(micro_dict)
+            for i in micro_dict.keys():
+                if i in self.reference_elements:
+                    self.metadata_merged[i] = micro_dict[i]
+                    self.reference_elements.remove(i)
+        # RDFa
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
         try:
@@ -487,8 +499,8 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
-            self.logger.info('FsF-F2-01M : Not all required partial metadata {} exists, so set status as = no metadata'.format(partial_elements))
-            metadata_status = 'no metadata' # status should follow enumeration in yaml
+            self.logger.info('FsF-F2-01M : Not all required minimum metadata {} exists, so set status as = insufficient metadata'.format(partial_elements))
+            metadata_status = 'insufficient metadata' # status should follow enumeration in yaml
             meta_score.earned = 0
             test_status = 'fail'
 
