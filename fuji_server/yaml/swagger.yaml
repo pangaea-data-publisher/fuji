@@ -14,7 +14,7 @@ externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
 servers:
-- url: https://localhost:1071/fuji/api/v1
+- url: http://localhost:1071/fuji/api/v1
   description: Development Server
 security:
 - UserLogin: []
