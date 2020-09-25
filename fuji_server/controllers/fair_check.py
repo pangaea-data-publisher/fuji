@@ -820,7 +820,7 @@ class FAIRCheck:
             license_score.earned = license_sc
         else:
             license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : License cannot be found')
+            self.logger.warning('FsF-R1.1-01M : License unavailable')
 
         license_result.output = licenses_list
         license_result.score = license_score
