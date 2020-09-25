@@ -49,7 +49,7 @@ class Mapper(Enum):
                     'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
                     'OpenAccess': 'public', 'ClosedAccess': 'closed_metadataonly', 'RestrictedAccess': 'restricted',
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
-                    'RESTRICTED': 'restricted', 'SENSITIVE': 'embargoed'
+                    'RESTRICTED': 'restricted', 'SENSITIVE': 'restricted', 'embargoedAccess':'embargoed'
                     }
 
     #https://en.wikipedia.org/wiki/List_of_archive_formats#cite_ref-MIME_type_2-3

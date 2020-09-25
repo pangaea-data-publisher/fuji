@@ -618,8 +618,7 @@ class FAIRCheck:
         #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
-        #4) CreativeCommons check for https://creativecommons.org/licenses/
-        #5) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+        #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
         self.count += 1
         access_identifier = 'FsF-A1-01M'
         access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
@@ -628,7 +627,7 @@ class FAIRCheck:
         access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
         access_output = DataAccessOutput()
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        rights_regex = r'((creativecommons\.org|purl\.org|\/coar\access_right|purl\.org\/eprint\/accessRights|europa\.eu|\/resource\/authority\/access-right)\/{1}(\S*)|info\:eu-repo\/semantics\/\w+)'
+        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
 
         access_level = None
         access_details = {}
@@ -640,6 +639,7 @@ class FAIRCheck:
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            access_rights = 'info:eu-repo/semantics/restrictedAccess'
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
@@ -647,8 +647,10 @@ class FAIRCheck:
                 if not self.isLicense(access_right, access_identifier):  # exclude license-based text from access_rights
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
+                        last_group = len(rights_match.groups())
+                        filtered_rights = rights_match[last_group]
                         for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code, rights_match[1], re.IGNORECASE):
+                            if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
                                 self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
@@ -825,7 +827,7 @@ class FAIRCheck:
         return license_result.to_dict()
 
     def lookup_license_by_url(self, u, metric_id):
-        self.logger.info('{0} : Search license SPDX details by url - {1}'.format(metric_id, u))
+        self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
         for item in FAIRCheck.SPDX_LICENSES:
@@ -844,7 +846,7 @@ class FAIRCheck:
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('{0} : Search license SPDX details by name - {1}'.format(metric_id, lvalue))
+        self.logger.info('{0} : Verify name through SPDX registry - {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRCheck.SPDX_LICENSE_NAMES]
         if max(sim) > 0.85:
