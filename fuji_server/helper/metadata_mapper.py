@@ -25,7 +25,7 @@ from enum import Enum
 class Mapper(Enum):
     ## ============================ CONFIGURATIONS ============================ ##
     # List of PIDS e.g. those listed in datacite schema
-    VALID_PIDS = ['doi', 'handle', 'ark', 'purl', 'lsid','sra','biosample','ensembl','uniprot','genome']
+    VALID_PIDS = ['doi', 'handle', 'ark', 'purl', 'lsid','sra','biosample','ensembl','uniprot','genome', 'urn']
     #identifiers.org pattern
     #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
@@ -77,12 +77,12 @@ class Mapper(Enum):
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished , '\
                             'modified_date: dateModified."@value" ||dateModified, ' \
-                           'creator: creator[?"@type" ==\'Person\'].name || author[*].name || creator.name || author.name, ' \
+                           'creator: creator[?"@type" ==\'Person\'].name || creator[?"@type" ==\'Organization\'].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
                            'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
-                           'publisher: publisher.name, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
+                           'publisher: publisher.name || provider, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
                            'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \

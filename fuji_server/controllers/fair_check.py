@@ -160,6 +160,8 @@ class FAIRCheck:
         pid_output = PersistenceOutput()
 
         # ======= CHECK IDENTIFIER UNIQUENESS =======
+        schemes = [i[0] for i in idutils.PID_SCHEMES]
+        self.logger.info('FsF-F1-01D : Using idutils schemes')
         found_ids = idutils.detect_identifier_schemes(self.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.info('FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
@@ -180,6 +182,7 @@ class FAIRCheck:
             uid_result.output = uid_output
 
             # ======= CHECK IDENTIFIER PERSISTENCE =======
+            self.logger.info('FsF-F1-01D : PID schemes-based assessment supported - {}'.format(Mapper.VALID_PIDS.value))
             if found_id in Mapper.VALID_PIDS.value:
                 self.pid_scheme = found_id
                 # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -496,8 +499,8 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
-            self.logger.info('FsF-F2-01M : Not all required partial metadata {} exists, so set status as = no metadata'.format(partial_elements))
-            metadata_status = 'no metadata' # status should follow enumeration in yaml
+            self.logger.info('FsF-F2-01M : Not all required partial metadata {} exists, so set status as = insufficent metadata'.format(partial_elements))
+            metadata_status = 'insufficent metadata' # status should follow enumeration in yaml
             meta_score.earned = 0
             test_status = 'fail'
 
@@ -817,7 +820,7 @@ class FAIRCheck:
             license_score.earned = license_sc
         else:
             license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : License unavailable')
+            self.logger.warning('FsF-R1.1-01M : License cannot be found')
 
         license_result.output = licenses_list
         license_result.score = license_score
