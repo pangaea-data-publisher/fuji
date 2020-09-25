@@ -12,6 +12,9 @@ import Levenshtein
 import idutils
 import lxml
 import rdflib
+from rdflib.namespace import RDF
+from rdflib.namespace import DCTERMS
+from rdflib.namespace import DC
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
@@ -287,15 +290,13 @@ class FAIRCheck:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
         # RDFa
+        RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
+        errors=[]
         try:
             rdfagraph = rdflib.Graph()
             rdfagraph.parse(data=self.landing_html, format='rdfa')
-        except:
-            pass
-
-        if rdfagraph is not None:
             rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
                                                   rdf_graph=rdfagraph)
             source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
@@ -307,8 +308,10 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
-        else:
+        except:
             self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
+
+
 
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
