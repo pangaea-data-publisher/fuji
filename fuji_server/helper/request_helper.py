@@ -85,7 +85,7 @@ class RequestHelper:
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
-                    content_type = self.http_response.headers["Content-Type"]
+                    content_type = self.http_response.headers.get("Content-Type")
                     #TODO content type is sometimes wrongly given.. try to infer the type from request
                     if content_type is not None:
                         if 'text/plain' in content_type:
