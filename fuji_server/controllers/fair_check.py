@@ -224,7 +224,7 @@ class FAIRCheck:
                         self.isMetadataAccessible = False
                     #if r.status_code == 401:
                         #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
-                    self.logger.warning("Resource unaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+                    self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
 
@@ -290,28 +290,17 @@ class FAIRCheck:
                 repoHelper.lookup_re3data()
                 self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
                 self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                #self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-
-        #if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
-            #self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
-            #if self.oaipmh_endpoint:
-                #if (self.uri_validator(self.oaipmh_endpoint)):
-                    #oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
-                    #self.community_standards_uri = oai_provider.getMetadataStandards()
-                    #self.namespace_uri.extend(oai_provider.getNamespaces())
-                    #self.logger.info('{} : All metadata standards defined in re3data - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
-                #else:
-                    #self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
                 self.community_standards = repoHelper.getRe3MetadataStandards()
                 self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
 
+        # retrieve metadata standards info from oai-pmh
         if self.oaipmh_endpoint:
             self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
             if (self.uri_validator(self.oaipmh_endpoint)):
                 oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
                 self.community_standards_uri = oai_provider.getMetadataStandards()
                 self.namespace_uri.extend(oai_provider.getNamespaces())
-                self.logger.info('{} : Standards listed through OAI-PMH - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+                self.logger.info('{} : Standards listed through OAI-PMH endpoint- {}'.format('FsF-R1.3-01M', list(self.community_standards_uri.keys())))
             else:
                 self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
         else:
@@ -637,7 +626,7 @@ class FAIRCheck:
                         #did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
-                            'FsF-F3-01M : Content identifier {0} unaccessible, HTTPError code {1} '.format(content_link.get('url'), e.code))
+                            'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(content_link.get('url'), e.code))
                     except urllib.URLError as e:
                         self.logger.exception(e.reason)
                     except:
@@ -1012,7 +1001,7 @@ class FAIRCheck:
             if contents:
                 for c in contents:
                     if c.get('type'):
-                        self.logger.info('FsF-R1.3-02D : Data content identifier is missing, but its format specified - {}'.format(c.get('type')))
+                        self.logger.info('FsF-R1.3-02D : File format specified - {}'.format(c.get('type')))
 
         mime_url_pair = {}
         if len(self.content_identifier) > 0:
@@ -1083,7 +1072,7 @@ class FAIRCheck:
                 data_file_format_score.earned = 1
                 data_file_format_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as no data content identifier(s) available/unaccesible')
+            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as data content identifier(s) unavailable/inaccesible')
             data_file_format_result.test_status='fail'
 
         data_file_format_output = data_file_list
@@ -1102,57 +1091,34 @@ class FAIRCheck:
         communitystd_sc = int(FAIRCheck.METRICS.get(communitystd_identifier).get('total_score'))
         communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
 
-
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
 
         # ============== retrieve community standards by collected namespace uris
-        for std_ns in self.namespace_uri:
-            if std_ns in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
-                subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
-                std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('title')
-                if subject and all(elem == "Multidisciplinary" for elem in subject):
-                    self.logger.info(
-                        'FsF-R1.3-01M : Skipping non-disciplinary standard found in namespaces - {}'.format(std_name))
-                else:
-                    nsout = CommunityEndorsedStandardOutputInner()
-                    nsout.metadata_standard = std_name
-                    nsout.subject_areas = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
-                    nsout.urls = [std_ns]
-                    standards_detected.append(nsout)
-
-        if self.community_standards:
-            for s in self.community_standards:
-                standard_found = self.lookup_metadatastandard_by_name(s)
-                if standard_found:
-                    subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+        if len(self.namespace_uri) > 0:
+            no_match = []
+            self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata - {}'.format(self.namespace_uri))
+            for std_ns in self.namespace_uri:
+                if std_ns in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
+                    subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
+                    std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('title')
                     if subject and all(elem == "Multidisciplinary" for elem in subject):
-                        self.logger.info('FsF-R1.3-01M : Skipping non-disciplinary standard listed in OAIPMH - {}'.format(s))
+                        self.logger.info(
+                        'FsF-R1.3-01M : Skipping non-disciplinary standard found in namespaces - {}'.format(std_name))
                     else:
-                        out = CommunityEndorsedStandardOutputInner()
-                        out.metadata_standard = s
-                        out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
-                        out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
-                        standards_detected.append(out)
+                        nsout = CommunityEndorsedStandardOutputInner()
+                        nsout.metadata_standard = std_name
+                        nsout.subject_areas = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
+                        nsout.urls = [std_ns]
+                        standards_detected.append(nsout)
+                else:
+                    no_match.append(std_ns)
+            if len(no_match)>0:
+                self.logger.info('FsF-R1.3-01M : Namespaces excluded as they are not found in RDA metadata catalog - {}'.format(no_match))
 
-        if not standards_detected and len(self.community_standards_uri)> 0:
-            #use schems declared in oai-pmh end point instead
-            #self.logger.info('{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
-            #for k,v in self.community_standards_uri.items():
-
-
-        #if len(self.community_standards_uri) > 0:
-            # use schemas declared in oai-pmh end point
-            self.logger.info('FsF-R1.3-01M : Primary source of metadata standard(s) - OAI-PMH endpoint')
-            self.logger.info('{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', list(self.community_standards_uri.keys())))
-            for k, v in self.community_standards_uri.items():
-                out = CommunityEndorsedStandardOutputInner()
-                out.metadata_standard = k
-                out.urls = v
-                standards_detected.append(out)
-
-        if not standards_detected:
-            if len(self.community_standards)> 0:
-                self.logger.info('FsF-R1.3-01M : Primary source of metadata standard(s) - re3data')
+        # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
+        if len(self.community_standards)> 0:
+            if not standards_detected:
+                self.logger.info('FsF-R1.3-01M : Use re3data the source of metadata standard(s)')
                 for s in self.community_standards:
                     standard_found = self.lookup_metadatastandard_by_name(s)
                     if standard_found:
@@ -1166,7 +1132,9 @@ class FAIRCheck:
                             out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                             standards_detected.append(out)
             else:
-                self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) listed in re3data')
+                self.logger.info('FsF-R1.3-01M : Metadata standard(s) listed in re3data, but excluded from the assessment output.')
+        else:
+            self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the reposiroty specified in re3data')
 
         if standards_detected:
             communitystd_score.earned = communitystd_sc
@@ -1254,85 +1222,6 @@ class FAIRCheck:
             data_provenance_result.test_debug = self.msg_filter.getMessage(data_provenance_identifier)
         return data_provenance_result.to_dict()
 
-    # def check_data_content_metadata_old(self):
-    #     #initially verification is restricted to the first file:
-    #     data_content_metadata_identifier = 'FsF-R1-01MD'
-    #     data_content_metadata_name = FAIRCheck.METRICS.get(data_content_metadata_identifier).get('metric_name')
-    #     data_content_metadata_sc = int(FAIRCheck.METRICS.get(data_content_metadata_identifier).get('total_score'))
-    #     data_content_metadata_score = FAIRResultCommonScore(total=data_content_metadata_sc)
-    #     data_content_metadata_result = DataContentMetadata(id=self.count, metric_identifier=data_content_metadata_identifier, metric_name=data_content_metadata_name)
-    #     data_content_metadata_output = DataContentMetadataOutput()
-    #     data_content_metadata_output.data_content_descriptor=[]
-    #     #download the last content object for testing content vs. metadata matching
-    #     test_data_content_text = ''
-    #     if isinstance(self.content_identifier, list):
-    #         content_uris = [d['url'] for d in self.content_identifier if 'url' in d]
-    #         self.logger.info('FsF-R1-01MD : Data content URI(s) specified - {}'.format(content_uris))
-    #         if len(self.content_identifier) > 0:
-    #             test_data_content_url = self.content_identifier[-1].get('url')
-    #             self.logger.info('FsF-R1-01MD : Content URI that will be analyzed - {}'.format(test_data_content_url))
-    #             try:
-    #                 r = requests.get(test_data_content_url)
-    #                 if r.status_code == 200:
-    #                     test_data_content_text = r.text
-    #             except:
-    #                 self.logger.warning('FsF-R1-01MD : Could not download content object')
-    #
-    #     if self.metadata_merged.get('object_content_identifier') is not None:
-    #         #check file type and size descriptors
-    #         for data_object in self.metadata_merged.get('object_content_identifier'):
-    #             fileinfoscore = 0
-    #             if data_object.get('type') is not None and data_object.get('size') is not None:
-    #                 self.logger.info('FsF-R1-01MD : Found file type and size info as content decriptor for: '+str(data_object.get('url')))
-    #                 data_content_metadata_output.has_content_descriptors = True
-    #                 data_content_metadata_result.test_status = 'pass'
-    #                 fileinfoscore = 0.5
-    #                 data_content_filetype_inner = DataContentMetadataOutputInner()
-    #                 data_content_filetype_inner.descriptor_type = 'file type'
-    #                 data_content_filetype_inner.descriptor_name = data_object.get('type')
-    #                 data_content_metadata_output.data_content_descriptor.append(data_content_filetype_inner)
-    #                 data_content_filesize_inner = DataContentMetadataOutputInner()
-    #                 data_content_filesize_inner.descriptor_type = 'file size'
-    #                 data_content_filesize_inner.descriptor_name = data_object.get('size')
-    #                 data_content_metadata_output.data_content_descriptor.append(data_content_filesize_inner)
-    #                 if data_object.get('header_content_type') == data_object.get('type'):
-    #                     data_content_filetype_inner.matchescontent = True
-    #                     fileinfoscore = 1
-    #             else:
-    #                 self.logger.warning('FsF-R1-01MD : No file type and size info available for: '+str(data_object.get('url')))
-    #
-    #         data_content_metadata_score.earned = fileinfoscore
-    #                 #check measured variables
-    #         if 'measured_variable' in self.metadata_merged:
-    #             self.logger.info('FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
-    #             variablescore = 1
-    #             data_content_metadata_result.test_status = 'pass'
-    #             data_content_metadata_output.has_content_descriptors= True
-    #
-    #             for variable in self.metadata_merged['measured_variable']:
-    #                 data_content_metadata_inner = DataContentMetadataOutputInner()
-    #                 data_content_metadata_inner.descriptor_name=variable
-    #                 data_content_metadata_inner.descriptor_type='measured_variable'
-    #
-    #                 if variable in test_data_content_text:
-    #                     self.logger.info('FsF-R1-01MD : Measured variables in metadata also found in file content')
-    #                     data_content_metadata_inner.matchescontent = True
-    #                     variablescore = 2
-    #                 data_content_metadata_output.data_content_descriptor.append(data_content_metadata_inner)
-    #             data_content_metadata_score.earned = data_content_metadata_score.earned + variablescore
-    #         else:
-    #             self.logger.warning('FsF-R1-01MD : No measured variables or observations (aka parameters) found as content descriptor')
-    #     else:
-    #         self.logger.warning('FsF-R1-01MD : No object content available to perform the test')
-    #
-    #     data_content_metadata_result.score = data_content_metadata_score
-    #
-    #     if self.isDebug:
-    #         data_content_metadata_result.test_debug = self.msg_filter.getMessage(data_content_metadata_identifier)
-    #     data_content_metadata_result.output=data_content_metadata_output
-    #
-    #     return data_content_metadata_result.to_dict()
-
     def check_data_content_metadata(self):
         self.count+=1
         data_content_metadata_identifier = 'FsF-R1-01MD'
@@ -1388,7 +1277,7 @@ class FAIRCheck:
                 except Exception as e:
                     self.logger.warning('{0} : Could not retrive/parse content object - {1}'.format(data_content_metadata_identifier, e))
             else:
-                self.logger.warning('FsF-R1-01MD : NO object content available to perform file descriptors (type and size) tests')
+                self.logger.warning('FsF-R1-01MD : No data object content available/accessible to perform file descriptors (type and size) tests')
 
         # 3. check file type and size descriptors of parsed data file only (ref:test_data_content_url)
         if test_data_content_url:
