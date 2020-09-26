@@ -288,7 +288,7 @@ class FAIRCheck:
                 self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
 
         if self.oaipmh_endpoint:
-            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+            self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
             if (self.uri_validator(self.oaipmh_endpoint)):
                 oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
                 self.community_standards_uri = oai_provider.getMetadataStandards()
@@ -1029,7 +1029,7 @@ class FAIRCheck:
                 data_file_format_score.earned = 1
                 data_file_format_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as no data content identifier(s) available')
+            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as no data content identifier(s) available/unaccesible')
             data_file_format_result.test_status='fail'
 
         data_file_format_output = data_file_list
