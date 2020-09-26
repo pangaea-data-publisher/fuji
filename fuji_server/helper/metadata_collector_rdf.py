@@ -21,33 +21,41 @@
 # SOFTWARE.
 
 
+import idutils
 import rdflib
 from rdflib import Namespace
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
+from rdflib.namespace import FOAF
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 class MetaDataCollectorRdf (MetaDataCollector):
     target_url=None
-    def __init__(self,  loggerinst, target_url, source):
+    def __init__(self,  loggerinst, target_url, source, rdf_graph=None):
         self.target_url = target_url
         self.content_type = None
         self.source_name = source
+        self.rdf_graph=rdf_graph
         super().__init__(logger=loggerinst)
+
 
     def parse_metadata(self):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
         self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
         rdf_metadata=dict()
-        requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
-        requestHelper.setAcceptType(AcceptTypes.rdf)
-        neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
-        #required for metric knowledge representation
-        self.content_type = requestHelper.getHTTPResponse().headers['content-type']
-        self.content_type = self.content_type.split(";", 1)[0]
+        if self.rdf_graph is None:
+            requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.rdf)
+            neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            #required for metric knowledge representation
+            self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
+            if self.content_type is not None:
+                self.content_type = self.content_type.split(";", 1)[0]
+        else:
+            neg_source, rdf_response = 'html' , self.rdf_graph
 
         ontology_indicator=[rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')]
         if isinstance(rdf_response,rdflib.graph.Graph):
@@ -71,12 +79,14 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
-        meta['object_identifier'] = str(item)
-        meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
+        meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
+        if self.source_name != self.getEnumSourceNames().RDFA.value:
+            meta['object_identifier'] = str(item)
+            meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         meta['object_type'] = type
         meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title))
         meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description))
-        meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date))
+        meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date)  or g.value(item, DCTERMS.issued))
         meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher))
         meta['keywords']=[]
         for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.keyword)) + list(g.objects(item, DC.keyword))):
@@ -112,6 +122,28 @@ class MetaDataCollectorRdf (MetaDataCollector):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         datasets = list(graph[: RDF.type: DCAT.Dataset])
         dcat_metadata = self.get_metadata(graph, datasets[0],type='Dataset')
+
+        # publisher
+        if idutils.is_url(dcat_metadata.get('publisher')) or dcat_metadata.get('publisher') is None:
+            publisher = graph.value(datasets[0], DCTERMS.publisher)
+            # FOAF preferred DCAT compliant
+            publisher_name = graph.value(publisher, FOAF.name)
+            dcat_metadata['publisher'] = publisher_name
+            # in some cases a dc title is used (not exactly DCAT compliant)
+            if dcat_metadata.get('publisher') is None:
+                publisher_title = graph.value(publisher, DCTERMS.title)
+                dcat_metadata['publisher'] = publisher_title
+
+        # creator
+        if idutils.is_url(dcat_metadata.get('creator')) or dcat_metadata.get('creator') is None:
+            creators = graph.objects(datasets[0], DCTERMS.creator)
+            creator_name = []
+            for creator in creators:
+                creator_name.append(graph.value(creator, FOAF.name))
+            if len(creator_name) > 0:
+                dcat_metadata['creator'] = creator_name
+
+        # distribution
         distribution = graph.objects(datasets[0], DCAT.distribution)
         dcat_metadata['object_content_identifier']=[]
         for dist in distribution:
@@ -119,7 +151,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
             #taking only one just to check if licence is available
             dcat_metadata['license']=graph.value(dist, DCTERMS.license)
             # TODO: check if this really works..
-            dcat_metadata['access_rights']=graph.value(dist, DCTERMS.accessRights)
+            dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
             dtype=graph.value(dist, DCAT.mediaType)
             dsize=graph.value(dist, DCAT.bytesSize)
             dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})

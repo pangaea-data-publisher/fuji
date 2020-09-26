@@ -44,6 +44,8 @@ class MetaDataCollector(object):
         B2FIND = 'B2FIND Metadata Aggregator'
         GUESSED_XML = 'Guessed XML Link'
         XML_NEGOTIATED = 'Generic XML (Negotiated)'
+        RDFA = 'Embedded RDFa'
+        MICRODATA = 'Embedded Microdata'
 
     def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
         self.source_metadata = sourcemetadata

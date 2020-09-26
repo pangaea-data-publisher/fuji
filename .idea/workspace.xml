@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="07aa8520-552c-47ba-bf95-6310c89d7dab" name="Default Changelist" comment="Changed out put of parser files so they indicate if the source is xml, rdf etc..">
+      <change beforePath="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuji_server/controllers/fair_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/controllers/fair_check.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuji_server/helper/metadata_collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/helper/metadata_collector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_rdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_rdf.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/pangaea-data-publisher/fuji.git" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1cOtGJ4kH2t6K14anzLDbZfFAtw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" />
+  </component>
+  <component name="RunManager" selected="Python.ex_evaluate">
+    <configuration name="ex_evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="fuji" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Robert\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fuji_server" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="fuji_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="fuji" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fuji_server/client" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fuji_server/client/fuji_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.ex_evaluate" />
+      <item itemvalue="Python.fuji_test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.ex_evaluate" />
+        <item itemvalue="Python.fuji_test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07aa8520-552c-47ba-bf95-6310c89d7dab" name="Default Changelist" comment="" />
+      <created>1590411370433</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1590411370433</updated>
+    </task>
+    <task id="LOCAL-00047" summary="minor changes">
+      <created>1592827743495</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827743495</updated>
+    </task>
+    <task id="LOCAL-00048" summary="minor changes">
+      <created>1592827779708</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827779708</updated>
+    </task>
+    <task id="LOCAL-00049" summary="minor changes">
+      <created>1592827795378</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827795378</updated>
+    </task>
+    <task id="LOCAL-00050" summary="minor changes">
+      <created>1592827825817</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827825818</updated>
+    </task>
+    <task id="LOCAL-00051" summary="new swagger built">
+      <created>1592827847085</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827847085</updated>
+    </task>
+    <task id="LOCAL-00052" summary="new swagger built">
+      <created>1592827854636</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827854637</updated>
+    </task>
+    <task id="LOCAL-00053" summary="excluded creativecommons licences from acess rights check&#10;Finalized provenance check">
+      <created>1592827975349</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827975349</updated>
+    </task>
+    <task id="LOCAL-00054" summary="excluded creativecommons licences from acess rights check&#10;provenance check changed outputs">
+      <created>1592827994500</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1592827994500</updated>
+    </task>
+    <task id="LOCAL-00055" summary="excluded creativecommons licences from acess rights check&#10;provenance check changed changed test outputs">
+      <created>1593070295574</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1593070295574</updated>
+    </task>
+    <task id="LOCAL-00056" summary="excluded creativecommons licences from acess rights check&#10;provenance check changed prefinal version of file format check">
+      <created>1593070334322</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1593070334322</updated>
+    </task>
+    <task id="LOCAL-00057" summary="excluded creativecommons licences from acess rights check&#10;provenance check changed prefinal version of file science file formats json">
+      <created>1593070405778</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1593070405778</updated>
+    </task>
+    <task id="LOCAL-00058" summary="excluded creativecommons licences from acess rights check&#10;provenance check changed prefinal version of file data formats -&gt; more checks">
+      <created>1593098546316</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1593098546316</updated>
+    </task>
+    <task id="LOCAL-00059" summary="excluded creativecommons licences from acess rights check&#10;data content metadata initial version">
+      <created>1593163832383</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1593163832383</updated>
+    </task>
+    <task id="LOCAL-00060" summary="minor change">
+      <created>1593163910894</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1593163910894</updated>
+    </task>
+    <task id="LOCAL-00061" summary="minor change">
+      <created>1593173662002</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1593173662003</updated>
+    </task>
+    <task id="LOCAL-00062" summary="stub for xml parsing">
+      <created>1593173763535</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1593173763535</updated>
+    </task>
+    <task id="LOCAL-00063" summary="stub for xml parsing">
+      <created>1593173778543</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1593173778543</updated>
+    </task>
+    <task id="LOCAL-00064" summary="minor changes">
+      <created>1593173887502</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1593173887502</updated>
+    </task>
+    <task id="LOCAL-00065" summary="minor changes">
+      <created>1593173957879</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1593173957880</updated>
+    </task>
+    <task id="LOCAL-00066" summary="fixed provenance check&#10;fixed missing namespaces from metadata_collector classes">
+      <created>1593348109904</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1593348109905</updated>
+    </task>
+    <task id="LOCAL-00067" summary="fixed provenance check&#10;Some schema.org related fixes">
+      <created>1593440216034</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1593440216034</updated>
+    </task>
+    <task id="LOCAL-00068" summary="finalized FsF-R1.2-01M and FsF-R1-01MD at least it is ready for review">
+      <created>1593691641090</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1593691641091</updated>
+    </task>
+    <task id="LOCAL-00069" summary="fixed NoneType error in case no creator names are given">
+      <created>1593768033787</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1593768033787</updated>
+    </task>
+    <task id="LOCAL-00070" summary="deleted duplicate check (if returns http 200) object identifier from check_content_identifier_included and moved parts of this to check_peristent...&#10;Fixed bug in check_data_file_format which now really test the data content">
+      <created>1593768313646</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1593768313646</updated>
+    </task>
+    <task id="LOCAL-00071" summary="simplified provenance output">
+      <created>1594387284675</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1594387284676</updated>
+    </task>
+    <task id="LOCAL-00072" summary="simplified provenance output">
+      <created>1594649888161</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1594649888161</updated>
+    </task>
+    <task id="LOCAL-00073" summary="new generic XML collector">
+      <created>1594649927369</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1594649927369</updated>
+    </task>
+    <task id="LOCAL-00074" summary="added provenance mapping">
+      <created>1594650138333</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1594650138333</updated>
+    </task>
+    <task id="LOCAL-00075" summary="improved handling of provenance dc fields (related)">
+      <created>1594650215171</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1594650215171</updated>
+    </task>
+    <task id="LOCAL-00076" summary="added guessed XML to enum">
+      <created>1594650274438</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1594650274438</updated>
+    </task>
+    <task id="LOCAL-00077" summary="simplified provenance handling">
+      <created>1594650352324</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1594650352324</updated>
+    </task>
+    <task id="LOCAL-00078" summary="corrected url">
+      <created>1594650575219</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1594650575220</updated>
+    </task>
+    <task id="LOCAL-00079" summary="changed score">
+      <created>1595859606376</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1595859606377</updated>
+    </task>
+    <task id="LOCAL-00080" summary="metadata mapping">
+      <created>1595859985757</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1595859985757</updated>
+    </task>
+    <task id="LOCAL-00081" summary="more standards..">
+      <created>1595860030142</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1595860030142</updated>
+    </task>
+    <task id="LOCAL-00082" summary="fixed the retrieve_retrieve typo">
+      <created>1595946822972</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1595946822973</updated>
+    </task>
+    <task id="LOCAL-00083" summary="missing landing_url caused errors">
+      <created>1595947861875</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1595947861876</updated>
+    </task>
+    <task id="LOCAL-00084" summary="metadata preserved output">
+      <created>1596105870180</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1596105870181</updated>
+    </task>
+    <task id="LOCAL-00085" summary="metadata preserved output">
+      <created>1596105915540</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1596105915540</updated>
+    </task>
+    <task id="LOCAL-00086" summary="added Replaces relation to prov">
+      <created>1596105938502</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1596105938502</updated>
+    </task>
+    <task id="LOCAL-00087" summary="minor">
+      <created>1596203495615</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1596203495617</updated>
+    </task>
+    <task id="LOCAL-00088" summary="added SSL error logger warning">
+      <created>1596203573343</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1596203573344</updated>
+    </task>
+    <task id="LOCAL-00089" summary="JSON contains uris I manuallay added to the standard file list at Github/metadata-catalogue-dev">
+      <created>1596203644488</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1596203644489</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Finalised parse_metadata method. Now it extracts namespaces">
+      <created>1596203704002</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1596203704002</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Now also metadata standards found through 'guessed xml links' are used to retrieve namespaces and corresponding metadata standards try: http://dx.doi.org/10.4227/05/5344F1159A1A9">
+      <created>1596203820528</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1596203820528</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Implemented Standard Protocol Check">
+      <created>1596620286348</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1596620286350</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Implemented Standard Protocol Check">
+      <created>1596620432201</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1596620432202</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Changed out put of parser files so they indicate if the source is xml, rdf etc..&#10;First XML content negotiation support">
+      <created>1596716759674</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1596716759674</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Changed out put of parser files so they indicate if the source is xml, rdf etc..">
+      <created>1600766593743</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1600766593744</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="swagger.yaml" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="finalized FsF-R1.2-01M and FsF-R1-01MD at least it is ready for review" />
+    <MESSAGE value="fixed NoneType error in case no creator names are given" />
+    <MESSAGE value="deleted duplicate check (if returns http 200) object identifier from check_content_identifier_included and moved parts of this to check_peristent...&#10;Fixed bug in check_data_file_format which now really test the data content" />
+    <MESSAGE value="simplified provenance output" />
+    <MESSAGE value="new generic XML collector" />
+    <MESSAGE value="added provenance mapping" />
+    <MESSAGE value="improved handling of provenance dc fields (related)" />
+    <MESSAGE value="added guessed XML to enum" />
+    <MESSAGE value="simplified provenance handling" />
+    <MESSAGE value="corrected url" />
+    <MESSAGE value="changed score" />
+    <MESSAGE value="metadata mapping" />
+    <MESSAGE value="more standards.." />
+    <MESSAGE value="fixed the retrieve_retrieve typo" />
+    <MESSAGE value="missing landing_url caused errors" />
+    <MESSAGE value="metadata preserved output" />
+    <MESSAGE value="added Replaces relation to prov" />
+    <MESSAGE value="minor" />
+    <MESSAGE value="added SSL error logger warning" />
+    <MESSAGE value="JSON contains uris I manuallay added to the standard file list at Github/metadata-catalogue-dev" />
+    <MESSAGE value="Finalised parse_metadata method. Now it extracts namespaces" />
+    <MESSAGE value="Now also metadata standards found through 'guessed xml links' are used to retrieve namespaces and corresponding metadata standards try: http://dx.doi.org/10.4227/05/5344F1159A1A9" />
+    <MESSAGE value="Implemented Standard Protocol Check" />
+    <MESSAGE value="Changed out put of parser files so they indicate if the source is xml, rdf etc..&#10;First XML content negotiation support" />
+    <MESSAGE value="Changed out put of parser files so they indicate if the source is xml, rdf etc.." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed out put of parser files so they indicate if the source is xml, rdf etc.." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="38" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600158842401">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="38" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.689@0.0.1280.689" timestamp="1600158842401" />
+    <state x="417" y="147" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592897122248">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="417" y="147" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.689@0.0.1280.689" timestamp="1592897122248" />
+    <state width="361" height="442" key="Diff.GoToChangePopup" timestamp="1600159387275">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state width="361" height="442" key="Diff.GoToChangePopup/0.0.1280.689@0.0.1280.689" timestamp="1600159387275" />
+    <state x="93" y="93" width="1095" height="495" maximized="true" key="DiffContextDialog" timestamp="1600161370522">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="421" y="96" width="691" height="490" key="FileChooserDialogImpl" timestamp="1600159604058">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.689/-1920.0.1920.1050@0.0.1280.689" timestamp="1593603586376" />
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.689@0.0.1280.689" timestamp="1600159604058" />
+    <state width="921" height="209" key="GridCell.Tab.0.bottom" timestamp="1600798902891">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state width="1259" height="83" key="GridCell.Tab.0.bottom/0.0.1280.689/-1920.0.1920.1050@0.0.1280.689" timestamp="1593767797941" />
+    <state width="921" height="209" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1600798902891" />
+    <state width="921" height="209" key="GridCell.Tab.0.center" timestamp="1600798902891">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state width="1259" height="83" key="GridCell.Tab.0.center/0.0.1280.689/-1920.0.1920.1050@0.0.1280.689" timestamp="1593767797941" />
+    <state width="921" height="209" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1600798902891" />
+    <state width="921" height="209" key="GridCell.Tab.0.left" timestamp="1600798902891">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state width="1259" height="83" key="GridCell.Tab.0.left/0.0.1280.689/-1920.0.1920.1050@0.0.1280.689" timestamp="1593767797941" />
+    <state width="921" height="209" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1600798902891" />
+    <state width="921" height="209" key="GridCell.Tab.0.right" timestamp="1600798902891">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state width="1259" height="83" key="GridCell.Tab.0.right/0.0.1280.689/-1920.0.1920.1050@0.0.1280.689" timestamp="1593767797941" />
+    <state width="921" height="209" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1600798902891" />
+    <state x="6" y="10" width="1274" height="587" key="MergeDialog" timestamp="1594708681390">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="6" y="10" width="1274" height="587" key="MergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1594708681390" />
+    <state x="171" y="211" width="579" height="264" key="MultipleFileMergeDialog" timestamp="1594708681402">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="171" y="211" width="579" height="264" key="MultipleFileMergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1594708681402" />
+    <state x="404" y="47" key="RollbackChangesDialog" timestamp="1600156812173">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="404" y="47" key="RollbackChangesDialog/0.0.1280.689@0.0.1280.689" timestamp="1600156812173" />
+    <state x="142" y="0" key="SettingsEditor" timestamp="1600158610255">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.689@0.0.1280.689" timestamp="1600158610255" />
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2" timestamp="1593164721404">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1593164721404" />
+    <state x="360" y="79" key="VcsDiffUtil.ChangesDialog" timestamp="1600161329979">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="360" y="79" key="VcsDiffUtil.ChangesDialog/0.0.1280.689@0.0.1280.689" timestamp="1600161329979" />
+    <state x="93" y="93" width="1095" height="504" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1600158425341">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="93" y="93" width="1095" height="504" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.689@0.0.1280.689" timestamp="1600158425341" />
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1600798903114">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.689@0.0.1280.689" timestamp="1600798903114" />
+    <state x="131" y="0" width="942" height="689" key="find.popup" timestamp="1600778148128">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="131" y="0" width="942" height="689" key="find.popup/0.0.1280.689@0.0.1280.689" timestamp="1600778148128" />
+    <state x="346" y="133" key="git4idea.merge.GitPullDialog" timestamp="1593173019667">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="346" y="133" key="git4idea.merge.GitPullDialog/0.0.1280.689@0.0.1280.689" timestamp="1593173019667" />
+    <state x="303" y="1" width="672" height="687" key="search.everywhere.popup" timestamp="1600089099442">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="303" y="1" width="672" height="687" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1600089099442" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fuji_server/helper/preprocessor.py</url>
+          <line>83</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
