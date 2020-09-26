@@ -1,4 +1,27 @@
 # -*- coding: utf-8 -*-
+
+# MIT License
+#
+# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import logging
 import mimetypes
 import re
@@ -143,6 +166,8 @@ class FAIRCheck:
         pid_output = PersistenceOutput()
 
         # ======= CHECK IDENTIFIER UNIQUENESS =======
+        schemes = [i[0] for i in idutils.PID_SCHEMES]
+        self.logger.info('FsF-F1-01D : Using idutils schemes')
         found_ids = idutils.detect_identifier_schemes(self.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.info('FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
@@ -163,6 +188,7 @@ class FAIRCheck:
             uid_result.output = uid_output
 
             # ======= CHECK IDENTIFIER PERSISTENCE =======
+            self.logger.info('FsF-F1-01D : PID schemes-based assessment supported - {}'.format(Mapper.VALID_PIDS.value))
             if found_id in Mapper.VALID_PIDS.value:
                 self.pid_scheme = found_id
                 # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -196,7 +222,9 @@ class FAIRCheck:
                 else:
                     if r.status_code in [401, 402, 403]:
                         self.isMetadataAccessible = False
-                    self.logger.warning("Identifier returned response code: {code}".format(code=r.status_code))
+                    #if r.status_code == 401:
+                        #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
+                    self.logger.warning("Resource unaccessible, identifier returned http status code: {code}".format(code=r.status_code))
             pid_result.score = pid_score
             pid_result.output = pid_output
 
@@ -248,29 +276,47 @@ class FAIRCheck:
         self.retrieve_apis_standards()
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from re3data')
+        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
         client_id = self.metadata_merged.get('datacite_client')
         self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
+
         if self.oaipmh_endpoint:
             self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
         else:
+            #find endpoint via datacite/re3data if pid is provided
             if client_id and self.pid_scheme:
+                self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
                 repoHelper = RepositoryHelper(client_id, self.pid_scheme)
                 repoHelper.lookup_re3data()
                 self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
                 self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
+                #self.community_standards.extend(repoHelper.getRe3MetadataStandards())
 
-        if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
-            self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
-            if self.oaipmh_endpoint:
-                if (self.uri_validator(self.oaipmh_endpoint)):
-                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
-                    self.community_standards_uri = oai_provider.getMetadataStandards()
-                    self.namespace_uri.extend(oai_provider.getNamespaces())
-                    self.logger.info('{} : All metadata standards defined in re3data - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
-                else:
-                    self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
+        #if not self.community_standards: # fallback get standards defined in api, e.g., oai-pmh
+            #self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository {}'.format('FsF-R1.3-01M', self.oaipmh_endpoint))
+            #if self.oaipmh_endpoint:
+                #if (self.uri_validator(self.oaipmh_endpoint)):
+                    #oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger, metric_id='FsF-R1.3-01M')
+                    #self.community_standards_uri = oai_provider.getMetadataStandards()
+                    #self.namespace_uri.extend(oai_provider.getNamespaces())
+                    #self.logger.info('{} : All metadata standards defined in re3data - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+                #else:
+                    #self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
+                self.community_standards = repoHelper.getRe3MetadataStandards()
+                self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
+
+        if self.oaipmh_endpoint:
+            self.logger.info('{} : Use OAIPMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+            if (self.uri_validator(self.oaipmh_endpoint)):
+                oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                self.community_standards_uri = oai_provider.getMetadataStandards()
+                self.namespace_uri.extend(oai_provider.getNamespaces())
+                self.logger.info('{} : Standards listed through OAI-PMH - {}'.format('FsF-R1.3-01M', self.community_standards_uri))
+            else:
+                self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
+        else:
+            self.logger.warning('{} : No OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         isPid = False
@@ -504,6 +550,7 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not all required minimum metadata {} exists, so set status as = insufficient metadata'.format(partial_elements))
             metadata_status = 'insufficient metadata' # status should follow enumeration in yaml
+
             meta_score.earned = 0
             test_status = 'fail'
 
@@ -590,7 +637,7 @@ class FAIRCheck:
                         #did_score.earned=1
                     except urllib.HTTPError as e:
                         self.logger.warning(
-                            'FsF-F3-01M : Content identifier {0}, HTTPError code {1} '.format(content_link.get('url'), e.code))
+                            'FsF-F3-01M : Content identifier {0} unaccessible, HTTPError code {1} '.format(content_link.get('url'), e.code))
                     except urllib.URLError as e:
                         self.logger.exception(e.reason)
                     except:
@@ -624,8 +671,7 @@ class FAIRCheck:
         #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
-        #4) CreativeCommons check for https://creativecommons.org/licenses/
-        #5) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+        #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
         self.count += 1
         access_identifier = 'FsF-A1-01M'
         access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
@@ -634,7 +680,7 @@ class FAIRCheck:
         access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
         access_output = DataAccessOutput()
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        rights_regex = r'((creativecommons\.org|purl\.org|\/coar\access_right|purl\.org\/eprint\/accessRights|europa\.eu|\/resource\/authority\/access-right)\/{1}(\S*)|info\:eu-repo\/semantics\/\w+)'
+        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
 
         access_level = None
         access_details = {}
@@ -646,6 +692,7 @@ class FAIRCheck:
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            access_rights = 'info:eu-repo/semantics/restrictedAccess'
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
@@ -653,8 +700,10 @@ class FAIRCheck:
                 if not self.isLicense(access_right, access_identifier):  # exclude license-based text from access_rights
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
+                        last_group = len(rights_match.groups())
+                        filtered_rights = rights_match[last_group]
                         for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code, rights_match[1], re.IGNORECASE):
+                            if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
                                 self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
@@ -798,7 +847,7 @@ class FAIRCheck:
         license_result = License(id=self.count, metric_identifier=license_identifier, metric_name=license_mname)
         licenses_list = []
         specified_licenses = self.metadata_merged.get('license')
-        #can be both:empty list and None
+
         if specified_licenses is not None and specified_licenses !=[]:
             if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
                 specified_licenses = [specified_licenses]
@@ -821,7 +870,8 @@ class FAIRCheck:
             license_score.earned = license_sc
         else:
             license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : NO license information is included in metadata')
+            self.logger.warning('FsF-R1.1-01M : License cannot be found')
+
         license_result.output = licenses_list
         license_result.score = license_score
 
@@ -830,7 +880,7 @@ class FAIRCheck:
         return license_result.to_dict()
 
     def lookup_license_by_url(self, u, metric_id):
-        self.logger.info('{0} : Search license SPDX details by url - {1}'.format(metric_id, u))
+        self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
         for item in FAIRCheck.SPDX_LICENSES:
@@ -849,7 +899,7 @@ class FAIRCheck:
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('{0} : Search license SPDX details by name - {1}'.format(metric_id, lvalue))
+        self.logger.info('{0} : Verify name through SPDX registry - {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRCheck.SPDX_LICENSE_NAMES]
         if max(sim) > 0.85:
@@ -962,12 +1012,12 @@ class FAIRCheck:
             if contents:
                 for c in contents:
                     if c.get('type'):
-                        self.logger.info('FsF-R1.3-02D : Object content identifier is missing, but data format specified - {}'.format(c.get('type')))
+                        self.logger.info('FsF-R1.3-02D : Data content identifier is missing, but its format specified - {}'.format(c.get('type')))
 
         mime_url_pair = {}
         if len(self.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.content_identifier]
-            self.logger.info('FsF-R1.3-02D : Object content identifier provided - {}'.format(content_urls))
+            self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
             for data_file in self.content_identifier:
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
@@ -1033,7 +1083,7 @@ class FAIRCheck:
                 data_file_format_score.earned = 1
                 data_file_format_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks, no object content identifiers available')
+            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as no data content identifier(s) available')
             data_file_format_result.test_status='fail'
 
         data_file_format_output = data_file_list
@@ -1054,6 +1104,7 @@ class FAIRCheck:
 
 
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
+
         # ============== retrieve community standards by collected namespace uris
         for std_ns in self.namespace_uri:
             if std_ns in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
@@ -1085,13 +1136,37 @@ class FAIRCheck:
 
         if not standards_detected and len(self.community_standards_uri)> 0:
             #use schems declared in oai-pmh end point instead
-            self.logger.info(
-                '{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
-            for k,v in self.community_standards_uri.items():
+            #self.logger.info('{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', self.community_standards_uri.keys()))
+            #for k,v in self.community_standards_uri.items():
+
+
+        #if len(self.community_standards_uri) > 0:
+            # use schemas declared in oai-pmh end point
+            self.logger.info('FsF-R1.3-01M : Primary source of metadata standard(s) - OAI-PMH endpoint')
+            self.logger.info('{} : Metadata standards defined in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M', list(self.community_standards_uri.keys())))
+            for k, v in self.community_standards_uri.items():
                 out = CommunityEndorsedStandardOutputInner()
                 out.metadata_standard = k
                 out.urls = v
                 standards_detected.append(out)
+
+        if not standards_detected:
+            if len(self.community_standards)> 0:
+                self.logger.info('FsF-R1.3-01M : Primary source of metadata standard(s) - re3data')
+                for s in self.community_standards:
+                    standard_found = self.lookup_metadatastandard_by_name(s)
+                    if standard_found:
+                        subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                        if subject and all(elem == "Multidisciplinary" for elem in subject):
+                            self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard - {}'.format(s))
+                        else:
+                            out = CommunityEndorsedStandardOutputInner()
+                            out.metadata_standard = s
+                            out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                            out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
+                            standards_detected.append(out)
+            else:
+                self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) listed in re3data')
 
         if standards_detected:
             communitystd_score.earned = communitystd_sc
