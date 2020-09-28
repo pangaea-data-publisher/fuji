@@ -188,7 +188,7 @@ class FAIRCheck:
             uid_result.output = uid_output
 
             # ======= CHECK IDENTIFIER PERSISTENCE =======
-            self.logger.info('FsF-F1-01D : PID schemes-based assessment supported - {}'.format(Mapper.VALID_PIDS.value))
+            self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(Mapper.VALID_PIDS.value))
             if found_id in Mapper.VALID_PIDS.value:
                 self.pid_scheme = found_id
                 # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -261,10 +261,10 @@ class FAIRCheck:
 
         # TODO quick-fix to merge size information - should do it at mapper
         if 'object_content_identifier' in self.metadata_merged:
-            if self.metadata_merged['object_content_identifier']:
+            if self.metadata_merged.get('object_content_identifier'):
                 for c in self.metadata_merged['object_content_identifier']:
                     if not c.get('size') and self.metadata_merged.get('object_size'):
-                        c['size'] = self.metadata_merged['object_size']
+                        c['size'] = self.metadata_merged.get('object_size')
 
         for mk, mv in list(self.metadata_merged.items()):
             if mv == '' or mv is None:
@@ -523,7 +523,7 @@ class FAIRCheck:
         meta_result = CoreMetadata(id=self.count, metric_identifier=coremeta_identifier, metric_name=coremeta_name)
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
         metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
-        self.logger.info('FsF-F2-01M : Required core metadata {}'.format(metadata_required))
+        self.logger.info('FsF-F2-01M : Required core metadata elements {}'.format(metadata_required))
 
         partial_elements = ['creator', 'title', 'object_identifier', 'publication_date']
         #TODO: check the number of metadata elements which metadata_found has in common with metadata_required
@@ -537,7 +537,7 @@ class FAIRCheck:
             meta_score.earned = meta_sc - 1
             test_status = 'pass'
         else:
-            self.logger.info('FsF-F2-01M : Not all required minimum metadata {} exists, so set status as = insufficient metadata'.format(partial_elements))
+            self.logger.info('FsF-F2-01M : Not all required metadata elements exists, so set the status as = insufficient metadata')
             metadata_status = 'insufficient metadata' # status should follow enumeration in yaml
 
             meta_score.earned = 0
@@ -955,7 +955,7 @@ class FAIRCheck:
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - structured data')
         else:
-            self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(search_engines_support))
+            self.logger.warning('FsF-F4-01M : Metadata is NOT found through - {}'.format(search_engines_support))
 
         registry_support_match = list(set(self.metadata_sources).intersection(sources_registry))
         if registry_support_match:
@@ -963,7 +963,7 @@ class FAIRCheck:
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
         else:
-            self.logger.warning('FsF-F4-01M : Metadata NOT found through - {}'.format(sources_registry))
+            self.logger.warning('FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  - {}'.format(sources_registry))
         length = len(search_mechanisms)
         if length > 0:
             searchable_result.test_status = 'pass'
@@ -1113,7 +1113,7 @@ class FAIRCheck:
                 else:
                     no_match.append(std_ns)
             if len(no_match)>0:
-                self.logger.info('FsF-R1.3-01M : Namespaces excluded as they are not found in RDA metadata catalog - {}'.format(no_match))
+                self.logger.info('FsF-R1.3-01M : Excluded namespaces they are not listed in RDA metadata catalog - {}'.format(no_match))
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
         if len(self.community_standards)> 0:
