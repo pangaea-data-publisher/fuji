@@ -16,7 +16,7 @@ class MetaDataCollectorMicroData (MetaDataCollector):
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().MICRODATA.value
             ext_meta = self.source_metadata[0]
-
+        self.logger.info('FsF-F2-01M : Trying to identify Microdata metadata')
         if ext_meta is not None:
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type

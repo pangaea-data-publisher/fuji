@@ -24,7 +24,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
     def parse_metadata(self):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
-        self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
+        self.logger.info('FsF-F2-01M : Trying to extract metadata from {}'.format(self.source_name))
         rdf_metadata=dict()
         if self.rdf_graph is None:
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
@@ -47,6 +47,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 rdf_metadata = self.get_dcat_metadata(rdf_response)
             elif bool(set(ontology_indicator) & set(dict(list(rdf_response.namespaces())).values())):
                 rdf_metadata = self.get_ontology_metadata(rdf_response)
+            else:
+                self.logger.info('FsF-F2-01M : Could not identify RDF metadata')
             #add found namespaces URIs to namespace
             for ns in rdf_response.namespaces():
                 self.namespaces.append(str(ns[1]))
