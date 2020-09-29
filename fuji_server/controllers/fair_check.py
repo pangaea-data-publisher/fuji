@@ -1,4 +1,27 @@
 # -*- coding: utf-8 -*-
+
+# MIT License
+#
+# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import logging
 import mimetypes
 import re
@@ -12,6 +35,9 @@ import Levenshtein
 import idutils
 import lxml
 import rdflib
+from rdflib.namespace import RDF
+from rdflib.namespace import DCTERMS
+from rdflib.namespace import DC
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
@@ -140,6 +166,8 @@ class FAIRCheck:
         pid_output = PersistenceOutput()
 
         # ======= CHECK IDENTIFIER UNIQUENESS =======
+        schemes = [i[0] for i in idutils.PID_SCHEMES]
+        self.logger.info('FsF-F1-01D : Using idutils schemes')
         found_ids = idutils.detect_identifier_schemes(self.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.info('FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
@@ -161,7 +189,6 @@ class FAIRCheck:
 
             # ======= CHECK IDENTIFIER PERSISTENCE =======
             self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(Mapper.VALID_PIDS.value))
-
             if found_id in Mapper.VALID_PIDS.value:
                 self.pid_scheme = found_id
                 # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -249,13 +276,16 @@ class FAIRCheck:
         self.retrieve_apis_standards()
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards from re3data')
+        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
         client_id = self.metadata_merged.get('datacite_client')
         self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
+
         if self.oaipmh_endpoint:
             self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
         else:
+            #find endpoint via datacite/re3data if pid is provided
             if client_id and self.pid_scheme:
+                self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
                 repoHelper = RepositoryHelper(client_id, self.pid_scheme)
                 repoHelper.lookup_re3data()
                 self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
@@ -295,15 +325,13 @@ class FAIRCheck:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
         # RDFa
+        RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
+        errors=[]
         try:
             rdfagraph = rdflib.Graph()
             rdfagraph.parse(data=self.landing_html, format='rdfa')
-        except:
-            pass
-
-        if rdfagraph is not None:
             rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
                                                   rdf_graph=rdfagraph)
             source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
@@ -315,8 +343,10 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
-        else:
+        except:
             self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
+
+
 
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -509,6 +539,7 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not all required metadata elements exists, so set the status as = insufficient metadata')
             metadata_status = 'insufficient metadata' # status should follow enumeration in yaml
+
             meta_score.earned = 0
             test_status = 'fail'
 
@@ -629,8 +660,7 @@ class FAIRCheck:
         #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
-        #4) CreativeCommons check for https://creativecommons.org/licenses/
-        #5) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
+        #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
         self.count += 1
         access_identifier = 'FsF-A1-01M'
         access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
@@ -639,7 +669,7 @@ class FAIRCheck:
         access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
         access_output = DataAccessOutput()
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        rights_regex = r'((creativecommons\.org|purl\.org|\/coar\access_right|purl\.org\/eprint\/accessRights|europa\.eu|\/resource\/authority\/access-right)\/{1}(\S*)|info\:eu-repo\/semantics\/\w+)'
+        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
 
         access_level = None
         access_details = {}
@@ -651,6 +681,7 @@ class FAIRCheck:
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            #access_rights = 'info:eu-repo/semantics/restrictedAccess'
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
@@ -658,8 +689,10 @@ class FAIRCheck:
                 if not self.isLicense(access_right, access_identifier):  # exclude license-based text from access_rights
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
+                        last_group = len(rights_match.groups())
+                        filtered_rights = rights_match[last_group]
                         for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code, rights_match[1], re.IGNORECASE):
+                            if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
                                 self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
@@ -803,7 +836,7 @@ class FAIRCheck:
         license_result = License(id=self.count, metric_identifier=license_identifier, metric_name=license_mname)
         licenses_list = []
         specified_licenses = self.metadata_merged.get('license')
-        #can be both:empty list and None
+
         if specified_licenses is not None and specified_licenses !=[]:
             if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
                 specified_licenses = [specified_licenses]
@@ -836,7 +869,7 @@ class FAIRCheck:
         return license_result.to_dict()
 
     def lookup_license_by_url(self, u, metric_id):
-        self.logger.info('{0} : Search license SPDX details by url - {1}'.format(metric_id, u))
+        self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
         for item in FAIRCheck.SPDX_LICENSES:
@@ -855,7 +888,7 @@ class FAIRCheck:
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('{0} : Search license SPDX details by name - {1}'.format(metric_id, lvalue))
+        self.logger.info('{0} : Verify name through SPDX registry - {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRCheck.SPDX_LICENSE_NAMES]
         if max(sim) > 0.85:
@@ -973,7 +1006,7 @@ class FAIRCheck:
         mime_url_pair = {}
         if len(self.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.content_identifier]
-            self.logger.info('FsF-R1.3-02D : Object content identifier provided - {}'.format(content_urls))
+            self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
             for data_file in self.content_identifier:
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
@@ -1059,6 +1092,7 @@ class FAIRCheck:
         communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
 
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
+
         # ============== retrieve community standards by collected namespace uris
         if len(self.namespace_uri) > 0:
             no_match = []
@@ -1540,3 +1574,4 @@ class FAIRCheck:
         if self.isDebug:
             protocol_result.test_debug = self.msg_filter.getMessage(protocol_identifier)
         return protocol_result.to_dict()
+
