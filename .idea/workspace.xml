@@ -19,14 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be0b3caa-1b45-43d5-bb11-a9d015b761d9" name="Default Changelist" comment="Microdata support">
+    <list default="true" id="be0b3caa-1b45-43d5-bb11-a9d015b761d9" name="Default Changelist" comment="chenged some log messages">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/client/ex_evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuji_server/controllers/fair_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/controllers/fair_check.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_microdata.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_microdata.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_rdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_rdf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_schemaorg.py" beforeDir="false" afterPath="$PROJECT_DIR$/fuji_server/helper/metadata_collector_schemaorg.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +98,21 @@
       <option name="project" value="LOCAL" />
       <updated>1600950380954</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fixed RDFa bug -&gt; empty dict">
+      <created>1601369773525</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1601369773525</updated>
+    </task>
+    <task id="LOCAL-00004" summary="chenged some log messages">
+      <created>1601369868264</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1601369868264</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -120,7 +130,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="RDFA support&#10;Inproved namespace handling to detect metadata standards&#10;Changed list for search engine supportive metadata exposure" />
     <MESSAGE value="Microdata support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Microdata support" />
+    <MESSAGE value="fixed RDFa bug -&gt; empty dict" />
+    <MESSAGE value="chenged some log messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="chenged some log messages" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600883443872">
@@ -143,10 +155,18 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1259" height="400" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1601369654213" />
-    <state x="93" y="93" width="1095" height="504" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1600938090445">
+    <state x="121" y="51" key="MergeDialog" timestamp="1601369980905">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="93" y="93" width="1095" height="504" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.689@0.0.1280.689" timestamp="1600938090445" />
+    <state x="121" y="51" key="MergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1601369980905" />
+    <state x="280" y="106" key="MultipleFileMergeDialog" timestamp="1601369988101">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="280" y="106" key="MultipleFileMergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1601369988101" />
+    <state x="93" y="93" width="1095" height="504" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601370084074">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="93" y="93" width="1095" height="504" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.689@0.0.1280.689" timestamp="1601370084074" />
     <state x="346" y="78" width="589" height="534" key="find.popup" timestamp="1601367485665">
       <screen x="0" y="0" width="1280" height="689" />
     </state>

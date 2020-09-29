@@ -73,6 +73,7 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'http://doi.org/10.25914/5eaa30de53244']
 #DCAT DDI
 testpids=['http://dda.dk/catalogue/150']
+testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
 startpid=None
