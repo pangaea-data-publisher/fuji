@@ -1574,4 +1574,3 @@ class FAIRCheck:
         if self.isDebug:
             protocol_result.test_debug = self.msg_filter.getMessage(protocol_identifier)
         return protocol_result.to_dict()
-
