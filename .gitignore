@@ -6,3 +6,5 @@
 /fuji_server/tests/
 /fuji_server/cuba/
 /fuji_server/logs/
+.idea/
+*.pyc
