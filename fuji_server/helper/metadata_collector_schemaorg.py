@@ -1,29 +1,9 @@
 import logging
+
 import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
-# MIT License
-#
-# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+
 
 class MetaDataCollectorSchemaOrg (MetaDataCollector):
     source_name=None
@@ -32,7 +12,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
-    def parse_metadata(self, ls=None):
+    def parse_metadata(self):
         jsnld_metadata = {}
         ext_meta=None
         if self.source_metadata:
@@ -72,31 +52,14 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             else:
                                 jsnld_metadata['creator'] = [str(first) + " " + str(last)]
 
-                        #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
-                        invalid_license = False
-                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(jsnld_metadata.get('license')))
                         if jsnld_metadata.get('license'):
                             if isinstance(jsnld_metadata.get('license'), list):
-                                jsnld_metadata['license'] = jsnld_metadata['license'][0]
-                            if isinstance(jsnld_metadata.get('license'), dict):
-                                ls_type = jsnld_metadata.get('license').get('@type')
-                                if ls_type =='CreativeWork':
-                                    ls = jsnld_metadata.get('license').get('url')
-                                    if not ls:
-                                        ls = jsnld_metadata.get('license').get('name')
-                                    if ls:
-                                        jsnld_metadata['license'] = ls
-                                    else:
-                                        invalid_license = True
-                                else:
-                                    invalid_license = True
-                        if invalid_license:
-                            self.logger.warning('FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.')
-                            jsnld_metadata['license'] = None
+                                #self.logger.info('FsF-R1.1-01M : Non-string license metadata is specified - {0}'.format(jsnld_metadata.get('license')))
+                                jsnld_metadata['license'] = jsnld_metadata.get('license')[0]
 
                         # filter out None values of related_resources
                         if jsnld_metadata.get('related_resources'):
-                            relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                            relateds =  [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                             if relateds:
                                 jsnld_metadata['related_resources'] = relateds
                                 self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))

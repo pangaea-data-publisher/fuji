@@ -5,7 +5,7 @@ info:
     Metrics</a>. <p> This work was supported by the <a href='https://www.fairsfair.eu/'>FAIRsFAIR</a>
     project (H2020-INFRAEOSC-2018-2020 Grant Agreement 831558).
   contact:
-    email: anusuriya.devaraju@googlemail.com ; rhuber@marum.de
+    email: adevaraju@marum.de
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -14,8 +14,10 @@ externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
 servers:
-- url: http://localhost:1071/fuji/api/v1
+- url: https://localhost:1071/fuji/api/v1
   description: Development Server
+security:
+- UserLogin: []
 tags:
 - name: FAIR object
   description: FAIRness assessment of a data object
@@ -84,11 +86,6 @@ paths:
           description: Object not found
       x-openapi-router-controller: fuji_server.controllers.fair_metric_controller
 components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
-      x-basicInfoFunc: fuji_server.controllers.authorization_controller.checkUser
   schemas:
     FAIRResults:
       type: object
@@ -354,7 +351,7 @@ components:
         core_metadata_status:
           type: string
           enum:
-          - insufficent metadata
+          - no metadata
           - partial metadata
           - all metadata
         core_metadata_found:
@@ -640,6 +637,8 @@ components:
           explode: false
           schema:
             type: string
-
-security:
-- basicAuth: []
+  securitySchemes:
+    UserLogin:
+      type: http
+      scheme: basic
+      x-basicInfoFunc: fuji_server.controllers.authorization_controller.check_UserLogin

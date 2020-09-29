@@ -1,25 +1,3 @@
-# MIT License
-#
-# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import logging
 import sys
 from enum import Enum
@@ -27,6 +5,7 @@ import extruct
 import rdflib
 import requests
 from requests.packages.urllib3.exceptions import *
+from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
@@ -80,12 +59,12 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
+                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type},verify=True)
                 status_code = self.http_response.status_code
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
-                    content_type = self.http_response.headers.get("Content-Type")
+                    content_type = self.http_response.headers["Content-Type"]
                     #TODO content type is sometimes wrongly given.. try to infer the type from request
                     if content_type is not None:
                         if 'text/plain' in content_type:
@@ -134,13 +113,13 @@ class RequestHelper:
                 else:
                     self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
             except requests.exceptions.SSLError as e:
-                self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
+                self.logger.warning('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.exception("SSLError: {}".format(e))
                 self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
             except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.exception("{} : RequestException: {}".format(metric_id, e))
+                self.logger.exception("RequestException: {}".format(e))
                 self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
         return source, self.parse_response
 

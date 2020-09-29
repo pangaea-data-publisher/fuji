@@ -1,28 +1,8 @@
-# MIT License
-#
-# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
+import sys
 
 import idutils
 import rdflib
+from rdflib.plugins.sparql.results.jsonresults import JSONResultSerializer
 from rdflib import Namespace
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
@@ -51,9 +31,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
             requestHelper.setAcceptType(AcceptTypes.rdf)
             neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
             #required for metric knowledge representation
-            self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
-            if self.content_type is not None:
-                self.content_type = self.content_type.split(";", 1)[0]
+            self.content_type = requestHelper.getHTTPResponse().headers['content-type']
+            self.content_type = self.content_type.split(";", 1)[0]
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 

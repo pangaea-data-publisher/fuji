@@ -4,13 +4,8 @@ controller generated to handled auth operation described at:
 https://connexion.readthedocs.io/en/latest/security.html
 """
 
-service_username = None
-service_password = None
+def check_UserLogin(username, password, required_scopes):
+    return {'username': 'password'}
 
-def checkUser(username, password, required_scopes=None):
-    if username == service_username and password == service_password:
-        return {'username':service_password, 'password': service_password}
-    else:
-        return None
 
 

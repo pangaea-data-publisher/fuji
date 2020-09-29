@@ -1,25 +1,3 @@
-# MIT License
-#
-# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 from fuji_server.helper.metadata_provider import MetadataProvider
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from lxml import etree
@@ -53,7 +31,6 @@ class OAIMetadataProvider(MetadataProvider):
             ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
             metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
             metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
-            metadata_schema = metadata_schema.strip()
             self.namespaces.append(metadata_schema)
             # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
             if not any(s in metadata_schema for s in filter):

@@ -1,4 +1,4 @@
-werkzeug
+beautifulsoup4
 lxml
 rdflib<5.0.0
 six
