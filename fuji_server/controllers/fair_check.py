@@ -299,15 +299,14 @@ class FAIRCheck:
             rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
                                                   rdf_graph=rdfagraph)
             source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
-            if len(rdfa_dict) > 0:
-                self.metadata_sources.append(rdfasource)
-                self.namespace_uri.extend(rdfa_collector.getNamespaces())
-                #rdfa_dict['object_identifier']=self.pid_url
-                rdfa_dict = self.exclude_null(rdfa_dict)
-                for i in rdfa_dict.keys():
-                    if i in self.reference_elements:
-                        self.metadata_merged[i] = rdfa_dict[i]
-                        self.reference_elements.remove(i)
+            self.metadata_sources.append(rdfasource)
+            self.namespace_uri.extend(rdfa_collector.getNamespaces())
+            #rdfa_dict['object_identifier']=self.pid_url
+            rdfa_dict = self.exclude_null(rdfa_dict)
+            for i in rdfa_dict.keys():
+                if i in self.reference_elements:
+                    self.metadata_merged[i] = rdfa_dict[i]
+                    self.reference_elements.remove(i)
         else:
             self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
 
