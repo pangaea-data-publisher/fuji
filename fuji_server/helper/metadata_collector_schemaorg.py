@@ -57,65 +57,65 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta['@context']).find('://schema.org') > -1:
-                    if ext_meta['@type'] in check_context_type:
-                        self.namespaces.append('http://schema.org/')
-                        jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
-                        # TODO all properties with null values extracted through jmespath should be excluded
-                        if jsnld_metadata.get('creator') is None:
-                            #TODO: handle None values for first and last name
-                            first = jsnld_metadata.get('creator_first')
-                            last = jsnld_metadata.get('creator_last')
-                            if isinstance(first, list) and isinstance(last, list):
-                                if len(first) == len(last):
-                                    names = [str(i) + " " + str(j) for i, j in zip(first, last)]
-                                    jsnld_metadata['creator'] = names
-                            else:
-                                jsnld_metadata['creator'] = [str(first) + " " + str(last)]
+                    if ext_meta['@type'] not in check_context_type:
+                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a scientific schema.org object (e.g. Dataset)')
 
-                        #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
-                        invalid_license = False
-                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(jsnld_metadata.get('license')))
-                        if jsnld_metadata.get('license'):
-                            if isinstance(jsnld_metadata.get('license'), list):
-                                jsnld_metadata['license'] = jsnld_metadata['license'][0]
-                            if isinstance(jsnld_metadata.get('license'), dict):
-                                ls_type = jsnld_metadata.get('license').get('@type')
-                                if ls_type =='CreativeWork':
-                                    ls = jsnld_metadata.get('license').get('url')
-                                    if not ls:
-                                        ls = jsnld_metadata.get('license').get('name')
-                                    if ls:
-                                        jsnld_metadata['license'] = ls
-                                    else:
-                                        invalid_license = True
+                    self.namespaces.append('http://schema.org/')
+                    jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                    # TODO all properties with null values extracted through jmespath should be excluded
+                    if jsnld_metadata.get('creator') is None:
+                        #TODO: handle None values for first and last name
+                        first = jsnld_metadata.get('creator_first')
+                        last = jsnld_metadata.get('creator_last')
+                        if isinstance(first, list) and isinstance(last, list):
+                            if len(first) == len(last):
+                                names = [str(i) + " " + str(j) for i, j in zip(first, last)]
+                                jsnld_metadata['creator'] = names
+                        else:
+                            jsnld_metadata['creator'] = [str(first) + " " + str(last)]
+
+                    #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
+                    invalid_license = False
+                    self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(jsnld_metadata.get('license')))
+                    if jsnld_metadata.get('license'):
+                        if isinstance(jsnld_metadata.get('license'), list):
+                            jsnld_metadata['license'] = jsnld_metadata['license'][0]
+                        if isinstance(jsnld_metadata.get('license'), dict):
+                            ls_type = jsnld_metadata.get('license').get('@type')
+                            if ls_type =='CreativeWork':
+                                ls = jsnld_metadata.get('license').get('url')
+                                if not ls:
+                                    ls = jsnld_metadata.get('license').get('name')
+                                if ls:
+                                    jsnld_metadata['license'] = ls
                                 else:
                                     invalid_license = True
-                        if invalid_license:
-                            self.logger.warning('FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.')
-                            jsnld_metadata['license'] = None
-
-                        # filter out None values of related_resources
-                        if jsnld_metadata.get('related_resources'):
-                            relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
-                            if relateds:
-                                jsnld_metadata['related_resources'] = relateds
-                                self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
                             else:
-                                del jsnld_metadata['related_resources']
-                                self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+                                invalid_license = True
+                    if invalid_license:
+                        self.logger.warning('FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.')
+                        jsnld_metadata['license'] = None
 
-                        # TODO quick-fix, expand mapping expression instead
-                        if jsnld_metadata.get('object_size'):
-                            jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+                    # filter out None values of related_resources
+                    if jsnld_metadata.get('related_resources'):
+                        relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                        if relateds:
+                            jsnld_metadata['related_resources'] = relateds
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
+                        else:
+                            del jsnld_metadata['related_resources']
+                            self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
 
-                    else:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                    # TODO quick-fix, expand mapping expression instead
+                    if jsnld_metadata.get('object_size'):
+                        jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+
                 else:
-                    self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object')
+                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+
             except Exception as err:
                 #print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
-
         return self.source_name, jsnld_metadata
