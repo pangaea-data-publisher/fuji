@@ -944,10 +944,12 @@ class FAIRCheck:
         #TODO: format may be specified in the metadata. but the data content uri is missing. will this pass the test?
         if not self.content_identifier: #self.content_identifier only includes uris that are accessible
             contents = self.metadata_merged.get('object_content_identifier')
+            unique_types = []
             if contents:
                 for c in contents:
                     if c.get('type'):
-                        self.logger.info('FsF-R1.3-02D : File format specified - {}'.format(c.get('type')))
+                        unique_types.append(c.get('type'))
+                self.logger.info('FsF-R1.3-02D : File format(s) specified - {}'.format(list(set(unique_types))))
 
         mime_url_pair = {}
         if len(self.content_identifier) > 0:
