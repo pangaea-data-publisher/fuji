@@ -73,6 +73,7 @@ class FAIRCheck:
     SPDX_LICENSE_NAMES = None
     COMMUNITY_STANDARDS_NAMES = None
     COMMUNITY_METADATA_STANDARDS_URIS = None
+    COMMUNITY_METADATA_STANDARDS_URIS_LIST = None
     COMMUNITY_STANDARDS = None
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
@@ -125,6 +126,7 @@ class FAIRCheck:
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
         if not cls.COMMUNITY_METADATA_STANDARDS_URIS:
             cls.COMMUNITY_METADATA_STANDARDS_URIS = Preprocessor.get_metadata_standards_uris()
+            cls.COMMUNITY_METADATA_STANDARDS_URIS_LIST = list(cls.COMMUNITY_METADATA_STANDARDS_URIS.keys())
         if not cls.COMMUNITY_STANDARDS:
             cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
@@ -275,6 +277,10 @@ class FAIRCheck:
         # detect api and standards
         self.retrieve_apis_standards()
 
+        # remove duplicates
+        if self.namespace_uri:
+            self.namespace_uri = list(set(self.namespace_uri))
+
     def retrieve_apis_standards(self):
         self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
         client_id = self.metadata_merged.get('datacite_client')
@@ -290,7 +296,7 @@ class FAIRCheck:
                 repoHelper.lookup_re3data()
                 self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
                 self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                self.community_standards = repoHelper.getRe3MetadataStandards()
+                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
                 self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
 
         # retrieve metadata standards info from oai-pmh
@@ -300,11 +306,14 @@ class FAIRCheck:
                 oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
                 self.community_standards_uri = oai_provider.getMetadataStandards()
                 self.namespace_uri.extend(oai_provider.getNamespaces())
-                self.logger.info('{} : Standards listed through OAI-PMH endpoint- {}'.format('FsF-R1.3-01M', list(self.community_standards_uri.keys())))
+                stds = None
+                if self.community_standards_uri:
+                    stds = list(self.community_standards_uri.keys())
+                self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
             else:
                 self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
         else:
-            self.logger.warning('{} : No OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+            self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
 
 
     def retrieve_metadata_embedded(self, extruct_metadata):
@@ -345,9 +354,6 @@ class FAIRCheck:
                     self.reference_elements.remove(i)
         except:
             self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
-
-
-
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
@@ -395,6 +401,7 @@ class FAIRCheck:
             if links:
                 self.metadata_merged['object_content_identifier'] = links
                 self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
+
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -766,67 +773,6 @@ class FAIRCheck:
             islicense = True
         return islicense
 
-    # def check_data_access_level_old(self):
-    #     #Focus on machine readable rights -> URIs only
-    #     #1) http://vocabularies.coar-repositories.org/documentation/access_rights/ check for http://purl.org/coar/access_right
-    #     #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
-    #     #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
-    #     #4) CreativeCommons check for https://creativecommons.org/licenses/
-    #     #5) <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
-    #     self.count += 1
-    #     access_identifier = 'FsF-A1-01M'
-    #     access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
-    #     access_sc = int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
-    #     access_score = FAIRResultCommonScore(total=access_sc)
-    #     access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
-    #     access_output = DataAccessOutput()
-    #     rights_regex = r'((creativecommons\.org\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-    #     access_rights = self.metadata_merged.get('access_level')
-    #
-    #     if access_rights is not None:
-    #         self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-    #     if isinstance(access_rights, str):
-    #         access_rights = [access_rights]
-    #     if isinstance(access_rights, bool):
-    #         if access_rights:
-    #             access_output.access_level = "public"
-    #         else:
-    #             access_output.access_level = "restricted"
-    #         access_output.access_details = {'access_right': {'https://schema.org/isAccessibleForFree': access_rights}}
-    #         access_score.earned = 1
-    #         access_result.test_status = "pass"
-    #     else:
-    #         access_licenses = self.metadata_merged.get('license')
-    #         if access_licenses is not None:
-    #             if isinstance(access_licenses, str):
-    #                 access_licenses=[access_licenses]
-    #             if access_rights is not None:
-    #                 access_licenses.extend(access_rights)
-    #             for access_right in access_licenses:
-    #                 rights_match = re.search(rights_regex, access_right)
-    #                 if rights_match is not None:
-    #                     access_result.test_status = "pass"
-    #                     for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-    #                         if re.search(right_code,rights_match[1]):
-    #                             access_output.access_level = right_status
-    #                             access_score.earned = 1
-    #                             self.logger.info('FsF-A1-01M : Rights information recognized as: '+str(right_status))
-    #                             break
-    #                     self.logger.info('FsF-A1-01M : Found access rights information in metadata')
-    #                     access_output.access_details={'access_right': rights_match[1]}
-    #                     break
-    #             if access_score.earned==0:
-    #                 self.logger.warning('FsF-A1-01M : No rights information is available in metadata')
-    #                 access_result.test_status = "fail"
-    #                 access_score.earned = 0
-    #         else:
-    #             self.logger.warning('FsF-A1-01M : No rights or licence information is included in metadata')
-    #     access_result.score=access_score
-    #     access_result.output=access_output
-    #     if self.isDebug:
-    #         access_result.test_debug = self.msg_filter.getMessage(access_identifier)
-    #     return access_result.to_dict()
-
     def check_license(self):
         self.count += 1
         license_identifier = 'FsF-R1.1-01M'  # FsF-R1.1-01M: Data Usage Licence
@@ -1092,32 +1038,34 @@ class FAIRCheck:
         communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
 
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
-
+        if self.namespace_uri:
+            self.namespace_uri = list(set(self.namespace_uri))
         # ============== retrieve community standards by collected namespace uris
         if len(self.namespace_uri) > 0:
             no_match = []
             self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata - {}'.format(self.namespace_uri))
             for std_ns in self.namespace_uri:
-                if std_ns in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
-                    subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
-                    std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('title')
+                std_ns_temp = self.lookup_metadatastandard_by_uri(std_ns)
+                #if std_ns_temp in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
+                if std_ns_temp:
+                    subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('subject_areas')
+                    std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('title')
                     if subject and all(elem == "Multidisciplinary" for elem in subject):
-                        self.logger.info(
-                        'FsF-R1.3-01M : Skipping non-disciplinary standard found in namespaces - {}'.format(std_name))
+                        self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard found through namespaces - {}'.format(std_ns))
                     else:
                         nsout = CommunityEndorsedStandardOutputInner()
-                        nsout.metadata_standard = std_name
-                        nsout.subject_areas = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns).get('subject_areas')
-                        nsout.urls = [std_ns]
+                        nsout.metadata_standard = std_name #use here original standard uri detected
+                        nsout.subject_areas = subject
+                        nsout.urls = [subject]
                         standards_detected.append(nsout)
                 else:
                     no_match.append(std_ns)
             if len(no_match)>0:
-                self.logger.info('FsF-R1.3-01M : Excluded namespaces they are not listed in RDA metadata catalog - {}'.format(no_match))
+                self.logger.info('FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog - {}'.format(no_match))
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
-        if len(self.community_standards)> 0:
-            if not standards_detected:
+        if len(self.community_standards) > 0:
+            if len(standards_detected) == 0:
                 self.logger.info('FsF-R1.3-01M : Use re3data the source of metadata standard(s)')
                 for s in self.community_standards:
                     standard_found = self.lookup_metadatastandard_by_name(s)
@@ -1132,7 +1080,7 @@ class FAIRCheck:
                             out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                             standards_detected.append(out)
             else:
-                self.logger.info('FsF-R1.3-01M : Metadata standard(s) listed in re3data, but excluded from the assessment output.')
+                self.logger.info('FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.')
         else:
             self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the reposiroty specified in re3data')
 
@@ -1140,7 +1088,7 @@ class FAIRCheck:
             communitystd_score.earned = communitystd_sc
             communitystd_result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-01M : Unable to determine community standard')
+            self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
 
         communitystd_result.score = communitystd_score
         communitystd_result.output = standards_detected
@@ -1153,6 +1101,14 @@ class FAIRCheck:
         # get standard name with the highest matching percentage using fuzzywuzzy
         highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
         if highest[1] > 80:
+            found = highest[0]
+        return found
+
+    def lookup_metadatastandard_by_uri(self, value):
+        found = None
+        # get standard uri with the highest matching percentage using fuzzywuzzy
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS_LIST, scorer=fuzz.token_sort_ratio)
+        if highest[1] > 90:
             found = highest[0]
         return found
 
@@ -1277,7 +1233,7 @@ class FAIRCheck:
                 except Exception as e:
                     self.logger.warning('{0} : Could not retrive/parse content object - {1}'.format(data_content_metadata_identifier, e))
             else:
-                self.logger.warning('FsF-R1-01MD : No data object content available/accessible to perform file descriptors (type and size) tests')
+                self.logger.warning('FsF-R1-01MD : NO data object content available/accessible to perform file descriptors (type and size) tests')
 
         # 3. check file type and size descriptors of parsed data file only (ref:test_data_content_url)
         if test_data_content_url:
@@ -1445,8 +1401,9 @@ class FAIRCheck:
         semanticvocab_result = DataProvenance(id=self.count, metric_identifier=semanticvocab_identifier, metric_name=semanticvocab_name)
 
         #remove duplicates
-        self.namespace_uri = list(set(self.namespace_uri))
-        self.namespace_uri = [x.strip() for x in self.namespace_uri]
+        if self.namespace_uri:
+            self.namespace_uri = list(set(self.namespace_uri))
+            self.namespace_uri = [x.strip() for x in self.namespace_uri]
         self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata - {1}'.format(semanticvocab_identifier, len(self.namespace_uri)))
 
         # exclude white list
