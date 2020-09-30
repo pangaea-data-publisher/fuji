@@ -84,6 +84,7 @@ class RepositoryHelper:
             if apiType in RepositoryHelper.RE3DATA_APITYPES:
                 self.repo_apis[a.attrib['apiType']] = a.text
         standards = root.xpath('//r3d:metadataStandard/r3d:metadataStandardName', namespaces=RepositoryHelper.ns)
+        #we only use the name as the url specified in re3data is dcc-based, e.g., http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format
         self.repo_standards = [s.text for s in standards]
 
     def getRe3MetadataStandards(self):
