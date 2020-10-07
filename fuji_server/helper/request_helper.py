@@ -131,6 +131,8 @@ class RequestHelper:
 
                                     # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
                                 break
+                    else:
+                        self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                 else:
                     self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
             except requests.exceptions.SSLError as e:
