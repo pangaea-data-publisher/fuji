@@ -243,12 +243,13 @@ class FAIRCheck:
         if isinstance(extruct_metadata, dict):
             embedded_exists = {k: v for k, v in extruct_metadata.items() if v}
             self.extruct = embedded_exists.copy()
-            self.logger.info(
-                'FsF-F2-01M : Formats of structured metadata embedded in HTML markup {}'.format(embedded_exists.keys()))
             if embedded_exists:  # retrieve metadata from landing page
+                self.logger.info(
+                    'FsF-F2-01M : Formats of structured metadata embedded in HTML markup - {}'.format(
+                        list(embedded_exists.keys())))
                 self.retrieve_metadata_embedded(embedded_exists)
-        else:
-            self.logger.warning('FsF-F2-01M : NO structured metadata embedded in HTML')
+            else:
+                self.logger.warning('FsF-F2-01M : NO structured metadata embedded in HTML')
 
         if self.reference_elements:  # this will be always true as we need datacite client id
             self.retrieve_metadata_external()
@@ -353,7 +354,7 @@ class FAIRCheck:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
         except:
-            self.logger.info('FsF-F2-01M : RDFa metadata UNAVAILABLE')
+            self.logger.warning('FsF-F2-01M : RDFa metadata parsing exception')
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
