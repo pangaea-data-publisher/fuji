@@ -7,7 +7,7 @@ from fuji_server.models.uniqueness_output import UniquenessOutput
 
 from fuji_server.models.uniqueness import Uniqueness
 
-from fuji_server.client.evaluations.fair_evaluator import FAIREvaluator
+from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 
 
 class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
@@ -32,10 +32,10 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             else:
                 if 'url' in found_ids:  # ['doi', 'url']
                     found_ids.remove('url')
-
             found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
             self.logger.info('FsF-F1-01D : Finalized unique identifier scheme - {}'.format(found_id))
             self.output.guid_scheme = found_id
             self.result.test_status = 'pass'
             self.result.score = self.score
             self.result.output = self.output
+        return found_id

@@ -114,6 +114,7 @@ def main():
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=debug)
             uid_result, pid_result = ft.check_unique_persistent()
+            uid_result = ft.check_unique_identifier()
             core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
             check_searchable_result = ft.check_searchable()
