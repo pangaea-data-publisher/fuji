@@ -1,8 +1,6 @@
 import idutils
-
 from fuji_server import Persistence, PersistenceOutput
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urllib.parse import urlparse

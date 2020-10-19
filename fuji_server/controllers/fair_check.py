@@ -45,6 +45,7 @@ from tika import parser
 from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
 from fuji_server.evaluators.fair_evaluator_unique_identifier import FAIREvaluatorUniqueIdentifier
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
+from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
@@ -594,6 +595,11 @@ class FAIRCheck:
         '''
 
     def check_content_identifier_included(self):
+        content_included_check = FAIREvaluatorContentIncluded(self)
+        content_included_check.set_metric('FsF-F3-01M', metrics=FAIRCheck.METRICS)
+        return content_included_check.getResult()
+
+        '''
         self.count += 1
         did_included_identifier = 'FsF-F3-01M'  # FsF-F3-01M: Inclusion of data identifier in metadata
         included_name = FAIRCheck.METRICS.get(did_included_identifier).get('metric_name')
@@ -612,6 +618,8 @@ class FAIRCheck:
         score = 0
         # This (check if object id is active) is already done ein check_unique_persistent
         '''
+
+        '''
         if FAIRCheck.uri_validator(
                 id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
             # check resolving status
@@ -629,6 +637,7 @@ class FAIRCheck:
                 self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
         else:
             self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
+        '''
         '''
         content_list = []
         if contents:
@@ -690,6 +699,7 @@ class FAIRCheck:
         if self.isDebug:
             did_result.test_debug = self.msg_filter.getMessage(did_included_identifier)
         return did_result.to_dict()
+        '''
 
     def check_data_access_level(self):
         #Focus on machine readable rights -> URIs only

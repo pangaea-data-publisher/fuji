@@ -1,9 +1,3 @@
-import logging
-
-import idutils
-
-from fuji_server import CoreMetadata, CoreMetadataOutput
-from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator

@@ -1,8 +1,5 @@
-import logging
-
 import idutils
 
-from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.models.uniqueness_output import UniquenessOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
