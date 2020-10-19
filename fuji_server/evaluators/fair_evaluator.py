@@ -5,14 +5,14 @@ from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.helper.log_message_filter import MessageFilter
 
 class FAIREvaluator:
-    def __init__(self, count, logger, is_debug, data_cache):
-
+    def __init__(self, fuji_instance):
+        self.fuji=fuji_instance
         self.metric_identifier = None
         self.metrics = None
         self.result = None
-        self.isDebug=is_debug
-        self.count = count
-        self.logger = logger
+        self.isDebug=self.fuji.isDebug
+        self.count = self.fuji.count
+        self.logger = self.fuji.logger
         if self.isDebug == True:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)

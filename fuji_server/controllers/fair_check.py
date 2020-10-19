@@ -42,7 +42,10 @@ from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
 
+from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
 from fuji_server.evaluators.fair_evaluator_unique_identifier import FAIREvaluatorUniqueIdentifier
+from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
+
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -67,8 +70,6 @@ from fuji_server.models.metadata_preserved import MetadataPreserved
 from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 from fuji_server.models.standardised_protocol import StandardisedProtocol
 from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
-
-from fuji_server.evaluators.data_cache import DataCache
 
 
 class FAIRCheck:
@@ -96,6 +97,7 @@ class FAIRCheck:
         self.landing_html = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
         self.pid_scheme = None
+        self.id_scheme= None
         self.logger = logging.getLogger(self.__class__.__name__)
         self.metadata_sources = []
         self.isDebug = test_debug
@@ -120,7 +122,6 @@ class FAIRCheck:
         self.extruct = None
         self.tika_content_types_list = []
 
-        self.cached_data = DataCache(uid)
 
     @classmethod
     def load_predata(cls):
@@ -158,12 +159,18 @@ class FAIRCheck:
             return False
 
     def check_unique_identifier(self):
-        unique_identifier_check = FAIREvaluatorUniqueIdentifier(count=self.count + 1, fuji= self)
+        unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)
         unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
-        unique_identifier_check.setID(self.id)
         return unique_identifier_check.getResult()
 
+    def check_persistent_identifier(self):
+        persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
+        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=FAIRCheck.METRICS)
+        return persistent_identifier_check.getResult()
+
     def check_unique_persistent(self):
+        return self.check_unique_identifier(), self.check_persistent_identifier()
+        '''
         uid_metric_identifier = 'FsF-F1-01D'  # FsF-F1-01D: Globally unique identifier
         pid_metric_identifier = 'FsF-F1-02D'  # FsF-F1-02D: Persistent identifier
         uid_metric_name = FAIRCheck.METRICS.get(uid_metric_identifier).get('metric_name')
@@ -250,6 +257,7 @@ class FAIRCheck:
 
         self.retrieve_metadata(result)
         return uid_result.to_dict(), pid_result.to_dict()
+        '''
 
     def retrieve_metadata(self, extruct_metadata):
         if isinstance(extruct_metadata, dict):
@@ -534,7 +542,14 @@ class FAIRCheck:
         else:
             return dt
 
+
+
     def check_minimal_metatadata(self):
+
+        core_metadata_check = FAIREvaluatorCoreMetadata(self)
+        core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
+        return core_metadata_check.getResult()
+    '''
         self.count += 1
         coremeta_identifier = 'FsF-F2-01M'
         meta_sc = int(FAIRCheck.METRICS.get(coremeta_identifier).get('total_score'))
@@ -576,6 +591,7 @@ class FAIRCheck:
         if self.isDebug:
             meta_result.test_debug = self.msg_filter.getMessage(coremeta_identifier)
         return meta_result.to_dict()
+        '''
 
     def check_content_identifier_included(self):
         self.count += 1
