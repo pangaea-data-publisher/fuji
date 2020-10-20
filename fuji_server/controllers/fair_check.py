@@ -42,6 +42,8 @@ from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
 
+from fuji_server.evaluators.fair_evaluator_check_license import FAIREvaluatorLicense
+from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
 from fuji_server.evaluators.fair_evaluator_unique_identifier import FAIREvaluatorUniqueIdentifier
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
@@ -171,94 +173,6 @@ class FAIRCheck:
 
     def check_unique_persistent(self):
         return self.check_unique_identifier(), self.check_persistent_identifier()
-        '''
-        uid_metric_identifier = 'FsF-F1-01D'  # FsF-F1-01D: Globally unique identifier
-        pid_metric_identifier = 'FsF-F1-02D'  # FsF-F1-02D: Persistent identifier
-        uid_metric_name = FAIRCheck.METRICS.get(uid_metric_identifier).get('metric_name')
-        pid_metric_name = FAIRCheck.METRICS.get(pid_metric_identifier).get('metric_name')
-        self.count += 1
-        uid_result = Uniqueness(id=self.count, metric_identifier=uid_metric_identifier, metric_name=uid_metric_name)
-        self.count += 1
-        pid_result = Persistence(id=self.count, metric_identifier=pid_metric_identifier, metric_name=pid_metric_name)
-        uid_sc = int(FAIRCheck.METRICS.get(uid_metric_identifier).get('total_score'))
-        pid_sc = int(FAIRCheck.METRICS.get(pid_metric_identifier).get('total_score'))
-        uid_score = FAIRResultCommonScore(total=uid_sc)
-        pid_score = FAIRResultCommonScore(total=pid_sc)
-        uid_output = UniquenessOutput()
-        pid_output = PersistenceOutput()
-
-        # ======= CHECK IDENTIFIER UNIQUENESS =======
-        schemes = [i[0] for i in idutils.PID_SCHEMES]
-        self.logger.info('FsF-F1-01D : Using idutils schemes')
-        found_ids = idutils.detect_identifier_schemes(self.id)  # some schemes like PMID are generic
-        if len(found_ids) > 0:
-            self.logger.info('FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
-            uid_output.guid = self.id
-            uid_score.earned = uid_sc
-            # identify main scheme
-            if len(found_ids) == 1 and found_ids[0] == 'url':  # only url included
-                self.pid_url = self.id
-            else:
-                if 'url' in found_ids:  # ['doi', 'url']
-                    found_ids.remove('url')
-
-            found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
-            self.logger.info('FsF-F1-01D : Finalized unique identifier scheme - {}'.format(found_id))
-            uid_output.guid_scheme = found_id
-            uid_result.test_status = 'pass'
-            uid_result.score = uid_score
-            uid_result.output = uid_output
-
-            # ======= CHECK IDENTIFIER PERSISTENCE =======
-            self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(Mapper.VALID_PIDS.value))
-            if found_id in Mapper.VALID_PIDS.value:
-                self.pid_scheme = found_id
-                # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
-                self.pid_url = idutils.to_url(self.id, scheme=self.pid_scheme)
-                self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.pid_scheme))
-            else:
-                pid_score.earned = 0
-                self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(found_id))
-
-            # ======= RETRIEVE METADATA FROM LANDING PAGE =======
-            requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.html)  # request
-            neg_source, result = requestHelper.content_negotiate('FsF-F1-02D')
-            #TODO: what if other protocols are used e.g. FTP etc..
-            r = requestHelper.getHTTPResponse()
-            if r:
-                if r.status_code == 200:
-                    self.landing_url = r.url
-                    up = urlparse(self.landing_url)
-                    self.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
-                    self.landing_html = r.text
-                    if self.pid_scheme:
-                        pid_score.earned = pid_sc  # idenfier should be based on a persistence scheme and resolvable
-                        pid_output.pid = self.id
-                        pid_output.pid_scheme = self.pid_scheme
-                        pid_result.test_status = 'pass'
-                    pid_output.resolved_url = self.landing_url  # url is active, although the identifier is not based on a pid scheme
-                    pid_output.resolvable_status = True
-                    self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
-                    self.isMetadataAccessible = True
-                else:
-                    if r.status_code in [401, 402, 403]:
-                        self.isMetadataAccessible = False
-                    #if r.status_code == 401:
-                        #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
-                    self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
-            pid_result.score = pid_score
-            pid_result.output = pid_output
-
-            if self.isDebug:
-                uid_result.test_debug = self.msg_filter.getMessage(uid_metric_identifier)
-                pid_result.test_debug = self.msg_filter.getMessage(pid_metric_identifier)
-        else:
-            self.logger.warning('FsF-F1-01D : Failed to check the identifier scheme!.')
-
-        self.retrieve_metadata(result)
-        return uid_result.to_dict(), pid_result.to_dict()
-        '''
 
     def retrieve_metadata(self, extruct_metadata):
         if isinstance(extruct_metadata, dict):
@@ -543,261 +457,25 @@ class FAIRCheck:
         else:
             return dt
 
-
-
     def check_minimal_metatadata(self):
-
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
         core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
         return core_metadata_check.getResult()
-    '''
-        self.count += 1
-        coremeta_identifier = 'FsF-F2-01M'
-        meta_sc = int(FAIRCheck.METRICS.get(coremeta_identifier).get('total_score'))
-        meta_score = FAIRResultCommonScore(total=meta_sc)
-        coremeta_name = FAIRCheck.METRICS.get(coremeta_identifier).get('metric_name')
-        meta_result = CoreMetadata(id=self.count, metric_identifier=coremeta_identifier, metric_name=coremeta_name)
-        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
-        metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
-        self.logger.info('FsF-F2-01M : Required core metadata elements {}'.format(metadata_required))
-
-        partial_elements = ['creator', 'title', 'object_identifier', 'publication_date']
-        #TODO: check the number of metadata elements which metadata_found has in common with metadata_required
-        #set(a) & set(b)
-        if set(metadata_found) == set(metadata_required):
-            metadata_status = 'all metadata'
-            meta_score.earned = meta_sc
-            test_status = 'pass'
-        elif set(partial_elements).issubset(metadata_found):
-            metadata_status = 'partial metadata'
-            meta_score.earned = meta_sc - 1
-            test_status = 'pass'
-        else:
-            self.logger.info('FsF-F2-01M : Not all required metadata elements exists, so set the status as = insufficient metadata')
-            metadata_status = 'insufficient metadata' # status should follow enumeration in yaml
-
-            meta_score.earned = 0
-            test_status = 'fail'
-
-        missing = list(set(metadata_required) - set(metadata_found))
-        if missing:
-            self.logger.warning('FsF-F2-01M : Missing core metadata %s' % (missing))
-
-        meta_output: CoreMetadataOutput = CoreMetadataOutput(core_metadata_status=metadata_status,
-                                                             core_metadata_source=self.metadata_sources)
-        meta_output.core_metadata_found = metadata_found
-        meta_result.test_status = test_status
-        meta_result.score = meta_score
-        meta_result.output = meta_output
-        if self.isDebug:
-            meta_result.test_debug = self.msg_filter.getMessage(coremeta_identifier)
-        return meta_result.to_dict()
-        '''
 
     def check_content_identifier_included(self):
         content_included_check = FAIREvaluatorContentIncluded(self)
         content_included_check.set_metric('FsF-F3-01M', metrics=FAIRCheck.METRICS)
         return content_included_check.getResult()
 
-        '''
-        self.count += 1
-        did_included_identifier = 'FsF-F3-01M'  # FsF-F3-01M: Inclusion of data identifier in metadata
-        included_name = FAIRCheck.METRICS.get(did_included_identifier).get('metric_name')
-        did_result = IdentifierIncluded(id=self.count, metric_identifier=did_included_identifier, metric_name=included_name)
-        did_sc = int(FAIRCheck.METRICS.get(did_included_identifier).get('total_score'))
-        did_score = FAIRResultCommonScore(total=did_sc)
-        did_output = IdentifierIncludedOutput()
-
-        #id_object = None
-        id_object = self.metadata_merged.get('object_identifier')
-        did_output.object_identifier_included = id_object
-        contents = self.metadata_merged.get('object_content_identifier')
-
-        if id_object is not None:
-            self.logger.info('FsF-F3-01M : Object identifier specified {}'.format(id_object))
-        score = 0
-        # This (check if object id is active) is already done ein check_unique_persistent
-        '''
-
-        '''
-        if FAIRCheck.uri_validator(
-                id_object):  # TODO: check if specified identifier same is provided identifier (handle pid and non-pid cases)
-            # check resolving status
-            try:
-                request = requests.get(id_object)
-                if request.status_code == 200:
-
-                    self.logger.info('FsF-F3-01M : Object identifier active (status code = 200)')
-                    score += 1
-                else:
-                    if request.status_code in [401,402,403]:
-                        self.isRestricted = True
-                    self.logger.warning("Identifier returned response code: {code}".format(code=request.status_code))
-            except:
-                self.logger.warning('FsF-F3-01M : Object identifier does not exist or could not be accessed {}'.format(id_object))
-        else:
-            self.logger.warning('FsF-F3-01M : Invalid Identifier - {}'.format(id_object))
-        '''
-        '''
-        content_list = []
-        if contents:
-            if isinstance(contents, dict):
-                contents = [contents]
-            contents = [c for c in contents if c]
-            number_of_contents = len(contents)
-            self.logger.info('FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
-
-            if number_of_contents >= FAIRCheck.FILES_LIMIT:
-                self.logger.info('FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first {} content identifiers'.format(FAIRCheck.FILES_LIMIT))
-                contents = contents[:FAIRCheck.FILES_LIMIT]
-
-            for content_link in contents:
-                if content_link.get('url'):
-                    #self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
-                    did_output_content = IdentifierIncludedOutputInner()
-                    did_output_content.content_identifier_included = content_link
-                    try:
-                        # only check the status, do not download the content
-                        response=urllib.urlopen(content_link.get('url'))
-                        content_link['header_content_type'] = response.getheader('Content-Type')
-                        content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
-                        content_link['header_content_length'] = response.getheader('Content-Length')
-                        if content_link['header_content_type'] != content_link.get('type'):
-                            self.logger.warning('FsF-F3-01M : Content type given in metadata ('+str(content_link.get('type'))+') differs from content type given in Header response ('+str(content_link['header_content_type'])+')')
-                            self.logger.info('FsF-F3-01M : Replacing metadata content type with content type from Header response: '+str(content_link['header_content_type']))
-                            content_link['type'] = content_link['header_content_type']
-                        #will pass even if the url cannot be accessed which is OK
-                        #did_result.test_status = "pass"
-                        #did_score.earned=1
-                    except urllib.HTTPError as e:
-                        self.logger.warning(
-                            'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(content_link.get('url'), e.code))
-                    except urllib.URLError as e:
-                        self.logger.exception(e.reason)
-                    except:
-                        self.logger.warning('FsF-F3-01M : Could not access the resource')
-                    else:  # will be executed if there is no exception
-                        self.content_identifier.append(content_link)
-                        did_output_content.content_identifier_active = True
-                        content_list.append(did_output_content)
-                else:
-                    self.logger.warning('FsF-F3-01M : Object (content) url is empty - {}'.format(content_link))
-
-        else:
-            self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
-
-        if content_list:
-            score += 1
-        did_score.earned = score
-        if score > 0:
-            did_result.test_status = "pass"
-
-        did_output.content = content_list
-        did_result.output = did_output
-        did_result.score = did_score
-
-        if self.isDebug:
-            did_result.test_debug = self.msg_filter.getMessage(did_included_identifier)
-        return did_result.to_dict()
-        '''
-
     def check_data_access_level(self):
-        #Focus on machine readable rights -> URIs only
-        #1) http://vocabularies.coar-repositories.org/documentation/access_rights/
-        #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
-        #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
-        #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
-        self.count += 1
-        access_identifier = 'FsF-A1-01M'
-        access_name = FAIRCheck.METRICS.get(access_identifier).get('metric_name')
-        access_sc = int(FAIRCheck.METRICS.get(access_identifier).get('total_score'))
-        access_score = FAIRResultCommonScore(total=access_sc)
-        access_result = DataAccessLevel(self.count, metric_identifier=access_identifier, metric_name=access_name)
-        access_output = DataAccessOutput()
-        #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+        data_access_level_check = FAIREvaluatorDataAccessLevel(self)
+        data_access_level_check.set_metric('FsF-A1-01M', metrics=FAIRCheck.METRICS)
+        return data_access_level_check.getResult()
 
-        access_level = None
-        access_details = {}
-        score = 0
-        test_status = "fail"
-        exclude = []
-        access_rights = self.metadata_merged.get('access_level')
-
-        #access_rights can be None or []
-        if access_rights:
-            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-            access_rights = 'info:eu-repo/semantics/restrictedAccess'
-            if isinstance(access_rights, str):
-                access_rights = [access_rights]
-            for access_right in access_rights:
-                self.logger.info('FsF-A1-01M : Access information specified - {}'.format(access_right))
-                if not self.isLicense(access_right, access_identifier):  # exclude license-based text from access_rights
-                    rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
-                    if rights_match is not None:
-                        last_group = len(rights_match.groups())
-                        filtered_rights = rights_match[last_group]
-                        for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code, filtered_rights, re.IGNORECASE):
-                                access_level = right_status
-                                access_details['access_condition'] = rights_match[1] #overwrite existing condition
-                                self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
-                                break
-                        break
-                    else:
-                        self.logger.info('FsF-A1-01M : Not a standardized access level')
-                else:
-                    self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored - {}'.format(access_right))
-                    exclude.append(access_right)
-            if not access_details and access_rights:
-                access_rights = set(access_rights) - set(exclude)
-                if access_rights :
-                    access_details['access_condition'] = ', '.join(access_rights)
-        else:
-            self.logger.warning('FsF-A1-01M : NO access information is available in metadata')
-            score = 0
-
-        if access_level is None:
-            # fall back - use binary access
-            access_free = self.metadata_merged.get('access_free')
-            if access_free is not None:
-                self.logger.info('FsF-A1-01M : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)')
-                if access_free: # schema.org: isAccessibleForFree || free
-                    access_level = "public"
-                else:
-                    access_level = "restricted"
-                access_details['accessible_free'] = access_free
-            #TODO assume access_level = restricted if access_rights provided?
-
-        #if embargoed, publication date must be specified (for now score is not deducted, just outputs warning message)
-        if access_level == 'embargoed':
-            available_date = self.metadata_merged.get('publication_date')
-            if available_date:
-                self.logger.info('FsF-A1-01M : Embargoed access, available date - {}'.format(available_date))
-                access_details['available_date'] = available_date
-            else:
-                self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
-
-        if access_level or access_details:
-            score = 1
-            test_status = "pass"
-        #if access_details:
-            #score += 1
-        #if score > 1:
-            #test_status = "pass"
-
-        access_score.earned = score
-        access_result.score = access_score
-        access_result.test_status = test_status
-        if access_level: #must be one of ['public', 'embargoed', 'restricted', 'closed_metadataonly']
-            access_output.access_level = access_level
-        else:
-            self.logger.warning('FsF-A1-01M : Unable to determine the access level')
-        access_output.access_details = access_details
-        access_result.output = access_output
-        if self.isDebug:
-            access_result.test_debug = self.msg_filter.getMessage(access_identifier)
-        return access_result.to_dict()
+    def check_license(self):
+        license_check = FAIREvaluatorLicense(self)
+        license_check.set_metric('FsF-R1.1-01M', metrics=FAIRCheck.METRICS)
+        return license_check.getResult()
 
     def isLicense (self, value, metric_id):
         islicense = False
@@ -811,47 +489,6 @@ class FAIRCheck:
         if spdx_html or spdx_osi:
             islicense = True
         return islicense
-
-    def check_license(self):
-        self.count += 1
-        license_identifier = 'FsF-R1.1-01M'  # FsF-R1.1-01M: Data Usage Licence
-        license_mname = FAIRCheck.METRICS.get(license_identifier).get('metric_name')
-        license_sc = int(FAIRCheck.METRICS.get(license_identifier).get('total_score'))
-        license_score = FAIRResultCommonScore(total=license_sc)
-        license_result = License(id=self.count, metric_identifier=license_identifier, metric_name=license_mname)
-        licenses_list = []
-        specified_licenses = self.metadata_merged.get('license')
-
-        if specified_licenses is not None and specified_licenses !=[]:
-            if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
-                specified_licenses = [specified_licenses]
-            for l in specified_licenses:
-                license_output = LicenseOutputInner()
-                #license can be dict or
-                license_output.license = l
-                if isinstance(l, str):
-                    isurl = idutils.is_url(l)
-                if isurl:
-                    spdx_html, spdx_osi = self.lookup_license_by_url(l, license_identifier)
-                else:  # maybe licence name
-                    spdx_html, spdx_osi = self.lookup_license_by_name(l, license_identifier)
-                if not spdx_html:
-                    self.logger.warning('FsF-R1.1-01M : NO SPDX license representation (spdx url, osi_approved) found')
-                license_output.details_url = spdx_html
-                license_output.osi_approved = spdx_osi
-                licenses_list.append(license_output)
-            license_result.test_status = "pass"
-            license_score.earned = license_sc
-        else:
-            license_score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : License unavailable')
-
-        license_result.output = licenses_list
-        license_result.score = license_score
-
-        if self.isDebug:
-            license_result.test_debug = self.msg_filter.getMessage(license_identifier)
-        return license_result.to_dict()
 
     def lookup_license_by_url(self, u, metric_id):
         self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))

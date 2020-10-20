@@ -38,7 +38,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             Mapper.VALID_PIDS.value))
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
-            self.fuji.pid_url = idutils.to_url(self.id, scheme=self.fuji.pid_scheme)
+            self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
             self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
