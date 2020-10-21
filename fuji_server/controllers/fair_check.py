@@ -42,12 +42,14 @@ from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
 
-from fuji_server.evaluators.fair_evaluator_check_license import FAIREvaluatorLicense
+from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
 from fuji_server.evaluators.fair_evaluator_unique_identifier import FAIREvaluatorUniqueIdentifier
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
 from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
+from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
+from fuji_server.evaluators.fair_evaluator_searchable import FAIREvaluatorSearchable
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
@@ -477,132 +479,18 @@ class FAIRCheck:
         license_check.set_metric('FsF-R1.1-01M', metrics=FAIRCheck.METRICS)
         return license_check.getResult()
 
-    def isLicense (self, value, metric_id):
-        islicense = False
-        isurl = idutils.is_url(value)
-        spdx_html = None
-        spdx_osi = None
-        if isurl:
-            spdx_html, spdx_osi = self.lookup_license_by_url(value, metric_id)
-        else:
-            spdx_html, spdx_osi = self.lookup_license_by_name(value, metric_id)
-        if spdx_html or spdx_osi:
-            islicense = True
-        return islicense
 
-    def lookup_license_by_url(self, u, metric_id):
-        self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))
-        html_url = None
-        isOsiApproved = False
-        for item in FAIRCheck.SPDX_LICENSES:
-            # u = u.lower()
-            # if any(u in v.lower() for v in item.values()):
-            seeAlso = item['seeAlso']
-            if any(u in v for v in seeAlso):
-                self.logger.info('{0} : Found SPDX license representation - {1}'.format(metric_id, item['detailsUrl']))
-                # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
-                html_url = item['detailsUrl'].replace(".json", ".html")
-                isOsiApproved = item['isOsiApproved']
-                break
-        return html_url, isOsiApproved
-
-    def lookup_license_by_name(self, lvalue, metric_id):
-        # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
-        html_url = None
-        isOsiApproved = False
-        self.logger.info('{0} : Verify name through SPDX registry - {1}'.format(metric_id, lvalue))
-        # Levenshtein distance similarity ratio between two license name
-        sim = [Levenshtein.ratio(lvalue.lower(), i) for i in FAIRCheck.SPDX_LICENSE_NAMES]
-        if max(sim) > 0.85:
-            index_max = max(range(len(sim)), key=sim.__getitem__)
-            sim_license = FAIRCheck.SPDX_LICENSE_NAMES[index_max]
-            found = next((item for item in FAIRCheck.SPDX_LICENSES if item['name'] == sim_license), None)
-            self.logger.info('FsF-R1.1-01M: Found SPDX license representation - {}'.format(found['detailsUrl']))
-            # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
-            html_url = found['detailsUrl'].replace(".json", ".html")
-            isOsiApproved = found['isOsiApproved']
-        return html_url, isOsiApproved
 
     def check_relatedresources(self):
-        self.count += 1
-        related_identifier = 'FsF-I3-01M'  # FsF-I3-01M: Meaningful links to related entities
-        related_mname = FAIRCheck.METRICS.get(related_identifier).get('metric_name')
-        related_sc = int(FAIRCheck.METRICS.get(related_identifier).get('total_score'))
-        related_score = FAIRResultCommonScore(total=related_sc)
-        related_result = RelatedResource(id=self.count, metric_identifier=related_identifier, metric_name=related_mname)
-        related_output = RelatedResourceOutput()
-        self.logger.info('{0} : Total number of related resources extracted - {1}'.format(related_identifier, len(self.related_resources)))
+        related_check = FAIREvaluatorRelatedResources(self)
+        related_check.set_metric('FsF-I3-01M', metrics=FAIRCheck.METRICS)
+        return related_check.getResult()
 
-        #if self.metadata_merged.get('related_resources'):
-        if self.related_resources:
-            #QC check: exclude potential incorrect relation
-            self.related_resources = [item for item in self.related_resources if item.get('related_resource') != self.pid_url]
-            self.logger.info('{0} : Number of related resources after QC step - {1}'.format(related_identifier, len(self.related_resources)))
-
-        if self.related_resources: #TODO include source of relation
-            related_output = self.related_resources
-            related_result.test_status = 'pass'
-            related_score.earned = related_sc
-
-        related_result.score = related_score
-        related_result.output = related_output
-        if self.isDebug:
-            related_result.test_debug = self.msg_filter.getMessage(related_identifier)
-        return related_result.to_dict()
 
     def check_searchable(self):
-        self.count += 1
-        searchable_identifier = 'FsF-F4-01M'  # FsF-F4-01M: Searchable metadata
-        searchable_name = FAIRCheck.METRICS.get(searchable_identifier).get('metric_name')
-        searchable_result = Searchable(id=self.count, metric_identifier=searchable_identifier, metric_name=searchable_name)
-        searchable_sc = int(FAIRCheck.METRICS.get(searchable_identifier).get('total_score'))
-        searchable_score = FAIRResultCommonScore(total=searchable_sc)
-        searchable_output = SearchableOutput()
-        search_mechanisms = []
-        sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value]
-        all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction - {}'.format(all))
-        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
-                                  MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
-                                  MetaDataCollector.Sources.DUBLINCORE.value,
-                                  MetaDataCollector.Sources.SIGN_POSTING.value,
-                                  MetaDataCollector.Sources.RDFA.value,
-                                  MetaDataCollector.Sources.LINKED_DATA.value,
-                                  MetaDataCollector.Sources.LINKED_DATA.RDF_SIGN_POSTING.value]
-
-        # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match: List[Any] = list(set(self.metadata_sources).intersection(search_engines_support))
-        if search_engine_support_match:
-            search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-            self.logger.info('FsF-F4-01M : Metadata found through - structured data')
-        else:
-            self.logger.warning('FsF-F4-01M : Metadata is NOT found through - {}'.format(search_engines_support))
-
-        registry_support_match = list(set(self.metadata_sources).intersection(sources_registry))
-        if registry_support_match:
-            search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
-            self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
-        else:
-            self.logger.warning('FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  - {}'.format(sources_registry))
-        length = len(search_mechanisms)
-        if length > 0:
-            searchable_result.test_status = 'pass'
-            if length == 2:
-                searchable_score.earned = searchable_sc
-            if length == 1:
-                searchable_score.earned = searchable_sc - 1
-        else:
-            self.logger.warning('NO search mechanism supported')
-
-        searchable_result.score = searchable_score
-        searchable_output.search_mechanisms = search_mechanisms
-        searchable_result.output = searchable_output
-
-        if self.isDebug:
-            searchable_result.test_debug = self.msg_filter.getMessage(searchable_identifier)
-        return searchable_result.to_dict()
+        searchable_check = FAIREvaluatorSearchable(self)
+        searchable_check.set_metric('FsF-F4-01M', metrics=FAIRCheck.METRICS)
+        return searchable_check.getResult()
 
     def check_data_file_format(self):
         #open_formats=['image/apng','text/csv','application/json']

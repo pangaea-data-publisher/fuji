@@ -23,6 +23,7 @@
 # SOFTWARE.
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.models.data_access_level import DataAccessLevel
 from fuji_server.models.data_access_output import DataAccessOutput
 from fuji_server.helper.metadata_mapper import Mapper
@@ -37,6 +38,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
         self.result = DataAccessLevel(self.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = DataAccessOutput()
+        licence_evaluator = FAIREvaluatorLicense(self.fuji)
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
         rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
 
@@ -55,7 +57,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 access_rights = [access_rights]
             for access_right in access_rights:
                 self.logger.info('FsF-A1-01M : Access information specified - {}'.format(access_right))
-                if not self.fuji.isLicense(access_right, self.metric_identifier):  # exclude license-based text from access_rights
+                if not licence_evaluator.isLicense(value=access_right, metric_id=self.metric_identifier):  # exclude license-based text from access_rights
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
                         last_group = len(rights_match.groups())
