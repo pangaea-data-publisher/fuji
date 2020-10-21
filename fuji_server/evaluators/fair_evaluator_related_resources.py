@@ -29,7 +29,7 @@ from fuji_server.models.related_resource_output import RelatedResourceOutput
 
 class FAIREvaluatorRelatedResources(FAIREvaluator):
     def evaluate(self):
-        self.result = RelatedResource(id=self.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = RelatedResource(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = RelatedResourceOutput()
 
         self.logger.info('{0} : Total number of related resources extracted - {1}'.format(self.metric_identifier,

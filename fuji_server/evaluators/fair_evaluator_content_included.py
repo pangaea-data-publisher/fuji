@@ -29,7 +29,7 @@ import urllib.request as urllib
 
 class FAIREvaluatorContentIncluded(FAIREvaluator):
     def evaluate(self):
-        self.result = IdentifierIncluded(id=self.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = IdentifierIncluded(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = IdentifierIncludedOutput()
 
         id_object = self.fuji.metadata_merged.get('object_identifier')

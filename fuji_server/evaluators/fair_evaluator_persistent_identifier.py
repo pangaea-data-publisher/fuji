@@ -31,7 +31,7 @@ from urllib.parse import urlparse
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
     def evaluate(self):
-        self.result = Persistence(id=self.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = Persistence(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = PersistenceOutput()
         # ======= CHECK IDENTIFIER PERSISTENCE =======
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(

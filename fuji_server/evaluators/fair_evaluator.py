@@ -34,7 +34,7 @@ class FAIREvaluator:
         self.metrics = None
         self.result = None
         self.isDebug=self.fuji.isDebug
-        self.count = self.fuji.count
+        self.fuji.count = self.fuji.count+1
         self.logger = self.fuji.logger
         if self.isDebug == True:
             self.msg_filter = MessageFilter()

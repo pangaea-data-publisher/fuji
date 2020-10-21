@@ -28,8 +28,8 @@ from fuji_server.models.license import License
 from fuji_server.models.license_output import LicenseOutput
 from fuji_server.models.license_output_inner import LicenseOutputInner
 import idutils
-
 from fuji_server.helper.metadata_mapper import Mapper
+
 class FAIREvaluatorLicense(FAIREvaluator):
 
     def isLicense (self, value, metric_id):
@@ -80,7 +80,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def evaluate(self):
 
-        self.result = License(id=self.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = License(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         licenses_list = []
         specified_licenses = self.fuji.metadata_merged.get('license')
 
