@@ -55,6 +55,7 @@ from fuji_server.evaluators.fair_evaluator_data_provenance import FAIREvaluatorD
 from fuji_server.evaluators.fair_evaluator_data_content_metadata import FAIREvaluatorDataContentMetadata
 from fuji_server.evaluators.fair_evaluator_formal_metadata import FAIREvaluatorFormalMetadata
 from fuji_server.evaluators.fair_evaluator_semantic_vocabulary import FAIREvaluatorSemanticVocabulary
+from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
@@ -607,34 +608,9 @@ class FAIRCheck:
         return semantic_vocabulary_check.getResult()
 
     def check_metadata_preservation(self):
-        self.count += 1
-        registry_bound_pid=['doi']
-        preservation_identifier = 'FsF-A2-01M'
-        preservation_name = FAIRCheck.METRICS.get(preservation_identifier).get('metric_name')
-        preservation_sc = int(FAIRCheck.METRICS.get(preservation_identifier).get('total_score'))
-        preservation_score = FAIRResultCommonScore(total=preservation_sc)
-        preservation_result = MetadataPreserved(id=self.count, metric_identifier=preservation_identifier,
-                                              metric_name=preservation_name)
-        outputs = []
-        test_status = 'fail'
-        score = 0
-        if self.pid_scheme:
-            if self.pid_scheme in registry_bound_pid:
-                test_status = 'pass'
-                outputs.append(MetadataPreservedOutput(metadata_preservation_method='datacite'))
-                score = 1
-                self.logger.info(
-                    '{0} : Metadata registry bound PID system used: '+self.pid_scheme.format(preservation_identifier))
-            else:
-                self.logger.info(
-                    '{0} : NO metadata registry bound PID system used'.format(preservation_identifier))
-        preservation_score.earned = score
-        preservation_result.score = preservation_score
-        preservation_result.output = outputs
-        preservation_result.test_status = test_status
-        if self.isDebug:
-            preservation_result.test_debug = self.msg_filter.getMessage(preservation_identifier)
-        return preservation_result.to_dict()
+        metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
+        metadata_preserved_check.set_metric('FsF-A2-01M', metrics=FAIRCheck.METRICS)
+        return metadata_preserved_check.getResult()
 
     def check_standardised_protocol(self):
         self.count += 1
