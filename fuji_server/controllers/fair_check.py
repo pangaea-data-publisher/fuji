@@ -56,6 +56,8 @@ from fuji_server.evaluators.fair_evaluator_data_content_metadata import FAIREval
 from fuji_server.evaluators.fair_evaluator_formal_metadata import FAIREvaluatorFormalMetadata
 from fuji_server.evaluators.fair_evaluator_semantic_vocabulary import FAIREvaluatorSemanticVocabulary
 from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
+from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
+from fuji_server.evaluators.fair_evaluator_standardised_protocol import FAIREvaluatorStandardisedProtocol
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
@@ -504,72 +506,9 @@ class FAIRCheck:
         return data_file_check.getResult()
 
     def check_community_metadatastandards(self):
-
-        self.count += 1
-        communitystd_identifier = 'FsF-R1.3-01M'  # FsF-R1.3-01M: Community-endorsed metadata
-        communitystd_name = FAIRCheck.METRICS.get(communitystd_identifier).get('metric_name')
-        communitystd_result = Searchable(id=self.count, metric_identifier=communitystd_identifier, metric_name=communitystd_name)
-        communitystd_sc = int(FAIRCheck.METRICS.get(communitystd_identifier).get('total_score'))
-        communitystd_score = FAIRResultCommonScore(total=communitystd_sc)
-
-        standards_detected: List[CommunityEndorsedStandardOutputInner] = []
-        if self.namespace_uri:
-            self.namespace_uri = list(set(self.namespace_uri))
-        # ============== retrieve community standards by collected namespace uris
-        if len(self.namespace_uri) > 0:
-            no_match = []
-            self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata - {}'.format(self.namespace_uri))
-            for std_ns in self.namespace_uri:
-                std_ns_temp = self.lookup_metadatastandard_by_uri(std_ns)
-                #if std_ns_temp in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
-                if std_ns_temp:
-                    subject = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('subject_areas')
-                    std_name= FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('title')
-                    if subject and all(elem == "Multidisciplinary" for elem in subject):
-                        self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard found through namespaces - {}'.format(std_ns))
-                    else:
-                        nsout = CommunityEndorsedStandardOutputInner()
-                        nsout.metadata_standard = std_name #use here original standard uri detected
-                        nsout.subject_areas = subject
-                        nsout.urls = [subject]
-                        standards_detected.append(nsout)
-                else:
-                    no_match.append(std_ns)
-            if len(no_match)>0:
-                self.logger.info('FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog - {}'.format(no_match))
-
-        # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
-        if len(self.community_standards) > 0:
-            if len(standards_detected) == 0:
-                self.logger.info('FsF-R1.3-01M : Use re3data the source of metadata standard(s)')
-                for s in self.community_standards:
-                    standard_found = self.lookup_metadatastandard_by_name(s)
-                    if standard_found:
-                        subject = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
-                        if subject and all(elem == "Multidisciplinary" for elem in subject):
-                            self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard - {}'.format(s))
-                        else:
-                            out = CommunityEndorsedStandardOutputInner()
-                            out.metadata_standard = s
-                            out.subject_areas = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
-                            out.urls = FAIRCheck.COMMUNITY_STANDARDS.get(standard_found).get('urls')
-                            standards_detected.append(out)
-            else:
-                self.logger.info('FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.')
-        else:
-            self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the reposiroty specified in re3data')
-
-        if standards_detected:
-            communitystd_score.earned = communitystd_sc
-            communitystd_result.test_status = 'pass'
-        else:
-            self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
-
-        communitystd_result.score = communitystd_score
-        communitystd_result.output = standards_detected
-        if self.isDebug:
-            communitystd_result.test_debug = self.msg_filter.getMessage(communitystd_identifier)
-        return communitystd_result.to_dict()
+        community_metadata_check = FAIREvaluatorCommunityMetadata(self)
+        community_metadata_check.set_metric('FsF-R1.3-01M', metrics=FAIRCheck.METRICS)
+        return community_metadata_check.getResult()
 
     def lookup_metadatastandard_by_name(self, value):
         found = None
@@ -613,54 +552,7 @@ class FAIRCheck:
         return metadata_preserved_check.getResult()
 
     def check_standardised_protocol(self):
-        self.count += 1
-        protocol_identifier = 'FsF-A1-02MD'
-        protocol_name = FAIRCheck.METRICS.get(protocol_identifier).get('metric_name')
-        protocol_sc = int(FAIRCheck.METRICS.get(protocol_identifier).get('total_score'))
-        protocol_score = FAIRResultCommonScore(total=protocol_sc)
-        protocol_result = StandardisedProtocol(id=self.count, metric_identifier=protocol_identifier,
-                                                metric_name=protocol_name)
-        metadata_output = data_output = None
-        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
-        metadata_found = {k: v for k, v in self.metadata_merged.items() if k in metadata_required}
-        test_status = 'fail'
-        score = 0
-        if self.landing_url is not None:
-            # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
-            metadata_parsed_url = urlparse(self.landing_url)
-            metadata_url_scheme = metadata_parsed_url.scheme
-
-            if metadata_url_scheme in FAIRCheck.STANDARD_PROTOCOLS:
-                metadata_output= {metadata_url_scheme:FAIRCheck.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
-                test_status = 'pass'
-                score += 1
-            if set(metadata_found) != set(metadata_required):
-                self.logger.info(
-                    '{0} : NOT all required metadata given, see: FsF-F2-01M'.format(protocol_identifier))
-                #parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
-        else:
-            self.logger.info(
-                '{0} : Metadata Identifier is not actionable or protocol errors occured'.format(protocol_identifier))
-
-        if len(self.content_identifier) > 0:
-            #here we only test the first content identifier
-            data_url = self.content_identifier[0].get('url')
-            data_parsed_url = urlparse(data_url)
-            data_url_scheme = data_parsed_url.scheme
-
-            if data_url_scheme in FAIRCheck.STANDARD_PROTOCOLS:
-                data_output = {data_url_scheme: FAIRCheck.STANDARD_PROTOCOLS.get(data_url_scheme)}
-                test_status = 'pass'
-                score += 1
-        else:
-            self.logger.info(
-                '{0} : NO content (data) identifier is given in metadata'.format(protocol_identifier))
-
-        protocol_score.earned = score
-        protocol_result.score = protocol_score
-        protocol_result.output = StandardisedProtocolOutput(standard_metadata_protocol=metadata_output,standard_data_protocol=data_output)
-        protocol_result.test_status = test_status
-        if self.isDebug:
-            protocol_result.test_debug = self.msg_filter.getMessage(protocol_identifier)
-        return protocol_result.to_dict()
+        standardised_protocol_check = FAIREvaluatorStandardisedProtocol(self)
+        standardised_protocol_check.set_metric('FsF-A1-02MD', metrics=FAIRCheck.METRICS)
+        return standardised_protocol_check.getResult()
 

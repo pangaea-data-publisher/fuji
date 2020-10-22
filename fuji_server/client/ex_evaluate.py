@@ -72,6 +72,10 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'http://doi.org/10.22033/ESGF/CMIP6.4397',
 'http://doi.org/10.25914/5eaa30de53244']
 #DCAT DDI
+testpids=['http://dda.dk/catalogue/150']
+#very large file!!
+testpids=['https://doi.org/10.1594/PANGAEA.902845']
+testpids=['https://doi.org/10.1594/PANGAEA.745671']
 #testpids=['http://dda.dk/catalogue/150']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
@@ -115,8 +119,7 @@ def main():
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=debug)
             uid_result, pid_result = ft.check_unique_persistent()
-            #uid_result = ft.check_unique_identifier()
-            #pid_result = ft.check_persistent_identifier()
+            uid_result = ft.check_unique_identifier()
             core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
             check_searchable_result = ft.check_searchable()
@@ -124,7 +127,6 @@ def main():
             relatedresources_result = ft.check_relatedresources()
             access_level_result=ft.check_data_access_level()
             formal_representation_result=ft.check_formal_metadata()
-            semantic_vocabulary_result = ft.check_semantic_vocabulary()
             data_file_format_result=ft.check_data_file_format()
             data_provenance_result=ft.check_data_provenance()
             community_standards_result=ft.check_community_metadatastandards()
@@ -132,7 +134,7 @@ def main():
             metadata_preserved_result = ft.check_metadata_preservation()
 
             standard_protocol_result = ft.check_standardised_protocol()
-            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,license_result, data_file_format_result,relatedresources_result, data_provenance_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_result,semantic_vocabulary_result]
+            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,license_result, data_file_format_result,data_provenance_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_result]
             #results=[uid_result, pid_result, core_metadata_result,data_file_format_result]
             #print(ft.metadata_merged)
             print(json.dumps(results, indent=4, sort_keys=True))
