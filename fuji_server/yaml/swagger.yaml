@@ -120,7 +120,8 @@ components:
             - $ref: '#/components/schemas/CommunityEndorsedStandard'
             - $ref: '#/components/schemas/DataFileFormat'
             - $ref: '#/components/schemas/MetadataPreserved'
-            - $ref: '#/components/schemas/StandardisedProtocol'
+            - $ref: '#/components/schemas/StandardisedProtocolData'
+            - $ref: '#/components/schemas/StandardisedProtocolMetadata'
     FAIRResultCommon:
       required:
       - id
@@ -281,13 +282,22 @@ components:
               $ref: '#/components/schemas/MetadataPreserved_output'
             test_debug:
               $ref: '#/components/schemas/Debug'
-    StandardisedProtocol:
+    StandardisedProtocolData:
       allOf:
         - $ref: '#/components/schemas/FAIRResultCommon'
         - type: object
           properties:
             output:
-              $ref: '#/components/schemas/StandardisedProtocol_output'
+              $ref: '#/components/schemas/StandardisedProtocolData_output'
+            test_debug:
+              $ref: '#/components/schemas/Debug'
+    StandardisedProtocolMetadata:
+      allOf:
+        - $ref: '#/components/schemas/FAIRResultCommon'
+        - type: object
+          properties:
+            output:
+              $ref: '#/components/schemas/StandardisedProtocolMetadata_output'
             test_debug:
               $ref: '#/components/schemas/Debug'
     FAIRResultCommon_score:
@@ -624,11 +634,14 @@ components:
         is_namespace_active:
           type: boolean
           default: false
-    StandardisedProtocol_output:
+    StandardisedProtocolData_output:
       type: object
       properties:
         standard_data_protocol:
           type: string
+    StandardisedProtocolMetadata_output:
+      type: object
+      properties:
         standard_metadata_protocol:
           type: string
   responses:

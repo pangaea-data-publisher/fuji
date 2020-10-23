@@ -57,7 +57,8 @@ from fuji_server.evaluators.fair_evaluator_formal_metadata import FAIREvaluatorF
 from fuji_server.evaluators.fair_evaluator_semantic_vocabulary import FAIREvaluatorSemanticVocabulary
 from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
-from fuji_server.evaluators.fair_evaluator_standardised_protocol import FAIREvaluatorStandardisedProtocol
+from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAIREvaluatorStandardisedProtocolData
+from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import FAIREvaluatorStandardisedProtocolMetadata
 
 from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
@@ -81,8 +82,8 @@ from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 from fuji_server.models.metadata_preserved import MetadataPreserved
 from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
-from fuji_server.models.standardised_protocol import StandardisedProtocol
-from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
+from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
+from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
 
 
 class FAIRCheck:
@@ -171,18 +172,6 @@ class FAIRCheck:
         except:
             return False
 
-    def check_unique_identifier(self):
-        unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)
-        unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
-        return unique_identifier_check.getResult()
-
-    def check_persistent_identifier(self):
-        persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
-        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=FAIRCheck.METRICS)
-        return persistent_identifier_check.getResult()
-
-    def check_unique_persistent(self):
-        return self.check_unique_identifier(), self.check_persistent_identifier()
 
     def retrieve_metadata(self, extruct_metadata):
         if isinstance(extruct_metadata, dict):
@@ -467,6 +456,36 @@ class FAIRCheck:
         else:
             return dt
 
+    def lookup_metadatastandard_by_name(self, value):
+        found = None
+        # get standard name with the highest matching percentage using fuzzywuzzy
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
+        if highest[1] > 80:
+            found = highest[0]
+        return found
+
+    def lookup_metadatastandard_by_uri(self, value):
+        found = None
+        # get standard uri with the highest matching percentage using fuzzywuzzy
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS_LIST,
+                                     scorer=fuzz.token_sort_ratio)
+        if highest[1] > 90:
+            found = highest[0]
+        return found
+
+    def check_unique_identifier(self):
+        unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)
+        unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
+        return unique_identifier_check.getResult()
+
+    def check_persistent_identifier(self):
+        persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
+        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=FAIRCheck.METRICS)
+        return persistent_identifier_check.getResult()
+
+    def check_unique_persistent(self):
+        return self.check_unique_identifier(), self.check_persistent_identifier()
+
     def check_minimal_metatadata(self):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
         core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
@@ -487,13 +506,10 @@ class FAIRCheck:
         license_check.set_metric('FsF-R1.1-01M', metrics=FAIRCheck.METRICS)
         return license_check.getResult()
 
-
-
     def check_relatedresources(self):
         related_check = FAIREvaluatorRelatedResources(self)
         related_check.set_metric('FsF-I3-01M', metrics=FAIRCheck.METRICS)
         return related_check.getResult()
-
 
     def check_searchable(self):
         searchable_check = FAIREvaluatorSearchable(self)
@@ -509,22 +525,6 @@ class FAIRCheck:
         community_metadata_check = FAIREvaluatorCommunityMetadata(self)
         community_metadata_check.set_metric('FsF-R1.3-01M', metrics=FAIRCheck.METRICS)
         return community_metadata_check.getResult()
-
-    def lookup_metadatastandard_by_name(self, value):
-        found = None
-        # get standard name with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
-        if highest[1] > 80:
-            found = highest[0]
-        return found
-
-    def lookup_metadatastandard_by_uri(self, value):
-        found = None
-        # get standard uri with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS_LIST, scorer=fuzz.token_sort_ratio)
-        if highest[1] > 90:
-            found = highest[0]
-        return found
 
     def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
@@ -551,8 +551,12 @@ class FAIRCheck:
         metadata_preserved_check.set_metric('FsF-A2-01M', metrics=FAIRCheck.METRICS)
         return metadata_preserved_check.getResult()
 
-    def check_standardised_protocol(self):
-        standardised_protocol_check = FAIREvaluatorStandardisedProtocol(self)
-        standardised_protocol_check.set_metric('FsF-A1-02MD', metrics=FAIRCheck.METRICS)
+    def check_standardised_protocol_data(self):
+        standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
+        standardised_protocol_check.set_metric('FsF-A1-03D', metrics=FAIRCheck.METRICS)
         return standardised_protocol_check.getResult()
 
+    def check_standardised_protocol_metadata(self):
+        standardised_protocol_check = FAIREvaluatorStandardisedProtocolMetadata(self)
+        standardised_protocol_check.set_metric('FsF-A1-02M', metrics=FAIRCheck.METRICS)
+        return standardised_protocol_check.getResult()

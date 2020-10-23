@@ -74,17 +74,29 @@ metrics:
   version: 0.3
   total_score: 1
 
-- metric_identifier: FsF-A1-02MD
-  metric_short_name: Standardized Communications Protocol
-  metric_name: Metadata as well as data are retrievable by their identifier using a standardized communications protocol.
-  description: tbd.
+- metric_identifier: FsF-A1-03D
+  metric_short_name: Standardized Communication Protocol of Data
+  metric_name: Data is accessible through a standardized communication protocol.
+  description: Given an identifier of a dataset, the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
   fair_principle: A1
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2020-07-08
+  date_created: 2020-10-23
+  date_updated: 2020-10-23
   version: 0.3
-  total_score: 2
+  total_score: 1
+
+- metric_identifier: FsF-A1-02M
+  metric_short_name: Standardized Communication Protocol of Metadata
+  metric_name: Metadata is accessible through a standardized communication protocol.
+  description: Given an identifier of a dataset, the metadata of the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-10-23
+  date_updated: 2020-10-23
+  version: 0.3
+  total_score: 1
 
 - metric_identifier: FsF-A2-01M
   metric_short_name: Metadata Preservation
