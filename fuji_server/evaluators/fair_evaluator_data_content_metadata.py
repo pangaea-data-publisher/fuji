@@ -26,7 +26,9 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
-
+import requests
+import time
+import traceback
 from tika import parser
 
 class FAIREvaluatorDataContentMetadata(FAIREvaluator):
@@ -64,7 +66,22 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     'FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))
                 try:
                     # Use Tika to parse the file
-                    parsedFile = parser.from_file(test_data_content_url)
+                    response_body=[]
+                    timeout = 10
+                    start = time.time()
+                    r = requests.get(test_data_content_url, verify=False, stream=True)
+                    tika_content_size =0
+                    for chunk in r.iter_content(1024):
+                        response_body.append(chunk)
+                        tika_content_size = tika_content_size + len(chunk)
+                        if time.time() > (start + timeout):
+                            self.logger.warning(
+                                'FsF-R1-01MD : Could not download complete file, skipped after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
+                            tika_content_size = 0
+                            break
+
+                    response_content = b''.join(response_body)
+                    parsedFile = parser.from_buffer(response_content)
                     status = parsedFile.get("status")
                     tika_content_types = parsedFile.get("metadata").get('Content-Type')
                     if isinstance(tika_content_types, list):
@@ -72,7 +89,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     else:
                         content_types_str = tika_content_types.split(';')[0]
                         self.fuji.tika_content_types_list.append(content_types_str)
-
                     # Extract the text content from the parsed file and convert to string
                     self.logger.info(
                         '{0} : File request status code {1}'.format(self.metric_identifier, status))
@@ -84,8 +100,9 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
                 except Exception as e:
                     self.logger.warning(
-                        '{0} : Could not retrive/parse content object - {1}'.format(self.metric_identifier,
+                        '{0} : Could not retrieve/parse content object - {1}'.format(self.metric_identifier,
                                                                                     e))
+                    #traceback.print_exc()
             else:
                 self.logger.warning(
                     'FsF-R1-01MD : NO data object content available/accessible to perform file descriptors (type and size) tests')
@@ -103,10 +120,18 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     descriptor = type
                     descriptor_value = data_object.get(d)
                     matches_content = False
-                    if data_object.get('header_content_type') == data_object.get(
-                            'type'):  # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
-                        matches_content = True
-                        score += 1
+                    #if data_object.get('header_content_type') == data_object.get('type'):
+                    # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
+                    if d == 'type':
+                        if data_object.get('type') in self.fuji.tika_content_types_list:
+                            matches_content = True
+                            score += 1
+                    elif d == 'size':
+                        if tika_content_size == 0:
+                            self.logger.warning('{0} : Could not verify content size from downloaded file'.format(self.metric_identifier))
+                        elif data_object.get('size') == tika_content_size:
+                            matches_content = True
+                            score += 1
                     data_content_filetype_inner = DataContentMetadataOutputInner()
                     data_content_filetype_inner.descriptor = descriptor
                     data_content_filetype_inner.descriptor_value = descriptor_value
