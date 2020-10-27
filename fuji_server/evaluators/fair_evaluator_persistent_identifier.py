@@ -50,12 +50,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         neg_source, result = requestHelper.content_negotiate('FsF-F1-02D')
         #TODO: what if other protocols are used e.g. FTP etc..
         r = requestHelper.getHTTPResponse()
+
         if r:
-            if r.status_code == 200:
+            if r.status == 200:
                 self.fuji.landing_url = r.url
                 up = urlparse(self.fuji.landing_url)
                 self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
-                self.fuji.landing_html = r.text
+                self.fuji.landing_html = requestHelper.getResponseContent()
                 if self.fuji.pid_scheme:
                     self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
                     self.output.pid = self.fuji.id

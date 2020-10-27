@@ -19,13 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import json
 import logging
 import sys
 from enum import Enum
 import extruct
 import rdflib
 import requests
+import urllib
 from requests.packages.urllib3.exceptions import *
 
 class AcceptTypes(Enum):
@@ -54,6 +55,7 @@ class RequestHelper:
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
+        self.response_content = None # normally the response body
 
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
@@ -69,6 +71,9 @@ class RequestHelper:
     def getHTTPResponse(self):
         return self.http_response
 
+    def getResponseContent(self):
+        return self.response_content
+
     def getParsedResponse(self):
         return self.parse_response
 
@@ -80,8 +85,13 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
-                self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
-                status_code = self.http_response.status_code
+                tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type})
+                tp_response =  urllib.request.urlopen(tp_request)
+                self.response_content = tp_response.read().decode('utf-8')
+                self.http_response = tp_response
+                #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
+                #status_code = self.http_response.status_code
+                status_code = self.http_response.status
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
@@ -94,7 +104,7 @@ class RequestHelper:
                             #try to find type by url
                             guessed_format = rdflib.util.guess_format(self.request_url)
                             if guessed_format is not None:
-                                self.parse_response  = self.parse_rdf(self.http_response.text, guessed_format)
+                                self.parse_response  = self.parse_rdf(self.response_content, guessed_format)
                                 source='rdf'
                                   #content_type = content_type.split(";", 1)[0]
                         else:
@@ -104,28 +114,28 @@ class RequestHelper:
                                     if content_type in at.value:
                                         if at.name == 'html':
                                             self.logger.info('%s : Found HTML page!' % metric_id)
-                                            self.parse_response = self.parse_html(self.http_response.text)
+                                            self.parse_response = self.parse_html(self.response_content)
                                             source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            if self.http_response.text.find('<rdf:RDF') > -1:
+                                            if self.http_response.read().find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
-                                                self.parse_response = self.parse_rdf(self.http_response.text, at.name)
+                                                self.parse_response = self.parse_rdf(self.response_content, at.name)
                                                 source='rdf'
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)
-                                                self.parse_response  = self.http_response
+                                                self.parse_response  = self.response_content
                                                 source='xml'
                                             break
                                         if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
-                                            self.parse_response  = self.http_response.json()
+                                            self.parse_response  = json.loads(self.response_content)
                                             source='json'
                                             # result = json.loads(response.text)
                                             break
                                         if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
-                                            self.parse_response  = self.parse_rdf(self.http_response.text, content_type)
+                                            self.parse_response  = self.parse_rdf(self.response_content, content_type)
                                             source='rdf'
                                             break
 

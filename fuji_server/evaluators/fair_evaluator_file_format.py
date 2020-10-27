@@ -40,7 +40,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         self.output = DataFileFormatOutput()
         data_file_list = []
 
-        # TODO: format may be specified in the metadata. but the data content uri is missing. will this pass the test?
         if not self.fuji.content_identifier:  # self.content_identifier only includes uris that are accessible
             contents = self.fuji.metadata_merged.get('object_content_identifier')
             unique_types = []
@@ -80,10 +79,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
 
-            # TODO: change output type instead of is_long_term_format etc use:
-            # is_prefered_format: boolean
-            # type: ['long term format','science format']
-            # domain: list of scientific domains, default: 'General'
             # FILE FORMAT CHECKS....
             # check if format is a scientific one:
             for mimetype, url in mime_url_pair.items():
