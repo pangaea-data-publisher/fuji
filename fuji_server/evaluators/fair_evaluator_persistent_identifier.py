@@ -71,7 +71,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     self.fuji.isMetadataAccessible = False
                 #if r.status_code == 401:
                     #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
-                self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
-        self.fuji.retrieve_metadata(result)
+                self.logger.error("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+
         self.result.score = self.score
         self.result.output = self.output

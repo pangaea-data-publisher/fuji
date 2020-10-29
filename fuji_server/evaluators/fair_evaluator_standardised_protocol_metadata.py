@@ -46,9 +46,14 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
             metadata_url_scheme = metadata_parsed_url.scheme
 
             if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
+                self.logger.info(
+                    '{0} : Standard protocol for access to metadata found: ' + metadata_url_scheme.format(
+                        self.metric_identifier))
+
                 metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
                 test_status = 'pass'
                 score += 1
+            #TODO: check why this is tested - delete if not required
             if set(metadata_found) != set(metadata_required):
                 self.logger.info(
                     '{0} : NOT all required metadata given, see: FsF-F2-01M'.format(self.metric_identifier))

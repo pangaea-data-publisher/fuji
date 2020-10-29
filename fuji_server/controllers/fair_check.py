@@ -313,6 +313,7 @@ class FAIRCheck:
 
         # ========= retrieve dublin core embedded in html page =========
         if self.reference_elements:
+            self.logger.info('FsF-F2-01M : Checking for DublinCore metadata')
             dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
                                                        mapping=Mapper.DC_MAPPING)
             source_dc, dc_dict = dc_collector.parse_metadata()

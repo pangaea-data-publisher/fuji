@@ -48,19 +48,24 @@ class OAIMetadataProvider(MetadataProvider):
         response_type, xml = requestHelper.content_negotiate(self.metric_id)
         schemas = {}
         if xml:
-            root = etree.fromstring(xml.content)
-            metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataProvider.oai_namespaces)
-            for node in metadata_nodes:
-                ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
-                metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
-                metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
-                metadata_schema = metadata_schema.strip()
-                self.namespaces.append(metadata_schema)
-                # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
-                if not any(s in metadata_schema for s in filter):
-                    schemas[metadata_prefix]= [metadata_schema]
-                else:
-                    self.logger.info('{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint - {1}'.format(self.metric_id,metadata_prefix))
+            try:
+                root = etree.fromstring(requestHelper.response_content)
+                metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataProvider.oai_namespaces)
+                for node in metadata_nodes:
+                    ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
+                    metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
+                    metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+                    metadata_schema = metadata_schema.strip()
+                    self.namespaces.append(metadata_schema)
+                    # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
+                    if not any(s in metadata_schema for s in filter):
+                        schemas[metadata_prefix]= [metadata_schema]
+                    else:
+                        self.logger.info('{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint - {1}'.format(self.metric_id,metadata_prefix))
+            except:
+                self.logger.info(
+                    '{0} : Could not parse XML response retrieved from OAI-PMH endpoint'.format(self.metric_id))
+
         return schemas
 
     def getNamespaces(self):

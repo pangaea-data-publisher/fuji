@@ -51,9 +51,11 @@ class MetaDataCollectorRdf (MetaDataCollector):
             requestHelper.setAcceptType(AcceptTypes.rdf)
             neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
             #required for metric knowledge representation
-            self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
-            if self.content_type is not None:
-                self.content_type = self.content_type.split(";", 1)[0]
+
+            if requestHelper.getHTTPResponse() is not None:
+                self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
+                if self.content_type is not None:
+                    self.content_type = self.content_type.split(";", 1)[0]
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 

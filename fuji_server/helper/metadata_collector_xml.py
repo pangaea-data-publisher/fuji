@@ -45,16 +45,17 @@ class MetaDataCollectorXML (MetaDataCollector):
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
-        self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(source_name))
-        #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
-        if neg_source != 'xml':
-            self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded: '+str(neg_source))
-        else:
-            tree = lxml.etree.XML(xml_response.content)
-            schema_locations = set(tree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
-            for schema_location in schema_locations:
-                self.namespaces=re.split('\s',schema_location)
-            #TODO: implement some XSLT to handle the XML..
+        if requestHelper.response_status == 200:
+            self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(source_name))
+            #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
+            if neg_source != 'xml':
+                self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded: '+str(neg_source))
+            else:
+                tree = lxml.etree.XML(xml_response)
+                schema_locations = set(tree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
+                for schema_location in schema_locations:
+                    self.namespaces=re.split('\s',schema_location)
+                #TODO: implement some XSLT to handle the XML..
 
         return source_name, dc_core_metadata
 

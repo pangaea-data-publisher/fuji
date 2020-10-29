@@ -55,6 +55,7 @@ class RequestHelper:
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
+        self.response_status = None
         self.response_content = None # normally the response body
 
     def setAcceptType(self, accepttype):
@@ -72,7 +73,7 @@ class RequestHelper:
         return self.http_response
 
     def getResponseContent(self):
-        return self.response_content
+        return self.response_content.decode('utf-8')
 
     def getParsedResponse(self):
         return self.parse_response
@@ -87,11 +88,11 @@ class RequestHelper:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type})
                 tp_response =  urllib.request.urlopen(tp_request)
-                self.response_content = tp_response.read().decode('utf-8')
+                self.response_content = tp_response.read()
                 self.http_response = tp_response
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
                 #status_code = self.http_response.status_code
-                status_code = self.http_response.status
+                self.response_status = status_code = self.http_response.status
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
@@ -104,7 +105,7 @@ class RequestHelper:
                             #try to find type by url
                             guessed_format = rdflib.util.guess_format(self.request_url)
                             if guessed_format is not None:
-                                self.parse_response  = self.parse_rdf(self.response_content, guessed_format)
+                                self.parse_response  = self.parse_rdf(self.response_content.decode('utf-8'), guessed_format)
                                 source='rdf'
                                   #content_type = content_type.split(";", 1)[0]
                         else:
@@ -114,15 +115,15 @@ class RequestHelper:
                                     if content_type in at.value:
                                         if at.name == 'html':
                                             self.logger.info('%s : Found HTML page!' % metric_id)
-                                            self.parse_response = self.parse_html(self.response_content)
+                                            self.parse_response = self.parse_html(self.response_content.decode('utf-8'))
                                             source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            if self.http_response.read().find('<rdf:RDF') > -1:
+                                            if self.response_content.decode('utf-8').find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
-                                                self.parse_response = self.parse_rdf(self.response_content, at.name)
+                                                self.parse_response = self.parse_rdf(self.response_content.decode('utf-8'), at.name)
                                                 source='rdf'
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)
@@ -145,15 +146,20 @@ class RequestHelper:
                         self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                 else:
                     self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
-            except requests.exceptions.SSLError as e:
-                self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.exception("SSLError: {}".format(e))
-                self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
-            except requests.exceptions.RequestException as e:
+            #except requests.exceptions.SSLError as e:
+            except urllib.error.HTTPError as e:
+            #    self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
+            #    self.logger.exception("SSLError: {}".format(e))
+            #    self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
+            #except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
-                self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.exception("{} : RequestException: {}".format(metric_id, e))
-                self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
+                #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
+                self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
+                #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
+                #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
+            except urllib.error.URLError as e:
+                self.logger.warning("{} : RequestException: {}".format(metric_id, e.reason))
+                #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
         return source, self.parse_response
 
     def parse_html(self, html_texts):
