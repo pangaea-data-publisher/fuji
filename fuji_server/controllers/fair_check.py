@@ -102,6 +102,8 @@ class FAIRCheck:
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
     FILES_LIMIT = None
+    LOG_SUCCESS = 25
+
 
     def __init__(self, uid, test_debug=False, oaipmh=None):
         self.id = uid
@@ -127,6 +129,7 @@ class FAIRCheck:
         self.rdf_graph = None
         self.sparql_endpoint = None
         self.rdf_collector = None
+        logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
