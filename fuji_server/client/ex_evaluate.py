@@ -30,7 +30,7 @@ testpids=[
 #testpids=['https://lithologs.net/?action=view&oid=470']
 # rdf links:
 #testpids=['http://bio2rdf.org/affymetrix:1415765_at','https://www.data.gv.at/katalog/dataset/b8dac7af-5c8a-4936-9abe-e1dbbdd8dd4f','https://identifiers.org/ena.embl:BN000065','https://www.ebi.ac.uk/biosamples/samples/SAMN14168013']
-testpids=['https://data.gov.lv/dati/lv/dataset/covid-19','https://www.data.gouv.fr/datasets/5e7e104ace2080d9162b61d8','https://www.data.gv.at/katalog/dataset/b8dac7af-5c8a-4936-9abe-e1dbbdd8dd4f','https://datos.gob.es/es/catalogo/e05070101-evolucion-de-enfermedad-por-el-coronavirus-covid-19']
+#testpids=['https://data.gov.lv/dati/lv/dataset/covid-19','https://www.data.gouv.fr/datasets/5e7e104ace2080d9162b61d8','https://www.data.gv.at/katalog/dataset/b8dac7af-5c8a-4936-9abe-e1dbbdd8dd4f','https://datos.gob.es/es/catalogo/e05070101-evolucion-de-enfermedad-por-el-coronavirus-covid-19']
 #testpids=['https://doi.org/10.26050/WDCC/MOMERGOMBSCMAQ']
 #testpids=['https://data.gov.lv/dati/lv/dataset/covid-19']
 #ontologies
@@ -62,7 +62,7 @@ testpids=['https://data.gov.lv/dati/lv/dataset/covid-19','https://www.data.gouv.
 #testpids=['https://data.neonscience.org/data-products/DP1.20066.001']
 #not found
 #testpids=['https://doi.pangaea.de/10.1594/PANGAEA.920063']
-testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
+'''testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'https://dx.doi.org/10.4227/05/5344F1159A1A9',
 'https://doi.org/10.4225/08/563869A931CFE',
 'https://data.neonscience.org/data-products/DP1.00001.001',
@@ -71,10 +71,17 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'https://meta.icos-cp.eu/objects/8YwZj8CQEj87IuI9P6QkZiKX',
 'http://doi.org/10.22033/ESGF/CMIP6.4397',
 'http://doi.org/10.25914/5eaa30de53244']
+'''
 #DCAT DDI
-testpids=['http://dda.dk/catalogue/150']
+#very large file!!
+#testpids=['https://doi.org/10.1594/PANGAEA.902845']
+#testpids=['https://doi.org/10.1594/PANGAEA.745671']
+#testpids=['http://dda.dk/catalogue/150']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
+#testpids=['https://doi.org/10.1594/PANGAEA.879324']
+#testpids=['https://hdl.handle.net/11168/11.429265']
+testpids=['http://doi.org/10.25914/5eaa30de53244']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()
@@ -113,24 +120,30 @@ def main():
             start=True
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=debug)
+
+
+
             uid_result, pid_result = ft.check_unique_persistent()
             core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
-            check_searchable_result = ft.check_searchable()
+            access_level_result=ft.check_data_access_level()
             license_result = ft.check_license()
             relatedresources_result = ft.check_relatedresources()
-            access_level_result=ft.check_data_access_level()
-            formal_representation_result=ft.check_formal_metadata()
+            check_searchable_result = ft.check_searchable()
             data_file_format_result=ft.check_data_file_format()
-            data_provenance_result=ft.check_data_provenance()
             community_standards_result=ft.check_community_metadatastandards()
+            data_provenance_result=ft.check_data_provenance()
             data_content_metadata = ft.check_data_content_metadata()
+            formal_representation_result=ft.check_formal_metadata()
+            semantic_vocabulary_result =ft.check_semantic_vocabulary()
             metadata_preserved_result = ft.check_metadata_preservation()
+            standard_protocol_data_result = ft.check_standardised_protocol_data()
+            standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
+            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,semantic_vocabulary_result, license_result, data_file_format_result,data_provenance_result,relatedresources_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_data_result,standard_protocol_metadata_result]
 
-            standard_protocol_result = ft.check_standardised_protocol()
-            results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,license_result, data_file_format_result,data_provenance_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_result]
-            #results=[uid_result, pid_result, core_metadata_result,data_file_format_result]
-            #print(ft.metadata_merged)
+            #put the debug messages at the right place...
+            for result_index, result in enumerate(results):
+                results[result_index]['test_debug'] = ft.msg_filter.getMessage(result.get('metric_identifier'))
             print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':

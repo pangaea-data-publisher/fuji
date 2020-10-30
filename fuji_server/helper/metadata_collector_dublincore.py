@@ -105,8 +105,9 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                     # https://www.dublincore.org/specifications/dublin-core/dcmi-dcsv/
                     if dc_core_metadata.get('file_format_only'):
                         format_str = dc_core_metadata.get('file_format_only')
-                        format_str = re.split(';|,',format_str)[0].strip() # assume first value as media type #TODO use regex to extract mimetype
-                        dc_core_metadata['file_format_only'] = format_str
+                        if isinstance(format_str,str):
+                            format_str = re.split(';|,',format_str)[0].strip() # assume first value as media type #TODO use regex to extract mimetype
+                            dc_core_metadata['file_format_only'] = format_str
             except Exception as e:
                 self.logger.exception('Failed to extract DublinCore - {}'.format(e))
         return source, dc_core_metadata

@@ -50,7 +50,7 @@ from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
 from fuji_server.models.semantic_vocabulary_output import SemanticVocabularyOutput
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
-from fuji_server.models.standardised_protocol import StandardisedProtocol
-from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
+from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
+from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
