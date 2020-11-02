@@ -53,6 +53,7 @@ class MetaDataCollectorXML (MetaDataCollector):
             else:
                 tree = lxml.etree.XML(xml_response)
                 schema_locations = set(tree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
+                #print(schema_locations)
                 for schema_location in schema_locations:
                     self.namespaces=re.split('\s',schema_location)
                 #TODO: implement some XSLT to handle the XML..

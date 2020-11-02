@@ -28,7 +28,8 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 class FAIREvaluatorCoreMetadata(FAIREvaluator):
     def evaluate(self):
-        self.fuji.retrieve_metadata(self.fuji.landing_html)
+
+        self.fuji.retrieve_metadata(self.fuji.extruct_result)
         self.result = CoreMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
 
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value

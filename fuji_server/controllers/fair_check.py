@@ -137,6 +137,7 @@ class FAIRCheck:
         self.count = 0
         FAIRCheck.load_predata()
         self.extruct = None
+        self.extruct_result = None
         self.tika_content_types_list = []
 
 
@@ -258,6 +259,7 @@ class FAIRCheck:
         isPid = False
         if self.pid_scheme:
             isPid = True
+        print(extruct_metadata)
         # ========= retrieve embedded rdfa and microdata metadata ========
         micro_meta = extruct_metadata.get('microdata')
         microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
@@ -415,16 +417,18 @@ class FAIRCheck:
 
         for metadata_link in typed_metadata_links:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
-                self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
+                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                 found_metadata_link=True
                 source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
             elif metadata_link['type'] == 'text/xml':
+                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
+                    metadata_link['type'] + ')'))
                 xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
                 xml_collector.parse_metadata()
-                xml_namespaces = xml_collector.getNamespaces()
+                self.namespace_uri.extend(xml_collector.getNamespaces())
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request

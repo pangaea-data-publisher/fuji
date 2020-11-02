@@ -206,5 +206,7 @@ class RequestHelper:
         # TODO: implement a generic XML parsing which checks domain specific
         # document schema and performs a XSLT to get metadata elements
         # write some domain specific XSLTs and/or parsers
+        self.logger.info('%s : Try to parse XML from %s' % (self.metric_id, self.request_url))
+
         print('Not yet implemented')
         return None
