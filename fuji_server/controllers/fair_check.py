@@ -259,7 +259,6 @@ class FAIRCheck:
         isPid = False
         if self.pid_scheme:
             isPid = True
-        print(extruct_metadata)
         # ========= retrieve embedded rdfa and microdata metadata ========
         micro_meta = extruct_metadata.get('microdata')
         microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
