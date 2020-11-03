@@ -46,10 +46,11 @@ def main():
     license_result = ft.check_license()
     relatedresources_result = ft.check_relatedresources()
     results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, license_result]
+    # put the debug messages at the right place...
     for result_index, result in enumerate(results):
         results[result_index]['test_debug'] = ft.msg_filter.getMessage(result.get('metric_identifier'))
 
-    # put the debug messages at the right place...
+
     print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':

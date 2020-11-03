@@ -80,8 +80,8 @@ testpids=['https://doi.org/10.1594/PANGAEA.745671']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
 testpids=['https://doi.org/10.1594/PANGAEA.879324']
-testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
-testpids=['https://hdl.handle.net/11168/11.10587']
+#testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
+#testpids=['https://hdl.handle.net/11168/11.10587']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()

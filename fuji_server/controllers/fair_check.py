@@ -272,7 +272,8 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
-        # RDFa
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata: '+str(micro_dict.keys()))
+            # RDFa
         RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
@@ -291,6 +292,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata: '+str(rdfa_dict.keys()))
         except:
             self.logger.warning('FsF-F2-01M : RDFa metadata parsing exception')
 
@@ -312,6 +314,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = schemaorg_dict[i]
                     self.reference_elements.remove(i)
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata: '+str(schemaorg_dict.keys()))
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
 
@@ -332,6 +335,7 @@ class FAIRCheck:
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
                         self.reference_elements.remove(d)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata: '+str(dc_dict.keys()))
             else:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
@@ -374,7 +378,7 @@ class FAIRCheck:
                         response=urllib.urlopen(guessed_link)
                         if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
                             datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
-                            self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
+                            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at: '+guessed_link)
 
                     except:
                         self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
