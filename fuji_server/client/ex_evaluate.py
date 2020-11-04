@@ -80,8 +80,8 @@ testpids=['https://doi.org/10.1594/PANGAEA.745671']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
 testpids=['https://doi.org/10.1594/PANGAEA.879324']
-#testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
-#testpids=['https://hdl.handle.net/11168/11.10587']
+testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
+testpids=['https://doi.pangaea.de/10.1594/PANGAEA.923903']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()
@@ -120,9 +120,6 @@ def main():
             start=True
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=debug)
-
-
-
             uid_result, pid_result = ft.check_unique_persistent()
             core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
@@ -142,6 +139,14 @@ def main():
             results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,semantic_vocabulary_result, license_result, data_file_format_result,data_provenance_result,relatedresources_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_data_result,standard_protocol_metadata_result]
             #results=[uid_result, pid_result, core_metadata_result,data_file_format_result]
             #print(ft.metadata_merged)
+            for res_k, res_v in enumerate(results):
+                if ft.isDebug:
+                    debug_list= ft.msg_filter.getMessage(res_v['metric_identifier'])
+                    if debug_list is not None:
+                        results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                    else:
+                        results[res_k]['test_debug'] =['INFO: No debug messages received']
+
             print(json.dumps(results, indent=4, sort_keys=True))
 
 if __name__ == '__main__':

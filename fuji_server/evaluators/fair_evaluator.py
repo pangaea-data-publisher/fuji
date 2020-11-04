@@ -55,6 +55,4 @@ class FAIREvaluator:
 
     def getResult(self):
         self.evaluate()
-        if self.isDebug:
-            self.result.test_debug = self.msg_filter.getMessage(self.metric_identifier)
         return self.result.to_dict()

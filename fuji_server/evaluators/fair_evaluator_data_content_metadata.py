@@ -60,7 +60,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
             content_length = len(self.fuji.content_identifier)
             if content_length > 0:
-                self.logger.info('FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
+                self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
                 test_data_content_url = self.fuji.content_identifier[-1].get('url')
                 self.logger.info(
                     'FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))
@@ -70,34 +70,39 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     timeout = 10
                     start = time.time()
                     r = requests.get(test_data_content_url, verify=False, stream=True)
-                    tika_content_size =0
-                    for chunk in r.iter_content(1024):
-                        response_body.append(chunk)
-                        tika_content_size = tika_content_size + len(chunk)
-                        if time.time() > (start + timeout):
-                            self.logger.warning(
-                                'FsF-R1-01MD : Could not download complete file, skipped after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
-                            tika_content_size = 0
-                            break
 
-                    response_content = b''.join(response_body)
-                    parsedFile = parser.from_buffer(response_content)
-                    status = parsedFile.get("status")
-                    tika_content_types = parsedFile.get("metadata").get('Content-Type')
-                    if isinstance(tika_content_types, list):
-                        self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
+                    tika_content_size = 0
+                    if r.status_code == 200:
+
+                        for chunk in r.iter_content(1024):
+                            response_body.append(chunk)
+                            tika_content_size = tika_content_size + len(chunk)
+                            if time.time() > (start + timeout):
+                                self.logger.warning(
+                                    'FsF-R1-01MD : Could not download complete file, skipped after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
+                                tika_content_size = 0
+                                break
+
+                        response_content = b''.join(response_body)
+                        parsedFile = parser.from_buffer(response_content)
+                        status = parsedFile.get("status")
+                        tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                        if isinstance(tika_content_types, list):
+                            self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
+                        else:
+                            content_types_str = tika_content_types.split(';')[0]
+                            self.fuji.tika_content_types_list.append(content_types_str)
+                        # Extract the text content from the parsed file and convert to string
+                        self.logger.info(
+                            '{0} : File request status code {1}'.format(self.metric_identifier, status))
+                        parsed_content = parsedFile["content"]
+                        test_data_content_text = str(parsed_content)
+                        # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
+                        if test_data_content_text:
+                            parsed_files = parsedFile.get("metadata").get('resourceName')
+                            self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
                     else:
-                        content_types_str = tika_content_types.split(';')[0]
-                        self.fuji.tika_content_types_list.append(content_types_str)
-                    # Extract the text content from the parsed file and convert to string
-                    self.logger.info(
-                        '{0} : File request status code {1}'.format(self.metric_identifier, status))
-                    parsed_content = parsedFile["content"]
-                    test_data_content_text = str(parsed_content)
-                    # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
-                    if test_data_content_text:
-                        parsed_files = parsedFile.get("metadata").get('resourceName')
-                        self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
+                        self.logger.warning('FsF-R1-01MD : Data file not accessible {}'.format(r.status_code))
                 except Exception as e:
                     self.logger.warning(
                         '{0} : Could not retrieve/parse content object - {1}'.format(self.metric_identifier,
@@ -143,20 +148,24 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         # 4. check if varibles specified in the data file
         is_variable_scored = False
         if self.fuji.metadata_merged.get('measured_variable'):
-            self.logger.info(
+            self.logger.log(self.fuji.LOG_SUCCESS,
                 'FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
-            if test_data_content_text:
-                for variable in self.fuji.metadata_merged['measured_variable']:
-                    variable_metadata_inner = DataContentMetadataOutputInner()
-                    variable_metadata_inner.descriptor = 'measured_variable'
-                    variable_metadata_inner.descriptor_value = variable
+            if not test_data_content_text:
+                self.logger.warning(
+                    'FsF-R1-01MD : Could not verify measured variables found in data content')
+            for variable in self.fuji.metadata_merged['measured_variable']:
+                variable_metadata_inner = DataContentMetadataOutputInner()
+                variable_metadata_inner.descriptor = 'measured_variable'
+                variable_metadata_inner.descriptor_value = variable
+                if test_data_content_text:
                     if variable in test_data_content_text:  # TODO use rapidfuzz (fuzzy search)
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
-                        if not is_variable_scored:  # only increase once
-                            score += 1
-                            is_variable_scored = True
-                    data_content_descriptors.append(variable_metadata_inner)
+                if not is_variable_scored:  # only increase once
+                    score += 1
+                    is_variable_scored = True
+                data_content_descriptors.append(variable_metadata_inner)
+
         else:
             self.logger.warning(
                 'FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
