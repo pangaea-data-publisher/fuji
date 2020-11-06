@@ -39,7 +39,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
             self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
-            self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
+            #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(self.fuji.id_scheme))
@@ -47,7 +48,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         # ======= RETRIEVE METADATA FROM LANDING PAGE =======
         requestHelper: RequestHelper = RequestHelper(self.fuji.pid_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.html)  # request
-        neg_source, result = requestHelper.content_negotiate('FsF-F1-02D')
+        neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D')
         #TODO: what if other protocols are used e.g. FTP etc..
         r = requestHelper.getHTTPResponse()
 

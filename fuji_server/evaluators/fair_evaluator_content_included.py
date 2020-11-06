@@ -35,7 +35,6 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         id_object = self.fuji.metadata_merged.get('object_identifier')
         self.output.object_identifier_included = id_object
         contents = self.fuji.metadata_merged.get('object_content_identifier')
-
         if id_object is not None:
             self.logger.info('FsF-F3-01M : Object identifier specified {}'.format(id_object))
         score = 0
@@ -45,7 +44,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                 contents = [contents]
             contents = [c for c in contents if c]
             number_of_contents = len(contents)
-            self.logger.info('FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
 
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
@@ -58,6 +57,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                     # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
                     did_output_content = IdentifierIncludedOutputInner()
                     did_output_content.content_identifier_included = content_link
+                    self.fuji.content_identifier.append(content_link)
                     try:
                         # only check the status, do not download the content
                         response = urllib.urlopen(content_link.get('url'))
@@ -75,6 +75,9 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         # will pass even if the url cannot be accessed which is OK
                         # did_result.test_status = "pass"
                         # did_score.earned=1
+
+                        did_output_content.content_identifier_active = False
+                        #content_list.append(did_output_content)
                     except urllib.HTTPError as e:
                         self.logger.warning(
                             'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(
@@ -84,9 +87,9 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                     except:
                         self.logger.warning('FsF-F3-01M : Could not access the resource')
                     else:  # will be executed if there is no exception
-                        self.fuji.content_identifier.append(content_link)
+                        #self.fuji.content_identifier.append(content_link)
                         did_output_content.content_identifier_active = True
-                        content_list.append(did_output_content)
+                    content_list.append(did_output_content)
                 else:
                     self.logger.warning('FsF-F3-01M : Object (content) url is empty - {}'.format(content_link))
         else:

@@ -80,6 +80,13 @@ def assess_by_id(body):  # noqa: E501
         results.append(data_file_format_result)
         results.append(standard_protocol_data_result)
         results.append(standard_protocol_metadata_result)
+        for res_k, res_v in enumerate(results):
+            if ft.isDebug:
+                debug_list = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                if debug_list is not None:
+                    results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                else:
+                    results[res_k]['test_debug'] = ['INFO: No debug messages received']
 
         timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         metric_spec = Preprocessor.metric_specification

@@ -74,6 +74,42 @@ metrics:
   version: 0.3
   total_score: 1
 
+- metric_identifier: FsF-A1-03D
+  metric_short_name: Standardized Communication Protocol of Data
+  metric_name: Data is accessible through a standardized communication protocol.
+  description: Given an identifier of a dataset, the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-10-23
+  date_updated: 2020-10-23
+  version: 0.3
+  total_score: 1
+
+- metric_identifier: FsF-A1-02M
+  metric_short_name: Standardized Communication Protocol of Metadata
+  metric_name: Metadata is accessible through a standardized communication protocol.
+  description: Given an identifier of a dataset, the metadata of the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-10-23
+  date_updated: 2020-10-23
+  version: 0.3
+  total_score: 1
+
+- metric_identifier: FsF-A2-01M
+  metric_short_name: Metadata Preservation
+  metric_name: Metadata remains available, even if the data is no longer available.
+  description: This metric determines if the metadata will be preserved even when the data they represent are no longer available, replaced or lost.
+  fair_principle: A1
+  evaluation_mechanism: to-do
+  created_by: FAIRsFAIR
+  date_created: 2020-07-08
+  date_updated: 2020-07-08
+  version: 0.3
+  total_score: 1
+
 - metric_identifier: FsF-I1-01M
   metric_short_name: Formal Representation of Metadata
   metric_name: Metadata is represented using a formal knowledge representation language.
@@ -88,7 +124,7 @@ metrics:
 
 - metric_identifier: FsF-I1-02M
   metric_short_name: Metadata with Semantic Resources
-  metric_name: Metadata uses common semantic resources
+  metric_name: Metadata uses semantic resources
   description: A metadata document or selected parts of the document may incorporate additional terms from semantic resources (also referred as semantic artefacts) so that the contents are unambiguous and can be processed automatically by machines. This enrichment facilitates enhanced data search and interoperability of data from different sources. Ontology, thesaurus, and taxonomy are kinds of semantic resources, and they come with varying degrees of expressiveness and computational complexity. Knowledge organization schemes such as thesaurus and taxonomy are semantically less formal than ontologies.
   fair_principle: I1
   evaluation_mechanism: to-do
@@ -112,7 +148,7 @@ metrics:
 
 - metric_identifier: FsF-R1-01MD
   metric_short_name: Metadata of Data Content
-  metric_name: Metadata includes the descriptions of the content of the data.
+  metric_name: Metadata specifies the content of the data.
   description: This metric evaluates if a description (properties) of the content of the data is specified in the metadata. The description should be an accurate reflection of  the actual data deposited. Data content descriptors include but are not limited to resource type (e.g., data or a collection of data), variable(s) measured or observed, method, data format and size. Ideally, ontological vocabularies should be used to describe data content to support interdisciplinary reuse.
   fair_principle: R1
   evaluation_mechanism: to-do
@@ -124,7 +160,7 @@ metrics:
 
 - metric_identifier: FsF-R1.1-01M
   metric_short_name: Data Usage License
-  metric_name: Metadata includes license information under which the data can be reused.
+  metric_name: Metadata includes license information under which data can be reused.
   description: This metric evaluates if data is associated with a license because otherwise users cannot reuse it in a clear legal context. We encourage the application of licenses for all kinds of data whether public, restricted or for specific users. Without an explicit license, users do not have a clear idea of what can be done with your data. Licenses can be of standard type (Creative Commons, Open Data Commons Open Database License) or bespoke licenses, and rights statements which indicate the conditions under which data can be reused. It is highly recommended to use a standard, machine-readable license such that it can be interpreted by machines and humans. In order to inform users about what rights they have to use a dataset, the license information should be specified as part of the dataset’s metadata.
   fair_principle: R1.1
   evaluation_mechanism: to-do
@@ -136,7 +172,7 @@ metrics:
 
 - metric_identifier: FsF-R1.2-01M
   metric_short_name: Data Provenance
-  metric_name: Metadata includes provenance information about data collection or generation.
+  metric_name: Metadata includes provenance information about data creation or generation.
   description: Data provenance (also known as lineage) represents a dataset’s history, including the people, entities, and processes involved in its creation, management and longer-term curation. It is essential to provide provenance information about your data to provide valuable context and to enable informed use and reuse. The levels of provenance information needed can vary depending on the data type (e.g., measurement, observation, derived data, or data product) and research domains. For that reason, it is difficult to define a set of finite provenance properties that will be adequate for all domains. Based on existing work, we suggest that the following provenance properties of data generation or collection are included in the metadata record as a minimum.
     (a) Sources of data, e.g., datasets the data is derived from and instruments
     (b) Data creation or collection date
@@ -154,7 +190,7 @@ metrics:
 
 - metric_identifier: FsF-R1.3-01M
   metric_short_name: Community-Endorsed Metadata Standard
-  metric_name: Metadata follows a standard endorsed by a given research community.
+  metric_name: Metadata follows a standard recommended by the target research community of the data.
   description: In addition to core metadata required to support data discovery (covered under metric FsF-F2-01M), metadata to support data reusability should be made available following community-endorsed metadata standards. Some communities have well-established metadata standards (e.g., geospatial [ISO19115], biodiversity [DarwinCore, ABCD, EML], social science [DDI], astronomy [International Virtual Observatory Alliance Technical Specifications]) while others have limited standards or standards that are under development (e.g., engineering and linguistics). The use of community-endorsed metadata standards is usually encouraged and supported by domain and discipline-specific repositories.
   fair_principle: R1.3
   evaluation_mechanism: to-do
@@ -166,8 +202,11 @@ metrics:
 
 - metric_identifier: FsF-R1.3-02D
   metric_short_name: Data File format
-  metric_name: Data available in file format backed by the research community.
+  metric_name: Data is available in a file format recommended by the target research community.
   description: File formats refer to methods for encoding digital information. For example, CSV for tabular data, NetCDF for multidimensional data and GeoTIFF for raster imagery. Data should be made available in a file format that is backed by the research community to enable data sharing and reuse. Consider for example, file formats that are widely used and supported by the most commonly used software and tools. These formats also should be suitable for long-term storage and archiving, which are usually recommended by a data repository. The formats not only give a higher certainty that your data can be read in the future, but they will also help to increase the reusability and interoperability. Using community-endorsed formats enables data to be loaded directly into the software and tools used for data analysis. It makes it possible to easily integrate your data with other data using the same preferred format. The use of preferred formats will also help to transform the format to a newer one, in case a preferred format gets outdated.
+    Similar to metric FsF-F4-01M, answering this metric will require an understanding of the capabilities offered, data preservation plan and policies implemented by the data repository and data services (e.g., Datacite PID service).
+    Continued access to metadata depends on a data repository’s preservation practice which is usually documented in the repository’s service policies or statements.
+    A trustworthy data repository offering DOIs and implementing a PID Policy should guarantee that metadata will remain accessible even when data is no longer available for any reason (e.g., by providing a tombstone page).
   fair_principle: R1.3
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR

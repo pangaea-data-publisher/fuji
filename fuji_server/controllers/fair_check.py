@@ -41,6 +41,7 @@ from rdflib.namespace import DC
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
+import base64
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
@@ -102,8 +103,13 @@ class FAIRCheck:
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
     FILES_LIMIT = None
+    LOG_SUCCESS = 25
+
 
     def __init__(self, uid, test_debug=False, oaipmh=None):
+        uid_bytes = uid.encode('utf-8')
+        self.test_id = str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
+        print(self.test_id)
         self.id = uid
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
@@ -127,6 +133,7 @@ class FAIRCheck:
         self.rdf_graph = None
         self.sparql_endpoint = None
         self.rdf_collector = None
+        logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
             self.msg_filter = MessageFilter()
             self.logger.addFilter(self.msg_filter)
@@ -134,6 +141,7 @@ class FAIRCheck:
         self.count = 0
         FAIRCheck.load_predata()
         self.extruct = None
+        self.extruct_result = None
         self.tika_content_types_list = []
 
 
@@ -268,7 +276,8 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
-        # RDFa
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata: '+str(micro_dict.keys()))
+            # RDFa
         RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
@@ -287,6 +296,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata: '+str(rdfa_dict.keys()))
         except:
             self.logger.warning('FsF-F2-01M : RDFa metadata parsing exception')
 
@@ -308,6 +318,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = schemaorg_dict[i]
                     self.reference_elements.remove(i)
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata: '+str(schemaorg_dict.keys()))
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
 
@@ -328,6 +339,7 @@ class FAIRCheck:
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
                         self.reference_elements.remove(d)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata: '+str(dc_dict.keys()))
             else:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
@@ -370,7 +382,7 @@ class FAIRCheck:
                         response=urllib.urlopen(guessed_link)
                         if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
                             datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
-                            self.logger.info('FsF-F2-01M : Found XML content at: '+guessed_link)
+                            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at: '+guessed_link)
 
                     except:
                         self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
@@ -412,16 +424,18 @@ class FAIRCheck:
 
         for metadata_link in typed_metadata_links:
             if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
-                self.logger.info('FsF-F2-01M : Found Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
+                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                 found_metadata_link=True
                 source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
             elif metadata_link['type'] == 'text/xml':
+                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
+                    metadata_link['type'] + ')'))
                 xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
                 xml_collector.parse_metadata()
-                xml_namespaces = xml_collector.getNamespaces()
+                self.namespace_uri.extend(xml_collector.getNamespaces())
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
