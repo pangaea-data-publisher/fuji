@@ -27,6 +27,7 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urllib.parse import urlparse
+import re
 
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
@@ -36,14 +37,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         # ======= CHECK IDENTIFIER PERSISTENCE =======
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
             Mapper.VALID_PIDS.value))
-        if self.fuji.pid_scheme is not None:
-            # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
-            self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
-            #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
-        else:
-            self.score.earned = 0
-            self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(self.fuji.id_scheme))
+
+
 
         # ======= RETRIEVE METADATA FROM LANDING PAGE =======
         requestHelper: RequestHelper = RequestHelper(self.fuji.pid_url, self.logger)
@@ -54,6 +49,33 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
         if r:
             if r.status == 200:
+                # identify signposting links in header
+                header_link_string = requestHelper.getHTTPResponse().getheader('Link')
+                if header_link_string is not None:
+                    for preparsed_link  in header_link_string.split(','):
+                        parsed_link = preparsed_link.strip().split(';')
+                        found_link = parsed_link[0].strip()
+                        found_rel = re.search('rel=\"([a-z-]+)\"', parsed_link[1])
+                        if found_rel:
+                            if self.fuji.signposting_header_links.get(found_rel[1]):
+                                self.fuji.signposting_header_links[found_rel[1]].append(found_link[1:-1])
+                            else:
+                                self.fuji.signposting_header_links[found_rel[1]]=[found_link[1:-1]]
+
+                #check if there is a cite-as signposting link
+                signposting_pid = None
+                if self.fuji.pid_scheme is None:
+                    signposting_pid = self.fuji.signposting_header_links.get('cite-as')
+                    if signposting_pid:
+                        found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
+                        if len(found_ids) > 1:
+                            found_ids.remove('url')
+                            found_id = found_ids[0]
+                            if found_id in Mapper.VALID_PIDS.value:
+                                self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
+                                self.fuji.pid_scheme = found_id
+
+
                 self.fuji.landing_url = r.url
                 up = urlparse(self.fuji.landing_url)
                 self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
@@ -72,7 +94,20 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     self.fuji.isMetadataAccessible = False
                 #if r.status_code == 401:
                     #response = requests.get(self.pid_url, auth=HTTPBasicAuth('user', 'pass'))
-                self.logger.error("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+                self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+
+        if self.fuji.pid_scheme is not None:
+            # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
+            if signposting_pid is None:
+                self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
+            else:
+                self.fuji.pid_url = signposting_pid[0]
+            self.output.pid = self.fuji.pid_url
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
+            #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
+        else:
+            self.score.earned = 0
+            self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
         self.result.output = self.output
