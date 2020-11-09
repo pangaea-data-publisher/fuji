@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
+
 from fuji_server import util
 from fuji_server.models import AnyOfFAIRResultsResultsItems
 
@@ -14,33 +15,53 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, timestamp: datetime=None, metric_specification: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+    def __init__(self, test_id: str=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
+        :param test_id: The test_id of this FAIRResults.  # noqa: E501
+        :type test_id: str
         :param timestamp: The timestamp of this FAIRResults.  # noqa: E501
         :type timestamp: datetime
+        :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
+        :type expiry_timestamp: datetime
         :param metric_specification: The metric_specification of this FAIRResults.  # noqa: E501
         :type metric_specification: str
+        :param metric_version: The metric_version of this FAIRResults.  # noqa: E501
+        :type metric_version: str
+        :param software_version: The software_version of this FAIRResults.  # noqa: E501
+        :type software_version: str
         :param total_metrics: The total_metrics of this FAIRResults.  # noqa: E501
         :type total_metrics: int
         :param results: The results of this FAIRResults.  # noqa: E501
         :type results: List[AnyOfFAIRResultsResultsItems]
         """
         self.swagger_types = {
+            'test_id': str,
             'timestamp': datetime,
+            'expiry_timestamp': datetime,
             'metric_specification': str,
+            'metric_version': str,
+            'software_version': str,
             'total_metrics': int,
             'results': List[AnyOfFAIRResultsResultsItems]
         }
 
         self.attribute_map = {
+            'test_id': 'test_id',
             'timestamp': 'timestamp',
+            'expiry_timestamp': 'expiry_timestamp',
             'metric_specification': 'metric_specification',
+            'metric_version': 'metric_version',
+            'software_version': 'software_version',
             'total_metrics': 'total_metrics',
             'results': 'results'
         }
+        self._test_id = test_id
         self._timestamp = timestamp
+        self._expiry_timestamp = expiry_timestamp
         self._metric_specification = metric_specification
+        self._metric_version = metric_version
+        self._software_version = software_version
         self._total_metrics = total_metrics
         self._results = results
 
@@ -54,6 +75,27 @@ class FAIRResults(Model):
         :rtype: FAIRResults
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def test_id(self) -> str:
+        """Gets the test_id of this FAIRResults.
+
+
+        :return: The test_id of this FAIRResults.
+        :rtype: str
+        """
+        return self._test_id
+
+    @test_id.setter
+    def test_id(self, test_id: str):
+        """Sets the test_id of this FAIRResults.
+
+
+        :param test_id: The test_id of this FAIRResults.
+        :type test_id: str
+        """
+
+        self._test_id = test_id
 
     @property
     def timestamp(self) -> datetime:
@@ -77,6 +119,27 @@ class FAIRResults(Model):
         self._timestamp = timestamp
 
     @property
+    def expiry_timestamp(self) -> datetime:
+        """Gets the expiry_timestamp of this FAIRResults.
+
+
+        :return: The expiry_timestamp of this FAIRResults.
+        :rtype: datetime
+        """
+        return self._expiry_timestamp
+
+    @expiry_timestamp.setter
+    def expiry_timestamp(self, expiry_timestamp: datetime):
+        """Sets the expiry_timestamp of this FAIRResults.
+
+
+        :param expiry_timestamp: The expiry_timestamp of this FAIRResults.
+        :type expiry_timestamp: datetime
+        """
+
+        self._expiry_timestamp = expiry_timestamp
+
+    @property
     def metric_specification(self) -> str:
         """Gets the metric_specification of this FAIRResults.
 
@@ -96,6 +159,48 @@ class FAIRResults(Model):
         """
 
         self._metric_specification = metric_specification
+
+    @property
+    def metric_version(self) -> str:
+        """Gets the metric_version of this FAIRResults.
+
+
+        :return: The metric_version of this FAIRResults.
+        :rtype: str
+        """
+        return self._metric_version
+
+    @metric_version.setter
+    def metric_version(self, metric_version: str):
+        """Sets the metric_version of this FAIRResults.
+
+
+        :param metric_version: The metric_version of this FAIRResults.
+        :type metric_version: str
+        """
+
+        self._metric_version = metric_version
+
+    @property
+    def software_version(self) -> str:
+        """Gets the software_version of this FAIRResults.
+
+
+        :return: The software_version of this FAIRResults.
+        :rtype: str
+        """
+        return self._software_version
+
+    @software_version.setter
+    def software_version(self, software_version: str):
+        """Sets the software_version of this FAIRResults.
+
+
+        :param software_version: The software_version of this FAIRResults.
+        :type software_version: str
+        """
+
+        self._software_version = software_version
 
     @property
     def total_metrics(self) -> int:
