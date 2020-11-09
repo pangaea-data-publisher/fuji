@@ -57,6 +57,7 @@ class RequestHelper:
         self.parse_response = None
         self.response_status = None
         self.response_content = None # normally the response body
+        self.response_header = None
 
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
@@ -78,6 +79,9 @@ class RequestHelper:
     def getParsedResponse(self):
         return self.parse_response
 
+    def getResponseHeader(self):
+        return self.response_header
+
     def content_negotiate(self, metric_id=''):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id=metric_id
@@ -89,6 +93,7 @@ class RequestHelper:
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type})
                 tp_response =  urllib.request.urlopen(tp_request)
                 self.response_content = tp_response.read()
+                self.response_header = tp_response.getheaders()
                 self.http_response = tp_response
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
                 #status_code = self.http_response.status_code
