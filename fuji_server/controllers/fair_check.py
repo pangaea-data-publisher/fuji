@@ -109,13 +109,13 @@ class FAIRCheck:
     def __init__(self, uid, test_debug=False, oaipmh=None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
-        print(self.test_id)
         self.id = uid
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.landing_html = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
+        self.signposting_header_links = dict()
         self.pid_scheme = None
         self.id_scheme= None
         self.logger = logging.getLogger(self.__class__.__name__)
