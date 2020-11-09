@@ -93,12 +93,21 @@ components:
     FAIRResults:
       type: object
       properties:
+        test_id:
+          type: string
         timestamp:
+          type: string
+          format: date-time
+        expiry_timestamp:
           type: string
           format: date-time
         metric_specification:
           type: string
           format: uri
+        metric_version:
+          type: string
+        software_version:
+          type: string
         total_metrics:
           type: integer
         results:
