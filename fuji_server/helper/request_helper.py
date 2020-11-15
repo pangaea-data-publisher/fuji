@@ -22,6 +22,7 @@
 import json
 import logging
 import sys
+import traceback
 from enum import Enum
 import extruct
 import rdflib
@@ -52,6 +53,7 @@ class RequestHelper:
         else :
             self.logger = logging.getLogger(self.__class__.__name__)
         self.request_url = url
+        self.redirect_url = None
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
@@ -92,9 +94,11 @@ class RequestHelper:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type})
                 tp_response =  urllib.request.urlopen(tp_request)
+                self.http_response = tp_response
+
                 self.response_content = tp_response.read()
                 self.response_header = tp_response.getheaders()
-                self.http_response = tp_response
+                self.redirect_url = tp_response.geturl()
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
                 #status_code = self.http_response.status_code
                 self.response_status = status_code = self.http_response.status
@@ -102,6 +106,7 @@ class RequestHelper:
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
                     content_type = self.http_response.headers.get("Content-Type")
+
                     #TODO content type is sometimes wrongly given.. try to infer the type from request
                     if content_type is not None:
                         if 'text/plain' in content_type:
@@ -161,6 +166,7 @@ class RequestHelper:
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
+                #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
             except urllib.error.URLError as e:
                 self.logger.warning("{} : RequestException: {}".format(metric_id, e.reason))
