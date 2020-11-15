@@ -1,3 +1,5 @@
+import os
+
 import connexion
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
@@ -90,7 +92,8 @@ def assess_by_id(body):  # noqa: E501
 
         timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         metric_spec = Preprocessor.metric_specification
+        metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
-        final_response = FAIRResults(timestamp= timestmp, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
+        final_response = FAIRResults(timestamp= timestmp, test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
     return final_response
 
