@@ -18,3 +18,5 @@ http://purl.org/dc/terms/
 http://www.w3.org/2005/sparql-results#
 http://www.w3.org/2005/xqt-errors#
 http://www.w3.org/2005/xpath-functions#
+http://schema.org/
+http://ogp.me/ns#
