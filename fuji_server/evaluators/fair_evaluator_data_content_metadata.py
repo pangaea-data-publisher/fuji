@@ -162,8 +162,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 variable_metadata_inner.descriptor = 'measured_variable'
                 variable_metadata_inner.descriptor_value = variable
                 if test_data_content_text:
-                    print(test_data_content_text)
-                    print(variable)
                     if variable in test_data_content_text:  # TODO use rapidfuzz (fuzzy search)
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
