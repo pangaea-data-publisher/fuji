@@ -21,6 +21,8 @@
 # SOFTWARE.
 import json
 import logging
+import mimetypes
+import re
 import sys
 import traceback
 from enum import Enum
@@ -29,6 +31,8 @@ import rdflib
 import requests
 import urllib
 from requests.packages.urllib3.exceptions import *
+from tika import parser
+
 
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
@@ -107,7 +111,16 @@ class RequestHelper:
                 if status_code == 200:
                     content_type = self.http_response.headers.get("Content-Type")
 
-                    #TODO content type is sometimes wrongly given.. try to infer the type from request
+                    if content_type is None:
+                        content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
+                    if content_type is None:
+                        #just in case tika is not running use this as quick check for the most obvious
+                        if re.match(r"<!doctype html>|<html",str(self.response_content.decode('utf-8')).strip(),re.IGNORECASE) is not None:
+                            content_type ='text/html'
+                    if content_type is None:
+                        parsedFile = parser.from_buffer(self.response_content)
+                        content_type = parsedFile.get("metadata").get('Content-Type')
+
                     if content_type is not None:
                         if 'text/plain' in content_type:
                             source = 'text'
