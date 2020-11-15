@@ -66,6 +66,7 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMicroData
+from fuji_server.helper.metadata_collector_opengraph import MetaDataCollectorOpenGraph
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
@@ -277,7 +278,8 @@ class FAIRCheck:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata: '+str(micro_dict.keys()))
-            # RDFa
+
+        #================== RDFa
         RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
@@ -298,7 +300,7 @@ class FAIRCheck:
                     self.reference_elements.remove(i)
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata: '+str(rdfa_dict.keys()))
         except:
-            self.logger.warning('FsF-F2-01M : RDFa metadata parsing exception')
+            self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML')
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
@@ -343,6 +345,22 @@ class FAIRCheck:
             else:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
+        # ======== retrieve OpenGraph metadata
+        ext_meta = extruct_metadata.get('opengraph')
+        opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger, sourcemetadata=ext_meta,
+                                                         mapping=Mapper.OG_MAPPING)
+        source_opengraph, opengraph_dict = opengraph_collector.parse_metadata()
+        opengraph_dict = self.exclude_null(opengraph_dict)
+        if opengraph_dict:
+            self.namespace_uri.extend(opengraph_collector.namespaces)
+            self.metadata_sources.append(source_opengraph)
+            for i in opengraph_dict.keys():
+                if i in self.reference_elements:
+                    self.metadata_merged[i] = opengraph_dict[i]
+                    self.reference_elements.remove(i)
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata: ' + str(opengraph_dict.keys()))
+        else:
+            self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
         #========= retrieve typed links =========
         if self.metadata_merged.get('object_content_identifier') is None:
             links = self.get_html_typed_links(rel='item')
@@ -403,6 +421,7 @@ class FAIRCheck:
             if dcitejsn_dict:
                 # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append(source_dcitejsn)
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found metadata registered at Datacite')
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
 
@@ -449,7 +468,7 @@ class FAIRCheck:
             rdf_dict = self.exclude_null(rdf_dict)
             if rdf_dict:
                 # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
-                # self.logger.info('FsF-F2-01M : Found Datacite metadata {} '.format(not_null_dcite))
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata')
                 self.metadata_sources.append(source_rdf)
                 for r in rdf_dict.keys():
                     if r in self.reference_elements:

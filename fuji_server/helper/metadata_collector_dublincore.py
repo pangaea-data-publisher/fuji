@@ -47,7 +47,6 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
                     dcterms = []
-
                     for dcitems in self.metadata_mapping.value.values():
                         if isinstance(dcitems, list):
                             dcterms.extend(dcitems)
