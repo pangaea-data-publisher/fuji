@@ -46,7 +46,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
             metadata_url_scheme = metadata_parsed_url.scheme
 
             if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                self.logger.info(
+                self.logger.log(self.fuji.LOG_SUCCESS,
                     '{0} : Standard protocol for access to metadata found: ' + metadata_url_scheme.format(
                         self.metric_identifier))
 
@@ -59,7 +59,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
                     '{0} : NOT all required metadata given, see: FsF-F2-01M'.format(self.metric_identifier))
                 # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
         else:
-            self.logger.info(
+            self.logger.warning(
                 '{0} : Metadata Identifier is not actionable or protocol errors occured'.format(self.metric_identifier))
 
         self.score.earned = score
