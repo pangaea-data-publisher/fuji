@@ -47,7 +47,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
             data_url_scheme = data_parsed_url.scheme
 
             if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                self.logger.info(
+                self.logger.log(self.fuji.LOG_SUCCESS,
                     '{0} : Standard protocol for access to data object found: '+data_url_scheme.format(self.metric_identifier))
                 data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
                 test_status = 'pass'

@@ -44,11 +44,13 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.score.earned = self.total_score
             # identify main scheme
             if len(found_ids) == 1 and found_ids[0] == 'url':  # only url included
-                self.fuji.pid_url = self.fuji.id
-                self.fuji.id_scheme = found_ids[0]
+                #self.fuji.pid_url = self.fuji.id
+                self.fuji.id_scheme = 'url'
             else:
                 if 'url' in found_ids:  # ['doi', 'url']
                     found_ids.remove('url')
+                    #self.fuji.pid_url = self.fuji.id
+                    self.fuji.id_scheme = found_ids[0]
             found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
             if found_id in Mapper.VALID_PIDS.value:
                 self.fuji.pid_scheme = found_id

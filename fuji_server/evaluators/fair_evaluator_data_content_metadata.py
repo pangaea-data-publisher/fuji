@@ -49,7 +49,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
         resource_type = self.fuji.metadata_merged.get('object_type')
         if resource_type:
-            self.logger.info('FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
             self.output.object_type = resource_type
             score += 1
         else:
@@ -73,7 +73,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
                     tika_content_size = 0
                     if r.status_code == 200:
-
                         for chunk in r.iter_content(1024):
                             response_body.append(chunk)
                             tika_content_size = tika_content_size + len(chunk)
@@ -119,6 +118,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             data_object = next(item for item in self.fuji.metadata_merged.get('object_content_identifier') if
                                item["url"] == test_data_content_url)
             missing_descriptors = []
+            variable_content_matched = False
             for d in descriptors:
                 type = 'file ' + d
                 if d in data_object.keys() and data_object.get(d):
@@ -131,6 +131,9 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         if data_object.get('type') in self.fuji.tika_content_types_list:
                             matches_content = True
                             score += 1
+                        else:
+                            self.logger.warning('{0} : Could not verify content type from downloaded file'.format(self.metric_identifier))
+
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size from downloaded file'.format(self.metric_identifier))
@@ -145,6 +148,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 else:
                     self.logger.warning('{0} : NO {1} info available'.format(self.metric_identifier, type))
 
+
         # 4. check if varibles specified in the data file
         is_variable_scored = False
         if self.fuji.metadata_merged.get('measured_variable'):
@@ -152,23 +156,28 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 'FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
             if not test_data_content_text:
                 self.logger.warning(
-                    'FsF-R1-01MD : Could not verify measured variables found in data content')
+                    'FsF-R1-01MD : Could not verify measured variables found in data object content, content parsing failed')
             for variable in self.fuji.metadata_merged['measured_variable']:
                 variable_metadata_inner = DataContentMetadataOutputInner()
                 variable_metadata_inner.descriptor = 'measured_variable'
                 variable_metadata_inner.descriptor_value = variable
                 if test_data_content_text:
+                    print(test_data_content_text)
+                    print(variable)
                     if variable in test_data_content_text:  # TODO use rapidfuzz (fuzzy search)
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
-                if not is_variable_scored:  # only increase once
-                    score += 1
-                    is_variable_scored = True
+                    if not is_variable_scored:  # only increase once
+                        self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
+                        score += 1
+                        is_variable_scored = True
                 data_content_descriptors.append(variable_metadata_inner)
-
         else:
             self.logger.warning(
                 'FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
+        if not is_variable_scored:
+            self.logger.warning(
+                'FsF-R1-01MD : Measured variables given in metadata do not match data object content')
 
         if score >= self.total_score / 2:  # more than half of total score, consider the test as pass
             test_status = 'pass'
