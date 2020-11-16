@@ -60,7 +60,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
             content_length = len(self.fuji.content_identifier)
             if content_length > 0:
-                self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
+                self.logger.info('FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
                 test_data_content_url = self.fuji.content_identifier[-1].get('url')
                 self.logger.info(
                     'FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))

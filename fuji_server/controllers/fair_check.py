@@ -407,6 +407,7 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
+
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url is not None:
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
@@ -448,13 +449,12 @@ class FAIRCheck:
                 source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 break
+
             elif metadata_link['type'] == 'text/xml':
                 self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
                     metadata_link['type'] + ')'))
-                xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                self.rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                            target_url=metadata_link['url'], link_type=metadata_link['source'])
-                xml_collector.parse_metadata()
-                self.namespace_uri.extend(xml_collector.getNamespaces())
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
