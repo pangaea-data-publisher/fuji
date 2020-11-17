@@ -438,23 +438,41 @@ class FAIRCheck:
 
         found_metadata_link =False
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
+        rel_meta_links = self.get_html_typed_links(rel='meta')
+        #ddi rel="meta" style
+        typed_metadata_links.extend(rel_meta_links)
         guessed_metadata_link = self.get_guessed_xml_link()
         if guessed_metadata_link is not None:
             typed_metadata_links.append(guessed_metadata_link)
 
-        for metadata_link in typed_metadata_links:
-            if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
-                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
-                found_metadata_link=True
-                source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
-                self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
-                break
+        if typed_metadata_links is not None:
+            for metadata_link in typed_metadata_links:
+                if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
+                    found_metadata_link=True
+                    source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
+                    self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
+                elif metadata_link['type'] in ['text/xml','application/x-ddi-l+xml','application/x-ddametadata+xml']:
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
+                        metadata_link['type'] + ')'))
+                    self.rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                               target_url=metadata_link['url'], link_type=metadata_link.get('source'))
 
-            elif metadata_link['type'] == 'text/xml':
-                self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
-                    metadata_link['type'] + ')'))
-                self.rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
-                                                           target_url=metadata_link['url'], link_type=metadata_link['source'])
+                if self.rdf_collector is not None:
+                    source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
+                    self.namespace_uri.extend(self.rdf_collector.getNamespaces())
+                    rdf_dict = self.exclude_null(rdf_dict)
+                    if rdf_dict:
+                        # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
+                        self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata')
+                        self.metadata_sources.append(source_rdf)
+                        for r in rdf_dict.keys():
+                            if r in self.reference_elements:
+                                self.metadata_merged[r] = rdf_dict[r]
+                                self.reference_elements.remove(r)
+                    else:
+                        self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
+
 
         if not found_metadata_link:
             #TODO: find a condition to trigger the rdf request
@@ -462,20 +480,7 @@ class FAIRCheck:
             if self.landing_url is not None:
                 self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
 
-        if self.rdf_collector is not None:
-            source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
-            self.namespace_uri.extend(self.rdf_collector.getNamespaces())
-            rdf_dict = self.exclude_null(rdf_dict)
-            if rdf_dict:
-                # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
-                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata')
-                self.metadata_sources.append(source_rdf)
-                for r in rdf_dict.keys():
-                    if r in self.reference_elements:
-                        self.metadata_merged[r] = rdf_dict[r]
-                        self.reference_elements.remove(r)
-            else:
-                self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
+
 
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
