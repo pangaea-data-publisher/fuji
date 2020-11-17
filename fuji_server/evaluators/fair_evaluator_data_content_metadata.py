@@ -98,8 +98,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         test_data_content_text = str(parsed_content)
                         # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                         if test_data_content_text:
-                            parsed_files = parsedFile.get("metadata").get('resourceName')
-                            self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(parsed_files))
+                            #parsed_files = parsedFile.get("metadata").get('resourceName')
+                            self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(test_data_content_url))
                     else:
                         self.logger.warning('FsF-R1-01MD : Data file not accessible {}'.format(r.status_code))
                 except Exception as e:
@@ -132,14 +132,17 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             matches_content = True
                             score += 1
                         else:
-                            self.logger.warning('{0} : Could not verify content type from downloaded file'.format(self.metric_identifier))
+                            self.logger.warning('{0} : Could not verify content type from downloaded file (expected: {1}, found: {2})'.format(self.metric_identifier, data_object.get('type'), str(self.fuji.tika_content_types_list) ))
 
                     elif d == 'size':
                         if tika_content_size == 0:
-                            self.logger.warning('{0} : Could not verify content size from downloaded file'.format(self.metric_identifier))
+                            self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
                         elif data_object.get('size') == tika_content_size:
                             matches_content = True
                             score += 1
+                        else:
+                            self.logger.warning('{0} : Could not verify content size from downloaded file (expected: {1}, found: {2})'.format(self.metric_identifier, str(data_object.get('size')), str(tika_content_size) ))
+
                     data_content_filetype_inner = DataContentMetadataOutputInner()
                     data_content_filetype_inner.descriptor = descriptor
                     data_content_filetype_inner.descriptor_value = descriptor_value
