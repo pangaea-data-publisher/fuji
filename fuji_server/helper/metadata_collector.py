@@ -38,6 +38,7 @@ class MetaDataCollector(object):
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
         SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Negotiated)'
         DATACITE_JSON = 'Datacite Search'
+        TYPED_LINK = 'Typed Links'
         SIGN_POSTING = 'Signposting Typed Links'
         RDF_SIGN_POSTING = 'RDF-based Typed Links'
         LINKED_DATA ='Linked Data (RDF)'
