@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import gzip
 import json
 import logging
 import mimetypes
@@ -30,6 +31,7 @@ import extruct
 import rdflib
 import requests
 import urllib
+import ssl
 from requests.packages.urllib3.exceptions import *
 from tika import parser
 
@@ -96,11 +98,15 @@ class RequestHelper:
         if self.request_url is not None:
             try:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
+                #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type})
-                tp_response =  urllib.request.urlopen(tp_request)
+                context = ssl._create_unverified_context()
+                tp_response =  urllib.request.urlopen(tp_request,context=context)
                 self.http_response = tp_response
 
                 self.response_content = tp_response.read()
+                if tp_response.info().get('Content-Encoding') == 'gzip':
+                    self.response_content = gzip.decompress(self.response_content)
                 self.response_header = tp_response.getheaders()
                 self.redirect_url = tp_response.geturl()
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
@@ -144,6 +150,7 @@ class RequestHelper:
                                         if at.name == 'xml': # TODO other types (xml)
                                             #in case the XML indeed is a RDF:
                                             # quick one:
+                                            print(type(self.response_content))
                                             if self.response_content.decode('utf-8').find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
                                                 self.parse_response = self.parse_rdf(self.response_content.decode('utf-8'), at.name)
@@ -182,7 +189,7 @@ class RequestHelper:
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
             except urllib.error.URLError as e:
-                self.logger.warning("{} : RequestException: {}".format(metric_id, e.reason))
+                self.logger.warning("{} : RequestException: {} : {}".format(metric_id, e.reason, self.request_url))
                 #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
         return source, self.parse_response
 
