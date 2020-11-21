@@ -93,7 +93,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.fuji.isMetadataAccessible = False
                 self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
             else:
+                self.fuji.isMetadataAccessible = False
                 self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+        else:
+            self.fuji.isMetadataAccessible = False
+            self.logger.warning(
+                "FsF-F1-02D :Resource inaccessible, no response received from: {}".format(check_url))
 
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
