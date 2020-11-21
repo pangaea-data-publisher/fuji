@@ -41,11 +41,14 @@ class MetaDataCollectorXML (MetaDataCollector):
             source_name = self.getEnumSourceNames().GUESSED_XML.value
         elif self.link_type == 'negotiated':
             source_name = self.getEnumSourceNames().XML_NEGOTIATED.value
+        else:
+            source_name = self.getEnumSourceNames().TYPED_LINK.value
         dc_core_metadata = None
-        requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
+        requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
+        self.logger.info('FsF-F2-01M : Trying to access metadata from: {}'.format(self.target_url))
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
-        if requestHelper.response_status == 200:
+        if requestHelper.getHTTPResponse() is not None:
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(source_name))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
@@ -53,7 +56,6 @@ class MetaDataCollectorXML (MetaDataCollector):
             else:
                 tree = lxml.etree.XML(xml_response)
                 schema_locations = set(tree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
-                #print(schema_locations)
                 for schema_location in schema_locations:
                     self.namespaces=re.split('\s',schema_location)
                 #TODO: implement some XSLT to handle the XML..

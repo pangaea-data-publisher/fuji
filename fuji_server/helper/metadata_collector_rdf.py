@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import json
 
 import idutils
 import rdflib
@@ -56,6 +56,12 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
                 if self.content_type is not None:
                     self.content_type = self.content_type.split(";", 1)[0]
+                    #handle JSON-LD
+                    DCAT = Namespace("http://www.w3.org/ns/dcat#")
+                    if self.content_type == 'application/ld+json':
+                        jsonldgraph= rdflib.ConjunctiveGraph()
+                        rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
+                        rdf_response = jsonldgraph
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
@@ -64,7 +70,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
-
             if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in dict(list(rdf_response.namespaces())).values():
                 self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
                 rdf_metadata = self.get_dcat_metadata(rdf_response)
@@ -122,42 +127,45 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_dcat_metadata(self, graph):
         dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
+
         datasets = list(graph[: RDF.type: DCAT.Dataset])
-        dcat_metadata = self.get_metadata(graph, datasets[0],type='Dataset')
+        if len(datasets)>0:
+            dcat_metadata = self.get_metadata(graph, datasets[0],type='Dataset')
+            # publisher
+            if idutils.is_url(dcat_metadata.get('publisher')) or dcat_metadata.get('publisher') is None:
+                publisher = graph.value(datasets[0], DCTERMS.publisher)
+                # FOAF preferred DCAT compliant
+                publisher_name = graph.value(publisher, FOAF.name)
+                dcat_metadata['publisher'] = publisher_name
+                # in some cases a dc title is used (not exactly DCAT compliant)
+                if dcat_metadata.get('publisher') is None:
+                    publisher_title = graph.value(publisher, DCTERMS.title)
+                    dcat_metadata['publisher'] = publisher_title
 
-        # publisher
-        if idutils.is_url(dcat_metadata.get('publisher')) or dcat_metadata.get('publisher') is None:
-            publisher = graph.value(datasets[0], DCTERMS.publisher)
-            # FOAF preferred DCAT compliant
-            publisher_name = graph.value(publisher, FOAF.name)
-            dcat_metadata['publisher'] = publisher_name
-            # in some cases a dc title is used (not exactly DCAT compliant)
-            if dcat_metadata.get('publisher') is None:
-                publisher_title = graph.value(publisher, DCTERMS.title)
-                dcat_metadata['publisher'] = publisher_title
+            # creator
+            if idutils.is_url(dcat_metadata.get('creator')) or dcat_metadata.get('creator') is None:
+                creators = graph.objects(datasets[0], DCTERMS.creator)
+                creator_name = []
+                for creator in creators:
+                    creator_name.append(graph.value(creator, FOAF.name))
+                if len(creator_name) > 0:
+                    dcat_metadata['creator'] = creator_name
 
-        # creator
-        if idutils.is_url(dcat_metadata.get('creator')) or dcat_metadata.get('creator') is None:
-            creators = graph.objects(datasets[0], DCTERMS.creator)
-            creator_name = []
-            for creator in creators:
-                creator_name.append(graph.value(creator, FOAF.name))
-            if len(creator_name) > 0:
-                dcat_metadata['creator'] = creator_name
-
-        # distribution
-        distribution = graph.objects(datasets[0], DCAT.distribution)
-        dcat_metadata['object_content_identifier']=[]
-        for dist in distribution:
-            durl=graph.value(dist, DCAT.accessURL)
-            #taking only one just to check if licence is available
-            dcat_metadata['license']=graph.value(dist, DCTERMS.license)
-            # TODO: check if this really works..
-            dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
-            dtype=graph.value(dist, DCAT.mediaType)
-            dsize=graph.value(dist, DCAT.bytesSize)
-            dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
-            #TODO: add provenance metadata retrieval
+            # distribution
+            distribution = graph.objects(datasets[0], DCAT.distribution)
+            dcat_metadata['object_content_identifier']=[]
+            for dist in distribution:
+                durl=graph.value(dist, DCAT.accessURL)
+                #taking only one just to check if licence is available
+                dcat_metadata['license']=graph.value(dist, DCTERMS.license)
+                # TODO: check if this really works..
+                dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
+                dtype=graph.value(dist, DCAT.mediaType)
+                dsize=graph.value(dist, DCAT.bytesSize)
+                dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+                #TODO: add provenance metadata retrieval
+        else:
+            self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
         return dcat_metadata
             #rdf_meta.query(self.metadata_mapping.value)
             #print(rdf_meta)

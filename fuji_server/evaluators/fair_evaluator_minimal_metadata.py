@@ -28,6 +28,8 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 class FAIREvaluatorCoreMetadata(FAIREvaluator):
     def evaluate(self):
+        if self.fuji.landing_url is None:
+            self.logger.warning('FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
 
         self.fuji.retrieve_metadata(self.fuji.extruct_result)
         self.result = CoreMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)

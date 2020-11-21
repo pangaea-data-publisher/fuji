@@ -37,6 +37,7 @@ paths:
               object_identifier: https://doi.org/10.1594/PANGAEA.908011
               test_debug: true
               oaipmh_endpoint: http://ws.pangaea.de/oai/provider
+              use_datacite: true
       responses:
         "200":
           description: successful operation
@@ -542,6 +543,9 @@ components:
         oaipmh_endpoint:
           type: string
           description: The URL of the OAI-PMH data-provider
+        use_datacite:
+          type: boolean
+          description: Indicates if DataCite should be used to retrieve metadata
     IdentifierIncluded_output_inner:
       type: object
       properties:
