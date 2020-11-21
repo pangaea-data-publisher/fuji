@@ -14,7 +14,7 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, oaipmh_endpoint: str=None):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, oaipmh_endpoint: str=None, use_datacite: bool=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -23,21 +23,26 @@ class Body(Model):
         :type test_debug: bool
         :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
         :type oaipmh_endpoint: str
+        :param use_datacite: The use_datacite of this Body.  # noqa: E501
+        :type use_datacite: bool
         """
         self.swagger_types = {
             'object_identifier': str,
             'test_debug': bool,
-            'oaipmh_endpoint': str
+            'oaipmh_endpoint': str,
+            'use_datacite': bool
         }
 
         self.attribute_map = {
             'object_identifier': 'object_identifier',
             'test_debug': 'test_debug',
-            'oaipmh_endpoint': 'oaipmh_endpoint'
+            'oaipmh_endpoint': 'oaipmh_endpoint',
+            'use_datacite': 'use_datacite'
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
         self._oaipmh_endpoint = oaipmh_endpoint
+        self._use_datacite = use_datacite
 
     @classmethod
     def from_dict(cls, dikt) -> 'Body':
@@ -120,3 +125,26 @@ class Body(Model):
         """
 
         self._oaipmh_endpoint = oaipmh_endpoint
+
+    @property
+    def use_datacite(self) -> bool:
+        """Gets the use_datacite of this Body.
+
+        Indicates if DataCite should be used to retrieve metadata  # noqa: E501
+
+        :return: The use_datacite of this Body.
+        :rtype: bool
+        """
+        return self._use_datacite
+
+    @use_datacite.setter
+    def use_datacite(self, use_datacite: bool):
+        """Sets the use_datacite of this Body.
+
+        Indicates if DataCite should be used to retrieve metadata  # noqa: E501
+
+        :param use_datacite: The use_datacite of this Body.
+        :type use_datacite: bool
+        """
+
+        self._use_datacite = use_datacite
