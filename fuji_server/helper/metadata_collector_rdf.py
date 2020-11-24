@@ -57,6 +57,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 if self.content_type is not None:
                     self.content_type = self.content_type.split(";", 1)[0]
                     #handle JSON-LD
+                    print(self.content_type)
                     DCAT = Namespace("http://www.w3.org/ns/dcat#")
                     if self.content_type == 'application/ld+json':
                         jsonldgraph= rdflib.ConjunctiveGraph()
