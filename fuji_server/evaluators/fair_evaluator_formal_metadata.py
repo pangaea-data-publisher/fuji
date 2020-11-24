@@ -66,7 +66,9 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         # 2b.content negotiate
         formalExists = False
         self.logger.info('{0} : Check if RDF-based typed link included'.format(self.metric_identifier))
-        if MetaDataCollector.Sources.RDF_SIGN_POSTING.value in self.fuji.metadata_sources:
+        if MetaDataCollector.Sources.LINKED_DATA.value in self.fuji.metadata_sources \
+                or MetaDataCollector.Sources.RDFA.value in self.fuji.metadata_sources\
+                or MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE  in self.fuji.metadata_sources:
             contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
                 '{0} : RDF graph retrieved, content type - {1}'.format(self.metric_identifier, contenttype))
