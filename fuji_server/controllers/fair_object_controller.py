@@ -90,6 +90,8 @@ def assess_by_id(body):  # noqa: E501
                     results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
                 else:
                     results[res_k]['test_debug'] = ['INFO: No debug messages received']
+            else:
+                results[res_k]['test_debug'] = ['INFO: Debugging disabled']
 
         timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         metric_spec = Preprocessor.metric_specification
