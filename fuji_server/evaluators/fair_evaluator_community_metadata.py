@@ -83,7 +83,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 self.logger.info(
                     'FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.')
         else:
-            self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the reposiroty specified in re3data')
+            self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the repository specified in re3data')
 
         if standards_detected:
             self.score.earned = self.total_score
