@@ -113,7 +113,8 @@ class RequestHelper:
                 self.response_content = tp_response.read()
                 if tp_response.info().get('Content-Encoding') == 'gzip':
                     self.response_content = gzip.decompress(self.response_content)
-                self.response_charset = tp_response.info().get_content_charset()
+                if tp_response.info().get_content_charset():
+                    self.response_charset = tp_response.info().get_content_charset()
                 self.response_header = tp_response.getheaders()
                 self.redirect_url = tp_response.geturl()
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
@@ -157,7 +158,6 @@ class RequestHelper:
                                         if at.name == 'xml': # TODO other types (xml)
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            print(type(self.response_content))
                                             if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
                                                 self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
