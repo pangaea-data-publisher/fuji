@@ -103,6 +103,7 @@ class FAIRCheck:
     VOCAB_NAMESPACES = None
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
+    SCHEMA_ORG_CONTEXT = []
     FILES_LIMIT = None
     LOG_SUCCESS = 25
 
@@ -173,6 +174,8 @@ class FAIRCheck:
             cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
         if not cls.STANDARD_PROTOCOLS:
             cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
+        if not cls.SCHEMA_ORG_CONTEXT:
+            SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
