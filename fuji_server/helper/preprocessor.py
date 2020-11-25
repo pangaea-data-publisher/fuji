@@ -68,7 +68,12 @@ class Preprocessor(object):
         with open(std_uri_path) as f:
             data = json.load(f)
         if data:
-            cls.schema_org_context  = data
+            for context, schemadict in data.get('@context').items():
+                #print(type(values))
+                if isinstance(schemadict, dict):
+                    schemauri = schemadict.get('@id')
+                    if str(schemauri).startswith('schema:'):
+                        cls.schema_org_context.append(context)
 
     @classmethod
     def get_schema_org_context(cls):
