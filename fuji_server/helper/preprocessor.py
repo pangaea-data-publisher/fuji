@@ -42,6 +42,7 @@ class Preprocessor(object):
     LOD_CLOUDNET = None
     BIOPORTAL_API = None
     BIOPORTAL_KEY = None
+    schema_org_context=[]
     all_licenses = []
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
@@ -59,6 +60,26 @@ class Preprocessor(object):
     logger = logging.getLogger()
     data_files_limit = 3
     metric_specification = None
+
+    @classmethod
+    def retrieve_schema_org_context(cls):
+        data = {}
+        std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'jsonldcontext.json')
+        with open(std_uri_path) as f:
+            data = json.load(f)
+        if data:
+            for context, schemadict in data.get('@context').items():
+                #print(type(values))
+                if isinstance(schemadict, dict):
+                    schemauri = schemadict.get('@id')
+                    if str(schemauri).startswith('schema:'):
+                        cls.schema_org_context.append(context)
+
+    @classmethod
+    def get_schema_org_context(cls):
+        if not cls.schema_org_context:
+            cls.retrieve_schema_org_context()
+        return cls.schema_org_context
 
     @classmethod
     def retrieve_metrics_yaml(cls, yaml_metric_path, limit, specification_uri):

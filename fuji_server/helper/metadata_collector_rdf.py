@@ -57,6 +57,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 if self.content_type is not None:
                     self.content_type = self.content_type.split(";", 1)[0]
                     #handle JSON-LD
+                    print(self.content_type)
                     DCAT = Namespace("http://www.w3.org/ns/dcat#")
                     if self.content_type == 'application/ld+json':
                         jsonldgraph= rdflib.ConjunctiveGraph()
@@ -166,6 +167,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 #TODO: add provenance metadata retrieval
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
+            #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
+            dcat_metadata['object_type'] = 'Dataset'
         return dcat_metadata
             #rdf_meta.query(self.metadata_mapping.value)
             #print(rdf_meta)

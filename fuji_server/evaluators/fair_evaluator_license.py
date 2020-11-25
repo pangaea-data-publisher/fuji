@@ -83,8 +83,10 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.result = License(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         licenses_list = []
         specified_licenses = self.fuji.metadata_merged.get('license')
-
+        self.score.earned = 0
+        spdx_found = False
         if specified_licenses is not None and specified_licenses !=[]:
+            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found licence information in metadata'.format(self.metric_identifier))
             if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
                 specified_licenses = [specified_licenses]
             for l in specified_licenses:
@@ -98,15 +100,19 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 else:  # maybe licence name
                     spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
                 if not spdx_html:
-                    self.logger.warning('FsF-R1.1-01M : NO SPDX license representation (spdx url, osi_approved) found')
+                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(self.metric_identifier))
+                else:
+                    self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(self.metric_identifier))
+                    spdx_found = True
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
             self.result.test_status = "pass"
-            self.score.earned = self.total_score
+            self.score.earned = 1
+            if spdx_found:
+                self.score.earned = 2
         else:
-            self.score.earned = 0
-            self.logger.warning('FsF-R1.1-01M : License unavailable')
+            self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
 
         self.result.output = licenses_list
         self.result.score = self.score

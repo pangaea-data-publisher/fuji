@@ -66,6 +66,7 @@ class RequestHelper:
         self.response_status = None
         self.response_content = None # normally the response body
         self.response_header = None
+        self.response_charset = 'utf-8'
 
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
@@ -82,13 +83,18 @@ class RequestHelper:
         return self.http_response
 
     def getResponseContent(self):
-        return self.response_content.decode('utf-8')
+        return self.response_content.decode(self.response_charset)
 
     def getParsedResponse(self):
         return self.parse_response
 
     def getResponseHeader(self):
         return self.response_header
+
+    def content_decode(self,content):
+        if isinstance(content, 'str'):
+          a=1
+        return True
 
     def content_negotiate(self, metric_id=''):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
@@ -107,6 +113,8 @@ class RequestHelper:
                 self.response_content = tp_response.read()
                 if tp_response.info().get('Content-Encoding') == 'gzip':
                     self.response_content = gzip.decompress(self.response_content)
+                if tp_response.info().get_content_charset():
+                    self.response_charset = tp_response.info().get_content_charset()
                 self.response_header = tp_response.getheaders()
                 self.redirect_url = tp_response.geturl()
                 #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
@@ -121,7 +129,7 @@ class RequestHelper:
                         content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                     if content_type is None:
                         #just in case tika is not running use this as quick check for the most obvious
-                        if re.match(r"<!doctype html>|<html",str(self.response_content.decode('utf-8')).strip(),re.IGNORECASE) is not None:
+                        if re.match(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
                             content_type ='text/html'
                     if content_type is None:
                         parsedFile = parser.from_buffer(self.response_content)
@@ -134,7 +142,7 @@ class RequestHelper:
                             #try to find type by url
                             guessed_format = rdflib.util.guess_format(self.request_url)
                             if guessed_format is not None:
-                                self.parse_response  = self.parse_rdf(self.response_content.decode('utf-8'), guessed_format)
+                                self.parse_response  = self.parse_rdf(self.response_content.decode(self.response_charset), guessed_format)
                                 source='rdf'
                                   #content_type = content_type.split(";", 1)[0]
                         else:
@@ -144,16 +152,15 @@ class RequestHelper:
                                     if content_type in at.value:
                                         if at.name == 'html':
                                             self.logger.info('%s : Found HTML page!' % metric_id)
-                                            self.parse_response = self.parse_html(self.response_content.decode('utf-8'))
+                                            self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
                                             source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
                                             #in case the XML indeed is a RDF:
                                             # quick one:
-                                            print(type(self.response_content))
-                                            if self.response_content.decode('utf-8').find('<rdf:RDF') > -1:
+                                            if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
                                                 self.logger.info('%s : Found RDF document by tag!' % metric_id)
-                                                self.parse_response = self.parse_rdf(self.response_content.decode('utf-8'), at.name)
+                                                self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
                                                 source='rdf'
                                             else:
                                                 self.logger.info('%s : Found XML document!' % metric_id)

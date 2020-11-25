@@ -42,53 +42,77 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         # note: 'source' allowed values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]
 
         # 1. light-weight check (structured_data), expected keys from extruct ['json-ld','rdfa']
+        embedded_RDF_exists = False
         self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(
             self.metric_identifier))
         if MetaDataCollector.Sources.SCHEMAORG_EMBED.value in self.fuji.metadata_sources:
             outputs.append(FormalMetadataOutputInner(serialization_format='JSON-LD', source='structured_data',
                                                      is_metadata_found=True))
             self.logger.info(
-                '{0} : RDF Serialization found in the data page - {1}'.format(self.metric_identifier, 'JSON-LD'))
-            score += 1
-        elif MetaDataCollector.Sources.RDFA.value in self.fuji.metadata_sources:
+                '{0} : JSON-LD (schema.org) serialization found in the data page - {1}'.format(self.metric_identifier, 'JSON-LD'))
+            embedded_RDF_exists = True
+        if MetaDataCollector.Sources.RDFA.value in self.fuji.metadata_sources:
             outputs.append(FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data',
                                                      is_metadata_found=True))
             self.logger.info(
-                '{0} : RDF Serialization found in the data page - {1}'.format(self.metric_identifier, 'RDFa'))
-            score += 1
+                '{0} : RDFa serialization found in the data page - {1}'.format(self.metric_identifier, 'RDFa'))
+            embedded_RDF_exists = True
 
         if len(outputs) == 0:
             self.logger.info(
                 '{0} : NO structured data (RDF serialization) embedded in the data page'.format(self.metric_identifier))
+        else:
+            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found RDF serialization in the data page'.format(self.metric_identifier))
+            score += 1
 
         # 2. hard check (typed-link, content negotiate, sparql endpoint)
         # 2a. in the object page, you may find a <link rel="alternate" type="application/rdf+xml" … />
-        # 2b.content negotiate
+
+        RDF_link_exists = False
         formalExists = False
         self.logger.info('{0} : Check if RDF-based typed link included'.format(self.metric_identifier))
         if MetaDataCollector.Sources.RDF_SIGN_POSTING.value in self.fuji.metadata_sources:
             contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
-                '{0} : RDF graph retrieved, content type - {1}'.format(self.metric_identifier, contenttype))
+                '{0} : RDF graph retrieved via typed link, content type - {1}'.format(self.metric_identifier, contenttype))
             outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='typed_link',
                                                      is_metadata_found=True))
-            score += 1
+            #score += 1
+            RDF_link_exists = True
             formalExists = True
         else:
             self.logger.info('{0} : NO RDF-based typed link found'.format(self.metric_identifier))
+
+        # 2b.content negotiate
+        negotiated_RDF_exists = False
+        self.logger.info(
+            '{0} : Check if RDF metadata available through content negotiation'.format(self.metric_identifier))
+            #for rdf_data_sources in [MetaDataCollector.Sources.LINKED_DATA.value, MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE,MetaDataCollector.Sources.]
+
+        if MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value in self.fuji.metadata_sources:
+            contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
-                '{0} : Check if RDF metadata available through content negotiation'.format(self.metric_identifier))
-            if MetaDataCollector.Sources.LINKED_DATA.value in self.fuji.metadata_sources:
-                contenttype = self.fuji.rdf_collector.get_content_type()
-                self.logger.info(
-                    '{0} : RDF graph retrieved, content type - {1}'.format(self.metric_identifier, contenttype))
-                outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
+                '{0} : JSON-LD graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, contenttype))
+            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
                                                          is_metadata_found=True))
-                score += 1
-                formalExists = True
-            else:
-                self.logger.info(
-                    '{0} : NO RDF metadata available through content negotiation'.format(self.metric_identifier))
+            negotiated_RDF_exists = True
+            formalExists = True
+
+        if MetaDataCollector.Sources.LINKED_DATA.value in self.fuji.metadata_sources:
+            contenttype = self.fuji.rdf_collector.get_content_type()
+            self.logger.info(
+                '{0} : RDF graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, contenttype))
+            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
+                                                         is_metadata_found=True))
+            negotiated_RDF_exists = True
+            formalExists = True
+
+        if negotiated_RDF_exists or RDF_link_exists:
+            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found RDF content through content negotiation or typed links'.format(self.metric_identifier))
+            score +=1
+        else:
+            self.logger.info(
+                '{0} : NO RDF metadata available through content negotiation'.format(self.metric_identifier))
 
         # 2c. try to retrieve via sparql endpoint (if available)
         if not formalExists:

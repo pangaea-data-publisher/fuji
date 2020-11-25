@@ -166,9 +166,9 @@ metrics:
   evaluation_mechanism: to-do
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
+  date_updated: 2020-11-24
   version: 0.3
-  total_score: 1
+  total_score: 2
 
 - metric_identifier: FsF-R1.2-01M
   metric_short_name: Data Provenance

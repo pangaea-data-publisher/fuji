@@ -40,7 +40,7 @@ class MetaDataCollector(object):
         DATACITE_JSON = 'Datacite Search'
         TYPED_LINK = 'Typed Links'
         SIGN_POSTING = 'Signposting Typed Links'
-        RDF_SIGN_POSTING = 'RDF-based Typed Links'
+        RDF_SIGN_POSTING = 'RDF-based Typed Links' #Links in header which lead to a RDF resource
         LINKED_DATA ='Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
         GUESSED_XML = 'Guessed XML Link'
