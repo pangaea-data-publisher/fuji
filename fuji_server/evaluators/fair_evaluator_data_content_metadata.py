@@ -78,7 +78,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             tika_content_size = tika_content_size + len(chunk)
                             if time.time() > (start + timeout):
                                 self.logger.warning(
-                                    'FsF-R1-01MD : Could not download complete file, skipped after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
+                                    'FsF-R1-01MD : File too large.., skipped download after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
                                 tika_content_size = 0
                                 break
 
