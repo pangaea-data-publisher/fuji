@@ -167,6 +167,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 #TODO: add provenance metadata retrieval
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
+            #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
+            dcat_metadata['object_type'] = 'Dataset'
         return dcat_metadata
             #rdf_meta.query(self.metadata_mapping.value)
             #print(rdf_meta)
