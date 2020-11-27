@@ -418,28 +418,28 @@ class FAIRCheck:
             source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
 
         # ========= retrieve datacite json metadata based on pid =========
-        if self.use_datacite == True:
-            if self.pid_scheme:
-                dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
-                                                            pid_url=self.pid_url)
-                source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
-                dcitejsn_dict = self.exclude_null(dcitejsn_dict)
-                if dcitejsn_dict:
-                    # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
-                    self.metadata_sources.append(source_dcitejsn)
-                    self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found metadata registered at Datacite: {}'.format(str(dcitejsn_dict.keys())))
-                    if dcitejsn_dict.get('related_resources'):
-                        self.related_resources.extend(dcitejsn_dict.get('related_resources'))
+        #if self.use_datacite == True:
+        if self.pid_scheme:
+            dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
+                                                        pid_url=self.pid_url)
+            source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
+            dcitejsn_dict = self.exclude_null(dcitejsn_dict)
+            if dcitejsn_dict:
+                # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
+                self.metadata_sources.append(source_dcitejsn)
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
+                if dcitejsn_dict.get('related_resources'):
+                    self.related_resources.extend(dcitejsn_dict.get('related_resources'))
 
-                    for r in dcitejsn_dict.keys():
-                        # only merge when the value cannot be retrived from embedded metadata
-                        if r in self.reference_elements and not self.metadata_merged.get(r):
-                            self.metadata_merged[r] = dcitejsn_dict[r]
-                            self.reference_elements.remove(r)
-                else:
-                    self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
+                for r in dcitejsn_dict.keys():
+                    # only merge when the value cannot be retrived from embedded metadata
+                    if r in self.reference_elements and not self.metadata_merged.get(r):
+                        self.metadata_merged[r] = dcitejsn_dict[r]
+                        self.reference_elements.remove(r)
             else:
-                self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
+                self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
+        else:
+            self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
 
         found_metadata_link =False
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
