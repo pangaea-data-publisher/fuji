@@ -72,10 +72,9 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         formalExists = False
         self.logger.info('{0} : Check if RDF-based typed link included'.format(self.metric_identifier))
         if MetaDataCollector.Sources.RDF_SIGN_POSTING.value in self.fuji.metadata_sources:
-            contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
-                '{0} : RDF graph retrieved via typed link, content type - {1}'.format(self.metric_identifier, contenttype))
-            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='typed_link',
+                '{0} : RDF graph retrieved via typed link, content type - {1}'.format(self.metric_identifier, 'RDF'))
+            outputs.append(FormalMetadataOutputInner(serialization_format='RDF', source='typed_link',
                                                      is_metadata_found=True))
             #score += 1
             RDF_link_exists = True
@@ -90,19 +89,17 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             #for rdf_data_sources in [MetaDataCollector.Sources.LINKED_DATA.value, MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE,MetaDataCollector.Sources.]
 
         if MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value in self.fuji.metadata_sources:
-            contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
-                '{0} : JSON-LD graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, contenttype))
-            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
+                '{0} : JSON-LD graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, 'JSON-LD'))
+            outputs.append(FormalMetadataOutputInner(serialization_format='JSON-LD', source='content_negotiate',
                                                          is_metadata_found=True))
             negotiated_RDF_exists = True
             formalExists = True
 
         if MetaDataCollector.Sources.LINKED_DATA.value in self.fuji.metadata_sources:
-            contenttype = self.fuji.rdf_collector.get_content_type()
             self.logger.info(
-                '{0} : RDF graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, contenttype))
-            outputs.append(FormalMetadataOutputInner(serialization_format=contenttype, source='content_negotiate',
+                '{0} : RDF graph retrieved through content negotiation, content type - {1}'.format(self.metric_identifier, 'RDF'))
+            outputs.append(FormalMetadataOutputInner(serialization_format='RDF', source='content_negotiate',
                                                          is_metadata_found=True))
             negotiated_RDF_exists = True
             formalExists = True
