@@ -148,6 +148,10 @@ components:
           type: string
         metric_name:
           type: string
+        metric_tests:
+          type: array
+          items:
+           $ref: '#/components/schemas/FAIRResultEvaluationCriterium'
         test_status:
           type: string
           default: fail
@@ -310,6 +314,15 @@ components:
               $ref: '#/components/schemas/StandardisedProtocolMetadata_output'
             test_debug:
               $ref: '#/components/schemas/Debug'
+    FAIRResultEvaluationCriterium:
+      type: object
+      properties:
+        metric_test_identifier:
+          type: string
+        metric_test_name:
+          type: string
+        metric_test_score:
+          type: integer
     FAIRResultCommon_score:
       type: object
       properties:

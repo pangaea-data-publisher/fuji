@@ -22,8 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import logging
-
+from typing import List, Dict
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
+from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
+
 
 from fuji_server.helper.log_message_filter import MessageFilter
 
@@ -33,6 +35,7 @@ class FAIREvaluator:
         self.metric_identifier = None
         self.metrics = None
         self.result = None
+        self.metric_tests = []
         self.isDebug=self.fuji.isDebug
         self.fuji.count = self.fuji.count+1
         self.logger = self.fuji.logger
@@ -49,6 +52,7 @@ class FAIREvaluator:
             self.score = FAIRResultCommonScore(total=self.total_score)
             self.metric_name = self.metrics.get(metric_identifier).get('metric_name')
 
+
     def evaluate(self):
         #Do the main FAIR check here
          return True
@@ -56,3 +60,15 @@ class FAIREvaluator:
     def getResult(self):
         self.evaluate()
         return self.result.to_dict()
+
+    def addEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0):
+        evaluation_criterium = FAIRResultEvaluationCriterium()
+        evaluation_criterium.metric_test_identifier= criterium_id
+        evaluation_criterium.metric_test_name = ''
+        metric_tests = self.metrics.get(self.metric_identifier).get('metric_tests')
+        if metric_tests is not None:
+            for criterium in metric_tests:
+                if criterium.get('metric_test_identifier') == criterium_id:
+                    evaluation_criterium.metric_test_name = criterium.get('metric_test_name')
+        evaluation_criterium.metric_test_score = metric_test_score
+        self.metric_tests.append(evaluation_criterium)
