@@ -319,9 +319,9 @@ components:
       properties:
         metric_test_identifier:
           type: string
-        metric_test_name:
+        criterium_name:
           type: string
-        metric_test_score:
+        criterium_score:
           type: integer
     FAIRResultCommon_score:
       type: object

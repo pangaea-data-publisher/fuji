@@ -61,14 +61,14 @@ class FAIREvaluator:
         self.evaluate()
         return self.result.to_dict()
 
-    def addEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0):
+    def addEvaluationCriteriumScore(self, criterium_id, criterium_score = 0):
         evaluation_criterium = FAIRResultEvaluationCriterium()
         evaluation_criterium.metric_test_identifier= criterium_id
-        evaluation_criterium.metric_test_name = ''
+        evaluation_criterium.criterium_name = ''
         metric_tests = self.metrics.get(self.metric_identifier).get('metric_tests')
         if metric_tests is not None:
             for criterium in metric_tests:
                 if criterium.get('metric_test_identifier') == criterium_id:
-                    evaluation_criterium.metric_test_name = criterium.get('metric_test_name')
-        evaluation_criterium.metric_test_score = metric_test_score
+                    evaluation_criterium.criterium_name = criterium.get('criterium_name')
+        evaluation_criterium.criterium_score = criterium_score
         self.metric_tests.append(evaluation_criterium)
