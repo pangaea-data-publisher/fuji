@@ -414,8 +414,16 @@ class FAIRCheck:
 
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url is not None:
+            self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
             source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
+            #TODO: Finish  this ...
+
+            # ========= retrieve rdf metadata namespaces by content negotiation ========
+            self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation')
+            source = MetaDataCollector.Sources.LINKED_DATA.value
+            self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url,
+                                                      source=source)
 
         # ========= retrieve datacite json metadata based on pid =========
         #if self.use_datacite == True:
@@ -463,27 +471,22 @@ class FAIRCheck:
                     self.rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                target_url=metadata_link['url'], link_type=metadata_link.get('source'))
 
-                if self.rdf_collector is not None:
-                    source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
-                    self.namespace_uri.extend(self.rdf_collector.getNamespaces())
-                    rdf_dict = self.exclude_null(rdf_dict)
-                    if rdf_dict:
-                        # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
-                        self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
-                        self.metadata_sources.append(source_rdf)
-                        for r in rdf_dict.keys():
-                            if r in self.reference_elements:
-                                self.metadata_merged[r] = rdf_dict[r]
-                                self.reference_elements.remove(r)
-                    else:
-                        self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
+        if self.rdf_collector is not None:
+            source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
+            self.namespace_uri.extend(self.rdf_collector.getNamespaces())
+            rdf_dict = self.exclude_null(rdf_dict)
+            if rdf_dict:
+                # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
+                self.metadata_sources.append(source_rdf)
+                for r in rdf_dict.keys():
+                    if r in self.reference_elements:
+                        self.metadata_merged[r] = rdf_dict[r]
+                        self.reference_elements.remove(r)
+            else:
+                self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
 
-        if not found_metadata_link:
-            #TODO: find a condition to trigger the rdf request
-            source = MetaDataCollector.Sources.LINKED_DATA.value
-            if self.landing_url is not None:
-                self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
 
 
 
