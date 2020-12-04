@@ -40,20 +40,20 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                                   MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
-                                  MetaDataCollector.Sources.RDFA.value,
-                                  MetaDataCollector.Sources.LINKED_DATA.value]
-
+                                  MetaDataCollector.Sources.RDFA.value]
         # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match: List[Any] = list(set(self.fuji.metadata_sources).intersection(search_engines_support))
+        search_engine_support_match: List[Any] = list(set(dict(self.fuji.metadata_sources).keys()).intersection(search_engines_support))
         if search_engine_support_match:
+            self.setEvaluationCriteriumScore('FsF-F4-01M-1', 1, 'pass')
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - structured data')
         else:
             self.logger.warning('FsF-F4-01M : Metadata is NOT found through - {}'.format(search_engines_support))
-
-        registry_support_match = list(set(self.fuji.metadata_sources).intersection(sources_registry))
+        #TODO: replace this metadata format based test by real lookup at registries
+        registry_support_match = list(set(dict(self.fuji.metadata_sources).keys()).intersection(sources_registry))
         if registry_support_match:
+            self.setEvaluationCriteriumScore('FsF-F4-01M-2', 1, 'pass')
             search_mechanisms.append(
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
@@ -64,6 +64,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         length = len(search_mechanisms)
         if length > 0:
             self.result.test_status = 'pass'
+
             if length == 2:
                 self.score.earned = self.total_score
             if length == 1:
@@ -73,4 +74,5 @@ class FAIREvaluatorSearchable(FAIREvaluator):
 
         self.result.score =  self.score
         self.output.search_mechanisms = search_mechanisms
+        self.result.metric_tests = self.metric_tests
         self.result.output =  self.output

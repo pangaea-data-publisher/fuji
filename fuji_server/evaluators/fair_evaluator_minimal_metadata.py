@@ -44,9 +44,13 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if set(metadata_found) == set(metadata_required):
             metadata_status = 'all metadata'
             self.score.earned = self.total_score
+            self.setEvaluationCriteriumScore('FsF-F2-01M-3', 1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
+
             test_status = 'pass'
         elif set(partial_elements).issubset(metadata_found):
             metadata_status = 'partial metadata'
+            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
             self.score.earned = self.total_score - 1
             test_status = 'pass'
         else:
@@ -66,7 +70,19 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         #meta_output: CoreMetadataOutput = CoreMetadataOutput(core_metadata_status=metadata_status,
         #                                                     core_metadata_source=self.metadata_sources)
         self.output.core_metadata_found = metadata_found
+        source_mechanisms = dict((y, x) for x, y in self.fuji.metadata_sources)
+        for source_mechanism in source_mechanisms:
+            if source_mechanism == 'embedded':
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0,'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+            if source_mechanism == 'negotiated':
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0,'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+            if source_mechanism == 'linked':
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0,'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
         self.result.test_status = test_status
+        self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.output = self.output
 

@@ -33,10 +33,7 @@ from tika import parser
 
 class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def evaluate(self):
-
-        self.result = DataContentMetadata(id=self.fuji.count,
-                                                           metric_identifier=self.metric_identifier,
-                                                           metric_name=self.metric_name)
+        self.result = DataContentMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = DataContentMetadataOutput()
         data_content_descriptors = []
         test_data_content_text = None
@@ -51,6 +48,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         if resource_type:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
             self.output.object_type = resource_type
+            self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
             score += 1
         else:
             self.logger.warning('FsF-R1-01MD : NO resource type specified ')
@@ -104,8 +102,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.warning('FsF-R1-01MD : Data file not accessible {}'.format(r.status_code))
                 except Exception as e:
                     self.logger.warning(
-                        '{0} : Could not retrieve/parse content object - {1}'.format(self.metric_identifier,
-                                                                                    e))
+                        '{0} : Could not retrieve/parse content object - {1}'.format(self.metric_identifier, e))
                     #traceback.print_exc()
             else:
                 self.logger.warning(
@@ -117,29 +114,33 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                            'size']  # default keys ['url', 'type', 'size', 'profile', 'header_content_type', 'header_content_length']
             data_object = next(item for item in self.fuji.metadata_merged.get('object_content_identifier') if
                                item["url"] == test_data_content_url)
-            missing_descriptors = []
-            variable_content_matched = False
+            if data_object.get('type') and data_object.get('size'):
+                score +=1
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-2', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-2a', 0, 'pass')
+
             for d in descriptors:
                 type = 'file ' + d
                 if d in data_object.keys() and data_object.get(d):
                     descriptor = type
                     descriptor_value = data_object.get(d)
                     matches_content = False
+                    matches_type = False
+                    matches_size = False
                     #if data_object.get('header_content_type') == data_object.get('type'):
                     # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
                     if d == 'type':
                         if data_object.get('type') in self.fuji.tika_content_types_list:
                             matches_content = True
-                            score += 1
+                            matches_type = True
                         else:
                             self.logger.warning('{0} : Could not verify content type from downloaded file (expected: {1}, found: {2})'.format(self.metric_identifier, data_object.get('type'), str(self.fuji.tika_content_types_list) ))
-
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
                         elif data_object.get('size') == tika_content_size:
                             matches_content = True
-                            score += 1
+                            matches_size = True
                         else:
                             self.logger.warning('{0} : Could not verify content size from downloaded file (expected: {1}, found: {2})'.format(self.metric_identifier, str(data_object.get('size')), str(tika_content_size) ))
 
@@ -150,11 +151,16 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     data_content_descriptors.append(data_content_filetype_inner)
                 else:
                     self.logger.warning('{0} : NO {1} info available'.format(self.metric_identifier, type))
-
+            ### scoring for file descriptors match
+            if matches_type and matches_size:
+                score += 1
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-3', 1, 'pass')
 
         # 4. check if varibles specified in the data file
         is_variable_scored = False
         if self.fuji.metadata_merged.get('measured_variable'):
+            self.setEvaluationCriteriumScore('FsF-R1-01MD-2', 1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-R1-01MD-2b', 0, 'pass')
             self.logger.log(self.fuji.LOG_SUCCESS,
                 'FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
             if not test_data_content_text:
@@ -169,6 +175,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
                     if not is_variable_scored:  # only increase once
+                        self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
                         self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
                         score += 1
                         is_variable_scored = True
@@ -186,4 +193,5 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         self.result.output = self.output
         self.score.earned = score
         self.result.score = self.score
+        self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status

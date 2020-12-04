@@ -40,7 +40,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
-            self.addEvaluationCriteriumScore('FsF-F1-01D-1',1)
+            self.setEvaluationCriteriumScore('FsF-F1-01D-1',1, 'pass')
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
 

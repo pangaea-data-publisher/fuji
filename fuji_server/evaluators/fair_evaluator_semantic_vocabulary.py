@@ -62,7 +62,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                 '{0} : Check the remaining namespace(s) exists in LOD - {1}'.format(self.metric_identifier, exists))
             if exists:
                 score = self.total_score
-                self.logger.info('{0} : Namespace matches found - {1}'.format(self.metric_identifier, exists))
+                self.setEvaluationCriteriumScore('FsF-I1-02M-1', 1, 'pass')
+                self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Namespace matches found - {1}'.format(self.metric_identifier, exists))
                 for e in exists:
                     outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
             else:
@@ -83,4 +84,5 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.result.test_status = test_status
         self.score.earned = score
         self.result.score = self.score
+        self.result.metric_tests = self.metric_tests
         self.result.output = outputs

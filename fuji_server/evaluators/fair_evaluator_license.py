@@ -108,11 +108,14 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
             self.result.test_status = "pass"
+            self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
             self.score.earned = 1
             if spdx_found:
+                self.setEvaluationCriteriumScore('FsF-R1.1-01M-2', 1, 'pass')
                 self.score.earned = 2
         else:
             self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
 
         self.result.output = licenses_list
+        self.result.metric_tests = self.metric_tests
         self.result.score = self.score

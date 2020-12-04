@@ -37,7 +37,6 @@ paths:
               object_identifier: https://doi.org/10.1594/PANGAEA.908011
               test_debug: true
               oaipmh_endpoint: http://ws.pangaea.de/oai/provider
-              use_datacite: true
       responses:
         "200":
           description: successful operation
@@ -317,12 +316,16 @@ components:
     FAIRResultEvaluationCriterium:
       type: object
       properties:
-        metric_test_identifier:
+        metric_test_name:
           type: string
-        criterium_name:
-          type: string
-        criterium_score:
+        metric_test_score:
           type: integer
+        metric_test_status:
+          type: string
+          default: fail
+          enum:
+          - pass
+          - fail
     FAIRResultCommon_score:
       type: object
       properties:
@@ -556,9 +559,6 @@ components:
         oaipmh_endpoint:
           type: string
           description: The URL of the OAI-PMH data-provider
-        use_datacite:
-          type: boolean
-          description: Indicates if DataCite should be used to retrieve metadata
     IdentifierIncluded_output_inner:
       type: object
       properties:

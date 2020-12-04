@@ -89,7 +89,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.output.resolvable_status = True
                 self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
                 self.fuji.isMetadataAccessible = True
-                self.addEvaluationCriteriumScore('FsF-F1-02D-1b', 1)
+                self.setEvaluationCriteriumScore('FsF-F1-02D-2', 1,'pass')
             elif r.status_code in [401, 402, 403]:
                 self.fuji.isMetadataAccessible = False
                 self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
@@ -111,8 +111,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.output.pid_scheme = self.fuji.pid_scheme
             self.result.test_status = 'pass'
             self.output.pid = self.fuji.pid_url
-            self.addEvaluationCriteriumScore('FsF-F1-02D-1', 0)
-            print(self.metric_tests)
+            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0,'pass')
+            #print(self.metric_tests)
 
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
             #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))

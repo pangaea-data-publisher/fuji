@@ -112,7 +112,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         self.result.test_status = test_status
         if access_level: #must be one of ['public', 'embargoed', 'restricted', 'closed_metadataonly']
             self.output.access_level = access_level
+            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 1, 'pass')
+            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-01M : Access level to data could successfully be determined: '+access_level)
         else:
             self.logger.warning('FsF-A1-01M : Unable to determine the access level')
         self.output.access_details = access_details
+        self.result.metric_tests = self.metric_tests
         self.result.output = self.output

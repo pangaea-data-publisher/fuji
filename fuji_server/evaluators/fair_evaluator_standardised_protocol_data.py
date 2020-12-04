@@ -48,15 +48,17 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
 
             if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
                 self.logger.log(self.fuji.LOG_SUCCESS,
-                    '{0} : Standard protocol for access to data object found: '+data_url_scheme.format(self.metric_identifier))
+                    'FsF-A1-03D : Standard protocol for access to data object found: '+data_url_scheme)
                 data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
+                self.setEvaluationCriteriumScore('FsF-A1-03D-1', 1, 'pass')
                 test_status = 'pass'
                 score += 1
         else:
             self.logger.info(
-                '{0} : NO content (data) identifier is given in metadata'.format(self.metric_identifier))
+                'FsF-A1-03D : NO content (data) identifier is given in metadata')
 
         self.score.earned = score
         self.result.score = self.score
         self.result.output = StandardisedProtocolDataOutput(standard_data_protocol=data_output)
+        self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status
