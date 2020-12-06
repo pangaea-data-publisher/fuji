@@ -148,8 +148,8 @@ components:
         metric_name:
           type: string
         metric_tests:
-          type: array
-          items:
+          type: object
+          additionalProperties:
            $ref: '#/components/schemas/FAIRResultEvaluationCriterium'
         test_status:
           type: string

@@ -19,7 +19,7 @@ class SemanticVocabulary(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: List[FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, output: SemanticVocabularyOutput=None, test_debug: Debug=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, output: SemanticVocabularyOutput=None, test_debug: Debug=None):  # noqa: E501
         """SemanticVocabulary - a model defined in Swagger
 
         :param id: The id of this SemanticVocabulary.  # noqa: E501
@@ -29,7 +29,7 @@ class SemanticVocabulary(Model):
         :param metric_name: The metric_name of this SemanticVocabulary.  # noqa: E501
         :type metric_name: str
         :param metric_tests: The metric_tests of this SemanticVocabulary.  # noqa: E501
-        :type metric_tests: List[FAIRResultEvaluationCriterium]
+        :type metric_tests: Dict[str, FAIRResultEvaluationCriterium]
         :param test_status: The test_status of this SemanticVocabulary.  # noqa: E501
         :type test_status: str
         :param score: The score of this SemanticVocabulary.  # noqa: E501
@@ -43,7 +43,7 @@ class SemanticVocabulary(Model):
             'id': int,
             'metric_identifier': str,
             'metric_name': str,
-            'metric_tests': List[FAIRResultEvaluationCriterium],
+            'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
             'score': FAIRResultCommonScore,
             'output': SemanticVocabularyOutput,
@@ -150,22 +150,22 @@ class SemanticVocabulary(Model):
         self._metric_name = metric_name
 
     @property
-    def metric_tests(self) -> List[FAIRResultEvaluationCriterium]:
+    def metric_tests(self) -> Dict[str, FAIRResultEvaluationCriterium]:
         """Gets the metric_tests of this SemanticVocabulary.
 
 
         :return: The metric_tests of this SemanticVocabulary.
-        :rtype: List[FAIRResultEvaluationCriterium]
+        :rtype: Dict[str, FAIRResultEvaluationCriterium]
         """
         return self._metric_tests
 
     @metric_tests.setter
-    def metric_tests(self, metric_tests: List[FAIRResultEvaluationCriterium]):
+    def metric_tests(self, metric_tests: Dict[str, FAIRResultEvaluationCriterium]):
         """Sets the metric_tests of this SemanticVocabulary.
 
 
         :param metric_tests: The metric_tests of this SemanticVocabulary.
-        :type metric_tests: List[FAIRResultEvaluationCriterium]
+        :type metric_tests: Dict[str, FAIRResultEvaluationCriterium]
         """
 
         self._metric_tests = metric_tests
