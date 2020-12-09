@@ -110,6 +110,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.output.pid_scheme = self.fuji.pid_scheme
             self.result.test_status = 'pass'
             self.output.pid = self.fuji.pid_url
+            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0,'pass')
+            if self.fuji.isMetadataAccessible:
+                self.setEvaluationCriteriumScore('FsF-F1-02D-2', 1, 'pass')
+
+            #print(self.metric_tests)
+
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
             #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
@@ -117,4 +123,5 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
+        self.result.metric_tests = self.metric_tests
         self.result.output = self.output

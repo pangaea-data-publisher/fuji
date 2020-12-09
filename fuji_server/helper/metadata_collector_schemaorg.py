@@ -82,8 +82,10 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
                     #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
                     invalid_license = False
-                    self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(jsnld_metadata.get('license')))
                     if jsnld_metadata.get('license'):
+                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(
+                            jsnld_metadata.get('license')))
+
                         if isinstance(jsnld_metadata.get('license'), list):
                             jsnld_metadata['license'] = jsnld_metadata['license'][0]
                         if isinstance(jsnld_metadata.get('license'), dict):

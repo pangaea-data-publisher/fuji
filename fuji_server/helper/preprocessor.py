@@ -157,6 +157,19 @@ class Preprocessor(object):
                 cls.logger.error(e2)
         if data:
             cls.all_licenses = data
+            for licenceitem in cls.all_licenses:
+                seeAlso = licenceitem.get('seeAlso')
+                # some cleanup to add modified licence URLs
+                for licenceurl in seeAlso:
+                    if 'http:' in licenceurl:
+                        altURL = licenceurl.replace('http:', 'https:')
+                    else:
+                        altURL = licenceurl.replace('https:', 'http:')
+                    if altURL not in seeAlso:
+                        seeAlso.append(altURL)
+                    if licenceurl.endswith('/legalcode'):
+                        altURL = licenceurl.replace('/legalcode', '')
+                        seeAlso.append(altURL)
             cls.total_licenses = len(data)
             cls.license_names = [d['name'] for d in data if 'name' in d]
             # referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]

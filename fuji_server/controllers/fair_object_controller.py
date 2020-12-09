@@ -47,8 +47,8 @@ def assess_by_id(body):  # noqa: E501
         identifier=body.object_identifier
         debug = body.test_debug
         oai = body.oaipmh_endpoint
-        use_datacite = body.use_datacite
-        ft = FAIRCheck(uid=identifier, test_debug=debug, oaipmh=oai, use_datacite=use_datacite)
+        usedatacite = body.use_datacite
+        ft = FAIRCheck(uid=identifier, test_debug=debug, oaipmh=oai, use_datacite=usedatacite)
 
         uid_result, pid_result = ft.check_unique_persistent()
         core_metadata_result = ft.check_minimal_metatadata()

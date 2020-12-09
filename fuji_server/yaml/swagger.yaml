@@ -148,6 +148,10 @@ components:
           type: string
         metric_name:
           type: string
+        metric_tests:
+          type: object
+          additionalProperties:
+           $ref: '#/components/schemas/FAIRResultEvaluationCriterium'
         test_status:
           type: string
           default: fail
@@ -310,6 +314,19 @@ components:
               $ref: '#/components/schemas/StandardisedProtocolMetadata_output'
             test_debug:
               $ref: '#/components/schemas/Debug'
+    FAIRResultEvaluationCriterium:
+      type: object
+      properties:
+        metric_test_name:
+          type: string
+        metric_test_score:
+          type: integer
+        metric_test_status:
+          type: string
+          default: fail
+          enum:
+          - pass
+          - fail
     FAIRResultCommon_score:
       type: object
       properties:
@@ -545,7 +562,7 @@ components:
           description: The URL of the OAI-PMH data-provider
         use_datacite:
           type: boolean
-          description: Indicates if DataCite should be used to retrieve metadata
+          description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata
     IdentifierIncluded_output_inner:
       type: object
       properties:

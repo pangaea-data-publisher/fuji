@@ -40,8 +40,10 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
+            self.setEvaluationCriteriumScore('FsF-F1-01D-1',1, 'pass')
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
+
             # identify main scheme
             if len(found_ids) == 1 and found_ids[0] == 'url':  # only url included
                 #self.fuji.pid_url = self.fuji.id
@@ -58,6 +60,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.output.guid_scheme = found_id
             self.result.test_status = 'pass'
             self.result.score = self.score
+            self.result.metric_tests = self.metric_tests
             self.result.output = self.output
         else:
             self.logger.warning('FsF-F1-01D : Failed to check the identifier scheme!.')

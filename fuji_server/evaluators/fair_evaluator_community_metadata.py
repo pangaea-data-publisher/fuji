@@ -62,10 +62,14 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 self.logger.info(
                     'FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog - {}'.format(
                         no_match))
+        if standards_detected:
+            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1a', 1, 'pass')
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
         if len(self.fuji.community_standards) > 0:
+            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 0, 'pass')
             if len(standards_detected) == 0:
+                self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
                 self.logger.info('FsF-R1.3-01M : Use re3data the source of metadata standard(s)')
                 for s in self.fuji.community_standards:
                     standard_found = self.fuji.lookup_metadatastandard_by_name(s)
@@ -88,8 +92,10 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if standards_detected:
             self.score.earned = self.total_score
             self.result.test_status = 'pass'
+            self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
+
         else:
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
-
+        self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.output = standards_detected

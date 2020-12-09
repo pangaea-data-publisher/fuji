@@ -130,7 +130,7 @@ class Body(Model):
     def use_datacite(self) -> bool:
         """Gets the use_datacite of this Body.
 
-        Indicates if DataCite should be used to retrieve metadata  # noqa: E501
+        Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata  # noqa: E501
 
         :return: The use_datacite of this Body.
         :rtype: bool
@@ -141,7 +141,7 @@ class Body(Model):
     def use_datacite(self, use_datacite: bool):
         """Sets the use_datacite of this Body.
 
-        Indicates if DataCite should be used to retrieve metadata  # noqa: E501
+        Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata  # noqa: E501
 
         :param use_datacite: The use_datacite of this Body.
         :type use_datacite: bool

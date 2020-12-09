@@ -75,18 +75,6 @@ from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-from fuji_server.models import *
-from fuji_server.models import CoreMetadataOutput, CommunityEndorsedStandardOutputInner
-from fuji_server.models.data_content_metadata import DataContentMetadata
-from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
-from fuji_server.models.data_provenance import DataProvenance
-from fuji_server.models.data_provenance_output import DataProvenanceOutput
-from fuji_server.models.metadata_preserved import MetadataPreserved
-from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
-from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
-from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
-
 
 class FAIRCheck:
     METRICS = None
@@ -152,7 +140,7 @@ class FAIRCheck:
     def load_predata(cls):
         cls.FILES_LIMIT = Preprocessor.data_files_limit
         if not cls.METRICS:
-            cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score'])
+            cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score','metric_tests'])
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
@@ -274,7 +262,7 @@ class FAIRCheck:
                                                    mapping=Mapper.MICRODATA_MAPPING)
         source_micro, micro_dict = microdata_collector.parse_metadata()
         if micro_dict:
-            self.metadata_sources.append(source_micro)
+            self.metadata_sources.append((source_micro,'embedded'))
             self.namespace_uri.extend(microdata_collector.getNamespaces())
             micro_dict = self.exclude_null(micro_dict)
             for i in micro_dict.keys():
@@ -294,7 +282,7 @@ class FAIRCheck:
             rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
                                                   rdf_graph=rdfagraph)
             source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
-            self.metadata_sources.append(rdfasource)
+            self.metadata_sources.append((rdfasource,'embedded'))
             self.namespace_uri.extend(rdfa_collector.getNamespaces())
             #rdfa_dict['object_identifier']=self.pid_url
             rdfa_dict = self.exclude_null(rdfa_dict)
@@ -316,7 +304,7 @@ class FAIRCheck:
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
             #not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
-            self.metadata_sources.append(source_schemaorg)
+            self.metadata_sources.append((source_schemaorg,'embedded'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             # add object type for future reference
@@ -338,7 +326,7 @@ class FAIRCheck:
             if dc_dict:
                 self.namespace_uri.extend(dc_collector.namespaces)
                 #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                self.metadata_sources.append(source_dc)
+                self.metadata_sources.append((source_dc,'embedded'))
                 if dc_dict.get('related_resources'):
                     self.related_resources.extend(dc_dict.get('related_resources'))
                 for d in dc_dict.keys():
@@ -357,7 +345,7 @@ class FAIRCheck:
         opengraph_dict = self.exclude_null(opengraph_dict)
         if opengraph_dict:
             self.namespace_uri.extend(opengraph_collector.namespaces)
-            self.metadata_sources.append(source_opengraph)
+            self.metadata_sources.append((source_opengraph,'embedded'))
             for i in opengraph_dict.keys():
                 if i in self.reference_elements:
                     self.metadata_merged[i] = opengraph_dict[i]
@@ -370,7 +358,7 @@ class FAIRCheck:
             links = self.get_html_typed_links(rel='item')
             if links:
                 self.metadata_merged['object_content_identifier'] = links
-                self.metadata_sources.append(MetaDataCollector.Sources.SIGN_POSTING.value)
+                self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
 
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
@@ -412,36 +400,77 @@ class FAIRCheck:
 
     def retrieve_metadata_external(self):
 
+        test_content_negotiation = False
+        test_typed_links = False
+        test_signposting = False
+        test_embedded = False
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url is not None:
+            self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
-            source_neg_xml, metadata_neg_xml = negotiated_xml_collector.parse_metadata()
+            source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
+            metadata_neg_dict = self.exclude_null(metadata_neg_dict)
+            if metadata_neg_dict:
+                test_content_negotiation = True
+            #TODO: Finish  this ...
 
-        # ========= retrieve datacite json metadata based on pid =========
-        if self.use_datacite == True:
-            if self.pid_scheme:
-                dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
-                                                            pid_url=self.pid_url)
-                source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
-                dcitejsn_dict = self.exclude_null(dcitejsn_dict)
-                if dcitejsn_dict:
-                    # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
-                    self.metadata_sources.append(source_dcitejsn)
-                    self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found metadata registered at Datacite: {}'.format(str(dcitejsn_dict.keys())))
-                    if dcitejsn_dict.get('related_resources'):
-                        self.related_resources.extend(dcitejsn_dict.get('related_resources'))
-
-                    for r in dcitejsn_dict.keys():
-                        # only merge when the value cannot be retrived from embedded metadata
-                        if r in self.reference_elements and not self.metadata_merged.get(r):
-                            self.metadata_merged[r] = dcitejsn_dict[r]
+            # ========= retrieve rdf metadata namespaces by content negotiation ========
+            self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation')
+            source = MetaDataCollector.Sources.LINKED_DATA.value
+            if self.pid_scheme == 'purl':
+                targeturl = self.pid_url
+            else:
+                targeturl = self.landing_url
+            neg_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=targeturl,
+                                                      source=source)
+            if neg_rdf_collector is not None:
+                source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
+                self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
+                rdf_dict = self.exclude_null(rdf_dict)
+                if rdf_dict:
+                    test_content_negotiation = True
+                    self.logger.log(self.LOG_SUCCESS,
+                                    'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
+                    self.metadata_sources.append((source_rdf,'negotiated'))
+                    for r in rdf_dict.keys():
+                        if r in self.reference_elements:
+                            self.metadata_merged[r] = rdf_dict[r]
                             self.reference_elements.remove(r)
                 else:
-                    self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
-            else:
-                self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
+                    self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
-        found_metadata_link =False
+
+
+        # ========= retrieve datacite json metadata based on pid =========
+        if self.pid_scheme:
+            # ================= datacite by content negotiation ===========
+            # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
+            if self.use_datacite is True:
+                datacite_target_url = self.pid_url
+            else:
+                datacite_target_url = self.landing_url
+            dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
+                                                        pid_url=datacite_target_url)
+            source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
+            dcitejsn_dict = self.exclude_null(dcitejsn_dict)
+            if dcitejsn_dict:
+                test_content_negotiation = True
+                # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
+                self.metadata_sources.append((source_dcitejsn,'negotiated'))
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
+                if dcitejsn_dict.get('related_resources'):
+                    self.related_resources.extend(dcitejsn_dict.get('related_resources'))
+
+                for r in dcitejsn_dict.keys():
+                    # only merge when the value cannot be retrived from embedded metadata
+                    if r in self.reference_elements and not self.metadata_merged.get(r):
+                        self.metadata_merged[r] = dcitejsn_dict[r]
+                        self.reference_elements.remove(r)
+            else:
+                self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
+        else:
+            self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
+
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
         rel_meta_links = self.get_html_typed_links(rel='meta')
         #ddi rel="meta" style
@@ -451,41 +480,33 @@ class FAIRCheck:
             typed_metadata_links.append(guessed_metadata_link)
 
         if typed_metadata_links is not None:
+            typed_rdf_collector = None
             for metadata_link in typed_metadata_links:
                 if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
                     found_metadata_link=True
-                    source = MetaDataCollector.Sources.RDF_SIGN_POSTING.value
-                    self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
+                    source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value
+                    typed_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 elif metadata_link['type'] in ['text/xml','application/x-ddi-l+xml','application/x-ddametadata+xml']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
                         metadata_link['type'] + ')'))
-                    self.rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                    typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                target_url=metadata_link['url'], link_type=metadata_link.get('source'))
 
-                if self.rdf_collector is not None:
-                    source_rdf, rdf_dict = self.rdf_collector.parse_metadata()
-                    self.namespace_uri.extend(self.rdf_collector.getNamespaces())
-                    rdf_dict = self.exclude_null(rdf_dict)
-                    if rdf_dict:
-                        # not_null_rdf = [k for k, v in rdf_dict.items() if v is not None]
-                        self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
-                        self.metadata_sources.append(source_rdf)
-                        for r in rdf_dict.keys():
-                            if r in self.reference_elements:
-                                self.metadata_merged[r] = rdf_dict[r]
-                                self.reference_elements.remove(r)
-                    else:
-                        self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
-
-
-        if not found_metadata_link:
-            #TODO: find a condition to trigger the rdf request
-            source = MetaDataCollector.Sources.LINKED_DATA.value
-            if self.landing_url is not None:
-                self.rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=source)
-
-
+            if typed_rdf_collector is not None:
+                source_rdf, rdf_dict = typed_rdf_collector.parse_metadata()
+                self.namespace_uri.extend(typed_rdf_collector.getNamespaces())
+                rdf_dict = self.exclude_null(rdf_dict)
+                if rdf_dict:
+                    test_typed_links = True
+                    self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
+                    self.metadata_sources.append((source_rdf,'linked'))
+                    for r in rdf_dict.keys():
+                        if r in self.reference_elements:
+                            self.metadata_merged[r] = rdf_dict[r]
+                            self.reference_elements.remove(r)
+                else:
+                    self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
         if self.reference_elements:
             self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
@@ -601,6 +622,6 @@ class FAIRCheck:
         return standardised_protocol_check.getResult()
 
     def check_standardised_protocol_metadata(self):
-        standardised_protocol_check = FAIREvaluatorStandardisedProtocolMetadata(self)
-        standardised_protocol_check.set_metric('FsF-A1-02M', metrics=FAIRCheck.METRICS)
-        return standardised_protocol_check.getResult()
+        standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
+        standardised_protocol_metadata_check.set_metric('FsF-A1-02M', metrics=FAIRCheck.METRICS)
+        return standardised_protocol_metadata_check.getResult()

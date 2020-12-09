@@ -43,7 +43,8 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         provenance_metadata_output = DataProvenanceOutputInner()
         provenance_metadata_output.provenance_metadata = []
         provenance_metadata_output.is_available = False
-
+        self.logger.info(
+            'FsF-R1.2-01M : Check if provenance information is available in descriptive metadata')
         for md in self.fuji.metadata_merged:
             if md in Mapper.PROVENANCE_MAPPING.value:
                 provenance_metadata_output.is_available = True
@@ -53,6 +54,8 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
                 )
 
         relateds = self.fuji.metadata_merged.get('related_resources')
+        self.logger.info(
+            'FsF-R1.2-01M : Check if provenance information is available in metadata about related resources')
         if isinstance(relateds, list):
             for rm in relateds:
                 if rm.get('relation_type') in Mapper.PROVENANCE_MAPPING.value:
@@ -61,24 +64,32 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
                          'metadata_element': 'related.' + str(rm.get('relation_type')),
                          'metadata_value': rm.get('related_resource')}
                     )
+        else:
+            self.logger.info('FsF-R1.2-01M : No provenance information found in metadata about related resources')
+
 
         if provenance_metadata_output.is_available:
-            self.logger.info('FsF-R1.2-01M : Found data creation-related provenance information')
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1.2-01M : Found data creation-related provenance information')
             provenance_status = 'pass'
             score = score + 1
+            self.setEvaluationCriteriumScore('FsF-R1.2-01M-1', 1, 'pass')
         self.output.provenance_metadata_included = provenance_metadata_output
 
         # structured provenance metadata available
         structured_metadata_output = DataProvenanceOutputInner()
         structured_metadata_output.provenance_metadata = []
         structured_metadata_output.is_available = False
+        self.logger.info(
+            'FsF-R1.2-01M : Check if provenance specific namespaces are listed in metadata')
+
         used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.fuji.namespace_uri)))
         if used_provenance_namespace:
             score = score + 1
             structured_metadata_output.is_available = True
             for used_prov_ns in used_provenance_namespace:
                 structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
-            self.logger.info('FsF-R1.2-01M : Found use of dedicated provenance ontologies')
+            self.setEvaluationCriteriumScore('FsF-R1.2-01M-2', 1, 'pass')
+            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.2-01M : Found use of dedicated provenance ontologies')
         else:
             self.logger.warning('FsF-R1.2-01M : Formal provenance metadata is unavailable')
         self.output.structured_provenance_available = structured_metadata_output
@@ -87,5 +98,6 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
             provenance_status = 'pass'
         self.result.test_status = provenance_status
         self.score.earned = score
+        self.result.metric_tests = self.metric_tests
         self.result.output = self.output
         self.result.score = self.score

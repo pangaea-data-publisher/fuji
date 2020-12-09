@@ -72,16 +72,25 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 'http://doi.org/10.22033/ESGF/CMIP6.4397',
 'http://doi.org/10.25914/5eaa30de53244']
 #DCAT DDI
-testpids=['http://dda.dk/catalogue/150']
+#testpids=['http://dda.dk/catalogue/150']
 #very large file!!
-testpids=['https://doi.org/10.1594/PANGAEA.902845']
-testpids=['https://doi.org/10.1594/PANGAEA.745671']
+#testpids=['https://doi.org/10.1594/PANGAEA.902845']
+#testpids=['https://doi.org/10.1594/PANGAEA.745671']
 #testpids=['http://dda.dk/catalogue/150']
 #perfect DCAT
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
-testpids=['https://doi.org/10.1594/PANGAEA.879324']
-testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
-testpids=['https://doi.pangaea.de/10.1594/PANGAEA.923903']
+#testpids=['https://doi.org/10.1594/PANGAEA.879324']
+#testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
+#testpids=['https://metadata.bgs.ac.uk/geonetwork/srv/api/records/6abc401d-250a-5469-e054-002128a47908']
+#testpids=['https://data.dtu.dk/articles/Data_for_the_paper_A_dual_reporter_system_for_investigating_and_optimizing_translation_and_folding_in_E_coli_/10265420']
+#testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
+#testpids=['http://dda.dk/catalogue/868']
+#testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-65-hamburg']
+testpids=['https://doi.pangaea.de/10.1594/PANGAEA.780085']
+#testpids=['https://ortus.rtu.lv/science/en/datamodule/294']
+#testpids=['https://doi.org/10.15482/USDA.ADC/1324677']
+testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
+testpids=['http://doi.org/10.5255/UKDA-SN-1329-1']
 startpid=None
 def main():
     config = ConfigParser.ConfigParser()
@@ -119,7 +128,7 @@ def main():
         if identifier==startpid or not startpid:
             start=True
         if start:
-            ft = FAIRCheck(uid=identifier,  test_debug=debug)
+            ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=False)
             uid_result, pid_result = ft.check_unique_persistent()
             core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
@@ -137,7 +146,7 @@ def main():
             standard_protocol_data_result = ft.check_standardised_protocol_data()
             standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
             results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,semantic_vocabulary_result, license_result, data_file_format_result,data_provenance_result,relatedresources_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_data_result,standard_protocol_metadata_result]
-            #results=[uid_result, pid_result, core_metadata_result,data_file_format_result]
+            #results=[core_metadata_result,uid_result, pid_result]
             #print(ft.metadata_merged)
             for res_k, res_v in enumerate(results):
                 if ft.isDebug:
@@ -146,6 +155,8 @@ def main():
                         results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
                     else:
                         results[res_k]['test_debug'] =['INFO: No debug messages received']
+                else:
+                    results[res_k]['test_debug'] = ['INFO: Debugging disabled']
 
             print(json.dumps(results, indent=4, sort_keys=True))
 

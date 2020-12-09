@@ -97,9 +97,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
         if content_list:
             score += 1
+            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 1, 'pass')
         self.score.earned = score
         if score > 0:
             self.result.test_status = "pass"
+        self.result.metric_tests = self.metric_tests
         self.output.content = content_list
         self.result.output = self.output
         self.result.score = self.score

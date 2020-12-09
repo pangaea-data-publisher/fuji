@@ -2,15 +2,18 @@
 metrics:
   ## ---------------- FINDABILITY ---------------- ##
 - metric_identifier: FsF-F1-01D
-  metric_short_name: Globally Unique Identifier
   metric_name: Data is assigned a globally unique identifier.
   description: A data object may be assigned with a globally unique identifier such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your data or metadata when you publish and make it available through their services.
   fair_principle: F1
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+  metric_tests:
+    - metric_test_identifier: FsF-F1-01D-1
+      metric_test_name: Identifier follows an idutils defined unique identifier synthax
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-11-25
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-F1-02D
@@ -18,11 +21,19 @@ metrics:
   metric_name : Data is assigned a persistent identifier.
   description: We make a distinction between the uniqueness and persistence of an identifier. An HTTP URL (the address of a given unique resource on the web) is globally unique, but may not be persistent as the URL of data may be not accessible (link rot problem) or the data available under the original URL may be changed (content drift problem). Identifiers based on the Handle System, DOI, ARK are both globally unique and persistent. They are maintained and governed such that they remain stable and resolvable for the long term. The persistent identifier (PID) of a data object may be resolved (point) to a landing page with metadata containing further information on how to access the data content, in some cases a downloadable artefact, or none if the data or repository is no longer maintained. Therefore, ensuring persistence is a shared responsibility between a PID service provider (e.g., datacite) and its clients (e.g., data repositories). For example, the DOI system guarantees the persistence of its identifiers through its social (e.g., policy) and technical infrastructures, whereas a data provider ensures the availability of the resource (e.g., landing page, downloadable artefact) associated with the identifier.
   fair_principle: F1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
+  metric_tests:
+    - metric_test_identifier: FsF-F1-02D-1
+      metric_test_name: Identifier follows an idutils defined persistent identifier synthax
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F1-02D-2
+      metric_test_name: Persistent identifier is resolvable
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-11-25
+  version: 0.4
+
   total_score: 1
 
 - metric_identifier: FsF-F2-01M
@@ -30,11 +41,38 @@ metrics:
   metric_name: Metadata includes descriptive core elements (creator, title, data identifier, publisher, publication date, summary and keywords) to support data findability.
   description: Metadata is descriptive information about a data object. Since the metadata required differs depending on the users and their applications, this metric focuses on core metadata. The core metadata is the minimum descriptive information required to enable data finding, including citation which makes it easier to find data. We determine the required metadata based on common data citation guidelines (e.g., DataCite, ESIP, and IASSIST), and metadata recommendations for data discovery (e.g., EOSC Datasets Minimum Information (EDMI), DataCite Metadata Schema, W3C Recommendation Data on the Web Best Practices and Data Catalog Vocabulary). This metric focuses on domain-agnostic core metadata. Domain or discipline-specific metadata specifications are covered under metric FsF-R1.3-01M. A repository should adopt a schema that includes properties of core metadata, whereas data authors should take the responsibility of providing core metadata.
   fair_principle: F2
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metadata can be offered in different ways. here we focus on common web based strategies.
+    These include 1) embedding metadata within the landing page such as JSON-LD, OpenGraph, Microdata, Dublin Core,
+    2) offering typed links which lead to metadata within the HTML code of the metadata or signposting links.
+    3) enable content negotiation and deliver e.g. RDF, JSON-LD or XML on demand.
+    The metric evaluates the completeness of metadata in case metadata has been retrieved.
+  metric_tests:
+    - metric_test_identifier: FsF-F2-01M-1
+      metric_test_name: Metadata has been made available via common web methods
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-1a
+      metric_test_name: Metadata is embedded in the landing page XHTML/HTML code
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-1b
+      metric_test_name: Metadata is accessible through content negotiation
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-1c
+      metric_test_name: Metadata is accessible via typed links
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-1d
+      metric_test_name: Metadata is accessible via signposting links
+      metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-2
+      metric_test_name: A minimum set of descriptive metadata is available
+      metric_test_score: 1
+    - metric_test_identifier: FsF-F2-01M-3
+      metric_test_name: A full set of descriptive metadata is available
+      metric_test_score: 1
+
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-01
+  version: 0.4
   total_score: 2
   passed: false
 
@@ -43,11 +81,15 @@ metrics:
   metric_name: Metadata includes the identifier of the data it describes.
   description: The metadata should explicitly specify the identifier of the data such that users can discover and access the data through the metadata. If the identifier specified is persistent and points to a landing page, the data identifier and links to download the data content should be taken into account in the assessment.
   fair_principle: F3
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Several metadata standards provide the possibility to include links to the actual data content. The presence of such links is evaluated here.
+  metric_tests:
+    - metric_test_identifier: FsF-F3-01M-1
+      metric_test_name: Metadata contains a PID or URL which indicates the location of the downloadable data content
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-F4-01M
@@ -55,11 +97,18 @@ metrics:
   metric_name: Metadata is offered in such a way that it can be retrieved programmatically.
   description: This metric refers to ways through which the metadata of data is exposed or provided in a standard and machine-readable format. Assessing this metric will require an understanding of the capabilities offered by the data repository used to host the data. Metadata may be available through multiple endpoints. For example, if data is hosted by a repository, the repository may disseminate its metadata through a metadata harvesting protocol (e.g., via OAI-PMH) and/or a web service. Metadata may also be embedded as structured data on a data page for use by web search engines such as Google and Bing or be available as linked (open) data.
   fair_principle: F4
-  evaluation_mechanism: to-do
+  evaluation_mechanism: The metric is evaluated using the given metadata standards known to support major search engines such as JSON-LD and Dublin Core. Presence of metadata in research data registries is further evaluated.
+  metric_tests:
+    - metric_test_identifier: FsF-F4-01M-1
+      metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (JSON-LD, Dublin Core, RDFa)
+      metric_test_score: 1
+    - metric_test_identifier: FsF-F4-01M-2
+      metric_test_name: Metadata is registered in major research data registries (DataCite)
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 2
 
 - metric_identifier: FsF-A1-01M
@@ -67,11 +116,15 @@ metrics:
   metric_name: Metadata contains access level and access conditions of the data.
   description: This metric determines if the metadata includes the level of access to the data such as public, embargoed, restricted, or metadata-only access and its access conditions. Both access level and conditions are necessary information to potentially gain access to the data. It is recommended that data should be as open as possible and as closed as necessary. There are no access conditions for public data. Datasets should be released into the public domain (e.g., with an appropriate public-domain-equivalent license such as Creative Commons CC0 licence) and openly accessible without restrictions when possible. Embargoed access refers to data that will be made publicly accessible at a specific date which should be specified in the metadata. For example, a data author may release their data after having published their findings from the data. Therefore, access conditions such as the date the data will be released publically is essential. Restricted access refers to data that can be accessed under certain conditions (e.g. because of commercial, sensitive, or other confidentiality reasons or the data is only accessible via a subscription or a fee). Restricted data may be available to a particular group of users or after permission is granted. For restricted data, the metadata should include the conditions of access to the data such as point of contact or instructions to access the data. Metadata-only access refers to data that is not made publicly available and for which only metadata is publicly available.
   fair_principle: A1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metric evaluation is based on the presence of access information in an appropriate metadata element/field.
+  metric_tests:
+    - metric_test_identifier: FsF-A1-01M-1
+      metric_test_name: Machine readable information about access restrictions or rights can be identified in metadata
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-A1-03D
@@ -79,11 +132,15 @@ metrics:
   metric_name: Data is accessible through a standardized communication protocol.
   description: Given an identifier of a dataset, the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
   fair_principle: A1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: The data link which is given in the metadata is tested for an standard communication protocol
+  metric_tests:
+    - metric_test_identifier: FsF-A1-03D-1
+      metric_test_name: Metadata includes a resolvable link to data based on standardized web communication protocols.
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-10-23
-  date_updated: 2020-10-23
-  version: 0.3
+  date_updated: 2020-12-05
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-A1-02M
@@ -91,11 +148,15 @@ metrics:
   metric_name: Metadata is accessible through a standardized communication protocol.
   description: Given an identifier of a dataset, the metadata of the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
   fair_principle: A1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: The URI scheme of the landing page is tested for a stanard communication protocol
+  metric_tests:
+    - metric_test_identifier: FsF-A1-02M-1
+      metric_test_name: Landing page link is based on standardized web communication protocols.
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-10-23
-  date_updated: 2020-10-23
-  version: 0.3
+  date_updated: 2020-12-05
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-A2-01M
@@ -103,11 +164,15 @@ metrics:
   metric_name: Metadata remains available, even if the data is no longer available.
   description: This metric determines if the metadata will be preserved even when the data they represent are no longer available, replaced or lost.
   fair_principle: A1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Currently this metric can only be assessed using the persistent identifier as an indicator. DOI metadata is preserved by DataCite.
+  metric_tests:
+    - metric_test_identifier: FsF-A2-01M-1
+      metric_test_name: The persistent identifier system used guarantees the preservation of associated metadata
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-05
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-I1-01M
@@ -115,11 +180,18 @@ metrics:
   metric_name: Metadata is represented using a formal knowledge representation language.
   description: Knowledge representation is vital for machine-processing of the knowledge of a domain. Expressing the metadata of a data object using a formal knowledge representation will enable machines to process it in a meaningful way and enable more data exchange possibilities. Examples of knowledge representation languages are RDF, RDFS, and OWL. These languages may be serialized (written) in different formats. For instance, RDF/XML, RDFa, Notation3, Turtle, N-Triples and N-Quads, and JSON-LD are RDF serialization formats.
   fair_principle: I1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metadata has to be serialised in a common formal knowledge representation language.
+  metric_tests:
+    - metric_test_identifier: FsF-I1-01M-1
+      metric_test_name: Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code
+      metric_test_score: 1
+    - metric_test_identifier: FsF-I1-01M-2
+      metric_test_name: Parsable, graph data (RDF, JSON-LD) is accessible through content negotiation, typed links or sparql endpoint
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 2
 
 - metric_identifier: FsF-I1-02M
@@ -127,11 +199,15 @@ metrics:
   metric_name: Metadata uses semantic resources
   description: A metadata document or selected parts of the document may incorporate additional terms from semantic resources (also referred as semantic artefacts) so that the contents are unambiguous and can be processed automatically by machines. This enrichment facilitates enhanced data search and interoperability of data from different sources. Ontology, thesaurus, and taxonomy are kinds of semantic resources, and they come with varying degrees of expressiveness and computational complexity. Knowledge organization schemes such as thesaurus and taxonomy are semantically less formal than ontologies.
   fair_principle: I1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Used namespaces are identified in given graph or XML metadata and verified using a controlled list.
+  metric_tests:
+    - metric_test_identifier: FsF-I1-02M-1
+      metric_test_name: Namespaces of known semantic resources can be identified in metadata
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-I3-01M
@@ -139,11 +215,15 @@ metrics:
   metric_name: Metadata includes links between the data and its related entities.
   description: Linking data to its related entities will increase its potential for reuse. The linking information should be captured as part of the metadata. A dataset may be linked to its prior version, related datasets or resources (e.g. publication, physical sample, funder, repository, platform, site, or observing network registries). Links between data and its related entities should be expressed through relation types (e.g., DataCite Metadata Schema specifies relation types between research objects through the fields ‘RelatedIdentifier’ and ‘RelationType’), and preferably use persistent Identifiers for related entities (e.g., ORCID for contributors, DOI for publications, and ROR for institutions).
   fair_principle: I3
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metadata is checked for existing relations to related entities which can be e.g. citations or other related resources
+  metric_tests:
+    - metric_test_identifier: FsF-I3-01M-1
+      metric_test_name: Related resources are explicitely mentioned in metadata
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-R1-01MD
@@ -151,11 +231,30 @@ metrics:
   metric_name: Metadata specifies the content of the data.
   description: This metric evaluates if a description (properties) of the content of the data is specified in the metadata. The description should be an accurate reflection of  the actual data deposited. Data content descriptors include but are not limited to resource type (e.g., data or a collection of data), variable(s) measured or observed, method, data format and size. Ideally, ontological vocabularies should be used to describe data content to support interdisciplinary reuse.
   fair_principle: R1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metric is evaluated using the resource type given in the metadata as well as data object specific properties file size and file type. Further presence of measured variables is tested.
+  metric_tests:
+    - metric_test_identifier: FsF-R1-01MD-1
+      metric_test_name: Resource type (e.g. dataset) is given in metadata
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1-01MD-2
+      metric_test_name: Verifiable data descriptors (file info, measured variables or observation types) are specified in metadata
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1-01MD-2a
+      metric_test_name: File size and type information are specified in metadata
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1-01MD-2b
+      metric_test_name: Measured variables or observation types are specified in metadata
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1-01MD-3
+      metric_test_name: Data content matches file type and size specified in metadata
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1-01MD-4
+      metric_test_name: Data content matches measured variables or observation types specified in metadata
+      metric_test_score: 0
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-07-08
-  version: 0.3
+  version: 0.4
   total_score: 4
 
 - metric_identifier: FsF-R1.1-01M
@@ -163,11 +262,18 @@ metrics:
   metric_name: Metadata includes license information under which data can be reused.
   description: This metric evaluates if data is associated with a license because otherwise users cannot reuse it in a clear legal context. We encourage the application of licenses for all kinds of data whether public, restricted or for specific users. Without an explicit license, users do not have a clear idea of what can be done with your data. Licenses can be of standard type (Creative Commons, Open Data Commons Open Database License) or bespoke licenses, and rights statements which indicate the conditions under which data can be reused. It is highly recommended to use a standard, machine-readable license such that it can be interpreted by machines and humans. In order to inform users about what rights they have to use a dataset, the license information should be specified as part of the dataset’s metadata.
   fair_principle: R1.1
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metric evaluation is based on the presence of a machine readable license information in an appropriate metadata element/field.
+  metric_tests:
+    - metric_test_identifier: FsF-R1.1-01M-1
+      metric_test_name: Licence information is given in an appropriate metadata element
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1.1-01M-2
+      metric_test_name: Recognized licence is valid and registered at SPDX
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-11-24
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 2
 
 - metric_identifier: FsF-R1.2-01M
@@ -181,11 +287,18 @@ metrics:
     There are various ways through which provenance information may be included in a metadata record. Some of the provenance properties (e.g., instrument, contributor) may be best represented using PIDs (such as DOIs for data, ORCIDs for researchers).
     This way, humans and systems can retrieve more information about each of the properties by resolving the PIDs. Alternatively, the provenance information can be given in a linked provenance record expressed explicitly in e.g., PROV-O or PAV or Vocabulary of Interlinked Datasets (VoID).
   fair_principle: R1.2
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metrics are assessed using provenance related information contained in metadata which can either be specific elements which can be mapped e.g. to PROV-O or the use of provenance related namespaces and associated terms.
+  metric_tests:
+    - metric_test_identifier: FsF-R1.2-01M-1
+      metric_test_name: Metadata contains elements which hold provenance information and can be mapped to PROV
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1.2-01M-2
+      metric_test_name: Metadata contains provenance information using formal provenance ontologies (PROV-O)
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 2
 
 - metric_identifier: FsF-R1.3-01M
@@ -193,11 +306,18 @@ metrics:
   metric_name: Metadata follows a standard recommended by the target research community of the data.
   description: In addition to core metadata required to support data discovery (covered under metric FsF-F2-01M), metadata to support data reusability should be made available following community-endorsed metadata standards. Some communities have well-established metadata standards (e.g., geospatial [ISO19115], biodiversity [DarwinCore, ABCD, EML], social science [DDI], astronomy [International Virtual Observatory Alliance Technical Specifications]) while others have limited standards or standards that are under development (e.g., engineering and linguistics). The use of community-endorsed metadata standards is usually encouraged and supported by domain and discipline-specific repositories.
   fair_principle: R1.3
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Metadata encodings can be verified using community specific namespaces and schemas listed by the RDA metadata standards WG
+  metric_tests:
+    - metric_test_identifier: FsF-R1.3-01M-1a
+      metric_test_name: Community specific metadata standard is detected using namespaces or schemas found in metadata listed in the RDA metadata standards catalogue
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1.3-01M-1b
+      metric_test_name: Community specific metadata standard is listed in the re3data record of the responsible repository
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1
 
 - metric_identifier: FsF-R1.3-02D
@@ -208,9 +328,22 @@ metrics:
     Continued access to metadata depends on a data repository’s preservation practice which is usually documented in the repository’s service policies or statements.
     A trustworthy data repository offering DOIs and implementing a PID Policy should guarantee that metadata will remain accessible even when data is no longer available for any reason (e.g., by providing a tombstone page).
   fair_principle: R1.3
-  evaluation_mechanism: to-do
+  evaluation_mechanism: Data file format given in metadata is compared to a controlled list of known scientific formats.
+  metric_tests:
+    - metric_test_identifier: FsF-R1.3-02D-1
+      metric_test_name: The format of a data file given in the metadata is listed in the long term file formats, open file formats or scientific file formats controlled list
+      metric_test_score: 1
+    - metric_test_identifier: FsF-R1.3-02D-1a
+      metric_test_name: The format of the data file is an open format
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1.3-02D-1b
+      metric_test_name: The format of the data file is a long term format
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1.3-02D-1c
+      metric_test_name: The format of the data file is a scientific format
+      metric_test_score: 0
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-07-08
-  version: 0.3
+  date_updated: 2020-12-03
+  version: 0.4
   total_score: 1

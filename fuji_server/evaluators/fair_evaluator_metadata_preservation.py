@@ -40,12 +40,14 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
                 test_status = 'pass'
                 outputs.append(MetadataPreservedOutput(metadata_preservation_method='datacite'))
                 score = 1
-                self.logger.info(
+                self.setEvaluationCriteriumScore('FsF-A2-01M-1', 1, 'pass')
+                self.logger.log(self.fuji.LOG_SUCCESS,
                     '{0} : Metadata registry bound PID system used: ' + self.fuji.pid_scheme.format(self.metric_identifier))
             else:
-                self.logger.info(
+                self.logger.warning(
                     '{0} : NO metadata registry bound PID system used'.format(self.metric_identifier))
         self.score.earned = score
         self.result.score = self.score
         self.result.output = outputs
+        self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status

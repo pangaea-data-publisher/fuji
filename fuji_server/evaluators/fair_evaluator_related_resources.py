@@ -40,13 +40,14 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
             # QC check: exclude potential incorrect relation
             self.fuji.related_resources = [item for item in self.fuji.related_resources if
                                       item.get('related_resource') != self.fuji.pid_url]
-            self.logger.info('{0} : Number of related resources after QC step - {1}'.format(self.metric_identifier, len(
+            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Number of related resources after QC step - {1}'.format(self.metric_identifier, len(
                 self.fuji.related_resources)))
 
         if self.fuji.related_resources:  # TODO include source of relation
             self.output = self.fuji.related_resources
             self.result.test_status = 'pass'
+            self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
             self.score.earned = self.total_score
-
+        self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.output = self.output

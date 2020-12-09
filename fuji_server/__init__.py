@@ -3,7 +3,7 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
-from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsItems
+from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.body import Body
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
