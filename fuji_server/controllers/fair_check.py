@@ -96,7 +96,7 @@ class FAIRCheck:
     LOG_SUCCESS = 25
 
 
-    def __init__(self, uid, test_debug=False, oaipmh=None):
+    def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
         self.test_id = str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         self.id = uid
@@ -123,6 +123,7 @@ class FAIRCheck:
         self.rdf_graph = None
         self.sparql_endpoint = None
         self.rdf_collector = None
+        self.use_datacite = use_datacite
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
             self.msg_filter = MessageFilter()
@@ -443,8 +444,13 @@ class FAIRCheck:
         # ========= retrieve datacite json metadata based on pid =========
         if self.pid_scheme:
             # ================= datacite by content negotiation ===========
+            # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
+            if self.use_datacite is True:
+                datacite_target_url = self.pid_url
+            else:
+                datacite_target_url = self.landing_url
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING, loggerinst=self.logger,
-                                                        pid_url=self.pid_url)
+                                                        pid_url=datacite_target_url)
             source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
             dcitejsn_dict = self.exclude_null(dcitejsn_dict)
             if dcitejsn_dict:
