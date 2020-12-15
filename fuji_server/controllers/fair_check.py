@@ -95,7 +95,6 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
 
-
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
         self.test_id = str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
@@ -124,6 +123,7 @@ class FAIRCheck:
         self.sparql_endpoint = None
         self.rdf_collector = None
         self.use_datacite = use_datacite
+        self.repeat_pid_check = False
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
             self.msg_filter = MessageFilter()
@@ -218,39 +218,41 @@ class FAIRCheck:
             self.namespace_uri = list(set(self.namespace_uri))
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
-        client_id = self.metadata_merged.get('datacite_client')
-        self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
+        if self.landing_url is not None:
+            self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
+            client_id = self.metadata_merged.get('datacite_client')
+            self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
 
-        if self.oaipmh_endpoint:
-            self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
-        else:
-            #find endpoint via datacite/re3data if pid is provided
-            if client_id and self.pid_scheme:
-                self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
-                repoHelper = RepositoryHelper(client_id, self.pid_scheme)
-                repoHelper.lookup_re3data()
-                self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
-                self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-                self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
-
-        # retrieve metadata standards info from oai-pmh
-        if self.oaipmh_endpoint:
-            self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
-            if (self.uri_validator(self.oaipmh_endpoint)):
-                oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
-                self.community_standards_uri = oai_provider.getMetadataStandards()
-                self.namespace_uri.extend(oai_provider.getNamespaces())
-                stds = None
-                if self.community_standards_uri:
-                    stds = list(self.community_standards_uri.keys())
-                self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+            if self.oaipmh_endpoint:
+                self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
             else:
-                self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
-        else:
-            self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+                #find endpoint via datacite/re3data if pid is provided
+                if client_id and self.pid_scheme:
+                    self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
+                    repoHelper = RepositoryHelper(client_id, self.pid_scheme)
+                    repoHelper.lookup_re3data()
+                    self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+                    self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
+                    self.community_standards.extend(repoHelper.getRe3MetadataStandards())
+                    self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
 
+            # retrieve metadata standards info from oai-pmh
+            if self.oaipmh_endpoint:
+                self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.oaipmh_endpoint)):
+                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_provider.getMetadataStandards()
+                    self.namespace_uri.extend(oai_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                    self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+                else:
+                    self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
+            else:
+                self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+        else:
+            self.logger.warning('{} : Skipped external ressources (OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         isPid = False
@@ -359,6 +361,21 @@ class FAIRCheck:
             if links:
                 self.metadata_merged['object_content_identifier'] = links
                 self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
+
+        #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
+        if self.metadata_merged.get('object_identifier'):
+            if self.pid_scheme is None:
+                found_pids_in_metadata = idutils.detect_identifier_schemes(self.metadata_merged.get('object_identifier'))
+                if len(found_pids_in_metadata) > 1:
+                    if 'url' in found_pids_in_metadata:
+                        found_pids_in_metadata.remove('url')
+                    found_id = found_pids_in_metadata[0]
+                    if found_id in Mapper.VALID_PIDS.value:
+                        self.logger.info('FsF-F1-02D : Found object identifier in metadata, repeating PID check')
+                        self.repeat_pid_check = True
+                        self.pid_scheme = found_id
+                        self.id = self.metadata_merged.get('object_identifier')
+
 
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
