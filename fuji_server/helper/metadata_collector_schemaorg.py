@@ -59,7 +59,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
 
                 if str(ext_meta['@context']).find('://schema.org') > -1:
-                    if ext_meta['@type'] not in self.SCHEMA_ORG_CONTEXT:
+                    if str(ext_meta['@type']).lower() not in self.SCHEMA_ORG_CONTEXT:
                         self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type')
                     elif ext_meta['@type'] not in check_context_type:
                         self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a research data object')
