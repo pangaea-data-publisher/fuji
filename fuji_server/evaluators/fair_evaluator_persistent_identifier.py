@@ -103,13 +103,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
             else:
                 self.fuji.pid_url = signposting_pid[0]
-            self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
             self.output.pid_scheme = self.fuji.pid_scheme
             self.result.test_status = 'pass'
             self.output.pid = self.fuji.pid_url
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0,'pass')
             if self.fuji.isMetadataAccessible:
                 self.setEvaluationCriteriumScore('FsF-F1-02D-2', 1, 'pass')
+                self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
 
             #print(self.metric_tests)
 
