@@ -54,12 +54,28 @@ class Preprocessor(object):
     linked_vocabs = {}
     default_namespaces = []
     standard_protocols = {}
+    resource_types = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
     logger = logging.getLogger()
     data_files_limit = 3
     metric_specification = None
+
+    @classmethod
+    def get_resource_types(cls):
+        if not cls.resource_types:
+            cls.retrieve_resource_types()
+        return cls.resource_types
+
+    @classmethod
+    def retrieve_resource_types(cls):
+        ns = []
+        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'ResourceTypes.txt')
+        with open(ns_file_path) as f:
+            ns = [line.lower().rstrip() for line in f]
+        if ns:
+            cls.resource_types = ns
 
     @classmethod
     def retrieve_schema_org_context(cls):
@@ -69,11 +85,10 @@ class Preprocessor(object):
             data = json.load(f)
         if data:
             for context, schemadict in data.get('@context').items():
-                #print(type(values))
                 if isinstance(schemadict, dict):
                     schemauri = schemadict.get('@id')
                     if str(schemauri).startswith('schema:'):
-                        cls.schema_org_context.append(context)
+                        cls.schema_org_context.append(str(context).lower())
 
     @classmethod
     def get_schema_org_context(cls):

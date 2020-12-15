@@ -94,6 +94,7 @@ class FAIRCheck:
     SCHEMA_ORG_CONTEXT = []
     FILES_LIMIT = None
     LOG_SUCCESS = 25
+    VALID_RESOURCE_TYPES = []
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -163,7 +164,9 @@ class FAIRCheck:
         if not cls.STANDARD_PROTOCOLS:
             cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         if not cls.SCHEMA_ORG_CONTEXT:
-            SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+            cls.SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+        if not cls.VALID_RESOURCE_TYPES:
+            cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
