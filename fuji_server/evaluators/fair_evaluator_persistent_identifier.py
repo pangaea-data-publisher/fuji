@@ -67,7 +67,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                 self.fuji.signposting_header_links[found_rel[1]]=[found_link[1:-1]]
 
                 #check if there is a cite-as signposting link
-
                 if self.fuji.pid_scheme is None:
                     signposting_pid = self.fuji.signposting_header_links.get('cite-as')
                     if signposting_pid:
@@ -78,8 +77,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                             if found_id in Mapper.VALID_PIDS.value:
                                 self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
                                 self.fuji.pid_scheme = found_id
-
-
 
                 up = urlparse(self.fuji.landing_url)
                 self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
