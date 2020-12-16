@@ -506,10 +506,14 @@ class FAIRCheck:
                 self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
-
+        #dcat style
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
+        #ddi style
         rel_meta_links = self.get_html_typed_links(rel='meta')
-        #ddi rel="meta" style
+        #signposting style
+        sign_metadata_links = self.get_html_typed_links(rel='describedby')
+
+        typed_metadata_links.extend(sign_metadata_links)
         typed_metadata_links.extend(rel_meta_links)
         guessed_metadata_link = self.get_guessed_xml_link()
         if guessed_metadata_link is not None:
