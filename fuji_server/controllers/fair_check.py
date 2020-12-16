@@ -312,6 +312,9 @@ class FAIRCheck:
             self.metadata_sources.append((source_schemaorg,'embedded'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
+            if schemaorg_dict.get('object_content_identifier'):
+                self.logger.log(self.LOG_SUCCESS,
+                                'FsF-F3-01M : Found data links in Schema.org metadata : ' + str(schemaorg_dict.get('object_content_identifier')))
             # add object type for future reference
             for i in schemaorg_dict.keys():
                 if i in self.reference_elements:
@@ -359,11 +362,14 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
         #========= retrieve typed links =========
-        if self.metadata_merged.get('object_content_identifier') is None:
-            links = self.get_html_typed_links(rel='item')
-            if links:
+
+        links = self.get_html_typed_links(rel='item')
+        if links:
+            self.logger.log(self.LOG_SUCCESS,
+                            'FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(links)))
+            if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = links
-                self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
+            self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
 
         #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
         if self.metadata_merged.get('object_identifier'):
@@ -448,10 +454,16 @@ class FAIRCheck:
                 self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
+                    if rdf_dict.get('object_content_identifier'):
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                                            len(rdf_dict.get('object_content_identifier'))))
+
                     test_content_negotiation = True
                     self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'negotiated'))
+
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
@@ -478,6 +490,10 @@ class FAIRCheck:
                 # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append((source_dcitejsn,'negotiated'))
                 self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
+                if dcitejsn_dict.get('object_content_identifier'):
+                    self.logger.log(self.LOG_SUCCESS,
+                                    'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                                        dcitejsn_dict.get('object_content_identifier')))
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
 
@@ -521,6 +537,10 @@ class FAIRCheck:
                     test_typed_links = True
                     self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'linked'))
+                    if rdf_dict.get('object_content_identifier'):
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F3-01M : Found data links in Linked Data metadata : ' + str(len(
+                                            rdf_dict.get('object_content_identifier'))))
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
