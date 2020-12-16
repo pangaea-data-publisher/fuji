@@ -67,7 +67,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                 self.fuji.signposting_header_links[found_rel[1]]=[found_link[1:-1]]
 
                 #check if there is a cite-as signposting link
-
                 if self.fuji.pid_scheme is None:
                     signposting_pid = self.fuji.signposting_header_links.get('cite-as')
                     if signposting_pid:
@@ -78,8 +77,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                             if found_id in Mapper.VALID_PIDS.value:
                                 self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
                                 self.fuji.pid_scheme = found_id
-
-
 
                 up = urlparse(self.fuji.landing_url)
                 self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
@@ -106,13 +103,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
             else:
                 self.fuji.pid_url = signposting_pid[0]
-            self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
             self.output.pid_scheme = self.fuji.pid_scheme
             self.result.test_status = 'pass'
             self.output.pid = self.fuji.pid_url
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0,'pass')
             if self.fuji.isMetadataAccessible:
                 self.setEvaluationCriteriumScore('FsF-F1-02D-2', 1, 'pass')
+                self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
 
             #print(self.metric_tests)
 

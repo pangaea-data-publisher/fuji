@@ -22,7 +22,7 @@
 
 
 import re
-
+from bs4 import BeautifulSoup
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_collector import MetaDataCollector
 
@@ -42,7 +42,22 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                 # < meta name = "DCTERMS.element" content = "Value" / >
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)
                 exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
-                meta_dc_matches = re.findall(exp, self.source_metadata)
+                meta_dc_matches = []
+                try:
+
+                    metasoup = BeautifulSoup(self.source_metadata,"lxml")
+                    meta_dc_soupresult = metasoup.findAll("meta", attrs={'name':re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})
+                    for meta_tag in meta_dc_soupresult:
+
+                        dc_name_parts = str(meta_tag['name']).split('.')
+                        if(len(dc_name_parts)>1):
+                            dc_t = None
+                            if len(dc_name_parts) == 3:
+                                dc_t = dc_name_parts[2]
+                            meta_dc_matches.append([dc_name_parts[1],dc_t,meta_tag['content']])
+                    #meta_dc_matches = re.findall(exp, self.source_metadata)
+                except Exception as e:
+                    self.logger.exception('Parsing error, failed to extract DublinCore - {}'.format(e))
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
@@ -54,10 +69,12 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             dcterms.append(dcitems)
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
-                        k = dc_meta[2]
+                        #key
+                        k = dc_meta[0]#2
                         #type
-                        t = dc_meta[3]
-                        v = dc_meta[5]
+                        t = dc_meta[1] #3
+                        #value
+                        v = dc_meta[2] #5
                         if k == 'date':
                             if t =='dateAccepted':
                                 dc_core_metadata['accepted_date'] = v

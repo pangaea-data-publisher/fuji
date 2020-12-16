@@ -52,6 +52,8 @@ def assess_by_id(body):  # noqa: E501
 
         uid_result, pid_result = ft.check_unique_persistent()
         core_metadata_result = ft.check_minimal_metatadata()
+        if ft.repeat_pid_check:
+            pid_result = ft.check_persistent_identifier()
         content_identifier_included_result = ft.check_content_identifier_included()
         access_level_result = ft.check_data_access_level()
         license_result = ft.check_license()

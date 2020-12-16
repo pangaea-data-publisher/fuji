@@ -94,7 +94,7 @@ class FAIRCheck:
     SCHEMA_ORG_CONTEXT = []
     FILES_LIMIT = None
     LOG_SUCCESS = 25
-
+    VALID_RESOURCE_TYPES = []
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -124,6 +124,7 @@ class FAIRCheck:
         self.sparql_endpoint = None
         self.rdf_collector = None
         self.use_datacite = use_datacite
+        self.repeat_pid_check = False
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
             self.msg_filter = MessageFilter()
@@ -163,7 +164,9 @@ class FAIRCheck:
         if not cls.STANDARD_PROTOCOLS:
             cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         if not cls.SCHEMA_ORG_CONTEXT:
-            SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+            cls.SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+        if not cls.VALID_RESOURCE_TYPES:
+            cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -218,39 +221,41 @@ class FAIRCheck:
             self.namespace_uri = list(set(self.namespace_uri))
 
     def retrieve_apis_standards(self):
-        self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
-        client_id = self.metadata_merged.get('datacite_client')
-        self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
+        if self.landing_url is not None:
+            self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
+            client_id = self.metadata_merged.get('datacite_client')
+            self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
 
-        if self.oaipmh_endpoint:
-            self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
-        else:
-            #find endpoint via datacite/re3data if pid is provided
-            if client_id and self.pid_scheme:
-                self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
-                repoHelper = RepositoryHelper(client_id, self.pid_scheme)
-                repoHelper.lookup_re3data()
-                self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
-                self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-                self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
-
-        # retrieve metadata standards info from oai-pmh
-        if self.oaipmh_endpoint:
-            self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
-            if (self.uri_validator(self.oaipmh_endpoint)):
-                oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
-                self.community_standards_uri = oai_provider.getMetadataStandards()
-                self.namespace_uri.extend(oai_provider.getNamespaces())
-                stds = None
-                if self.community_standards_uri:
-                    stds = list(self.community_standards_uri.keys())
-                self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+            if self.oaipmh_endpoint:
+                self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
             else:
-                self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
-        else:
-            self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+                #find endpoint via datacite/re3data if pid is provided
+                if client_id and self.pid_scheme:
+                    self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
+                    repoHelper = RepositoryHelper(client_id, self.pid_scheme)
+                    repoHelper.lookup_re3data()
+                    self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+                    self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
+                    self.community_standards.extend(repoHelper.getRe3MetadataStandards())
+                    self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
 
+            # retrieve metadata standards info from oai-pmh
+            if self.oaipmh_endpoint:
+                self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.oaipmh_endpoint)):
+                    oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = oai_provider.getMetadataStandards()
+                    self.namespace_uri.extend(oai_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                    self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+                else:
+                    self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
+            else:
+                self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+        else:
+            self.logger.warning('{} : Skipped external ressources (OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata):
         isPid = False
@@ -307,6 +312,9 @@ class FAIRCheck:
             self.metadata_sources.append((source_schemaorg,'embedded'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
+            if schemaorg_dict.get('object_content_identifier'):
+                self.logger.log(self.LOG_SUCCESS,
+                                'FsF-F3-01M : Found data links in Schema.org metadata : ' + str(schemaorg_dict.get('object_content_identifier')))
             # add object type for future reference
             for i in schemaorg_dict.keys():
                 if i in self.reference_elements:
@@ -354,11 +362,29 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
         #========= retrieve typed links =========
-        if self.metadata_merged.get('object_content_identifier') is None:
-            links = self.get_html_typed_links(rel='item')
-            if links:
+
+        links = self.get_html_typed_links(rel='item')
+        if links:
+            self.logger.log(self.LOG_SUCCESS,
+                            'FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(links)))
+            if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = links
-                self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
+            self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
+
+        #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
+        if self.metadata_merged.get('object_identifier'):
+            if self.pid_scheme is None:
+                found_pids_in_metadata = idutils.detect_identifier_schemes(self.metadata_merged.get('object_identifier'))
+                if len(found_pids_in_metadata) > 1:
+                    if 'url' in found_pids_in_metadata:
+                        found_pids_in_metadata.remove('url')
+                    found_id = found_pids_in_metadata[0]
+                    if found_id in Mapper.VALID_PIDS.value:
+                        self.logger.info('FsF-F1-02D : Found object identifier in metadata, repeating PID check')
+                        self.repeat_pid_check = True
+                        self.pid_scheme = found_id
+                        self.id = self.metadata_merged.get('object_identifier')
+
 
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
@@ -428,10 +454,16 @@ class FAIRCheck:
                 self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
+                    if rdf_dict.get('object_content_identifier'):
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                                            len(rdf_dict.get('object_content_identifier'))))
+
                     test_content_negotiation = True
                     self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'negotiated'))
+
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
@@ -458,6 +490,10 @@ class FAIRCheck:
                 # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append((source_dcitejsn,'negotiated'))
                 self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
+                if dcitejsn_dict.get('object_content_identifier'):
+                    self.logger.log(self.LOG_SUCCESS,
+                                    'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                                        dcitejsn_dict.get('object_content_identifier')))
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
 
@@ -470,10 +506,14 @@ class FAIRCheck:
                 self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
-
+        #dcat style
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
+        #ddi style
         rel_meta_links = self.get_html_typed_links(rel='meta')
-        #ddi rel="meta" style
+        #signposting style
+        sign_metadata_links = self.get_html_typed_links(rel='describedby')
+
+        typed_metadata_links.extend(sign_metadata_links)
         typed_metadata_links.extend(rel_meta_links)
         guessed_metadata_link = self.get_guessed_xml_link()
         if guessed_metadata_link is not None:
@@ -501,6 +541,10 @@ class FAIRCheck:
                     test_typed_links = True
                     self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'linked'))
+                    if rdf_dict.get('object_content_identifier'):
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F3-01M : Found data links in Linked Data metadata : ' + str(len(
+                                            rdf_dict.get('object_content_identifier'))))
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]

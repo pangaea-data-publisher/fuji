@@ -44,12 +44,20 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         self.logger.info('FsF-R1-01MD : Object landing page accessible status - {}'.format(self.fuji.isMetadataAccessible))
 
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
+        # http://doi.org/10.1007/s10531-013-0468-6
+        #
         resource_type = self.fuji.metadata_merged.get('object_type')
         if resource_type:
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
-            self.output.object_type = resource_type
-            self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
-            score += 1
+            resource_type = str(resource_type).lower()
+            if str(resource_type).startswith('http'):
+                    resource_type = resource_type.split('/')[-1]
+            if resource_type in self.fuji.VALID_RESOURCE_TYPES or resource_type in self.fuji.SCHEMA_ORG_CONTEXT:
+                self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified - {}'.format(resource_type))
+                self.output.object_type = resource_type
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                score += 1
+            else:
+                self.logger.warning('FsF-R1-01MD : No valid resource type specified: '+str(resource_type))
         else:
             self.logger.warning('FsF-R1-01MD : NO resource type specified ')
 
