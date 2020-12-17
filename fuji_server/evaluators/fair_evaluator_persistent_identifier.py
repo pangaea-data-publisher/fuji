@@ -87,7 +87,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 #check if there is a cite-as signposting link
                 if self.fuji.pid_scheme is None:
                     signposting_pid_link = self.fuji.get_signposting_links('cite-as')
-                    signposting_pid = signposting_pid_link[0].get('url')
+                    if signposting_pid_link:
+                        signposting_pid = signposting_pid_link[0].get('url')
                     if signposting_pid:
                         found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
                         if len(found_ids) > 1:
