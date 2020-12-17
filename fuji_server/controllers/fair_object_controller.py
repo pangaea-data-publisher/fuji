@@ -99,6 +99,6 @@ def assess_by_id(body):  # noqa: E501
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
-        final_response = FAIRResults(timestamp= timestmp, test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
+        final_response = FAIRResults(timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
     return final_response
 
