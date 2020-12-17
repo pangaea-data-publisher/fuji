@@ -105,7 +105,7 @@ class FAIRCheck:
         self.landing_url = None  # url of the landing page of self.pid_url
         self.landing_html = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
-        self.signposting_header_links = dict()
+        self.signposting_header_links = []
         self.pid_scheme = None
         self.id_scheme= None
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -369,7 +369,7 @@ class FAIRCheck:
                             'FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(links)))
             if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = links
-            self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value,'linked'))
+            self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
 
         #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
         if self.metadata_merged.get('object_identifier'):
@@ -380,7 +380,8 @@ class FAIRCheck:
                         found_pids_in_metadata.remove('url')
                     found_id = found_pids_in_metadata[0]
                     if found_id in Mapper.VALID_PIDS.value:
-                        self.logger.info('FsF-F1-02D : Found object identifier in metadata, repeating PID check')
+                        self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
+                        self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
                         self.repeat_pid_check = True
                         self.pid_scheme = found_id
                         self.id = self.metadata_merged.get('object_identifier')
@@ -404,6 +405,13 @@ class FAIRCheck:
                     href=self.landing_origin+href
                 datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
+
+    def get_signposting_links(self, rel="item"):
+        signlinks =[]
+        for signposting_links in self.signposting_header_links:
+            if signposting_links.get('rel') == rel:
+                signlinks.append(signposting_links)
+        return signlinks
 
     def get_guessed_xml_link(self):
         # in case object landing page URL ends with '.html' or '/html'
@@ -506,16 +514,25 @@ class FAIRCheck:
                 self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
-        #dcat style
+        sign_header_links = []
+        #signposting header links
+        if self.get_signposting_links('describedby'):
+            sign_header_links = self.get_signposting_links('describedby')
+            self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value, 'signposting'))
+        #dcat style meta links
         typed_metadata_links = self.get_html_typed_links(rel='alternate')
-        #ddi style
+        #ddi style meta links
         rel_meta_links = self.get_html_typed_links(rel='meta')
-        #signposting style
-        sign_metadata_links = self.get_html_typed_links(rel='describedby')
+        #signposting style meta links
+        sign_meta_links = self.get_html_typed_links(rel='describedby')
 
-        typed_metadata_links.extend(sign_metadata_links)
+
+
+        typed_metadata_links.extend(sign_meta_links)
         typed_metadata_links.extend(rel_meta_links)
+        typed_metadata_links.extend(sign_header_links)
         guessed_metadata_link = self.get_guessed_xml_link()
+
         if guessed_metadata_link is not None:
             typed_metadata_links.append(guessed_metadata_link)
 

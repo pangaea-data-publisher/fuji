@@ -56,19 +56,38 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 # identify signposting links in header
                 header_link_string = requestHelper.getHTTPResponse().getheader('Link')
                 if header_link_string is not None:
+                    self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
+
                     for preparsed_link  in header_link_string.split(','):
+                        found_link = None
+                        found_type, type_match = None, None
+                        found_rel, rel_match = None, None
                         parsed_link = preparsed_link.strip().split(';')
                         found_link = parsed_link[0].strip()
-                        found_rel = re.search('rel=\"([a-z-]+)\"', parsed_link[1])
+                        for link_prop in parsed_link[1:]:
+                            if str(link_prop).startswith('rel="'):
+                                rel_match = re.search('rel=\"(.*?)\"', link_prop)
+                            elif str(link_prop).startswith('type="'):
+                                type_match = re.search('type=\"(.*?)\"', link_prop)
+                        if type_match:
+                            found_type = type_match[1]
+                        if rel_match:
+                            found_rel = rel_match[1]
+                        signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel}
+                        if found_link:
+                            self.fuji.signposting_header_links.append(signposting_link_dict)
+                        '''
                         if found_rel:
                             if self.fuji.signposting_header_links.get(found_rel[1]):
                                 self.fuji.signposting_header_links[found_rel[1]].append(found_link[1:-1])
                             else:
                                 self.fuji.signposting_header_links[found_rel[1]]=[found_link[1:-1]]
+                        '''
 
                 #check if there is a cite-as signposting link
                 if self.fuji.pid_scheme is None:
-                    signposting_pid = self.fuji.signposting_header_links.get('cite-as')
+                    signposting_pid_link = self.fuji.get_signposting_links('cite-as')
+                    signposting_pid = signposting_pid_link[0].get('url')
                     if signposting_pid:
                         found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
                         if len(found_ids) > 1:

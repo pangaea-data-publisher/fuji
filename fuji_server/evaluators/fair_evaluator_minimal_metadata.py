@@ -81,6 +81,9 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             if source_mechanism == 'linked':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0,'pass')
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+            if source_mechanism == 'signposting':
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0,'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
         self.result.test_status = test_status
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
