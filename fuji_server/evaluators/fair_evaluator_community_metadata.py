@@ -83,7 +83,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
                             self.logger.log(self.fuji.LOG_SUCCESS,
                                             'FsF-R1.3-01M : Found disciplinary standard through re3data - {}'.format(
-                                                std_ns))
+                                                s))
                             out = CommunityEndorsedStandardOutputInner()
                             out.metadata_standard = s
                             out.subject_areas = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')

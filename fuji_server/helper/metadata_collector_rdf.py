@@ -60,9 +60,12 @@ class MetaDataCollectorRdf (MetaDataCollector):
                     print(self.content_type)
                     DCAT = Namespace("http://www.w3.org/ns/dcat#")
                     if self.content_type == 'application/ld+json':
-                        jsonldgraph= rdflib.ConjunctiveGraph()
-                        rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
-                        rdf_response = jsonldgraph
+                        try:
+                            jsonldgraph= rdflib.ConjunctiveGraph()
+                            rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
+                            rdf_response = jsonldgraph
+                        except Exception as e:
+                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD - {}'.format(e))
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
