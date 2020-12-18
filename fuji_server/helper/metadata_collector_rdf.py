@@ -164,6 +164,9 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 dtype=graph.value(dist, DCAT.mediaType)
                 dsize=graph.value(dist, DCAT.bytesSize)
                 dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+
+            if dcat_metadata['object_content_identifier']:
+                self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata : ' + str(dcat_metadata['object_content_identifier']))
                 #TODO: add provenance metadata retrieval
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
