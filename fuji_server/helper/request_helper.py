@@ -123,7 +123,11 @@ class RequestHelper:
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
                     content_type = self.http_response.headers.get("Content-Type")
-
+                    #try to find out if content type is byte then fix
+                    try:
+                        self.response_content.decode('utf-8')
+                    except (UnicodeDecodeError, AttributeError):
+                        self.response_content = str(self.response_content).encode('utf-8')
                     if content_type is None:
                         content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                     if content_type is None:
@@ -151,6 +155,7 @@ class RequestHelper:
                                     if content_type in at.value:
                                         if at.name == 'html':
                                             self.logger.info('%s : Found HTML page!' % metric_id)
+
                                             self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
                                             source='html'
                                             break

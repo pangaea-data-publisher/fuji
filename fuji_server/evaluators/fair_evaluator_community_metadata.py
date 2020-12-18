@@ -51,6 +51,9 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             'FsF-R1.3-01M : Skipped non-disciplinary standard found through namespaces - {}'.format(
                                 std_ns))
                     else:
+                        self.logger.log(self.fuji.LOG_SUCCESS,
+                            'FsF-R1.3-01M : Found disciplinary standard through namespaces - {}'.format(
+                                std_ns))
                         nsout = CommunityEndorsedStandardOutputInner()
                         nsout.metadata_standard = std_name  # use here original standard uri detected
                         nsout.subject_areas = subject
@@ -69,8 +72,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if len(self.fuji.community_standards) > 0:
             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 0, 'pass')
             if len(standards_detected) == 0:
-                self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
-                self.logger.info('FsF-R1.3-01M : Use re3data the source of metadata standard(s)')
+                self.logger.info('FsF-R1.3-01M : Using re3data to detect metadata standard(s)')
                 for s in self.fuji.community_standards:
                     standard_found = self.fuji.lookup_metadatastandard_by_name(s)
                     if standard_found:
@@ -78,6 +80,10 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                         if subject and all(elem == "Multidisciplinary" for elem in subject):
                             self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard - {}'.format(s))
                         else:
+                            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
+                            self.logger.log(self.fuji.LOG_SUCCESS,
+                                            'FsF-R1.3-01M : Found disciplinary standard through re3data - {}'.format(
+                                                s))
                             out = CommunityEndorsedStandardOutputInner()
                             out.metadata_standard = s
                             out.subject_areas = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')

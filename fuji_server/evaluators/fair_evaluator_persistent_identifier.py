@@ -76,13 +76,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel}
                         if found_link:
                             self.fuji.signposting_header_links.append(signposting_link_dict)
-                        '''
-                        if found_rel:
-                            if self.fuji.signposting_header_links.get(found_rel[1]):
-                                self.fuji.signposting_header_links[found_rel[1]].append(found_link[1:-1])
-                            else:
-                                self.fuji.signposting_header_links[found_rel[1]]=[found_link[1:-1]]
-                        '''
 
                 #check if there is a cite-as signposting link
                 if self.fuji.pid_scheme is None:

@@ -95,7 +95,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.1'
+    FUJI_VERSION = 'v1.0.1b'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -250,7 +250,7 @@ class FAIRCheck:
                     stds = None
                     if self.community_standards_uri:
                         stds = list(self.community_standards_uri.keys())
-                    self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
@@ -314,8 +314,7 @@ class FAIRCheck:
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             if schemaorg_dict.get('object_content_identifier'):
-                self.logger.log(self.LOG_SUCCESS,
-                                'FsF-F3-01M : Found data links in Schema.org metadata : ' + str(schemaorg_dict.get('object_content_identifier')))
+                self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata : ' + str(schemaorg_dict.get('object_content_identifier')))
             # add object type for future reference
             for i in schemaorg_dict.keys():
                 if i in self.reference_elements:
@@ -362,20 +361,33 @@ class FAIRCheck:
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata: ' + str(opengraph_dict.keys()))
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
-        #========= retrieve typed links =========
 
-        links = self.get_html_typed_links(rel='item')
-        if links:
-            self.logger.log(self.LOG_SUCCESS,
-                            'FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(links)))
+        #========= retrieve signposting data links
+
+        data_sign_links = self.get_signposting_links('item')
+        if data_sign_links:
+            self.logger.info('FsF-F3-01M : Found data links in response header (signposting) : ' + str(len(data_sign_links)))
             if self.metadata_merged.get('object_content_identifier') is None:
-                self.metadata_merged['object_content_identifier'] = links
-            self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
+                self.metadata_merged['object_content_identifier'] = data_sign_links
+
+        #========= retrieve typed data object links =========
+
+        data_meta_links = self.get_html_typed_links(rel='item')
+        if data_meta_links:
+            self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(data_meta_links)))
+            if self.metadata_merged.get('object_content_identifier') is None:
+                self.metadata_merged['object_content_identifier'] = data_meta_links
+           # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
 
         #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
         if self.metadata_merged.get('object_identifier'):
+            if isinstance(self.metadata_merged.get('object_identifier'),list):
+                identifiertotest = self.metadata_merged.get('object_identifier')[0]
+            else:
+                identifiertotest = self.metadata_merged.get('object_identifier')
             if self.pid_scheme is None:
-                found_pids_in_metadata = idutils.detect_identifier_schemes(self.metadata_merged.get('object_identifier'))
+                print(self.metadata_merged.get('object_identifier'))
+                found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
                 if len(found_pids_in_metadata) > 1:
                     if 'url' in found_pids_in_metadata:
                         found_pids_in_metadata.remove('url')
@@ -385,7 +397,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
                         self.repeat_pid_check = True
                         self.pid_scheme = found_id
-                        self.id = self.metadata_merged.get('object_identifier')
+                        self.id = identifiertotest
 
 
 
@@ -464,8 +476,7 @@ class FAIRCheck:
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
                     if rdf_dict.get('object_content_identifier'):
-                        self.logger.log(self.LOG_SUCCESS,
-                                        'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                        self.logger.info('FsF-F3-01M : Found data links in RDF metadata : ' + str(
                                             len(rdf_dict.get('object_content_identifier'))))
 
                     test_content_negotiation = True
@@ -500,8 +511,7 @@ class FAIRCheck:
                 self.metadata_sources.append((source_dcitejsn,'negotiated'))
                 self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
                 if dcitejsn_dict.get('object_content_identifier'):
-                    self.logger.log(self.LOG_SUCCESS,
-                                    'FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                    self.logger.info('FsF-F3-01M : Found data links in Datacite metadata : ' + str(
                                         dcitejsn_dict.get('object_content_identifier')))
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
@@ -559,10 +569,7 @@ class FAIRCheck:
                     test_typed_links = True
                     self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'linked'))
-                    if rdf_dict.get('object_content_identifier'):
-                        self.logger.log(self.LOG_SUCCESS,
-                                        'FsF-F3-01M : Found data links in Linked Data metadata : ' + str(len(
-                                            rdf_dict.get('object_content_identifier'))))
+
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]

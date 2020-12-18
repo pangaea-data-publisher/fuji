@@ -60,9 +60,12 @@ class MetaDataCollectorRdf (MetaDataCollector):
                     print(self.content_type)
                     DCAT = Namespace("http://www.w3.org/ns/dcat#")
                     if self.content_type == 'application/ld+json':
-                        jsonldgraph= rdflib.ConjunctiveGraph()
-                        rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
-                        rdf_response = jsonldgraph
+                        try:
+                            jsonldgraph= rdflib.ConjunctiveGraph()
+                            rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
+                            rdf_response = jsonldgraph
+                        except Exception as e:
+                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD - {}'.format(e))
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
@@ -164,6 +167,9 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 dtype=graph.value(dist, DCAT.mediaType)
                 dsize=graph.value(dist, DCAT.bytesSize)
                 dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+
+            if dcat_metadata['object_content_identifier']:
+                self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata : ' + str(dcat_metadata['object_content_identifier']))
                 #TODO: add provenance metadata retrieval
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
