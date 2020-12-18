@@ -250,7 +250,7 @@ class FAIRCheck:
                     stds = None
                     if self.community_standards_uri:
                         stds = list(self.community_standards_uri.keys())
-                    self.logger.info('{} : Selected standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
@@ -381,8 +381,13 @@ class FAIRCheck:
 
         #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
         if self.metadata_merged.get('object_identifier'):
+            if isinstance(self.metadata_merged.get('object_identifier'),list):
+                identifiertotest = self.metadata_merged.get('object_identifier')[0]
+            else:
+                identifiertotest = self.metadata_merged.get('object_identifier')
             if self.pid_scheme is None:
-                found_pids_in_metadata = idutils.detect_identifier_schemes(self.metadata_merged.get('object_identifier'))
+                print(self.metadata_merged.get('object_identifier'))
+                found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
                 if len(found_pids_in_metadata) > 1:
                     if 'url' in found_pids_in_metadata:
                         found_pids_in_metadata.remove('url')
@@ -392,7 +397,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
                         self.repeat_pid_check = True
                         self.pid_scheme = found_id
-                        self.id = self.metadata_merged.get('object_identifier')
+                        self.id = identifiertotest
 
 
 
