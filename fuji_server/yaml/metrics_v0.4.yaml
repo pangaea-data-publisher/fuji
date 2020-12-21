@@ -63,10 +63,10 @@ metrics:
       metric_test_name: Metadata is accessible via signposting links
       metric_test_score: 0
     - metric_test_identifier: FsF-F2-01M-2
-      metric_test_name: A minimum set of descriptive metadata is available
+      metric_test_name: Core data citation metadata is available
       metric_test_score: 1
     - metric_test_identifier: FsF-F2-01M-3
-      metric_test_name: A full set of descriptive metadata is available
+      metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
 
   created_by: FAIRsFAIR
