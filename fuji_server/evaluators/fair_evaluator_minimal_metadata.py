@@ -37,8 +37,8 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
         metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
         self.logger.info('FsF-F2-01M : Required core metadata elements {}'.format(metadata_required))
-
-        partial_elements = ['creator', 'title', 'object_identifier', 'publication_date']
+        # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
+        partial_elements = ['creator', 'title', 'object_identifier', 'publication_date','publisher']
         # TODO: check the number of metadata elements which metadata_found has in common with metadata_required
         # set(a) & set(b)
         if set(metadata_found) == set(metadata_required):
