@@ -104,6 +104,7 @@ class FAIRCheck:
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
+        self.origin_url = None #the url from where all starts - in case of redirection we'll need this later on
         self.landing_html = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
         self.signposting_header_links = []
@@ -302,15 +303,23 @@ class FAIRCheck:
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
+
+        if self.use_datacite is True:
+            target_url = self.pid_url
+        else:
+            target_url = self.landing_url
+
         schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
-                                                         mapping=Mapper.SCHEMAORG_MAPPING,
-                                                         ispid=isPid, pidurl=self.pid_url)
+                                                         mapping=Mapper.SCHEMAORG_MAPPING, pidurl=target_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
         schemaorg_dict = self.exclude_null(schemaorg_dict)
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
             #not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
-            self.metadata_sources.append((source_schemaorg,'embedded'))
+            if source_schemaorg == MetaDataCollector.Sources.SCHEMAORG_EMBED.value:
+                self.metadata_sources.append((source_schemaorg,'embedded'))
+            else:
+                self.metadata_sources.append((source_schemaorg, 'negotiated'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             if schemaorg_dict.get('object_content_identifier'):
@@ -386,7 +395,7 @@ class FAIRCheck:
             else:
                 identifiertotest = self.metadata_merged.get('object_identifier')
             if self.pid_scheme is None:
-                print(self.metadata_merged.get('object_identifier'))
+                #print(self.metadata_merged.get('object_identifier'))
                 found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
                 if len(found_pids_in_metadata) > 1:
                     if 'url' in found_pids_in_metadata:
@@ -446,7 +455,6 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
-
         test_content_negotiation = False
         test_typed_links = False
         test_signposting = False
@@ -468,10 +476,16 @@ class FAIRCheck:
                 targeturl = self.pid_url
             else:
                 targeturl = self.landing_url
+
             neg_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=targeturl,
                                                       source=source)
             if neg_rdf_collector is not None:
                 source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
+                # in case F-UJi was redirected and the landing page content negotiation doesnt return anything try the origin URL
+                if not rdf_dict:
+                    if self.origin_url is not None:
+                        neg_rdf_collector.target_url = self.origin_url
+                        source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
                 self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:

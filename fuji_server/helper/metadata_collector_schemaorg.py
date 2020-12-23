@@ -29,8 +29,8 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 class MetaDataCollectorSchemaOrg (MetaDataCollector):
     source_name=None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
-    def __init__(self, sourcemetadata, mapping, loggerinst, ispid, pidurl):
-        self.is_pid = ispid
+    def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
+        #self.is_pid = ispid
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
@@ -41,14 +41,16 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             ext_meta = self.source_metadata[0]
         else:
-            if self.is_pid:
-                self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
-                # TODO (IMPORTANT) PID agency may support Schema.org in JSON-LD
-                # TODO (IMPORTANT) validate schema.org
-                # fallback, request (doi) metadata specified in schema.org JSON-LD
-                requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
-                requestHelper.setAcceptType(AcceptTypes.schemaorg)
-                neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            #if self.is_pid:
+            # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
+
+            self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
+            # TODO (IMPORTANT) PID agency may support Schema.org in JSON-LD
+            # TODO (IMPORTANT) validate schema.org
+            # fallback, request (doi) metadata specified in schema.org JSON-LD
+            requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.schemaorg)
+            neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
         if ext_meta is not None:
             self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))

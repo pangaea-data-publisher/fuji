@@ -49,7 +49,7 @@ class AcceptTypes(Enum):
     nt = 'text/n3, application/n-triples'
     rdfxml = 'application/rdf+xml, text/rdf;q=0.5, application/xml;q=0.1, text/xml;q=0.1'
     turtle = 'text/ttl, text/turtle, application/turtle, application/x-turtle;q=0.6, text/n3;q=0.3, text/rdf+n3;q=0.3, application/rdf+n3;q=0.3'
-    rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9'
+    rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9,application/ld+json'
     default = '*/*'
 
 class RequestHelper:
@@ -172,10 +172,15 @@ class RequestHelper:
                                                 source='xml'
                                             break
                                         if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
-                                            self.parse_response  = json.loads(self.response_content)
-                                            source='json'
-                                            # result = json.loads(response.text)
-                                            break
+                                            try:
+                                                self.parse_response  = json.loads(self.response_content)
+                                                source='json'
+                                                # result = json.loads(response.text)
+                                                break
+                                            except ValueError:
+                                                self.logger.info(
+                                                    '{0} : Retrieved response seems not to be valid JSON'.format(metric_id))
+
                                         if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
                                             self.parse_response  = self.parse_rdf(self.response_content, content_type)
                                             source='rdf'
