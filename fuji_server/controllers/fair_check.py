@@ -302,15 +302,23 @@ class FAIRCheck:
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
+
+        if self.use_datacite is True:
+            target_url = self.pid_url
+        else:
+            target_url = self.landing_url
+
         schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
-                                                         mapping=Mapper.SCHEMAORG_MAPPING,
-                                                         ispid=isPid, pidurl=self.pid_url)
+                                                         mapping=Mapper.SCHEMAORG_MAPPING, pidurl=target_url)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
         schemaorg_dict = self.exclude_null(schemaorg_dict)
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
             #not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
-            self.metadata_sources.append((source_schemaorg,'embedded'))
+            if source_schemaorg == MetaDataCollector.Sources.SCHEMAORG_EMBED.value:
+                self.metadata_sources.append((source_schemaorg,'embedded'))
+            else:
+                self.metadata_sources.append((source_schemaorg, 'negotiated'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             if schemaorg_dict.get('object_content_identifier'):
@@ -446,7 +454,6 @@ class FAIRCheck:
         return datalink
 
     def retrieve_metadata_external(self):
-
         test_content_negotiation = False
         test_typed_links = False
         test_signposting = False
