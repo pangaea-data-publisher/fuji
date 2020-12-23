@@ -47,6 +47,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
         rdf_metadata=dict()
         if self.rdf_graph is None:
+            #print(self.target_url)
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.rdf)
             neg_source,rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
@@ -57,7 +58,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 if self.content_type is not None:
                     self.content_type = self.content_type.split(";", 1)[0]
                     #handle JSON-LD
-                    print(self.content_type)
                     DCAT = Namespace("http://www.w3.org/ns/dcat#")
                     if self.content_type == 'application/ld+json':
                         try:
@@ -79,6 +79,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 rdf_metadata = self.get_dcat_metadata(rdf_response)
             elif bool(set(ontology_indicator) & set(dict(list(rdf_response.namespaces())).values())):
                 rdf_metadata = self.get_ontology_metadata(rdf_response)
+            else:
+                rdf_metadata = self.get_default_metadata(rdf_response)
             #add found namespaces URIs to namespace
             for ns in rdf_response.namespaces():
                 self.namespaces.append(str(ns[1]))
@@ -86,14 +88,21 @@ class MetaDataCollectorRdf (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Expected RDF Graph but received - {0}'.format(self.content_type))
         return self.source_name, rdf_metadata
 
+    def get_default_metadata(self,g):
+        meta = dict()
+        meta['object_type'] = 'Other'
+        return meta
+
     #TODO rename to: get_core_metadata
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
+        '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
+        '''
         meta['object_type'] = type
         meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title))
         meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description))

@@ -104,6 +104,7 @@ class FAIRCheck:
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
+        self.origin_url = None #the url from where all starts - in case of redirection we'll need this later on
         self.landing_html = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
         self.signposting_header_links = []
@@ -394,7 +395,7 @@ class FAIRCheck:
             else:
                 identifiertotest = self.metadata_merged.get('object_identifier')
             if self.pid_scheme is None:
-                print(self.metadata_merged.get('object_identifier'))
+                #print(self.metadata_merged.get('object_identifier'))
                 found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
                 if len(found_pids_in_metadata) > 1:
                     if 'url' in found_pids_in_metadata:
@@ -475,10 +476,16 @@ class FAIRCheck:
                 targeturl = self.pid_url
             else:
                 targeturl = self.landing_url
+
             neg_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=targeturl,
                                                       source=source)
             if neg_rdf_collector is not None:
                 source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
+                # in case F-UJi was redirected and the landing page content negotiation doesnt return anything try the origin URL
+                if not rdf_dict:
+                    if self.origin_url is not None:
+                        neg_rdf_collector.target_url = self.origin_url
+                        source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
                 self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
