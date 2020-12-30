@@ -43,11 +43,11 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.setEvaluationCriteriumScore('FsF-F1-01D-1',1, 'pass')
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
-
             # identify main scheme
-            if len(found_ids) == 1 and found_ids[0] == 'url':  # only url included
+            if len(found_ids) == 1:
                 #self.fuji.pid_url = self.fuji.id
-                self.fuji.id_scheme = 'url'
+                self.fuji.id_scheme = found_ids[0]
+                #self.fuji.id_scheme = 'url'
             else:
                 if 'url' in found_ids:  # ['doi', 'url']
                     found_ids.remove('url')
