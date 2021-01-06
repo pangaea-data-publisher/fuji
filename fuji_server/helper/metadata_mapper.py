@@ -76,7 +76,7 @@ class Mapper(Enum):
     # conditionsOfAccess, usageInfo?, isAccessibleForFree
     ## A license document that applies to this content, typically indicated by URL.
     SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
-                            'publication_date: datePublished."@value" || datePublished , '\
+                            'publication_date: datePublished."@value" || datePublished || dateCreated, '\
                             'modified_date: dateModified."@value" ||dateModified, ' \
                            'creator: creator[?"@type" ==\'Person\'].name || creator[?"@type" ==\'Organization\'].name || author[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
@@ -121,3 +121,18 @@ class Mapper(Enum):
                           'hasFormat' :'prov:alternateOf', 'isFormatOf':'prov:alternateOf','isVersionOf':'prov:wasRevisionOf','isNewVersionOf':'prov:wasRevisionOf',
                           'isReferencedBy':'prov:hadDerivation', 'isReplacedBy':'prov:wasRevisionOf', 'References': 'prov:wasDerivedFrom','IsDerivedFrom': 'prov:wasDerivedFrom',
                           'isBasedOn':'prov:hadPrimarySource','hasVersion':'prov:hadRevision','Obsoletes':'prov:wasRevisionOf','Replaces':'prov:wasDerivedFrom'}
+
+    GENERIC_SPARQL = """
+            PREFIX dct: <http://purl.org/dc/terms/>
+            SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level WHERE {
+            OPTIONAL {?dataset  dct:title ?title}
+            OPTIONAL {?dataset dct:identifier ?object_identifier}
+            OPTIONAL {?dataset  dct:description ?summary}
+            OPTIONAL {?dataset  dct:publisher ?publisher}
+            OPTIONAL {?dataset  dct:created|dct:issued|dct:date ?publication_date}
+            OPTIONAL {?dataset  dct:creator ?creator}
+            OPTIONAL {?dataset  dct:type ?object_type}
+            OPTIONAL {?dataset  dct:license ?license}
+            OPTIONAL {?dataset  dct:accessRights|dct:rights ?access_level}
+            }
+            """
