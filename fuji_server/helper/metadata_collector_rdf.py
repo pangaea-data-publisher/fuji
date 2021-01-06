@@ -31,6 +31,7 @@ from rdflib.namespace import FOAF
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+from fuji_server.helper.metadata_mapper import Mapper
 
 class MetaDataCollectorRdf (MetaDataCollector):
     target_url=None
@@ -90,7 +91,21 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
     def get_default_metadata(self,g):
         meta = dict()
-        meta['object_type'] = 'Other'
+        try:
+            self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
+            r = g.query(Mapper.GENERIC_SPARQL.value)
+            for row in sorted(r):
+                for l, v in row.asdict().items():
+                    if l is not None:
+                        meta[l] = str(v)
+                break
+        except Exception as e:
+            self.logger.info('FsF-F2-01M : SPARQLing error - {}'.format(e))
+        if len(meta)<=0:
+            meta['object_type'] = 'Other'
+            self.logger.info('FsF-F2-01M : Could not find metadata elements through generic SPARQL query on RDF')
+        else:
+            self.logger.info('FsF-F2-01M : Found some metadata elements through generic SPARQL query on RDF: '+str(meta.keys()))
         return meta
 
     #TODO rename to: get_core_metadata

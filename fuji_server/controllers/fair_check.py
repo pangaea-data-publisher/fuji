@@ -41,7 +41,7 @@ from rdflib.namespace import DC
 from rapidfuzz import fuzz
 from rapidfuzz import process
 from tika import parser
-import base64
+import hashlib
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
@@ -95,11 +95,12 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.2'
+    FUJI_VERSION = 'v1.0.3'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
-        self.test_id = str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
+        self.test_id = hashlib.sha1(uid_bytes).hexdigest()
+        #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         self.id = uid
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
