@@ -39,6 +39,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
             Mapper.VALID_PIDS.value))
         check_url = None
+        signposting_pid = None
         if self.fuji.id_scheme is not None:
             check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
         if self.fuji.id_scheme =='url':
@@ -50,7 +51,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             requestHelper.setAcceptType(AcceptTypes.html)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D')
             r = requestHelper.getHTTPResponse()
-            signposting_pid = None
+
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
                 if r.status == 200:

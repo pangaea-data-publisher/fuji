@@ -52,7 +52,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
                 if 'url' in found_ids:  # ['doi', 'url']
                     found_ids.remove('url')
                     #self.fuji.pid_url = self.fuji.id
-                    self.fuji.id_scheme = found_ids[0]
+                self.fuji.id_scheme = found_ids[0]
             found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
             if found_id in Mapper.VALID_PIDS.value:
                 self.fuji.pid_scheme = found_id
