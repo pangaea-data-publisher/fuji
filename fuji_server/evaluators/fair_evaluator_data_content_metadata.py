@@ -61,13 +61,13 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         else:
             self.logger.warning('FsF-R1-01MD : NO resource type specified ')
 
-        # 2. initially verification is restricted to the first file and only use object content uri that is accessible (self.content_identifier)
+        # 2. initially verification is restricted to the last file and only use object content uri that is accessible (self.content_identifier)
         if isinstance(self.fuji.content_identifier, list):
-            content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
-            content_length = len(self.fuji.content_identifier)
+            not_empty_content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
+            content_length = len(not_empty_content_uris)
             if content_length > 0:
                 self.logger.info('FsF-R1-01MD : Number of data content URI(s) specified - {}'.format(content_length))
-                test_data_content_url = self.fuji.content_identifier[-1].get('url')
+                test_data_content_url = not_empty_content_uris[-1]
                 self.logger.info(
                     'FsF-R1-01MD : Selected content file to be analyzed - {}'.format(test_data_content_url))
                 try:
@@ -76,7 +76,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     timeout = 10
                     start = time.time()
                     r = requests.get(test_data_content_url, verify=False, stream=True)
-
                     tika_content_size = 0
                     if r.status_code == 200:
                         for chunk in r.iter_content(1024):
@@ -86,21 +85,36 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 self.logger.warning(
                                     'FsF-R1-01MD : File too large.., skipped download after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
                                 tika_content_size = 0
+                                tika_content_size = str(r.headers.get('content-length')).split(';')[0]
+
                                 break
 
                         response_content = b''.join(response_body)
-                        parsedFile = parser.from_buffer(response_content)
-                        status = parsedFile.get("status")
-                        tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                        status = 'tika error'
+                        parsed_content=''
+                        try:
+                            parsedFile = parser.from_buffer(response_content)
+                            status = parsedFile.get("status")
+                            tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                            parsed_content = parsedFile.get("content")
+                            self.logger.info(
+                                '{0} : Successfully parsed data object file using TIKA'.format(self.metric_identifier))
+                        except  Exception as e:
+                            self.logger.warning(
+                                '{0} : File parsing using TIKA failed: {1}'.format(self.metric_identifier, e))
+                            # in case TIKA request fails use response header info
+                            tika_content_types = str(r.headers.get('content-type')).split(';')[0]
+
                         if isinstance(tika_content_types, list):
                             self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
                         else:
                             content_types_str = tika_content_types.split(';')[0]
                             self.fuji.tika_content_types_list.append(content_types_str)
+
                         # Extract the text content from the parsed file and convert to string
                         self.logger.info(
                             '{0} : File request status code {1}'.format(self.metric_identifier, status))
-                        parsed_content = parsedFile["content"]
+
                         test_data_content_text = str(parsed_content)
                         # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                         if test_data_content_text:
@@ -121,11 +135,14 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             descriptors = ['type',
                            'size']  # default keys ['url', 'type', 'size', 'profile', 'header_content_type', 'header_content_length']
             data_object = next(item for item in self.fuji.metadata_merged.get('object_content_identifier') if
-                               item["url"] == test_data_content_url)
+                               item.get('url') == test_data_content_url)
             if data_object.get('type') and data_object.get('size'):
                 score +=1
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-2', 1, 'pass')
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-2a', 0, 'pass')
+
+            matches_type = False
+            matches_size = False
 
             for d in descriptors:
                 type = 'file ' + d
@@ -133,8 +150,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     descriptor = type
                     descriptor_value = data_object.get(d)
                     matches_content = False
-                    matches_type = False
-                    matches_size = False
+
                     #if data_object.get('header_content_type') == data_object.get('type'):
                     # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
                     if d == 'type':
