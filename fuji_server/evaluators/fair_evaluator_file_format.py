@@ -53,7 +53,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         if len(self.fuji.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.fuji.content_identifier]
             self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
-            for data_file in self.fuji.content_identifier:
+            for file_index, data_file in enumerate(self.fuji.content_identifier):
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream']:
@@ -67,15 +67,16 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
                     if mime_type:
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
-                            self.logger.warning(
-                                'FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
-                            # exclude archieve format
-                            self.fuji.tika_content_types_list = [n for n in self.fuji.tika_content_types_list if
-                                                            n not in self.fuji.ARCHIVE_MIMETYPES]
                             self.logger.info(
-                                'FsF-R1.3-02D : Extracted file formats - {}'.format(self.fuji.tika_content_types_list))
-                            for t in self.fuji.tika_content_types_list:
-                                mime_url_pair[t] = data_file.get('url')
+                                'FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
+                            # exclude archive format
+                            if file_index == len(self.fuji.content_identifier)-1:
+                                self.fuji.tika_content_types_list = [n for n in self.fuji.tika_content_types_list if
+                                                                n not in self.fuji.ARCHIVE_MIMETYPES]
+                                self.logger.info(
+                                    'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) - {}'.format(self.fuji.tika_content_types_list))
+                                for t in self.fuji.tika_content_types_list:
+                                    mime_url_pair[t] = data_file.get('url')
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
 
