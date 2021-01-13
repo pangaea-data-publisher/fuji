@@ -22,7 +22,7 @@
 
 import logging
 
-logger = logging.getLogger(__name__)
+
 
 
 class MessageFilter(logging.Filter):
@@ -32,10 +32,15 @@ class MessageFilter(logging.Filter):
 
     def filter(self, record):
         # Intercept logs messages #TODO - do not write FsF-* messages into a log file
+        msg = None
+        level = None
+        msgtxt = None
         if record.getMessage().startswith('FsF-'):
             level = record.levelname
             m = record.getMessage().split(":", 1)
-            msg = level + ': ' + m[1].strip()
+            #msg = level + ': ' + m[1].strip()
+            msgtxt=m[1].strip()
+            msg = '%s: %s' % (level, msgtxt)
             metric = m[0].strip()
             if metric in self.messages:
                 self.messages[metric].append(msg)
