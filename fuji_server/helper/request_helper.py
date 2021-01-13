@@ -57,7 +57,7 @@ class RequestHelper:
         if logInst:
             self.logger = logInst
         else :
-            self.logger = logging.getLogger(self.__class__.__name__)
+            self.logger = logging.getLogger(__name__)
         self.request_url = url
         self.redirect_url = None
         self.accept_type = AcceptTypes.default.value

@@ -25,7 +25,7 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.identifier_included import IdentifierIncluded
 from fuji_server.models.identifier_included_output import IdentifierIncludedOutput
 from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner
-import urllib.request as urllib
+import urllib
 
 class FAIREvaluatorContentIncluded(FAIREvaluator):
     def evaluate(self):
@@ -60,7 +60,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                     self.fuji.content_identifier.append(content_link)
                     try:
                         # only check the status, do not download the content
-                        response = urllib.urlopen(content_link.get('url'))
+                        response = urllib.request.urlopen(content_link.get('url'))
                         content_link['header_content_type'] = response.getheader('Content-Type')
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
@@ -78,11 +78,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
                         did_output_content.content_identifier_active = False
                         #content_list.append(did_output_content)
-                    except urllib.HTTPError as e:
+                    except urllib.error.HTTPError as e:
                         self.logger.warning(
                             'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(
                                 content_link.get('url'), e.code))
-                    except urllib.URLError as e:
+                    except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
                     except:
                         self.logger.warning('FsF-F3-01M : Could not access the resource')

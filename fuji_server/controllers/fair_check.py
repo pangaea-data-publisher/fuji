@@ -95,7 +95,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.3'
+    FUJI_VERSION = 'v1.0.4'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -111,7 +111,7 @@ class FAIRCheck:
         self.signposting_header_links = []
         self.pid_scheme = None
         self.id_scheme= None
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger(__name__)
         self.metadata_sources = []
         self.isDebug = test_debug
         self.isMetadataAccessible = None

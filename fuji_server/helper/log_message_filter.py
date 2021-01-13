@@ -22,7 +22,7 @@
 
 import logging
 
-logger = logging.getLogger(__name__)
+
 
 
 class MessageFilter(logging.Filter):
@@ -35,10 +35,13 @@ class MessageFilter(logging.Filter):
         if record.getMessage().startswith('FsF-'):
             level = record.levelname
             m = record.getMessage().split(":", 1)
-            msg = level + ': ' + m[1].strip()
+            #msg = level + ': ' + m[1].strip()
+            msgtxt=m[1].strip()
+            msg = '%s: %s' % (level, msgtxt)
             metric = m[0].strip()
             if metric in self.messages:
-                self.messages[metric].append(msg)
+                if msg not in self.messages[metric]:
+                    self.messages[metric].append(msg)
             else:
                 self.messages[metric] = [msg]
         return True

@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import urllib
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.data_content_metadata import DataContentMetadata
@@ -74,54 +75,72 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     # Use Tika to parse the file
                     response_body=[]
                     timeout = 10
+                    tika_content_size = 0
+                    max_download_size =1000000
+
                     start = time.time()
                     r = requests.get(test_data_content_url, verify=False, stream=True)
-                    tika_content_size = 0
-                    if r.status_code == 200:
-                        for chunk in r.iter_content(1024):
-                            response_body.append(chunk)
-                            tika_content_size = tika_content_size + len(chunk)
-                            if time.time() > (start + timeout):
-                                self.logger.warning(
-                                    'FsF-R1-01MD : File too large.., skipped download after '+str(timeout)+' sec  - {}'.format(test_data_content_url))
-                                tika_content_size = 0
-                                tika_content_size = str(r.headers.get('content-length')).split(';')[0]
-
+                    try:
+                        response = urllib.request.urlopen(test_data_content_url)
+                        while True:
+                            chunk = response.read(1024)
+                            if not chunk:
                                 break
+                            else:
+                                response_body.append(chunk)
+                                # avoiding large file sizes to test with TIKA.. truncate after 1 Mb
+                                tika_content_size = tika_content_size + len(chunk)
+                                if time.time() > (start + timeout) or tika_content_size >= max_download_size:
+                                    self.logger.warning(
+                                        'FsF-R1-01MD : File too large.., skipped download after ' + str(
+                                            timeout) + ' sec or receiving > ' + str(max_download_size) + '- {}'.format(
+                                            test_data_content_url))
+                                    tika_content_size = 0
+                                    tika_content_size = str(r.headers.get('content-length')).split(';')[0]
+                                    break
 
-                        response_content = b''.join(response_body)
-                        status = 'tika error'
-                        parsed_content=''
-                        try:
-                            parsedFile = parser.from_buffer(response_content)
-                            status = parsedFile.get("status")
-                            tika_content_types = parsedFile.get("metadata").get('Content-Type')
-                            parsed_content = parsedFile.get("content")
-                            self.logger.info(
-                                '{0} : Successfully parsed data object file using TIKA'.format(self.metric_identifier))
-                        except  Exception as e:
-                            self.logger.warning(
-                                '{0} : File parsing using TIKA failed: {1}'.format(self.metric_identifier, e))
-                            # in case TIKA request fails use response header info
-                            tika_content_types = str(r.headers.get('content-type')).split(';')[0]
+                    except urllib.error.HTTPError as e:
+                        self.logger.warning(
+                            'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(
+                                test_data_content_url, e.code))
+                    except urllib.error.URLError as e:
+                        self.logger.exception(e.reason)
+                    except Exception as e:
+                        self.logger.warning('FsF-F3-01M : Could not access the resource'+str(e))
 
-                        if isinstance(tika_content_types, list):
-                            self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
-                        else:
-                            content_types_str = tika_content_types.split(';')[0]
-                            self.fuji.tika_content_types_list.append(content_types_str)
-
-                        # Extract the text content from the parsed file and convert to string
+                    response_content = b''.join(response_body)
+                    status = 'tika error'
+                    parsed_content=''
+                    try:
+                        parsedFile = parser.from_buffer(response_content)
+                        status = parsedFile.get("status")
+                        tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                        parsed_content = parsedFile.get("content")
                         self.logger.info(
-                            '{0} : File request status code {1}'.format(self.metric_identifier, status))
+                            '{0} : Successfully parsed data object file using TIKA'.format(self.metric_identifier))
+                    except  Exception as e:
+                        self.logger.warning(
+                            '{0} : File parsing using TIKA failed: {1}'.format(self.metric_identifier, e))
+                        # in case TIKA request fails use response header info
+                        tika_content_types = str(r.headers.get('content-type')).split(';')[0]
 
-                        test_data_content_text = str(parsed_content)
-                        # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
-                        if test_data_content_text:
-                            #parsed_files = parsedFile.get("metadata").get('resourceName')
-                            self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(test_data_content_url))
+                    if isinstance(tika_content_types, list):
+                        self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
                     else:
-                        self.logger.warning('FsF-R1-01MD : Data file not accessible {}'.format(r.status_code))
+                        content_types_str = tika_content_types.split(';')[0]
+                        self.fuji.tika_content_types_list.append(content_types_str)
+
+                    # Extract the text content from the parsed file and convert to string
+                    self.logger.info(
+                        '{0} : File request status code {1}'.format(self.metric_identifier, status))
+
+                    test_data_content_text = str(parsed_content)
+                    # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
+                    if test_data_content_text:
+                        #parsed_files = parsedFile.get("metadata").get('resourceName')
+                        self.logger.info('FsF-R1-01MD : Succesfully parsed data file(s) - {}'.format(test_data_content_url))
+                #else:
+                    #    self.logger.warning('FsF-R1-01MD : Data file not accessible {}'.format(r.status_code))
                 except Exception as e:
                     self.logger.warning(
                         '{0} : Could not retrieve/parse content object - {1}'.format(self.metric_identifier, e))

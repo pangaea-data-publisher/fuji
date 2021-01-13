@@ -41,7 +41,7 @@ class RepositoryHelper:
         self.repository_url = None
         self.repo_apis = {}
         self.repo_standards = []
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger(__name__)
 
     def lookup_re3data(self):
         if self.client_id and self.pid_scheme:
