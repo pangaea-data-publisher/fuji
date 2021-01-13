@@ -58,7 +58,7 @@ class Preprocessor(object):
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
 
