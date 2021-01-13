@@ -28,8 +28,6 @@ from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvalua
 from pprint import pprint
 
 
-from fuji_server.helper.log_message_filter import MessageFilter
-
 class FAIREvaluator:
     def __init__(self, fuji_instance):
         self.fuji=fuji_instance
