@@ -39,11 +39,8 @@ class FAIREvaluator:
         self.metric_tests = dict()
         self.isDebug=self.fuji.isDebug
         self.fuji.count = self.fuji.count+1
-        self.logger = self.fuji.logger
-        if self.isDebug == True:
-            self.msg_filter = MessageFilter()
-            self.logger.addFilter(self.msg_filter)
-            self.logger.setLevel(logging.INFO)  # set to debug in testing environment
+        self.logger =  self.fuji.logger
+
 
     def set_metric(self, metric_identifier, metrics):
         self.metrics = metrics
@@ -62,6 +59,7 @@ class FAIREvaluator:
     def getResult(self):
         self.evaluate()
         return self.result.to_dict()
+
 
     def initializeEvaluationCriteria(self):
         all_metric_tests = self.metrics.get(self.metric_identifier).get('metric_tests')
