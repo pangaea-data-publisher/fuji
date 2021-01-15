@@ -85,16 +85,20 @@ def assess_by_id(body):  # noqa: E501
         results.append(data_file_format_result)
         results.append(standard_protocol_data_result)
         results.append(standard_protocol_metadata_result)
+        debug_messages = ft.get_log_messages_dict()
+        ft.logger_message_stream.flush()
         for res_k, res_v in enumerate(results):
             if ft.isDebug:
-                debug_list = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                debug_list = debug_messages.get(res_v['metric_identifier'])
+                # debug_list= ft.msg_filter.getMessage(res_v['metric_identifier'])
                 if debug_list is not None:
-                    results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                    results[res_k]['test_debug'] = debug_messages.get(res_v['metric_identifier'])
                 else:
                     results[res_k]['test_debug'] = ['INFO: No debug messages received']
             else:
                 results[res_k]['test_debug'] = ['INFO: Debugging disabled']
-
+                debug_messages = {}
+        ft.logger.handlers = [ft.logger.handlers[-1]]
         timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
