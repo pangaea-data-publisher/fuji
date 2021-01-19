@@ -32,18 +32,12 @@ class MessageFilter(logging.Filter):
 
     def filter(self, record):
         # Intercept logs messages #TODO - do not write FsF-* messages into a log file
-        if record.getMessage().startswith('FsF-'):
+        #print(record.getMessage())
+        if record.msg.startswith('FsF-'):
             level = record.levelname
-            m = record.getMessage().split(":", 1)
-            #msg = level + ': ' + m[1].strip()
-            msgtxt=m[1].strip()
-            msg = '%s: %s' % (level, msgtxt)
-            metric = m[0].strip()
-            if metric in self.messages:
-                if msg not in self.messages[metric]:
-                    self.messages[metric].append(msg)
-            else:
-                self.messages[metric] = [msg]
+            m = record.msg.split(":", 1)
+            msg = '%s: %s' % (level, m[1].strip())
+            record.msg = msg
         return True
 
     def getMessage(self, m_id):
