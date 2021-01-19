@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 
 import configparser as ConfigParser
+import io
 import json
+import logging
 import os
 from pathlib import Path
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
+import gc
+import tracemalloc
+# os
+#os.environ['TIKA_SERVER_JAR'] = 'file://Program Files\tika\tika-server-1.24.1.jar'
 
 identifier = 'https://doi.org/10.1594/PANGAEA.902845'
 #identifier='https://doi.org/10.26050/WDCC/MOMERGOMBSCMAQ'
@@ -13,7 +19,7 @@ oai_pmh = 'http://ws.pangaea.de/oai/'
 debug = True
 
 muchotestpids=[
-    '10.15493/DEFF.10000003',
+    '10.15493/DEFF.10000003','https://phaidra.cab.unipd.it/view/o:267291',
     'doi:10.1038/nphys1170','doi:10.17882/42182','https://deims.org/sites/default/files/data/elter_va_fruska_gora_temperature_0.xls',
     '10.25504/FAIRsharing.2bdvmk','http://bio2rdf.org/affymetrix:1415765_at','doi:10.18129/B9.bioc.BiocGenerics',
     'https://data.noaa.gov/dataset/dataset/w00411-nos-hydrographic-survey-2015-08-15','10.6075/J0513WJD','10.7280/D1P075',
@@ -47,7 +53,9 @@ muchotestpids=[
     'https://www.proteinatlas.org/ENSG00000110651-CD81/cell','http://dda.dk/catalogue/868','https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-65-hamburg', 'https://ortus.rtu.lv/science/en/datamodule/294',
     'https://doi.org/10.15482/USDA.ADC/1324677','https://www.proteinatlas.org/ENSG00000110651-CD81/cell','http://doi.org/10.5255/UKDA-SN-1329-1',
     'http://purl.org/vocommons/voaf','https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm','http://doi.org/10.22033/ESGF/CMIP6.4397',
-    'https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046','http://doi.org/10.1007/s10531-013-0468-6']
+    'https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046','http://doi.org/10.1007/s10531-013-0468-6',
+    'https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi','https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b'
+]
 
 testpids=[
     '10.15493/DEFF.10000003',
@@ -61,7 +69,8 @@ testpids=[
     'https://www.proteinatlas.org/ENSG000002695','http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/33fa648d-c4d6-4449-ac3c-dbec0f204e1d',
     'https://data.geus.dk/JupiterWWW/anlaeg.jsp?anlaegid=97389','http://tun.fi/JX.1058739','10.15468/0fxsox',
     'https://doi.pangaea.de/10.1594/PANGAEA.866933','10.17026/dans-z56-fz75','http://data.europa.eu/89h/jrc-eplca-898618b5-3306-11dd-bd11-0800200c9a66',
-    'https://www.govdata.de/web/guest/suchen/-/details/temperatur-des-meerwassers-20172b0eb','doi:10.26050/WDCC/MOMERGOMBSCMAQ'
+    'https://www.govdata.de/web/guest/suchen/-/details/temperatur-des-meerwassers-20172b0eb','doi:10.26050/WDCC/MOMERGOMBSCMAQ',
+    'https://ortus.rtu.lv/science/en/datamodule/3'
 ]
 
 #testpids=['https://lithologs.net/?action=view&oid=470']
@@ -72,7 +81,7 @@ testpids=[
 #testpids=['https://data.gov.lv/dati/lv/dataset/covid-19']
 #ontologies
 #testpids=['https://raw.githubusercontent.com/obi-ontology/obi/v2020-04-23/obi.owl']
-#testpids=['http://vocab.nerc.ac.uk/collection/L22/current/','http://purl.org/vocommons/voaf','http://purl.obolibrary.org/obo/bfo.owl']
+testpids=['http://vocab.nerc.ac.uk/collection/L22/current/','http://purl.org/vocommons/voaf','http://purl.obolibrary.org/obo/bfo.owl']
 #testpids=['http://purl.obolibrary.org/obo/bfo.owl']
 #testpids=['https://raw.githubusercontent.com/BFO-ontology/BFO/v2019-08-26/bfo_classes_only.owl']
 #testpids=['http://vocab.nerc.ac.uk/collection/L05/current/']
@@ -117,7 +126,7 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['https://doi.org/10.1594/PANGAEA.745671']
 #testpids=['http://dda.dk/catalogue/150']
 #perfect DCAT
-testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
+#testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hamburgb809f']
 #testpids=['https://doi.org/10.1594/PANGAEA.879324']
 #testpids=['https://deims.org/dataset/75a7f938-7c77-11e3-8832-005056ab003f','https://hdl.handle.net/11168/11.429265']
 #testpids=['https://metadata.bgs.ac.uk/geonetwork/srv/api/records/6abc401d-250a-5469-e054-002128a47908']
@@ -125,7 +134,7 @@ testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-131-hambur
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://dda.dk/catalogue/868']
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-65-hamburg']
-testpids=['https://doi.pangaea.de/10.1594/PANGAEA.810463']
+#testpids=['https://doi.pangaea.de/10.1594/PANGAEA.810463']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/294']
 #testpids=['https://doi.org/10.15482/USDA.ADC/1324677']
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
@@ -135,8 +144,24 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.810463']
 #testpids=['http://doi.org/10.22033/ESGF/CMIP6.4397']
 #testpids=['https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046']
 #testpids=['http://doi.org/10.1007/s10531-013-0468-6']
+#rdf
+#testpids=['http://tun.fi/JX.1099769']
+testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
+#rdf
+#testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
+#testpids=['https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi']
+testpids=['http://doi.org/10.17882/42182']*50
 #testpids = muchotestpids
+#testpids =['https://doi.pangaea.de/10.1594/PANGAEA.810463']*100
 startpid=''
+def effectivehandlers(logger):
+    handlers = logger.handlers
+    while True:
+        logger = logger.parent
+        handlers.extend(logger.handlers)
+        if not (logger.parent and logger.propagate):
+            break
+    return handlers
 def main():
     config = ConfigParser.ConfigParser()
     my_path = Path(__file__).parent.parent
@@ -168,26 +193,30 @@ def main():
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
     start=False
-    usedatacite = True
+    usedatacite = False
+    tracemalloc.start()
     for identifier in testpids:
+
         print (identifier)
         if identifier==startpid or not startpid:
             start=True
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
+
+           # print(effectivehandlers(ft.logger))
             uid_result, pid_result = ft.check_unique_persistent()
             core_metadata_result = ft.check_minimal_metatadata()
             if ft.repeat_pid_check:
-                pid_result = ft.check_persistent_identifier()
+                uid_result, pid_result = ft.check_unique_persistent()
             content_identifier_included_result = ft.check_content_identifier_included()
             access_level_result=ft.check_data_access_level()
             license_result = ft.check_license()
             relatedresources_result = ft.check_relatedresources()
             check_searchable_result = ft.check_searchable()
+            data_content_metadata = ft.check_data_content_metadata()
             data_file_format_result=ft.check_data_file_format()
             community_standards_result=ft.check_community_metadatastandards()
             data_provenance_result=ft.check_data_provenance()
-            data_content_metadata = ft.check_data_content_metadata()
             formal_representation_result=ft.check_formal_metadata()
             semantic_vocabulary_result =ft.check_semantic_vocabulary()
             metadata_preserved_result = ft.check_metadata_preservation()
@@ -197,17 +226,39 @@ def main():
             results = [uid_result, pid_result, core_metadata_result, content_identifier_included_result, check_searchable_result, access_level_result, formal_representation_result,semantic_vocabulary_result, license_result, data_file_format_result,data_provenance_result,relatedresources_result,community_standards_result,data_content_metadata,metadata_preserved_result, standard_protocol_data_result,standard_protocol_metadata_result]
             #results=[core_metadata_result,uid_result, pid_result]
             #print(ft.metadata_merged)
+            debug_messages = ft.get_log_messages_dict()
+            ft.logger_message_stream.flush()
             for res_k, res_v in enumerate(results):
                 if ft.isDebug:
-                    debug_list= ft.msg_filter.getMessage(res_v['metric_identifier'])
+                    debug_list = debug_messages.get(res_v['metric_identifier'])
+                    #debug_list= ft.msg_filter.getMessage(res_v['metric_identifier'])
                     if debug_list is not None:
-                        results[res_k]['test_debug'] = ft.msg_filter.getMessage(res_v['metric_identifier'])
+                        results[res_k]['test_debug'] = debug_messages.get(res_v['metric_identifier'])
                     else:
                         results[res_k]['test_debug'] =['INFO: No debug messages received']
                 else:
                     results[res_k]['test_debug'] = ['INFO: Debugging disabled']
-
+                    debug_messages = {}
             print(json.dumps(results, indent=4, sort_keys=True))
+            #remove unused logger handlers and filters to avoid memory leaks
+            ft.logger.handlers = [ft.logger.handlers[-1]]
+            #ft.logger.filters = [ft.logger.filters]
+            current, peak = tracemalloc.get_traced_memory()
+            print(f"Current memory usage is {current / 10 ** 6}MB; Peak was {peak / 10 ** 6}MB")
+            snapshot = tracemalloc.take_snapshot()
+            top_stats = snapshot.statistics('traceback')
 
+            # pick the biggest memory block
+            stat = top_stats[0]
+            print("%s memory blocks: %.1f KiB" % (stat.count, stat.size / 1024))
+            for line in stat.traceback.format():
+                print(line)
+
+            for i, stat in enumerate(snapshot.statistics('filename')[:5], 1):
+                print(i,  str(stat))
+
+            #preproc.logger.
+            gc.collect()
+    tracemalloc.stop()
 if __name__ == '__main__':
     main()

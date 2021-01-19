@@ -21,7 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import io
 import logging
 import mimetypes
 import re
@@ -61,7 +61,6 @@ from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluat
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAIREvaluatorStandardisedProtocolData
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import FAIREvaluatorStandardisedProtocolMetadata
 
-from fuji_server.helper.log_message_filter import MessageFilter
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
@@ -95,7 +94,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.4'
+    FUJI_VERSION = 'v1.0.5'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -128,11 +127,15 @@ class FAIRCheck:
         self.rdf_collector = None
         self.use_datacite = use_datacite
         self.repeat_pid_check = False
+        self.logger_message_stream = io.StringIO()
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         if self.isDebug:
-            self.msg_filter = MessageFilter()
-            self.logger.addFilter(self.msg_filter)
+            self.logStreamHandler = logging.StreamHandler(self.logger_message_stream)
+            formatter = logging.Formatter('%(message)s|%(levelname)s')
+            self.logStreamHandler.setFormatter(formatter)
+            self.logger.propagate = False
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
+            self.logger.addHandler(self.logStreamHandler)
         self.count = 0
         FAIRCheck.load_predata()
         self.extruct = None
@@ -709,3 +712,20 @@ class FAIRCheck:
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
         standardised_protocol_metadata_check.set_metric('FsF-A1-02M', metrics=FAIRCheck.METRICS)
         return standardised_protocol_metadata_check.getResult()
+
+    def get_log_messages_dict(self):
+        logger_messages ={}
+        self.logger_message_stream.seek(0)
+        for log_message in self.logger_message_stream.readlines():
+            if log_message.startswith('FsF-'):
+                m = log_message.split(":", 1)
+                metric = m[0].strip()
+                message_n_level = m[1].strip().split("|",1)
+                level = message_n_level[1]
+                message = message_n_level[0]
+                if metric not in logger_messages:
+                    logger_messages[metric] =[]
+                if message not in logger_messages[metric]:
+                    logger_messages[metric].append(level.replace('\n', '')+': '+message.strip())
+
+        return logger_messages

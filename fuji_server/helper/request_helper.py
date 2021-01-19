@@ -34,6 +34,7 @@ import urllib
 import ssl
 from requests.packages.urllib3.exceptions import *
 from tika import parser
+from fuji_server.helper.preprocessor import Preprocessor
 
 
 class AcceptTypes(Enum):
@@ -57,7 +58,7 @@ class RequestHelper:
         if logInst:
             self.logger = logInst
         else :
-            self.logger = logging.getLogger(__name__)
+            self.logger = Preprocessor.logger #logging.getLogger(__name__)
         self.request_url = url
         self.redirect_url = None
         self.accept_type = AcceptTypes.default.value
