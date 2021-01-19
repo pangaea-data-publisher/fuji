@@ -15,13 +15,13 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, test_id: str=None, request: Dict[str, str]=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+    def __init__(self, test_id: str=None, request: Dict=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501
         :type test_id: str
         :param request: The request of this FAIRResults.  # noqa: E501
-        :type request: Dict[str, str]
+        :type request: Dict
         :param timestamp: The timestamp of this FAIRResults.  # noqa: E501
         :type timestamp: datetime
         :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
@@ -39,7 +39,7 @@ class FAIRResults(Model):
         """
         self.swagger_types = {
             'test_id': str,
-            'request': Dict[str, str],
+            'request': Dict,
             'timestamp': datetime,
             'expiry_timestamp': datetime,
             'metric_specification': str,
@@ -103,22 +103,22 @@ class FAIRResults(Model):
         self._test_id = test_id
 
     @property
-    def request(self) -> Dict[str, str]:
+    def request(self) -> Dict:
         """Gets the request of this FAIRResults.
 
 
         :return: The request of this FAIRResults.
-        :rtype: Dict[str, str]
+        :rtype: Dict
         """
         return self._request
 
     @request.setter
-    def request(self, request: Dict[str, str]):
+    def request(self, request: Dict):
         """Sets the request of this FAIRResults.
 
 
         :param request: The request of this FAIRResults.
-        :type request: Dict[str, str]
+        :type request: Dict
         """
 
         self._request = request

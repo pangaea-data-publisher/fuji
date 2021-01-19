@@ -98,8 +98,7 @@ components:
           type: string
         request:
           type: object
-          additionalProperties:
-            type: string
+          additionalProperties: true
         timestamp:
           type: string
           format: date-time
