@@ -96,6 +96,10 @@ components:
       properties:
         test_id:
           type: string
+        request:
+          type: object
+          additionalProperties:
+            type: string
         timestamp:
           type: string
           format: date-time

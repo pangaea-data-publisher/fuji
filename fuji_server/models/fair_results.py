@@ -15,11 +15,13 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, test_id: str=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+    def __init__(self, test_id: str=None, request: Dict[str, str]=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501
         :type test_id: str
+        :param request: The request of this FAIRResults.  # noqa: E501
+        :type request: Dict[str, str]
         :param timestamp: The timestamp of this FAIRResults.  # noqa: E501
         :type timestamp: datetime
         :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
@@ -37,6 +39,7 @@ class FAIRResults(Model):
         """
         self.swagger_types = {
             'test_id': str,
+            'request': Dict[str, str],
             'timestamp': datetime,
             'expiry_timestamp': datetime,
             'metric_specification': str,
@@ -48,6 +51,7 @@ class FAIRResults(Model):
 
         self.attribute_map = {
             'test_id': 'test_id',
+            'request': 'request',
             'timestamp': 'timestamp',
             'expiry_timestamp': 'expiry_timestamp',
             'metric_specification': 'metric_specification',
@@ -57,6 +61,7 @@ class FAIRResults(Model):
             'results': 'results'
         }
         self._test_id = test_id
+        self._request = request
         self._timestamp = timestamp
         self._expiry_timestamp = expiry_timestamp
         self._metric_specification = metric_specification
@@ -96,6 +101,27 @@ class FAIRResults(Model):
         """
 
         self._test_id = test_id
+
+    @property
+    def request(self) -> Dict[str, str]:
+        """Gets the request of this FAIRResults.
+
+
+        :return: The request of this FAIRResults.
+        :rtype: Dict[str, str]
+        """
+        return self._request
+
+    @request.setter
+    def request(self, request: Dict[str, str]):
+        """Sets the request of this FAIRResults.
+
+
+        :param request: The request of this FAIRResults.
+        :type request: Dict[str, str]
+        """
+
+        self._request = request
 
     @property
     def timestamp(self) -> datetime:
