@@ -41,7 +41,7 @@ class Mapper(Enum):
                  'object_type', 'data_size','datacite_client', 'modified_date','created_date','right_holder', 'object_size']
 
     # core metadata elements (FsF-F2-01M)
-    REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier']
+    REQUIRED_CORE_METADATA = ['creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords','object_identifier','object_type']
 
 
     ## ============================ METADATA MAPPINGS ============================ ##
