@@ -150,9 +150,9 @@ testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #rdf
 #testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
 #testpids=['https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi']
-testpids=['http://doi.org/10.17882/42182']*50
+testpids=['http://doi.org/10.17882/42182']
 #testpids = muchotestpids
-#testpids =['https://doi.pangaea.de/10.1594/PANGAEA.810463']*100
+testpids =['10.15152/QDB.121']
 startpid=''
 def effectivehandlers(logger):
     handlers = logger.handlers
@@ -193,7 +193,7 @@ def main():
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
     start=False
-    usedatacite = False
+    usedatacite = True
     tracemalloc.start()
     for identifier in testpids:
 
