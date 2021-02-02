@@ -52,7 +52,6 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-            access_rights = 'info:eu-repo/semantics/restrictedAccess'
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
