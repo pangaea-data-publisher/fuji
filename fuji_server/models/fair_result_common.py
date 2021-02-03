@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
+from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -15,7 +16,7 @@ class FAIRResultCommon(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, test_status: str='fail', score: FAIRResultCommonScore=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None):  # noqa: E501
         """FAIRResultCommon - a model defined in Swagger
 
         :param id: The id of this FAIRResultCommon.  # noqa: E501
@@ -24,6 +25,8 @@ class FAIRResultCommon(Model):
         :type metric_identifier: str
         :param metric_name: The metric_name of this FAIRResultCommon.  # noqa: E501
         :type metric_name: str
+        :param metric_tests: The metric_tests of this FAIRResultCommon.  # noqa: E501
+        :type metric_tests: Dict[str, FAIRResultEvaluationCriterium]
         :param test_status: The test_status of this FAIRResultCommon.  # noqa: E501
         :type test_status: str
         :param score: The score of this FAIRResultCommon.  # noqa: E501
@@ -33,6 +36,7 @@ class FAIRResultCommon(Model):
             'id': int,
             'metric_identifier': str,
             'metric_name': str,
+            'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
             'score': FAIRResultCommonScore
         }
@@ -41,12 +45,14 @@ class FAIRResultCommon(Model):
             'id': 'id',
             'metric_identifier': 'metric_identifier',
             'metric_name': 'metric_name',
+            'metric_tests': 'metric_tests',
             'test_status': 'test_status',
             'score': 'score'
         }
         self._id = id
         self._metric_identifier = metric_identifier
         self._metric_name = metric_name
+        self._metric_tests = metric_tests
         self._test_status = test_status
         self._score = score
 
@@ -129,6 +135,27 @@ class FAIRResultCommon(Model):
             raise ValueError("Invalid value for `metric_name`, must not be `None`")  # noqa: E501
 
         self._metric_name = metric_name
+
+    @property
+    def metric_tests(self) -> Dict[str, FAIRResultEvaluationCriterium]:
+        """Gets the metric_tests of this FAIRResultCommon.
+
+
+        :return: The metric_tests of this FAIRResultCommon.
+        :rtype: Dict[str, FAIRResultEvaluationCriterium]
+        """
+        return self._metric_tests
+
+    @metric_tests.setter
+    def metric_tests(self, metric_tests: Dict[str, FAIRResultEvaluationCriterium]):
+        """Sets the metric_tests of this FAIRResultCommon.
+
+
+        :param metric_tests: The metric_tests of this FAIRResultCommon.
+        :type metric_tests: Dict[str, FAIRResultEvaluationCriterium]
+        """
+
+        self._metric_tests = metric_tests
 
     @property
     def test_status(self) -> str:

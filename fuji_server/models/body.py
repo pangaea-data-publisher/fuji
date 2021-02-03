@@ -14,25 +14,35 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, oaipmh_endpoint: str=None, use_datacite: bool=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
         :type object_identifier: str
         :param test_debug: The test_debug of this Body.  # noqa: E501
         :type test_debug: bool
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
+        :type oaipmh_endpoint: str
+        :param use_datacite: The use_datacite of this Body.  # noqa: E501
+        :type use_datacite: bool
         """
         self.swagger_types = {
             'object_identifier': str,
-            'test_debug': bool
+            'test_debug': bool,
+            'oaipmh_endpoint': str,
+            'use_datacite': bool
         }
 
         self.attribute_map = {
             'object_identifier': 'object_identifier',
-            'test_debug': 'test_debug'
+            'test_debug': 'test_debug',
+            'oaipmh_endpoint': 'oaipmh_endpoint',
+            'use_datacite': 'use_datacite'
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
+        self._oaipmh_endpoint = oaipmh_endpoint
+        self._use_datacite = use_datacite
 
     @classmethod
     def from_dict(cls, dikt) -> 'Body':
@@ -92,3 +102,49 @@ class Body(Model):
         """
 
         self._test_debug = test_debug
+
+    @property
+    def oaipmh_endpoint(self) -> str:
+        """Gets the oaipmh_endpoint of this Body.
+
+        The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :return: The oaipmh_endpoint of this Body.
+        :rtype: str
+        """
+        return self._oaipmh_endpoint
+
+    @oaipmh_endpoint.setter
+    def oaipmh_endpoint(self, oaipmh_endpoint: str):
+        """Sets the oaipmh_endpoint of this Body.
+
+        The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.
+        :type oaipmh_endpoint: str
+        """
+
+        self._oaipmh_endpoint = oaipmh_endpoint
+
+    @property
+    def use_datacite(self) -> bool:
+        """Gets the use_datacite of this Body.
+
+        Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata  # noqa: E501
+
+        :return: The use_datacite of this Body.
+        :rtype: bool
+        """
+        return self._use_datacite
+
+    @use_datacite.setter
+    def use_datacite(self, use_datacite: bool):
+        """Sets the use_datacite of this Body.
+
+        Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata  # noqa: E501
+
+        :param use_datacite: The use_datacite of this Body.
+        :type use_datacite: bool
+        """
+
+        self._use_datacite = use_datacite

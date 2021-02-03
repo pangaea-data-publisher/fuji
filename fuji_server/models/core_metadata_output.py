@@ -69,7 +69,7 @@ class CoreMetadataOutput(Model):
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.
         :type core_metadata_status: str
         """
-        allowed_values = ["no metadata", "partial metadata", "all metadata"]  # noqa: E501
+        allowed_values = ["insufficent metadata", "partial metadata", "all metadata"]  # noqa: E501
         if core_metadata_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `core_metadata_status` ({0}), must be one of {1}"

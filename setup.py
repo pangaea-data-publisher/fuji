@@ -22,7 +22,7 @@ setup(
     keywords=["PANGAEA", "FAIRsFAIR", "FAIR Principles", "Data Object Assessment","Swagger"],
     install_requires=REQUIRES,
     packages=find_packages(exclude=["tests", "logs"]),
-    package_data={'': ['yaml/*.yaml','config/*']},
+    package_data={'': ['data/*.*','yaml/*.yaml','config/*']},
     include_package_data=True,
     entry_points={
         'console_scripts': ['fuji_server=fuji_server.__main__:main']},

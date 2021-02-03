@@ -4,6 +4,28 @@ import os
 from typing import Dict, Any
 from urllib.parse import urlparse
 import requests
+# MIT License
+#
+# Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import yaml
 
 class Preprocessor(object):
@@ -20,23 +42,65 @@ class Preprocessor(object):
     LOD_CLOUDNET = None
     BIOPORTAL_API = None
     BIOPORTAL_KEY = None
+    schema_org_context=[]
     all_licenses = []
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
+    metadata_standards_uris = {} #some additional namespace uris and all uris from above as key
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
     default_namespaces = []
+    standard_protocols = {}
+    resource_types = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
-    logger = logging.getLogger()
+    logger = logging.getLogger(__name__)
+    data_files_limit = 3
+    metric_specification = None
 
     @classmethod
-    def retrieve_metrics_yaml(cls, yaml_metric_path):
+    def get_resource_types(cls):
+        if not cls.resource_types:
+            cls.retrieve_resource_types()
+        return cls.resource_types
+
+    @classmethod
+    def retrieve_resource_types(cls):
+        ns = []
+        ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'ResourceTypes.txt')
+        with open(ns_file_path) as f:
+            ns = [line.lower().rstrip() for line in f]
+        if ns:
+            cls.resource_types = ns
+
+    @classmethod
+    def retrieve_schema_org_context(cls):
+        data = {}
+        std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'jsonldcontext.json')
+        with open(std_uri_path) as f:
+            data = json.load(f)
+        if data:
+            for context, schemadict in data.get('@context').items():
+                if isinstance(schemadict, dict):
+                    schemauri = schemadict.get('@id')
+                    if str(schemauri).startswith('schema:'):
+                        cls.schema_org_context.append(str(context).lower())
+
+    @classmethod
+    def get_schema_org_context(cls):
+        if not cls.schema_org_context:
+            cls.retrieve_schema_org_context()
+        return cls.schema_org_context
+
+    @classmethod
+    def retrieve_metrics_yaml(cls, yaml_metric_path, limit, specification_uri):
         cls.METRIC_YML_PATH = yaml_metric_path
+        cls.data_files_limit = limit
+        cls.metric_specification = specification_uri
         stream = open(cls.METRIC_YML_PATH, 'r')
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
@@ -108,14 +172,36 @@ class Preprocessor(object):
                 cls.logger.error(e2)
         if data:
             cls.all_licenses = data
+            for licenceitem in cls.all_licenses:
+                seeAlso = licenceitem.get('seeAlso')
+                # some cleanup to add modified licence URLs
+                for licenceurl in seeAlso:
+                    if 'http:' in licenceurl:
+                        altURL = licenceurl.replace('http:', 'https:')
+                    else:
+                        altURL = licenceurl.replace('https:', 'http:')
+                    if altURL not in seeAlso:
+                        seeAlso.append(altURL)
+                    if licenceurl.endswith('/legalcode'):
+                        altURL = licenceurl.replace('/legalcode', '')
+                        seeAlso.append(altURL)
             cls.total_licenses = len(data)
             cls.license_names = [d['name'] for d in data if 'name' in d]
             # referenceNumber = [r['referenceNumber'] for r in data if 'referenceNumber' in r]
             # seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
             # cls.license_urls = dict(zip(referenceNumber, seeAlso))
+    @classmethod
+    def retrieve_metadata_standards_uris(cls, isDebugMode):
+        data = {}
+        std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards_uris.json')
+        with open(std_uri_path) as f:
+            data = json.load(f)
+        if data:
+            cls.metadata_standards_uris  = data
 
     @classmethod
     def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
+        cls.retrieve_metadata_standards_uris(isDebugMode)
         data = {}
         std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
         # The repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
@@ -183,6 +269,15 @@ class Preprocessor(object):
             data = json.load(f)
         if data:
             cls.open_file_formats = data
+
+    @classmethod
+    def retrieve_standard_protocols(cls, isDebugMode):
+        data = {}
+        protocols_path = os.path.join(cls.fuji_server_dir, 'data', 'standard_uri_protocols.json')
+        with open(protocols_path) as f:
+            data = json.load(f)
+        if data:
+            cls.standard_protocols = data
 
     @classmethod
     def retrieve_default_namespaces(cls):
@@ -356,17 +451,37 @@ class Preprocessor(object):
         return new_dict
 
     @classmethod
+    def get_metadata_standards_uris(cls) -> object:
+        if not cls.metadata_standards_uris:
+            cls.retrieve_metadata_standards_uris()
+        return cls.metadata_standards_uris
+
+    @classmethod
     def get_metadata_standards(cls) -> object:
+        if not cls.metadata_standards:
+            cls.retrieve_metadata_standards()
         return cls.metadata_standards
 
     @classmethod
     def get_science_file_formats(cls) -> object:
+        if not cls.science_file_formats:
+            cls.retrieve_science_file_formats(True)
         return cls.science_file_formats
 
     @classmethod
     def get_long_term_file_formats(cls) -> object:
+        if not cls.long_term_file_formats:
+            cls.retrieve_long_term_file_formats(True)
         return cls.long_term_file_formats
 
     @classmethod
     def get_open_file_formats(cls) -> object:
+        if not cls.open_file_formats:
+            cls.retrieve_open_file_formats(True)
         return cls.open_file_formats
+
+    @classmethod
+    def get_standard_protocols(cls) -> object:
+        if not cls.standard_protocols:
+            cls.retrieve_standard_protocols(True)
+        return cls.standard_protocols

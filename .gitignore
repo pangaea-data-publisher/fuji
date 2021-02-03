@@ -1,0 +1,10 @@
+/tox.ini
+/test-requirements.txt
+/Dockerfile
+/.travis.yml
+/.dockerignore
+/fuji_server/tests/
+/fuji_server/cuba/
+/fuji_server/logs/
+.idea/
+*.pyc

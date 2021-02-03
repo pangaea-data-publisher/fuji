@@ -1,0 +1,2445 @@
+{
+  "http://www.tdwg.org/standards/115/": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "http://wiki.tdwg.org/ABCD": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "https://abcd.tdwg.org/xml/ABCD_3.0.xsd": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "http://www.tdwg.org/schemas/abcd/3.0": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "https://abcd.tdwg.org/xml/ABCD_2.1.xsd": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "http://www.tdwg.org/schemas/abcd/2.1": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "https://abcd.tdwg.org/xml/ABCD_2.06.xsd": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "http://www.tdwg.org/schemas/abcd/2.06": {
+    "title": "ABCD (Access to Biological Collection Data)",
+    "identifier": "msc:m1",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Earth sciences",
+      "Genetics",
+      "Geology",
+      "Palaeontology",
+      "Zoology"
+    ]
+  },
+  "http://www.tdwg.org/standards/640/": {
+    "title": "ABCDDNA",
+    "identifier": "msc:m42",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.dnabank-network.org/schemas/ABCDDNA/ABCDDNA.xsd": {
+    "title": "ABCDDNA",
+    "identifier": "msc:m42",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.dnabank-network.org/schemas/ABCDDNA": {
+    "title": "ABCDDNA",
+    "identifier": "msc:m42",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.geocase.eu/efg": {
+    "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
+    "identifier": "msc:m43",
+    "subject_areas": [
+      "Earth sciences",
+      "Mineralogy",
+      "Palaeontology"
+    ]
+  },
+  "http://www.geocase.eu/sites/geocase.biodiv.naturkundemuseum-berlin.de/documentation/abcdefg.xsd": {
+    "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
+    "identifier": "msc:m43",
+    "subject_areas": [
+      "Earth sciences",
+      "Mineralogy",
+      "Palaeontology"
+    ]
+  },
+  "http://www.synthesys.info/ABCDEFG/1.0": {
+    "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
+    "identifier": "msc:m43",
+    "subject_areas": [
+      "Earth sciences",
+      "Mineralogy",
+      "Palaeontology"
+    ]
+  },
+  "http://www.agls.gov.au": {
+    "title": "AGLS Metadata Profile",
+    "identifier": "msc:m44",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.agls.gov.au/agls/terms/": {
+    "title": "AGLS Metadata Profile",
+    "identifier": "msc:m44",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://aims.fao.org/es/standards/agmes/namespace-specification": {
+    "title": "AgMES (Agricultural Metadata Element Set)",
+    "identifier": "msc:m2",
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ]
+  },
+  "http://aims.fao.org/standards/agmes": {
+    "title": "AgMES (Agricultural Metadata Element Set)",
+    "identifier": "msc:m2",
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ]
+  },
+  "http://purl.org/agmes/1.1/": {
+    "title": "AgMES (Agricultural Metadata Element Set)",
+    "identifier": "msc:m2",
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ]
+  },
+  "http://www.fao.org/docrep/008/ae909e/ae909e00.htm": {
+    "title": "AGRIS Application Profile",
+    "identifier": "msc:m45",
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ]
+  },
+  "http://www.fao.org/agris": {
+    "title": "AGRIS Application Profile",
+    "identifier": "msc:m45",
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ]
+  },
+  "https://www.anzlic.gov.au/resources/anzlic-metadata-profile": {
+    "title": "ANZLIC Metadata Profile",
+    "identifier": "msc:m46",
+    "subject_areas": [
+      "Cartography",
+      "Geography",
+      "Topography"
+    ]
+  },
+  "http://code.google.com/p/applecore/wiki/Introduction": {
+    "title": "Apple Core",
+    "identifier": "msc:m47",
+    "subject_areas": [
+      "Botany"
+    ]
+  },
+  "http://www.w3.org/TR/vocab-adms/": {
+    "title": "Asset Description Metadata Schema (ADMS)",
+    "identifier": "msc:m48",
+    "subject_areas": [
+      "Social policy"
+    ]
+  },
+  "http://www.w3.org/ns/adms#": {
+    "title": "Asset Description Metadata Schema (ADMS)",
+    "identifier": "msc:m48",
+    "subject_areas": [
+      "Social policy"
+    ]
+  },
+  "http://www.virtualastronomy.org/avm_metadata.php#2": {
+    "title": "AVM (Astronomy Visualization Metadata)",
+    "identifier": "msc:m3",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "http://www.virtualastronomy.org/avm_metadata.php": {
+    "title": "AVM (Astronomy Visualization Metadata)",
+    "identifier": "msc:m3",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "http://www.communicatingastronomy.org/avm/1.0/": {
+    "title": "AVM (Astronomy Visualization Metadata)",
+    "identifier": "msc:m3",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "https://pro.carare.eu/doku.php?id=support:metadata-schema": {
+    "title": "CARARE metadata schema",
+    "identifier": "msc:m49",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ]
+  },
+  "http://www.carare.eu/carareSchema": {
+    "title": "CARARE metadata schema",
+    "identifier": "msc:m49",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ]
+  },
+  "https://pro.carare.eu/lib/exe/fetch.php?media=support:carare-v1_0_6_1.xsd": {
+    "title": "CARARE metadata schema",
+    "identifier": "msc:m49",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ]
+  },
+  "https://more.metadatacenter.org/tools-training/outreach/cedar-template-model": {
+    "title": "CEDAR Template Model",
+    "identifier": "msc:m94",
+    "subject_areas": [
+      "Administration",
+      "Agricultural research",
+      "Clinical medicine",
+      "Earth sciences",
+      "Medical information systems"
+    ]
+  },
+  "https://more.metadatacenter.org/sites/default/files/artifact/CEDAR%20Template%20Model%20v1.5.0_0.pdf": {
+    "title": "CEDAR Template Model",
+    "identifier": "msc:m94",
+    "subject_areas": [
+      "Administration",
+      "Agricultural research",
+      "Clinical medicine",
+      "Earth sciences",
+      "Medical information systems"
+    ]
+  },
+  "http://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/documentation/MInfo.html": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.eurocris.org/cerif/main-features-cerif": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/CERIF_1.6_2.xsd": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.5/CERIF_1.5_1.xsd": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "urn:xmlns:org:eurocris:cerif-1.6-2": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "urn:xmlns:org:eurocris:cerif-1.5-1": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "urn:xmlns:org:eurocris:cerif-1.4-0": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.eurocris.org/ontologies/cerif/1.3#": {
+    "title": "CERIF (Common European Research Information Format)",
+    "identifier": "msc:m4",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.cessda.org/sharing/managing/3/": {
+    "title": "CESSDA MLI - Council of European Social Science Data Archives Minimum Level of Information",
+    "identifier": "msc:m50",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Land use",
+      "Sociology"
+    ]
+  },
+  "http://cfconventions.org/documents.html": {
+    "title": "CF (Climate and Forecast) Metadata Conventions",
+    "identifier": "msc:m5",
+    "subject_areas": [
+      "Climatology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://cfconventions.org/": {
+    "title": "CF (Climate and Forecast) Metadata Conventions",
+    "identifier": "msc:m5",
+    "subject_areas": [
+      "Climatology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://www.iucr.org/resources/cif/spec": {
+    "title": "CIF (Crystallographic Information Framework)",
+    "identifier": "msc:m6",
+    "subject_areas": [
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://www.iucr.org/resources/cif": {
+    "title": "CIF (Crystallographic Information Framework)",
+    "identifier": "msc:m6",
+    "subject_areas": [
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "https://earthsystemcog.org/projects/es-doc-models/cim_versions": {
+    "title": "CIM (Common Information Model)",
+    "identifier": "msc:m7",
+    "subject_areas": [
+      "Climatology"
+    ]
+  },
+  "https://earthsystemcog.org/projects/es-doc-models/cim": {
+    "title": "CIM (Common Information Model)",
+    "identifier": "msc:m7",
+    "subject_areas": [
+      "Climatology"
+    ]
+  },
+  "https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd": {
+    "title": "CIM (Common Information Model)",
+    "identifier": "msc:m7",
+    "subject_areas": [
+      "Climatology"
+    ]
+  },
+  "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html": {
+    "title": "COARDS Conventions",
+    "identifier": "msc:m51",
+    "subject_areas": [
+      "Climatology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://www.seadatanet.org/Metadata/CSR": {
+    "title": "Cruise Summary Reports",
+    "identifier": "msc:m52",
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://www.seadatanet.org": {
+    "title": "Cruise Summary Reports",
+    "identifier": "msc:m52",
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CSR_ISO19139_5.2.0.xsd": {
+    "title": "Cruise Summary Reports",
+    "identifier": "msc:m52",
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  " http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd": {
+    "title": "Cruise Summary Reports",
+    "identifier": "msc:m52",
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf": {
+    "title": "CSDGM Extensions for Remote Sensing Metadata",
+    "identifier": "msc:m53",
+    "subject_areas": [
+      "Climatology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://icatproject-contrib.github.io/CSMD/": {
+    "title": "CSMD (Core Scientific Metadata Model)",
+    "identifier": "msc:m8",
+    "subject_areas": [
+      "Biochemistry",
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://www.purl.org/net/CSMD/4.0#": {
+    "title": "CSMD (Core Scientific Metadata Model)",
+    "identifier": "msc:m8",
+    "subject_areas": [
+      "Biochemistry",
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://www.escience.clrc.ac.uk/schemas/scientific": {
+    "title": "CSMD (Core Scientific Metadata Model)",
+    "identifier": "msc:m8",
+    "subject_areas": [
+      "Biochemistry",
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension": {
+    "title": "Darwin Core Geospatial Extension",
+    "identifier": "msc:m54",
+    "subject_areas": [
+      "Biogeography",
+      "Cartography",
+      "Topography"
+    ]
+  },
+  "http://www.tdwg.org/standards/450": {
+    "title": "Darwin Core",
+    "identifier": "msc:m9",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ]
+  },
+  "http://rs.tdwg.org/dwc/index.htm": {
+    "title": "Darwin Core",
+    "identifier": "msc:m9",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ]
+  },
+  "http://rs.tdwg.org/dwc/terms/": {
+    "title": "Darwin Core",
+    "identifier": "msc:m9",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ]
+  },
+  "http://rs.tdwg.org/dwc/iri/": {
+    "title": "Darwin Core",
+    "identifier": "msc:m9",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ]
+  },
+  "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd": {
+    "title": "Darwin Core",
+    "identifier": "msc:m9",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ]
+  },
+  "https://frictionlessdata.io/specs/data-package/": {
+    "title": "Data Package",
+    "identifier": "msc:m10",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://frictionlessdata.io/data-packages/": {
+    "title": "Data Package",
+    "identifier": "msc:m10",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-2.1/doc/DataCite-MetadataKernel_v2.2.pdf": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-2.1/metadata.xsd": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel-2.1": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-2.2/metadata.xsd": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel-2.2": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-3.0/doc/DataCite-MetadataKernel_v3.0.pdf": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-3.0/metadata.xsd": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel-3": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-3.1/doc/DataCite-MetadataKernel_v3.1.pdf": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-3.1/metadata.xsd": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel-3.1": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-4.0/doc/DataCite-MetadataKernel_v4.0.pdf": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://schema.datacite.org/meta/kernel-4.0/metadata.xsd": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel-4": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.w3.org/TR/vocab-dcat/#class-dataset": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "https://www.w3.org/TR/vocab-dcat/#class-catalog": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "http://www.w3.org/TR/vocab-dcat/": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "https://www.w3.org/ns/dcat.ttl": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "https://www.w3.org/2017/dxwg/wiki/Main_Page": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "http://www.w3.org/ns/dcat#": {
+    "title": "DCAT (Data Catalog Vocabulary)",
+    "identifier": "msc:m12",
+    "subject_areas": null
+  },
+  "http://www.ddialliance.org/Specification/": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "http://www.ddialliance.org/": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "http://www.icpsr.umich.edu/DDI": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "http://www.ddialliance.org/DDI/schema/ddi3.1/dataset.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "ddi:codebook:2_5": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "ddi:dataset:3_3": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "ddi:dataset:3_2": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "ddi:dataset:3_1": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "ddi:dataset:3_0": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Codebook/2.1/XMLSchema/codebook.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/instance.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd": {
+    "title": "DDI (Data Documentation Initiative)",
+    "identifier": "msc:m13",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Health policy",
+      "History",
+      "Human geography",
+      "Land use",
+      "Law",
+      "Politics",
+      "Social policy",
+      "Sociology",
+      "Statistics"
+    ]
+  },
+  "http://gcmd.nasa.gov/add/difguide/WRITEADIF.pdf": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://gcmd.nasa.gov/add/difguide/": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "https://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v10.2.xsd": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "https://git.earthdata.nasa.gov/projects/EMFD/repos/dif-schemas/browse/10.x/dif.xsd": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://wiki.datadryad.org/Metadata_Profile": {
+    "title": "Dryad Metadata Application Profile",
+    "identifier": "msc:m55",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datadryad.org/metadata/": {
+    "title": "Dryad Metadata Application Profile",
+    "identifier": "msc:m55",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datadryad.org/profile/v3.1/dryad.xsd": {
+    "title": "Dryad Metadata Application Profile",
+    "identifier": "msc:m55",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datadryad.org/profile/v3/dryad.xsd": {
+    "title": "Dryad Metadata Application Profile",
+    "identifier": "msc:m55",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://ils.unc.edu/mrc/dryad/version1_0/dryad_1_0.xsd": {
+    "title": "Dryad Metadata Application Profile",
+    "identifier": "msc:m55",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/specifications/": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcterms.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/simpledc20021212.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcmitype.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/2008/02/11/simpledc.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/dc.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/dcterms.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://dublincore.org/schemas/xmls/qdc/dcmitype.xsd": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "- type: namespace": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://purl.org/dc/elements/1.1/": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://purl.org/dc/terms/": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://purl.org/dc/dcmitype/": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://code.google.com/p/darwincore-germplasm/": {
+    "title": "DwC Germplasm",
+    "identifier": "msc:m56",
+    "subject_areas": [
+      "Botany"
+    ]
+  },
+  "http://purl.org/germplasm#": {
+    "title": "DwC Germplasm",
+    "identifier": "msc:m56",
+    "subject_areas": [
+      "Botany"
+    ]
+  },
+  "http://purl.org/germplasm/germplasmTerm#": {
+    "title": "DwC Germplasm",
+    "identifier": "msc:m56",
+    "subject_areas": [
+      "Botany"
+    ]
+  },
+  "https://www.loc.gov/ead/": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "urn:isbn:1-931666-22-9": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/tglib1998/": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/ag/aghome.html": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/ead.xsd": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "ftp://ftp.loc.gov/pub/ead/ead.dtd": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/tglib/": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/ead3.xsd": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/ead3.dtd": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "https://www.loc.gov/ead/EAD3taglib/EAD3.html": {
+    "title": "EAD (Encoded Archival Description)",
+    "identifier": "msc:m96",
+    "subject_areas": [
+      "History"
+    ]
+  },
+  "http://ecrystals.chem.soton.ac.uk": {
+    "title": "eBank UK Metadata Application Profile",
+    "identifier": "msc:m57",
+    "subject_areas": [
+      "Crystallography"
+    ]
+  },
+  "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd": {
+    "title": "eBank UK Metadata Application Profile",
+    "identifier": "msc:m57",
+    "subject_areas": [
+      "Crystallography"
+    ]
+  },
+  "http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/": {
+    "title": "eBank UK Metadata Application Profile",
+    "identifier": "msc:m57",
+    "subject_areas": [
+      "Crystallography"
+    ]
+  },
+  "https://www.bodc.ac.uk/data/information_and_inventories/edmed/": {
+    "title": "EDMED Metadata Profile",
+    "identifier": "msc:m58",
+    "subject_areas": [
+      "Climatology",
+      "Ecology",
+      "Environmental sciences",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Soil sciences"
+    ]
+  },
+  "EDMED_sdn_V1.2.xsd": {
+    "title": "EDMED Metadata Profile",
+    "identifier": "msc:m58",
+    "subject_areas": [
+      "Climatology",
+      "Ecology",
+      "Environmental sciences",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Soil sciences"
+    ]
+  },
+  "https://eml.ecoinformatics.org/": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "https://eml.ecoinformatics.org/schema": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "eml://eml.ecoinformatics.org/eml-2.0.0": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "eml://ecoinformatics.org/eml-2.1.0": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "eml://ecoinformatics.org/eml-2.1.1": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "https://eml.ecoinformatics.org/eml-2.2.0": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "https://eml.ecoinformatics.org/eml-2.2.1": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "https://eml.ecoinformatics.org/schema/eml_xsd": {
+    "title": "EML (Ecological Metadata Language)",
+    "identifier": "msc:m16",
+    "subject_areas": [
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "http://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/upload/MISC/EURISCO_Descriptors.pdf": {
+    "title": "EURISCO Descriptors",
+    "identifier": "msc:m85",
+    "subject_areas": null
+  },
+  "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf": {
+    "title": "FGDC/CSDGM Biological Data Profile",
+    "identifier": "msc:m59",
+    "subject_areas": [
+      "Biogeography"
+    ]
+  },
+  "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/base-metadata/v2_0698.pdf": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.fgdc.gov/metadata/geospatial-metadata-standards/": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.xsd": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "https://www.fgdc.gov/schemas/metadata/fgdc-std-001.2-2001.xsd": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://fits.gsfc.nasa.gov/fits_standard.html": {
+    "title": "FITS (Flexible Image Transport System)",
+    "identifier": "msc:m18",
+    "subject_areas": [
+      "Astronomy",
+      "Astrophysics",
+      "Sun"
+    ]
+  },
+  "http://fits.gsfc.nasa.gov/fits_wcs.html": {
+    "title": "FITS World Coordinate System (WCS)",
+    "identifier": "msc:m60",
+    "subject_areas": [
+      "Astronomy",
+      "Astrophysics",
+      "Sun"
+    ]
+  },
+  "http://rs.gbif.org/schema/eml-gbif-profile/": {
+    "title": "GBIF Metadata Profile",
+    "identifier": "msc:m61",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "http://rs.gbif.org/schema/eml-gbif-profile/1.0.2/eml-gbif-profile.xsd": {
+    "title": "GBIF Metadata Profile",
+    "identifier": "msc:m61",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml-gbif-profile.xsd": {
+    "title": "GBIF Metadata Profile",
+    "identifier": "msc:m61",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Ecology",
+      "Zoology"
+    ]
+  },
+  "http://enews.patricbrc.org/faqs/genome-metadata-faqs/": {
+    "title": "Genome Metadata",
+    "identifier": "msc:m19",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.ecb.int/stats/services/sdmx/html/index.en.html": {
+    "title": "GESMES/TS (Generic Statistical Message for Time Series)",
+    "identifier": "msc:m62",
+    "subject_areas": [
+      "Economics",
+      "Social policy",
+      "Statistics"
+    ]
+  },
+  "http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model": {
+    "title": "GSIM (Generic Statistical Information Model)",
+    "identifier": "msc:m63",
+    "subject_areas": [
+      "Statistics"
+    ]
+  },
+  "http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5": {
+    "title": "HISPID (Herbarium Information Standards and Protocols for Interchange of Data)",
+    "identifier": "msc:m64",
+    "subject_areas": [
+      "Botany"
+    ]
+  },
+  "http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf": {
+    "title": "IMPEx Data Model",
+    "identifier": "msc:m65",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://inspire.ec.europa.eu/": {
+    "title": "INSPIRE Metadata Regulation",
+    "identifier": "msc:m66",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.ivoa.net/documents/#specs": {
+    "title": "International Virtual Observatory Alliance Technical Specifications",
+    "identifier": "msc:m20",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "http://ivoa.net/documents/": {
+    "title": "International Virtual Observatory Alliance Technical Specifications",
+    "identifier": "msc:m20",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title": {
+    "title": "ISA-TAB Nano",
+    "identifier": "msc:m67",
+    "subject_areas": [
+      "Biochemicals",
+      "Biotechnology"
+    ]
+  },
+  "http://isatab.sourceforge.net/docs/ISA-TAB_release-candidate-1_v1.0_24nov08.pdf": {
+    "title": "ISA-Tab",
+    "identifier": "msc:m21",
+    "subject_areas": [
+      "Biochemicals",
+      "Biochemistry",
+      "Biophysics",
+      "Biotechnology",
+      "Cell biology",
+      "Genetics",
+      "Metabolism",
+      "Molecular biology"
+    ]
+  },
+  "http://isatab.sourceforge.net/format.html": {
+    "title": "ISA-Tab",
+    "identifier": "msc:m21",
+    "subject_areas": [
+      "Biochemicals",
+      "Biochemistry",
+      "Biophysics",
+      "Biotechnology",
+      "Cell biology",
+      "Genetics",
+      "Metabolism",
+      "Molecular biology"
+    ]
+  },
+  "https://bitbucket.org/kanterae/isaconfig-dixa": {
+    "title": "isaconfig-diXa",
+    "identifier": "msc:m68",
+    "subject_areas": [
+      "Genetics",
+      "Toxicology"
+    ]
+  },
+  "http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229": {
+    "title": "ISO 19115-2 - Imagery and gridded data",
+    "identifier": "msc:m69",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Glaciology",
+      "Hydrology",
+      "Land use",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata": {
+    "title": "ISO 19115 North American Profile",
+    "identifier": "msc:m70",
+    "subject_areas": [
+      "Cartography",
+      "Geography",
+      "Topography"
+    ]
+  },
+  "http://standards.iso.org/iso/19115/-3/": {
+    "title": "ISO 19115",
+    "identifier": "msc:m22",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Geology",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798": {
+    "title": "ISO 19115",
+    "identifier": "msc:m22",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Geology",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.isotc211.org/2005/gmd/gmd.xsd": {
+    "title": "ISO 19115",
+    "identifier": "msc:m22",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Geology",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://www.loc.gov/marc/": {
+    "title": "MARC (Machine-Readable Cataloging)",
+    "identifier": "msc:m88",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/marc/bibliographic/": {
+    "title": "MARC (Machine-Readable Cataloging)",
+    "identifier": "msc:m88",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd": {
+    "title": "MARC (Machine-Readable Cataloging)",
+    "identifier": "msc:m88",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.aodc.org.au/index.php?id=37": {
+    "title": "Marine Community Profile",
+    "identifier": "msc:m71",
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ]
+  },
+  "http://mibbi.sourceforge.net/foundry.shtml": {
+    "title": "MIBBI (Minimum Information for Biological and Biomedical Investigations)",
+    "identifier": "msc:m23",
+    "subject_areas": [
+      "Biochemistry",
+      "Biology",
+      "Biotechnology",
+      "Cell biology",
+      "Computer applications",
+      "Environmental sciences",
+      "Genetics",
+      "Metabolism",
+      "Proteins"
+    ]
+  },
+  "http://mibbi.sourceforge.net/portal.shtml": {
+    "title": "MIBBI Portal",
+    "identifier": "msc:m72",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.english-heritage.org.uk/content/publications/publicationsNew/guidelines-standards/midas-heritage/midas-heritage-2012-v1_1.pdf": {
+    "title": "MIDAS-Heritage",
+    "identifier": "msc:m24",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ]
+  },
+  "http://www.english-heritage.org.uk/publications/midas-heritage/": {
+    "title": "MIDAS-Heritage",
+    "identifier": "msc:m24",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/v3/mods-3-3.xsd": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/mods-outline-3-4.html": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/mods-outline-3-5.html": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/v3/mods-3-5.xsd": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/mods-outline-3-6.html": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/v3/mods-3-6.xsd": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/mods-outline-3-7.html": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/standards/mods/v3/mods-3-7.xsd": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://download.nexusformat.org/doc/html/ref_doc.html": {
+    "title": "NeXus",
+    "identifier": "msc:m25",
+    "subject_areas": [
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://www.nexusformat.org/": {
+    "title": "NeXus",
+    "identifier": "msc:m25",
+    "subject_areas": [
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ]
+  },
+  "http://www.openarchives.org/ore/": {
+    "title": "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)",
+    "identifier": "msc:m26",
+    "subject_areas": [
+      "Anthropology",
+      "History",
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.openarchives.org/ore/toc": {
+    "title": "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)",
+    "identifier": "msc:m26",
+    "subject_areas": [
+      "Anthropology",
+      "History",
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.molgenis.org/wiki/ObservStart": {
+    "title": "Observ-OM",
+    "identifier": "msc:m27",
+    "subject_areas": [
+      "Biology"
+    ]
+  },
+  "http://portal.opengeospatial.org/files/?artifact_id=41579": {
+    "title": "Observations and Measurements",
+    "identifier": "msc:m28",
+    "subject_areas": [
+      "Chemistry",
+      "Geology",
+      "Meteorology",
+      "Remote sensing"
+    ]
+  },
+  "http://www.opengeospatial.org/standards/om": {
+    "title": "Observations and Measurements",
+    "identifier": "msc:m28",
+    "subject_areas": [
+      "Chemistry",
+      "Geology",
+      "Meteorology",
+      "Remote sensing"
+    ]
+  },
+  "http://www.openmicroscopy.org/site/support/file-formats/ome-tiff": {
+    "title": "OME-TIFF (Open Microscopy Environment TIFF)",
+    "identifier": "msc:m73",
+    "subject_areas": [
+      "Animal diseases",
+      "Cell biology",
+      "Physiology",
+      "Plant diseases",
+      "Plant physiology",
+      "Zoology"
+    ]
+  },
+  "http://www.openmicroscopy.org/Schemas/": {
+    "title": "OME-XML (Open Microscopy Environment XML)",
+    "identifier": "msc:m29",
+    "subject_areas": [
+      "Animal diseases",
+      "Cell biology",
+      "Physiology",
+      "Plant diseases",
+      "Plant physiology",
+      "Zoology"
+    ]
+  },
+  "http://www.openmicroscopy.org/site/support/file-formats": {
+    "title": "OME-XML (Open Microscopy Environment XML)",
+    "identifier": "msc:m29",
+    "subject_areas": [
+      "Animal diseases",
+      "Cell biology",
+      "Physiology",
+      "Plant diseases",
+      "Plant physiology",
+      "Zoology"
+    ]
+  },
+  "https://guidelines.openaire.eu/": {
+    "title": "OpenAIRE Guidelines",
+    "identifier": "msc:m92",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Index/": {
+    "title": "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)",
+    "identifier": "msc:m30",
+    "subject_areas": [
+      "Biology",
+      "Chemistry",
+      "Computer applications",
+      "Crystallography",
+      "Molecular biology",
+      "Physics"
+    ]
+  },
+  "http://mmcif.wwpdb.org/": {
+    "title": "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)",
+    "identifier": "msc:m30",
+    "subject_areas": [
+      "Biology",
+      "Chemistry",
+      "Computer applications",
+      "Crystallography",
+      "Molecular biology",
+      "Physics"
+    ]
+  },
+  "http://www.loc.gov/standards/premis/v3/premis-3-0-final.pdf": {
+    "title": "PREMIS",
+    "identifier": "msc:m31",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.loc.gov/standards/premis/": {
+    "title": "PREMIS",
+    "identifier": "msc:m31",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://prsinfo.clinicaltrials.gov/definitions.html": {
+    "title": "Protocol Data Element Definitions",
+    "identifier": "msc:m32",
+    "subject_areas": [
+      "Clinical medicine"
+    ]
+  },
+  "http://clinicaltrials.gov/ct2/manage-recs/resources": {
+    "title": "Protocol Data Element Definitions",
+    "identifier": "msc:m32",
+    "subject_areas": [
+      "Clinical medicine"
+    ]
+  },
+  "http://www.w3.org/TR/prov-overview/": {
+    "title": "PROV",
+    "identifier": "msc:m33",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.w3.org/2001/sw/wiki/PROV": {
+    "title": "PROV",
+    "identifier": "msc:m33",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://data-archive.ac.uk/create-manage/projects/qudex?index=1": {
+    "title": "QuDEx (Qualitative Data Exchange Format)",
+    "identifier": "msc:m34",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1": {
+    "title": "QuDEx (Qualitative Data Exchange Format)",
+    "identifier": "msc:m34",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.w3.org/TR/vocab-data-cube/": {
+    "title": "RDF Data Cube Vocabulary",
+    "identifier": "msc:m35",
+    "subject_areas": [
+      "Statistics"
+    ]
+  },
+  "http://www.ivoa.net/documents/latest/RM.html": {
+    "title": "Resource Metadata for the Virtual Observatory",
+    "identifier": "msc:m74",
+    "subject_areas": [
+      "Astronomy"
+    ]
+  },
+  "https://www.ands.org.au/online-services/rif-cs-schema": {
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
+    "identifier": "msc:m98",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://services.ands.org.au/documentation/rifcs/schemadocs/registryObjects.html": {
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
+    "identifier": "msc:m98",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd": {
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
+    "identifier": "msc:m98",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://cds.u-strasbg.fr/doc/catstd.pdf": {
+    "title": "SDAC (Standard for Documentation of Astronomical Catalogues)",
+    "identifier": "msc:m37",
+    "subject_areas": [
+      "Astronomy",
+      "Astrophysics"
+    ]
+  },
+  "http://cds.u-strasbg.fr/doc/catstd.htx": {
+    "title": "SDAC (Standard for Documentation of Astronomical Catalogues)",
+    "identifier": "msc:m37",
+    "subject_areas": [
+      "Astronomy",
+      "Astrophysics"
+    ]
+  },
+  "http://sdmx.org/?page_id=5008": {
+    "title": "SDMX (Statistical Data and Metadata Exchange)",
+    "identifier": "msc:m38",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Human geography",
+      "Social policy",
+      "Statistics"
+    ]
+  },
+  "http://sdmx.org": {
+    "title": "SDMX (Statistical Data and Metadata Exchange)",
+    "identifier": "msc:m38",
+    "subject_areas": [
+      "Demography",
+      "Economics",
+      "Human geography",
+      "Social policy",
+      "Statistics"
+    ]
+  },
+  "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/": {
+    "title": "Shoreline Metadata Profile",
+    "identifier": "msc:m75",
+    "subject_areas": [
+      "Hydrology",
+      "Oceanography"
+    ]
+  },
+  "http://snrnasm.bio.unc.edu": {
+    "title": "SNRNASM ISA-Tab",
+    "identifier": "msc:m76",
+    "subject_areas": [
+      "Biochemistry",
+      "Cell biology"
+    ]
+  },
+  "http://www.spase-group.org/docs/schema/": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_2.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_3.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_4.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_5.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_6.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_7.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_9.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://www.spase-group.org/data/model/spase-2_2_8.pdf": {
+    "title": "SPASE Data Model",
+    "identifier": "msc:m39",
+    "subject_areas": [
+      "Astronomical systems",
+      "Astronomy",
+      "Sun"
+    ]
+  },
+  "http://frictionlessdata.io/guides/tabular-data-package/": {
+    "title": "Tabular Data Package",
+    "identifier": "msc:m77",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.tei-c.org/Guidelines/P5/": {
+    "title": "TEI (Text Encoding Initiative) Guidelines",
+    "identifier": "msc:m99",
+    "subject_areas": [
+      "History",
+      "Languages"
+    ]
+  },
+  "https://www.tei-c.org/release/doc/tei-p5-doc/en/html/index.html": {
+    "title": "TEI (Text Encoding Initiative) Guidelines",
+    "identifier": "msc:m99",
+    "subject_areas": [
+      "History",
+      "Languages"
+    ]
+  },
+  "http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf": {
+    "title": "TIDCC (Towards an International Data Commons for Crystallography)",
+    "identifier": "msc:m78",
+    "subject_areas": [
+      "Crystallography"
+    ]
+  },
+  "http://www.gogeo.ac.uk/gogeo/metadata/agmap.htm": {
+    "title": "UK AGMAP (Academic Geospatial Metadata Application Profile)",
+    "identifier": "msc:m79",
+    "subject_areas": [
+      "Cartography",
+      "Geography",
+      "Topography"
+    ]
+  },
+  "http://www.agi.org.uk/uk-gemini/": {
+    "title": "UK Gemini",
+    "identifier": "msc:m80",
+    "subject_areas": [
+      "Cartography",
+      "Geography",
+      "Topography"
+    ]
+  },
+  "http://schema.ukeof.org.uk/": {
+    "title": "UKEOF",
+    "identifier": "msc:m40",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Climatology",
+      "Ecology",
+      "Geology",
+      "Hydrology",
+      "Meteorology",
+      "Remote sensing",
+      "Soil sciences"
+    ]
+  },
+  "http://www.ukeof.org.uk/": {
+    "title": "UKEOF",
+    "identifier": "msc:m40",
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Climatology",
+      "Ecology",
+      "Geology",
+      "Hydrology",
+      "Meteorology",
+      "Remote sensing",
+      "Soil sciences"
+    ]
+  },
+  "http://repository.stategeothermaldata.org/repository/resource/98ddf901b9782a25982e01af3b0bda50/": {
+    "title": "USGIN (US Geoscience Information Network) Metadata Profile",
+    "identifier": "msc:m81",
+    "subject_areas": [
+      "Earth sciences"
+    ]
+  },
+  "http://usgin.github.io/usginspecs/USGIN_ISO_Metadata.htm": {
+    "title": "USGIN (US Geoscience Information Network) Metadata Profile",
+    "identifier": "msc:m81",
+    "subject_areas": [
+      "Earth sciences"
+    ]
+  },
+  "http://www.ncbi.nlm.nih.gov/pubmed/23031277": {
+    "title": "VarioML",
+    "identifier": "msc:m82",
+    "subject_areas": [
+      "Genetics"
+    ]
+  },
+  "http://www.opengeospatial.org/standards/waterml": {
+    "title": "WaterML",
+    "identifier": "msc:m83",
+    "subject_areas": [
+      "Hydrology"
+    ]
+  },
+  "http://wis.wmo.int/2006/metadata/WMO%20Core%20Metadata%20Profile%20%28October%202006%29/documentation.htm": {
+    "title": "WMO Core Metadata Profile",
+    "identifier": "msc:m84",
+    "subject_areas": [
+      "Meteorology"
+    ]
+  }
+}
