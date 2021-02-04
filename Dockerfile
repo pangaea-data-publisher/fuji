@@ -2,7 +2,7 @@ FROM python:3
 ### python:3 image: No java available: Cannot run TIKA... 
 ### Install Java via the package manager
 RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends default-jre-headless \
   && apt-get clean \
   && apt-get remove --purge -y default-jre-headless \ 
   && rm -rf /var/lib/apt/lists/*
