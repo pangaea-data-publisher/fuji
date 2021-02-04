@@ -1,9 +1,14 @@
-#FROM python:3 # No java available: Cannot use TIKA... 
+FROM python:3
+### python:3 image: No java available: Cannot run TIKA... 
 ### Install Java via the package manager
-#RUN apt-get update && apt-get upgrade -y && apt install -y default-jdk
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get -y install default-jre-headless \
+  && apt-get clean \
+  && apt-get remove --purge -y default-jre-headless \ 
+  && rm -rf /var/lib/apt/lists/*
 
-## OR: Use Ubuntu image with python and java pre-installed:
-FROM korekontrol/ubuntu-java-python3:latest
+## OR: Use Ubuntu image with python and java pre-installed instead (smallest):
+#FROM korekontrol/ubuntu-java-python3:latest
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
