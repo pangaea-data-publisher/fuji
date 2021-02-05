@@ -36,7 +36,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         search_mechanisms = []
         sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction - {}'.format(all))
+        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction -: {}'.format(all))
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
                                   MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
                                   MetaDataCollector.Sources.DUBLINCORE.value,
@@ -49,7 +49,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - structured data')
         else:
-            self.logger.warning('FsF-F4-01M : Metadata is NOT found through - {}'.format(search_engines_support))
+            self.logger.warning('FsF-F4-01M : Metadata is NOT found through -: {}'.format(search_engines_support))
         #TODO: replace this metadata format based test by real lookup at registries
         registry_support_match = list(set(dict(self.fuji.metadata_sources).keys()).intersection(sources_registry))
         if registry_support_match:
@@ -58,8 +58,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
         else:
-            self.logger.warning(
-                'FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  - {}'.format(
+            self.logger.warning('FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  -: {}'.format(
                     sources_registry))
         length = len(search_mechanisms)
         if length > 0:

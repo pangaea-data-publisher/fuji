@@ -46,7 +46,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return islicense
 
     def lookup_license_by_url(self, u, metric_id):
-        self.logger.info('{0} : Verify URL through SPDX registry - {1}'.format(metric_id, u))
+        self.logger.info('{0} : Verify URL through SPDX registry -: {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
         for item in self.fuji.SPDX_LICENSES:
@@ -54,7 +54,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             # if any(u in v.lower() for v in item.values()):
             seeAlso = item['seeAlso']
             if any(u in v for v in seeAlso):
-                self.logger.info('{0} : Found SPDX license representation - {1}'.format(metric_id, item['detailsUrl']))
+                self.logger.info('{0} : Found SPDX license representation -: {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
                 html_url = item['detailsUrl'].replace(".json", ".html")
                 isOsiApproved = item['isOsiApproved']
@@ -65,14 +65,14 @@ class FAIREvaluatorLicense(FAIREvaluator):
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
-        self.logger.info('{0} : Verify name through SPDX registry - {1}'.format(metric_id, lvalue))
+        self.logger.info('{0} : Verify name through SPDX registry -: {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         sim = [Levenshtein.ratio(lvalue.lower(), i) for i in self.fuji.SPDX_LICENSE_NAMES]
         if max(sim) > 0.85:
             index_max = max(range(len(sim)), key=sim.__getitem__)
             sim_license = self.fuji.SPDX_LICENSE_NAMES[index_max]
             found = next((item for item in self.fuji.SPDX_LICENSES if item['name'] == sim_license), None)
-            self.logger.info('{0}: Found SPDX license representation - {1}'.format(metric_id,found['detailsUrl']))
+            self.logger.info('{0}: Found SPDX license representation -: {1}'.format(metric_id,found['detailsUrl']))
             # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
             html_url = found['detailsUrl'].replace(".json", ".html")
             isOsiApproved = found['isOsiApproved']

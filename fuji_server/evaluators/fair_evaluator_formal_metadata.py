@@ -123,29 +123,26 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             # self.pid_url = 'https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm' #test uri
             if self.fuji.sparql_endpoint:
                 self.logger.info(
-                    '{0} : SPARQL endpoint found - {1}'.format(self.metric_identifier, self.fuji.sparql_endpoint))
+                    '{0} : SPARQL endpoint found -: {1}'.format(self.metric_identifier, self.fuji.sparql_endpoint))
                 sparql_provider = SPARQLMetadataProvider(endpoint=self.fuji.sparql_endpoint, logger=self.logger,
                                                          metric_id=self.metric_identifier)
                 query = "CONSTRUCT {{?dataURI ?property ?value}} where {{ VALUES ?dataURI {{ <{}> }} ?dataURI ?property ?value }}".format(
                     self.fuji.pid_url)
-                self.logger.info('{0} : Executing SPARQL - {1}'.format(self.metric_identifier, query))
+                self.logger.info('{0} : Executing SPARQL -: {1}'.format(self.metric_identifier, query))
                 rdfgraph, contenttype = sparql_provider.getMetadata(query)
                 if rdfgraph:
                     outputs.append(
                         FormalMetadataOutputInner(serialization_format=contenttype, source='sparql_endpoint',
                                                   is_metadata_found=True))
                     score += 1
-                    self.logger.log(self.fuji.LOG_SUCCESS,
-                                    '{0} : Found RDF content through SPARQL endpoint'.format(
+                    self.logger.log(self.fuji.LOG_SUCCESS,'{0} : Found RDF content through SPARQL endpoint'.format(
                                         self.metric_identifier))
                     self.setEvaluationCriteriumScore('FsF-I1-01M-2', 1, 'pass')
                     self.fuji.namespace_uri.extend(sparql_provider.getNamespaces())
                 else:
-                    self.logger.warning(
-                        '{0} : NO RDF metadata retrieved through the sparql endpoint'.format(self.metric_identifier))
+                    self.logger.warning('{0} : NO RDF metadata retrieved through the sparql endpoint'.format(self.metric_identifier))
             else:
-                self.logger.warning(
-                    '{0} : NO SPARQL endpoint found through re3data based on the object URI provided'.format(
+                self.logger.warning('{0} : NO SPARQL endpoint found through re3data based on the object URI provided'.format(
                         self.metric_identifier))
 
         if score > 0:

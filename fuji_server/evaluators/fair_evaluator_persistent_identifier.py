@@ -103,17 +103,15 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     self.fuji.isMetadataAccessible = True
                 elif r.status_code in [401, 402, 403]:
                     self.fuji.isMetadataAccessible = False
-                    self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+                    self.logger.warning("Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
                 else:
                     self.fuji.isMetadataAccessible = False
-                    self.logger.warning("Resource inaccessible, identifier returned http status code: {code}".format(code=r.status_code))
+                    self.logger.warning("Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
             else:
                 self.fuji.isMetadataAccessible = False
-                self.logger.warning(
-                    "FsF-F1-02D :Resource inaccessible, no response received from: {}".format(check_url))
+                self.logger.warning("FsF-F1-02D :Resource inaccessible, no response received from -: {}".format(check_url))
         else:
-            self.logger.warning(
-                "FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier: {}".format(self.fuji.id))
+            self.logger.warning("FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier -: {}".format(self.fuji.id))
 
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -132,11 +130,11 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
             #print(self.metric_tests)
 
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
             #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
-            self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme - {}'.format(self.fuji.id_scheme))
+            self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
         self.result.metric_tests = self.metric_tests

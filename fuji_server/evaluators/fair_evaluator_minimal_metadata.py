@@ -41,9 +41,9 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         partial_elements = ['creator', 'title', 'object_identifier', 'publication_date','publisher','object_type']
         # TODO: check the number of metadata elements which metadata_found has in common with metadata_required
         # set(a) & set(b)
-        self.logger.info('FsF-F2-01M : Testing for required core descriptive metadata elements {}'.format(metadata_required))
+        self.logger.info('FsF-F2-01M : Testing for required core descriptive metadata elements -: {}'.format(metadata_required))
         if set(metadata_found) == set(metadata_required):
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core descriptive metadata elements {}'.format(metadata_required))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core descriptive metadata elements -: {}'.format(metadata_required))
             metadata_status = 'all metadata'
             self.score.earned = self.total_score
             self.setEvaluationCriteriumScore('FsF-F2-01M-3', 1, 'pass')
@@ -51,18 +51,17 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             test_status = 'pass'
         else:
             core_missing = list(set(metadata_required) - set(metadata_found))
-            self.logger.warning('FsF-F2-01M : Not all required core descriptive metadata elements exist, missing: {}'.format(str(core_missing)))
-            self.logger.info('FsF-F2-01M : Testing for required core citation metadata elements {}'.format(partial_elements))
+            self.logger.warning('FsF-F2-01M : Not all required core descriptive metadata elements exist, missing -: {}'.format(str(core_missing)))
+            self.logger.info('FsF-F2-01M : Testing for required core citation metadata elements -: {}'.format(partial_elements))
             if set(partial_elements).issubset(metadata_found):
-                self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core citation metadata elements {}'.format(partial_elements))
+                self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core citation metadata elements -: {}'.format(partial_elements))
                 metadata_status = 'partial metadata'
                 self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
                 self.score.earned = self.total_score - 1
                 test_status = 'pass'
             else:
                 partial_missing = list(set(partial_elements) - set(metadata_found))
-                self.logger.warning(
-                    'FsF-F2-01M : Not all required citation metadata elements exist, missing: '+str(partial_missing))
+                self.logger.warning('FsF-F2-01M : Not all required citation metadata elements exist, missing -: '+str(partial_missing))
                 metadata_status = 'insufficient metadata'  # status should follow enumeration in yaml
                 self.score.earned = 0
                 test_status = 'fail'

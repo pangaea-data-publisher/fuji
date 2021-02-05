@@ -48,7 +48,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
                 self.logger.warning('FsF-A1-02M : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M')
             else:
                 if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                    self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-02M : Standard protocol for access to metadata found: ' + str(metadata_url_scheme))
+                    self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
 
                     metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
                     test_status = 'pass'

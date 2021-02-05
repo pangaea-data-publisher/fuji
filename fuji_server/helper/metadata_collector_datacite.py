@@ -58,7 +58,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                                 dcite_metadata['creator'] = names
 
                     if dcite_metadata.get('related_resources'):
-                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
+                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
                             len(dcite_metadata['related_resources']), source_name))
                         temp_rels = []
 
@@ -75,5 +75,5 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                             flat = ', '.join(map(str, value))
                             dcite_metadata[key] = flat
             except Exception as e:
-                self.logger.exception('Failed to extract Datacite Json - {}'.format(e))
+                self.logger.exception('Failed to extract Datacite Json -: {}'.format(e))
         return source_name, dcite_metadata

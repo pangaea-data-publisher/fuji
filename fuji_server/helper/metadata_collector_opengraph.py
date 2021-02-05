@@ -15,7 +15,7 @@ class MetaDataCollectorOpenGraph (MetaDataCollector):
         og_metadata = {}
         ext_meta=None
         if self.source_metadata:
-            self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
+            self.logger.info('FsF-F2-01M : Extract metadata from -: {}'.format(self.source_name))
             self.source_name = self.getEnumSourceNames().OPENGRAPH.value
             ext_meta =dict(self.source_metadata[0].get('properties'))
         if ext_meta is not None:

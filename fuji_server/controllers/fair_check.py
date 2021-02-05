@@ -217,7 +217,7 @@ class FAIRCheck:
             if mv == '' or mv is None:
                 del self.metadata_merged[mk]
 
-        self.logger.info('FsF-F2-01M : Type of object described by the metadata - {}'.format(self.metadata_merged.get('object_type')))
+        self.logger.info('FsF-F2-01M : Type of object described by the metadata -: {}'.format(self.metadata_merged.get('object_type')))
 
         # detect api and standards
         self.retrieve_apis_standards()
@@ -230,7 +230,7 @@ class FAIRCheck:
         if self.landing_url is not None:
             self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
             client_id = self.metadata_merged.get('datacite_client')
-            self.logger.info('FsF-R1.3-01M : re3data/datacite client id - {}'.format(client_id))
+            self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
 
             if self.oaipmh_endpoint:
                 self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
@@ -243,11 +243,11 @@ class FAIRCheck:
                     self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
                     self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
                     self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-                    self.logger.info('{} : Metadata standards listed in re3data record - {}'.format('FsF-R1.3-01M', self.community_standards ))
+                    self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format('FsF-R1.3-01M', self.community_standards ))
 
             # retrieve metadata standards info from oai-pmh
             if self.oaipmh_endpoint:
-                self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository - {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
                 if (self.uri_validator(self.oaipmh_endpoint)):
                     oai_provider = OAIMetadataProvider(endpoint=self.oaipmh_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
                     self.community_standards_uri = oai_provider.getMetadataStandards()
@@ -255,7 +255,7 @@ class FAIRCheck:
                     stds = None
                     if self.community_standards_uri:
                         stds = list(self.community_standards_uri.keys())
-                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint - {}'.format('FsF-R1.3-01M',stds ))
+                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format('FsF-R1.3-01M',stds ))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
@@ -280,7 +280,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = micro_dict[i]
                     self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata: '+str(micro_dict.keys()))
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
 
         #================== RDFa
         RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
@@ -301,7 +301,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata: '+str(rdfa_dict.keys()))
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
         except:
             self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML')
 
@@ -327,13 +327,13 @@ class FAIRCheck:
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             if schemaorg_dict.get('object_content_identifier'):
-                self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata : ' + str(schemaorg_dict.get('object_content_identifier')))
+                self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' + str(schemaorg_dict.get('object_content_identifier')))
             # add object type for future reference
             for i in schemaorg_dict.keys():
                 if i in self.reference_elements:
                     self.metadata_merged[i] = schemaorg_dict[i]
                     self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata: '+str(schemaorg_dict.keys()))
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata -: '+str(schemaorg_dict.keys()))
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
 
@@ -354,7 +354,7 @@ class FAIRCheck:
                     if d in self.reference_elements:
                         self.metadata_merged[d] = dc_dict[d]
                         self.reference_elements.remove(d)
-                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata: '+str(dc_dict.keys()))
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata -: '+str(dc_dict.keys()))
             else:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
@@ -371,7 +371,7 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = opengraph_dict[i]
                     self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata: ' + str(opengraph_dict.keys()))
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
         else:
             self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
 
@@ -379,7 +379,7 @@ class FAIRCheck:
 
         data_sign_links = self.get_signposting_links('item')
         if data_sign_links:
-            self.logger.info('FsF-F3-01M : Found data links in response header (signposting) : ' + str(len(data_sign_links)))
+            self.logger.info('FsF-F3-01M : Found data links in response header (signposting) -: ' + str(len(data_sign_links)))
             if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = data_sign_links
 
@@ -387,7 +387,7 @@ class FAIRCheck:
 
         data_meta_links = self.get_html_typed_links(rel='item')
         if data_meta_links:
-            self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) : ' + str(len(data_meta_links)))
+            self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' + str(len(data_meta_links)))
             if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = data_meta_links
            # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
@@ -452,10 +452,10 @@ class FAIRCheck:
                         response=urllib.urlopen(guessed_link)
                         if response.getheader('Content-Type') in ['text/xml','application/rdf+xml']:
                             datalink={'source':'guessed','url': guessed_link, 'type': response.getheader('Content-Type'), 'rel': 'alternate'}
-                            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at: '+guessed_link)
+                            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at -: '+guessed_link)
 
                     except:
-                        self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for: '+guessed_link)
+                        self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: '+guessed_link)
         return datalink
 
     def retrieve_metadata_external(self):
@@ -494,12 +494,12 @@ class FAIRCheck:
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
                     if rdf_dict.get('object_content_identifier'):
-                        self.logger.info('FsF-F3-01M : Found data links in RDF metadata : ' + str(
+                        self.logger.info('FsF-F3-01M : Found data links in RDF metadata -: ' + str(
                                             len(rdf_dict.get('object_content_identifier'))))
 
                     test_content_negotiation = True
                     self.logger.log(self.LOG_SUCCESS,
-                                    'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
+                                    'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'negotiated'))
 
                     for r in rdf_dict.keys():
@@ -527,9 +527,9 @@ class FAIRCheck:
                 test_content_negotiation = True
                 # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append((source_dcitejsn,'negotiated'))
-                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata: {}'.format(str(dcitejsn_dict.keys())))
+                self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Datacite metadata -: {}'.format(str(dcitejsn_dict.keys())))
                 if dcitejsn_dict.get('object_content_identifier'):
-                    self.logger.info('FsF-F3-01M : Found data links in Datacite metadata : ' + str(
+                    self.logger.info('FsF-F3-01M : Found data links in Datacite metadata -: ' + str(
                                         dcitejsn_dict.get('object_content_identifier')))
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
@@ -569,12 +569,12 @@ class FAIRCheck:
             typed_rdf_collector = None
             for metadata_link in typed_metadata_links:
                 if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
-                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata ('+str(metadata_link['type']+')'))
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: ('+str(metadata_link['type']+')'))
                     found_metadata_link=True
                     source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value
                     typed_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
                 elif metadata_link['type'] in ['text/xml','application/x-ddi-l+xml','application/x-ddametadata+xml']:
-                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata (' + str(
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' + str(
                         metadata_link['type'] + ')'))
                     typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                target_url=metadata_link['url'], link_type=metadata_link.get('source'))
@@ -585,7 +585,7 @@ class FAIRCheck:
                 rdf_dict = self.exclude_null(rdf_dict)
                 if rdf_dict:
                     test_typed_links = True
-                    self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata: {}'.format(str(rdf_dict.keys())))
+                    self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'linked'))
 
                     for r in rdf_dict.keys():
@@ -596,7 +596,7 @@ class FAIRCheck:
                     self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
         if self.reference_elements:
-            self.logger.debug('Reference metadata elements NOT FOUND - {}'.format(self.reference_elements))
+            self.logger.debug('FsF-F2-01M : Reference metadata elements NOT FOUND -: {}'.format(self.reference_elements))
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
 

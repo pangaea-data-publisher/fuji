@@ -192,7 +192,7 @@ class RequestHelper:
                     else:
                         self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                 else:
-                    self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
+                    self.logger.warning('{0} : NO successful response received, status code -: {1}'.format(metric_id, str(status_code)))
             #except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
             #    self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
@@ -201,12 +201,12 @@ class RequestHelper:
             #except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
+                self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
             except urllib.error.URLError as e:
-                self.logger.warning("{} : RequestException: {} : {}".format(metric_id, e.reason, self.request_url))
+                self.logger.warning("{} : RequestException -: {} : {}".format(metric_id, e.reason, self.request_url))
                 #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
         return source, self.parse_response
 
@@ -217,7 +217,7 @@ class RequestHelper:
             extracted = extruct.extract(html_texts.encode('utf8'))
         except:
             extracted=None
-            self.logger.warning('%s : Failed to perform parsing on microdata or JSON %s' % (self.metric_id, self.request_url))
+            self.logger.warning('%s : Failed to perform parsing on microdata or JSON -: %s' % (self.metric_id, self.request_url))
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
@@ -227,13 +227,13 @@ class RequestHelper:
         # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
         graph = None
         try:
-            self.logger.info('%s : Try to parse RDF from %s' % (self.metric_id, self.request_url))
+            self.logger.info('%s : Try to parse RDF from -: %s' % (self.metric_id, self.request_url))
             graph = rdflib.Graph()
             graph.parse(data=response, format=type)
             #queries have to be done in specific metadata collector classes
         except:
             error = sys.exc_info()[0]
-            self.logger.warning('%s : Failed to parse RDF %s %s' % (self.metric_id, self.request_url, str(error)))
+            self.logger.warning('%s : Failed to parse RDF -: %s %s' % (self.metric_id, self.request_url, str(error)))
             self.logger.debug(error)
         return graph
 
@@ -254,7 +254,7 @@ class RequestHelper:
         # TODO: implement a generic XML parsing which checks domain specific
         # document schema and performs a XSLT to get metadata elements
         # write some domain specific XSLTs and/or parsers
-        self.logger.info('%s : Try to parse XML from %s' % (self.metric_id, self.request_url))
+        self.logger.info('%s : Try to parse XML from -: %s' % (self.metric_id, self.request_url))
         self.logger.warning('%s : Domain specific XML parsing not yet implemented ' % (self.metric_id,))
         #print('Not yet implemented')
         return None

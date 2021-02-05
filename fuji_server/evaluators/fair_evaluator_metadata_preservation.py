@@ -44,8 +44,7 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
                 self.logger.log(self.fuji.LOG_SUCCESS,
                     '{0} : Metadata registry bound PID system used: ' + self.fuji.pid_scheme.format(self.metric_identifier))
             else:
-                self.logger.warning(
-                    '{0} : NO metadata registry bound PID system used'.format(self.metric_identifier))
+                self.logger.warning('{0} : NO metadata registry bound PID system used'.format(self.metric_identifier))
         self.score.earned = score
         self.result.score = self.score
         self.result.output = outputs

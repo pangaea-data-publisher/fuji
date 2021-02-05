@@ -53,7 +53,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
         if ext_meta is not None:
-            self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
+            self.logger.info('FsF-F2-01M : Extract metadata from -: {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             check_context_type =  ["Dataset", "Collection"]
@@ -85,7 +85,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                     #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
                     invalid_license = False
                     if jsnld_metadata.get('license'):
-                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(
+                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) -: {}'.format(
                             jsnld_metadata.get('license')))
 
                         if isinstance(jsnld_metadata.get('license'), list):
@@ -111,7 +111,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                         if relateds:
                             jsnld_metadata['related_resources'] = relateds
-                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
                         else:
                             del jsnld_metadata['related_resources']
                             self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
@@ -125,7 +125,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
             except Exception as err:
                 #print(err.with_traceback())
-                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
 
