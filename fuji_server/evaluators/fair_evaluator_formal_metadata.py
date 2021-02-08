@@ -32,7 +32,7 @@ from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutput
 class FAIREvaluatorFormalMetadata(FAIREvaluator):
     def evaluate(self):
 
-        self.result = FormalMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = FormalMetadata(id=self.metric_number, metric_identifier=self.metric_identifier,
                                             metric_name=self.metric_name)
 
         outputs = []

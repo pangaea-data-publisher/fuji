@@ -30,7 +30,7 @@ from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 class FAIREvaluatorMetadataPreserved(FAIREvaluator):
     def evaluate(self):
         registry_bound_pid = ['doi']
-        self.result = MetadataPreserved(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = MetadataPreserved(id=self.metric_number, metric_identifier=self.metric_identifier,
                                                 metric_name=self.metric_name)
         outputs = []
         test_status = 'fail'

@@ -34,7 +34,7 @@ from tika import parser
 
 class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def evaluate(self):
-        self.result = DataContentMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = DataContentMetadata(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = DataContentMetadataOutput()
         data_content_descriptors = []
         test_data_content_text = None

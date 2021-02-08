@@ -80,7 +80,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def evaluate(self):
 
-        self.result = License(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = License(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         licenses_list = []
         specified_licenses = self.fuji.metadata_merged.get('license')
         self.score.earned = 0

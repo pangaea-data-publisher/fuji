@@ -35,7 +35,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
         text_format_regex = r'(^text)[\/]|[\/\+](xml|text|json)'
 
-        self.result = DataFileFormat(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = DataFileFormat(id=self.metric_number, metric_identifier=self.metric_identifier,
                                                  metric_name=self.metric_name)
         self.output = DataFileFormatOutput()
         data_file_list = []

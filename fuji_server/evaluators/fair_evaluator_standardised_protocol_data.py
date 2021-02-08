@@ -32,7 +32,7 @@ from urllib.parse import urlparse
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
     def evaluate(self):
 
-        self.result = StandardisedProtocolData(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = StandardisedProtocolData(id=self.metric_number, metric_identifier=self.metric_identifier,
                                                metric_name=self.metric_name)
         metadata_output = data_output = None
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value

@@ -30,7 +30,7 @@ from typing import List, Any
 
 class FAIREvaluatorSearchable(FAIREvaluator):
     def evaluate(self):
-        self.result = Searchable(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = Searchable(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = SearchableOutput()
 
         search_mechanisms = []

@@ -36,7 +36,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
         #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
-        self.result = DataAccessLevel(self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = DataAccessLevel(self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = DataAccessOutput()
         licence_evaluator = FAIREvaluatorLicense(self.fuji)
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'

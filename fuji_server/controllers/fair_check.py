@@ -147,7 +147,7 @@ class FAIRCheck:
     def load_predata(cls):
         cls.FILES_LIMIT = Preprocessor.data_files_limit
         if not cls.METRICS:
-            cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score','metric_tests'])
+            cls.METRICS = Preprocessor.get_custom_metrics(['metric_name', 'total_score','metric_tests','metric_number'])
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()

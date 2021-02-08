@@ -33,6 +33,7 @@ class FAIREvaluator:
         self.fuji=fuji_instance
         self.metric_identifier = None
         self.metrics = None
+        self.metric_number = None
         self.result = None
         self.metric_tests = dict()
         self.isDebug=self.fuji.isDebug
@@ -47,6 +48,7 @@ class FAIREvaluator:
             self.total_score = int(self.metrics.get(metric_identifier).get('total_score'))
             self.score = FAIRResultCommonScore(total=self.total_score)
             self.metric_name = self.metrics.get(metric_identifier).get('metric_name')
+            self.metric_number = self.metrics.get(metric_identifier).get('metric_number')
             self.initializeEvaluationCriteria()
 
 

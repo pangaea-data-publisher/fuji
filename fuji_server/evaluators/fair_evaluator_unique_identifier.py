@@ -33,7 +33,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
 
     def evaluate(self):
         # ======= CHECK IDENTIFIER UNIQUENESS =======
-        self.result = Uniqueness(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = Uniqueness(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = UniquenessOutput()
         schemes = [i[0] for i in idutils.PID_SCHEMES]
         self.logger.info('FsF-F1-01D : Using idutils schemes')

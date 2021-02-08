@@ -30,7 +30,7 @@ from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabula
 class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
     def evaluate(self):
 
-        self.result = SemanticVocabulary(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = SemanticVocabulary(id=self.metric_number, metric_identifier=self.metric_identifier,
                                               metric_name=self.metric_name)
 
         # remove duplicates

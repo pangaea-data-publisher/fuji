@@ -30,7 +30,7 @@ from fuji_server.models.community_endorsed_standard_output_inner import Communit
 
 class FAIREvaluatorCommunityMetadata(FAIREvaluator):
     def evaluate(self):
-        self.result = CommunityEndorsedStandard(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = CommunityEndorsedStandard(id=self.metric_number, metric_identifier=self.metric_identifier,
                                          metric_name=self.metric_name)
 
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []

@@ -32,7 +32,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             self.logger.warning('FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
 
         self.fuji.retrieve_metadata(self.fuji.extruct_result)
-        self.result = CoreMetadata(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = CoreMetadata(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
 
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
         metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
