@@ -18,7 +18,7 @@ class MetaDataCollectorMicroData (MetaDataCollector):
             ext_meta = self.source_metadata[0]
 
         if ext_meta is not None:
-            self.logger.info('FsF-F2-01M : Extract metadata from -: {}'.format(self.source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract Microdata metadata from -: {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             # TODO replace check_context_type list context comparison by regex

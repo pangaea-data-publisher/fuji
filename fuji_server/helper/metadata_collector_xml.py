@@ -46,10 +46,10 @@ class MetaDataCollectorXML (MetaDataCollector):
         dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
-        self.logger.info('FsF-F2-01M : Trying to access metadata from -: {}'.format(self.target_url))
+        #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.getHTTPResponse() is not None:
-            self.logger.info('FsF-F2-01M : Extract metadata from -: {}'.format(source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract/parse metadata from -: {}'.format(source_name))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
                 self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: '+str(neg_source))

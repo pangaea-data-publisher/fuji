@@ -38,7 +38,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
     def parse_metadata(self):
         source_name = None
         dcite_metadata = {}
-        self.logger.info('FsF-F2-01M : Extract datacite metadata')
+        self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
         requestHelper = RequestHelper(self.pid_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.datacite_json)
         neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')

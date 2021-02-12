@@ -49,7 +49,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
-            neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D')
+            neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
             r = requestHelper.getHTTPResponse()
 
             if r:

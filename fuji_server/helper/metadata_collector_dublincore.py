@@ -37,7 +37,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
         source = None
         if self.source_metadata is not None:
             try:
-                self.logger.info('FsF-F2-01M : Extract DublinCore metadata from html page')
+                #self.logger.info('FsF-F2-01M : Trying to extract DublinCore metadata from html page')
                 # get core metadat from dublin core meta tags:
                 # < meta name = "DCTERMS.element" content = "Value" / >
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)

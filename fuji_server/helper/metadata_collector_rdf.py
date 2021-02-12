@@ -45,7 +45,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
     def parse_metadata(self):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
-        self.logger.info('FsF-F2-01M : Extract metadata from -: {}'.format(self.source_name))
+        #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata=dict()
         if self.rdf_graph is None:
             #print(self.target_url)
@@ -153,6 +153,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
+
         dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
 
