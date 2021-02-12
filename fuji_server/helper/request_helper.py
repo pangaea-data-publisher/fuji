@@ -97,7 +97,7 @@ class RequestHelper:
           a=1
         return True
 
-    def content_negotiate(self, metric_id=''):
+    def content_negotiate(self, metric_id='', ignore_html = True):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id=metric_id
         source = 'html'
@@ -155,9 +155,13 @@ class RequestHelper:
                                 for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                     if content_type in at.value:
                                         if at.name == 'html':
-                                            self.logger.info('%s : Found HTML page!' % metric_id)
-
-                                            self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
+                                            #since we already parse HTML in the landing page we ignore this and do not parse again
+                                            if ignore_html == False:
+                                                self.logger.info('%s : Found HTML page!' % metric_id)
+                                                self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
+                                            else:
+                                                self.logger.info('%s : Ignoring HTML response' % metric_id)
+                                                self.parse_response = None
                                             source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
@@ -214,10 +218,11 @@ class RequestHelper:
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         try:
+            #print(html_texts.encode('utf8'))
             extracted = extruct.extract(html_texts.encode('utf8'))
-        except:
+        except Exception as e:
             extracted=None
-            self.logger.warning('%s : Failed to perform parsing on microdata or JSON -: %s' % (self.metric_id, self.request_url))
+            self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' % (self.metric_id, self.request_url+' '+str(e)))
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
