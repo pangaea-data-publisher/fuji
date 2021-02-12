@@ -35,6 +35,7 @@ import Levenshtein
 import idutils
 import lxml
 import rdflib
+from rdflib.exceptions import ParserError
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
@@ -94,7 +95,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.5c'
+    FUJI_VERSION = 'v1.0.5d'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
@@ -137,6 +138,7 @@ class FAIRCheck:
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
             self.logger.addHandler(self.logStreamHandler)
         self.count = 0
+        self.embedded_retrieved = False
         FAIRCheck.load_predata()
         self.extruct = None
         self.extruct_result = None
@@ -187,15 +189,17 @@ class FAIRCheck:
         if isinstance(extruct_metadata, dict):
             embedded_exists = {k: v for k, v in extruct_metadata.items() if v}
             self.extruct = embedded_exists.copy()
+            '''
             if embedded_exists:  # retrieve metadata from landing page
                 self.logger.info(
-                    'FsF-F2-01M : Formats of structured metadata embedded in HTML markup - {}'.format(
+                    'FsF-F2-01M : Formats of structured metadata embedded in HTML markup detected by extruct - {}'.format(
                         list(embedded_exists.keys())))
-                self.retrieve_metadata_embedded(embedded_exists)
+                #self.retrieve_metadata_embedded(embedded_exists)
             else:
                 self.logger.warning('FsF-F2-01M : NO structured metadata embedded in HTML')
-
+            '''
         if self.reference_elements:  # this will be always true as we need datacite client id
+            self.retrieve_metadata_embedded(embedded_exists)
             self.retrieve_metadata_external()
 
         # ========= clean merged metadata, delete all entries which are None or ''
@@ -267,7 +271,12 @@ class FAIRCheck:
         isPid = False
         if self.pid_scheme:
             isPid = True
+        self.embedded_retrieved = True
+        self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
+
         # ========= retrieve embedded rdfa and microdata metadata ========
+        self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
+
         micro_meta = extruct_metadata.get('microdata')
         microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
                                                    mapping=Mapper.MICRODATA_MAPPING)
@@ -283,11 +292,15 @@ class FAIRCheck:
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
 
         #================== RDFa
+        self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
+
         RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
         rdfasource = MetaDataCollector.Sources.RDFA.value
         rdfagraph = None
         errors=[]
         try:
+            rdflib_logger = logging.getLogger('rdflib')
+            rdflib_logger.setLevel(logging.ERROR)
             rdfagraph = rdflib.Graph()
             rdfagraph.parse(data=self.landing_html, format='rdfa')
             rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
@@ -302,28 +315,21 @@ class FAIRCheck:
                     self.metadata_merged[i] = rdfa_dict[i]
                     self.reference_elements.remove(i)
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
-        except:
-            self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML')
+        except Exception as e:
+            self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:'+str(e))
 
         # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
         ext_meta = extruct_metadata.get('json-ld')
 
-        if self.use_datacite is True:
-            target_url = self.pid_url
-        else:
-            target_url = self.landing_url
+        self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
         schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
-                                                         mapping=Mapper.SCHEMAORG_MAPPING, pidurl=target_url)
+                                                         mapping=Mapper.SCHEMAORG_MAPPING, pidurl=None)
         source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
         schemaorg_dict = self.exclude_null(schemaorg_dict)
         if schemaorg_dict:
             self.namespace_uri.extend(schemaorg_collector.namespaces)
-            #not_null_sco = [k for k, v in schemaorg_dict.items() if v is not None]
-            if source_schemaorg == MetaDataCollector.Sources.SCHEMAORG_EMBED.value:
-                self.metadata_sources.append((source_schemaorg,'embedded'))
-            else:
-                self.metadata_sources.append((source_schemaorg, 'negotiated'))
+            self.metadata_sources.append((source_schemaorg,'embedded'))
             if schemaorg_dict.get('related_resources'):
                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
             if schemaorg_dict.get('object_content_identifier'):
@@ -333,13 +339,13 @@ class FAIRCheck:
                 if i in self.reference_elements:
                     self.metadata_merged[i] = schemaorg_dict[i]
                     self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata -: '+str(schemaorg_dict.keys()))
+            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: '+str(schemaorg_dict.keys()))
         else:
-            self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
+            self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
 
         # ========= retrieve dublin core embedded in html page =========
         if self.reference_elements:
-            self.logger.info('FsF-F2-01M : Checking for DublinCore metadata')
+            self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
             dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
                                                        mapping=Mapper.DC_MAPPING)
             source_dc, dc_dict = dc_collector.parse_metadata()
@@ -359,6 +365,8 @@ class FAIRCheck:
                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
         # ======== retrieve OpenGraph metadata
+        self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
+
         ext_meta = extruct_metadata.get('opengraph')
         opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger, sourcemetadata=ext_meta,
                                                          mapping=Mapper.OG_MAPPING)
@@ -373,9 +381,10 @@ class FAIRCheck:
                     self.reference_elements.remove(i)
             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
         else:
-            self.logger.info('FsF-F2-01M : Schema.org metadata UNAVAILABLE')
+            self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
 
         #========= retrieve signposting data links
+        self.logger.info('FsF-F2-01M : Trying to identify Typed Links in html page')
 
         data_sign_links = self.get_signposting_links('item')
         if data_sign_links:
@@ -463,8 +472,16 @@ class FAIRCheck:
         test_typed_links = False
         test_signposting = False
         test_embedded = False
+        self.logger.info('FsF-F2-01M : Starting to identify EXTERNAL metadata through content negotiation or typed links')
+
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url is not None:
+
+            if self.use_datacite is True:
+                target_url = self.pid_url
+            else:
+                target_url = self.landing_url
+
             self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
             source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
@@ -473,9 +490,35 @@ class FAIRCheck:
                 test_content_negotiation = True
             #TODO: Finish  this ...
 
+            # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
+            self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation')
+
+            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=None,
+                                                             mapping=Mapper.SCHEMAORG_MAPPING, pidurl=target_url)
+            source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+            schemaorg_dict = self.exclude_null(schemaorg_dict)
+            if schemaorg_dict:
+                self.namespace_uri.extend(schemaorg_collector.namespaces)
+                self.metadata_sources.append((source_schemaorg, 'negotiated'))
+                if schemaorg_dict.get('related_resources'):
+                    self.related_resources.extend(schemaorg_dict.get('related_resources'))
+                if schemaorg_dict.get('object_content_identifier'):
+                    self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' + str(
+                        schemaorg_dict.get('object_content_identifier')))
+                # add object type for future reference
+                for i in schemaorg_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = schemaorg_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS,
+                                'FsF-F2-01M : Found Schema.org metadata through content negotiation-: ' + str(schemaorg_dict.keys()))
+            else:
+                self.logger.info('FsF-F2-01M : Schema.org metadata through content negotiation UNAVAILABLE')
+
             # ========= retrieve rdf metadata namespaces by content negotiation ========
             self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation')
             source = MetaDataCollector.Sources.LINKED_DATA.value
+            #TODO: handle this the same way as with datacite based content negotiation->use the use_datacite switch
             if self.pid_scheme == 'purl':
                 targeturl = self.pid_url
             else:
@@ -487,7 +530,7 @@ class FAIRCheck:
                 source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
                 # in case F-UJi was redirected and the landing page content negotiation doesnt return anything try the origin URL
                 if not rdf_dict:
-                    if self.origin_url is not None:
+                    if self.origin_url is not None and self.origin_url != targeturl:
                         neg_rdf_collector.target_url = self.origin_url
                         source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
                 self.namespace_uri.extend(neg_rdf_collector.getNamespaces())
@@ -569,7 +612,7 @@ class FAIRCheck:
             typed_rdf_collector = None
             for metadata_link in typed_metadata_links:
                 if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
-                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: ('+str(metadata_link['type']+')'))
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: ('+str(metadata_link['type'])+' '+str(metadata_link['url'])+')')
                     found_metadata_link=True
                     source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value
                     typed_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
