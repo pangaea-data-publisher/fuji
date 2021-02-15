@@ -186,6 +186,7 @@ class FAIRCheck:
 
 
     def retrieve_metadata(self, extruct_metadata):
+        embedded_exists={}
         if isinstance(extruct_metadata, dict):
             embedded_exists = {k: v for k, v in extruct_metadata.items() if v}
             self.extruct = embedded_exists.copy()
@@ -764,7 +765,10 @@ class FAIRCheck:
                 m = log_message.split(":", 1)
                 metric = m[0].strip()
                 message_n_level = m[1].strip().split("|",1)
-                level = message_n_level[1]
+                if len(message_n_level) >1:
+                    level = message_n_level[1]
+                else:
+                    level ='INFO'
                 message = message_n_level[0]
                 if metric not in logger_messages:
                     logger_messages[metric] =[]
