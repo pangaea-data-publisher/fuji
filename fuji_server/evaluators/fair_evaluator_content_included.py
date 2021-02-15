@@ -29,14 +29,14 @@ import urllib
 
 class FAIREvaluatorContentIncluded(FAIREvaluator):
     def evaluate(self):
-        self.result = IdentifierIncluded(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = IdentifierIncluded(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = IdentifierIncludedOutput()
 
         id_object = self.fuji.metadata_merged.get('object_identifier')
         self.output.object_identifier_included = id_object
         contents = self.fuji.metadata_merged.get('object_content_identifier')
         if id_object is not None:
-            self.logger.info('FsF-F3-01M : Object identifier specified {}'.format(id_object))
+            self.logger.info('FsF-F3-01M : Object identifier specified -: {}'.format(id_object))
         score = 0
         content_list = []
         if contents:
@@ -44,11 +44,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                 contents = [contents]
             contents = [c for c in contents if c]
             number_of_contents = len(contents)
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F3-01M : Number of object content identifier found - {}'.format(number_of_contents))
+            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F3-01M : Number of object content identifier found -: {}'.format(number_of_contents))
 
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
-                    'FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first {} content identifiers'.format(
+                    'FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first -: {} content identifiers'.format(
                         self.fuji.FILES_LIMIT))
                 contents = contents[:self.fuji.FILES_LIMIT]
 
@@ -65,11 +65,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
                         if content_link['header_content_type'] != content_link.get('type'):
-                            self.logger.warning('FsF-F3-01M : Content type given in metadata (' + str(content_link.get(
-                                'type')) + ') differs from content type given in Header response (' + str(
+                            self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: (' + str(content_link.get(
+                                'type')) + ') vs. (' + str(
                                 content_link['header_content_type']) + ')')
                             self.logger.info(
-                                'FsF-F3-01M : Replacing metadata content type with content type from Header response: ' + str(
+                                'FsF-F3-01M : Replacing metadata content type with content type from Header response -: ' + str(
                                     content_link['header_content_type']))
                             content_link['type'] = content_link['header_content_type']
                         # will pass even if the url cannot be accessed which is OK
@@ -79,8 +79,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         did_output_content.content_identifier_active = False
                         #content_list.append(did_output_content)
                     except urllib.error.HTTPError as e:
-                        self.logger.warning(
-                            'FsF-F3-01M : Content identifier {0} inaccessible, HTTPError code {1} '.format(
+                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0} , HTTPError code {1} '.format(
                                 content_link.get('url'), e.code))
                     except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
@@ -91,7 +90,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         did_output_content.content_identifier_active = True
                     content_list.append(did_output_content)
                 else:
-                    self.logger.warning('FsF-F3-01M : Object (content) url is empty - {}'.format(content_link))
+                    self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
 

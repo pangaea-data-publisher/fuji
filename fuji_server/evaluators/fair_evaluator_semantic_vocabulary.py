@@ -30,14 +30,14 @@ from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabula
 class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
     def evaluate(self):
 
-        self.result = SemanticVocabulary(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = SemanticVocabulary(id=self.metric_number, metric_identifier=self.metric_identifier,
                                               metric_name=self.metric_name)
 
         # remove duplicates
         if self.fuji.namespace_uri:
             self.fuji.namespace_uri = list(set(self.fuji.namespace_uri))
             self.fuji.namespace_uri = [x.strip() for x in self.fuji.namespace_uri]
-        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata - {1}'.format(
+        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
             self.metric_identifier, len(self.fuji.namespace_uri)))
 
         # exclude white list
@@ -49,7 +49,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.fuji.namespace_uri[:] = [x for x in self.fuji.namespace_uri if x not in excluded]
         if excluded:
             self.logger.info(
-                '{0} : Default vocabulary namespace(s) excluded - {1}'.format(self.metric_identifier, excluded))
+                '{0} : Default vocabulary namespace(s) excluded -: {1}'.format(self.metric_identifier, excluded))
 
         outputs = []
         score = 0
@@ -59,11 +59,11 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             lod_namespaces = [d['namespace'] for d in self.fuji.VOCAB_NAMESPACES if 'namespace' in d]
             exists = list(set(lod_namespaces) & set(self.fuji.namespace_uri))
             self.logger.info(
-                '{0} : Check the remaining namespace(s) exists in LOD - {1}'.format(self.metric_identifier, exists))
+                '{0} : Check the remaining namespace(s) exists in LOD -: {1}'.format(self.metric_identifier, exists))
             if exists:
                 score = self.total_score
                 self.setEvaluationCriteriumScore('FsF-I1-02M-1', 1, 'pass')
-                self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Namespace matches found - {1}'.format(self.metric_identifier, exists))
+                self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, exists))
                 for e in exists:
                     outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
             else:
@@ -71,12 +71,10 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
 
             not_exists = [x for x in self.fuji.namespace_uri if x not in exists]
             if not_exists:
-                self.logger.warning(
-                    '{0} : Vocabulary namespace (s) specified but no match is found in LOD reference list - {1}'.format(
+                self.logger.warning('{0} : Vocabulary namespace (s) specified but no match is found in LOD reference list -: {1}'.format(
                         self.metric_identifier, not_exists))
         else:
-            self.logger.warning(
-                '{0} : NO namespaces of semantic vocabularies found in the metadata'.format(self.metric_identifier))
+            self.logger.warning('{0} : NO namespaces of semantic vocabularies found in the metadata'.format(self.metric_identifier))
 
         if score > 0:
             test_status = 'pass'

@@ -36,7 +36,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
         #3) EU publications access rights check for http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC
         #4) Openaire Guidelines <dc:rights>info:eu-repo/semantics/openAccess</dc:rights>
-        self.result = DataAccessLevel(self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = DataAccessLevel(self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = DataAccessOutput()
         licence_evaluator = FAIREvaluatorLicense(self.fuji)
         #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
@@ -52,11 +52,15 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
-                self.logger.info('FsF-A1-01M : Access information specified - {}'.format(access_right))
+                #TODO: remove new lines also from other logger messages or handle this elsewhere
+                access_right = re.sub(r"[\r\n]+", ' ', access_right)
+                self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(access_right.replace('\n', ' ')))
                 if not licence_evaluator.isLicense(value=access_right, metric_id=self.metric_identifier):  # exclude license-based text from access_rights
+
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
                         last_group = len(rights_match.groups())
@@ -65,14 +69,25 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                             if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
-                                self.logger.info('FsF-A1-01M : Access level recognized as ' + str(right_status))
+                                self.logger.info('FsF-A1-01M : Standardized actionable access level recognized as -:' + str(right_status))
                                 break
                         break
                     else:
-                        self.logger.info('FsF-A1-01M : Not a standardized access level')
+                        self.logger.info('FsF-A1-01M : Not a standardized, actionable access level')
                 else:
-                    self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored - {}'.format(access_right))
+                    self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
                     exclude.append(access_right)
+
+            if not access_level:
+                lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
+                for access_right in access_rights:
+                    if access_right.lower() in lower_case_access_dict:
+                        self.logger.info('FsF-A1-01M : Non-actionable (term only) standard access level recognized as -:' + str(
+                            lower_case_access_dict.get(access_right.lower())))
+                        access_level = lower_case_access_dict.get(access_right.lower())
+                        access_details['access_condition'] = access_right
+                        break
+
             if not access_details and access_rights:
                 access_rights = set(access_rights) - set(exclude)
                 if access_rights :
@@ -97,7 +112,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if access_level == 'embargoed':
             available_date = self.fuji.metadata_merged.get('publication_date')
             if available_date:
-                self.logger.info('FsF-A1-01M : Embargoed access, available date - {}'.format(available_date))
+                self.logger.info('FsF-A1-01M : Embargoed access, available date -: {}'.format(available_date))
                 access_details['available_date'] = available_date
             else:
                 self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
@@ -112,7 +127,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if access_level: #must be one of ['public', 'embargoed', 'restricted', 'closed_metadataonly']
             self.output.access_level = access_level
             self.setEvaluationCriteriumScore('FsF-A1-01M-1', 1, 'pass')
-            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-01M : Access level to data could successfully be determined: '+access_level)
+            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-01M : Access level to data could successfully be determined -: '+access_level)
         else:
             self.logger.warning('FsF-A1-01M : Unable to determine the access level')
         self.output.access_details = access_details

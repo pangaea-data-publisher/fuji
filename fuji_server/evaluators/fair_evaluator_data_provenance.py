@@ -31,7 +31,7 @@ from fuji_server.helper.metadata_mapper import Mapper
 class FAIREvaluatorDataProvenance(FAIREvaluator):
     def evaluate(self):
 
-        self.result = DataProvenance(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = DataProvenance(id=self.metric_number, metric_identifier=self.metric_identifier,
                                                 metric_name=self.metric_name)
         self.output = DataProvenanceOutput()
         score = 0

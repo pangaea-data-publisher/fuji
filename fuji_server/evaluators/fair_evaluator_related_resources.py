@@ -29,10 +29,10 @@ from fuji_server.models.related_resource_output import RelatedResourceOutput
 
 class FAIREvaluatorRelatedResources(FAIREvaluator):
     def evaluate(self):
-        self.result = RelatedResource(id=self.fuji.count, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = RelatedResource(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = RelatedResourceOutput()
 
-        self.logger.info('{0} : Total number of related resources extracted - {1}'.format(self.metric_identifier,
+        self.logger.info('{0} : Total number of related resources extracted -: {1}'.format(self.metric_identifier,
                                                                                           len(self.fuji.related_resources)))
 
         # if self.metadata_merged.get('related_resources'):
@@ -40,7 +40,7 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
             # QC check: exclude potential incorrect relation
             self.fuji.related_resources = [item for item in self.fuji.related_resources if
                                       item.get('related_resource') != self.fuji.pid_url]
-            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Number of related resources after QC step - {1}'.format(self.metric_identifier, len(
+            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Number of related resources after QC step -: {1}'.format(self.metric_identifier, len(
                 self.fuji.related_resources)))
 
         if self.fuji.related_resources:  # TODO include source of relation

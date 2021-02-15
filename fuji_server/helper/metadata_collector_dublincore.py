@@ -37,7 +37,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
         source = None
         if self.source_metadata is not None:
             try:
-                self.logger.info('FsF-F2-01M : Extract DublinCore metadata from html page')
+                #self.logger.info('FsF-F2-01M : Trying to extract DublinCore metadata from html page')
                 # get core metadat from dublin core meta tags:
                 # < meta name = "DCTERMS.element" content = "Value" / >
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)
@@ -56,7 +56,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             meta_dc_matches.append([dc_name_parts[1],dc_t,meta_tag.get('content')])
                     #meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
-                    self.logger.exception('Parsing error, failed to extract DublinCore - {}'.format(e))
+                    self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
                     source = self.getEnumSourceNames().DUBLINCORE.value
@@ -112,7 +112,7 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     dc_core_metadata[elem] = v
                     if dc_core_metadata.get('related_resources'):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
-                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(count, source))
+                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted -: {0} from {1}'.format(count, source))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
 

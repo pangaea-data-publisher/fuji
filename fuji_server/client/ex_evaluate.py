@@ -152,7 +152,7 @@ testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #testpids=['https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi']
 testpids=['http://doi.org/10.17882/42182']
 #testpids = muchotestpids
-testpids =['10.15152/QDB.121']
+testpids =['https://datadoi.ee/handle/33/48']
 startpid=''
 def effectivehandlers(logger):
     handlers = logger.handlers

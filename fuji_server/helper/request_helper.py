@@ -97,7 +97,7 @@ class RequestHelper:
           a=1
         return True
 
-    def content_negotiate(self, metric_id=''):
+    def content_negotiate(self, metric_id='', ignore_html = True):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id=metric_id
         source = 'html'
@@ -155,9 +155,13 @@ class RequestHelper:
                                 for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                     if content_type in at.value:
                                         if at.name == 'html':
-                                            self.logger.info('%s : Found HTML page!' % metric_id)
-
-                                            self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
+                                            #since we already parse HTML in the landing page we ignore this and do not parse again
+                                            if ignore_html == False:
+                                                self.logger.info('%s : Found HTML page!' % metric_id)
+                                                self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
+                                            else:
+                                                self.logger.info('%s : Ignoring HTML response' % metric_id)
+                                                self.parse_response = None
                                             source='html'
                                             break
                                         if at.name == 'xml': # TODO other types (xml)
@@ -192,7 +196,7 @@ class RequestHelper:
                     else:
                         self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                 else:
-                    self.logger.warning('{0} : NO successful response received, status code - {1}'.format(metric_id, str(status_code)))
+                    self.logger.warning('{0} : NO successful response received, status code -: {1}'.format(metric_id, str(status_code)))
             #except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
             #    self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
@@ -201,12 +205,12 @@ class RequestHelper:
             #except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
+                self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
             except urllib.error.URLError as e:
-                self.logger.warning("{} : RequestException: {} : {}".format(metric_id, e.reason, self.request_url))
+                self.logger.warning("{} : RequestException -: {} : {}".format(metric_id, e.reason, self.request_url))
                 #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
         return source, self.parse_response
 
@@ -214,10 +218,11 @@ class RequestHelper:
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         try:
+            #print(html_texts.encode('utf8'))
             extracted = extruct.extract(html_texts.encode('utf8'))
-        except:
+        except Exception as e:
             extracted=None
-            self.logger.warning('%s : Failed to perform parsing on microdata or JSON %s' % (self.metric_id, self.request_url))
+            self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' % (self.metric_id, self.request_url+' '+str(e)))
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
@@ -227,13 +232,13 @@ class RequestHelper:
         # https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#rdflib.graph.Graph.parse
         graph = None
         try:
-            self.logger.info('%s : Try to parse RDF from %s' % (self.metric_id, self.request_url))
+            self.logger.info('%s : Try to parse RDF from -: %s' % (self.metric_id, self.request_url))
             graph = rdflib.Graph()
             graph.parse(data=response, format=type)
             #queries have to be done in specific metadata collector classes
         except:
             error = sys.exc_info()[0]
-            self.logger.warning('%s : Failed to parse RDF %s %s' % (self.metric_id, self.request_url, str(error)))
+            self.logger.warning('%s : Failed to parse RDF -: %s %s' % (self.metric_id, self.request_url, str(error)))
             self.logger.debug(error)
         return graph
 
@@ -254,7 +259,7 @@ class RequestHelper:
         # TODO: implement a generic XML parsing which checks domain specific
         # document schema and performs a XSLT to get metadata elements
         # write some domain specific XSLTs and/or parsers
-        self.logger.info('%s : Try to parse XML from %s' % (self.metric_id, self.request_url))
+        self.logger.info('%s : Try to parse XML from -: %s' % (self.metric_id, self.request_url))
         self.logger.warning('%s : Domain specific XML parsing not yet implemented ' % (self.metric_id,))
         #print('Not yet implemented')
         return None

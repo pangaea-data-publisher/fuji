@@ -61,7 +61,7 @@ class OAIMetadataProvider(MetadataProvider):
                     if not any(s in metadata_schema for s in filter):
                         schemas[metadata_prefix]= [metadata_schema]
                     else:
-                        self.logger.info('{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint - {1}'.format(self.metric_id,metadata_prefix))
+                        self.logger.info('{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {1}'.format(self.metric_id,metadata_prefix))
             except:
                 self.logger.info(
                     '{0} : Could not parse XML response retrieved from OAI-PMH endpoint'.format(self.metric_id))

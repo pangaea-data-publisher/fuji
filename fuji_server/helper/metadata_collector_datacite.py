@@ -38,7 +38,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
     def parse_metadata(self):
         source_name = None
         dcite_metadata = {}
-        self.logger.info('FsF-F2-01M : Extract datacite metadata')
+        self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
         requestHelper = RequestHelper(self.pid_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.datacite_json)
         neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
@@ -58,7 +58,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                                 dcite_metadata['creator'] = names
 
                     if dcite_metadata.get('related_resources'):
-                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(
+                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
                             len(dcite_metadata['related_resources']), source_name))
                         temp_rels = []
 
@@ -75,5 +75,5 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                             flat = ', '.join(map(str, value))
                             dcite_metadata[key] = flat
             except Exception as e:
-                self.logger.exception('Failed to extract Datacite Json - {}'.format(e))
+                self.logger.exception('Failed to extract Datacite Json -: {}'.format(e))
         return source_name, dcite_metadata

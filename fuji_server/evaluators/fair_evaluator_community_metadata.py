@@ -30,7 +30,7 @@ from fuji_server.models.community_endorsed_standard_output_inner import Communit
 
 class FAIREvaluatorCommunityMetadata(FAIREvaluator):
     def evaluate(self):
-        self.result = CommunityEndorsedStandard(id=self.fuji.count, metric_identifier=self.metric_identifier,
+        self.result = CommunityEndorsedStandard(id=self.metric_number, metric_identifier=self.metric_identifier,
                                          metric_name=self.metric_name)
 
         standards_detected: List[CommunityEndorsedStandardOutputInner] = []
@@ -39,7 +39,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         # ============== retrieve community standards by collected namespace uris
         if len(self.fuji.namespace_uri) > 0:
             no_match = []
-            self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata - {}'.format(self.fuji.namespace_uri))
+            self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata -: {}'.format(self.fuji.namespace_uri))
             for std_ns in self.fuji.namespace_uri:
                 std_ns_temp = self.fuji.lookup_metadatastandard_by_uri(std_ns)
                 # if std_ns_temp in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
@@ -48,11 +48,11 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     std_name = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('title')
                     if subject and all(elem == "Multidisciplinary" for elem in subject):
                         self.logger.info(
-                            'FsF-R1.3-01M : Skipped non-disciplinary standard found through namespaces - {}'.format(
+                            'FsF-R1.3-01M : Skipped non-disciplinary standard found through namespaces -: {}'.format(
                                 std_ns))
                     else:
                         self.logger.log(self.fuji.LOG_SUCCESS,
-                            'FsF-R1.3-01M : Found disciplinary standard through namespaces - {}'.format(
+                            'FsF-R1.3-01M : Found disciplinary standard through namespaces -: {}'.format(
                                 std_ns))
                         nsout = CommunityEndorsedStandardOutputInner()
                         nsout.metadata_standard = std_name  # use here original standard uri detected
@@ -63,7 +63,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     no_match.append(std_ns)
             if len(no_match) > 0:
                 self.logger.info(
-                    'FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog - {}'.format(
+                    'FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog -: {}'.format(
                         no_match))
         if standards_detected:
             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1a', 1, 'pass')
@@ -78,11 +78,11 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     if standard_found:
                         subject = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
                         if subject and all(elem == "Multidisciplinary" for elem in subject):
-                            self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard - {}'.format(s))
+                            self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard -: {}'.format(s))
                         else:
                             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
                             self.logger.log(self.fuji.LOG_SUCCESS,
-                                            'FsF-R1.3-01M : Found disciplinary standard through re3data - {}'.format(
+                                            'FsF-R1.3-01M : Found disciplinary standard through re3data -: {}'.format(
                                                 s))
                             out = CommunityEndorsedStandardOutputInner()
                             out.metadata_standard = s

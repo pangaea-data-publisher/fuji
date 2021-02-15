@@ -40,10 +40,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             ext_meta = self.source_metadata[0]
-        else:
-            #if self.is_pid:
-            # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
-
+        elif self.pid_url:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
             # TODO (IMPORTANT) PID agency may support Schema.org in JSON-LD
             # TODO (IMPORTANT) validate schema.org
@@ -53,7 +50,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
         if ext_meta is not None:
-            self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             check_context_type =  ["Dataset", "Collection"]
@@ -64,9 +61,9 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                     if str(ext_meta['@type']).lower() not in self.SCHEMA_ORG_CONTEXT:
                         self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type')
                     elif ext_meta['@type'] not in check_context_type:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a research data object')
+                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
                     else:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD which seems to be valid, based on the given context type')
+                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type')
 
                         self.namespaces.append('http://schema.org/')
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
@@ -85,7 +82,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                     #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
                     invalid_license = False
                     if jsnld_metadata.get('license'):
-                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) - {}'.format(
+                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) -: {}'.format(
                             jsnld_metadata.get('license')))
 
                         if isinstance(jsnld_metadata.get('license'), list):
@@ -111,10 +108,12 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                         if relateds:
                             jsnld_metadata['related_resources'] = relateds
-                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
                         else:
                             del jsnld_metadata['related_resources']
                             self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+
+
 
                     # TODO quick-fix, expand mapping expression instead
                     if jsnld_metadata.get('object_size'):
@@ -125,7 +124,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
             except Exception as err:
                 #print(err.with_traceback())
-                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org - {}'.format(err))
+                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
 

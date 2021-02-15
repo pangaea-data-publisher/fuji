@@ -45,7 +45,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
     def parse_metadata(self):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
-        self.logger.info('FsF-F2-01M : Extract metadata from {}'.format(self.source_name))
+        #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata=dict()
         if self.rdf_graph is None:
             #print(self.target_url)
@@ -66,7 +66,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                             rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
                             rdf_response = jsonldgraph
                         except Exception as e:
-                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD - {}'.format(e))
+                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
@@ -86,7 +86,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
             for ns in rdf_response.namespaces():
                 self.namespaces.append(str(ns[1]))
         else:
-            self.logger.info('FsF-F2-01M : Expected RDF Graph but received - {0}'.format(self.content_type))
+            self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
         return self.source_name, rdf_metadata
 
     def get_default_metadata(self,g):
@@ -100,12 +100,12 @@ class MetaDataCollectorRdf (MetaDataCollector):
                         meta[l] = str(v)
                 break
         except Exception as e:
-            self.logger.info('FsF-F2-01M : SPARQLing error - {}'.format(e))
+            self.logger.info('FsF-F2-01M : SPARQLing error -: {}'.format(e))
         if len(meta)<=0:
             meta['object_type'] = 'Other'
             self.logger.info('FsF-F2-01M : Could not find metadata elements through generic SPARQL query on RDF')
         else:
-            self.logger.info('FsF-F2-01M : Found some metadata elements through generic SPARQL query on RDF: '+str(meta.keys()))
+            self.logger.info('FsF-F2-01M : Found some metadata elements through generic SPARQL query on RDF -: '+str(meta.keys()))
         return meta
 
     #TODO rename to: get_core_metadata
@@ -153,6 +153,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
+
         dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
 
@@ -193,7 +194,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
 
             if dcat_metadata['object_content_identifier']:
-                self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata : ' + str(dcat_metadata['object_content_identifier']))
+                self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata -: ' + str(dcat_metadata['object_content_identifier']))
                 #TODO: add provenance metadata retrieval
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
