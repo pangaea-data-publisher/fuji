@@ -52,10 +52,13 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
-                self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(access_right))
+                #TODO: remove new lines also from other logger messages or handle this elsewhere
+                access_right = re.sub(r"[\r\n]+", ' ', access_right)
+                self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(access_right.replace('\n', ' ')))
                 if not licence_evaluator.isLicense(value=access_right, metric_id=self.metric_identifier):  # exclude license-based text from access_rights
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
