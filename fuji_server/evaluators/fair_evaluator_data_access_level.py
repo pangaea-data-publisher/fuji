@@ -60,6 +60,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 access_right = re.sub(r"[\r\n]+", ' ', access_right)
                 self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(access_right.replace('\n', ' ')))
                 if not licence_evaluator.isLicense(value=access_right, metric_id=self.metric_identifier):  # exclude license-based text from access_rights
+
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
                         last_group = len(rights_match.groups())
@@ -68,14 +69,25 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                             if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
-                                self.logger.info('FsF-A1-01M : Access level recognized as -:' + str(right_status))
+                                self.logger.info('FsF-A1-01M : Standardized actionable access level recognized as -:' + str(right_status))
                                 break
                         break
                     else:
-                        self.logger.info('FsF-A1-01M : Not a standardized access level')
+                        self.logger.info('FsF-A1-01M : Not a standardized, actionable access level')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
                     exclude.append(access_right)
+
+            if not access_level:
+                lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
+                for access_right in access_rights:
+                    if access_right.lower() in lower_case_access_dict:
+                        self.logger.info('FsF-A1-01M : Non-actionable (term only) standard access level recognized as -:' + str(
+                            lower_case_access_dict.get(access_right.lower())))
+                        access_level = lower_case_access_dict.get(access_right.lower())
+                        access_details['access_condition'] = access_right
+                        break
+
             if not access_details and access_rights:
                 access_rights = set(access_rights) - set(exclude)
                 if access_rights :
