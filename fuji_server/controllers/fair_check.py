@@ -101,7 +101,7 @@ class FAIRCheck:
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
-        self.id = uid
+        self.id = self.input_id = uid
         self.oaipmh_endpoint = oaipmh
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
@@ -141,7 +141,7 @@ class FAIRCheck:
         self.embedded_retrieved = False
         FAIRCheck.load_predata()
         self.extruct = None
-        self.extruct_result = None
+        self.extruct_result = {}
         self.tika_content_types_list = []
 
 
@@ -199,9 +199,10 @@ class FAIRCheck:
             else:
                 self.logger.warning('FsF-F2-01M : NO structured metadata embedded in HTML')
             '''
-        if self.reference_elements:  # this will be always true as we need datacite client id
-            self.retrieve_metadata_embedded(embedded_exists)
-            self.retrieve_metadata_external()
+        #if self.reference_elements:  # this will be always true as we need datacite client id
+        #    if include_embedded ==True:
+        #        self.retrieve_metadata_embedded(embedded_exists)
+        #    self.retrieve_metadata_external()
 
         # ========= clean merged metadata, delete all entries which are None or ''
         data_objects = self.metadata_merged.get('object_content_identifier')
@@ -268,7 +269,7 @@ class FAIRCheck:
         else:
             self.logger.warning('{} : Skipped external ressources (OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
 
-    def retrieve_metadata_embedded(self, extruct_metadata):
+    def retrieve_metadata_embedded(self, extruct_metadata ={}):
         isPid = False
         if self.pid_scheme:
             isPid = True
@@ -611,6 +612,8 @@ class FAIRCheck:
 
         if typed_metadata_links is not None:
             typed_rdf_collector = None
+            #unique entries for typed links
+            typed_metadata_links = [dict(t) for t in {tuple(d.items()) for d in typed_metadata_links}]
             for metadata_link in typed_metadata_links:
                 if metadata_link['type'] in ['application/rdf+xml','text/n3','text/ttl','application/ld+json']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: ('+str(metadata_link['type'])+' '+str(metadata_link['url'])+')')
@@ -682,7 +685,7 @@ class FAIRCheck:
     def check_unique_persistent(self):
         return self.check_unique_identifier(), self.check_persistent_identifier()
 
-    def check_minimal_metatadata(self):
+    def check_minimal_metatadata(self,include_embedded = True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
         core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
         return core_metadata_check.getResult()
