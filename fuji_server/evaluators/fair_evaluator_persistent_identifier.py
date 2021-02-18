@@ -32,7 +32,6 @@ import re
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
     def evaluate(self):
-
         self.result = Persistence(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = PersistenceOutput()
         # ======= CHECK IDENTIFIER PERSISTENCE =======
@@ -50,10 +49,17 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
+            if type(self.fuji.extruct_result) != dict:
+                self.fuji.extruct_result ={}
             r = requestHelper.getHTTPResponse()
 
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
+                #in case the test has been repeated because a PID has been found in metadata
+                if self.fuji.repeat_pid_check == True:
+                    if self.fuji.landing_url != self.fuji.input_id:
+                        self.logger.warning('FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL')
+
                 if r.status == 200:
                     # identify signposting links in header
                     header_link_string = requestHelper.getHTTPResponse().getheader('Link')
@@ -64,6 +70,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                             found_link = None
                             found_type, type_match = None, None
                             found_rel, rel_match = None, None
+                            found_formats, formats_match = None, None
                             parsed_link = preparsed_link.strip().split(';')
                             found_link = parsed_link[0].strip()
                             for link_prop in parsed_link[1:]:
@@ -71,11 +78,15 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                     rel_match = re.search('rel=\"(.*?)\"', link_prop)
                                 elif str(link_prop).startswith('type="'):
                                     type_match = re.search('type=\"(.*?)\"', link_prop)
+                                elif str(link_prop).startswith('formats="'):
+                                    formats_match = re.search('formats=\"(.*?)\"', link_prop)
                             if type_match:
                                 found_type = type_match[1]
                             if rel_match:
                                 found_rel = rel_match[1]
-                            signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel}
+                            if formats_match:
+                                found_formats = formats_match[1]
+                            signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel, 'profile':found_formats}
                             if found_link:
                                 self.fuji.signposting_header_links.append(signposting_link_dict)
 
