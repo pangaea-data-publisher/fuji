@@ -27,6 +27,7 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_mapper import Mapper
 
 class FAIREvaluatorCoreMetadata(FAIREvaluator):
+
     def evaluate(self):
         if self.fuji.landing_url is None:
             self.logger.warning('FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
