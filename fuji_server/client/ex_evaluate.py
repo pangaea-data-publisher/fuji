@@ -19,7 +19,7 @@ oai_pmh = 'http://ws.pangaea.de/oai/'
 debug = True
 
 muchotestpids=[
-    '10.15493/DEFF.10000003','https://phaidra.cab.unipd.it/view/o:267291',
+    '10.15493/DEFF.10000003','https://phaidra.cab.unipd.it/view/o:267291','https://jyx.jyu.fi/handle/123456789/39205',
     'doi:10.1038/nphys1170','doi:10.17882/42182','https://deims.org/sites/default/files/data/elter_va_fruska_gora_temperature_0.xls',
     '10.25504/FAIRsharing.2bdvmk','http://bio2rdf.org/affymetrix:1415765_at','doi:10.18129/B9.bioc.BiocGenerics',
     'https://data.noaa.gov/dataset/dataset/w00411-nos-hydrographic-survey-2015-08-15','10.6075/J0513WJD','10.7280/D1P075',
@@ -146,13 +146,15 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['http://doi.org/10.1007/s10531-013-0468-6']
 #rdf
 #testpids=['http://tun.fi/JX.1099769']
-testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
+#testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #rdf
 #testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
 #testpids=['https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi']
-testpids=['http://doi.org/10.17882/42182']
-#testpids = muchotestpids
-testpids =['https://datadoi.ee/handle/33/48']
+#testpids=['http://doi.org/10.17882/42182']
+testpids = muchotestpids
+#testpids =['https://repo.clarino.uib.no/xmlui/handle/11509/103']
+#testpids=['https://data.aussda.at/dataset.xhtml?persistentId=doi:10.11587/QQ7HTL']
+testpids =['https://www.proteinatlas.org/ENSG00000180739-S1PR5/tissue/primary+data']
 startpid=''
 def effectivehandlers(logger):
     handlers = logger.handlers
@@ -195,19 +197,25 @@ def main():
     start=False
     usedatacite = True
     tracemalloc.start()
+    n=1
     for identifier in testpids:
 
         print (identifier)
+        print(n)
+        n+=1
         if identifier==startpid or not startpid:
             start=True
         if start:
             ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
 
-           # print(effectivehandlers(ft.logger))
             uid_result, pid_result = ft.check_unique_persistent()
-            core_metadata_result = ft.check_minimal_metatadata()
+            ft.retrieve_metadata_embedded(ft.extruct_result)
+            include_embedded= True
             if ft.repeat_pid_check:
                 uid_result, pid_result = ft.check_unique_persistent()
+            ft.retrieve_metadata_external()
+
+            core_metadata_result = ft.check_minimal_metatadata()
             content_identifier_included_result = ft.check_content_identifier_included()
             access_level_result=ft.check_data_access_level()
             license_result = ft.check_license()
