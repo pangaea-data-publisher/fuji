@@ -70,9 +70,13 @@ class MetaDataCollectorRdf (MetaDataCollector):
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
+
+
         ontology_indicator=[rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')]
         if isinstance(rdf_response,rdflib.graph.Graph):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
+            graph_text = rdf_response.serialize(format="ttl")
+            self.getNamespacesfromIRIs(graph_text)
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
             if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in dict(list(rdf_response.namespaces())).values():

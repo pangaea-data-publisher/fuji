@@ -25,6 +25,7 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.preprocessor import Preprocessor
 
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+from urlextract import URLExtract
 
 class MetaDataCollectorSchemaOrg (MetaDataCollector):
     source_name=None
@@ -33,6 +34,9 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
         #self.is_pid = ispid
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
+
+
+
 
     def parse_metadata(self, ls=None):
         jsnld_metadata = {}
@@ -50,6 +54,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
 
         if ext_meta is not None:
+            self.getNamespacesfromIRIs(ext_meta)
             self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
