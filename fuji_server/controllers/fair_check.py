@@ -95,7 +95,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.6'
+    FUJI_VERSION = 'v1.0.7'
 
     def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
         uid_bytes = uid.encode('utf-8')
