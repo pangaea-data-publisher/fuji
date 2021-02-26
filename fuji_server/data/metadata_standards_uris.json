@@ -1622,6 +1622,27 @@
       "Genetics"
     ]
   },
+  "http://www.georss.org": {
+    "title": "GeoRSS",
+    "identifier": "msc:m1000",
+    "subject_areas": [
+      "Earth sciences"
+    ]
+  },
+  "http://www.georss.org/georss/": {
+    "title": "GeoRSS",
+    "identifier": "msc:m1000",
+    "subject_areas": [
+      "Earth sciences"
+    ]
+  },
+  "http://schemas.opengis.net/georss/1.0/": {
+    "title": "GeoRSS",
+    "identifier": "msc:m1000",
+    "subject_areas": [
+      "Earth sciences"
+    ]
+  },
   "http://www.ecb.int/stats/services/sdmx/html/index.en.html": {
     "title": "GESMES/TS (Generic Statistical Message for Time Series)",
     "identifier": "msc:m62",
