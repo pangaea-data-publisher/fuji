@@ -115,7 +115,6 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
 
         # 2c. try to retrieve via sparql endpoint (if available)
         if not formalExists or 1==1:
-            print('SPARQL')
             # self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/query/' #test web sparql form
