@@ -1691,6 +1691,38 @@
       "Topography"
     ]
   },
+  "http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd": {
+    "title": "INSPIRE Metadata Regulation",
+    "identifier": "msc:m66",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
+  "http://inspire.ec.europa.eu/schemas/common/1.0/network.xsd": {
+    "title": "INSPIRE Metadata Regulation",
+    "identifier": "msc:m66",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
   "http://www.ivoa.net/documents/#specs": {
     "title": "International Virtual Observatory Alliance Technical Specifications",
     "identifier": "msc:m20",
