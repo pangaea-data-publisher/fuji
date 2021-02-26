@@ -24,15 +24,24 @@ from urllib.error import HTTPError
 
 import rdflib
 from SPARQLWrapper import SPARQLWrapper, SPARQLExceptions, RDFXML
+
+from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_provider import MetadataProvider
 
 class SPARQLMetadataProvider(MetadataProvider):
 
+    def getMetadataStandards(self):
+        standards = {v: k for v, k in enumerate(self.namespaces)}
+        return standards
+
     def getMetadata(self, queryString):
+
         wrapper = SPARQLWrapper(self.endpoint)
         wrapper.setQuery(queryString)
         wrapper.setReturnFormat(RDFXML)
+
         rdf_graph = None
+        content_type = None
         try:
             response = wrapper.query() #application/rdf+xml
             content_type = response.info()['content-type'].split(';')[0]
@@ -47,8 +56,11 @@ class SPARQLMetadataProvider(MetadataProvider):
                 # an RDF graph [RDF-CONCEPTS] serialized, for example, in the RDF/XML syntax [RDF-XML], or an equivalent RDF graph serialization, for SPARQL Query forms DESCRIBE and CONSTRUCT
                 if isinstance(rdf_graph, rdflib.graph.Graph) and len(rdf_graph) > 0 :
                     self.logger.info('{0} : number of triples found in the graph, format -: {1} of  {2}'.format(self.metric_id, len(rdf_graph), content_type))
+                    graph_text = rdf_graph.serialize(format="ttl")
+
                     for n in rdf_graph.namespaces():
                         self.namespaces.append(str(n[1]))
+                    self.getNamespacesfromIRIs(graph_text)
                 else:
                     self.logger.warning('{0} : SPARQL query returns NO result.'.format(self.metric_id))
         except HTTPError as err1:

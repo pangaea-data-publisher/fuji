@@ -1804,6 +1804,23 @@
       "Topography"
     ]
   },
+  "http://www.isotc211.org/2005/gmd": {
+    "title": "ISO 19115",
+    "identifier": "msc:m22",
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Geology",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ]
+  },
   "http://www.loc.gov/marc/": {
     "title": "MARC (Machine-Readable Cataloging)",
     "identifier": "msc:m88",

@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 1.0.0
+  version: 1.0.7
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -36,7 +36,8 @@ paths:
             example:
               object_identifier: https://doi.org/10.1594/PANGAEA.908011
               test_debug: true
-              oaipmh_endpoint: http://ws.pangaea.de/oai/provider
+              metadata_service_endpoint: http://ws.pangaea.de/oai/provider
+              metadata_service_type: oai_pmh
               use_datacite: true
       responses:
         "200":
@@ -560,9 +561,11 @@ components:
           description: Indicate if the detailed evaluation procedure of the metrics
             should to be included in the response
           default: false
-        oaipmh_endpoint:
+        metadata_service_endpoint:
           type: string
-          description: The URL of the OAI-PMH data-provider
+          description: The URL of the catalogue endpoint (e.g. OAI-PMH data-provider)
+        metadata_service_type:
+          type: string
         use_datacite:
           type: boolean
           description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata

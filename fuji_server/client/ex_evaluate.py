@@ -15,7 +15,7 @@ import tracemalloc
 
 identifier = 'https://doi.org/10.1594/PANGAEA.902845'
 #identifier='https://doi.org/10.26050/WDCC/MOMERGOMBSCMAQ'
-oai_pmh = 'http://ws.pangaea.de/oai/'
+#oai_pmh = 'http://ws.pangaea.de/oai/'
 debug = True
 
 muchotestpids=[
@@ -145,7 +145,7 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046']
 #testpids=['http://doi.org/10.1007/s10531-013-0468-6']
 #rdf
-#testpids=['http://tun.fi/JX.1099769']
+testpids=['http://tun.fi/JX.1099769']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #rdf
 #testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
@@ -154,8 +154,10 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 testpids = muchotestpids
 #testpids =['https://repo.clarino.uib.no/xmlui/handle/11509/103']
 #testpids=['https://data.aussda.at/dataset.xhtml?persistentId=doi:10.11587/QQ7HTL']
-testpids =['https://www.proteinatlas.org/ENSG00000180739-S1PR5/tissue/primary+data']
+#testpids =['https://meta.icos-cp.eu/collections/WM5ShdLFqPSI0coyVa57G1_Z']
 startpid=''
+metadata_service_endpoint = None
+metadata_service_type = None
 def effectivehandlers(logger):
     handlers = logger.handlers
     while True:
@@ -206,7 +208,10 @@ def main():
         if identifier==startpid or not startpid:
             start=True
         if start:
-            ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
+            ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url=metadata_service_endpoint,
+                           metadata_service_type=metadata_service_type, use_datacite=usedatacite)
+
+            #ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
 
             uid_result, pid_result = ft.check_unique_persistent()
             ft.retrieve_metadata_embedded(ft.extruct_result)

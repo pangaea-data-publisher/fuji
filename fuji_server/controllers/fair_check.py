@@ -71,6 +71,7 @@ from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
@@ -95,14 +96,24 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.7'
+    FUJI_VERSION = 'v1.0.7b'
 
-    def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
+    def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         self.id = self.input_id = uid
-        self.oaipmh_endpoint = oaipmh
+        self.metadata_service_url = metadata_service_url
+        self.metadata_service_type = metadata_service_type
+        self.oaipmh_endpoint = None
+        self.csw_endpoint = None
+        self.sparql_endpoint = None
+        if self.metadata_service_type == 'oai_pmh':
+            self.oaipmh_endpoint = self.metadata_service_url
+        elif self.metadata_service_type == 'ogc_csw':
+            self.csw_endpoint = self.metadata_service_url
+        elif self.metadata_service_type == 'sparql':
+            self.sparql_endpoint = self.metadata_service_url
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.origin_url = None #the url from where all starts - in case of redirection we'll need this later on
@@ -124,7 +135,7 @@ class FAIRCheck:
         self.related_resources = []
        # self.test_data_content_text = None# a helper to check metadata against content
         self.rdf_graph = None
-        self.sparql_endpoint = None
+
         self.rdf_collector = None
         self.use_datacite = use_datacite
         self.repeat_pid_check = False
@@ -238,8 +249,8 @@ class FAIRCheck:
             client_id = self.metadata_merged.get('datacite_client')
             self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
 
-            if self.oaipmh_endpoint:
-                self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
+            if self.metadata_service_url is not None:
+                self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request.')
             else:
                 #find endpoint via datacite/re3data if pid is provided
                 if client_id and self.pid_scheme:
@@ -261,13 +272,47 @@ class FAIRCheck:
                     stds = None
                     if self.community_standards_uri:
                         stds = list(self.community_standards_uri.keys())
-                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format('FsF-R1.3-01M',stds ))
+                        self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format('FsF-R1.3-01M',stds ))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
                 self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+
+            # retrieve metadata standards info from OGC CSW
+            if self.csw_endpoint:
+                self.logger.info('{} : Use OGC CSW endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.csw_endpoint)):
+                    csw_provider = OGCCSWMetadataProvider(endpoint=self.csw_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = csw_provider.getMetadataStandards()
+                    self.namespace_uri.extend(csw_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                        self.logger.log(self.LOG_SUCCESS,
+                                    '{} : Found disciplinary standards that are listed in OGC CSW endpoint -: {}'.format(
+                                        'FsF-R1.3-01M', stds))
+                else:
+                    self.logger.info('{} : Invalid OGC CSW endpoint'.format('FsF-R1.3-01M'))
+
+            # retrieve metadata standards info from SPARQL endpoint
+            if self.sparql_endpoint:
+                self.logger.info('{} : Use SPARQL endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.sparql_endpoint)):
+                    sparql_provider = SPARQLMetadataProvider(endpoint=self.sparql_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = sparql_provider.getMetadataStandards()
+                    self.namespace_uri.extend(sparql_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                        self.logger.log(self.LOG_SUCCESS,
+                                    '{} : Found disciplinary standards that are listed in SPARQL endpoint -: {}'.format(
+                                        'FsF-R1.3-01M', stds))
+                else:
+                    self.logger.info('{} : Invalid SPARQL endpoint'.format('FsF-R1.3-01M'))
+
+
         else:
-            self.logger.warning('{} : Skipped external ressources (OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
+            self.logger.warning('{} : Skipped external ressources (e.g. OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata ={}):
         isPid = False

@@ -22,6 +22,10 @@
 
 from abc import ABC, abstractmethod
 
+from urlextract import URLExtract
+
+from fuji_server.helper.preprocessor import Preprocessor
+
 
 class MetadataProvider(ABC):
 
@@ -39,3 +43,28 @@ class MetadataProvider(ABC):
     @abstractmethod
     def getMetadata(self):
         pass
+
+    @abstractmethod
+    def getMetadataStandards(self):
+        pass
+
+    def getNamespacesfromIRIs(self, meta_source):
+        extractor = URLExtract()
+        namespaces = set()
+        if meta_source is not None:
+            for url in set(extractor.gen_urls(str(meta_source))):
+                namespace_candidate = url.rsplit('/', 1)[0]
+                if namespace_candidate != url:
+                    namespaces.add(namespace_candidate)
+                else:
+                    namespace_candidate = url.rsplit('#', 1)[0]
+                    if namespace_candidate != url:
+                        namespaces.add(namespace_candidate)
+
+            vocabs = Preprocessor.getLinkedVocabs()
+            lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
+            for ns in namespaces:
+                if ns+'/' in lod_namespaces:
+                    self.namespaces.append(ns+'/')
+                elif ns+'#' in lod_namespaces:
+                    self.namespaces.append(ns+'#')
