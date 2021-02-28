@@ -24,7 +24,7 @@ The service uses the [Connexion](https://github.com/zalando/connexion) library o
 ## Usage
 Before running the service, please set user details in the config file, see config/server.ini.
 
-To start the service, you may execute the following python-based or docker-based installation commands from the root directory:
+To install F-UJI, you may execute the following python-based or docker-based installation commands from the root directory:
 
 #### Python module-based installation:
 ```
