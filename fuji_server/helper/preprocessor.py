@@ -55,12 +55,30 @@ class Preprocessor(object):
     default_namespaces = []
     standard_protocols = {}
     resource_types = []
+    identifiers_org_data = {}
+
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
     logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
+
+    @classmethod
+    def get_identifiers_org_data(cls):
+        if not cls.identifiers_org_data:
+            cls.retrieve_identifiers_org_data()
+        return cls.identifiers_org_data
+
+    @classmethod
+    def retrieve_identifiers_org_data(cls):
+        std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'identifiers_org_resolver_data.json')
+        with open(std_uri_path,encoding='utf8') as f:
+            identifiers_data = json.load(f)
+        if identifiers_data:
+            for namespace in identifiers_data['payload']['namespaces']:
+                cls.identifiers_org_data[namespace['prefix']] = {'pattern': namespace['pattern'],
+                                                             'url_pattern': namespace['resources'][0]['urlPattern']}
 
     @classmethod
     def get_resource_types(cls):
