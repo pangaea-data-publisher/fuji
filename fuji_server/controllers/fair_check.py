@@ -96,6 +96,7 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
+    IDENTIFIERS_ORG_DATA = {}
     FUJI_VERSION = 'v1.0.7b'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True):
@@ -186,6 +187,8 @@ class FAIRCheck:
             cls.SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
         if not cls.VALID_RESOURCE_TYPES:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
+        if not cls.IDENTIFIERS_ORG_DATA:
+            cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
