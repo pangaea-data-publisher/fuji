@@ -107,7 +107,6 @@ class RequestHelper:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
                 #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type, 'User-Agent': 'F-UJI'})
-                print(self.request_url)
                 context = ssl._create_unverified_context()
                 tp_response =  urllib.request.urlopen(tp_request,context=context)
                 self.http_response = tp_response
