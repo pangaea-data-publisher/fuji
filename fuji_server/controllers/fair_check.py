@@ -450,7 +450,7 @@ class FAIRCheck:
         #======== retrieve OpenSearch links
         search_links = self.get_html_typed_links(rel='search')
         for search in search_links:
-            if search['type'] in ['application/opensearchdescription+xml']:
+            if search.get('type') in ['application/opensearchdescription+xml']:
                 self.logger.info('FsF-R1.3-01M : Found OpenSearch link in HTML head (link rel=search) -: ' + str(search['url']))
                 self.namespace_uri.append('http://a9.com/-/spec/opensearch/1.1/')
 
@@ -458,8 +458,8 @@ class FAIRCheck:
         #TODO: do somethin useful with this..
         feed_links = self.get_html_typed_links(rel='alternate')
         for feed in feed_links:
-            if feed['type'] in ['application/rss+xml']:
-                self.logger.info('FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' + str(search['url']))
+            if feed.get('type') in ['application/rss+xml']:
+                self.logger.info('FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' + str(feed.get('url')))
                 feed_helper = RSSAtomMetadataProvider(self.logger,feed['url'],'FsF-R1.3-01M')
                 feed_helper.getMetadataStandards()
                 self.namespace_uri.extend(feed_helper.getNamespaces())
