@@ -100,7 +100,7 @@ class FAIRCheck:
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
     IDENTIFIERS_ORG_DATA = {}
-    FUJI_VERSION = 'v1.0.7b'
+    FUJI_VERSION = 'v1.0.8'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True):
         uid_bytes = uid.encode('utf-8')
