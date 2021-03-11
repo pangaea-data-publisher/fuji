@@ -30,7 +30,7 @@ import sys
 import urllib
 import urllib.request as urllib
 from typing import List, Any
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 import Levenshtein
 import idutils
@@ -75,6 +75,7 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
+from fuji_server.helper.metadataprovider_rss_atom import RSSAtomMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -444,6 +445,24 @@ class FAIRCheck:
             if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = data_sign_links
 
+
+
+        #======== retrieve OpenSearch links
+        search_links = self.get_html_typed_links(rel='search')
+        for search in search_links:
+            if search['type'] in ['application/opensearchdescription+xml']:
+                self.logger.info('FsF-R1.3-01M : Found OpenSearch link in HTML head (link rel=search) -: ' + str(search['url']))
+                self.namespace_uri.append('http://a9.com/-/spec/opensearch/1.1/')
+
+        #========= retrieve atom, GeoRSS links
+        #TODO: do somethin useful with this..
+        feed_links = self.get_html_typed_links(rel='alternate')
+        for feed in feed_links:
+            if feed['type'] in ['application/rss+xml']:
+                self.logger.info('FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' + str(search['url']))
+                feed_helper = RSSAtomMetadataProvider(self.logger,feed['url'],'FsF-R1.3-01M')
+                feed_helper.getMetadataStandards()
+                self.namespace_uri.extend(feed_helper.getNamespaces())
         #========= retrieve typed data object links =========
 
         data_meta_links = self.get_html_typed_links(rel='item')
@@ -458,7 +477,6 @@ class FAIRCheck:
                 identifiertotest = self.metadata_merged.get('object_identifier')[0]
             else:
                 identifiertotest = self.metadata_merged.get('object_identifier')
-            print('pid scheme:', self.pid_scheme)
             if self.pid_scheme is None:
                 #print(self.metadata_merged.get('object_identifier'))
                 idhelper = IdentifierHelper(identifiertotest)
@@ -488,8 +506,10 @@ class FAIRCheck:
                 href=l.attrib.get('href')
                 #handle relative paths
                 if urlparse(href).scheme == '':
-                    landingdir, landingfile = os.path.split(self.landing_url)
-                    href= landingdir+'/'+href
+                    href = urljoin(self.landing_url,href)
+                    #landingpath = urlparse(self.landing_url).path
+                    #landingdir, landingfile = os.path.split(landingpath)
+                    #href= landingdir+'/'+href
                 datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
 

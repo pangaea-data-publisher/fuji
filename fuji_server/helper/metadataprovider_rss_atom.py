@@ -27,7 +27,7 @@ import feedparser
 
 class RSSAtomMetadataProvider(MetadataProvider):
 
-    csw_namespaces = {'atom':'http://www.w3.org/2005/Atom','georss': 'http://www.georss.org/georss/'}
+    rss_namespaces = {'atom':'http://www.w3.org/2005/Atom','georss': 'http://www.georss.org/georss/'}
 
     def getMetadata(self):
         # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
@@ -42,7 +42,7 @@ class RSSAtomMetadataProvider(MetadataProvider):
         schemas = {}
         try:
             feed = feedparser.parse(self.endpoint)
-            print(feed.namespaces)
+            #print(feed.namespaces)
             for namespace_pre, namespace_uri in feed.namespaces.items():
                 if namespace_uri not in self.namespaces:
                     self.namespaces.append(str(namespace_uri))
