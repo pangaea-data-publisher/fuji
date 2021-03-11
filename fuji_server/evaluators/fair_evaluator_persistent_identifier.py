@@ -24,6 +24,7 @@
 import idutils
 from fuji_server import Persistence, PersistenceOutput
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urllib.parse import urlparse
@@ -40,7 +41,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         check_url = None
         signposting_pid = None
         if self.fuji.id_scheme is not None:
-            check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
+            check_url = self.fuji.pid_url
+            #check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
         if self.fuji.id_scheme =='url':
             self.fuji.origin_url = self.fuji.id
             check_url =self.fuji.id
@@ -96,13 +98,15 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         if signposting_pid_link:
                             signposting_pid = signposting_pid_link[0].get('url')
                         if signposting_pid:
-                            found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
-                            if len(found_ids) > 1:
-                                found_ids.remove('url')
-                                found_id = found_ids[0]
-                                if found_id in Mapper.VALID_PIDS.value:
-                                    self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
-                                    self.fuji.pid_scheme = found_id
+                            signidhelper = IdentifierHelper
+                            #found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
+                            found_id = signidhelper.preferred_schema
+                            #if len(found_ids) > 1:
+                            #    found_ids.remove('url')
+                            #    found_id = found_ids[0]
+                            if signidhelper.is_persistent:
+                                self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
+                                self.fuji.pid_scheme = found_id
 
                     up = urlparse(self.fuji.landing_url)
                     self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
@@ -127,7 +131,9 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
             if signposting_pid is None:
-                self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
+                idhelper = IdentifierHelper(self.fuji.id)
+                self.fuji.pid_url = idhelper.identifier_url
+                #self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
             else:
                 self.fuji.pid_url = signposting_pid[0]
             self.output.pid_scheme = self.fuji.pid_scheme
