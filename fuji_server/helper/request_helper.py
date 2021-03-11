@@ -107,6 +107,7 @@ class RequestHelper:
                 self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
                 #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type, 'User-Agent': 'F-UJI'})
+                print(self.request_url)
                 context = ssl._create_unverified_context()
                 tp_response =  urllib.request.urlopen(tp_request,context=context)
                 self.http_response = tp_response
@@ -212,6 +213,9 @@ class RequestHelper:
             except urllib.error.URLError as e:
                 self.logger.warning("{} : RequestException -: {} : {}".format(metric_id, e.reason, self.request_url))
                 #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
+            except Exception as e:
+                self.logger.warning("{} : Request Failed -: {} : {}".format(metric_id, str(e), self.request_url))
+
         return source, self.parse_response
 
     def parse_html(self, html_texts):

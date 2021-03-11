@@ -24,6 +24,7 @@
 import io
 import logging
 import mimetypes
+import os
 import re
 import sys
 import urllib
@@ -76,6 +77,7 @@ from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
+from fuji_server.helper.identifier_helper import IdentifierHelper
 
 class FAIRCheck:
     METRICS = None
@@ -450,21 +452,20 @@ class FAIRCheck:
             if self.metadata_merged.get('object_content_identifier') is None:
                 self.metadata_merged['object_content_identifier'] = data_meta_links
            # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
-
         #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
         if self.metadata_merged.get('object_identifier'):
             if isinstance(self.metadata_merged.get('object_identifier'),list):
                 identifiertotest = self.metadata_merged.get('object_identifier')[0]
             else:
                 identifiertotest = self.metadata_merged.get('object_identifier')
+            print('pid scheme:', self.pid_scheme)
             if self.pid_scheme is None:
                 #print(self.metadata_merged.get('object_identifier'))
-                found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
+                idhelper = IdentifierHelper(identifiertotest)
+                found_pids_in_metadata = idhelper.identifier_schemes
                 if len(found_pids_in_metadata) > 1:
-                    if 'url' in found_pids_in_metadata:
-                        found_pids_in_metadata.remove('url')
-                    found_id = found_pids_in_metadata[0]
-                    if found_id in Mapper.VALID_PIDS.value:
+                    found_id = idhelper.preferred_schema
+                    if idhelper.is_persistent:
                         self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
                         self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
                         self.repeat_pid_check = True
@@ -486,8 +487,9 @@ class FAIRCheck:
             for l in links:
                 href=l.attrib.get('href')
                 #handle relative paths
-                if href.startswith('/'):
-                    href=self.landing_origin+href
+                if urlparse(href).scheme == '':
+                    landingdir, landingfile = os.path.split(self.landing_url)
+                    href= landingdir+'/'+href
                 datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
 
@@ -719,6 +721,7 @@ class FAIRCheck:
         if highest[1] > 90:
             found = highest[0]
         return found
+
 
     def check_unique_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)
