@@ -35,6 +35,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         self.result = FormalMetadata(id=self.metric_number, metric_identifier=self.metric_identifier,
                                             metric_name=self.metric_name)
 
+
         outputs = []
         score = 0
         test_status = 'fail'
@@ -114,7 +115,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                 '{0} : NO RDF metadata available through content negotiation'.format(self.metric_identifier))
 
         # 2c. try to retrieve via sparql endpoint (if available)
-        if not formalExists:
+        if not formalExists or 1==1:
             # self.logger.info('{0} : Check if SPARQL endpoint is available'.format(formal_meta_identifier))
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/sparql/repositories/archives' #test endpoint
             # self.sparql_endpoint = 'http://data.archaeologydataservice.ac.uk/query/' #test web sparql form
@@ -126,8 +127,12 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                     '{0} : SPARQL endpoint found -: {1}'.format(self.metric_identifier, self.fuji.sparql_endpoint))
                 sparql_provider = SPARQLMetadataProvider(endpoint=self.fuji.sparql_endpoint, logger=self.logger,
                                                          metric_id=self.metric_identifier)
-                query = "CONSTRUCT {{?dataURI ?property ?value}} where {{ VALUES ?dataURI {{ <{}> }} ?dataURI ?property ?value }}".format(
-                    self.fuji.pid_url)
+                if self.fuji.pid_url == None:
+                    url_to_sparql = self.fuji.landing_url
+                else:
+                    url_to_sparql = self.fuji.pid_url
+                query = "DESCRIBE <"+str(url_to_sparql)+">"
+                #query = "CONSTRUCT {{?dataURI ?property ?value}} where {{ VALUES ?dataURI {{ <"+str(url_to_sparql)+"> }} ?dataURI ?property ?value }}"
                 self.logger.info('{0} : Executing SPARQL -: {1}'.format(self.metric_identifier, query))
                 rdfgraph, contenttype = sparql_provider.getMetadata(query)
                 if rdfgraph:
@@ -135,6 +140,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                         FormalMetadataOutputInner(serialization_format=contenttype, source='sparql_endpoint',
                                                   is_metadata_found=True))
                     score += 1
+
                     self.logger.log(self.fuji.LOG_SUCCESS,'{0} : Found RDF content through SPARQL endpoint'.format(
                                         self.metric_identifier))
                     self.setEvaluationCriteriumScore('FsF-I1-01M-2', 1, 'pass')

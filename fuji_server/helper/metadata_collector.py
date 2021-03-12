@@ -2,6 +2,8 @@ import enum
 import logging
 from typing import Optional
 
+from urlextract import URLExtract
+
 from fuji_server.helper import metadata_mapper
 # MIT License
 #
@@ -26,6 +28,7 @@ from fuji_server.helper import metadata_mapper
 # SOFTWARE.
 
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollector(object):
@@ -82,3 +85,24 @@ class MetaDataCollector(object):
 
     def getNamespaces(self):
         return self.namespaces
+
+    def getNamespacesfromIRIs(self, meta_source):
+        extractor = URLExtract()
+        namespaces = set()
+        if meta_source is not None:
+            for url in set(extractor.gen_urls(str(meta_source))):
+                namespace_candidate = url.rsplit('/', 1)[0]
+                if namespace_candidate != url:
+                    namespaces.add(namespace_candidate)
+                else:
+                    namespace_candidate = url.rsplit('#', 1)[0]
+                    if namespace_candidate != url:
+                        namespaces.add(namespace_candidate)
+
+            vocabs = Preprocessor.getLinkedVocabs()
+            lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
+            for ns in namespaces:
+                if ns+'/' in lod_namespaces:
+                    self.namespaces.append(ns+'/')
+                elif ns+'#' in lod_namespaces:
+                    self.namespaces.append(ns+'#')

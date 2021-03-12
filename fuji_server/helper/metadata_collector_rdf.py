@@ -70,9 +70,13 @@ class MetaDataCollectorRdf (MetaDataCollector):
         else:
             neg_source, rdf_response = 'html' , self.rdf_graph
 
+
+
         ontology_indicator=[rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')]
         if isinstance(rdf_response,rdflib.graph.Graph):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
+            graph_text = rdf_response.serialize(format="ttl")
+            self.getNamespacesfromIRIs(graph_text)
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
             if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in dict(list(rdf_response.namespaces())).values():
@@ -92,20 +96,24 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_default_metadata(self,g):
         meta = dict()
         try:
-            self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
-            r = g.query(Mapper.GENERIC_SPARQL.value)
-            for row in sorted(r):
-                for l, v in row.asdict().items():
-                    if l is not None:
-                        meta[l] = str(v)
-                break
+            if(len(g)>1):
+                self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
+                r = g.query(Mapper.GENERIC_SPARQL.value)
+                for row in sorted(r):
+                    for l, v in row.asdict().items():
+                        if l is not None:
+                            meta[l] = str(v)
+                    break
+            else:
+                self.logger.info('FsF-F2-01M : Graph seems to contain only one triple, skipping core metadata element test')
         except Exception as e:
             self.logger.info('FsF-F2-01M : SPARQLing error -: {}'.format(e))
-        if len(meta)<=0:
-            meta['object_type'] = 'Other'
-            self.logger.info('FsF-F2-01M : Could not find metadata elements through generic SPARQL query on RDF')
+        if len(meta) <= 0:
+            if len(g) > 1:
+                meta['object_type'] = 'Other'
+                self.logger.info('FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '+str(len(g))+' triples in the given graph')
         else:
-            self.logger.info('FsF-F2-01M : Found some metadata elements through generic SPARQL query on RDF -: '+str(meta.keys()))
+            self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: '+str(meta.keys()))
         return meta
 
     #TODO rename to: get_core_metadata

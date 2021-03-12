@@ -23,6 +23,7 @@
 # SOFTWARE.
 import idutils
 
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.uniqueness_output import UniquenessOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
@@ -37,13 +38,18 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         self.output = UniquenessOutput()
         schemes = [i[0] for i in idutils.PID_SCHEMES]
         self.logger.info('FsF-F1-01D : Using idutils schemes')
-        found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
+        idhelper = IdentifierHelper(self.fuji.id)
+        found_ids = idhelper.identifier_schemes
+        #found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
             self.setEvaluationCriteriumScore('FsF-F1-01D-1',1, 'pass')
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
             # identify main scheme
+            found_id = idhelper.preferred_schema
+            self.fuji.id_scheme = idhelper.identifier_schemes[0]
+            '''
             if len(found_ids) == 1:
                 #self.fuji.pid_url = self.fuji.id
                 self.fuji.id_scheme = found_ids[0]
@@ -54,8 +60,10 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
                     #self.fuji.pid_url = self.fuji.id
                 self.fuji.id_scheme = found_ids[0]
             found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
-            if found_id in Mapper.VALID_PIDS.value:
+            '''
+            if idhelper.is_persistent:
                 self.fuji.pid_scheme = found_id
+                self.fuji.pid_url = idhelper.identifier_url
             self.logger.info('FsF-F1-01D : Finalized unique identifier scheme - {}'.format(found_id))
             self.output.guid_scheme = found_id
             self.result.test_status = 'pass'

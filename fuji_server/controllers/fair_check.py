@@ -24,12 +24,13 @@
 import io
 import logging
 import mimetypes
+import os
 import re
 import sys
 import urllib
 import urllib.request as urllib
 from typing import List, Any
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 import Levenshtein
 import idutils
@@ -71,10 +72,13 @@ from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
+from fuji_server.helper.metadataprovider_rss_atom import RSSAtomMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
+from fuji_server.helper.identifier_helper import IdentifierHelper
 
 class FAIRCheck:
     METRICS = None
@@ -95,18 +99,30 @@ class FAIRCheck:
     FILES_LIMIT = None
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
-    FUJI_VERSION = 'v1.0.6'
+    IDENTIFIERS_ORG_DATA = {}
+    FUJI_VERSION = 'v1.0.8'
 
-    def __init__(self, uid, test_debug=False, oaipmh=None, use_datacite=True):
+    def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         self.id = self.input_id = uid
-        self.oaipmh_endpoint = oaipmh
+        self.metadata_service_url = metadata_service_url
+        self.metadata_service_type = metadata_service_type
+        self.oaipmh_endpoint = None
+        self.csw_endpoint = None
+        self.sparql_endpoint = None
+        if self.metadata_service_type == 'oai_pmh':
+            self.oaipmh_endpoint = self.metadata_service_url
+        elif self.metadata_service_type == 'ogc_csw':
+            self.csw_endpoint = self.metadata_service_url
+        elif self.metadata_service_type == 'sparql':
+            self.sparql_endpoint = self.metadata_service_url
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.origin_url = None #the url from where all starts - in case of redirection we'll need this later on
         self.landing_html = None
+        self.landing_content_type= None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
         self.signposting_header_links = []
         self.pid_scheme = None
@@ -124,7 +140,7 @@ class FAIRCheck:
         self.related_resources = []
        # self.test_data_content_text = None# a helper to check metadata against content
         self.rdf_graph = None
-        self.sparql_endpoint = None
+
         self.rdf_collector = None
         self.use_datacite = use_datacite
         self.repeat_pid_check = False
@@ -175,6 +191,8 @@ class FAIRCheck:
             cls.SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
         if not cls.VALID_RESOURCE_TYPES:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
+        if not cls.IDENTIFIERS_ORG_DATA:
+            cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -238,8 +256,8 @@ class FAIRCheck:
             client_id = self.metadata_merged.get('datacite_client')
             self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
 
-            if self.oaipmh_endpoint:
-                self.logger.info('{} : OAI-PMH endpoint provided as part of the request.'.format('FsF-R1.3-01M'))
+            if self.metadata_service_url is not None:
+                self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request.')
             else:
                 #find endpoint via datacite/re3data if pid is provided
                 if client_id and self.pid_scheme:
@@ -261,13 +279,47 @@ class FAIRCheck:
                     stds = None
                     if self.community_standards_uri:
                         stds = list(self.community_standards_uri.keys())
-                    self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format('FsF-R1.3-01M',stds ))
+                        self.logger.log(self.LOG_SUCCESS,'{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format('FsF-R1.3-01M',stds ))
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
                 self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+
+            # retrieve metadata standards info from OGC CSW
+            if self.csw_endpoint:
+                self.logger.info('{} : Use OGC CSW endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.csw_endpoint)):
+                    csw_provider = OGCCSWMetadataProvider(endpoint=self.csw_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = csw_provider.getMetadataStandards()
+                    self.namespace_uri.extend(csw_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                        self.logger.log(self.LOG_SUCCESS,
+                                    '{} : Found disciplinary standards that are listed in OGC CSW endpoint -: {}'.format(
+                                        'FsF-R1.3-01M', stds))
+                else:
+                    self.logger.info('{} : Invalid OGC CSW endpoint'.format('FsF-R1.3-01M'))
+
+            # retrieve metadata standards info from SPARQL endpoint
+            if self.sparql_endpoint:
+                self.logger.info('{} : Use SPARQL endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
+                if (self.uri_validator(self.sparql_endpoint)):
+                    sparql_provider = SPARQLMetadataProvider(endpoint=self.sparql_endpoint, logger=self.logger,metric_id='FsF-R1.3-01M')
+                    self.community_standards_uri = sparql_provider.getMetadataStandards()
+                    self.namespace_uri.extend(sparql_provider.getNamespaces())
+                    stds = None
+                    if self.community_standards_uri:
+                        stds = list(self.community_standards_uri.keys())
+                        self.logger.log(self.LOG_SUCCESS,
+                                    '{} : Found disciplinary standards that are listed in SPARQL endpoint -: {}'.format(
+                                        'FsF-R1.3-01M', stds))
+                else:
+                    self.logger.info('{} : Invalid SPARQL endpoint'.format('FsF-R1.3-01M'))
+
+
         else:
-            self.logger.warning('{} : Skipped external ressources (OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
+            self.logger.warning('{} : Skipped external ressources (e.g. OAI, re3data) checks since landing page could not be resolved'.format('FsF-R1.3-01M'))
 
     def retrieve_metadata_embedded(self, extruct_metadata ={}):
         isPid = False
@@ -275,155 +327,173 @@ class FAIRCheck:
             isPid = True
         self.embedded_retrieved = True
         self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
+        #test if content is html otherwise skip embedded tests
+        if 'html' in self.landing_content_type:
+            # ========= retrieve embedded rdfa and microdata metadata ========
+            self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
 
-        # ========= retrieve embedded rdfa and microdata metadata ========
-        self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
+            micro_meta = extruct_metadata.get('microdata')
+            microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
+                                                       mapping=Mapper.MICRODATA_MAPPING)
+            source_micro, micro_dict = microdata_collector.parse_metadata()
+            if micro_dict:
+                self.metadata_sources.append((source_micro,'embedded'))
+                self.namespace_uri.extend(microdata_collector.getNamespaces())
+                micro_dict = self.exclude_null(micro_dict)
+                for i in micro_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = micro_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
 
-        micro_meta = extruct_metadata.get('microdata')
-        microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
-                                                   mapping=Mapper.MICRODATA_MAPPING)
-        source_micro, micro_dict = microdata_collector.parse_metadata()
-        if micro_dict:
-            self.metadata_sources.append((source_micro,'embedded'))
-            self.namespace_uri.extend(microdata_collector.getNamespaces())
-            micro_dict = self.exclude_null(micro_dict)
-            for i in micro_dict.keys():
-                if i in self.reference_elements:
-                    self.metadata_merged[i] = micro_dict[i]
-                    self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
+            #================== RDFa
+            self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
 
-        #================== RDFa
-        self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
+            RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
+            rdfasource = MetaDataCollector.Sources.RDFA.value
+            rdfagraph = None
+            errors=[]
+            try:
+                rdflib_logger = logging.getLogger('rdflib')
+                rdflib_logger.setLevel(logging.ERROR)
+                rdfagraph = rdflib.Graph()
+                rdfagraph.parse(data=self.landing_html, format='rdfa')
+                rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
+                                                      rdf_graph=rdfagraph)
+                source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
+                if(len(rdfa_dict) > 0):
+                    self.metadata_sources.append((rdfasource,'embedded'))
+                    self.namespace_uri.extend(rdfa_collector.getNamespaces())
+                    #rdfa_dict['object_identifier']=self.pid_url
+                    rdfa_dict = self.exclude_null(rdfa_dict)
+                    for i in rdfa_dict.keys():
+                        if i in self.reference_elements:
+                            self.metadata_merged[i] = rdfa_dict[i]
+                            self.reference_elements.remove(i)
+                    self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
+            except Exception as e:
+                self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:'+str(e))
 
-        RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
-        rdfasource = MetaDataCollector.Sources.RDFA.value
-        rdfagraph = None
-        errors=[]
-        try:
-            rdflib_logger = logging.getLogger('rdflib')
-            rdflib_logger.setLevel(logging.ERROR)
-            rdfagraph = rdflib.Graph()
-            rdfagraph.parse(data=self.landing_html, format='rdfa')
-            rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
-                                                  rdf_graph=rdfagraph)
-            source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
-            self.metadata_sources.append((rdfasource,'embedded'))
-            self.namespace_uri.extend(rdfa_collector.getNamespaces())
-            #rdfa_dict['object_identifier']=self.pid_url
-            rdfa_dict = self.exclude_null(rdfa_dict)
-            for i in rdfa_dict.keys():
-                if i in self.reference_elements:
-                    self.metadata_merged[i] = rdfa_dict[i]
-                    self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
-        except Exception as e:
-            self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:'+str(e))
+            # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
+            ext_meta = extruct_metadata.get('json-ld')
 
-        # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
-        ext_meta = extruct_metadata.get('json-ld')
+            self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
-        self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
-
-        schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
-                                                         mapping=Mapper.SCHEMAORG_MAPPING, pidurl=None)
-        source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
-        schemaorg_dict = self.exclude_null(schemaorg_dict)
-        if schemaorg_dict:
-            self.namespace_uri.extend(schemaorg_collector.namespaces)
-            self.metadata_sources.append((source_schemaorg,'embedded'))
-            if schemaorg_dict.get('related_resources'):
-                self.related_resources.extend(schemaorg_dict.get('related_resources'))
-            if schemaorg_dict.get('object_content_identifier'):
-                self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' + str(schemaorg_dict.get('object_content_identifier')))
-            # add object type for future reference
-            for i in schemaorg_dict.keys():
-                if i in self.reference_elements:
-                    self.metadata_merged[i] = schemaorg_dict[i]
-                    self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: '+str(schemaorg_dict.keys()))
-        else:
-            self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
-
-        # ========= retrieve dublin core embedded in html page =========
-        if self.reference_elements:
-            self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
-            dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
-                                                       mapping=Mapper.DC_MAPPING)
-            source_dc, dc_dict = dc_collector.parse_metadata()
-            dc_dict = self.exclude_null(dc_dict)
-            if dc_dict:
-                self.namespace_uri.extend(dc_collector.namespaces)
-                #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                self.metadata_sources.append((source_dc,'embedded'))
-                if dc_dict.get('related_resources'):
-                    self.related_resources.extend(dc_dict.get('related_resources'))
-                for d in dc_dict.keys():
-                    if d in self.reference_elements:
-                        self.metadata_merged[d] = dc_dict[d]
-                        self.reference_elements.remove(d)
-                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata -: '+str(dc_dict.keys()))
+            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
+                                                             mapping=Mapper.SCHEMAORG_MAPPING, pidurl=None)
+            source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+            schemaorg_dict = self.exclude_null(schemaorg_dict)
+            if schemaorg_dict:
+                self.namespace_uri.extend(schemaorg_collector.namespaces)
+                self.metadata_sources.append((source_schemaorg,'embedded'))
+                if schemaorg_dict.get('related_resources'):
+                    self.related_resources.extend(schemaorg_dict.get('related_resources'))
+                if schemaorg_dict.get('object_content_identifier'):
+                    self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' + str(schemaorg_dict.get('object_content_identifier')))
+                # add object type for future reference
+                for i in schemaorg_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = schemaorg_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: '+str(schemaorg_dict.keys()))
             else:
-                self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
+                self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
 
-        # ======== retrieve OpenGraph metadata
-        self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
+            # ========= retrieve dublin core embedded in html page =========
+            if self.reference_elements:
+                self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
+                dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger, sourcemetadata=self.landing_html,
+                                                           mapping=Mapper.DC_MAPPING)
+                source_dc, dc_dict = dc_collector.parse_metadata()
+                dc_dict = self.exclude_null(dc_dict)
+                if dc_dict:
+                    self.namespace_uri.extend(dc_collector.namespaces)
+                    #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                    self.metadata_sources.append((source_dc,'embedded'))
+                    if dc_dict.get('related_resources'):
+                        self.related_resources.extend(dc_dict.get('related_resources'))
+                    for d in dc_dict.keys():
+                        if d in self.reference_elements:
+                            self.metadata_merged[d] = dc_dict[d]
+                            self.reference_elements.remove(d)
+                    self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata -: '+str(dc_dict.keys()))
+                else:
+                    self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
 
-        ext_meta = extruct_metadata.get('opengraph')
-        opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger, sourcemetadata=ext_meta,
-                                                         mapping=Mapper.OG_MAPPING)
-        source_opengraph, opengraph_dict = opengraph_collector.parse_metadata()
-        opengraph_dict = self.exclude_null(opengraph_dict)
-        if opengraph_dict:
-            self.namespace_uri.extend(opengraph_collector.namespaces)
-            self.metadata_sources.append((source_opengraph,'embedded'))
-            for i in opengraph_dict.keys():
-                if i in self.reference_elements:
-                    self.metadata_merged[i] = opengraph_dict[i]
-                    self.reference_elements.remove(i)
-            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
-        else:
-            self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
+            # ======== retrieve OpenGraph metadata
+            self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
 
-        #========= retrieve signposting data links
-        self.logger.info('FsF-F2-01M : Trying to identify Typed Links in html page')
-
-        data_sign_links = self.get_signposting_links('item')
-        if data_sign_links:
-            self.logger.info('FsF-F3-01M : Found data links in response header (signposting) -: ' + str(len(data_sign_links)))
-            if self.metadata_merged.get('object_content_identifier') is None:
-                self.metadata_merged['object_content_identifier'] = data_sign_links
-
-        #========= retrieve typed data object links =========
-
-        data_meta_links = self.get_html_typed_links(rel='item')
-        if data_meta_links:
-            self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' + str(len(data_meta_links)))
-            if self.metadata_merged.get('object_content_identifier') is None:
-                self.metadata_merged['object_content_identifier'] = data_meta_links
-           # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
-
-        #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
-        if self.metadata_merged.get('object_identifier'):
-            if isinstance(self.metadata_merged.get('object_identifier'),list):
-                identifiertotest = self.metadata_merged.get('object_identifier')[0]
+            ext_meta = extruct_metadata.get('opengraph')
+            opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger, sourcemetadata=ext_meta,
+                                                             mapping=Mapper.OG_MAPPING)
+            source_opengraph, opengraph_dict = opengraph_collector.parse_metadata()
+            opengraph_dict = self.exclude_null(opengraph_dict)
+            if opengraph_dict:
+                self.namespace_uri.extend(opengraph_collector.namespaces)
+                self.metadata_sources.append((source_opengraph,'embedded'))
+                for i in opengraph_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = opengraph_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
             else:
-                identifiertotest = self.metadata_merged.get('object_identifier')
-            if self.pid_scheme is None:
-                #print(self.metadata_merged.get('object_identifier'))
-                found_pids_in_metadata = idutils.detect_identifier_schemes(identifiertotest)
-                if len(found_pids_in_metadata) > 1:
-                    if 'url' in found_pids_in_metadata:
-                        found_pids_in_metadata.remove('url')
-                    found_id = found_pids_in_metadata[0]
-                    if found_id in Mapper.VALID_PIDS.value:
-                        self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
-                        self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
-                        self.repeat_pid_check = True
-                        self.pid_scheme = found_id
-                        self.id = identifiertotest
+                self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
+
+            #========= retrieve signposting data links
+            self.logger.info('FsF-F2-01M : Trying to identify Typed Links in html page')
+
+            data_sign_links = self.get_signposting_links('item')
+            if data_sign_links:
+                self.logger.info('FsF-F3-01M : Found data links in response header (signposting) -: ' + str(len(data_sign_links)))
+                if self.metadata_merged.get('object_content_identifier') is None:
+                    self.metadata_merged['object_content_identifier'] = data_sign_links
 
 
+
+            #======== retrieve OpenSearch links
+            search_links = self.get_html_typed_links(rel='search')
+            for search in search_links:
+                if search.get('type') in ['application/opensearchdescription+xml']:
+                    self.logger.info('FsF-R1.3-01M : Found OpenSearch link in HTML head (link rel=search) -: ' + str(search['url']))
+                    self.namespace_uri.append('http://a9.com/-/spec/opensearch/1.1/')
+
+            #========= retrieve atom, GeoRSS links
+            #TODO: do somethin useful with this..
+            feed_links = self.get_html_typed_links(rel='alternate')
+            for feed in feed_links:
+                if feed.get('type') in ['application/rss+xml']:
+                    self.logger.info('FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' + str(feed.get('url')))
+                    feed_helper = RSSAtomMetadataProvider(self.logger,feed['url'],'FsF-R1.3-01M')
+                    feed_helper.getMetadataStandards()
+                    self.namespace_uri.extend(feed_helper.getNamespaces())
+            #========= retrieve typed data object links =========
+
+            data_meta_links = self.get_html_typed_links(rel='item')
+            if data_meta_links:
+                self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' + str(len(data_meta_links)))
+                if self.metadata_merged.get('object_content_identifier') is None:
+                    self.metadata_merged['object_content_identifier'] = data_meta_links
+               # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
+            #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
+            if self.metadata_merged.get('object_identifier'):
+                if isinstance(self.metadata_merged.get('object_identifier'),list):
+                    identifiertotest = self.metadata_merged.get('object_identifier')[0]
+                else:
+                    identifiertotest = self.metadata_merged.get('object_identifier')
+                if self.pid_scheme is None:
+                    #print(self.metadata_merged.get('object_identifier'))
+                    idhelper = IdentifierHelper(identifiertotest)
+                    found_pids_in_metadata = idhelper.identifier_schemes
+                    if len(found_pids_in_metadata) > 1:
+                        found_id = idhelper.preferred_schema
+                        if idhelper.is_persistent:
+                            self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
+                            self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
+                            self.repeat_pid_check = True
+                            self.pid_scheme = found_id
+                            self.id = identifiertotest
+        else:
+            self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' + str(self.landing_url)+' expected html content but received: '+str(self.landing_content_type))
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -438,8 +508,11 @@ class FAIRCheck:
             for l in links:
                 href=l.attrib.get('href')
                 #handle relative paths
-                if href.startswith('/'):
-                    href=self.landing_origin+href
+                if urlparse(href).scheme == '':
+                    href = urljoin(self.landing_url,href)
+                    #landingpath = urlparse(self.landing_url).path
+                    #landingdir, landingfile = os.path.split(landingpath)
+                    #href= landingdir+'/'+href
                 datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
         return datalinks
 
@@ -671,6 +744,7 @@ class FAIRCheck:
         if highest[1] > 90:
             found = highest[0]
         return found
+
 
     def check_unique_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)

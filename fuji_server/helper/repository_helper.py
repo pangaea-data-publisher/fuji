@@ -49,24 +49,30 @@ class RepositoryHelper:
             short_re3doi = idutils.normalize_pid(re3doi, scheme='doi') #https://doi.org/10.17616/R3XS37
             # pid -> clientId -> repo doi-> re3id, and query repository metadata from re3api
             if re3doi:
-                self.logger.info('Found match re3data (DOI-based) record')
+                self.logger.info('FsF-R1.3-01M : Found match re3data (DOI-based) record')
                 query_url = Preprocessor.RE3DATA_API + '?query=' + short_re3doi  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
                 re_source, xml = q.content_negotiate(metric_id='RE3DATA')
-                root = etree.fromstring(xml)
-                #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
-                re3link = root.xpath('//link')[0].attrib['href']
-                if re3link is not None:
-                    self.logger.info('Found match re3data metadata record')
-                    # query reposiroty metadata
-                    q2 = RequestHelper(url=re3link)
-                    q2.setAcceptType(AcceptTypes.xml)
-                    re3_source, re3_response = q2.content_negotiate(metric_id='RE3DATA')
-                    self.re3metadata_raw = re3_response
-                    self.parseRepositoryMetadata()
+                try:
+                    if isinstance(xml, bytes):
+                        xml = xml.decode().encode()
+                    root = etree.fromstring(xml)
+
+                    #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
+                    re3link = root.xpath('//link')[0].attrib['href']
+                    if re3link is not None:
+                        self.logger.info('FsF-R1.3-01M : Found match re3data metadata record')
+                        # query reposiroty metadata
+                        q2 = RequestHelper(url=re3link)
+                        q2.setAcceptType(AcceptTypes.xml)
+                        re3_source, re3_response = q2.content_negotiate(metric_id='RE3DATA')
+                        self.re3metadata_raw = re3_response
+                        self.parseRepositoryMetadata()
+                except Exception as e:
+                    self.logger.warning('FsF-R1.3-01M : Malformed re3data (DOI-based) record received: '+str(e))
             else:
-                self.logger.warning('No DOI of client id is available from datacite api')
+                self.logger.warning('FsF-R1.3-01M : No DOI of client id is available from datacite api')
 
     def parseRepositoryMetadata(self):
         #http://schema.re3data.org/3-0/re3data-example-V3-0.xml

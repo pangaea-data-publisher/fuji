@@ -14,34 +14,39 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, oaipmh_endpoint: str=None, use_datacite: bool=None):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
         :type object_identifier: str
         :param test_debug: The test_debug of this Body.  # noqa: E501
         :type test_debug: bool
-        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
-        :type oaipmh_endpoint: str
+        :param metadata_service_endpoint: The metadata_service_endpoint of this Body.  # noqa: E501
+        :type metadata_service_endpoint: str
+        :param metadata_service_type: The metadata_service_type of this Body.  # noqa: E501
+        :type metadata_service_type: str
         :param use_datacite: The use_datacite of this Body.  # noqa: E501
         :type use_datacite: bool
         """
         self.swagger_types = {
             'object_identifier': str,
             'test_debug': bool,
-            'oaipmh_endpoint': str,
+            'metadata_service_endpoint': str,
+            'metadata_service_type': str,
             'use_datacite': bool
         }
 
         self.attribute_map = {
             'object_identifier': 'object_identifier',
             'test_debug': 'test_debug',
-            'oaipmh_endpoint': 'oaipmh_endpoint',
+            'metadata_service_endpoint': 'metadata_service_endpoint',
+            'metadata_service_type': 'metadata_service_type',
             'use_datacite': 'use_datacite'
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
-        self._oaipmh_endpoint = oaipmh_endpoint
+        self._metadata_service_endpoint = metadata_service_endpoint
+        self._metadata_service_type = metadata_service_type
         self._use_datacite = use_datacite
 
     @classmethod
@@ -104,27 +109,48 @@ class Body(Model):
         self._test_debug = test_debug
 
     @property
-    def oaipmh_endpoint(self) -> str:
-        """Gets the oaipmh_endpoint of this Body.
+    def metadata_service_endpoint(self) -> str:
+        """Gets the metadata_service_endpoint of this Body.
 
-        The URL of the OAI-PMH data-provider  # noqa: E501
+        The URL of the catalogue endpoint (e.g. OAI-PMH data-provider)  # noqa: E501
 
-        :return: The oaipmh_endpoint of this Body.
+        :return: The metadata_service_endpoint of this Body.
         :rtype: str
         """
-        return self._oaipmh_endpoint
+        return self._metadata_service_endpoint
 
-    @oaipmh_endpoint.setter
-    def oaipmh_endpoint(self, oaipmh_endpoint: str):
-        """Sets the oaipmh_endpoint of this Body.
+    @metadata_service_endpoint.setter
+    def metadata_service_endpoint(self, metadata_service_endpoint: str):
+        """Sets the metadata_service_endpoint of this Body.
 
-        The URL of the OAI-PMH data-provider  # noqa: E501
+        The URL of the catalogue endpoint (e.g. OAI-PMH data-provider)  # noqa: E501
 
-        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.
-        :type oaipmh_endpoint: str
+        :param metadata_service_endpoint: The metadata_service_endpoint of this Body.
+        :type metadata_service_endpoint: str
         """
 
-        self._oaipmh_endpoint = oaipmh_endpoint
+        self._metadata_service_endpoint = metadata_service_endpoint
+
+    @property
+    def metadata_service_type(self) -> str:
+        """Gets the metadata_service_type of this Body.
+
+
+        :return: The metadata_service_type of this Body.
+        :rtype: str
+        """
+        return self._metadata_service_type
+
+    @metadata_service_type.setter
+    def metadata_service_type(self, metadata_service_type: str):
+        """Sets the metadata_service_type of this Body.
+
+
+        :param metadata_service_type: The metadata_service_type of this Body.
+        :type metadata_service_type: str
+        """
+
+        self._metadata_service_type = metadata_service_type
 
     @property
     def use_datacite(self) -> bool:
