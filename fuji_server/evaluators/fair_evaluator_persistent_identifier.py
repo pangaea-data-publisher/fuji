@@ -51,6 +51,9 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
+            if not 'html' in requestHelper.content_type:
+                print('Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
+                self.fuji.extruct_result={}
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result ={}
             r = requestHelper.getHTTPResponse()
@@ -111,6 +114,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     up = urlparse(self.fuji.landing_url)
                     self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
                     self.fuji.landing_html = requestHelper.getResponseContent()
+                    self.fuji.landing_content_type = requestHelper.content_type
 
                     self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
                     self.output.resolvable_status = True

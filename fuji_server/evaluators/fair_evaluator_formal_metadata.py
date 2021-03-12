@@ -35,6 +35,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         self.result = FormalMetadata(id=self.metric_number, metric_identifier=self.metric_identifier,
                                             metric_name=self.metric_name)
 
+
         outputs = []
         score = 0
         test_status = 'fail'

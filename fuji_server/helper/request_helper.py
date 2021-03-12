@@ -68,6 +68,7 @@ class RequestHelper:
         self.response_content = None # normally the response body
         self.response_header = None
         self.response_charset = 'utf-8'
+        self.content_type = None
 
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
@@ -123,24 +124,24 @@ class RequestHelper:
                 self.logger.info(
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
-                    content_type = self.http_response.headers.get("Content-Type")
+                    self.content_type = self.http_response.headers.get("Content-Type")
                     #try to find out if content type is byte then fix
                     try:
                         self.response_content.decode('utf-8')
                     except (UnicodeDecodeError, AttributeError):
                         self.response_content = str(self.response_content).encode('utf-8')
-                    if content_type is None:
-                        content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
-                    if content_type is None:
+                    if self.content_type is None:
+                        self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
+                    if self.content_type is None:
                         #just in case tika is not running use this as quick check for the most obvious
                         if re.match(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
-                            content_type ='text/html'
-                    if content_type is None:
+                            self.content_type ='text/html'
+                    if self.content_type is None:
                         parsedFile = parser.from_buffer(self.response_content)
-                        content_type = parsedFile.get("metadata").get('Content-Type')
+                        self.content_type = parsedFile.get("metadata").get('Content-Type')
 
-                    if content_type is not None:
-                        if 'text/plain' in content_type:
+                    if self.content_type is not None:
+                        if 'text/plain' in self.content_type:
                             source = 'text'
                             self.logger.info('%s : Plain text has been responded as content type!' % metric_id)
                             #try to find type by url
@@ -150,10 +151,10 @@ class RequestHelper:
                                 source='rdf'
                                   #content_type = content_type.split(";", 1)[0]
                         else:
-                            content_type = content_type.split(";", 1)[0]
+                            self.content_type = self.content_type.split(";", 1)[0]
                             while (True):
                                 for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
-                                    if content_type in at.value:
+                                    if self.content_type in at.value:
                                         if at.name == 'html':
                                             #since we already parse HTML in the landing page we ignore this and do not parse again
                                             if ignore_html == False:
@@ -187,7 +188,7 @@ class RequestHelper:
                                                     '{0} : Retrieved response seems not to be valid JSON'.format(metric_id))
 
                                         if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
-                                            self.parse_response  = self.parse_rdf(self.response_content, content_type)
+                                            self.parse_response  = self.parse_rdf(self.response_content, self.content_type)
                                             source='rdf'
                                             break
 
