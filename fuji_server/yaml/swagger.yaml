@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 1.0.7
+  version: 1.1.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -165,6 +165,16 @@ components:
           - indeterminate
         score:
           $ref: '#/components/schemas/FAIRResultCommon_score'
+        maturity:
+          type: string
+          default: undefined
+          enum:
+            - undefined
+            - initial
+            - managed
+            - defined
+            - quantitatively managed
+            - optimizing
     Uniqueness:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'

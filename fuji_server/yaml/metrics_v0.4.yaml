@@ -9,7 +9,10 @@ metrics:
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   metric_tests:
     - metric_test_identifier: FsF-F1-01D-1
-      metric_test_name: Identifier follows an idutils defined unique identifier synthax
+      metric_test_name: Identifier follows an idutils or identifiers.org defined unique identifier synthax
+      metric_test_score: 1
+    - metric_test_identifier: FsF-F1-01D-2
+      metric_test_name: Identifier follows an UUID or HASH type synthax
       metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
@@ -65,6 +68,9 @@ metrics:
     - metric_test_identifier: FsF-F2-01M-1d
       metric_test_name: Metadata is accessible via signposting links
       metric_test_score: 0
+    - metric_test_identifier: FsF-F2-01M-2a
+      metric_test_name: Some descriptive metadata is available
+      metric_test_score: 0.5
     - metric_test_identifier: FsF-F2-01M-2
       metric_test_name: Core data citation metadata is available
       metric_test_score: 1

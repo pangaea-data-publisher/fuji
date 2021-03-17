@@ -29,12 +29,15 @@ from pprint import pprint
 
 
 class FAIREvaluator:
+    #according to the CMMI model
+    maturity_levels = {0: 'undefined', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
     def __init__(self, fuji_instance):
         self.fuji=fuji_instance
         self.metric_identifier = None
         self.metrics = None
         self.metric_number = None
         self.result = None
+        self.maturity = 0
         self.metric_tests = dict()
         self.isDebug=self.fuji.isDebug
         self.fuji.count = self.fuji.count+1

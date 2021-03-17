@@ -51,13 +51,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
-            if not 'html' in requestHelper.content_type:
+            if not 'html' in str(requestHelper.content_type):
                 print('Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
                 self.fuji.extruct_result={}
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result ={}
             r = requestHelper.getHTTPResponse()
-
+            self.maturity = 1
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
@@ -119,6 +119,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
                     self.output.resolvable_status = True
                     self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                    self.maturity = 3
                     self.fuji.isMetadataAccessible = True
                 elif r.status_code in [401, 402, 403]:
                     self.fuji.isMetadataAccessible = False
@@ -158,5 +159,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output

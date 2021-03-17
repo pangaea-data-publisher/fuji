@@ -328,7 +328,7 @@ class FAIRCheck:
         self.embedded_retrieved = True
         self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
         #test if content is html otherwise skip embedded tests
-        if 'html' in self.landing_content_type:
+        if 'html' in str(self.landing_content_type):
             # ========= retrieve embedded rdfa and microdata metadata ========
             self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
 
@@ -853,3 +853,23 @@ class FAIRCheck:
                     logger_messages[metric].append(level.replace('\n', '')+': '+message.strip())
 
         return logger_messages
+
+    def get_assessment_summary(self, results):
+        summary={'score':{}, 'maturity':{}}
+        for res_k, res_v in enumerate(results):
+            metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-',res_v['metric_identifier'])
+            if metric_match.group(2) is not None:
+                fair_principle = metric_match[1]
+                fair_category = metric_match[2]
+                if summary['score'].get(fair_category):
+                    summary['score'][fair_category]['earned'] += res_v['score']['earned']
+                    summary['score'][fair_category]['total'] += res_v['score']['total']
+                else:
+                    summary['score'][fair_category] = {'earned':res_v['score']['earned'],'total':res_v['score']['total']}
+                if summary['score'].get(fair_principle):
+                    summary['score'][fair_principle]['earned'] += res_v['score']['earned']
+                    summary['score'][fair_principle]['total'] += res_v['score']['earned']
+                else:
+                    summary['score'][fair_principle] = {'earned':res_v['score']['earned'],'total':res_v['score']['total']}
+
+        print(summary )

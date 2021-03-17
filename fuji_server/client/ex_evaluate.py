@@ -54,7 +54,10 @@ muchotestpids=[
     'https://doi.org/10.15482/USDA.ADC/1324677','https://www.proteinatlas.org/ENSG00000110651-CD81/cell','http://doi.org/10.5255/UKDA-SN-1329-1',
     'http://purl.org/vocommons/voaf','https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm','http://doi.org/10.22033/ESGF/CMIP6.4397',
     'https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046','http://doi.org/10.1007/s10531-013-0468-6',
-    'https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi','https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b'
+    'https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi','https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b',
+    'https://repo.clarino.uib.no/xmlui/handle/11509/103','https://data.aussda.at/dataset.xhtml?persistentId=doi:10.11587/QQ7HTL',
+    'https://meta.icos-cp.eu/collections/WM5ShdLFqPSI0coyVa57G1_Z','https://www.ebi.ac.uk/biosamples/samples/SAMN15743948',
+    'https://www.uniprot.org/uniprot/P0CY61','http://doi.org/10.25914/5eaa30de53244'
 ]
 
 testpids=[
@@ -134,7 +137,7 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://dda.dk/catalogue/868']
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-65-hamburg']
-#testpids=['https://doi.pangaea.de/10.1594/PANGAEA.810463']
+testpids=['https://doi.org/10.1594/PANGAEA.833812']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/294']
 #testpids=['https://doi.org/10.15482/USDA.ADC/1324677']
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
@@ -145,16 +148,25 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046']
 #testpids=['http://doi.org/10.1007/s10531-013-0468-6']
 #rdf
-testpids=['http://tun.fi/JX.1099769']
+#testpids=['http://tun.fi/JX.1099769']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #rdf
 #testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
 #testpids=['https://data.gov.lv/dati/lv/dataset/maksatnespejas-procesi']
 #testpids=['http://doi.org/10.17882/42182']
-testpids = muchotestpids
+#testpids = muchotestpids
 #testpids =['https://repo.clarino.uib.no/xmlui/handle/11509/103']
 #testpids=['https://data.aussda.at/dataset.xhtml?persistentId=doi:10.11587/QQ7HTL']
 #testpids =['https://meta.icos-cp.eu/collections/WM5ShdLFqPSI0coyVa57G1_Z']
+#testpids=['https://www.ebi.ac.uk/biosamples/samples/SAMN15743948']
+#testpids=['https://www.uniprot.org/uniprot/P0CY61']
+#testpids=['http://doi.org/10.25914/5eaa30de53244']
+#testpids=['http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/33fa648d-c4d6-4449-ac3c-dbec0f204e1d']
+#testpids=['http://id.luomus.fi/GP.110472']
+#testpids=['https://www.ncbi.nlm.nih.gov/nuccore/mh885469']
+#testpids = ['https://doi.org/10.7910/DVN/SI6TUS']
+#testpids = ['dhdsfahgfdsafdskhg']
+#testpids = ['0d14fbaa-8cd6-11e7-b2ed-28d244cd6e76','e1b1aee9769d8f401edb6840d9b5f3c8']
 startpid=''
 metadata_service_endpoint = None
 metadata_service_type = None
@@ -241,6 +253,7 @@ def main():
             #print(ft.metadata_merged)
             debug_messages = ft.get_log_messages_dict()
             ft.logger_message_stream.flush()
+            ft.get_assessment_summary(results)
             for res_k, res_v in enumerate(results):
                 if ft.isDebug:
                     debug_list = debug_messages.get(res_v['metric_identifier'])
