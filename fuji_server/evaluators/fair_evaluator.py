@@ -21,16 +21,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import logging
-from typing import List, Dict
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
-from pprint import pprint
-
+from fuji_server.helper.metadata_mapper import Mapper
 
 class FAIREvaluator:
     #according to the CMMI model
-    maturity_levels = {0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
+    maturity_levels = Mapper.MATURITY_LEVELS.value
+        #{0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
     def __init__(self, fuji_instance):
         self.fuji=fuji_instance
         self.metric_identifier = None

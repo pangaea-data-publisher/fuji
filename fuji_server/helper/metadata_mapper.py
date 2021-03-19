@@ -31,6 +31,10 @@ class Mapper(Enum):
     #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
 
+    #CMMI capability maturity levels
+    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
+
+
     # reference metadata elements (used by FUJI)
     #['creator','license','related_resources'] --> list type
     # datacite_client --> retrieve re3data records

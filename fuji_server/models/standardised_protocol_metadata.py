@@ -19,7 +19,7 @@ class StandardisedProtocolMetadata(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, output: StandardisedProtocolMetadataOutput=None, test_debug: Debug=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='undefined', output: StandardisedProtocolMetadataOutput=None, test_debug: Debug=None):  # noqa: E501
         """StandardisedProtocolMetadata - a model defined in Swagger
 
         :param id: The id of this StandardisedProtocolMetadata.  # noqa: E501
@@ -34,6 +34,8 @@ class StandardisedProtocolMetadata(Model):
         :type test_status: str
         :param score: The score of this StandardisedProtocolMetadata.  # noqa: E501
         :type score: FAIRResultCommonScore
+        :param maturity: The maturity of this StandardisedProtocolMetadata.  # noqa: E501
+        :type maturity: str
         :param output: The output of this StandardisedProtocolMetadata.  # noqa: E501
         :type output: StandardisedProtocolMetadataOutput
         :param test_debug: The test_debug of this StandardisedProtocolMetadata.  # noqa: E501
@@ -46,6 +48,7 @@ class StandardisedProtocolMetadata(Model):
             'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
             'score': FAIRResultCommonScore,
+            'maturity': str,
             'output': StandardisedProtocolMetadataOutput,
             'test_debug': Debug
         }
@@ -57,6 +60,7 @@ class StandardisedProtocolMetadata(Model):
             'metric_tests': 'metric_tests',
             'test_status': 'test_status',
             'score': 'score',
+            'maturity': 'maturity',
             'output': 'output',
             'test_debug': 'test_debug'
         }
@@ -66,6 +70,7 @@ class StandardisedProtocolMetadata(Model):
         self._metric_tests = metric_tests
         self._test_status = test_status
         self._score = score
+        self._maturity = maturity
         self._output = output
         self._test_debug = test_debug
 
@@ -219,6 +224,33 @@ class StandardisedProtocolMetadata(Model):
             raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
+
+    @property
+    def maturity(self) -> str:
+        """Gets the maturity of this StandardisedProtocolMetadata.
+
+
+        :return: The maturity of this StandardisedProtocolMetadata.
+        :rtype: str
+        """
+        return self._maturity
+
+    @maturity.setter
+    def maturity(self, maturity: str):
+        """Sets the maturity of this StandardisedProtocolMetadata.
+
+
+        :param maturity: The maturity of this StandardisedProtocolMetadata.
+        :type maturity: str
+        """
+        allowed_values = ["undefined", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
+        if maturity not in allowed_values:
+            raise ValueError(
+                "Invalid value for `maturity` ({0}), must be one of {1}"
+                .format(maturity, allowed_values)
+            )
+
+        self._maturity = maturity
 
     @property
     def output(self) -> StandardisedProtocolMetadataOutput:

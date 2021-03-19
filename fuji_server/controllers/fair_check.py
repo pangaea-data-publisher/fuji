@@ -31,6 +31,7 @@ import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse, urljoin
+import pandas as pd
 
 import Levenshtein
 import idutils
@@ -855,21 +856,20 @@ class FAIRCheck:
         return logger_messages
 
     def get_assessment_summary(self, results):
-        summary={'score':{}, 'maturity':{}}
+        maturity_dict =  Mapper.MATURITY_LEVELS.value
+        summary={'fair_category':[], 'fair_principle':[],'score_earned':[],'score_total':[], 'maturity':[]}
         for res_k, res_v in enumerate(results):
             metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-',res_v['metric_identifier'])
             if metric_match.group(2) is not None:
                 fair_principle = metric_match[1]
                 fair_category = metric_match[2]
-                if summary['score'].get(fair_category):
-                    summary['score'][fair_category]['earned'] += res_v['score']['earned']
-                    summary['score'][fair_category]['total'] += res_v['score']['total']
-                else:
-                    summary['score'][fair_category] = {'earned':res_v['score']['earned'],'total':res_v['score']['total']}
-                if summary['score'].get(fair_principle):
-                    summary['score'][fair_principle]['earned'] += res_v['score']['earned']
-                    summary['score'][fair_principle]['total'] += res_v['score']['earned']
-                else:
-                    summary['score'][fair_principle] = {'earned':res_v['score']['earned'],'total':res_v['score']['total']}
+                earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
+                summary['fair_category'].append(fair_category)
+                summary['fair_principle'].append(fair_principle)
+                summary['score_earned'].append(res_v['score']['earned'])
+                summary['score_total'] .append(res_v['score']['total'])
+                summary['maturity'] .append(earned_maturity)
+        summary_frame = pd.DataFrame(summary)
 
-        print(summary )
+
+        print(summary_frame.head())
