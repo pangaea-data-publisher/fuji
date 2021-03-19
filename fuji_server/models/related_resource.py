@@ -19,7 +19,7 @@ class RelatedResource(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='undefined', output: RelatedResourceOutput=None, test_debug: Debug=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='incomplete', output: RelatedResourceOutput=None, test_debug: Debug=None):  # noqa: E501
         """RelatedResource - a model defined in Swagger
 
         :param id: The id of this RelatedResource.  # noqa: E501
@@ -243,7 +243,7 @@ class RelatedResource(Model):
         :param maturity: The maturity of this RelatedResource.
         :type maturity: str
         """
-        allowed_values = ["undefined", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
+        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
         if maturity not in allowed_values:
             raise ValueError(
                 "Invalid value for `maturity` ({0}), must be one of {1}"

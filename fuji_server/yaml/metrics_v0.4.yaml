@@ -133,6 +133,9 @@ metrics:
     - metric_test_identifier: FsF-A1-01M-1
       metric_test_name: Machine readable information about access restrictions or rights can be identified in metadata
       metric_test_score: 1
+    - metric_test_identifier: FsF-A1-01M-1b
+      metric_test_name: Non actionable information about access restrictions or rights can be identified in metadata
+      metric_test_score: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03

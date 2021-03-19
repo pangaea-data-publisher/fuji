@@ -230,7 +230,7 @@ class FAIRResultCommon(Model):
         :param maturity: The maturity of this FAIRResultCommon.
         :type maturity: str
         """
-        allowed_values = ["undefined", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
+        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
         if maturity not in allowed_values:
             raise ValueError(
                 "Invalid value for `maturity` ({0}), must be one of {1}"

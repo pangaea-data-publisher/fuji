@@ -169,7 +169,7 @@ components:
           type: string
           default: undefined
           enum:
-            - undefined
+            - incomplete
             - initial
             - managed
             - defined

@@ -66,6 +66,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     'FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog -: {}'.format(
                         no_match))
         if standards_detected:
+            self.maturity = 3
             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1a', 1, 'pass')
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
@@ -98,10 +99,13 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if standards_detected:
             self.score.earned = self.total_score
             self.result.test_status = 'pass'
+            if self.maturity < 3:
+                self.maturity = 2
             self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
 
         else:
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = standards_detected

@@ -48,6 +48,8 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
             self.result.test_status = 'pass'
             self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
             self.score.earned = self.total_score
+            self.maturity = 3
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.score = self.score
         self.result.output = self.output
