@@ -115,6 +115,9 @@ components:
           type: string
         total_metrics:
           type: integer
+        summary:
+          type: object
+          additionalProperties: true
         results:
           type: array
           items:
@@ -167,14 +170,7 @@ components:
           $ref: '#/components/schemas/FAIRResultCommon_score'
         maturity:
           type: string
-          default: undefined
-          enum:
-            - incomplete
-            - initial
-            - managed
-            - defined
-            - quantitatively managed
-            - optimizing
+          default: incomplete
     Uniqueness:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'
@@ -334,7 +330,7 @@ components:
         metric_test_name:
           type: string
         metric_test_score:
-          type: integer
+          type: number
         metric_test_status:
           type: string
           default: fail
@@ -345,8 +341,7 @@ components:
       type: object
       properties:
         earned:
-          type: integer
-          format: int32
+          type: number
           default: 0
         total:
           type: integer

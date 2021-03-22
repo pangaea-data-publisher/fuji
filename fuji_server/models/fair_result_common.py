@@ -16,7 +16,7 @@ class FAIRResultCommon(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='undefined'):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='incomplete'):  # noqa: E501
         """FAIRResultCommon - a model defined in Swagger
 
         :param id: The id of this FAIRResultCommon.  # noqa: E501

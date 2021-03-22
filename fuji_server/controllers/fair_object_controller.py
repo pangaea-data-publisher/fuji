@@ -92,6 +92,7 @@ def assess_by_id(body):  # noqa: E501
         results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
         ft.logger_message_stream.flush()
+        summary = ft.get_assessment_summary(results)
         for res_k, res_v in enumerate(results):
             if ft.isDebug:
                 debug_list = debug_messages.get(res_v['metric_identifier'])
@@ -108,6 +109,6 @@ def assess_by_id(body):  # noqa: E501
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
-        final_response = FAIRResults(request = body.to_dict(),timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
+        final_response = FAIRResults(request = body.to_dict(),timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results, summary=summary)
     return final_response
 

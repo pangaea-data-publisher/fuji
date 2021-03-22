@@ -857,19 +857,28 @@ class FAIRCheck:
 
     def get_assessment_summary(self, results):
         maturity_dict =  Mapper.MATURITY_LEVELS.value
-        summary={'fair_category':[], 'fair_principle':[],'score_earned':[],'score_total':[], 'maturity':[]}
+        summary_dict={'fair_category':[], 'fair_principle':[],'score_earned':[],'score_total':[], 'maturity':[]}
         for res_k, res_v in enumerate(results):
             metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-',res_v['metric_identifier'])
             if metric_match.group(2) is not None:
                 fair_principle = metric_match[1]
                 fair_category = metric_match[2]
                 earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
-                summary['fair_category'].append(fair_category)
-                summary['fair_principle'].append(fair_principle)
-                summary['score_earned'].append(res_v['score']['earned'])
-                summary['score_total'] .append(res_v['score']['total'])
-                summary['maturity'] .append(earned_maturity)
-        summary_frame = pd.DataFrame(summary)
+                summary_dict['fair_category'].append(fair_category)
+                summary_dict['fair_principle'].append(fair_principle)
+                summary_dict['score_earned'].append(res_v['score']['earned'])
+                summary_dict['score_total'] .append(res_v['score']['total'])
+                summary_dict['maturity'] .append(earned_maturity)
 
+        sf = pd.DataFrame(summary_dict)
+        summary = {'score_earned':{},'score_total':{},'score_percent':{}}
 
-        print(summary_frame.head())
+        summary['score_earned'] = sf.groupby(by='fair_category')['score_earned'].sum().to_dict()
+        summary['score_earned'].update(sf.groupby(by='fair_principle')['score_earned'].sum().to_dict())
+        summary['score_total'] =  sf.groupby(by='fair_category')['score_total'].sum().to_dict()
+        summary['score_total'].update(sf.groupby(by='fair_principle')['score_total'].sum().to_dict())
+        summary['score_percent'] = (sf.groupby(by='fair_category')['score_earned'].sum()/sf.groupby(by='fair_category')['score_total'].sum()*100).to_dict()
+        summary['score_percent'].update((sf.groupby(by='fair_principle')['score_earned'].sum()/sf.groupby(by='fair_principle')['score_total'].sum()*100).to_dict())
+        summary['maturity'] = sf.groupby(by='fair_category')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict()
+        summary['maturity'].update(sf.groupby(by='fair_principle')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict())
+        return summary
