@@ -875,10 +875,17 @@ class FAIRCheck:
 
         summary['score_earned'] = sf.groupby(by='fair_category')['score_earned'].sum().to_dict()
         summary['score_earned'].update(sf.groupby(by='fair_principle')['score_earned'].sum().to_dict())
+        summary['score_earned']['FAIR'] = round(float(sf['score_earned'].sum()),2)
         summary['score_total'] =  sf.groupby(by='fair_category')['score_total'].sum().to_dict()
         summary['score_total'].update(sf.groupby(by='fair_principle')['score_total'].sum().to_dict())
-        summary['score_percent'] = (sf.groupby(by='fair_category')['score_earned'].sum()/sf.groupby(by='fair_category')['score_total'].sum()*100).to_dict()
-        summary['score_percent'].update((sf.groupby(by='fair_principle')['score_earned'].sum()/sf.groupby(by='fair_principle')['score_total'].sum()*100).to_dict())
+        summary['score_total']['FAIR'] = round(float(sf['score_total'].sum()),2)
+        summary['score_percent'] = (round(sf.groupby(by='fair_category')['score_earned'].sum()/sf.groupby(by='fair_category')['score_total'].sum()*100,2)).to_dict()
+        summary['score_percent'].update((round(sf.groupby(by='fair_principle')['score_earned'].sum()/sf.groupby(by='fair_principle')['score_total'].sum()*100,2)).to_dict())
+        summary['score_percent']['FAIR'] = round(float(sf['score_earned'].sum()/sf['score_total'].sum()*100),2)
         summary['maturity'] = sf.groupby(by='fair_category')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict()
         summary['maturity'].update(sf.groupby(by='fair_principle')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict())
+        total_maturity = 0
+        for fair_index in ['F','A','I','R']:
+            total_maturity += summary['maturity'][fair_index]
+        summary['maturity']['FAIR'] = round(float(1 if total_maturity/4 < 1 and total_maturity/4 > 0 else total_maturity/4),2)
         return summary
