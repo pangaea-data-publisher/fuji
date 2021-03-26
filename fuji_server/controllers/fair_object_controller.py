@@ -47,7 +47,7 @@ def assess_by_id(body):  # noqa: E501
         identifier=body.object_identifier
         debug = body.test_debug
         metadata_service_endpoint = body.metadata_service_endpoint
-        metadata_service_type = body.metadata_service_endpoint
+        metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
         ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url = metadata_service_endpoint, metadata_service_type =metadata_service_type, use_datacite=usedatacite)
 

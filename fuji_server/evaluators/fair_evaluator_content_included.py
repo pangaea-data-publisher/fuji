@@ -46,6 +46,8 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             number_of_contents = len(contents)
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F3-01M : Number of object content identifier found -: {}'.format(number_of_contents))
             self.maturity = 1
+            score = 0.5
+            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
                     'FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first -: {} content identifiers'.format(
@@ -97,10 +99,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
         if content_list:
             self.maturity = 3
-            score += 1
-            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 1, 'pass')
+            score = 1
+            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F3-01M-2', 0.5, 'pass')
         self.score.earned = score
-        if score > 0:
+        if score > 0.5:
             self.result.test_status = "pass"
         self.result.metric_tests = self.metric_tests
         self.output.content = content_list

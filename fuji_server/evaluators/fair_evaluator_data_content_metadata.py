@@ -65,7 +65,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
         # 2. initially verification is restricted to the last file and only use object content uri that is accessible (self.content_identifier)
         if isinstance(self.fuji.content_identifier, list):
-            self.maturity = 1
+            if len(self.fuji.content_identifier)>0:
+                self.maturity = 1
             not_empty_content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
             content_length = len(not_empty_content_uris)
             if content_length > 0:

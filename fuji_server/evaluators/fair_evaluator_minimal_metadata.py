@@ -51,8 +51,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             self.maturity = 3
             self.score.earned = self.total_score
             self.setEvaluationCriteriumScore('FsF-F2-01M-3', 1, 'pass')
-            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
-            self.setEvaluationCriteriumScore('FsF-F2-01M-2a', 1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
             test_status = 'pass'
         else:
             core_missing = list(set(metadata_required) - set(metadata_found))
@@ -62,8 +61,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core citation metadata elements -: {}'.format(partial_elements))
                 metadata_status = 'partial metadata'
                 self.maturity = 2
-                self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-2a', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
                 self.score.earned = self.total_score - 1
                 test_status = 'pass'
             else:
@@ -71,7 +69,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                     self.logger.info('FsF-F2-01M : Found some descriptive metadata elements -: ' + str(metadata_found.keys()))
                     metadata_status = 'some metadata'
                     self.maturity = 1
-                    self.setEvaluationCriteriumScore('FsF-F2-01M-2a', 0.5, 'pass')
+                    self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
                     self.score.earned = 0.5
                     test_status = 'pass'
                 else:
@@ -91,16 +89,16 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         for source_mechanism in source_mechanisms:
             if source_mechanism == 'embedded':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'negotiated':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'linked':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'signposting':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
         self.result.test_status = test_status
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score

@@ -70,13 +70,14 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
                                 self.logger.info('FsF-A1-01M : Standardized actionable access level recognized as -:' + str(right_status))
-                                self.setEvaluationCriteriumScore('FsF-A1-01M-1', 1, 'pass')
+                                self.setEvaluationCriteriumScore('FsF-A1-01M-2', 0.5, 'pass')
+                                self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
                                 self.maturity = 3
                                 break
                         break
                     else:
                         self.maturity = 1
-                        self.setEvaluationCriteriumScore('FsF-A1-01M-1b', 1, 'pass')
+                        self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
                         self.logger.info('FsF-A1-01M : Non-actionable, non-standardized, access level found')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
@@ -126,7 +127,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
 
         if access_level or access_details:
-            score = 1
+            if access_level:
+                score = 1
+            else:
+                score= 0.5
             test_status = "pass"
 
         self.score.earned = score

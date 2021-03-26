@@ -46,25 +46,13 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         #found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
-            self.setEvaluationCriteriumScore('FsF-F1-01D-1',1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F1-01D-1',self.total_score, 'pass')
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
             self.maturity = 3
             # identify main scheme
             found_id = idhelper.preferred_schema
             self.fuji.id_scheme = idhelper.identifier_schemes[0]
-            '''
-            if len(found_ids) == 1:
-                #self.fuji.pid_url = self.fuji.id
-                self.fuji.id_scheme = found_ids[0]
-                #self.fuji.id_scheme = 'url'
-            else:
-                if 'url' in found_ids:  # ['doi', 'url']
-                    found_ids.remove('url')
-                    #self.fuji.pid_url = self.fuji.id
-                self.fuji.id_scheme = found_ids[0]
-            found_id = found_ids[0]  # TODO: take the first element of list, e.g., [doi, handle]
-            '''
             if idhelper.is_persistent:
                 self.fuji.pid_scheme = found_id
                 self.fuji.pid_url = idhelper.identifier_url
@@ -73,20 +61,20 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.result.test_status = 'pass'
         elif self.verify_uuid(self.fuji.id):
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier (UUID) scheme found')
-            self.setEvaluationCriteriumScore('FsF-F1-01D-2',1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F1-01D-2',0.5, 'pass')
             self.result.test_status = 'pass'
             self.output.guid_scheme = 'uuid'
             self.output.guid = self.fuji.id
             self.maturity = 1
-            self.score.earned = 1
+            self.score.earned = 0.5
         elif self.verify_hash(self.fuji.id):
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier (SHA,MD5) scheme found')
-            self.setEvaluationCriteriumScore('FsF-F1-01D-2',1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F1-01D-2',0.5, 'pass')
             self.result.test_status = 'pass'
             self.output.guid_scheme = 'hash'
             self.output.guid = self.fuji.id
             self.maturity = 1
-            self.score.earned = 1
+            self.score.earned = 0.5
         else:
             self.result.test_status = 'fail'
             self.score.earned = 0

@@ -41,7 +41,7 @@ class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
     datacite_json = 'application/vnd.datacite.datacite+json'
     datacite_xml = 'application/vnd.datacite.datacite+xml'
-    schemaorg = 'application/vnd.schemaorg.ld+json'
+    schemaorg = 'application/vnd.schemaorg.ld+json, application/ld+json'
     html = 'text/html, application/xhtml+xml'
     xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'

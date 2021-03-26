@@ -144,9 +144,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.output.pid_scheme = self.fuji.pid_scheme
 
             self.output.pid = self.fuji.pid_url
-            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0,'pass')
+            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5,'pass')
+            self.score.earned = 0.5
             if self.fuji.isMetadataAccessible:
-                self.setEvaluationCriteriumScore('FsF-F1-02D-2', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F1-02D-2', 0.5, 'pass')
                 self.result.test_status = 'pass'
                 self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
 

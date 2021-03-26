@@ -557,6 +557,8 @@ class FAIRCheck:
                 target_url = self.pid_url
             else:
                 target_url = self.landing_url
+            if target_url is None:
+                target_url = self.origin_url
 
             self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
@@ -568,7 +570,6 @@ class FAIRCheck:
 
             # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
             self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation')
-
             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=None,
                                                              mapping=Mapper.SCHEMAORG_MAPPING, pidurl=target_url)
             source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
