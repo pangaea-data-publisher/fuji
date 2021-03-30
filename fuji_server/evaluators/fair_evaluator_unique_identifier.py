@@ -47,9 +47,10 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))
             self.setEvaluationCriteriumScore('FsF-F1-01D-1',self.total_score, 'pass')
+            self.maturity = 3
             self.output.guid = self.fuji.id
             self.score.earned = self.total_score
-            self.maturity = 3
+
             # identify main scheme
             found_id = idhelper.preferred_schema
             self.fuji.id_scheme = idhelper.identifier_schemes[0]

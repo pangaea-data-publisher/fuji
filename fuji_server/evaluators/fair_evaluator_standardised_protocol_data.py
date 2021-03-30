@@ -41,7 +41,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         score = 0
 
         if len(self.fuji.content_identifier) > 0:
-            self.maturity = 1
+
             # here we only test the first content identifier
             data_url = self.fuji.content_identifier[0].get('url')
             data_parsed_url = urlparse(data_url)

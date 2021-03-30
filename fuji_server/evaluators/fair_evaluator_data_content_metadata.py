@@ -56,6 +56,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified -: {}'.format(resource_type))
                 self.output.object_type = resource_type
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1a', 0, 'pass')
                 self.maturity = 1
                 score += 1
             else:
@@ -67,6 +68,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         if isinstance(self.fuji.content_identifier, list):
             if len(self.fuji.content_identifier)>0:
                 self.maturity = 1
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1b', 0, 'pass')
             not_empty_content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
             content_length = len(not_empty_content_uris)
             if content_length > 0:

@@ -71,11 +71,20 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_status = 'fail'
                 evaluation_criterium.metric_test_name = metric_test.get('metric_test_name')
                 evaluation_criterium.metric_test_score = 0
+                evaluation_criterium.metric_test_score_max = metric_test.get('metric_test_score')
+                evaluation_criterium.metric_test_maturity = None
+                evaluation_criterium.metric_test_maturity_max = metric_test.get('metric_test_maturity')
                 self.metric_tests[metric_test.get('metric_test_identifier')] = evaluation_criterium
 
-    def setEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0, metric_test_status = 'fail'):
+    def setEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0, metric_test_status = 'fail', metric_test_maturity = None):
         evaluation_criterium = self.metric_tests.get(criterium_id)
         if evaluation_criterium is not None:
-            evaluation_criterium.metric_test_score = metric_test_score
+            if metric_test_score != evaluation_criterium.metric_test_score_max:
+                evaluation_criterium.metric_test_score = metric_test_score
+            else:
+                if metric_test_status =='pass':
+                    evaluation_criterium.metric_test_score = evaluation_criterium.metric_test_score_max
             evaluation_criterium.metric_test_status = metric_test_status
+            if metric_test_status == 'pass':
+                evaluation_criterium.metric_test_maturity = evaluation_criterium.metric_test_maturity_max
             self.metric_tests[criterium_id] = evaluation_criterium

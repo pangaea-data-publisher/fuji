@@ -107,10 +107,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
+
             self.result.test_status = "pass"
             self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
             self.score.earned = 1
-            self.maturity = 2
+            self.maturity = 1
             if spdx_found:
                 self.setEvaluationCriteriumScore('FsF-R1.1-01M-2', 1, 'pass')
                 self.score.earned = 2

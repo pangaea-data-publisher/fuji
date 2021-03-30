@@ -57,7 +57,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result ={}
             r = requestHelper.getHTTPResponse()
-            self.maturity = 1
+
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
@@ -119,7 +119,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
                     self.output.resolvable_status = True
                     self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
-                    self.maturity = 3
                     self.fuji.isMetadataAccessible = True
                 elif r.status_code in [401, 402, 403]:
                     self.fuji.isMetadataAccessible = False
@@ -146,8 +145,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.output.pid = self.fuji.pid_url
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5,'pass')
             self.score.earned = 0.5
+            self.maturity = 1
             if self.fuji.isMetadataAccessible:
                 self.setEvaluationCriteriumScore('FsF-F1-02D-2', 0.5, 'pass')
+                self.maturity = 3
                 self.result.test_status = 'pass'
                 self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
 

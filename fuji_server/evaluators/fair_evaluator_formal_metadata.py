@@ -65,7 +65,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         else:
             self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found structured data (RDF serialization) in the data page'.format(self.metric_identifier))
             score += 1
-            self.maturity = 3
+            self.maturity = 2
             self.setEvaluationCriteriumScore('FsF-I1-01M-1', 1, 'pass')
 
         # 2. hard check (typed-link, content negotiate, sparql endpoint)
