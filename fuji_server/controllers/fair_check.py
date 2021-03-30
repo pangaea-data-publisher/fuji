@@ -257,8 +257,8 @@ class FAIRCheck:
             client_id = self.metadata_merged.get('datacite_client')
             self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
 
-            if self.metadata_service_url is not None:
-                self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request.')
+            if self.metadata_service_url not in [None,'']:
+                self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request -: '+str(self.metadata_service_url))
             else:
                 #find endpoint via datacite/re3data if pid is provided
                 if client_id and self.pid_scheme:
