@@ -331,6 +331,10 @@ components:
           type: string
         metric_test_score:
           type: number
+          nullable: true
+        metric_test_maturity:
+          type: integer
+          nullable: true
         metric_test_status:
           type: string
           default: fail
