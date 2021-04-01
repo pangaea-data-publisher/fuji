@@ -482,17 +482,15 @@ class FAIRCheck:
                 else:
                     identifiertotest = self.metadata_merged.get('object_identifier')
                 if self.pid_scheme is None:
-                    #print(self.metadata_merged.get('object_identifier'))
                     idhelper = IdentifierHelper(identifiertotest)
-                    found_pids_in_metadata = idhelper.identifier_schemes
-                    if len(found_pids_in_metadata) > 1:
-                        found_id = idhelper.preferred_schema
-                        if idhelper.is_persistent:
-                            self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
-                            self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
-                            self.repeat_pid_check = True
-                            self.pid_scheme = found_id
-                            self.id = identifiertotest
+
+                    found_id = idhelper.preferred_schema
+                    if idhelper.is_persistent:
+                        self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
+                        self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
+                        self.repeat_pid_check = True
+                        self.pid_scheme = found_id
+                        self.id = identifiertotest
         else:
             self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' + str(self.landing_url)+' expected html content but received: '+str(self.landing_content_type))
 
