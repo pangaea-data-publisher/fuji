@@ -578,6 +578,10 @@ components:
         use_datacite:
           type: boolean
           description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata
+        oaipmh_endpoint:
+          deprecated: true
+          type: string
+          description: (Deprecated) The URL of the OAI-PMH data-provider
     IdentifierIncluded_output_inner:
       type: object
       properties:

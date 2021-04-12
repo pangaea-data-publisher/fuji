@@ -103,16 +103,19 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     FUJI_VERSION = 'v1.1.0'
 
-    def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True):
+    def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         self.id = self.input_id = uid
         self.metadata_service_url = metadata_service_url
         self.metadata_service_type = metadata_service_type
-        self.oaipmh_endpoint = None
+        self.oaipmh_endpoint = oaipmh_endpoint
         self.csw_endpoint = None
         self.sparql_endpoint = None
+        if self.oaipmh_endpoint:
+            self.metadata_service_url = self.oaipmh_endpoint
+            self.metadata_service_type = 'oai_pmh'
         if self.metadata_service_type == 'oai_pmh':
             self.oaipmh_endpoint = self.metadata_service_url
         elif self.metadata_service_type == 'ogc_csw':
@@ -262,11 +265,12 @@ class FAIRCheck:
             else:
                 #find endpoint via datacite/re3data if pid is provided
                 if client_id and self.pid_scheme:
-                    self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
                     repoHelper = RepositoryHelper(client_id, self.pid_scheme)
                     repoHelper.lookup_re3data()
-                    self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
-                    self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
+                    if not self.metadata_service_url:
+                        self.logger.info('{} : Inferring endpoint information through re3data/datacite services'.format('FsF-R1.3-01M'))
+                        self.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+                        self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
                     self.community_standards.extend(repoHelper.getRe3MetadataStandards())
                     self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format('FsF-R1.3-01M', self.community_standards ))
 
