@@ -52,7 +52,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         for item in self.fuji.SPDX_LICENSES:
             # u = u.lower()
             # if any(u in v.lower() for v in item.values()):
-            seeAlso = item['seeAlso']
+            seeAlso = item.get('seeAlso')
             if any(u in v for v in seeAlso):
                 self.logger.info('{0} : Found SPDX license representation -: {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
@@ -107,7 +107,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
-
             self.result.test_status = "pass"
             self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
             self.score.earned = 1
