@@ -54,10 +54,12 @@ def assess_by_id(body):  # noqa: E501
 
         uid_result, pid_result = ft.check_unique_persistent()
         ft.retrieve_metadata_embedded(ft.extruct_result)
-        include_embedded = True
         if ft.repeat_pid_check:
             uid_result, pid_result = ft.check_unique_persistent()
+        include_embedded = True
         ft.retrieve_metadata_external()
+        if ft.repeat_pid_check:
+            uid_result, pid_result = ft.check_unique_persistent()
 
         core_metadata_result = ft.check_minimal_metatadata()
         content_identifier_included_result = ft.check_content_identifier_included()
