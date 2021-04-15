@@ -52,7 +52,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             requestHelper.setAcceptType(AcceptTypes.html)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
             if not 'html' in str(requestHelper.content_type):
-                print('Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
+                self.logger.info('FsF-F2-01M :Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
                 self.fuji.extruct_result={}
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result ={}
