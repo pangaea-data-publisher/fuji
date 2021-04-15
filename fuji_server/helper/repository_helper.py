@@ -46,7 +46,12 @@ class RepositoryHelper:
     def lookup_re3data(self):
         if self.client_id and self.pid_scheme:
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
-            short_re3doi = idutils.normalize_pid(re3doi, scheme='doi') #https://doi.org/10.17616/R3XS37
+            #print(self.client_id,'Re3DOI',re3doi, idutils.is_doi(re3doi))
+            if re3doi:
+                if idutils.is_doi(re3doi):
+                    short_re3doi = idutils.normalize_pid(re3doi, scheme='doi') #https://doi.org/10.17616/R3XS37
+                else:
+                    re3doi = None
             # pid -> clientId -> repo doi-> re3id, and query repository metadata from re3api
             if re3doi:
                 self.logger.info('FsF-R1.3-01M : Found match re3data (DOI-based) record')
