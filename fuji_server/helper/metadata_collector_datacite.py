@@ -63,6 +63,8 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                         temp_rels = []
 
                         for r in dcite_metadata['related_resources']:
+                            if r.get('scheme_uri'):
+                                self.namespaces.append(r.get('scheme_uri'))
                             filtered = {k: v for k, v in r.items() if v is not None}
                             temp_rels.append(filtered)
                         dcite_metadata['related_resources'] = temp_rels
