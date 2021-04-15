@@ -76,7 +76,7 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
-from fuji_server.helper.metadataprovider_rss_atom import RSSAtomMetadataProvider
+from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -480,23 +480,29 @@ class FAIRCheck:
                     self.metadata_merged['object_content_identifier'] = data_meta_links
                # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
             #Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
-            if self.metadata_merged.get('object_identifier'):
-                if isinstance(self.metadata_merged.get('object_identifier'),list):
-                    identifiertotest = self.metadata_merged.get('object_identifier')[0]
-                else:
-                    identifiertotest = self.metadata_merged.get('object_identifier')
-                if self.pid_scheme is None:
-                    idhelper = IdentifierHelper(identifiertotest)
-
-                    found_id = idhelper.preferred_schema
-                    if idhelper.is_persistent:
-                        self.logger.info('FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
-                        self.logger.log(self.LOG_SUCCESS, 'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
-                        self.repeat_pid_check = True
-                        self.pid_scheme = found_id
-                        self.id = identifiertotest
+            self.check_pidtest_repeat()
         else:
             self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' + str(self.landing_url)+' expected html content but received: '+str(self.landing_content_type))
+
+
+    def check_pidtest_repeat(self):
+        if self.metadata_merged.get('object_identifier'):
+            if isinstance(self.metadata_merged.get('object_identifier'), list):
+                identifiertotest = self.metadata_merged.get('object_identifier')[0]
+            else:
+                identifiertotest = self.metadata_merged.get('object_identifier')
+            if self.pid_scheme is None:
+                idhelper = IdentifierHelper(identifiertotest)
+
+                found_id = idhelper.preferred_schema
+                if idhelper.is_persistent:
+                    self.logger.info(
+                        'FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
+                    self.logger.log(self.LOG_SUCCESS,
+                                    'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
+                    self.repeat_pid_check = True
+                    self.pid_scheme = found_id
+                    self.id = identifiertotest
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
@@ -655,7 +661,7 @@ class FAIRCheck:
                                         dcitejsn_dict.get('object_content_identifier')))
                 if dcitejsn_dict.get('related_resources'):
                     self.related_resources.extend(dcitejsn_dict.get('related_resources'))
-
+                    self.namespace_uri.extend(dcite_collector.getNamespaces())
                 for r in dcitejsn_dict.keys():
                     # only merge when the value cannot be retrived from embedded metadata
                     if r in self.reference_elements and not self.metadata_merged.get(r):
@@ -723,6 +729,8 @@ class FAIRCheck:
             self.logger.debug('FsF-F2-01M : Reference metadata elements NOT FOUND -: {}'.format(self.reference_elements))
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
+        # Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
+        self.check_pidtest_repeat()
 
     def exclude_null(self, dt):
         if type(dt) is dict:
@@ -859,8 +867,9 @@ class FAIRCheck:
         return logger_messages
 
     def get_assessment_summary(self, results):
+        status_dict = {'pass':1, 'fail':0}
         maturity_dict =  Mapper.MATURITY_LEVELS.value
-        summary_dict={'fair_category':[], 'fair_principle':[],'score_earned':[],'score_total':[], 'maturity':[]}
+        summary_dict={'fair_category':[], 'fair_principle':[],'score_earned':[],'score_total':[], 'maturity':[],'status':[]}
         for res_k, res_v in enumerate(results):
             metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-',res_v['metric_identifier'])
             if metric_match.group(2) is not None:
@@ -872,23 +881,35 @@ class FAIRCheck:
                 summary_dict['score_earned'].append(res_v['score']['earned'])
                 summary_dict['score_total'] .append(res_v['score']['total'])
                 summary_dict['maturity'] .append(earned_maturity)
+                summary_dict['status'].append(status_dict.get(res_v['test_status']))
 
         sf = pd.DataFrame(summary_dict)
-        summary = {'score_earned':{},'score_total':{},'score_percent':{}}
+        summary = {'score_earned':{},'score_total':{},'score_percent':{}, 'status_total':{},'status_passed':{}}
 
         summary['score_earned'] = sf.groupby(by='fair_category')['score_earned'].sum().to_dict()
         summary['score_earned'].update(sf.groupby(by='fair_principle')['score_earned'].sum().to_dict())
         summary['score_earned']['FAIR'] = round(float(sf['score_earned'].sum()),2)
+
         summary['score_total'] =  sf.groupby(by='fair_category')['score_total'].sum().to_dict()
         summary['score_total'].update(sf.groupby(by='fair_principle')['score_total'].sum().to_dict())
         summary['score_total']['FAIR'] = round(float(sf['score_total'].sum()),2)
+
         summary['score_percent'] = (round(sf.groupby(by='fair_category')['score_earned'].sum()/sf.groupby(by='fair_category')['score_total'].sum()*100,2)).to_dict()
         summary['score_percent'].update((round(sf.groupby(by='fair_principle')['score_earned'].sum()/sf.groupby(by='fair_principle')['score_total'].sum()*100,2)).to_dict())
         summary['score_percent']['FAIR'] = round(float(sf['score_earned'].sum()/sf['score_total'].sum()*100),2)
+
         summary['maturity'] = sf.groupby(by='fair_category')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict()
         summary['maturity'].update(sf.groupby(by='fair_principle')['maturity'].apply(lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict())
         total_maturity = 0
         for fair_index in ['F','A','I','R']:
             total_maturity += summary['maturity'][fair_index]
         summary['maturity']['FAIR'] = round(float(1 if total_maturity/4 < 1 and total_maturity/4 > 0 else total_maturity/4),2)
+
+        summary['status_total'] = sf.groupby(by='fair_principle')['status'].count().to_dict()
+        summary['status_total'].update(sf.groupby(by='fair_category')['status'].count().to_dict())
+        summary['status_total']['FAIR'] = int(sf['status'].count())
+
+        summary['status_passed'] = sf.groupby(by='fair_principle')['status'].sum().to_dict()
+        summary['status_passed'].update(sf.groupby(by='fair_category')['status'].sum().to_dict())
+        summary['status_passed']['FAIR'] = int(sf['status'].sum())
         return summary
