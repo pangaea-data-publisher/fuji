@@ -334,50 +334,6 @@ class FAIRCheck:
         self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
         #test if content is html otherwise skip embedded tests
         if 'html' in str(self.landing_content_type):
-            # ========= retrieve embedded rdfa and microdata metadata ========
-            self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
-
-            micro_meta = extruct_metadata.get('microdata')
-            microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
-                                                       mapping=Mapper.MICRODATA_MAPPING)
-            source_micro, micro_dict = microdata_collector.parse_metadata()
-            if micro_dict:
-                self.metadata_sources.append((source_micro,'embedded'))
-                self.namespace_uri.extend(microdata_collector.getNamespaces())
-                micro_dict = self.exclude_null(micro_dict)
-                for i in micro_dict.keys():
-                    if i in self.reference_elements:
-                        self.metadata_merged[i] = micro_dict[i]
-                        self.reference_elements.remove(i)
-                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
-
-            #================== RDFa
-            self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
-
-            RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
-            rdfasource = MetaDataCollector.Sources.RDFA.value
-            rdfagraph = None
-            errors=[]
-            try:
-                rdflib_logger = logging.getLogger('rdflib')
-                rdflib_logger.setLevel(logging.ERROR)
-                rdfagraph = rdflib.Graph()
-                rdfagraph.parse(data=self.landing_html, format='rdfa')
-                rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
-                                                      rdf_graph=rdfagraph)
-                source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
-                if(len(rdfa_dict) > 0):
-                    self.metadata_sources.append((rdfasource,'embedded'))
-                    self.namespace_uri.extend(rdfa_collector.getNamespaces())
-                    #rdfa_dict['object_identifier']=self.pid_url
-                    rdfa_dict = self.exclude_null(rdfa_dict)
-                    for i in rdfa_dict.keys():
-                        if i in self.reference_elements:
-                            self.metadata_merged[i] = rdfa_dict[i]
-                            self.reference_elements.remove(i)
-                    self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
-            except Exception as e:
-                self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:'+str(e))
 
             # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
             ext_meta = extruct_metadata.get('json-ld')
@@ -424,6 +380,51 @@ class FAIRCheck:
                     self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found DublinCore metadata -: '+str(dc_dict.keys()))
                 else:
                     self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
+            # ========= retrieve embedded rdfa and microdata metadata ========
+            self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
+
+            micro_meta = extruct_metadata.get('microdata')
+            microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger, sourcemetadata=micro_meta,
+                                                       mapping=Mapper.MICRODATA_MAPPING)
+            source_micro, micro_dict = microdata_collector.parse_metadata()
+            if micro_dict:
+                self.metadata_sources.append((source_micro,'embedded'))
+                self.namespace_uri.extend(microdata_collector.getNamespaces())
+                micro_dict = self.exclude_null(micro_dict)
+                for i in micro_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = micro_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found microdata metadata -: '+str(micro_dict.keys()))
+
+            #================== RDFa
+            self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
+
+            RDFA_ns = rdflib.Namespace("http://www.w3.org/ns/rdfa#")
+            rdfasource = MetaDataCollector.Sources.RDFA.value
+            rdfagraph = None
+            errors=[]
+            try:
+                rdflib_logger = logging.getLogger('rdflib')
+                rdflib_logger.setLevel(logging.ERROR)
+                rdfagraph = rdflib.Graph()
+                rdfagraph.parse(data=self.landing_html, format='rdfa')
+                rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=self.landing_url, source=rdfasource,
+                                                      rdf_graph=rdfagraph)
+                source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
+                if(len(rdfa_dict) > 0):
+                    self.metadata_sources.append((rdfasource,'embedded'))
+                    self.namespace_uri.extend(rdfa_collector.getNamespaces())
+                    #rdfa_dict['object_identifier']=self.pid_url
+                    rdfa_dict = self.exclude_null(rdfa_dict)
+                    for i in rdfa_dict.keys():
+                        if i in self.reference_elements:
+                            self.metadata_merged[i] = rdfa_dict[i]
+                            self.reference_elements.remove(i)
+                    self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found RDFa metadata -: '+str(rdfa_dict.keys()))
+            except Exception as e:
+                self.logger.info('FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:'+str(e))
+
 
             # ======== retrieve OpenGraph metadata
             self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
@@ -560,7 +561,6 @@ class FAIRCheck:
 
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url is not None:
-
             if self.use_datacite is True:
                 target_url = self.pid_url
             else:
@@ -664,7 +664,7 @@ class FAIRCheck:
                     self.namespace_uri.extend(dcite_collector.getNamespaces())
                 for r in dcitejsn_dict.keys():
                     # only merge when the value cannot be retrived from embedded metadata
-                    if r in self.reference_elements and not self.metadata_merged.get(r):
+                    if r in self.reference_elements:
                         self.metadata_merged[r] = dcitejsn_dict[r]
                         self.reference_elements.remove(r)
             else:
@@ -717,7 +717,6 @@ class FAIRCheck:
                     test_typed_links = True
                     self.logger.log(self.LOG_SUCCESS,'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf,'linked'))
-
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
