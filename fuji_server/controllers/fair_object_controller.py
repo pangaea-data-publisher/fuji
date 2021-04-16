@@ -47,16 +47,19 @@ def assess_by_id(body):  # noqa: E501
         identifier=body.object_identifier
         debug = body.test_debug
         metadata_service_endpoint = body.metadata_service_endpoint
-        metadata_service_type = body.metadata_service_endpoint
+        oaipmh_endpoint = body.oaipmh_endpoint
+        metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
-        ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url = metadata_service_endpoint, metadata_service_type =metadata_service_type, use_datacite=usedatacite)
+        ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url = metadata_service_endpoint, metadata_service_type =metadata_service_type, use_datacite=usedatacite, oaipmh_endpoint =oaipmh_endpoint)
 
         uid_result, pid_result = ft.check_unique_persistent()
         ft.retrieve_metadata_embedded(ft.extruct_result)
-        include_embedded = True
         if ft.repeat_pid_check:
             uid_result, pid_result = ft.check_unique_persistent()
+        include_embedded = True
         ft.retrieve_metadata_external()
+        if ft.repeat_pid_check:
+            uid_result, pid_result = ft.check_unique_persistent()
 
         core_metadata_result = ft.check_minimal_metatadata()
         content_identifier_included_result = ft.check_content_identifier_included()
@@ -92,6 +95,7 @@ def assess_by_id(body):  # noqa: E501
         results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
         ft.logger_message_stream.flush()
+        summary = ft.get_assessment_summary(results)
         for res_k, res_v in enumerate(results):
             if ft.isDebug:
                 debug_list = debug_messages.get(res_v['metric_identifier'])
@@ -109,6 +113,6 @@ def assess_by_id(body):  # noqa: E501
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
-        final_response = FAIRResults(request = body.to_dict(),timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results)
+        final_response = FAIRResults(request = body.to_dict(),timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results, summary=summary)
     return final_response
 

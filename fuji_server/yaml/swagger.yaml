@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 1.0.7
+  version: 1.1.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -115,6 +115,9 @@ components:
           type: string
         total_metrics:
           type: integer
+        summary:
+          type: object
+          additionalProperties: true
         results:
           type: array
           items:
@@ -165,6 +168,9 @@ components:
           - indeterminate
         score:
           $ref: '#/components/schemas/FAIRResultCommon_score'
+        maturity:
+          type: string
+          default: incomplete
     Uniqueness:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'
@@ -324,7 +330,11 @@ components:
         metric_test_name:
           type: string
         metric_test_score:
+          type: number
+          nullable: true
+        metric_test_maturity:
           type: integer
+          nullable: true
         metric_test_status:
           type: string
           default: fail
@@ -335,8 +345,7 @@ components:
       type: object
       properties:
         earned:
-          type: integer
-          format: int32
+          type: number
           default: 0
         total:
           type: integer
@@ -569,6 +578,10 @@ components:
         use_datacite:
           type: boolean
           description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata
+        oaipmh_endpoint:
+          deprecated: true
+          type: string
+          description: (Deprecated) The URL of the OAI-PMH data-provider
     IdentifierIncluded_output_inner:
       type: object
       properties:

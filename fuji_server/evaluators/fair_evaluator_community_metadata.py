@@ -66,12 +66,14 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     'FsF-R1.3-01M : The following standards found through namespaces are excluded as they are not listed in RDA metadata catalog -: {}'.format(
                         no_match))
         if standards_detected:
-            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1a', 1, 'pass')
+            self.maturity = 3
+            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1', 1, 'pass')
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
+        re3_detected = False
         if len(self.fuji.community_standards) > 0:
-            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 0, 'pass')
-            if len(standards_detected) == 0:
+            #if len(standards_detected) == 0:
+            if 1==1:
                 self.logger.info('FsF-R1.3-01M : Using re3data to detect metadata standard(s)')
                 for s in self.fuji.community_standards:
                     standard_found = self.fuji.lookup_metadatastandard_by_name(s)
@@ -80,7 +82,9 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                         if subject and all(elem == "Multidisciplinary" for elem in subject):
                             self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard -: {}'.format(s))
                         else:
-                            self.setEvaluationCriteriumScore('FsF-R1.3-01M-1b', 1, 'pass')
+                            if self.maturity < 2:
+                                self.maturity = 2
+                            re3_detected = True
                             self.logger.log(self.fuji.LOG_SUCCESS,
                                             'FsF-R1.3-01M : Found disciplinary standard through re3data -: {}'.format(
                                                 s))
@@ -92,16 +96,24 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             else:
                 self.logger.info(
                     'FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.')
+
         else:
             self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the repository specified in re3data')
 
         if standards_detected:
+            if re3_detected:
+                if self.maturity < 3:
+                    self.maturity = 2
+                    self.setEvaluationCriteriumScore('FsF-R1.3-01M-2', 1, 'pass')
+                else:
+                    self.setEvaluationCriteriumScore('FsF-R1.3-01M-2', 0, 'pass')
             self.score.earned = self.total_score
             self.result.test_status = 'pass'
-            self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
+
 
         else:
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = standards_detected

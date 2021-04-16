@@ -41,6 +41,7 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
                 outputs.append(MetadataPreservedOutput(metadata_preservation_method='datacite'))
                 score = 1
                 self.setEvaluationCriteriumScore('FsF-A2-01M-1', 1, 'pass')
+                self.maturity = 3
                 self.logger.log(self.fuji.LOG_SUCCESS,
                     '{0} : Metadata registry bound PID system used: ' + self.fuji.pid_scheme.format(self.metric_identifier))
             else:
@@ -50,3 +51,4 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
         self.result.output = outputs
         self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status
+        self.result.maturity = self.maturity_levels.get(self.maturity)

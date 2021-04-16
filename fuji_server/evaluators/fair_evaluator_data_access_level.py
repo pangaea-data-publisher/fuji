@@ -52,7 +52,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #access_rights can be None or []
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-
+            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
+            self.maturity = 1
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
@@ -60,7 +61,6 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 access_right = re.sub(r"[\r\n]+", ' ', access_right)
                 self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(access_right.replace('\n', ' ')))
                 if not licence_evaluator.isLicense(value=access_right, metric_id=self.metric_identifier):  # exclude license-based text from access_rights
-
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
                         last_group = len(rights_match.groups())
@@ -70,10 +70,12 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                                 access_level = right_status
                                 access_details['access_condition'] = rights_match[1] #overwrite existing condition
                                 self.logger.info('FsF-A1-01M : Standardized actionable access level recognized as -:' + str(right_status))
+                                self.setEvaluationCriteriumScore('FsF-A1-01M-2', 0.5, 'pass')
+                                self.maturity = 3
                                 break
                         break
-                    else:
-                        self.logger.info('FsF-A1-01M : Not a standardized, actionable access level')
+                    #else:
+                    #    self.logger.info('FsF-A1-01M : Non-actionable, non-standardized, access level found')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
                     exclude.append(access_right)
@@ -84,6 +86,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                     if access_right.lower() in lower_case_access_dict:
                         self.logger.info('FsF-A1-01M : Non-actionable (term only) standard access level recognized as -:' + str(
                             lower_case_access_dict.get(access_right.lower())))
+                        self.maturity = 2
+                        self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
                         access_level = lower_case_access_dict.get(access_right.lower())
                         access_details['access_condition'] = access_right
                         break
@@ -106,6 +110,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 else:
                     access_level = "restricted"
                 access_details['accessible_free'] = access_free
+                self.maturity = 2
+                self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
             #TODO assume access_level = restricted if access_rights provided?
 
         #if embargoed, publication date must be specified (for now score is not deducted, just outputs warning message)
@@ -118,7 +124,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
 
         if access_level or access_details:
-            score = 1
+            if access_level:
+                score = 1
+            else:
+                score= 0.5
             test_status = "pass"
 
         self.score.earned = score
@@ -126,10 +135,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         self.result.test_status = test_status
         if access_level: #must be one of ['public', 'embargoed', 'restricted', 'closed_metadataonly']
             self.output.access_level = access_level
-            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 1, 'pass')
             self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-01M : Access level to data could successfully be determined -: '+access_level)
         else:
             self.logger.warning('FsF-A1-01M : Unable to determine the access level')
         self.output.access_details = access_details
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = self.output

@@ -52,7 +52,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         for item in self.fuji.SPDX_LICENSES:
             # u = u.lower()
             # if any(u in v.lower() for v in item.values()):
-            seeAlso = item['seeAlso']
+            seeAlso = item.get('seeAlso')
             if any(u in v for v in seeAlso):
                 self.logger.info('{0} : Found SPDX license representation -: {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
@@ -110,12 +110,16 @@ class FAIREvaluatorLicense(FAIREvaluator):
             self.result.test_status = "pass"
             self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
             self.score.earned = 1
+            self.maturity = 1
             if spdx_found:
                 self.setEvaluationCriteriumScore('FsF-R1.1-01M-2', 1, 'pass')
                 self.score.earned = 2
+                self.maturity = 3
         else:
             self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
 
         self.result.output = licenses_list
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
+

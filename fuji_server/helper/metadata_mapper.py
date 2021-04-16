@@ -31,6 +31,10 @@ class Mapper(Enum):
     #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
 
+    #CMMI capability maturity levels
+    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
+
+
     # reference metadata elements (used by FUJI)
     #['creator','license','related_resources'] --> list type
     # datacite_client --> retrieve re3data records
@@ -109,7 +113,7 @@ class Mapper(Enum):
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date || publicationYear,' \
                         'data_size:sizes[0], data_file_format: formats, license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
-                        'related_resources: relatedIdentifiers[*], datacite_client: clientId, ' \
+                        'related_resources: ( relatedIdentifiers[*].{related_resource: relatedIdentifier, relation_type:relationType, scheme_uri: schemeUri}), datacite_client: clientId, ' \
                         'modified_date: dates[?dateType == \'Updated\'].date,' \
                         'created_date: dates[?dateType == \'Created\'].date,' \
                         'accepted_date: dates[?dateType == \'Accepted\'].date,' \

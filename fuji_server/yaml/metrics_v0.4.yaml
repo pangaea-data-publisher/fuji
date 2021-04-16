@@ -9,8 +9,13 @@ metrics:
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   metric_tests:
     - metric_test_identifier: FsF-F1-01D-1
-      metric_test_name: Identifier follows an idutils defined unique identifier synthax
+      metric_test_name: Identifier is resolvable and follows an idutils or identifiers.org defined unique identifier synthax
       metric_test_score: 1
+      metric_test_maturity: 3
+    - metric_test_identifier: FsF-F1-01D-2
+      metric_test_name: Identifier is not resolvable but follows an UUID or HASH type synthax
+      metric_test_score: 0.5
+      metric_test_maturity: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
@@ -27,10 +32,12 @@ metrics:
   metric_tests:
     - metric_test_identifier: FsF-F1-02D-1
       metric_test_name: Identifier follows an idutils defined persistent identifier synthax
-      metric_test_score: 0
+      metric_test_score: 0.5
+      metric_test_maturity: 1
     - metric_test_identifier: FsF-F1-02D-2
       metric_test_name: Persistent identifier is resolvable
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
@@ -52,7 +59,8 @@ metrics:
   metric_tests:
     - metric_test_identifier: FsF-F2-01M-1
       metric_test_name: Metadata has been made available via common web methods
-      metric_test_score: 0
+      metric_test_score: 0.5
+      metric_test_maturity: 1
     - metric_test_identifier: FsF-F2-01M-1a
       metric_test_name: Metadata is embedded in the landing page XHTML/HTML code
       metric_test_score: 0
@@ -67,10 +75,12 @@ metrics:
       metric_test_score: 0
     - metric_test_identifier: FsF-F2-01M-2
       metric_test_name: Core data citation metadata is available
-      metric_test_score: 1
+      metric_test_score: 0.5
+      metric_test_maturity: 2
     - metric_test_identifier: FsF-F2-01M-3
       metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
+      metric_test_maturity: 3
 
   created_by: FAIRsFAIR
   date_created: 2020-07-08
@@ -88,8 +98,13 @@ metrics:
   evaluation_mechanism: Several metadata standards provide the possibility to include links to the actual data content. The presence of such links is evaluated here.
   metric_tests:
     - metric_test_identifier: FsF-F3-01M-1
+      metric_test_name: Metadata contains information about the availability of data content
+      metric_test_score: 0.5
+      metric_test_maturity: 1
+    - metric_test_identifier: FsF-F3-01M-2
       metric_test_name: Metadata contains a PID or URL which indicates the location of the downloadable data content
-      metric_test_score: 1
+      metric_test_score: 0.5
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -107,9 +122,11 @@ metrics:
     - metric_test_identifier: FsF-F4-01M-1
       metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (JSON-LD, Dublin Core, RDFa)
       metric_test_score: 1
+      metric_test_maturity: 3
     - metric_test_identifier: FsF-F4-01M-2
       metric_test_name: Metadata is registered in major research data registries (DataCite)
       metric_test_score: 1
+      metric_test_maturity: 2
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -125,8 +142,18 @@ metrics:
   evaluation_mechanism: Metric evaluation is based on the presence of access information in an appropriate metadata element/field.
   metric_tests:
     - metric_test_identifier: FsF-A1-01M-1
-      metric_test_name: Machine readable information about access restrictions or rights can be identified in metadata
-      metric_test_score: 1
+      metric_test_name: Information about access restrictions or rights can be identified in metadata
+      metric_test_score: 0.5
+      metric_test_maturity: 1
+    - metric_test_identifier: FsF-A1-01M-3
+      metric_test_name: Data access information is indicated by (not machine readable) standard terms
+      metric_test_score: 0.5
+      metric_test_maturity: 2
+    - metric_test_identifier: FsF-A1-01M-2
+      metric_test_name: Data access information is machine readable
+      metric_test_score: 0.5
+      metric_test_maturity: 3
+
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -144,6 +171,7 @@ metrics:
     - metric_test_identifier: FsF-A1-03D-1
       metric_test_name: Metadata includes a resolvable link to data based on standardized web communication protocols.
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
@@ -161,6 +189,7 @@ metrics:
     - metric_test_identifier: FsF-A1-02M-1
       metric_test_name: Landing page link is based on standardized web communication protocols.
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
@@ -178,6 +207,7 @@ metrics:
     - metric_test_identifier: FsF-A2-01M-1
       metric_test_name: The persistent identifier system used guarantees the preservation of associated metadata
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-05
@@ -195,9 +225,11 @@ metrics:
     - metric_test_identifier: FsF-I1-01M-1
       metric_test_name: Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code
       metric_test_score: 1
+      metric_test_maturity: 3
     - metric_test_identifier: FsF-I1-01M-2
       metric_test_name: Parsable, graph data (RDF, JSON-LD) is accessible through content negotiation, typed links or sparql endpoint
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -232,6 +264,7 @@ metrics:
     - metric_test_identifier: FsF-I3-01M-1
       metric_test_name: Related resources are explicitely mentioned in metadata
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -247,11 +280,19 @@ metrics:
   evaluation_mechanism: Metric is evaluated using the resource type given in the metadata as well as data object specific properties file size and file type. Further presence of measured variables is tested.
   metric_tests:
     - metric_test_identifier: FsF-R1-01MD-1
-      metric_test_name: Resource type (e.g. dataset) is given in metadata
+      metric_test_name: Minimal information about available data content is given in metadata
       metric_test_score: 1
+      metric_test_maturity: 1
+    - metric_test_identifier: FsF-R1-01MD-1a
+      metric_test_name: Resource type (e.g. dataset) is given in metadata
+      metric_test_score: 0
+    - metric_test_identifier: FsF-R1-01MD-1b
+      metric_test_name: Information about data content (e.g. links) is given in metadata
+      metric_test_score: 0
     - metric_test_identifier: FsF-R1-01MD-2
       metric_test_name: Verifiable data descriptors (file info, measured variables or observation types) are specified in metadata
       metric_test_score: 1
+      metric_test_maturity: 2
     - metric_test_identifier: FsF-R1-01MD-2a
       metric_test_name: File size and type information are specified in metadata
       metric_test_score: 0
@@ -260,10 +301,12 @@ metrics:
       metric_test_score: 0
     - metric_test_identifier: FsF-R1-01MD-3
       metric_test_name: Data content matches file type and size specified in metadata
-      metric_test_score: 0
+      metric_test_score: 1
+      metric_test_maturity: 3
     - metric_test_identifier: FsF-R1-01MD-4
       metric_test_name: Data content matches measured variables or observation types specified in metadata
-      metric_test_score: 0
+      metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-07-08
@@ -281,9 +324,11 @@ metrics:
     - metric_test_identifier: FsF-R1.1-01M-1
       metric_test_name: Licence information is given in an appropriate metadata element
       metric_test_score: 1
+      metric_test_maturity: 1
     - metric_test_identifier: FsF-R1.1-01M-2
       metric_test_name: Recognized licence is valid and registered at SPDX
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -307,9 +352,11 @@ metrics:
     - metric_test_identifier: FsF-R1.2-01M-1
       metric_test_name: Metadata contains elements which hold provenance information and can be mapped to PROV
       metric_test_score: 1
+      metric_test_maturity: 2
     - metric_test_identifier: FsF-R1.2-01M-2
       metric_test_name: Metadata contains provenance information using formal provenance ontologies (PROV-O)
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -324,12 +371,14 @@ metrics:
   fair_principle: R1.3
   evaluation_mechanism: Metadata encodings can be verified using community specific namespaces and schemas listed by the RDA metadata standards WG
   metric_tests:
-    - metric_test_identifier: FsF-R1.3-01M-1a
-      metric_test_name: Community specific metadata standard is detected using namespaces or schemas found in metadata listed in the RDA metadata standards catalogue
+    - metric_test_identifier: FsF-R1.3-01M-1
+      metric_test_name: Community specific metadata standard is detected using namespaces or schemas found in provided metadata or metadata services outputs
       metric_test_score: 1
-    - metric_test_identifier: FsF-R1.3-01M-1b
+      metric_test_maturity: 3
+    - metric_test_identifier: FsF-R1.3-01M-2
       metric_test_name: Community specific metadata standard is listed in the re3data record of the responsible repository
-      metric_test_score: 1
+      metric_test_score: 0.5
+      metric_test_maturity: 2
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -353,12 +402,15 @@ metrics:
     - metric_test_identifier: FsF-R1.3-02D-1a
       metric_test_name: The format of the data file is an open format
       metric_test_score: 0
+      metric_test_maturity: 1
     - metric_test_identifier: FsF-R1.3-02D-1b
       metric_test_name: The format of the data file is a long term format
       metric_test_score: 0
+      metric_test_maturity: 2
     - metric_test_identifier: FsF-R1.3-02D-1c
       metric_test_name: The format of the data file is a scientific format
       metric_test_score: 0
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03

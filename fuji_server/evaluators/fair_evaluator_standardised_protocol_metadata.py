@@ -54,6 +54,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
                     test_status = 'pass'
                     score += 1
                     self.setEvaluationCriteriumScore('FsF-A1-02M-1', 1, 'pass')
+                    self.maturity = 3
                 # TODO: check why this is tested - delete if not required
                 if set(metadata_found) != set(metadata_required):
                     self.logger.info('FsF-A1-02M : NOT all required metadata given, see: FsF-F2-01M')
@@ -65,6 +66,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
         self.result.score = self.score
         self.result.output = StandardisedProtocolMetadataOutput(standard_metadata_protocol=metadata_output)
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.test_status = test_status
 
 

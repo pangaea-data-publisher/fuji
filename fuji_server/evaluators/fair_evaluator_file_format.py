@@ -53,6 +53,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         if len(self.fuji.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.fuji.content_identifier]
             self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
+            #self.maturity = 1
             for file_index, data_file in enumerate(self.fuji.content_identifier):
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
@@ -88,6 +89,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 subject_area = []
                 if mimetype in self.fuji.SCIENCE_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1c', 0, 'pass')
+                    self.maturity = 3
                     if self.fuji.SCIENCE_FILE_FORMATS.get(mimetype) == 'Generic':
                         subject_area.append('General')
                         preferance_reason.append('generic science format')
@@ -98,12 +100,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 # check if long term format
                 if mimetype in self.fuji.LONG_TERM_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1b', 0, 'pass')
+                    self.maturity = 2
                     preferance_reason.append('long term format')
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
                 # check if open format
                 if mimetype in self.fuji.OPEN_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1a', 0, 'pass')
+                    self.maturity = 1
                     preferance_reason.append('open format')
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
@@ -125,6 +129,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             if len(data_file_list) > 0:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
+                #self.maturity = 3
                 self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community')
                 self.result.test_status = 'pass'
         else:
@@ -134,4 +139,5 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         self.output = data_file_list
         self.result.output = self.output
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.score = self.score

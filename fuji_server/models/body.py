@@ -14,7 +14,7 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None, oaipmh_endpoint: str=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -27,13 +27,16 @@ class Body(Model):
         :type metadata_service_type: str
         :param use_datacite: The use_datacite of this Body.  # noqa: E501
         :type use_datacite: bool
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
+        :type oaipmh_endpoint: str
         """
         self.swagger_types = {
             'object_identifier': str,
             'test_debug': bool,
             'metadata_service_endpoint': str,
             'metadata_service_type': str,
-            'use_datacite': bool
+            'use_datacite': bool,
+            'oaipmh_endpoint': str
         }
 
         self.attribute_map = {
@@ -41,13 +44,15 @@ class Body(Model):
             'test_debug': 'test_debug',
             'metadata_service_endpoint': 'metadata_service_endpoint',
             'metadata_service_type': 'metadata_service_type',
-            'use_datacite': 'use_datacite'
+            'use_datacite': 'use_datacite',
+            'oaipmh_endpoint': 'oaipmh_endpoint'
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
         self._metadata_service_endpoint = metadata_service_endpoint
         self._metadata_service_type = metadata_service_type
         self._use_datacite = use_datacite
+        self._oaipmh_endpoint = oaipmh_endpoint
 
     @classmethod
     def from_dict(cls, dikt) -> 'Body':
@@ -174,3 +179,26 @@ class Body(Model):
         """
 
         self._use_datacite = use_datacite
+
+    @property
+    def oaipmh_endpoint(self) -> str:
+        """Gets the oaipmh_endpoint of this Body.
+
+        (Deprecated) The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :return: The oaipmh_endpoint of this Body.
+        :rtype: str
+        """
+        return self._oaipmh_endpoint
+
+    @oaipmh_endpoint.setter
+    def oaipmh_endpoint(self, oaipmh_endpoint: str):
+        """Sets the oaipmh_endpoint of this Body.
+
+        (Deprecated) The URL of the OAI-PMH data-provider  # noqa: E501
+
+        :param oaipmh_endpoint: The oaipmh_endpoint of this Body.
+        :type oaipmh_endpoint: str
+        """
+
+        self._oaipmh_endpoint = oaipmh_endpoint

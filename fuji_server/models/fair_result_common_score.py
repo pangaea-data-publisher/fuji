@@ -14,7 +14,7 @@ class FAIRResultCommonScore(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, earned: int=0, total: int=0):  # noqa: E501
+    def __init__(self, earned: float=0, total: int=0):  # noqa: E501
         """FAIRResultCommonScore - a model defined in Swagger
 
         :param earned: The earned of this FAIRResultCommonScore.  # noqa: E501
@@ -23,7 +23,7 @@ class FAIRResultCommonScore(Model):
         :type total: int
         """
         self.swagger_types = {
-            'earned': int,
+            'earned': float,
             'total': int
         }
 
@@ -46,22 +46,22 @@ class FAIRResultCommonScore(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def earned(self) -> int:
+    def earned(self) -> float:
         """Gets the earned of this FAIRResultCommonScore.
 
 
         :return: The earned of this FAIRResultCommonScore.
-        :rtype: int
+        :rtype: float
         """
         return self._earned
 
     @earned.setter
-    def earned(self, earned: int):
+    def earned(self, earned: float):
         """Sets the earned of this FAIRResultCommonScore.
 
 
         :param earned: The earned of this FAIRResultCommonScore.
-        :type earned: int
+        :type earned: float
         """
 
         self._earned = earned

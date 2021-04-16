@@ -45,7 +45,9 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             contents = [c for c in contents if c]
             number_of_contents = len(contents)
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F3-01M : Number of object content identifier found -: {}'.format(number_of_contents))
-
+            self.maturity = 1
+            score = 0.5
+            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
                     'FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first -: {} content identifiers'.format(
@@ -88,6 +90,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                     else:  # will be executed if there is no exception
                         #self.fuji.content_identifier.append(content_link)
                         did_output_content.content_identifier_active = True
+
                     content_list.append(did_output_content)
                 else:
                     self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
@@ -95,12 +98,15 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
 
         if content_list:
-            score += 1
-            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 1, 'pass')
+            self.maturity = 3
+            score = 1
+            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F3-01M-2', 0.5, 'pass')
         self.score.earned = score
-        if score > 0:
+        if score > 0.5:
             self.result.test_status = "pass"
         self.result.metric_tests = self.metric_tests
         self.output.content = content_list
         self.result.output = self.output
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.score = self.score

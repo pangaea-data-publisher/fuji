@@ -71,6 +71,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         if provenance_metadata_output.is_available:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1.2-01M : Found data creation-related provenance information')
             provenance_status = 'pass'
+            self.maturity = 2
             score = score + 1
             self.setEvaluationCriteriumScore('FsF-R1.2-01M-1', 1, 'pass')
         self.output.provenance_metadata_included = provenance_metadata_output
@@ -89,6 +90,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
             for used_prov_ns in used_provenance_namespace:
                 structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
             self.setEvaluationCriteriumScore('FsF-R1.2-01M-2', 1, 'pass')
+            self.maturity = 3
             self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.2-01M : Found use of dedicated provenance ontologies')
         else:
             self.logger.warning('FsF-R1.2-01M : Formal provenance metadata is unavailable')
@@ -99,5 +101,6 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         self.result.test_status = provenance_status
         self.score.earned = score
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = self.output
         self.result.score = self.score

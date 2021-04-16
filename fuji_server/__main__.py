@@ -98,6 +98,6 @@ if __name__ == '__main__':
     log_file_path = os.path.join(log_directory, 'fuji.log')
     if not os.path.exists(log_directory):
         os.makedirs(log_directory, exist_ok=True)
-    fileConfig(log_configfile, defaults={'logfilename': log_file_path.replace("\\", "/")})
+    #fileConfig(log_configfile, defaults={'logfilename': log_file_path.replace("\\", "/")})
     logger = logging.getLogger()  # use this form to initialize the root logger
     main()

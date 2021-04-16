@@ -43,12 +43,15 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         # TODO: check the number of metadata elements which metadata_found has in common with metadata_required
         # set(a) & set(b)
         self.logger.info('FsF-F2-01M : Testing for required core descriptive metadata elements -: {}'.format(metadata_required))
+
+
         if set(metadata_found) == set(metadata_required):
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core descriptive metadata elements -: {}'.format(metadata_required))
             metadata_status = 'all metadata'
+            self.maturity = 3
             self.score.earned = self.total_score
             self.setEvaluationCriteriumScore('FsF-F2-01M-3', 1, 'pass')
-            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
             test_status = 'pass'
         else:
             core_missing = list(set(metadata_required) - set(metadata_found))
@@ -57,15 +60,25 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             if set(partial_elements).issubset(metadata_found):
                 self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F2-01M : Found required core citation metadata elements -: {}'.format(partial_elements))
                 metadata_status = 'partial metadata'
-                self.setEvaluationCriteriumScore('FsF-F2-01M-2', 1, 'pass')
+                self.maturity = 2
+                self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
                 self.score.earned = self.total_score - 1
                 test_status = 'pass'
             else:
+                if len(metadata_found) >=2:
+                    self.logger.info('FsF-F2-01M : Found some descriptive metadata elements -: ' + str(metadata_found.keys()))
+                    metadata_status = 'some metadata'
+                    self.maturity = 1
+                    self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
+                    self.score.earned = 0.5
+                    test_status = 'pass'
+                else:
+                    metadata_status = 'insufficient metadata'  # status should follow enumeration in yaml
+                    self.score.earned = 0
+                    test_status = 'fail'
                 partial_missing = list(set(partial_elements) - set(metadata_found))
                 self.logger.warning('FsF-F2-01M : Not all required citation metadata elements exist, missing -: '+str(partial_missing))
-                metadata_status = 'insufficient metadata'  # status should follow enumeration in yaml
-                self.score.earned = 0
-                test_status = 'fail'
+
 
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
                                                      core_metadata_source=self.fuji.metadata_sources)
@@ -76,18 +89,19 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         for source_mechanism in source_mechanisms:
             if source_mechanism == 'embedded':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'negotiated':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'linked':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
             if source_mechanism == 'signposting':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0,'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0, 'pass')
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
         self.result.test_status = test_status
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = self.output
 

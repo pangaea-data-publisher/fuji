@@ -65,6 +65,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         else:
             self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found structured data (RDF serialization) in the data page'.format(self.metric_identifier))
             score += 1
+            self.maturity = 2
             self.setEvaluationCriteriumScore('FsF-I1-01M-1', 1, 'pass')
 
         # 2. hard check (typed-link, content negotiate, sparql endpoint)
@@ -109,6 +110,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         if negotiated_RDF_exists or RDF_link_exists:
             self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found RDF content through content negotiation or typed links'.format(self.metric_identifier))
             score +=1
+            self.maturity = 3
             self.setEvaluationCriteriumScore('FsF-I1-01M-2', 1, 'pass')
         else:
             self.logger.info(
@@ -139,8 +141,9 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                     outputs.append(
                         FormalMetadataOutputInner(serialization_format=contenttype, source='sparql_endpoint',
                                                   is_metadata_found=True))
-                    score += 1
-
+                    if score < 2:
+                        score += 1
+                    self.maturity = 3
                     self.logger.log(self.fuji.LOG_SUCCESS,'{0} : Found RDF content through SPARQL endpoint'.format(
                                         self.metric_identifier))
                     self.setEvaluationCriteriumScore('FsF-I1-01M-2', 1, 'pass')
@@ -157,4 +160,5 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         self.score.earned = score
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = outputs

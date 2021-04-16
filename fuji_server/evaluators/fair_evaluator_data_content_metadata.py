@@ -56,6 +56,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified -: {}'.format(resource_type))
                 self.output.object_type = resource_type
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1a', 0, 'pass')
+                self.maturity = 1
                 score += 1
             else:
                 self.logger.warning('FsF-R1-01MD : No valid resource type specified -: '+str(resource_type))
@@ -64,9 +66,15 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
         # 2. initially verification is restricted to the last file and only use object content uri that is accessible (self.content_identifier)
         if isinstance(self.fuji.content_identifier, list):
+            if len(self.fuji.content_identifier)>0:
+                self.maturity = 1
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                self.setEvaluationCriteriumScore('FsF-R1-01MD-1b', 0, 'pass')
             not_empty_content_uris = [d['url'] for d in self.fuji.content_identifier if 'url' in d]
             content_length = len(not_empty_content_uris)
             if content_length > 0:
+                if self.maturity <3:
+                    self.maturity = 2
                 self.logger.info('FsF-R1-01MD : Number of data content URI(s) specified -: {}'.format(content_length))
                 test_data_content_url = not_empty_content_uris[-1]
                 self.logger.info(
@@ -150,6 +158,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                item.get('url') == test_data_content_url)
             if data_object.get('type') and data_object.get('size'):
                 score +=1
+                if self.maturity < 3:
+                    self.maturity = 2
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-2', 1, 'pass')
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-2a', 0, 'pass')
 
@@ -190,6 +200,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             ### scoring for file descriptors match
             if matches_type and matches_size:
                 score += 1
+                self.maturity = 3
                 self.setEvaluationCriteriumScore('FsF-R1-01MD-3', 1, 'pass')
 
         # 4. check if varibles specified in the data file
@@ -199,6 +210,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             self.setEvaluationCriteriumScore('FsF-R1-01MD-2b', 0, 'pass')
             self.logger.log(self.fuji.LOG_SUCCESS,
                 'FsF-R1-01MD : Found measured variables or observations (aka parameters) as content descriptor')
+            if self.maturity < 3:
+                self.maturity = 2
             if not test_data_content_text:
                 self.logger.warning('FsF-R1-01MD : Could not verify measured variables found in data object content, content parsing failed')
             for variable in self.fuji.metadata_merged['measured_variable']:
@@ -212,6 +225,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     if not is_variable_scored:  # only increase once
                         self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
                         self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
+                        self.maturity = 3
                         score += 1
                         is_variable_scored = True
                 data_content_descriptors.append(variable_metadata_inner)
@@ -227,4 +241,5 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         self.score.earned = score
         self.result.score = self.score
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.test_status = test_status

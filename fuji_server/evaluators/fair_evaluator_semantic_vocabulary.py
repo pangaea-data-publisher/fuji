@@ -56,6 +56,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         test_status = 'fail'
         # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
         if self.fuji.namespace_uri:
+            self.maturity = 1
             lod_namespaces = [d['namespace'] for d in self.fuji.VOCAB_NAMESPACES if 'namespace' in d]
             exists = list(set(lod_namespaces) & set(self.fuji.namespace_uri))
             self.logger.info(
@@ -63,6 +64,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             if exists:
                 score = self.total_score
                 self.setEvaluationCriteriumScore('FsF-I1-02M-1', 1, 'pass')
+                self.maturity = 3
                 self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, exists))
                 for e in exists:
                     outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
@@ -83,4 +85,5 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.score.earned = score
         self.result.score = self.score
         self.result.metric_tests = self.metric_tests
+        self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.output = outputs

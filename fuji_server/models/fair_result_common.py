@@ -16,7 +16,7 @@ class FAIRResultCommon(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='incomplete'):  # noqa: E501
         """FAIRResultCommon - a model defined in Swagger
 
         :param id: The id of this FAIRResultCommon.  # noqa: E501
@@ -31,6 +31,8 @@ class FAIRResultCommon(Model):
         :type test_status: str
         :param score: The score of this FAIRResultCommon.  # noqa: E501
         :type score: FAIRResultCommonScore
+        :param maturity: The maturity of this FAIRResultCommon.  # noqa: E501
+        :type maturity: str
         """
         self.swagger_types = {
             'id': int,
@@ -38,7 +40,8 @@ class FAIRResultCommon(Model):
             'metric_name': str,
             'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
-            'score': FAIRResultCommonScore
+            'score': FAIRResultCommonScore,
+            'maturity': str
         }
 
         self.attribute_map = {
@@ -47,7 +50,8 @@ class FAIRResultCommon(Model):
             'metric_name': 'metric_name',
             'metric_tests': 'metric_tests',
             'test_status': 'test_status',
-            'score': 'score'
+            'score': 'score',
+            'maturity': 'maturity'
         }
         self._id = id
         self._metric_identifier = metric_identifier
@@ -55,6 +59,7 @@ class FAIRResultCommon(Model):
         self._metric_tests = metric_tests
         self._test_status = test_status
         self._score = score
+        self._maturity = maturity
 
     @classmethod
     def from_dict(cls, dikt) -> 'FAIRResultCommon':
@@ -206,3 +211,30 @@ class FAIRResultCommon(Model):
             raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
+
+    @property
+    def maturity(self) -> str:
+        """Gets the maturity of this FAIRResultCommon.
+
+
+        :return: The maturity of this FAIRResultCommon.
+        :rtype: str
+        """
+        return self._maturity
+
+    @maturity.setter
+    def maturity(self, maturity: str):
+        """Sets the maturity of this FAIRResultCommon.
+
+
+        :param maturity: The maturity of this FAIRResultCommon.
+        :type maturity: str
+        """
+        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
+        if maturity not in allowed_values:
+            raise ValueError(
+                "Invalid value for `maturity` ({0}), must be one of {1}"
+                .format(maturity, allowed_values)
+            )
+
+        self._maturity = maturity
