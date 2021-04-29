@@ -64,68 +64,72 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 if self.fuji.repeat_pid_check == True:
                     if self.fuji.landing_url != self.fuji.input_id:
                         self.logger.warning('FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL')
+                if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
+                    if r.status == 200:
+                        # identify signposting links in header
+                        header_link_string = requestHelper.getHTTPResponse().getheader('Link')
+                        if header_link_string is not None:
+                            self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
 
-                if r.status == 200:
-                    # identify signposting links in header
-                    header_link_string = requestHelper.getHTTPResponse().getheader('Link')
-                    if header_link_string is not None:
-                        self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
+                            for preparsed_link  in header_link_string.split(','):
+                                found_link = None
+                                found_type, type_match = None, None
+                                found_rel, rel_match = None, None
+                                found_formats, formats_match = None, None
+                                parsed_link = preparsed_link.strip().split(';')
+                                found_link = parsed_link[0].strip()
+                                for link_prop in parsed_link[1:]:
+                                    if str(link_prop).startswith('rel="'):
+                                        rel_match = re.search('rel=\"(.*?)\"', link_prop)
+                                    elif str(link_prop).startswith('type="'):
+                                        type_match = re.search('type=\"(.*?)\"', link_prop)
+                                    elif str(link_prop).startswith('formats="'):
+                                        formats_match = re.search('formats=\"(.*?)\"', link_prop)
+                                if type_match:
+                                    found_type = type_match[1]
+                                if rel_match:
+                                    found_rel = rel_match[1]
+                                if formats_match:
+                                    found_formats = formats_match[1]
+                                signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel, 'profile':found_formats}
+                                if found_link:
+                                    self.fuji.signposting_header_links.append(signposting_link_dict)
 
-                        for preparsed_link  in header_link_string.split(','):
-                            found_link = None
-                            found_type, type_match = None, None
-                            found_rel, rel_match = None, None
-                            found_formats, formats_match = None, None
-                            parsed_link = preparsed_link.strip().split(';')
-                            found_link = parsed_link[0].strip()
-                            for link_prop in parsed_link[1:]:
-                                if str(link_prop).startswith('rel="'):
-                                    rel_match = re.search('rel=\"(.*?)\"', link_prop)
-                                elif str(link_prop).startswith('type="'):
-                                    type_match = re.search('type=\"(.*?)\"', link_prop)
-                                elif str(link_prop).startswith('formats="'):
-                                    formats_match = re.search('formats=\"(.*?)\"', link_prop)
-                            if type_match:
-                                found_type = type_match[1]
-                            if rel_match:
-                                found_rel = rel_match[1]
-                            if formats_match:
-                                found_formats = formats_match[1]
-                            signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel, 'profile':found_formats}
-                            if found_link:
-                                self.fuji.signposting_header_links.append(signposting_link_dict)
+                        #check if there is a cite-as signposting link
+                        if self.fuji.pid_scheme is None:
+                            signposting_pid_link = self.fuji.get_signposting_links('cite-as')
+                            if signposting_pid_link:
+                                signposting_pid = signposting_pid_link[0].get('url')
+                            if signposting_pid:
+                                signidhelper = IdentifierHelper
+                                #found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
+                                found_id = signidhelper.preferred_schema
+                                #if len(found_ids) > 1:
+                                #    found_ids.remove('url')
+                                #    found_id = found_ids[0]
+                                if signidhelper.is_persistent:
+                                    self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
+                                    self.fuji.pid_scheme = found_id
 
-                    #check if there is a cite-as signposting link
-                    if self.fuji.pid_scheme is None:
-                        signposting_pid_link = self.fuji.get_signposting_links('cite-as')
-                        if signposting_pid_link:
-                            signposting_pid = signposting_pid_link[0].get('url')
-                        if signposting_pid:
-                            signidhelper = IdentifierHelper
-                            #found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
-                            found_id = signidhelper.preferred_schema
-                            #if len(found_ids) > 1:
-                            #    found_ids.remove('url')
-                            #    found_id = found_ids[0]
-                            if signidhelper.is_persistent:
-                                self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
-                                self.fuji.pid_scheme = found_id
+                        up = urlparse(self.fuji.landing_url)
+                        self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
+                        self.fuji.landing_html = requestHelper.getResponseContent()
+                        self.fuji.landing_content_type = requestHelper.content_type
 
-                    up = urlparse(self.fuji.landing_url)
-                    self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
-                    self.fuji.landing_html = requestHelper.getResponseContent()
-                    self.fuji.landing_content_type = requestHelper.content_type
-
-                    self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
-                    self.output.resolvable_status = True
-                    self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
-                    self.fuji.isMetadataAccessible = True
-                elif r.status_code in [401, 402, 403]:
-                    self.fuji.isMetadataAccessible = False
-                    self.logger.warning("Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
+                        self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
+                        self.output.resolvable_status = True
+                        self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                        self.fuji.isMetadataAccessible = True
+                    elif r.status_code in [401, 402, 403]:
+                        self.fuji.isMetadataAccessible = False
+                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
+                    else:
+                        self.fuji.isMetadataAccessible = False
+                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
                 else:
-                    self.fuji.isMetadataAccessible = False
-                    self.logger.warning("Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
+                    self.logger.warning("FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}".format(
+                        code=self.fuji.landing_url))
+
             else:
                 self.fuji.isMetadataAccessible = False
                 self.logger.warning("FsF-F1-02D :Resource inaccessible, no response received from -: {}".format(check_url))
