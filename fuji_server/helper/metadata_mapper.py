@@ -93,8 +93,11 @@ class Mapper(Enum):
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \
                             'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
-                            'related_resources: [{related_resource: isPartOf."@id" || isPartOf.url || isPartOf, relation_type: \'isPartOf\'}, ' \
-                            '{related_resource: "@reverse".isBasedOn."@id" || "@reverse".isBasedOn.url || isBasedOn , relation_type: \'isBasedOn\'} ], ' \
+                            'related_resources: [{related_resource: (isPartOf."@id" || isPartOf[0]."@id" || isPartOf.url || isPartOf[0].url || isPartOf), relation_type: \'isPartOf\'}, ' \
+                            '{related_resource: (includedInDataCatalog."@id" || includedInDataCatalog[0]."@id" || includedInDataCatalog.url || includedInDataCatalog[0].url || includedInDataCatalog.name || includedInDataCatalog[0].name || includedInDataCatalog), relation_type: \'isPartOf\'}, ' \
+                            '{related_resource: (subjectOf."@id" || subjectOf[0]."@id" || subjectOf.url ||subjectOf[0].url || subjectOf.name || subjectOf[0].name || subjectOf), relation_type: \'isReferencedBy\'},' \
+                            '{related_resource: (isBasedOn."@id" || isBasedOn[0]."@id" || isBasedOn.url || isBasedOn[0].url || isBasedOn) , relation_type: \'isBasedOn\'} , ' \
+                            '{related_resource: "@reverse".isBasedOn[0]."@id" || "@reverse".isBasedOn[0].url || isBasedOn , relation_type: \'isBasisFor\'} ], ' \
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}])}'
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
