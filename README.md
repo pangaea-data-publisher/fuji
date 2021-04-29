@@ -5,6 +5,8 @@ Developers: [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com), [Rob
 F-UJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
 The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.  
 
+A web demo using F-UJI is available at https://www.f-uji.net
+
 ## Assessment Scope, Constraint and Limitation
 The service is **in development** and its assessment depends on several factors. 
 - In the FAIR ecosystem, FAIR assessment must go beyond the object itself. FAIR enabling services and repositories are vital to ensure that research data objects remain FAIR over time. Importantly, machine-readable services (e.g., registries) and documents (e.g., policies) are required to enable automated tests. 
