@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  fujirest:
+    image: "sneumann/fuji:latest"
+    ports:
+      - "1071:1071"
+
+  notebook:
+    image: "jupyter/minimal-notebook:latest"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - .:/home/jovyan/work
+    ports:
+      - "8888:8888"
+
