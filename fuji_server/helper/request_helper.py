@@ -46,6 +46,7 @@ class AcceptTypes(Enum):
     xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
+    atom = 'application/atom+xml'
     rdfjson = 'application/rdf+json'
     nt = 'text/n3, application/n-triples'
     rdfxml = 'application/rdf+xml, text/rdf;q=0.5, application/xml;q=0.1, text/xml;q=0.1'
