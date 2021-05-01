@@ -69,6 +69,7 @@ from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorData
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMicroData
 from fuji_server.helper.metadata_collector_opengraph import MetaDataCollectorOpenGraph
+from fuji_server.helper.metadata_collector_ore_atom import MetaDataCollectorOreAtom
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
@@ -634,6 +635,8 @@ class FAIRCheck:
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
                             self.reference_elements.remove(r)
+                    if rdf_dict.get('related_resources'):
+                        self.related_resources.extend(rdf_dict.get('related_resources'))
                 else:
                     self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
@@ -690,6 +693,10 @@ class FAIRCheck:
         typed_metadata_links.extend(sign_header_links)
         guessed_metadata_link = self.get_guessed_xml_link()
 
+        #print('debugging OAI ORE')
+        #typed_metadata_links.append(
+        #    {'url': 'https://data.hpc.imperial.ac.uk/resolve/?ore=6216', 'type': 'application/atom+xml', 'rel': 'resourcemap', 'profile': None})
+
         if guessed_metadata_link is not None:
             typed_metadata_links.append(guessed_metadata_link)
 
@@ -708,6 +715,20 @@ class FAIRCheck:
                         metadata_link['type'] + ')'))
                     typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                target_url=metadata_link['url'], link_type=metadata_link.get('source'))
+                elif metadata_link['type'] in ['application/atom+xml'] and metadata_link['rel'] == 'resourcemap':
+                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to OAI ORE (atom) Metadata -: (' + str(
+                        metadata_link['type'] + ')'))
+                    ore_atom_collector = MetaDataCollectorOreAtom(loggerinst=self.logger, target_url=metadata_link['url'] )
+                    source_ore, ore_dict = ore_atom_collector.parse_metadata()
+                    ore_dict = self.exclude_null(ore_dict)
+                    if ore_dict:
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F2-01M : Found OAI ORE metadata -: {}'.format(str(ore_dict.keys())))
+                        self.metadata_sources.append((source_ore, 'linked'))
+                        for r in ore_dict.keys():
+                            if r in self.reference_elements:
+                                self.metadata_merged[r] = ore_dict[r]
+                                self.reference_elements.remove(r)
 
             if typed_rdf_collector is not None:
                 source_rdf, rdf_dict = typed_rdf_collector.parse_metadata()
@@ -721,6 +742,8 @@ class FAIRCheck:
                         if r in self.reference_elements:
                             self.metadata_merged[r] = rdf_dict[r]
                             self.reference_elements.remove(r)
+                    if rdf_dict.get('related_resources'):
+                        self.related_resources.extend(rdf_dict.get('related_resources'))
                 else:
                     self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
