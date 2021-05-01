@@ -110,7 +110,8 @@ def assess_by_id(body):  # noqa: E501
                 results[res_k]['test_debug'] = ['INFO: Debugging disabled']
                 debug_messages = {}
         ft.logger.handlers = [ft.logger.handlers[-1]]
-        timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
+        #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
+        timestmp = datetime.datetime.now().replace(microsecond=0).isoformat() + "Z" # use timestamp format from RFC 3339 as specified in openapi3
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
