@@ -132,15 +132,22 @@ class Mapper(Enum):
 
     GENERIC_SPARQL = """
             PREFIX dct: <http://purl.org/dc/terms/>
-            SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level WHERE {
-            OPTIONAL {?dataset  dct:title ?title}
-            OPTIONAL {?dataset dct:identifier ?object_identifier}
-            OPTIONAL {?dataset  dct:description ?summary}
-            OPTIONAL {?dataset  dct:publisher ?publisher}
-            OPTIONAL {?dataset  dct:created|dct:issued|dct:date ?publication_date}
-            OPTIONAL {?dataset  dct:creator ?creator}
-            OPTIONAL {?dataset  dct:type ?object_type}
-            OPTIONAL {?dataset  dct:license ?license}
-            OPTIONAL {?dataset  dct:accessRights|dct:rights ?access_level}
+            PREFIX dc: <http://purl.org/dc/elements/1.1/>
+            SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level ?keywords ?references ?source ?isVersionOf ?isReferencedBy
+            WHERE {
+            OPTIONAL {?dataset  dct:title|dc:title ?title}
+            OPTIONAL {?dataset dct:identifier|dc:identifier ?object_identifier}
+            OPTIONAL {?dataset  dct:description|dc:description ?summary}
+            OPTIONAL {?dataset  dct:publisher|dc:publisher ?publisher}
+            OPTIONAL {?dataset  dct:created|dct:issued|dct:date|dc:created|dc:issued|dc:date ?publication_date}
+            OPTIONAL {?dataset  dct:creator|dc:creator ?creator}
+            OPTIONAL {?dataset  dct:type|dc:type ?object_type}
+            OPTIONAL {?dataset  dct:license|dc:license ?license}
+            OPTIONAL {?dataset  dct:accessRights|dct:rights|dc:rights ?access_level}
+            OPTIONAL {?dataset  dct:subject|dc:subject ?keywords}
+            OPTIONAL {?dataset  dct:references|dc:references ?references}
+            OPTIONAL {?dataset  dct:isReferencedBy ?isReferencedBy}
+            OPTIONAL {?dataset  dc:source|dct:source ?source}
+            OPTIONAL {?dataset  dct:isVersionOf ?isVersionOf}
             }
             """

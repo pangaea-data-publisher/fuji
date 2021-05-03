@@ -99,10 +99,17 @@ class MetaDataCollectorRdf (MetaDataCollector):
             if(len(g)>1):
                 self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
                 r = g.query(Mapper.GENERIC_SPARQL.value)
+                #this will only return the first result set (row)
+
                 for row in sorted(r):
                     for l, v in row.asdict().items():
                         if l is not None:
-                            meta[l] = str(v)
+                            if l in ['references' ,'source' ,'isVersionOf','isReferencedBy']:
+                                if not meta.get('related_resources'):
+                                    meta['related_resources'] = []
+                                meta['related_resources'].append({'related_resource': str(v), 'relation_type': l})
+                            else:
+                                meta[l] = str(v)
                     break
             else:
                 self.logger.info('FsF-F2-01M : Graph seems to contain only one triple, skipping core metadata element test')
