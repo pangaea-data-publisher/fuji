@@ -46,7 +46,7 @@ from rapidfuzz import process
 from tika import parser
 import hashlib
 
-import tldextract
+from tldextract import extract
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
@@ -212,18 +212,14 @@ class FAIRCheck:
     def validate_service_url(self):
         # checks if service url and landing page url have same domain in order to avoid manipulations
         if self.metadata_service_url:
-            service_url_parts = urlparse(self.metadata_service_url)
-            landing_url_parts = urlparse(self.landing_url)
-            landing_domain = True
-            service_domain = False
-            if service_url_parts.netloc:
-                service_domain = '.'.join(service_url_parts.netloc.split('.')[-2:])
-            if landing_url_parts.netloc:
-                landing_domain = '.'.join(landing_url_parts.netloc.split('.')[-2:])
+            service_url_parts = extract(self.metadata_service_url)
+            landing_url_parts = extract(self.landing_url)
+            service_domain = service_url_parts.domain+'.'+service_url_parts.suffix
+            landing_domain = landing_url_parts.domain+'.'+landing_url_parts.suffix
             if landing_domain == service_domain:
                 return True
             else:
-                self.logger.info('FsF-R1.3-01M : Service URL domain/subdomain does not match with landing page domain -: {}'.format(service_domain,landing_domain))
+                self.logger.warning('FsF-R1.3-01M : Service URL domain/subdomain does not match with landing page domain -: {}'.format(service_domain,landing_domain))
                 self.metadata_service_url, self.csw_endpoint, self.oaipmh_endpoint ,self.sparql_endpoint = None, None, None, None
                 return False
         else:
@@ -283,7 +279,8 @@ class FAIRCheck:
                 client_id = self.metadata_merged.get('datacite_client')
                 self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
             else:
-                self.logger.info('{} : Datacite support disabled, therefore skipping standards identification using in re3data record'.format(
+                client_id = None
+                self.logger.warning('{} : Datacite support disabled, therefore skipping standards identification using in re3data record'.format(
                     'FsF-R1.3-01M', ))
 
             if self.metadata_service_url not in [None,'']:
