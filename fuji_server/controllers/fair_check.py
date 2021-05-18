@@ -46,6 +46,8 @@ from rapidfuzz import process
 from tika import parser
 import hashlib
 
+from tldextract import extract
+
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
@@ -207,6 +209,21 @@ class FAIRCheck:
         except:
             return False
 
+    def validate_service_url(self):
+        # checks if service url and landing page url have same domain in order to avoid manipulations
+        if self.metadata_service_url:
+            service_url_parts = extract(self.metadata_service_url)
+            landing_url_parts = extract(self.landing_url)
+            service_domain = service_url_parts.domain+'.'+service_url_parts.suffix
+            landing_domain = landing_url_parts.domain+'.'+landing_url_parts.suffix
+            if landing_domain == service_domain:
+                return True
+            else:
+                self.logger.warning('FsF-R1.3-01M : Service URL domain/subdomain does not match with landing page domain -: {}'.format(service_domain,landing_domain))
+                self.metadata_service_url, self.csw_endpoint, self.oaipmh_endpoint ,self.sparql_endpoint = None, None, None, None
+                return False
+        else:
+            return False
 
     def retrieve_metadata(self, extruct_metadata):
         embedded_exists={}
@@ -258,8 +275,13 @@ class FAIRCheck:
     def retrieve_apis_standards(self):
         if self.landing_url is not None:
             self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
-            client_id = self.metadata_merged.get('datacite_client')
-            self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
+            if self.use_datacite:
+                client_id = self.metadata_merged.get('datacite_client')
+                self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
+            else:
+                client_id = None
+                self.logger.warning('{} : Datacite support disabled, therefore skipping standards identification using in re3data record'.format(
+                    'FsF-R1.3-01M', ))
 
             if self.metadata_service_url not in [None,'']:
                 self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request -: '+str(self.metadata_service_url))
@@ -274,7 +296,8 @@ class FAIRCheck:
                         self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
                     self.community_standards.extend(repoHelper.getRe3MetadataStandards())
                     self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format('FsF-R1.3-01M', self.community_standards ))
-
+            # verify the service url by domain matching
+            self.validate_service_url()
             # retrieve metadata standards info from oai-pmh
             if self.oaipmh_endpoint:
                 self.logger.info('{} : Use OAI-PMH endpoint to retrieve standards used by the repository -: {}'.format('FsF-R1.3-01M',self.oaipmh_endpoint))
@@ -289,7 +312,7 @@ class FAIRCheck:
                 else:
                     self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
-                self.logger.warning('{} : NO OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
+                self.logger.warning('{} : NO valid OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
 
             # retrieve metadata standards info from OGC CSW
             if self.csw_endpoint:

@@ -73,7 +73,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         re3_detected = False
         if len(self.fuji.community_standards) > 0:
             #if len(standards_detected) == 0:
-            if 1==1:
+            if self.fuji.use_datacite:
                 self.logger.info('FsF-R1.3-01M : Using re3data to detect metadata standard(s)')
                 for s in self.fuji.community_standards:
                     standard_found = self.fuji.lookup_metadatastandard_by_name(s)
@@ -93,11 +93,12 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             out.subject_areas = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
                             out.urls = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('urls')
                             standards_detected.append(out)
-            else:
+            elif self.fuji.use_datacite:
                 self.logger.info(
                     'FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.')
 
-        else:
+
+        elif self.fuji.use_datacite:
             self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the repository specified in re3data')
 
         if standards_detected:
