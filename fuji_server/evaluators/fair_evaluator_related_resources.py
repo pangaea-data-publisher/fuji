@@ -23,6 +23,7 @@
 # SOFTWARE.
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.related_resource import RelatedResource
 from fuji_server.models.related_resource_output import RelatedResourceOutput
 #from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner
@@ -36,19 +37,28 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                                                                                           len(self.fuji.related_resources)))
 
         # if self.metadata_merged.get('related_resources'):
+        pid_used = False
         if self.fuji.related_resources:
             # QC check: exclude potential incorrect relation
             self.fuji.related_resources = [item for item in self.fuji.related_resources if
                                       item.get('related_resource') != self.fuji.pid_url]
+
             self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Number of related resources after QC step -: {1}'.format(self.metric_identifier, len(
                 self.fuji.related_resources)))
 
         if self.fuji.related_resources:  # TODO include source of relation
+            for relation in self.fuji.related_resources:
+                relation_identifier = IdentifierHelper(relation.get('related_resource'))
+                if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
+                    pid_used = True
             self.output = self.fuji.related_resources
             self.result.test_status = 'pass'
             self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
             self.score.earned = self.total_score
-            self.maturity = 3
+            self.maturity = 2
+            if pid_used:
+                self.setEvaluationCriteriumScore('FsF-I3-01M-2', 1, 'pass')
+                self.maturity = 3
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.score = self.score

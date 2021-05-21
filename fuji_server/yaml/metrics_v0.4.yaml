@@ -9,11 +9,11 @@ metrics:
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   metric_tests:
     - metric_test_identifier: FsF-F1-01D-1
-      metric_test_name: Identifier is resolvable and follows an idutils or identifiers.org defined unique identifier synthax
+      metric_test_name: Identifier is resolvable and follows a defined unique identifier syntax (IRI, URL)
       metric_test_score: 1
       metric_test_maturity: 3
     - metric_test_identifier: FsF-F1-01D-2
-      metric_test_name: Identifier is not resolvable but follows an UUID or HASH type synthax
+      metric_test_name: Identifier is not resolvable but follows an UUID or HASH type syntax
       metric_test_score: 0.5
       metric_test_maturity: 1
   created_by: FAIRsFAIR
@@ -31,7 +31,7 @@ metrics:
   evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
   metric_tests:
     - metric_test_identifier: FsF-F1-02D-1
-      metric_test_name: Identifier follows an idutils defined persistent identifier synthax
+      metric_test_name: Identifier follows a defined persistent identifier syntax
       metric_test_score: 0.5
       metric_test_maturity: 1
     - metric_test_identifier: FsF-F1-02D-2
@@ -263,6 +263,10 @@ metrics:
   metric_tests:
     - metric_test_identifier: FsF-I3-01M-1
       metric_test_name: Related resources are explicitely mentioned in metadata
+      metric_test_score: 1
+      metric_test_maturity: 2
+    - metric_test_identifier: FsF-I3-01M-2
+      metric_test_name: Related resources are indicated by machine readable links or identifiers
       metric_test_score: 1
       metric_test_maturity: 3
   created_by: FAIRsFAIR

@@ -104,7 +104,7 @@ class FAIRCheck:
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
     IDENTIFIERS_ORG_DATA = {}
-    FUJI_VERSION = 'v1.1.1'
+    FUJI_VERSION = 'v1.1.2'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -709,16 +709,10 @@ class FAIRCheck:
         #signposting style meta links
         sign_meta_links = self.get_html_typed_links(rel='describedby')
 
-
-
         typed_metadata_links.extend(sign_meta_links)
         typed_metadata_links.extend(rel_meta_links)
         typed_metadata_links.extend(sign_header_links)
         guessed_metadata_link = self.get_guessed_xml_link()
-
-        #print('debugging OAI ORE')
-        #typed_metadata_links.append(
-        #    {'url': 'https://data.hpc.imperial.ac.uk/resolve/?ore=6216', 'type': 'application/atom+xml', 'rel': 'resourcemap', 'profile': None})
 
         if guessed_metadata_link is not None:
             typed_metadata_links.append(guessed_metadata_link)
@@ -733,11 +727,6 @@ class FAIRCheck:
                     found_metadata_link=True
                     source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value
                     typed_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=metadata_link['url'], source=source )
-                elif metadata_link['type'] in ['text/xml','application/x-ddi-l+xml','application/x-ddametadata+xml']:
-                    self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' + str(
-                        metadata_link['type'] + ')'))
-                    typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
-                                                               target_url=metadata_link['url'], link_type=metadata_link.get('source'))
                 elif metadata_link['type'] in ['application/atom+xml'] and metadata_link['rel'] == 'resourcemap':
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to OAI ORE (atom) Metadata -: (' + str(
                         metadata_link['type'] + ')'))
@@ -752,6 +741,15 @@ class FAIRCheck:
                             if r in self.reference_elements:
                                 self.metadata_merged[r] = ore_dict[r]
                                 self.reference_elements.remove(r)
+                elif re.search(r'[+\/]xml$', str(metadata_link['type'])):
+                #elif metadata_link['type'] in ['text/xml', 'application/xml', 'application/x-ddi-l+xml',
+                #                               'application/x-ddametadata+xml']:
+                    self.logger.info(
+                        'FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' + str(
+                            metadata_link['type'] + ')'))
+                    typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                               target_url=metadata_link['url'],
+                                                               link_type=metadata_link.get('source'))
 
             if typed_rdf_collector is not None:
                 source_rdf, rdf_dict = typed_rdf_collector.parse_metadata()
