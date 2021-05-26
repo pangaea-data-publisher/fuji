@@ -455,7 +455,8 @@ components:
           - public
           - embargoed
           - restricted
-          - closed_metadataonly
+          - closed
+          - metadataonly
         access_details:
           type: object
     RelatedResource_output:

@@ -51,8 +51,8 @@ class Mapper(Enum):
     ## ============================ METADATA MAPPINGS ============================ ##
     #https://www.dublincore.org/webinars/2015/openaire_guidelines_promoting_repositories_interoperability_and_supporting_open_access_funder_mandates/slides.pdf
     ACCESS_RIGHT_CODES = {'creativecommons': 'public', 'creative commons': 'public',
-                    'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
-                    'OpenAccess': 'public', 'ClosedAccess': 'closed_metadataonly', 'RestrictedAccess': 'restricted',
+                    'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadataonly',
+                    'OpenAccess': 'public', 'ClosedAccess': 'closed', 'RestrictedAccess': 'restricted',
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'restricted', 'embargoedAccess':'embargoed'
                     }
