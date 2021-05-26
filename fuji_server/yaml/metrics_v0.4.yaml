@@ -98,7 +98,7 @@ metrics:
   evaluation_mechanism: Several metadata standards provide the possibility to include links to the actual data content. The presence of such links is evaluated here.
   metric_tests:
     - metric_test_identifier: FsF-F3-01M-1
-      metric_test_name: Metadata contains information about the availability of data content
+      metric_test_name: Metadata contains data content related information (file name, size, type)
       metric_test_score: 0.5
       metric_test_maturity: 1
     - metric_test_identifier: FsF-F3-01M-2
@@ -225,7 +225,7 @@ metrics:
     - metric_test_identifier: FsF-I1-01M-1
       metric_test_name: Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code
       metric_test_score: 1
-      metric_test_maturity: 3
+      metric_test_maturity: 2
     - metric_test_identifier: FsF-I1-01M-2
       metric_test_name: Parsable, graph data (RDF, JSON-LD) is accessible through content negotiation, typed links or sparql endpoint
       metric_test_score: 1
@@ -245,8 +245,13 @@ metrics:
   evaluation_mechanism: Used namespaces are identified in given graph or XML metadata and verified using a controlled list.
   metric_tests:
     - metric_test_identifier: FsF-I1-02M-1
+      metric_test_name: Vocabulary namespace URIs can be identified in metadata
+      metric_test_score: 0
+      metric_test_maturity: 1
+    - metric_test_identifier: FsF-I1-02M-2
       metric_test_name: Namespaces of known semantic resources can be identified in metadata
       metric_test_score: 1
+      metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -262,7 +267,7 @@ metrics:
   evaluation_mechanism: Metadata is checked for existing relations to related entities which can be e.g. citations or other related resources
   metric_tests:
     - metric_test_identifier: FsF-I3-01M-1
-      metric_test_name: Related resources are explicitely mentioned in metadata
+      metric_test_name: Related resources are explicitly mentioned in metadata
       metric_test_score: 1
       metric_test_maturity: 2
     - metric_test_identifier: FsF-I3-01M-2
