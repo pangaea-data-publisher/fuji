@@ -38,34 +38,36 @@ class IdentifierHelper:
     def __init__(self, idstring):
         self.identifier = idstring
         self.normalized_id = self.identifier
-        if len(self.identifier) > 4 and not self.identifier.isnumeric():
-            generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
-            # idutils check
-            self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
-            # identifiers.org check
-            if not self.identifier_schemes:
-                self.method = 'identifiers.org'
-                idmatch = re.search(generic_identifiers_org_pattern, self.identifier)
-                if idmatch:
-                    found_prefix = idmatch[1]
-                    found_suffix = idmatch[2]
-                    if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
-                        if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
-                            self.identifier_schemes = [found_prefix, 'identifiers_org']
-                            self.preferred_schema = found_prefix
-                        self.identifier_url = str(self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace('{$id}', found_suffix)
-                        self.normalized_id = found_prefix.lower()+':'+found_suffix
-            else:
-                # preferred schema
-                if len(self.identifier_schemes) > 0:
-                    if len(self.identifier_schemes) > 1:
-                        if 'url' in self.identifier_schemes:  # ['doi', 'url']
-                            self.identifier_schemes.remove('url')
-                    self.preferred_schema = self.identifier_schemes[0]
-                    self.normalized_id = idutils.normalize_pid(self.identifier,self.preferred_schema)
-                self.identifier_url = idutils.to_url(self.identifier,self.preferred_schema)
-            if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys():
-                self.is_persistent = True
+        if self.identifier and isinstance(self.identifier, str):
+            if len(self.identifier) > 4 and not self.identifier.isnumeric():
+                generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
+                # idutils check
+                self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
+                # identifiers.org check
+                if not self.identifier_schemes:
+                    self.method = 'identifiers.org'
+                    idmatch = re.search(generic_identifiers_org_pattern, self.identifier)
+                    if idmatch:
+                        found_prefix = idmatch[1]
+                        found_suffix = idmatch[2]
+                        if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
+                            if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
+                                self.identifier_schemes = [found_prefix, 'identifiers_org']
+                                self.preferred_schema = found_prefix
+                            self.identifier_url = str(self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace('{$id}', found_suffix)
+                            self.normalized_id = found_prefix.lower()+':'+found_suffix
+                else:
+                    # preferred schema
+                    if self.identifier_schemes:
+                        if len(self.identifier_schemes) > 0:
+                            if len(self.identifier_schemes) > 1:
+                                if 'url' in self.identifier_schemes:  # ['doi', 'url']
+                                    self.identifier_schemes.remove('url')
+                            self.preferred_schema = self.identifier_schemes[0]
+                            self.normalized_id = idutils.normalize_pid(self.identifier,self.preferred_schema)
+                        self.identifier_url = idutils.to_url(self.identifier,self.preferred_schema)
+                if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys():
+                    self.is_persistent = True
 
     def get_preferred_schema(self):
         return self.preferred_schema

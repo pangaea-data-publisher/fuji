@@ -419,7 +419,7 @@ components:
       properties:
         object_identifier_included:
           type: string
-        content:
+        object_content_identifier_included:
           type: array
           items:
             $ref: '#/components/schemas/IdentifierIncluded_output_inner'
@@ -455,7 +455,8 @@ components:
           - public
           - embargoed
           - restricted
-          - closed_metadataonly
+          - closed
+          - metadataonly
         access_details:
           type: object
     RelatedResource_output:

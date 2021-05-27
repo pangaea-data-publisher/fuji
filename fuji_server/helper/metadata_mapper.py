@@ -51,8 +51,8 @@ class Mapper(Enum):
     ## ============================ METADATA MAPPINGS ============================ ##
     #https://www.dublincore.org/webinars/2015/openaire_guidelines_promoting_repositories_interoperability_and_supporting_open_access_funder_mandates/slides.pdf
     ACCESS_RIGHT_CODES = {'creativecommons': 'public', 'creative commons': 'public',
-                    'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadata_only',
-                    'OpenAccess': 'public', 'ClosedAccess': 'closed_metadataonly', 'RestrictedAccess': 'restricted',
+                    'c_abf2': 'public', 'c_f1cf': 'embargoed', 'c_16ec': 'restricted', 'c_14cb': 'metadataonly',
+                    'OpenAccess': 'public', 'ClosedAccess': 'closed', 'RestrictedAccess': 'restricted',
                     'NON_PUBLIC': 'restricted', 'OP_DATPRO': 'embargoed', 'PUBLIC': 'public',
                     'RESTRICTED': 'restricted', 'SENSITIVE': 'restricted', 'embargoedAccess':'embargoed'
                     }
@@ -97,7 +97,7 @@ class Mapper(Enum):
                             '{related_resource: (includedInDataCatalog."@id" || includedInDataCatalog[0]."@id" || includedInDataCatalog.url || includedInDataCatalog[0].url || includedInDataCatalog.name || includedInDataCatalog[0].name || includedInDataCatalog), relation_type: \'isPartOf\'}, ' \
                             '{related_resource: (subjectOf."@id" || subjectOf[0]."@id" || subjectOf.url ||subjectOf[0].url || subjectOf.name || subjectOf[0].name || subjectOf), relation_type: \'isReferencedBy\'},' \
                             '{related_resource: (isBasedOn."@id" || isBasedOn[0]."@id" || isBasedOn.url || isBasedOn[0].url || isBasedOn) , relation_type: \'isBasedOn\'} , ' \
-                            '{related_resource: "@reverse".isBasedOn[0]."@id" || "@reverse".isBasedOn[0].url || isBasedOn , relation_type: \'isBasisFor\'} ], ' \
+                            '{related_resource: "@reverse".isBasedOn[0]."@id" || "@reverse".isBasedOn."@id" || "@reverse".isBasedOn[0].url || isBasedOn , relation_type: \'isBasisFor\'} ], ' \
                             'object_content_identifier: (distribution[*].{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: contentUrl, type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}])}'
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
 
