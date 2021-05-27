@@ -106,7 +106,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         if score > 0.5:
             self.result.test_status = "pass"
         self.result.metric_tests = self.metric_tests
-        self.output.content = content_list
+        self.output.object_content_identifier_included = content_list
         self.result.output = self.output
         self.result.maturity = self.maturity_levels.get(self.maturity)
         self.result.score = self.score

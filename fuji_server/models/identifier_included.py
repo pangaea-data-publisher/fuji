@@ -243,12 +243,6 @@ class IdentifierIncluded(Model):
         :param maturity: The maturity of this IdentifierIncluded.
         :type maturity: str
         """
-        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
-        if maturity not in allowed_values:
-            raise ValueError(
-                "Invalid value for `maturity` ({0}), must be one of {1}"
-                .format(maturity, allowed_values)
-            )
 
         self._maturity = maturity
 
