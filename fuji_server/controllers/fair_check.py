@@ -517,18 +517,24 @@ class FAIRCheck:
             else:
                 identifiertotest = [self.metadata_merged.get('object_identifier')]
             if self.pid_scheme is None:
+                found_pids={}
                 for pidcandidate in identifiertotest:
                     idhelper = IdentifierHelper(pidcandidate)
                     found_id_scheme = idhelper.preferred_schema
                     if idhelper.is_persistent:
-                        self.logger.info(
-                            'FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
-                        self.logger.log(self.LOG_SUCCESS,
-                                        'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
-                        self.repeat_pid_check = True
-                        self.pid_scheme = found_id_scheme
-                        self.id = pidcandidate
-                        break
+                        found_pids[found_id_scheme] = pidcandidate
+                if len(found_pids) >=1:
+                    self.logger.info(
+                        'FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
+                    self.logger.log(self.LOG_SUCCESS,
+                                    'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
+                    self.repeat_pid_check = True
+
+                    if 'doi' in found_pids:
+                        self.id = found_pids['doi']
+                        self.pid_scheme = 'doi'
+                    else:
+                        self.pid_scheme, self.id = next(iter(found_pids.items()))
 
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
