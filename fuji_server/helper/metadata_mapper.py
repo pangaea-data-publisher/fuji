@@ -69,7 +69,7 @@ class Mapper(Enum):
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified','created_date' : 'created',
               'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
                   'date_available':'available','provenance_general':'provenance',
-                'related_resources':['relation','source','references']}
+                'related_resources':['relation','source','references','hasVersion','isReferencedBy','isVersionOf','hasVersion','replaces','requires','conformsTo','hasFormat','hasPart','isPartOf','isReplacedBy','isRequiredBy']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)

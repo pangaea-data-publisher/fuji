@@ -88,12 +88,18 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
-                                if k in ['source']:
-                                    t = 'isBasedOn'
-                                if k == 'references':
-                                    t = 'References'
-                                if t in [None, '']:
-                                    t = 'isRelatedTo'
+                                #Mapping see: https://www.w3.org/TR/prov-dc/
+                                #qualifiers, subproperties (t):
+                                #https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
+                                #https://www.dublincore.org/specifications/dublin-core/dcq-html/
+
+                                if k in ['source','references']:
+                                    t = 'wasDerivedFrom'
+                                elif k == 'relation':
+                                    if t in [None, '']:
+                                        t = 'isRelatedTo'
+                                else:
+                                    t = k
                                 v = [{'related_resource':v, 'relation_type':t}] # must be a list of dict
                                 #v = dict(related_resource=v, relation_type=t)
                             if v:
