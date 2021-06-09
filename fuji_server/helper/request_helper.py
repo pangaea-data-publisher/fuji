@@ -43,6 +43,7 @@ class AcceptTypes(Enum):
     datacite_xml = 'application/vnd.datacite.datacite+xml'
     schemaorg = 'application/vnd.schemaorg.ld+json, application/ld+json'
     html = 'text/html, application/xhtml+xml'
+    html_xml = 'text/html, application/xhtml+xml, application/xml, text/xml, application/rdf+xml'
     xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
@@ -126,6 +127,7 @@ class RequestHelper:
                     '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                 if status_code == 200:
                     self.content_type = self.http_response.headers.get("Content-Type")
+                    print('######',self.content_type)
                     #try to find out if content type is byte then fix
                     try:
                         self.response_content.decode('utf-8')
@@ -140,6 +142,10 @@ class RequestHelper:
                     if self.content_type is None:
                         parsedFile = parser.from_buffer(self.response_content)
                         self.content_type = parsedFile.get("metadata").get('Content-Type')
+                    if 'application/xhtml+xml' in self.content_type:
+                        print('XHTML')
+                        if not re.match(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
+                            self.content_type = 'text/xml'
 
                     if self.content_type is not None:
                         if 'text/plain' in self.content_type:
