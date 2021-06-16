@@ -21,20 +21,57 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import idutils
+
 from fuji_server import OutputSearchMechanisms
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.catalogue_helper_datacite import MetaDataCatalogueDataCite
+from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
+from fuji_server.helper.catalogue_helper_mendeley_data import MetaDataCatalogueMendeleyData
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from typing import List, Any
 
 class FAIREvaluatorSearchable(FAIREvaluator):
+
+    def check_registry_support(self):
+        # check if record is listed in major catalogs -> searchable
+        # DataCite registry, Google Dataset search, Mendeley data etc..
+        #Using the DataCite API in case content negotiation does not work
+        registries_supported = []
+        #DataCite only for DOIs
+        pidhelper = IdentifierHelper(self.fuji.pid_url)
+        if self.fuji.pid_scheme:
+            if 'doi' in self.fuji.pid_scheme:
+                datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
+                datacite_registry_helper.query(pidhelper.normalized_id)
+                if datacite_registry_helper.islisted:
+                    registries_supported.append(datacite_registry_helper.source)
+        google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
+        google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+        if google_registry_helper.islisted:
+            registries_supported.append(google_registry_helper.source)
+
+        mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
+        mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+        if mendeley_registry_helper.islisted:
+            registries_supported.append(mendeley_registry_helper.source)
+
+
+        return registries_supported
+
     def evaluate(self):
         self.result = Searchable(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = SearchableOutput()
 
         search_mechanisms = []
-        sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value]
+        sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value,
+                            MetaDataCatalogue.Sources.DATACITE.value,
+                            MetaDataCatalogue.Sources.MENDELEY_DATA,
+                            MetaDataCatalogue.Sources.GOOGLE_DATASET]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
         self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction -: {}'.format(all))
         search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
@@ -53,6 +90,12 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             self.logger.warning('FsF-F4-01M : Metadata is NOT found through -: {}'.format(search_engines_support))
         #TODO: replace this metadata format based test by real lookup at registries
         registry_support_match = list(set(dict(self.fuji.metadata_sources).keys()).intersection(sources_registry))
+
+        registries_listed = self.check_registry_support()
+
+        registry_support_match.extend(registries_listed)
+
+
         if registry_support_match:
             self.setEvaluationCriteriumScore('FsF-F4-01M-2', 1, 'pass')
             if self.maturity < 3:

@@ -108,6 +108,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         jsnld_metadata['license'] = None
 
                     # filter out None values of related_resources
+
                     if jsnld_metadata.get('related_resources'):
                         relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                         if relateds:
@@ -117,11 +118,11 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             del jsnld_metadata['related_resources']
                             self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
 
-
-
                     # TODO quick-fix, expand mapping expression instead
                     if jsnld_metadata.get('object_size'):
-                        jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+                        jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value'))
+
+                        #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
 
                 else:
                     self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')

@@ -104,7 +104,8 @@ class FAIRCheck:
     LOG_SUCCESS = 25
     VALID_RESOURCE_TYPES = []
     IDENTIFIERS_ORG_DATA = {}
-    FUJI_VERSION = 'v1.1.2c'
+    GOOGLE_DATA_DOI_CACHE =[]
+    FUJI_VERSION = 'v1.2.0'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -200,6 +201,9 @@ class FAIRCheck:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
+        if not cls.GOOGLE_DATA_DOI_CACHE:
+            cls.GOOGLE_DATA_DOI_CACHE= Preprocessor.get_google_data_dois()
+
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -602,9 +606,24 @@ class FAIRCheck:
             self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,target_url=self.landing_url, link_type='negotiated')
             source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
+            #print('### ',metadata_neg_dict)
             metadata_neg_dict = self.exclude_null(metadata_neg_dict)
+
             if metadata_neg_dict:
-                test_content_negotiation = True
+                self.metadata_sources.append((source_neg_xml, 'negotiated'))
+                if metadata_neg_dict.get('related_resources'):
+                    self.related_resources.extend(metadata_neg_dict.get('related_resources'))
+                if metadata_neg_dict.get('object_content_identifier'):
+                    self.logger.info('FsF-F3-01M : Found data links in XML metadata -: ' + str(
+                        metadata_neg_dict.get('object_content_identifier')))
+                # add object type for future reference
+                for i in metadata_neg_dict.keys():
+                    if i in self.reference_elements:
+                        self.metadata_merged[i] = metadata_neg_dict[i]
+                        self.reference_elements.remove(i)
+                self.logger.log(self.LOG_SUCCESS,
+                                'FsF-F2-01M : Found XML metadata through content negotiation-: ' + str(metadata_neg_dict.keys()))
+                self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
             #TODO: Finish  this ...
 
             # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
@@ -754,9 +773,27 @@ class FAIRCheck:
                     self.logger.info(
                         'FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' + str(
                             metadata_link['type'] + ')'))
-                    typed_rdf_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                    linked_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                target_url=metadata_link['url'],
                                                                link_type=metadata_link.get('source'))
+                    if linked_xml_collector is not None:
+                        source_linked_xml, linked_xml_dict = linked_xml_collector.parse_metadata()
+                        if linked_xml_dict:
+                            self.metadata_sources.append((source_linked_xml, 'linked'))
+                            if linked_xml_dict.get('related_resources'):
+                                self.related_resources.extend(linked_xml_dict.get('related_resources'))
+                            if linked_xml_dict.get('object_content_identifier'):
+                                self.logger.info('FsF-F3-01M : Found data links in XML metadata -: ' + str(
+                                    linked_xml_dict.get('object_content_identifier')))
+                            # add object type for future reference
+                            for i in linked_xml_dict.keys():
+                                if i in self.reference_elements:
+                                    self.metadata_merged[i] = linked_xml_dict[i]
+                                    self.reference_elements.remove(i)
+                            self.logger.log(self.LOG_SUCCESS,
+                                            'FsF-F2-01M : Found XML metadata through typed links-: ' + str(
+                                                linked_xml_dict.keys()))
+                            self.namespace_uri.extend(linked_xml_collector.getNamespaces())
 
             if typed_rdf_collector is not None:
                 source_rdf, rdf_dict = typed_rdf_collector.parse_metadata()

@@ -87,7 +87,7 @@ class Mapper(Enum):
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
                            'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
-                           'publisher: publisher.name || provider, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
+                           'publisher: publisher.name || provider.name || publisher || provider, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
                            'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
@@ -241,6 +241,9 @@ class Mapper(Enum):
         'object_content_identifier_url':{'path':['./{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}url','.//{*}dataset/{*}distribution/{*}online/{*}url']},
         'object_content_identifier_size': {'path': './{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size'}
     }
+    XML_MAPPING_DDI_STUDY ={
+
+    }
 
     XML_MAPPING_DDI_CODEBOOK = {'title': {'path': './{*}stdyDscr/{*}citation/{*}titlStmt/{*}titl'},
                                 'creator': {'path': './{*}stdyDscr/{*}citation/{*}rspStmt/{*}AuthEnty'},
@@ -282,9 +285,6 @@ class Mapper(Enum):
                                 'object_content_identifier_url': {'path': './/{*}fileDscr@@URI'},
                                 'measured_variable': {'path': './{*}dataDscr/{*}var@@name'}
                                 }
-    XML_MAPPING_DDI_STUDY = {
-
-    }
 
     XML_MAPPING_GCMD_ISO ={
         'title': {'path':['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}title/{*}CharacterString',

@@ -39,6 +39,7 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
         # if self.metadata_merged.get('related_resources'):
         pid_used = False
         if self.fuji.related_resources:
+            #print(self.fuji.related_resources)
             # QC check: exclude potential incorrect relation
             self.fuji.related_resources = [item for item in self.fuji.related_resources if
                                       item.get('related_resource') != self.fuji.pid_url]

@@ -84,6 +84,7 @@ class MetaDataCollectorXML (MetaDataCollector):
                 else:
                     metatree = tree
                 if metatree is not None:
+                    root_namespace = None
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
                     schema_locations = set(metatree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
                     for schema_location in schema_locations:
@@ -114,10 +115,11 @@ class MetaDataCollectorXML (MetaDataCollector):
                         xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
                         self.logger.info(
                             'FsF-F2-01M : Identified ISO 19115 XML based on root tag')
-                    elif 'datacite.org/schema' in root_namespace:
-                        xml_mapping = Mapper.XML_MAPPING_DATACITE.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified DataCite XML based on namespace')
+                    elif root_namespace:
+                        if 'datacite.org/schema' in root_namespace:
+                            xml_mapping = Mapper.XML_MAPPING_DATACITE.value
+                            self.logger.info(
+                                'FsF-F2-01M : Identified DataCite XML based on namespace')
 
         if xml_mapping and metatree is not None:
             xml_metadata = self.get_mapped_xml_metadata(metatree, xml_mapping)
@@ -135,7 +137,6 @@ class MetaDataCollectorXML (MetaDataCollector):
 
         for prop in mapping:
             res[prop] = []
-
             if isinstance(mapping.get(prop).get('path'), list):
                 pathlist = mapping.get(prop).get('path')
             else:
@@ -176,6 +177,8 @@ class MetaDataCollectorXML (MetaDataCollector):
         for kres, vres in res.items():
             if vres:
                 if kres.startswith('related_resource') and 'related_resource_type' not in kres:
+                    if isinstance(vres,str):
+                        vres=[vres]
                     reltype = kres[17:]
                     if not reltype:
                         reltype='related'

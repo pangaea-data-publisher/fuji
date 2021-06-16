@@ -1,2 +1,2 @@
 #user dictionary: key = username value = password
-fuji_users = {}
+fuji_users = {'marvel':'wonderwoman'}

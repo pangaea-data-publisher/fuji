@@ -118,10 +118,9 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     dc_core_metadata[elem] = v
                     if dc_core_metadata.get('related_resources'):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
-                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted -: {0} from {1}'.format(count, source))
+                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}'.format(count, source))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
-
                     # process string-based file format
                     # https://www.dublincore.org/specifications/dublin-core/dcmi-dcsv/
                     if dc_core_metadata.get('file_format_only'):

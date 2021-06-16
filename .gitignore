@@ -8,3 +8,4 @@
 /fuji_server/logs/
 .idea/
 *.pyc
+/build/

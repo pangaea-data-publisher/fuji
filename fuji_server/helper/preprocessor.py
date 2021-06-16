@@ -42,6 +42,7 @@ class Preprocessor(object):
     LOD_CLOUDNET = None
     BIOPORTAL_API = None
     BIOPORTAL_KEY = None
+
     schema_org_context=[]
     all_licenses = []
     license_names = []
@@ -56,6 +57,7 @@ class Preprocessor(object):
     standard_protocols = {}
     resource_types = []
     identifiers_org_data = {}
+    google_data_dois = []
 
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
@@ -63,6 +65,18 @@ class Preprocessor(object):
     logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
+
+    @classmethod
+    def get_google_data_dois(cls):
+        if not cls.google_data_dois:
+            cls.retrieve_google_data_dois()
+        return cls.google_data_dois
+
+    @classmethod
+    def retrieve_google_data_dois(cls):
+        google_doi_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_dois.txt')
+        with open(google_doi_path,'r') as f:
+            cls.google_data_dois = f.read().splitlines()
 
     @classmethod
     def get_identifiers_org_data(cls):
