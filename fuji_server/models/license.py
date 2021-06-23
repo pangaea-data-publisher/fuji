@@ -236,19 +236,13 @@ class License(Model):
         return self._maturity
 
     @maturity.setter
-    def maturity(self, maturity: str):
-        """Sets the maturity of this License.
+    def maturity(self, maturity: int):
+        """Sets the maturity of this Uniqueness.
 
 
-        :param maturity: The maturity of this License.
-        :type maturity: str
+        :param maturity: The maturity of this Uniqueness.
+        :type maturity: int
         """
-        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
-        if maturity not in allowed_values:
-            raise ValueError(
-                "Invalid value for `maturity` ({0}), must be one of {1}"
-                .format(maturity, allowed_values)
-            )
 
         self._maturity = maturity
 

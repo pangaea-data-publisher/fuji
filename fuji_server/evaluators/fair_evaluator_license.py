@@ -67,15 +67,16 @@ class FAIREvaluatorLicense(FAIREvaluator):
         isOsiApproved = False
         self.logger.info('{0} : Verify name through SPDX registry -: {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
-        sim = [Levenshtein.ratio(lvalue.lower(), i) for i in self.fuji.SPDX_LICENSE_NAMES]
-        if max(sim) > 0.85:
-            index_max = max(range(len(sim)), key=sim.__getitem__)
-            sim_license = self.fuji.SPDX_LICENSE_NAMES[index_max]
-            found = next((item for item in self.fuji.SPDX_LICENSES if item['name'] == sim_license), None)
-            self.logger.info('{0}: Found SPDX license representation -: {1}'.format(metric_id,found['detailsUrl']))
-            # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
-            html_url = found['detailsUrl'].replace(".json", ".html")
-            isOsiApproved = found['isOsiApproved']
+        if lvalue:
+            sim = [Levenshtein.ratio(lvalue.lower(), i) for i in self.fuji.SPDX_LICENSE_NAMES]
+            if max(sim) > 0.85:
+                index_max = max(range(len(sim)), key=sim.__getitem__)
+                sim_license = self.fuji.SPDX_LICENSE_NAMES[index_max]
+                found = next((item for item in self.fuji.SPDX_LICENSES if item['name'] == sim_license), None)
+                self.logger.info('{0}: Found SPDX license representation -: {1}'.format(metric_id,found['detailsUrl']))
+                # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
+                html_url = found['detailsUrl'].replace(".json", ".html")
+                isOsiApproved = found['isOsiApproved']
         return html_url, isOsiApproved
 
     def evaluate(self):
@@ -121,5 +122,5 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.result.output = licenses_list
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
 

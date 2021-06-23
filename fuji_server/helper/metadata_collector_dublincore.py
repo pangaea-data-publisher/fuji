@@ -88,12 +88,18 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
-                                if k in ['source']:
-                                    t = 'isBasedOn'
-                                if k == 'references':
-                                    t = 'References'
-                                if t in [None, '']:
-                                    t = 'isRelatedTo'
+                                #Mapping see: https://www.w3.org/TR/prov-dc/
+                                #qualifiers, subproperties (t):
+                                #https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
+                                #https://www.dublincore.org/specifications/dublin-core/dcq-html/
+
+                                if k in ['source','references']:
+                                    t = 'wasDerivedFrom'
+                                elif k == 'relation':
+                                    if t in [None, '']:
+                                        t = 'isRelatedTo'
+                                else:
+                                    t = k
                                 v = [{'related_resource':v, 'relation_type':t}] # must be a list of dict
                                 #v = dict(related_resource=v, relation_type=t)
                             if v:
@@ -112,10 +118,9 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     dc_core_metadata[elem] = v
                     if dc_core_metadata.get('related_resources'):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
-                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted -: {0} from {1}'.format(count, source))
+                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}'.format(count, source))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
-
                     # process string-based file format
                     # https://www.dublincore.org/specifications/dublin-core/dcmi-dcsv/
                     if dc_core_metadata.get('file_format_only'):

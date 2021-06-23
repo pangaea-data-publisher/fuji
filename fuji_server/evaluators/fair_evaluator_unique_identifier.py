@@ -66,7 +66,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.result.test_status = 'pass'
             self.output.guid_scheme = 'uuid'
             self.output.guid = self.fuji.id
-            self.maturity = 1
+            self.maturity = 2
             self.score.earned = 0.5
         elif self.verify_hash(self.fuji.id):
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier (SHA,MD5) scheme found')
@@ -74,7 +74,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
             self.result.test_status = 'pass'
             self.output.guid_scheme = 'hash'
             self.output.guid = self.fuji.id
-            self.maturity = 1
+            self.maturity = 2
             self.score.earned = 0.5
         else:
             self.result.test_status = 'fail'
@@ -83,7 +83,7 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         self.result.score = self.score
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
 
     def verify_uuid(self,id):
         try:

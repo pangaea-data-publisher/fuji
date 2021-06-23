@@ -16,7 +16,7 @@ class FAIRResultCommon(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: str='incomplete'):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: int=0):  # noqa: E501
         """FAIRResultCommon - a model defined in Swagger
 
         :param id: The id of this FAIRResultCommon.  # noqa: E501
@@ -32,7 +32,7 @@ class FAIRResultCommon(Model):
         :param score: The score of this FAIRResultCommon.  # noqa: E501
         :type score: FAIRResultCommonScore
         :param maturity: The maturity of this FAIRResultCommon.  # noqa: E501
-        :type maturity: str
+        :type maturity: int
         """
         self.swagger_types = {
             'id': int,
@@ -41,7 +41,7 @@ class FAIRResultCommon(Model):
             'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
             'score': FAIRResultCommonScore,
-            'maturity': str
+            'maturity': int
         }
 
         self.attribute_map = {
@@ -213,28 +213,22 @@ class FAIRResultCommon(Model):
         self._score = score
 
     @property
-    def maturity(self) -> str:
+    def maturity(self) -> int:
         """Gets the maturity of this FAIRResultCommon.
 
 
         :return: The maturity of this FAIRResultCommon.
-        :rtype: str
+        :rtype: int
         """
         return self._maturity
 
     @maturity.setter
-    def maturity(self, maturity: str):
+    def maturity(self, maturity: int):
         """Sets the maturity of this FAIRResultCommon.
 
 
         :param maturity: The maturity of this FAIRResultCommon.
-        :type maturity: str
+        :type maturity: int
         """
-        allowed_values = ["incomplete", "initial", "managed", "defined", "quantitatively managed", "optimizing"]  # noqa: E501
-        if maturity not in allowed_values:
-            raise ValueError(
-                "Invalid value for `maturity` ({0}), must be one of {1}"
-                .format(maturity, allowed_values)
-            )
 
         self._maturity = maturity

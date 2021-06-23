@@ -116,5 +116,5 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.output = standards_detected

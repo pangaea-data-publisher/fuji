@@ -22,6 +22,7 @@
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+from fuji_server.helper.metadata_mapper import Mapper
 import lxml
 import re
 
@@ -34,7 +35,13 @@ class MetaDataCollectorXML (MetaDataCollector):
 
 
     def parse_metadata(self):
+        xml_metadata = None
+        xml_mapping = None
+        metatree= None
+        envelope_metadata ={}
         XSI = "http://www.w3.org/2001/XMLSchema-instance"
+        if self.link_type == 'linked':
+            source_name = self.getEnumSourceNames().TYPED_LINK.value
         if self.link_type == 'embedded':
             source_name = self.getEnumSourceNames().LINKED_DATA.value
         elif self.link_type == 'guessed':
@@ -54,11 +61,157 @@ class MetaDataCollectorXML (MetaDataCollector):
             if neg_source != 'xml':
                 self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: '+str(neg_source))
             else:
-                tree = lxml.etree.XML(xml_response)
-                schema_locations = set(tree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
-                for schema_location in schema_locations:
-                    self.namespaces=re.split('\s',schema_location)
-                #TODO: implement some XSLT to handle the XML..
+                parser = lxml.etree.XMLParser(strip_cdata=False)
+                tree = lxml.etree.XML(xml_response, parser)
+                root_element = tree.tag
+                if root_element.endswith('}OAI-PMH'):
+                    self.logger.info(
+                        'FsF-F2-01M : Found OAI-PMH type XML envelope, unpacking \'metadata\' element for further processing')
+                    metatree = tree.find('.//{*}metadata/*')
+                elif root_element.endswith('}mets'):
+                    self.logger.info(
+                        'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing')
+                    envelope_metadata = self.get_mapped_xml_metadata(tree, Mapper.XML_MAPPING_METS.value)
+                    metatree = tree.find('.//{*}dmdSec/{*}mdWrap/{*}xmlData/*')
+                elif root_element.endswith('}GetRecordsResponse'):
+                    self.logger.info(
+                        'FsF-F2-01M : Found OGC CSW GetRecords type XML envelope, unpacking \'SearchResults\' element for further processing')
+                    metatree = tree.find('.//{*}SearchResults/*')
+                elif root_element.endswith('}GetRecordByIdResponse'):
+                    self.logger.info(
+                        'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing')
+                    metatree = tree.find('.//*')
+                else:
+                    metatree = tree
+                if metatree is not None:
+                    root_namespace = None
+                    nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
+                    schema_locations = set(metatree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
+                    for schema_location in schema_locations:
+                        self.namespaces=re.split('\s',schema_location)
+                    if nsmatch:
+                        root_namespace = nsmatch[1]
+                        root_element = nsmatch[2]
+                        print('#' + root_element + '#', root_namespace)
+                        self.namespaces.append(root_namespace)
+                    if root_element=='codeBook':
+                        xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
+                        self.logger.info(
+                            'FsF-F2-01M : Identified DDI codeBook XML based on root tag')
+                    elif root_element=='dc':
+                        xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
+                        self.logger.info(
+                            'FsF-F2-01M : Identified Dublin Core XML based on root tag')
+                    elif root_element =='mods':
+                        xml_mapping = Mapper.XML_MAPPING_MODS.value
+                        self.logger.info(
+                            'FsF-F2-01M : Identified MODS XML based on root tag')
 
-        return source_name, dc_core_metadata
+                    elif root_element =='eml':
+                        xml_mapping = Mapper.XML_MAPPING_EML.value
+                        self.logger.info(
+                            'FsF-F2-01M : Identified EML XML based on root tag')
+                    elif root_element =='MD_Metadata':
+                        xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
+                        self.logger.info(
+                            'FsF-F2-01M : Identified ISO 19115 XML based on root tag')
+                    elif root_namespace:
+                        if 'datacite.org/schema' in root_namespace:
+                            xml_mapping = Mapper.XML_MAPPING_DATACITE.value
+                            self.logger.info(
+                                'FsF-F2-01M : Identified DataCite XML based on namespace')
+
+        if xml_mapping and metatree is not None:
+            xml_metadata = self.get_mapped_xml_metadata(metatree, xml_mapping)
+
+        if envelope_metadata:
+            for envelope_key, envelope_values in envelope_metadata.items():
+                if envelope_key not in xml_metadata:
+                    xml_metadata[envelope_key] = envelope_values
+        return source_name, xml_metadata
+
+    def get_mapped_xml_metadata(self, tree, mapping):
+        res = dict()
+        #make sure related_resources are not listed in the mapping dict instead related_resource_Reltype has to be used
+        res['related_resources'] = []
+
+        for prop in mapping:
+            res[prop] = []
+            if isinstance(mapping.get(prop).get('path'), list):
+                pathlist = mapping.get(prop).get('path')
+            else:
+                pathlist = [mapping.get(prop).get('path')]
+
+            propcontent = []
+            for mappath in pathlist:
+                pathdef = mappath.split('@@')
+                attribute = None
+                if len(pathdef) > 1:
+                    attribute = pathdef[1]
+                    if ':' in attribute:
+                        if attribute.split(':')[0] == 'xlink':
+                            attribute = '{http://www.w3.org/1999/xlink}'+attribute.split(':')[1]
+                subtrees = tree.findall(pathdef[0])
+                for subtree in subtrees:
+                    propcontent.append({'tree': subtree, 'attribute': attribute})
+                    # propcontent.extend({'tree':tree.findall(pathdef[0]),'attribute':attribute})
+            if isinstance(propcontent, list):
+                if len(propcontent) == 1:
+                    if propcontent[0].get('attribute'):
+                        res[prop] = propcontent[0].get('tree').attrib.get(propcontent[0].get('attribute'))
+                    elif len(propcontent[0].get('tree')) == 0:
+                        res[prop] = propcontent[0].get('tree').text
+                    else:
+                        res[prop] = lxml.etree.tostring(propcontent[0].get('tree'), method='text', encoding='unicode')
+                else:
+                    for propelem in propcontent:
+                        if propelem.get('attribute'):
+                            res[prop].append(propelem.get('tree').attrib.get(propelem.get('attribute')))
+                        elif len(propelem.get('tree')) == 0:
+                            res[prop].append(propelem.get('tree').text)
+                        else:
+                            res[prop].append(
+                                lxml.etree.tostring(propelem.get('tree'), method='text', encoding='unicode'))
+
+        #related resources
+        for kres, vres in res.items():
+            if vres:
+                if kres.startswith('related_resource') and 'related_resource_type' not in kres:
+                    if isinstance(vres,str):
+                        vres=[vres]
+                    reltype = kres[17:]
+                    if not reltype:
+                        reltype='related'
+                    ri = 0
+                    for relres in vres:
+                        if relres:
+                            if res.get('related_resource_type'):
+                                if ri < len(res['related_resource_type']):
+                                    reltype = res['related_resource_type'][ri]
+                            relres = re.sub(r"[\n\t]*", "", str(relres)).strip()
+                        if relres and reltype:
+                            res['related_resources'].append({'related_resource':relres,'resource_type':reltype})
+                        ri += 1
+        #object_content_identifiers
+
+        if res.get('object_content_identifier_url'):
+            res['object_content_identifier'] = []
+            if not isinstance(res['object_content_identifier_url'], list):
+                res['object_content_identifier_url'] = [res['object_content_identifier_url']]
+            ci=0
+            for content_url in res['object_content_identifier_url']:
+                content_size = None
+                content_type = None
+                if res.get('object_content_identifier_size'):
+                    if ci < len(res['object_content_identifier_size']):
+                        content_size = res['object_content_identifier_size'][ci]
+                if res.get('object_content_identifier_type'):
+                    if ci < len(res['object_content_identifier_type']):
+                        content_type = res['object_content_identifier_type'][ci]
+                res['object_content_identifier'].append({'url': content_url, 'size': content_size,'type': content_type})
+                ci+=1
+            res.pop('object_content_identifier_type', None)
+            res.pop('object_content_identifier_size', None)
+            res.pop('object_content_identifier_url', None)
+        return res
 

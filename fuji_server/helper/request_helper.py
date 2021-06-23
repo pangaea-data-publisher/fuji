@@ -43,6 +43,7 @@ class AcceptTypes(Enum):
     datacite_xml = 'application/vnd.datacite.datacite+xml'
     schemaorg = 'application/vnd.schemaorg.ld+json, application/ld+json'
     html = 'text/html, application/xhtml+xml'
+    html_xml = 'text/html, application/xhtml+xml, application/xml;q=0.5, text/xml;q=0.5, application/rdf+xml;q=0.5'
     xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
@@ -135,12 +136,14 @@ class RequestHelper:
                         self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                     if self.content_type is None:
                         #just in case tika is not running use this as quick check for the most obvious
-                        if re.match(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
+                        if re.search(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
                             self.content_type ='text/html'
                     if self.content_type is None:
                         parsedFile = parser.from_buffer(self.response_content)
                         self.content_type = parsedFile.get("metadata").get('Content-Type')
-
+                    if 'application/xhtml+xml' in self.content_type:
+                        if re.search(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is None:
+                            self.content_type = 'text/xml'
                     if self.content_type is not None:
                         if 'text/plain' in self.content_type:
                             source = 'text'
@@ -153,6 +156,7 @@ class RequestHelper:
                                   #content_type = content_type.split(";", 1)[0]
                         else:
                             self.content_type = self.content_type.split(";", 1)[0]
+                            #print(self.content_type)
                             while (True):
                                 for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                     if self.content_type in at.value:

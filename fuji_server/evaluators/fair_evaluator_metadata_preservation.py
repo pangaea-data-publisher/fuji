@@ -51,4 +51,4 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
         self.result.output = outputs
         self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity

@@ -49,7 +49,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if check_url is not None:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper = RequestHelper(check_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.html)  # request
+            requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
             neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
             if not 'html' in str(requestHelper.content_type):
                 self.logger.info('FsF-F2-01M :Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
@@ -165,6 +165,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output

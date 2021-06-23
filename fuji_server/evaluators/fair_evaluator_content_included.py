@@ -70,10 +70,15 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                             self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: (' + str(content_link.get(
                                 'type')) + ') vs. (' + str(
                                 content_link['header_content_type']) + ')')
-                            self.logger.info(
-                                'FsF-F3-01M : Replacing metadata content type with content type from Header response -: ' + str(
-                                    content_link['header_content_type']))
-                            content_link['type'] = content_link['header_content_type']
+                            if 'html' not in content_link['header_content_type']:
+                                self.logger.info(
+                                    'FsF-F3-01M : Replacing metadata content type with content type from Header response -: ' + str(
+                                        content_link['header_content_type']))
+                                content_link['type'] = content_link['header_content_type']
+                            else:
+                                self.logger.warning(
+                                    'FsF-F3-01M : Header response returned html type, assuming login page or similar -: ' + str(
+                                        content_link['header_content_type']))
                         # will pass even if the url cannot be accessed which is OK
                         # did_result.test_status = "pass"
                         # did_score.earned=1
@@ -108,5 +113,5 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.output.object_content_identifier_included = content_list
         self.result.output = self.output
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.score = self.score

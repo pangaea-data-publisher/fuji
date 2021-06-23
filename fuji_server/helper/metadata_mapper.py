@@ -32,7 +32,7 @@ class Mapper(Enum):
     IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
 
     #CMMI capability maturity levels
-    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
+    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'moderate', 3: 'advanced'}
 
 
     # reference metadata elements (used by FUJI)
@@ -69,7 +69,7 @@ class Mapper(Enum):
               'keywords': 'subject', 'object_type': 'type','modified_date': 'modified','created_date' : 'created',
               'license': 'license', 'file_format_only': 'format', 'access_level':['rights','accessRights'],
                   'date_available':'available','provenance_general':'provenance',
-                'related_resources':['relation','source','references']}
+                'related_resources':['relation','source','references','hasVersion','isReferencedBy','isVersionOf','hasVersion','replaces','requires','conformsTo','hasFormat','hasPart','isPartOf','isReplacedBy','isRequiredBy']}
 
     # https://ogp.me/
     # og:url ->The canonical URL of your object that will be used as its permanent ID in the graph (assume this is fuji:object_indentifier)
@@ -87,7 +87,7 @@ class Mapper(Enum):
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
                            'right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, ' \
-                           'publisher: publisher.name || provider, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
+                           'publisher: publisher.name || provider.name || publisher || provider, license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
                            'summary: description, keywords: keywords, ' \
                            'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
                             'access_level: conditionsOfAccess, ' \
@@ -151,3 +151,169 @@ class Mapper(Enum):
             OPTIONAL {?dataset  dct:isVersionOf ?isVersionOf}
             }
             """
+
+    #################  XML Mappings ###############
+    # relations: indicate type using: related_resource_[opional relation type] alternative: define a list 'related_resource_type'
+    # content identifiers: object_content_identifier_url, object_content_identifier_size, object_content_identifier_type (should have same length)
+    # attributes: must be indicated like this: tag@@attribute
+
+    XML_MAPPING_DUBLIN_CORE ={'title': {'path': './{*}title'},
+     'creator': {'path': './{*}creator'},
+     'contributor': {'path': './{*}contributor'},
+     'keywords': {'path': './{*}subject'},
+     'summary': {'path': './{*}description'},
+     'publisher': {'path': './{*}publisher'},
+     'keywords':{'path': './{*}subject'},
+     'publication_date': {'path': ['./{*}date', './{*}available','./{*}issued']},
+     'created_date': {'path': './{*}created'},
+     'object_identifier': {'path': './{*}identifier'},
+     'related_resource': {'path': [
+         './{*}related',
+         './{*}source',
+         './{*}references',
+         './{*}hasVersion',
+         './{*}isReferencedBy',
+         './{*}isVersionOf',
+         './{*}hasVersion',
+         './{*}replaces',
+         './{*}requires',
+         './{*}conformsTo',
+         './{*}hasFormat',
+         './{*}hasPart',
+         './{*}isPartOf',
+         './{*}isReplacedBy',
+         './{*}isRequiredBy'
+     ]},
+     'license': {'path': './{*}license'},
+     'access_level': {'path': ['./{*}rights','./{*}accessRights']},
+     'object_type': {'path': './{*}type'},
+     'provenance_general': {'path': './{*}provenance'}
+     }
+
+    XML_MAPPING_DATACITE = {
+        'title': {'path': './{*}titles/{*}title'},
+        'creator': {'path': './{*}creators/{*}creator/{*}creatorName'},
+        'contributor':{'path': './{*}contributors/{*}contributorName'},
+        'publication_date':{'path':'./{*}publicationYear'},
+        'keywords': {'path': './{*}subjects/{*}subject'},
+        'object_identifier': {'path':'./{*}identifier'},
+        'publisher':{'path':'./{*}publisher'},
+        'summary': {'path': './{*}descriptions/{*}description'},
+        'object_type':{'path': './{*}resourceType@@resourceTypeGeneral'},
+        'related_resource': {'path':'./{*}relatedIdentifiers/{*}relatedIdentifier'},
+        'related_resource_type': {'path': './{*}relatedIdentifiers/{*}relatedIdentifier@@relationType'},
+        'license': {'path': ['./{*}rightsList/{*}rights','./{*}rightsList/{*}rights@@rightsURI']},
+        'access_level': {'path': ['./{*}rightsList/{*}rights', './{*}rightsList/{*}rights@@rightsURI']}
+    }
+
+    XML_MAPPING_METS = {
+        'publisher': {'path': './{*}metsHdr/{*}agent[@ROLE="CREATOR"]/{*}name'},
+        'object_content_identifier_url': {'path': './{*}fileSec/{*}fileGrp/{*}file/{*}FLocat@@xlink:href'},
+        'object_content_identifier_type': {'path': './{*}fileSec/{*}fileGrp/{*}file@@MIMETYPE'}
+    }
+
+    XML_MAPPING_MODS ={
+        'title': {'path': './{*}titleInfo/{*}title'},
+        'creator':{'path':["./{*}name/{*}role[{*}roleTerm='Creator']/../{*}namePart[1]","./{*}name/{*}role[{*}roleTerm='Author']/../{*}namePart[1]"]},
+        'publisher':{'path':'./{*}originInfo/{*}publisher'},
+        'object_identifier':{'path':'./{*}identifier'},
+        'publication_date': {'path': './{*}originInfo/{*}dateCreated'},
+        'related_resource': {'path':['./{*}relatedItem/{*}recordInfo/{*}recordIdentifier','./{*}relatedItem/{*}identifier']},
+        'related_resource_type': {'path': ['./{*}relatedItem@@type','./{*}relatedItem@@type']},
+        'keywords': {'path': './{*}subject/{*}topic'},
+        'summary': {'path': './{*}abstract'},
+        'object_type': {'path': './{*}typeOfResource'},
+        'access_level': {'path':['./{*}accessCondition','./{*}accessCondition@@type','./{*}accessCondition@@href']},
+        'license': {'path':['./{*}accessCondition','./{*}accessCondition@@type','./{*}accessCondition@@href']}
+    }
+
+    XML_MAPPING_EML ={
+        'title':{'path':'./{*}dataset/{*}title'},
+        'object_identifier':{'path':['./{*}dataset/{*}alternateIdentifier','.//@@packageId']},
+        'creator':{'path':'./{*}dataset/{*}individualName/{*}surName'},
+        'contributor':{'path':'./{*}dataset/{*}associatedParty/{*}surName'},
+        'publication_date':{'path':'./{*}dataset/{*}pubDate'},
+        'keywords': {'path':'./{*}dataset/{*}keywordSet/{*}keyword'},
+        'summary':{'path':'./{*}dataset/{*}abstract/{*}para'},
+        'publisher':{'path':'./{*}dataset/{*}publisher/{*}organizationName'},
+        'measured_variable': {'path':'.//{*}additionalMetadata/{*}metadata/{*}variableName'},
+        'license':{'path':['./{*}dataset/{*}intellectualRights/{*}para','{*}dataset/{*}intellectualRights/{*}section/{*}para/{*}value']},
+        'object_content_identifier_url':{'path':['./{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}url','.//{*}dataset/{*}distribution/{*}online/{*}url']},
+        'object_content_identifier_size': {'path': './{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size'}
+    }
+    XML_MAPPING_DDI_STUDY ={
+
+    }
+
+    XML_MAPPING_DDI_CODEBOOK = {'title': {'path': './{*}stdyDscr/{*}citation/{*}titlStmt/{*}titl'},
+                                'creator': {'path': './{*}stdyDscr/{*}citation/{*}rspStmt/{*}AuthEnty'},
+                                'keywords': {'path': [
+                                    './{*}stdyDscr/{*}stdyInfo/{*}subject/{*}keyword',
+                                    './{*}stdyDscr/{*}stdyInfo/{*}subject/{*}topcClas'
+                                ]},
+                                'summary': {'path': './{*}stdyDscr/{*}stdyInfo/{*}abstract'},
+                                'publisher': {'path': [
+                                    './{*}docDscr/{*}citation/{*}prodStmt/{*}producer',
+                                    './{*}stdyDscr/{*}citation/{*}distStmt/{*}distrbtr'
+                                ]},
+                                'publication_date': {'path': './{*}docDscr/{*}citation/{*}prodStmt/{*}prodDate@@date'},
+                                'object_identifier': {'path': ['./{*}stdyDscr/{*}dataAccs/{*}setAvail/{*}accsPlac@@URI',
+                                                               './{*}docDscr/{*}citation/{*}titlStmt/{*}IDNo',
+                                                               './{*}docDscr/{*}citation/{*}holdings@@URI',
+                                                               './{*}stdyDscr/{*}citation/{*}titlStmt/{*}IDNo']},
+                                'related_resource': {'path': [
+                                    './{*}stdyDscr/{*}method/{*}dataColl/{*}sources',
+                                    './{*}stdyDscr/{*}othrStdyMat/*'
+                                ]},
+                                'related_resource_hasVersion': {'path': [
+                                    './{*}docDscr/{*}citation/{*}verStmt',
+                                    './{*}stdyDscr/{*}citation/{*}verStmt'
+                                ]},
+                                'related_resource_isPartOf': {'path': [
+                                    './{*}docDscr/{*}citation/{*}serStmt/{*}serName',
+                                    './{*}stdyDscr/{*}citation/{*}serStmt/{*}serName'
+                                ]},
+                                'license': {'path': [
+                                    './{*}docDscr/{*}citation/{*}prodStmt/{*}copyright',
+                                    './{*}stdyDscr/{*}citation/{*}prodStmt/{*}copyright'
+                                ]},
+                                'object_type': {'path': './{*}stdyDscr/{*}stdyInfo/{*}sumDscr/{*}dataKind'},
+                                'access_level': {'path': [
+                                    './{*}stdyDscr/{*}dataAccs/{*}setAvail/{*}avlStatus',
+                                    './{*}stdyDscr/{*}dataAccs/{*}useStmt/*'
+                                ]},
+                                'object_content_identifier_url': {'path': './/{*}fileDscr@@URI'},
+                                'measured_variable': {'path': './{*}dataDscr/{*}var@@name'}
+                                }
+
+    XML_MAPPING_GCMD_ISO ={
+        'title': {'path':['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}title/{*}CharacterString',
+                  './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}title']},
+        'publication_date':  {'path':['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}date/{*}CI_Date/{*}date/{*}DateTime',
+                              './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}date/{*}CI_Date/{*}date']},
+        'object_identifier': {'path': ['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}identifier/{*}MD_Identifier/{*}code/{*}CharacterString',
+                              './{*}dataSetURI/{*}CharacterString']
+                              },
+        'creator':           {'path': './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/{*}CharacterString'},
+        'summary':           {'path': './{*}identificationInfo//{*}abstract'},
+        'keywords':          {'path': ['./{*}identificationInfo//{*}descriptiveKeywords/{*}MD_Keywords/{*}keyword/{*}CharacterString',
+                              './{*}identificationInfo//{*}topicCategory/{*}MD_TopicCategoryCode',
+                              './{*}identificationInfo//{*}descriptiveKeywords/{*}MD_Keywords/{*}keyword']},
+        'publisher':         {'path': "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='pointOfContact']/../{*}organisationName/{*}CharacterString"},
+        'object_type':       {'path':['./{*}hierarchyLevel/{*}MD_ScopeCode','./{*}identificationInfo//{*}spatialRepresentationType/{*}MD_SpatialRepresentationTypeCode']},
+        'object_content_identifier_url':{'path':'./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL'},
+        'measured_variable': {'path': ['./{*}contentInfo/{*}MD_CoverageDescription/{*}attributeDescription/{*}RecordType',
+                                       #https://wiki.esipfed.org/Documenting_Resource_Content
+                                       './{*}contentInfo/{*}MD_CoverageDescription/{*}dimension/{*}MD_Band/{*}sequenceIdentifier/{*}MemberName/{*}aName',
+                                       './{*}contentInfo/{*}MD_CoverageDescription/{*}attributeGroup/{*}MD_AttributeGroup/{*}attribute/{*}MD_SampleDimension/{*}sequenceIdentifier/{*}MemberName/{*}aName']},
+        'access_level': {'path':['./{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}accessConstraints/{*}MD_RestrictionCode',
+                         './{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}accessConstraints/{*}MD_RestrictionCode@@codeListValue']},
+        'license':{'path':['./{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}useConstraints/{*}MD_RestrictionCode[@codeListValue=\'license\']',
+                           #'./{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}useConstraints/{*}MD_RestrictionCode@@codeListValue',
+                   './{*}identificationInfo//{*}resourceConstraints/{*}otherConstraints/{*}CharacterString',
+                           './{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}otherConstraints/{*}Anchor',
+                           './{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}otherConstraints/{*}Anchor@@xlink:href']},
+        'related_resource':{'path':['./{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetName/*',
+                                    './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetIdentifier/*']},
+        'related_resource_type': {'path': './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation/{*}associationType/{*}DS_AssociationTypeCode@@codeListValue'}
+    }
