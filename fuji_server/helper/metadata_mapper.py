@@ -32,7 +32,7 @@ class Mapper(Enum):
     IDENTIFIERS_PIDS=r'https://identifiers.org/[provider_code/]namespace:accession'
 
     #CMMI capability maturity levels
-    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
+    MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'moderate', 3: 'advanced'}
 
 
     # reference metadata elements (used by FUJI)

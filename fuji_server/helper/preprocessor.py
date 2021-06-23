@@ -58,7 +58,7 @@ class Preprocessor(object):
     resource_types = []
     identifiers_org_data = {}
     google_data_dois = []
-
+    google_data_urls = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
     header = {"Accept": "application/json"}
@@ -77,6 +77,18 @@ class Preprocessor(object):
         google_doi_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_dois.txt')
         with open(google_doi_path,'r') as f:
             cls.google_data_dois = f.read().splitlines()
+
+    @classmethod
+    def get_google_data_urls(cls):
+        if not cls.google_data_urls:
+            cls.retrieve_google_data_urls()
+        return cls.google_data_urls
+
+    @classmethod
+    def retrieve_google_data_urls(cls):
+        google_url_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_urls.txt')
+        with open(google_url_path,'r') as f:
+            cls.google_data_urls = f.read().splitlines()
 
     @classmethod
     def get_identifiers_org_data(cls):

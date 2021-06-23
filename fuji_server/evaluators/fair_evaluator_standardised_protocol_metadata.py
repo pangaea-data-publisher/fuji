@@ -66,7 +66,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
         self.result.score = self.score
         self.result.output = StandardisedProtocolMetadataOutput(standard_metadata_protocol=metadata_output)
         self.result.metric_tests = self.metric_tests
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.test_status = test_status
 
 

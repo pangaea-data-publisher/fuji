@@ -9,3 +9,5 @@
 .idea/
 *.pyc
 /build/
+!/fuji_server/data/google_search_dois.txt
+!/fuji_server/data/google_search_urls.txt

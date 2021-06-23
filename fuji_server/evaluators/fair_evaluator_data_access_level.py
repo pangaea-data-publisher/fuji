@@ -141,5 +141,5 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             self.logger.warning('FsF-A1-01M : Unable to determine the access level')
         self.output.access_details = access_details
         self.result.metric_tests = self.metric_tests
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.output = self.output

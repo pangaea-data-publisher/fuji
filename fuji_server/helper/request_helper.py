@@ -43,7 +43,7 @@ class AcceptTypes(Enum):
     datacite_xml = 'application/vnd.datacite.datacite+xml'
     schemaorg = 'application/vnd.schemaorg.ld+json, application/ld+json'
     html = 'text/html, application/xhtml+xml'
-    html_xml = 'text/html, application/xhtml+xml, application/xml, text/xml, application/rdf+xml'
+    html_xml = 'text/html, application/xhtml+xml, application/xml;q=0.5, text/xml;q=0.5, application/rdf+xml;q=0.5'
     xml = 'application/xml, text/xml;q=0.5'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'

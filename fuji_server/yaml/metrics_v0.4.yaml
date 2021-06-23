@@ -42,7 +42,6 @@ metrics:
   date_created: 2020-07-08
   date_updated: 2020-11-25
   version: 0.4
-
   total_score: 1
 
 - metric_identifier: FsF-F2-01M

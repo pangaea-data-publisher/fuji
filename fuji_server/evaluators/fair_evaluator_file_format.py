@@ -89,7 +89,8 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 subject_area = []
                 if mimetype in self.fuji.SCIENCE_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1c', 0, 'pass')
-                    self.maturity = 3
+                    if self.maturity < 3:
+                        self.maturity = 3
                     if self.fuji.SCIENCE_FILE_FORMATS.get(mimetype) == 'Generic':
                         subject_area.append('General')
                         preferance_reason.append('generic science format')
@@ -100,22 +101,25 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 # check if long term format
                 if mimetype in self.fuji.LONG_TERM_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1b', 0, 'pass')
-                    self.maturity = 2
+                    if self.maturity < 2:
+                        self.maturity = 2
                     preferance_reason.append('long term format')
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
                 # check if open format
                 if mimetype in self.fuji.OPEN_FILE_FORMATS:
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1a', 0, 'pass')
-                    self.maturity = 1
+                    if self.maturity < 1:
+                        self.maturity = 1
                     preferance_reason.append('open format')
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
                 # generic text/xml/json file check
-                if re.search(text_format_regex, mimetype):
+                if 'html' not in mimetype and re.search(text_format_regex, mimetype):
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1a', 0, 'pass')
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1b', 0, 'pass')
-                    self.setEvaluationCriteriumScore('FsF-R1.3-02D-1c', 0, 'pass')
+                    self.setEvaluationCriteriumScore('FsF-R1.3-02D-1c', 0, 'fail')
+                    self.maturity = 2
                     preferance_reason.extend(['long term format', 'open format', 'generic science format'])
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
@@ -125,7 +129,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
-
             if len(data_file_list) > 0:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
@@ -139,5 +142,5 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         self.output = data_file_list
         self.result.output = self.output
         self.result.metric_tests = self.metric_tests
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.score = self.score

@@ -165,6 +165,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output

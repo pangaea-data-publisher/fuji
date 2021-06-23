@@ -105,7 +105,8 @@ class FAIRCheck:
     VALID_RESOURCE_TYPES = []
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE =[]
-    FUJI_VERSION = 'v1.2.0'
+    GOOGLE_DATA_URL_CACHE = []
+    FUJI_VERSION = 'v1.3.0'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -201,8 +202,9 @@ class FAIRCheck:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
-        if not cls.GOOGLE_DATA_DOI_CACHE:
-            cls.GOOGLE_DATA_DOI_CACHE= Preprocessor.get_google_data_dois()
+        #not needed locally ... but init class variable
+        Preprocessor.get_google_data_dois()
+        Preprocessor.get_google_data_urls()
 
 
     @staticmethod
@@ -361,6 +363,7 @@ class FAIRCheck:
         self.embedded_retrieved = True
         self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
         #test if content is html otherwise skip embedded tests
+        #print(self.landing_content_type)
         if 'html' in str(self.landing_content_type):
 
             # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
@@ -962,7 +965,8 @@ class FAIRCheck:
             if metric_match.group(2) is not None:
                 fair_principle = metric_match[1]
                 fair_category = metric_match[2]
-                earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
+                earned_maturity = res_v['maturity']
+                #earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
                 summary_dict['fair_category'].append(fair_category)
                 summary_dict['fair_principle'].append(fair_principle)
                 summary_dict['score_earned'].append(res_v['score']['earned'])

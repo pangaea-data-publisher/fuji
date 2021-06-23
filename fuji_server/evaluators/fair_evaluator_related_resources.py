@@ -61,6 +61,6 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                 self.setEvaluationCriteriumScore('FsF-I3-01M-2', 1, 'pass')
                 self.maturity = 3
         self.result.metric_tests = self.metric_tests
-        self.result.maturity = self.maturity_levels.get(self.maturity)
+        self.result.maturity = self.maturity
         self.result.score = self.score
         self.result.output = self.output
