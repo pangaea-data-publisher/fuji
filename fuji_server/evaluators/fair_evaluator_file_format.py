@@ -70,19 +70,24 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
                             self.logger.info(
                                 'FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
-                            # exclude archive format
-                            if file_index == len(self.fuji.content_identifier)-1:
-                                self.fuji.tika_content_types_list = [n for n in self.fuji.tika_content_types_list if
-                                                                n not in self.fuji.ARCHIVE_MIMETYPES]
-                                self.logger.info(
-                                    'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'.format(self.fuji.tika_content_types_list))
-                                for t in self.fuji.tika_content_types_list:
-                                    mime_url_pair[t] = data_file.get('url')
+                            if 'unverified' not in self.fuji.tika_content_types_list:
+                                # exclude archive format
+                                if file_index == len(self.fuji.content_identifier)-1:
+                                    self.fuji.tika_content_types_list = [n for n in self.fuji.tika_content_types_list if
+                                                                    n not in self.fuji.ARCHIVE_MIMETYPES]
+                                    self.logger.info(
+                                        'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'.format(self.fuji.tika_content_types_list))
+                                    for t in self.fuji.tika_content_types_list:
+                                        mime_url_pair[t] = data_file.get('url')
+                            else:
+                                self.logger.warning(
+                                    'FsF-R1.3-02D : Content type not verified during FsF-R1-01MD, assuming login page or similar instead of - {}'.format(mime_type))
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
 
             # FILE FORMAT CHECKS....
             # check if format is a scientific one:
+            loginpage = False
             for mimetype, url in mime_url_pair.items():
                 data_file_output = DataFileFormatOutputInner()
                 preferance_reason = []
@@ -115,6 +120,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
                 # generic text/xml/json file check
+
                 if 'html' not in mimetype and re.search(text_format_regex, mimetype):
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1a', 0, 'pass')
                     self.setEvaluationCriteriumScore('FsF-R1.3-02D-1b', 0, 'pass')
@@ -123,13 +129,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                     preferance_reason.extend(['long term format', 'open format', 'generic science format'])
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
+                    loginpage = True
 
                 data_file_output.mime_type = mimetype
                 data_file_output.file_uri = url
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
-            if len(data_file_list) > 0:
+            if len(data_file_list) > 0 and not loginpage:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
                 #self.maturity = 3

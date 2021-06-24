@@ -181,6 +181,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             matches_type = True
                         else:
                             self.logger.warning('{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'.format(self.metric_identifier, data_object.get('type'), str(self.fuji.tika_content_types_list) ))
+                            self.fuji.tika_content_types_list.append('unverified')
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
