@@ -106,7 +106,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE =[]
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = 'v1.3.0'
+    FUJI_VERSION = 'v1.3.1'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -551,17 +551,24 @@ class FAIRCheck:
         # Use links to find domains specific metadata
         datalinks = []
         if isinstance(self.landing_html, str):
-            dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
-            links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
-            for l in links:
-                href=l.attrib.get('href')
-                #handle relative paths
-                if urlparse(href).scheme == '':
-                    href = urljoin(self.landing_url,href)
-                    #landingpath = urlparse(self.landing_url).path
-                    #landingdir, landingfile = os.path.split(landingpath)
-                    #href= landingdir+'/'+href
-                datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
+            if self.landing_html:
+                try:
+                    dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
+                    links=dom.xpath('/*/head/link[@rel="'+rel+'"]')
+                    for l in links:
+                        href=l.attrib.get('href')
+                        #handle relative paths
+                        if urlparse(href).scheme == '':
+                            href = urljoin(self.landing_url,href)
+                            #landingpath = urlparse(self.landing_url).path
+                            #landingdir, landingfile = os.path.split(landingpath)
+                            #href= landingdir+'/'+href
+                        datalinks.append({'url': href, 'type': l.attrib.get('type'), 'rel': l.attrib.get('rel'), 'profile': l.attrib.get('format')})
+                except:
+                    self.logger.info('FsF-F2-01M : Typed links identification failed -:')
+            else:
+                self.logger.info('FsF-F2-01M : Expected HTML to check for typed links but received empty string ')
+
         return datalinks
 
     def get_signposting_links(self, rel="item"):
@@ -727,16 +734,22 @@ class FAIRCheck:
         else:
             self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
         sign_header_links = []
+        rel_meta_links = []
+        sign_meta_links = []
         #signposting header links
         if self.get_signposting_links('describedby'):
             sign_header_links = self.get_signposting_links('describedby')
             self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value, 'signposting'))
-        #dcat style meta links
-        typed_metadata_links = self.get_html_typed_links(rel='alternate')
-        #ddi style meta links
-        rel_meta_links = self.get_html_typed_links(rel='meta')
-        #signposting style meta links
-        sign_meta_links = self.get_html_typed_links(rel='describedby')
+        typed_metadata_links=[]
+        if self.landing_html:
+            #dcat style meta links
+            typed_metadata_links = self.get_html_typed_links(rel='alternate')
+            #ddi style meta links
+            rel_meta_links = self.get_html_typed_links(rel='meta')
+            #signposting style meta links
+            sign_meta_links = self.get_html_typed_links(rel='describedby')
+        else:
+            self.logger.info('FsF-F2-01M : Expected HTML to check for typed links but received empty string ')
 
         typed_metadata_links.extend(sign_meta_links)
         typed_metadata_links.extend(rel_meta_links)

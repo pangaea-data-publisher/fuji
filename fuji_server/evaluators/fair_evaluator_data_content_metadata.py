@@ -181,6 +181,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             matches_type = True
                         else:
                             self.logger.warning('{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'.format(self.metric_identifier, data_object.get('type'), str(self.fuji.tika_content_types_list) ))
+                            self.fuji.tika_content_types_list.append('unverified')
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
@@ -222,12 +223,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     if variable in test_data_content_text:  # TODO use rapidfuzz (fuzzy search)
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
-                    if not is_variable_scored:  # only increase once
-                        self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
-                        self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
-                        self.maturity = 3
-                        score += 1
-                        is_variable_scored = True
+                        if not is_variable_scored:  # only increase once
+                            self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
+                            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
+                            self.maturity = 3
+                            score += 1
+                            is_variable_scored = True
                 data_content_descriptors.append(variable_metadata_inner)
         else:
             self.logger.warning('FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
