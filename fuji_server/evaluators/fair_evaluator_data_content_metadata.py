@@ -223,12 +223,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     if variable in test_data_content_text:  # TODO use rapidfuzz (fuzzy search)
                         # self.logger.info('FsF-R1-01MD : Measured variable found in file content - {}'.format(variable))
                         variable_metadata_inner.matches_content = True
-                    if not is_variable_scored:  # only increase once
-                        self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
-                        self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
-                        self.maturity = 3
-                        score += 1
-                        is_variable_scored = True
+                        if not is_variable_scored:  # only increase once
+                            self.setEvaluationCriteriumScore('FsF-R1-01MD-4', 1, 'pass')
+                            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Found specified measured variable in data object content')
+                            self.maturity = 3
+                            score += 1
+                            is_variable_scored = True
                 data_content_descriptors.append(variable_metadata_inner)
         else:
             self.logger.warning('FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
