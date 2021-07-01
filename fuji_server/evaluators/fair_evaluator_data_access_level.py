@@ -51,9 +51,9 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
         #access_rights can be None or []
         if access_rights:
-            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
-            self.maturity = 1
+            #self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            #self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
+            #self.maturity = 1
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
             for access_right in access_rights:
@@ -78,6 +78,12 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                     #    self.logger.info('FsF-A1-01M : Non-actionable, non-standardized, access level found')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
+                    if self.fuji.metadata_merged.get('licence'):
+                        if isinstance(self.fuji.metadata_merged.get('licence'),list):
+                            self.fuji.metadata_merged['licence'].append(access_right)
+                    else:
+                        self.fuji.metadata_merged['licence']=[access_right]
+                    self.logger.info('FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'.format(access_right))
                     exclude.append(access_right)
 
             if not access_level:
@@ -96,6 +102,11 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 access_rights = set(access_rights) - set(exclude)
                 if access_rights :
                     access_details['access_condition'] = ', '.join(access_rights)
+
+        if access_rights:
+            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
+            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
+            self.maturity = 1
         else:
             self.logger.warning('FsF-A1-01M : NO access information is available in metadata')
             score = 0
