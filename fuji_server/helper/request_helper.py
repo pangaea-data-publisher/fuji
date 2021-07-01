@@ -229,6 +229,7 @@ class RequestHelper:
         try:
             #print(html_texts.encode('utf8'))
             extracted = extruct.extract(html_texts.encode('utf8'))
+            #print('extr',self.content_type,self.request_url)
         except Exception as e:
             extracted=None
             self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' % (self.metric_id, self.request_url+' '+str(e)))
