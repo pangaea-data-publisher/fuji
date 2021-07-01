@@ -78,11 +78,11 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                     #    self.logger.info('FsF-A1-01M : Non-actionable, non-standardized, access level found')
                 else:
                     self.logger.warning('FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.format(access_right))
-                    if self.fuji.metadata_merged.get('licence'):
-                        if isinstance(self.fuji.metadata_merged.get('licence'),list):
-                            self.fuji.metadata_merged['licence'].append(access_right)
+                    if self.fuji.metadata_merged.get('license'):
+                        if isinstance(self.fuji.metadata_merged.get('license'),list):
+                            self.fuji.metadata_merged['license'].append(access_right)
                     else:
-                        self.fuji.metadata_merged['licence']=[access_right]
+                        self.fuji.metadata_merged['license']=[access_right]
                     self.logger.info('FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'.format(access_right))
                     exclude.append(access_right)
 
