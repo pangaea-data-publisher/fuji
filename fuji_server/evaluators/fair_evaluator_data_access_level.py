@@ -92,7 +92,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                     if access_right.lower() in lower_case_access_dict:
                         self.logger.info('FsF-A1-01M : Non-actionable (term only) standard access level recognized as -:' + str(
                             lower_case_access_dict.get(access_right.lower())))
-                        self.maturity = 2
+                        if self.maturity <=2:
+                            self.maturity = 2
                         self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
                         access_level = lower_case_access_dict.get(access_right.lower())
                         access_details['access_condition'] = access_right
@@ -106,7 +107,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if access_rights:
             self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
             self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
-            self.maturity = 1
+            if self.maturity <=1:
+                self.maturity = 1
         else:
             self.logger.warning('FsF-A1-01M : NO access information is available in metadata')
             score = 0
@@ -121,7 +123,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 else:
                     access_level = "restricted"
                 access_details['accessible_free'] = access_free
-                self.maturity = 2
+                if self.maturity <=2:
+                    self.maturity = 2
                 self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
             #TODO assume access_level = restricted if access_rights provided?
 
