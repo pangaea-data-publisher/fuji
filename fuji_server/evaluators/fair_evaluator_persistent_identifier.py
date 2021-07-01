@@ -61,9 +61,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
+                #print(self.fuji.landing_url, self.fuji.input_id)
                 if self.fuji.repeat_pid_check == True:
                     if self.fuji.landing_url != self.fuji.input_id:
                         self.logger.warning('FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL')
+                        self.logger.warning('FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL resolved from PID found in metadata does not match with input URL')
+
+                        #self.fuji.repeat_pid_check = False
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
                     if r.status == 200:
                         # identify signposting links in header

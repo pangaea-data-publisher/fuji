@@ -80,7 +80,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return html_url, isOsiApproved
 
     def evaluate(self):
-
         self.result = License(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         licenses_list = []
         specified_licenses = self.fuji.metadata_merged.get('license')

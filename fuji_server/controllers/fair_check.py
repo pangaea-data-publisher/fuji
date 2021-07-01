@@ -106,7 +106,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE =[]
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = 'v1.3.1'
+    FUJI_VERSION = 'v1.3.2'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -368,7 +368,7 @@ class FAIRCheck:
 
             # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
             ext_meta = extruct_metadata.get('json-ld')
-
+            #print(ext_meta)
             self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger, sourcemetadata=ext_meta,
@@ -530,7 +530,7 @@ class FAIRCheck:
                     found_id_scheme = idhelper.preferred_schema
                     if idhelper.is_persistent:
                         found_pids[found_id_scheme] = pidcandidate
-                if len(found_pids) >=1:
+                if len(found_pids) >=1 and self.repeat_pid_check == False:
                     self.logger.info(
                         'FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
                     self.logger.log(self.LOG_SUCCESS,
