@@ -106,7 +106,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE =[]
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = 'v1.3.2'
+    FUJI_VERSION = 'v1.3.2b'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
