@@ -199,17 +199,23 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
+
             dcat_metadata['object_content_identifier']=[]
             for dist in distribution:
-                durl= (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL))
-                #taking only one just to check if licence is available
-                dcat_metadata['license']=graph.value(dist, DCTERMS.license)
-                # TODO: check if this really works..
-                dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
-                dtype=graph.value(dist, DCAT.mediaType)
-                dsize=graph.value(dist, DCAT.bytesSize)
+                dtype,durl ,dsize = None,None,None
+                if not (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)):
+                    durl = str(dist)
+                else:
+                    durl= (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL))
+                    #taking only one just to check if licence is available
+                    dcat_metadata['license']=graph.value(dist, DCTERMS.license)
+                    # TODO: check if this really works..
+                    dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
+                    dtype=graph.value(dist, DCAT.mediaType)
+                    dsize=graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:
                     dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+
 
             if dcat_metadata['object_content_identifier']:
                 self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata -: ' + str(dcat_metadata['object_content_identifier']))
