@@ -136,7 +136,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
-            if len(data_file_list) > 0 and not loginpage:
+            if len(preferance_reason) > 0 and not loginpage:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
                 #self.maturity = 3
