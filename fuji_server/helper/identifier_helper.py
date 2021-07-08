@@ -40,6 +40,9 @@ class IdentifierHelper:
         self.normalized_id = self.identifier
         if self.identifier and isinstance(self.identifier, str):
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
+                #workaround to recognize https purls
+                if 'https://purl.' in self.identifier:
+                    self.identifier = self.identifier.replace('https:','http:')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
                 # idutils check
                 self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)

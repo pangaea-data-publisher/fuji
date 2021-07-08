@@ -104,7 +104,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 for row in sorted(r):
                     for l, v in row.asdict().items():
                         if l is not None:
-                            if l in ['references' ,'source' ,'isVersionOf','isReferencedBy']:
+                            if l in ['references' ,'source' ,'isVersionOf','isReferencedBy','isPartOf','hasVersion','replaces', 'hasPart', 'isReplacedBy', 'requires', 'isRequiredBy']:
                                 if not meta.get('related_resources'):
                                     meta['related_resources'] = []
                                 meta['related_resources'].append({'related_resource': str(v), 'relation_type': l})
@@ -127,6 +127,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
+        #default sparql
+        meta = self.get_default_metadata(g)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
@@ -144,6 +146,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         #TODO creators, contributors
         meta['creator'] = g.value(item, DC.creator)
         meta['license'] = g.value(item, DCTERMS.license)
+        meta['access_level'] = (g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or g.value(item, DC.rights))
         # quick fix (avoid rdflib literal type exception)
         for v in [meta['title'],meta['summary'], meta['publisher']]:
             if v:
@@ -168,7 +171,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
-
         dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
 
