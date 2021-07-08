@@ -54,7 +54,10 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             content_urls = [item.get('url') for item in self.fuji.content_identifier]
             self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
             #self.maturity = 1
+            loginpage = False
+            preferred_detected = False
             for file_index, data_file in enumerate(self.fuji.content_identifier):
+
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream']:
@@ -87,7 +90,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
             # FILE FORMAT CHECKS....
             # check if format is a scientific one:
-            loginpage = False
+
             for mimetype, url in mime_url_pair.items():
                 data_file_output = DataFileFormatOutputInner()
                 preferance_reason = []
@@ -129,14 +132,17 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                     preferance_reason.extend(['long term format', 'open format', 'generic science format'])
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
+                if 'html' in mimetype:
                     loginpage = True
 
+                if preferance_reason:
+                    preferred_detected = True
                 data_file_output.mime_type = mimetype
                 data_file_output.file_uri = url
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
-            if len(preferance_reason) > 0 and not loginpage:
+            if preferred_detected and not loginpage:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
                 #self.maturity = 3
