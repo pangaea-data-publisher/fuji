@@ -111,6 +111,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                             else:
                                 meta[l] = str(v)
                     break
+                print(meta['related_resources'])
             else:
                 self.logger.info('FsF-F2-01M : Graph seems to contain only one triple, skipping core metadata element test')
         except Exception as e:
@@ -128,7 +129,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
         #default sparql
-        meta = self.get_default_metadata(g)
+        met = self.get_default_metadata(item)
+        print(met)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
@@ -146,11 +148,19 @@ class MetaDataCollectorRdf (MetaDataCollector):
         #TODO creators, contributors
         meta['creator'] = g.value(item, DC.creator)
         meta['license'] = g.value(item, DCTERMS.license)
+        meta['related_resources']=[]
         meta['access_level'] = (g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or g.value(item, DC.rights))
+        for dctrelationtype in [DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf, DCTERMS.hasVersion, DCTERMS.replaces,
+                 DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires, DCTERMS.isRequiredBy]:
+            dctrelation = g.value(item, dctrelationtype)
+            if dctrelation:
+                meta['related_resources'].append({'related_resource': str(dctrelation), 'relation_type': str(dctrelationtype)})
+
         # quick fix (avoid rdflib literal type exception)
         for v in [meta['title'],meta['summary'], meta['publisher']]:
             if v:
                 v = v.toPython()
+        print(meta)
         return meta
 
     def get_ontology_metadata(self, graph):
@@ -214,7 +224,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                     dtype=graph.value(dist, DCAT.mediaType)
                     dsize=graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:
-                    dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+                    dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':dtype, 'size':dsize})
 
 
             if dcat_metadata['object_content_identifier']:
