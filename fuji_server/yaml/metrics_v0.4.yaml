@@ -387,6 +387,10 @@ metrics:
       metric_test_name: Community specific metadata standard is listed in the re3data record of the responsible repository
       metric_test_score: 0.5
       metric_test_maturity: 2
+    - metric_test_identifier: FsF-R1.3-01M-3
+      metric_test_name: Multidisciplinary but community endorsed metadata (RDA Metadata Standards Catalog) standard is listed in the re3data record or detected by namespace
+      metric_test_score: 0
+      metric_test_maturity: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
