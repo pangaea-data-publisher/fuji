@@ -107,11 +107,21 @@ class RequestHelper:
         status_code = None
         if self.request_url is not None:
             try:
-                self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
+                #self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
+                self.logger.info('{0} : Retrieving page -: {1} as {2}'.format(metric_id, self.request_url, self.accept_type))
+
                 #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
+                urllib.request.HTTPRedirectHandler.http_error_308 = urllib.request.HTTPRedirectHandler.http_error_301
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type, 'User-Agent': 'F-UJI'})
+
                 context = ssl._create_unverified_context()
-                tp_response =  urllib.request.urlopen(tp_request,context=context)
+
+                try:
+                    tp_response =  urllib.request.urlopen(tp_request,context=context)
+                except Exception as e:
+                    if e.code == 308:
+                        self.logger.error('%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed' % metric_id)
+                        #print('#############################'+str(e))
                 self.http_response = tp_response
                 self.response_content = tp_response.read()
                 if tp_response.info().get('Content-Encoding') == 'gzip':
@@ -213,6 +223,7 @@ class RequestHelper:
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 self.response_status = int(e.code)
+                print(e)
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
