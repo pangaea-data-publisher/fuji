@@ -41,10 +41,11 @@ class RepositoryHelper:
         self.repository_url = None
         self.repo_apis = {}
         self.repo_standards = []
-        self.logger = Preprocessor.logger #logging.getLogger(__name__)
+        self.logger = logging.getLogger('fuji_server.controllers.fair_check')
         #print(__name__)
     def lookup_re3data(self):
         if self.client_id and self.pid_scheme:
+
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
             #print(self.client_id,'Re3DOI',re3doi, idutils.is_doi(re3doi))
             if re3doi:
@@ -52,6 +53,7 @@ class RepositoryHelper:
                     short_re3doi = idutils.normalize_pid(re3doi, scheme='doi') #https://doi.org/10.17616/R3XS37
                 else:
                     re3doi = None
+
             # pid -> clientId -> repo doi-> re3id, and query repository metadata from re3api
             if re3doi:
                 self.logger.info('FsF-R1.3-01M : Found match re3data (DOI-based) record')
@@ -67,7 +69,7 @@ class RepositoryHelper:
                     #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
                     re3link = root.xpath('//link')[0].attrib['href']
                     if re3link is not None:
-                        self.logger.info('FsF-R1.3-01M : Found match re3data metadata record')
+                        self.logger.info('FsF-R1.3-01M : Found match re3data metadata record -: '+str(re3link))
                         # query reposiroty metadata
                         q2 = RequestHelper(url=re3link)
                         q2.setAcceptType(AcceptTypes.xml)
