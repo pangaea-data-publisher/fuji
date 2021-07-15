@@ -123,7 +123,6 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
 
         elif self.fuji.use_datacite:
             self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the repository specified in re3data')
-        print('M/D Standard Ratio: ',len(community_standards_detected) , len(multidiscipliary_standards_detected))
         if community_standards_detected:
             if re3_detected:
                 if self.maturity < 3:
@@ -131,7 +130,8 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     self.setEvaluationCriteriumScore('FsF-R1.3-01M-2', 1, 'pass')
                 else:
                     self.setEvaluationCriteriumScore('FsF-R1.3-01M-2', 0, 'pass')
-            self.score.earned = self.total_score
+            if len(community_standards_detected) - len(multidiscipliary_standards_detected) > 0:
+                self.score.earned = self.total_score
             self.result.test_status = 'pass'
 
         else:
