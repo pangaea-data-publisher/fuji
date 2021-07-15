@@ -38,44 +38,48 @@ class MetaDataCollectorDatacite (MetaDataCollector):
     def parse_metadata(self):
         source_name = None
         dcite_metadata = {}
-        self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
-        requestHelper = RequestHelper(self.pid_url, self.logger)
-        requestHelper.setAcceptType(AcceptTypes.datacite_json)
-        neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
-        if ext_meta:
-            try:
-                dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
-                if dcite_metadata:
-                    self.namespaces.append('http://datacite.org/schema/')
-                    source_name = self.getEnumSourceNames().DATACITE_JSON.value
-                    if dcite_metadata['creator'] is None:
-                        first = dcite_metadata['creator_first']
-                        last = dcite_metadata['creator_last']
-                        # default type of creator is []
-                        if isinstance(first, list) and isinstance(last, list):
-                            if len(first) == len(last):
-                                names = [i + " " + j for i, j in zip(first, last)]
-                                dcite_metadata['creator'] = names
+        if self.pid_url:
+            self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
+            requestHelper = RequestHelper(self.pid_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.datacite_json)
+            neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            if ext_meta:
+                try:
+                    dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                    if dcite_metadata:
+                        self.namespaces.append('http://datacite.org/schema/')
+                        source_name = self.getEnumSourceNames().DATACITE_JSON.value
+                        if dcite_metadata['creator'] is None:
+                            first = dcite_metadata['creator_first']
+                            last = dcite_metadata['creator_last']
+                            # default type of creator is []
+                            if isinstance(first, list) and isinstance(last, list):
+                                if len(first) == len(last):
+                                    names = [i + " " + j for i, j in zip(first, last)]
+                                    dcite_metadata['creator'] = names
 
-                    if dcite_metadata.get('related_resources'):
-                        self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
-                            len(dcite_metadata['related_resources']), source_name))
-                        temp_rels = []
+                        if dcite_metadata.get('related_resources'):
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
+                                len(dcite_metadata['related_resources']), source_name))
+                            temp_rels = []
 
-                        for r in dcite_metadata['related_resources']:
-                            if r.get('scheme_uri'):
-                                self.namespaces.append(r.get('scheme_uri'))
-                            filtered = {k: v for k, v in r.items() if v is not None}
-                            temp_rels.append(filtered)
-                        dcite_metadata['related_resources'] = temp_rels
-                    else:
-                        self.logger.info('FsF-I3-01M : No related resource(s) found in Datacite metadata')
+                            for r in dcite_metadata['related_resources']:
+                                if r.get('scheme_uri'):
+                                    self.namespaces.append(r.get('scheme_uri'))
+                                filtered = {k: v for k, v in r.items() if v is not None}
+                                temp_rels.append(filtered)
+                            dcite_metadata['related_resources'] = temp_rels
+                        else:
+                            self.logger.info('FsF-I3-01M : No related resource(s) found in Datacite metadata')
 
-                    # convert all values (list type) into string except 'creator','license','related_resources'
-                    for key, value in dcite_metadata.items():
-                        if key not in self.exclude_conversion and isinstance(value, list):
-                            flat = ', '.join(map(str, value))
-                            dcite_metadata[key] = flat
-            except Exception as e:
-                self.logger.exception('Failed to extract Datacite Json -: {}'.format(e))
+                        # convert all values (list type) into string except 'creator','license','related_resources'
+                        for key, value in dcite_metadata.items():
+                            if key not in self.exclude_conversion and isinstance(value, list):
+                                flat = ', '.join(map(str, value))
+                                dcite_metadata[key] = flat
+                except Exception as e:
+                    self.logger.exception('Failed to extract Datacite Json -: {}'.format(e))
+        else:
+            self.logger.warning('FsF-F2-01M : Skipped Datacite metadata retrieval, no PID URL detected')
+
         return source_name, dcite_metadata
