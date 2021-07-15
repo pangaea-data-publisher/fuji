@@ -68,6 +68,7 @@ def main():
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
     preproc.retrieve_default_namespaces()
+    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'],config['SERVICE']['remote_log_path'])
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
@@ -96,6 +97,7 @@ if __name__ == '__main__':
     log_dir = config['SERVICE']['logdir']
     log_directory = os.path.join(my_path, log_dir)
     log_file_path = os.path.join(log_directory, 'fuji.log')
+
     if not os.path.exists(log_directory):
         os.makedirs(log_directory, exist_ok=True)
     #fileConfig(log_configfile, defaults={'logfilename': log_file_path.replace("\\", "/")})

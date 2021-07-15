@@ -65,6 +65,20 @@ class Preprocessor(object):
     logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
+    remote_log_host = None
+    remote_log_path = None
+
+    @classmethod
+    def set_remote_log_info(cls, host, path ):
+        try:
+            request = requests.get('http://'+host+path)
+            if request.status_code == 200:
+                cls.remote_log_host=host
+                cls.remote_log_path=path
+            else:
+                cls.logger.warning('Remote Logging not possible, URL response: '+str(request.status_code))
+        except Exception as e:
+            cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host+' '+path))
 
     @classmethod
     def get_google_data_dois(cls):
