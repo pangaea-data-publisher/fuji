@@ -46,7 +46,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.fuji.id_scheme =='url':
             self.fuji.origin_url = self.fuji.id
             check_url =self.fuji.id
-        if check_url is not None:
+        if check_url:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
