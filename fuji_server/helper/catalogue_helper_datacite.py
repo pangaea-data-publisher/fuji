@@ -16,7 +16,7 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
     def query(self, pid):
         response = None
         try:
-            res= apiresponse = re.get(self.apiURI+'/'+pid)
+            res= apiresponse = re.get(self.apiURI+'/'+pid, timeout=5)
             self.logger.info('FsF-F4-01M : Querying DataCite API for -:' + str(pid))
             if res.status_code == 200:
                 self.islisted =True
