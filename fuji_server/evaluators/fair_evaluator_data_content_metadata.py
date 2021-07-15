@@ -185,7 +185,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
-                        elif data_object.get('size') == tika_content_size:
+                        elif int(data_object.get('size')) == int(tika_content_size):
                             matches_content = True
                             matches_size = True
                         else:
