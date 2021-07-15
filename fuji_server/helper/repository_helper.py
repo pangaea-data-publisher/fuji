@@ -33,7 +33,7 @@ class RepositoryHelper:
     ns = {"r3d": "http://www.re3data.org/schema/2-2"}
     RE3DATA_APITYPES =['OAI-PMH','SOAP','SPARQL','SWORD','OpenDAP']
 
-    def __init__(self, client, pidscheme):
+    def __init__(self, client, pidscheme, logger):
         self.client_id = client
         self.pid_scheme = pidscheme
         self.re3metadata_raw = None
@@ -41,7 +41,7 @@ class RepositoryHelper:
         self.repository_url = None
         self.repo_apis = {}
         self.repo_standards = []
-        self.logger = logging.getLogger('fuji_server.controllers.fair_check')
+        self.logger = logging.getLogger(logger)
         #print(__name__)
     def lookup_re3data(self):
         if self.client_id and self.pid_scheme:
