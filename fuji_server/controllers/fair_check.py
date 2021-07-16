@@ -309,7 +309,9 @@ class FAIRCheck:
 
             if self.metadata_service_url not in [None,'']:
                 self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request -: '+str(self.metadata_service_url))
-            else:
+            #else:
+            #check re3data always instead...
+            if self.fuji.use_datacite:
                 self.logger.info('FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '+str(client_id))
                 #find endpoint via datacite/re3data if pid is provided
                 #print(client_id ,self.pid_scheme)
@@ -322,7 +324,9 @@ class FAIRCheck:
                         self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
                     self.community_standards.extend(repoHelper.getRe3MetadataStandards())
                     self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format('FsF-R1.3-01M', self.community_standards ))
-            # verify the service url by domain matching
+            else:
+                self.logger.info('FsF-R1.3-01M : Skipped re3data metadata standards query since Datacite support is disabled by user')
+                # verify the service url by domain matching
             self.validate_service_url()
             # retrieve metadata standards info from oai-pmh
             if self.oaipmh_endpoint:
