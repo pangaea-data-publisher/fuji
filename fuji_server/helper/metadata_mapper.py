@@ -133,7 +133,7 @@ class Mapper(Enum):
     GENERIC_SPARQL = """
             PREFIX dct: <http://purl.org/dc/terms/>
             PREFIX dc: <http://purl.org/dc/elements/1.1/>
-            SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level ?keywords ?references ?source ?isVersionOf ?isReferencedBy
+            SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level ?keywords ?references ?source ?isVersionOf ?isReferencedBy ?isPartOf ?hasVersion ?replaces ?hasPart ?isReplacedBy ?requires ?isRequiredBy
             WHERE {
             OPTIONAL {?dataset  dct:title|dc:title ?title}
             OPTIONAL {?dataset dct:identifier|dc:identifier ?object_identifier}
@@ -149,6 +149,12 @@ class Mapper(Enum):
             OPTIONAL {?dataset  dct:isReferencedBy ?isReferencedBy}
             OPTIONAL {?dataset  dc:source|dct:source ?source}
             OPTIONAL {?dataset  dct:isVersionOf ?isVersionOf}
+            OPTIONAL {?dataset  dct:isPartOf ?isPartOf}
+            OPTIONAL {?dataset  dct:hasVersion ?hasVersion}
+            OPTIONAL {?dataset  dct:replaces ?replaces}
+            OPTIONAL {?dataset  dct:hasPart ?hasPart}
+            OPTIONAL {?dataset  dct:requires ?requires}
+            OPTIONAL {?dataset  dct:isRequiredBy ?isRequiredBy}
             }
             """
 

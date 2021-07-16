@@ -43,6 +43,8 @@ class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
         self.logger.info('FsF-F1-01D : Using idutils schemes')
         idhelper = IdentifierHelper(self.fuji.id)
         found_ids = idhelper.identifier_schemes
+        self.logger.info('Starting assessment on identifier: {}'.format(self.fuji.id))
+
         #found_ids = idutils.detect_identifier_schemes(self.fuji.id)  # some schemes like PMID are generic
         if len(found_ids) > 0:
             self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-01D : Unique identifier schemes found {}'.format(found_ids))

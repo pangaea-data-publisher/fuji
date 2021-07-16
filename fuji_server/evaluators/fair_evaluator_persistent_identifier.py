@@ -46,7 +46,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.fuji.id_scheme =='url':
             self.fuji.origin_url = self.fuji.id
             check_url =self.fuji.id
-        if check_url is not None:
+        if check_url:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
@@ -57,6 +57,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result ={}
             r = requestHelper.getHTTPResponse()
+            response_status =requestHelper.response_status
 
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
@@ -69,7 +70,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
                         #self.fuji.repeat_pid_check = False
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
-                    if r.status == 200:
+
+                    if response_status == 200:
                         # identify signposting links in header
                         header_link_string = requestHelper.getHTTPResponse().getheader('Link')
                         if header_link_string is not None:
@@ -124,12 +126,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         self.output.resolvable_status = True
                         self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
                         self.fuji.isMetadataAccessible = True
-                    elif r.status_code in [401, 402, 403]:
+                    elif response_status in [401, 402, 403]:
                         self.fuji.isMetadataAccessible = False
-                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
+                        self.logger.error("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=response_status))
                     else:
                         self.fuji.isMetadataAccessible = False
-                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=r.status_code))
+                        self.logger.error("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=response_status))
                 else:
                     self.logger.warning("FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}".format(
                         code=self.fuji.landing_url))
@@ -137,6 +139,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             else:
                 self.fuji.isMetadataAccessible = False
                 self.logger.warning("FsF-F1-02D :Resource inaccessible, no response received from -: {}".format(check_url))
+                if response_status in [401, 402, 403]:
+                    self.logger.error(
+                    "FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(
+                        code=response_status))
         else:
             self.logger.warning("FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier -: {}".format(self.fuji.id))
 

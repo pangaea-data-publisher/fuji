@@ -104,7 +104,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
                 for row in sorted(r):
                     for l, v in row.asdict().items():
                         if l is not None:
-                            if l in ['references' ,'source' ,'isVersionOf','isReferencedBy']:
+                            if l in ['references' ,'source' ,'isVersionOf','isReferencedBy','isPartOf','hasVersion','replaces', 'hasPart', 'isReplacedBy', 'requires', 'isRequiredBy']:
                                 if not meta.get('related_resources'):
                                     meta['related_resources'] = []
                                 meta['related_resources'].append({'related_resource': str(v), 'relation_type': l})
@@ -127,6 +127,8 @@ class MetaDataCollectorRdf (MetaDataCollector):
     def get_metadata(self,g, item, type='Dataset'):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
+        #default sparql
+        met = self.get_default_metadata(item)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
@@ -144,6 +146,14 @@ class MetaDataCollectorRdf (MetaDataCollector):
         #TODO creators, contributors
         meta['creator'] = g.value(item, DC.creator)
         meta['license'] = g.value(item, DCTERMS.license)
+        meta['related_resources']=[]
+        meta['access_level'] = (g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or g.value(item, DC.rights))
+        for dctrelationtype in [DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf, DCTERMS.hasVersion, DCTERMS.replaces,
+                 DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires, DCTERMS.isRequiredBy]:
+            dctrelation = g.value(item, dctrelationtype)
+            if dctrelation:
+                meta['related_resources'].append({'related_resource': str(dctrelation), 'relation_type': str(dctrelationtype)})
+
         # quick fix (avoid rdflib literal type exception)
         for v in [meta['title'],meta['summary'], meta['publisher']]:
             if v:
@@ -168,7 +178,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
-
         dcat_metadata=dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
 
@@ -197,16 +206,23 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
+
             dcat_metadata['object_content_identifier']=[]
             for dist in distribution:
-                durl=graph.value(dist, DCAT.accessURL)
-                #taking only one just to check if licence is available
-                dcat_metadata['license']=graph.value(dist, DCTERMS.license)
-                # TODO: check if this really works..
-                dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
-                dtype=graph.value(dist, DCAT.mediaType)
-                dsize=graph.value(dist, DCAT.bytesSize)
-                dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':str(dtype), 'size':dsize})
+                dtype,durl ,dsize = None,None,None
+                if not (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)):
+                    durl = str(dist)
+                else:
+                    durl= (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL))
+                    #taking only one just to check if licence is available
+                    dcat_metadata['license']=graph.value(dist, DCTERMS.license)
+                    # TODO: check if this really works..
+                    dcat_metadata['access_rights']=(graph.value(dist, DCTERMS.accessRights) or graph.value(dist, DCTERMS.rights))
+                    dtype=graph.value(dist, DCAT.mediaType)
+                    dsize=graph.value(dist, DCAT.bytesSize)
+                if durl or dtype or dsize:
+                    dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':dtype, 'size':dsize})
+
 
             if dcat_metadata['object_content_identifier']:
                 self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata -: ' + str(dcat_metadata['object_content_identifier']))

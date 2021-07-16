@@ -65,6 +65,20 @@ class Preprocessor(object):
     logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
+    remote_log_host = None
+    remote_log_path = None
+
+    @classmethod
+    def set_remote_log_info(cls, host, path ):
+        try:
+            request = requests.get('http://'+host+path)
+            if request.status_code == 200:
+                cls.remote_log_host=host
+                cls.remote_log_path=path
+            else:
+                cls.logger.warning('Remote Logging not possible, URL response: '+str(request.status_code))
+        except Exception as e:
+            cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host+' '+path))
 
     @classmethod
     def get_google_data_dois(cls):
@@ -168,11 +182,13 @@ class Preprocessor(object):
         # retrieve all client id and re3data doi from datacite
         cls.DATACITE_API_REPO = datacite_endpoint
         cls.RE3DATA_API = re3_endpoint
+        #isDebugMode=False
         re3dict_path = os.path.join(cls.fuji_server_dir, 'data', 'repodois.json')
         if isDebugMode:
             with open(re3dict_path) as f:
                 cls.re3repositories = json.load(f)
         else:
+            #print('updating re3data dois')
             p = {'query': 're3data_id:*'}
             try:
                 req = requests.get(datacite_endpoint, params=p, headers=cls.header)
@@ -184,6 +200,8 @@ class Preprocessor(object):
                     for r in response["data"]:
                         cls.re3repositories[r['id']] = r['attributes']['re3data']
                     raw['links'] = response['links']
+                #fix wrong entry
+                cls.re3repositories['bl.imperial']='http://doi.org/10.17616/R3K64N'
                 with open(re3dict_path, 'w') as f2:
                     json.dump(cls.re3repositories, f2)
             except requests.exceptions.RequestException as e:
