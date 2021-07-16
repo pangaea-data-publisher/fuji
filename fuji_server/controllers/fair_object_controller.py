@@ -58,7 +58,7 @@ def assess_by_id(body):  # noqa: E501
         ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url = metadata_service_endpoint, metadata_service_type =metadata_service_type, use_datacite=usedatacite, oaipmh_endpoint =oaipmh_endpoint)
         # set target for remote logging
         remote_log_host, remote_log_path = Preprocessor.remote_log_host, Preprocessor.remote_log_path
-        print(remote_log_host, remote_log_path)
+        #print(remote_log_host, remote_log_path)
         if remote_log_host and remote_log_path:
             ft.set_remote_logging_target(remote_log_host, remote_log_path)
         uid_result, pid_result = ft.check_unique_persistent()

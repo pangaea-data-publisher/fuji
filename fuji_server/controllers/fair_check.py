@@ -224,7 +224,6 @@ class FAIRCheck:
     def set_remote_logging_target(self, host, path):
         if host and path:
             try:
-                print(host,path, self.test_id)
                 weblogger = logging.handlers.HTTPHandler(host,
                                                          path + '?testid=' + str(self.test_id), method='POST')
                 webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
@@ -313,7 +312,7 @@ class FAIRCheck:
             else:
                 self.logger.info('FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '+str(client_id))
                 #find endpoint via datacite/re3data if pid is provided
-                print(client_id ,self.pid_scheme)
+                #print(client_id ,self.pid_scheme)
                 if client_id and self.pid_scheme:
                     repoHelper = RepositoryHelper(client_id, self.pid_scheme, logger= self.logger.name)
                     repoHelper.lookup_re3data()

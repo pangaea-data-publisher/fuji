@@ -185,11 +185,23 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning('{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(self.metric_identifier))
-                        elif int(data_object.get('size')) == int(tika_content_size):
-                            matches_content = True
-                            matches_size = True
                         else:
-                            self.logger.warning('{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'.format(self.metric_identifier, str(data_object.get('size')), str(tika_content_size) ))
+                            #print(type(data_object.get('size')))
+                            try:
+                                object_size=int(float(data_object.get('size')))
+                                if object_size == tika_content_size:
+                                    matches_content = True
+                                    matches_size = True
+                                else:
+                                    self.logger.warning(
+                                        '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'.format(
+                                            self.metric_identifier, str(data_object.get('size')),
+                                            str(tika_content_size)))
+
+                            except Exception as e:
+                                self.logger.warning(
+                                    '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'.format(
+                                        self.metric_identifier, str(data_object.get('size')), str(tika_content_size)))
 
                     data_content_filetype_inner = DataContentMetadataOutputInner()
                     data_content_filetype_inner.descriptor = descriptor

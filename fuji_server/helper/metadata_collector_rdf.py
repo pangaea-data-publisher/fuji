@@ -111,7 +111,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
                             else:
                                 meta[l] = str(v)
                     break
-                print(meta['related_resources'])
             else:
                 self.logger.info('FsF-F2-01M : Graph seems to contain only one triple, skipping core metadata element test')
         except Exception as e:
@@ -130,7 +129,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
         meta = dict()
         #default sparql
         met = self.get_default_metadata(item)
-        print(met)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
@@ -160,7 +158,6 @@ class MetaDataCollectorRdf (MetaDataCollector):
         for v in [meta['title'],meta['summary'], meta['publisher']]:
             if v:
                 v = v.toPython()
-        print(meta)
         return meta
 
     def get_ontology_metadata(self, graph):
