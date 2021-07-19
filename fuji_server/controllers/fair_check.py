@@ -223,14 +223,23 @@ class FAIRCheck:
 
     def set_remote_logging_target(self, host, path):
         if host and path:
+            isHostUp = False
             try:
-                weblogger = logging.handlers.HTTPHandler(host,
-                                                         path + '?testid=' + str(self.test_id), method='POST')
-                webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
-                weblogger.setFormatter(webformatter)
-                self.logger.addHandler(weblogger)
+                if urllib.urlopen('http://'+host+''+path).getcode() == 200:
+                    isHostUp = True
             except Exception as e:
+                print('Remote logging not possible, please check config.ini, host not reachable: http://'+str(host)+''+str(path))
                 print(e)
+            if isHostUp:
+                try:
+                    weblogger = logging.handlers.HTTPHandler(host,
+                                                             path + '?testid=' + str(self.test_id), method='POST')
+                    webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
+                    weblogger.setFormatter(webformatter)
+                    self.logger.addHandler(weblogger)
+                except Exception as e:
+                    print(e)
+
 
 
     def validate_service_url(self):
@@ -311,7 +320,7 @@ class FAIRCheck:
                 self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request -: '+str(self.metadata_service_url))
             #else:
             #check re3data always instead...
-            if self.fuji.use_datacite:
+            if self.use_datacite:
                 self.logger.info('FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '+str(client_id))
                 #find endpoint via datacite/re3data if pid is provided
                 #print(client_id ,self.pid_scheme)
