@@ -209,7 +209,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     data_content_filetype_inner.matches_content = matches_content
                     data_content_descriptors.append(data_content_filetype_inner)
                 else:
-                    self.logger.warning('{0} : NO info available about {1} -: '.format(self.metric_identifier, type))
+                    self.logger.warning('{0} : NO info about {1} available in given metadata -: '.format(self.metric_identifier, type))
             ### scoring for file descriptors match
             if matches_type and matches_size:
                 score += 1
