@@ -49,11 +49,15 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.logger.info('{0} : Verify URL through SPDX registry -: {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
+        ul = None
+        if 'spdx.org/licenses' in u:
+            ul = u.split('/')[-1]
         for item in self.fuji.SPDX_LICENSES:
             # u = u.lower()
             # if any(u in v.lower() for v in item.values()):
+            licenseId = item.get('licenseId')
             seeAlso = item.get('seeAlso')
-            if any(u in v for v in seeAlso):
+            if any(u in v for v in seeAlso) or licenseId == ul:
                 self.logger.info('{0} : Found SPDX license representation -: {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
                 html_url = item['detailsUrl'].replace(".json", ".html")

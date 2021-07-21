@@ -130,7 +130,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         meta = dict()
         #default sparql
-        met = self.get_default_metadata(item)
+        meta = self.get_default_metadata(g)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
