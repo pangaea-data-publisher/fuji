@@ -20,9 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import json
+import urllib
 
 import idutils
 import rdflib
+import requests
 from rdflib import Namespace
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
@@ -135,7 +137,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
-        meta['object_type'] = type
+
         meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title))
         meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description))
         meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date)  or g.value(item, DCTERMS.issued))
@@ -158,6 +160,9 @@ class MetaDataCollectorRdf (MetaDataCollector):
         for v in [meta['title'],meta['summary'], meta['publisher']]:
             if v:
                 v = v.toPython()
+        if meta:
+            meta['object_type'] = type
+
         return meta
 
     def get_ontology_metadata(self, graph):
@@ -206,12 +211,28 @@ class MetaDataCollectorRdf (MetaDataCollector):
 
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
-
             dcat_metadata['object_content_identifier']=[]
             for dist in distribution:
                 dtype,durl ,dsize = None,None,None
                 if not (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)):
-                    durl = str(dist)
+                    self.logger.info('FsF-F2-01M : Trying to retrieve DCAT distributions from remote location -:'+str(dist))
+                    try:
+                        distgraph = rdflib.Graph()
+                        disturl = str(dist)
+                        distresponse = requests.get(disturl,headers={'Accept':'application/rdf+xml'})
+                        if distresponse.text:
+                            distgraph.parse(data=distresponse.text,format="application/rdf+xml")
+                            extdist = list(distgraph[: RDF.type: DCAT.Distribution])
+                            durl = (distgraph.value(extdist[0], DCAT.accessURL) or distgraph.value(extdist[0], DCAT.downloadURL))
+                            dsize = distgraph.value(extdist[0], DCAT.byteSize)
+                            dtype = distgraph.value(extdist[0], DCAT.mediaType)
+                            self.logger.info(
+                                'FsF-F2-01M : Found DCAT distribution URL info from remote location -:' + str(durl))
+                    except Exception as e:
+                        self.logger.info(
+                            'FsF-F2-01M : Failed to retrieve DCAT distributions from remote location -:' + str(dist))
+                        #print(e)
+                        durl = str(dist)
                 else:
                     durl= (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL))
                     #taking only one just to check if licence is available
@@ -221,7 +242,9 @@ class MetaDataCollectorRdf (MetaDataCollector):
                     dtype=graph.value(dist, DCAT.mediaType)
                     dsize=graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:
-                    dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':dtype, 'size':dsize})
+                    if idutils.is_url(str(durl)):
+                        dtype= '/'.join(str(dtype).split('/')[-2:])
+                    dcat_metadata['object_content_identifier'].append({'url':str(durl),'type':dtype, 'size':str(dsize)})
 
 
             if dcat_metadata['object_content_identifier']:
@@ -230,7 +253,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
         else:
             self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
             #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
-            dcat_metadata['object_type'] = 'Dataset'
+            #dcat_metadata['object_type'] = 'Dataset'
         return dcat_metadata
             #rdf_meta.query(self.metadata_mapping.value)
             #print(rdf_meta)
