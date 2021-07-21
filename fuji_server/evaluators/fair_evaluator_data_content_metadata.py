@@ -51,7 +51,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         if resource_type:
             resource_type = str(resource_type).lower()
             if str(resource_type).startswith('http'):
-                    resource_type = resource_type.split('/')[-1]
+                    resource_type = '/'.join(str(resource_type).split('/')[-2:])
             if resource_type in self.fuji.VALID_RESOURCE_TYPES or resource_type in self.fuji.SCHEMA_ORG_CONTEXT:
                 self.logger.log(self.fuji.LOG_SUCCESS,'FsF-R1-01MD : Resource type specified -: {}'.format(resource_type))
                 self.output.object_type = resource_type
@@ -81,13 +81,14 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     'FsF-R1-01MD : Selected content file to be analyzed -: {}'.format(test_data_content_url))
                 try:
                     # Use Tika to parse the file
+                    response_content=None
                     response_body=[]
                     timeout = 10
                     tika_content_size = 0
                     max_download_size =1000000
 
                     start = time.time()
-                    r = requests.get(test_data_content_url, verify=False, stream=True)
+                    #r = requests.get(test_data_content_url, verify=False, stream=True)
                     try:
                         response = urllib.request.urlopen(test_data_content_url)
                         while True:
@@ -103,30 +104,39 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                             timeout) + ' sec or receiving > ' + str(max_download_size) + '- {}'.format(
                                             test_data_content_url))
                                     tika_content_size = 0
-                                    tika_content_size = str(r.headers.get('content-length')).split(';')[0]
+                                    tika_content_size = str(response.headers.get('content-length')).split(';')[0]
                                     break
 
                     except urllib.error.HTTPError as e:
                         self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
                                 test_data_content_url, e.code))
+                        self.logger.warning(
+                            'FsF-R1-01MD : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
+                                test_data_content_url, e.code))
                     except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
                     except Exception as e:
                         self.logger.warning('FsF-F3-01M : Could not access the resource -:'+str(e))
+                    if response_body:
+                        response_content = b''.join(response_body)
 
-                    response_content = b''.join(response_body)
                     status = 'tika error'
                     parsed_content=''
                     try:
-                        parsedFile = parser.from_buffer(response_content)
-                        status = parsedFile.get("status")
-                        tika_content_types = parsedFile.get("metadata").get('Content-Type')
-                        parsed_content = parsedFile.get("content")
-                        self.logger.info('{0} : Successfully parsed data object file using TIKA'.format(self.metric_identifier))
+                        if response_content:
+                            parsedFile = parser.from_buffer(response_content)
+                            status = parsedFile.get("status")
+                            tika_content_types = parsedFile.get("metadata").get('Content-Type')
+                            parsed_content = parsedFile.get("content")
+                            self.logger.info('{0} : Successfully parsed data object file using TIKA'.format(self.metric_identifier))
+                        else:
+                            self.logger.warning(
+                                '{0} : Could not parse data object file using TIKA'.format(self.metric_identifier))
+
                     except  Exception as e:
                         self.logger.warning('{0} : File parsing using TIKA failed -: {1}'.format(self.metric_identifier, e))
                         # in case TIKA request fails use response header info
-                        tika_content_types = str(r.headers.get('content-type')).split(';')[0]
+                        tika_content_types = str(response.headers.get('content-type')).split(';')[0]
 
                     if isinstance(tika_content_types, list):
                         self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
@@ -209,7 +219,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     data_content_filetype_inner.matches_content = matches_content
                     data_content_descriptors.append(data_content_filetype_inner)
                 else:
-                    self.logger.warning('{0} : NO info available about {1} -: '.format(self.metric_identifier, type))
+                    self.logger.warning('{0} : NO info about {1} available in given metadata -: '.format(self.metric_identifier, type))
             ### scoring for file descriptors match
             if matches_type and matches_size:
                 score += 1

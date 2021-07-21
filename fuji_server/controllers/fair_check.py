@@ -106,7 +106,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE =[]
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = 'v1.3.4'
+    FUJI_VERSION = 'v1.3.5'
 
     def __init__(self, uid, test_debug=False, metadata_service_url=None, metadata_service_type =None,use_datacite=True, oaipmh_endpoint = None):
         uid_bytes = uid.encode('utf-8')
@@ -223,14 +223,23 @@ class FAIRCheck:
 
     def set_remote_logging_target(self, host, path):
         if host and path:
+            isHostUp = False
             try:
-                weblogger = logging.handlers.HTTPHandler(host,
-                                                         path + '?testid=' + str(self.test_id), method='POST')
-                webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
-                weblogger.setFormatter(webformatter)
-                self.logger.addHandler(weblogger)
+                if urllib.urlopen('http://'+host+''+path).getcode() == 200:
+                    isHostUp = True
             except Exception as e:
+                print('Remote logging not possible, please check config.ini, host not reachable: http://'+str(host)+''+str(path))
                 print(e)
+            if isHostUp:
+                try:
+                    weblogger = logging.handlers.HTTPHandler(host,
+                                                             path + '?testid=' + str(self.test_id), method='POST')
+                    webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
+                    weblogger.setFormatter(webformatter)
+                    self.logger.addHandler(weblogger)
+                except Exception as e:
+                    print(e)
+
 
 
     def validate_service_url(self):
@@ -309,7 +318,9 @@ class FAIRCheck:
 
             if self.metadata_service_url not in [None,'']:
                 self.logger.info('FsF-R1.3-01M : Metadata service endpoint ('+str(self.metadata_service_type)+') provided as part of the request -: '+str(self.metadata_service_url))
-            else:
+            #else:
+            #check re3data always instead...
+            if self.use_datacite:
                 self.logger.info('FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '+str(client_id))
                 #find endpoint via datacite/re3data if pid is provided
                 #print(client_id ,self.pid_scheme)
@@ -322,7 +333,9 @@ class FAIRCheck:
                         self.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
                     self.community_standards.extend(repoHelper.getRe3MetadataStandards())
                     self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format('FsF-R1.3-01M', self.community_standards ))
-            # verify the service url by domain matching
+            else:
+                self.logger.info('FsF-R1.3-01M : Skipped re3data metadata standards query since Datacite support is disabled by user')
+                # verify the service url by domain matching
             self.validate_service_url()
             # retrieve metadata standards info from oai-pmh
             if self.oaipmh_endpoint:
