@@ -54,7 +54,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             content_urls = [item.get('url') for item in self.fuji.content_identifier]
             self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
             #self.maturity = 1
-            loginpage = False
+
             preferred_detected = False
             for file_index, data_file in enumerate(self.fuji.content_identifier):
 
@@ -133,20 +133,21 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                     subject_area.append('General')
                     data_file_output.is_preferred_format = True
                 if 'html' in mimetype:
-                    loginpage = True
+                    preferance_reason = []
 
                 if preferance_reason:
                     preferred_detected = True
+
                 data_file_output.mime_type = mimetype
                 data_file_output.file_uri = url
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
-            if preferred_detected and not loginpage:
+            if preferred_detected:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
                 #self.maturity = 3
-                self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community')
+                self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community -:'+str(mimetype))
                 self.result.test_status = 'pass'
         else:
             self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as data content identifier(s) unavailable/inaccesible')
