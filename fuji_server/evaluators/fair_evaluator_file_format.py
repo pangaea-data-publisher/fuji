@@ -60,7 +60,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
-                    if mime_type is None or mime_type in ['application/octet-stream']:
+                    if mime_type is None or mime_type in ['application/octet-stream','binary/octet-stream']:
                         self.logger.info(
                             'FsF-R1.3-02D : Guessing  the type of a file based on its filename or URL -: {}'.format(
                                 data_file.get('url')))
