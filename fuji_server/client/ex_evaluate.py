@@ -265,6 +265,8 @@ def main():
     isDebug = config.getboolean('SERVICE', 'debug_mode')
     data_files_limit = int(config['SERVICE']['data_files_limit'])
     metric_specification = config['SERVICE']['metric_specification']
+    remote_log_host = config['SERVICE']['remote_log_host']
+    remote_log_path = config['SERVICE']['remote_log_path']
 
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit,metric_specification)
@@ -281,7 +283,7 @@ def main():
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
     start=False
-    usedatacite = False
+    usedatacite = True
     #tracemalloc.start()
     n=1
     for identifier in testpids:
@@ -296,6 +298,9 @@ def main():
                            metadata_service_type=metadata_service_type, use_datacite=usedatacite, oaipmh_endpoint=oaipmh_endpoint)
 
             #ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
+            #set target for remote logging
+            if remote_log_host and remote_log_path:
+                ft.set_remote_logging_target(remote_log_host, remote_log_path)
 
             uid_result, pid_result = ft.check_unique_persistent()
             ft.retrieve_metadata_embedded(ft.extruct_result)
