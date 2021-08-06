@@ -68,8 +68,8 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         content_link['header_content_length'] = response.getheader('Content-Length')
                         if content_link['header_content_type'] != content_link.get('type'):
                             self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: (' + str(content_link.get(
-                                'type')) + ') vs. (' + str(
-                                content_link['header_content_type']) + ')')
+                                'type')) + ') vs. (' + str(content_link['header_content_type']) + ')')
+                            '''
                             if 'html' not in content_link['header_content_type']:
                                 if content_link['header_content_type'] not in ['application/octet-stream','binary/octet-stream']:
                                     self.logger.info(
@@ -80,6 +80,8 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                                     self.logger.info('FsF-F3-01M : Ignoring HTTP header response for generic content type -:' + str(
                                             content_link['header_content_type']))
                             else:
+                            '''
+                            if 'html' in content_link['header_content_type']:
                                 self.logger.warning(
                                     'FsF-F3-01M : Header response returned html type, assuming login page or similar -: ' + str(
                                         content_link['header_content_type']))
