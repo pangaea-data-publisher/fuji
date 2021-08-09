@@ -237,10 +237,26 @@ testpids = sorted(set(muchotestpids))
 #testpids=['https://services.data.shom.fr/geonetwork/srv/api/records/412878/formatters/xml']
 #testpids=['http://data.aims.gov.au/resources/mest/reefstate.xml']
 #testpids=['http://marine-analyst.eu/metadata/WIND_GLO_WIND_L4_NRT_OBSERVATIONS_012_004.xml']
-#testpids=['https://doi.org/10.1594/PANGAEA.893199']
-startpid='https://www.proteinatlas.org/ENSG00000110651-CD81/cell'
+#testpids=['https://meta.fieldsites.se/objects/9T97smOWm37jsfISaw8T8jjn']
+#testpids=['https://www.osti.gov/biblio/1635002']
+#testpids=['https://repo.clarino.uib.no/xmlui/handle/11509/103']
+#testpids=['https://fairsfair.fair-dtls.surf-hosted.nl/dataset/fb33948b-8656-44aa-9bfc-4acd39d0784c?format=jsonld']
+#testpids=['https://www.rd-alliance.org/users/mustapha-mokrane']
+#testpids =['https://purl.org/fairdatapoint/app/dataset/764fc18f-9b8d-4e1f-857f-b12b194e048f']
+#testpids=['https://doi.org/10.11583/DTU.10259936.v1']
+#testpids=['https://ckan.govdata.de/dataset/manahmen-in-asien']
+#testpids=['https://doi.org/10.15553/c2016v711a3']
+#testpids=['10.15152/QDB.235']
+#testpids=['https://doi.org/10.17863/CAM.14473']
+#testpids=['https://fairsfair.fair-dtls.surf-hosted.nl/dataset/043ea683-a3e4-441e-b8de-d376b5a9991f']
+#testpids=['urn:lsid:zoobank.org:pub:CDC8D258-8F57-41DC-B560-247E17D3DC8C']
+#testpids=['urn:lsid:luomus:GP.110472']
+#testpids=['10.5284/1088084']
+#testpids=['https://fairsfair.fair-dtls.surf-hosted.nl/dataset/043ea683-a3e4-441e-b8de-d376b5a9991f']
+#testpids=['10.17045/sthlmuni.5857716.v4']
+startpid=''
 metadata_service_endpoint = ''
-metadata_service_type = 'oai_pmh'
+metadata_service_type = ''
 oaipmh_endpoint = ''
 def effectivehandlers(logger):
     handlers = logger.handlers
@@ -265,6 +281,8 @@ def main():
     isDebug = config.getboolean('SERVICE', 'debug_mode')
     data_files_limit = int(config['SERVICE']['data_files_limit'])
     metric_specification = config['SERVICE']['metric_specification']
+    remote_log_host = config['SERVICE']['remote_log_host']
+    remote_log_path = config['SERVICE']['remote_log_path']
 
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit,metric_specification)
@@ -281,7 +299,7 @@ def main():
     print('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
     print('Total subjects area of imported metadata standards : {}'.format(len(preproc.metadata_standards)))
     start=False
-    usedatacite = False
+    usedatacite = True
     #tracemalloc.start()
     n=1
     for identifier in testpids:
@@ -296,6 +314,9 @@ def main():
                            metadata_service_type=metadata_service_type, use_datacite=usedatacite, oaipmh_endpoint=oaipmh_endpoint)
 
             #ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
+            #set target for remote logging
+            if remote_log_host and remote_log_path:
+                ft.set_remote_logging_target(remote_log_host, remote_log_path)
 
             uid_result, pid_result = ft.check_unique_persistent()
             ft.retrieve_metadata_embedded(ft.extruct_result)
@@ -337,8 +358,8 @@ def main():
                 else:
                     results[res_k]['test_debug'] = ['INFO: Debugging disabled']
                     debug_messages = {}
-           # print(json.dumps(results, indent=4, sort_keys=True))
-            print(json.dumps([core_metadata_result,check_searchable_result], indent=4, sort_keys=True))
+            #print(json.dumps(results, indent=4, sort_keys=True))
+            #print(json.dumps([core_metadata_result,check_searchable_result], indent=4, sort_keys=True))
             #remove unused logger handlers and filters to avoid memory leaks
             ft.logger.handlers = [ft.logger.handlers[-1]]
             #ft.logger.filters = [ft.logger.filters]
