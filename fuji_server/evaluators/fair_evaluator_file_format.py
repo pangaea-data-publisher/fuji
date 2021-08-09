@@ -52,7 +52,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         mime_url_pair = {}
         if len(self.fuji.content_identifier) > 0:
             content_urls = [item.get('url') for item in self.fuji.content_identifier]
-            self.logger.info('FsF-R1.3-02D : Data content identifier provided - {}'.format(content_urls))
+            self.logger.info('FsF-R1.3-02D : Data content identifier provided -: {}'.format(content_urls))
             #self.maturity = 1
 
             preferred_detected = False
@@ -66,13 +66,13 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                 data_file.get('url')))
                         # if mime type not given try to guess it based on the file name
                         guessed_mime_type = mimetypes.guess_type(data_file.get('url'))
-                        self.logger.info('FsF-R1.3-02D : Guess return value - {}'.format(guessed_mime_type))
+                        self.logger.info('FsF-R1.3-02D : Guess return value -: {}'.format(guessed_mime_type))
                         mime_type = guessed_mime_type[0]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
 
                     if mime_type:
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
                             self.logger.info(
-                                'FsF-R1.3-02D : Archiving/compression format specified - {}'.format(mime_type))
+                                'FsF-R1.3-02D : Archiving/compression format specified -: {}'.format(mime_type))
                             if 'unverified' not in self.fuji.tika_content_types_list:
                                 # exclude archive format
                                 if file_index == len(self.fuji.content_identifier)-1:
@@ -84,9 +84,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                         mime_url_pair[t] = data_file.get('url')
                             else:
                                 self.logger.warning(
-                                    'FsF-R1.3-02D : Content type not verified during FsF-R1-01MD, assuming login page or similar instead of - {}'.format(mime_type))
+                                    'FsF-R1.3-02D : Content type not verified during FsF-R1-01MD, assuming login page or similar instead of -: {}'.format(mime_type))
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
+                            if self.fuji.tika_content_types_list:
+                                #add tika detected mimes
+                                for tika_mime in self.fuji.tika_content_types_list:
+                                    if tika_mime !='unverified' and tika_mime not in mime_url_pair:
+                                        mime_url_pair[tika_mime] = data_file.get('url')
 
             # FILE FORMAT CHECKS....
             # check if format is a scientific one:

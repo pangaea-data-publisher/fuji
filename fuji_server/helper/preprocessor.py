@@ -89,8 +89,13 @@ class Preprocessor(object):
     @classmethod
     def retrieve_google_data_dois(cls):
         google_doi_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_dois.txt')
-        with open(google_doi_path,'r') as f:
-            cls.google_data_dois = f.read().splitlines()
+        if not os.path.exists(google_doi_path):
+            cls.google_data_dois = []
+            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_doi_path))
+            print ('Google Search DOI File does not exist')
+        else:
+            with open(google_doi_path,'r') as f:
+                cls.google_data_dois = f.read().splitlines()
 
     @classmethod
     def get_google_data_urls(cls):
@@ -101,8 +106,13 @@ class Preprocessor(object):
     @classmethod
     def retrieve_google_data_urls(cls):
         google_url_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_urls.txt')
-        with open(google_url_path,'r') as f:
-            cls.google_data_urls = f.read().splitlines()
+        if not os.path.exists(google_url_path):
+            cls.google_data_dois = []
+            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_url_path))
+            print ('Google Search URL File does not exist')
+        else:
+            with open(google_url_path,'r') as f:
+                cls.google_data_urls = f.read().splitlines()
 
     @classmethod
     def get_identifiers_org_data(cls):
