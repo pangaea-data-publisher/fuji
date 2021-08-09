@@ -1,7 +1,8 @@
 import enum
 import logging
 import requests as re
-
+import pandas as pd
+import os
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -15,6 +16,10 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
     def query(self, pidlist):
         response = None
+        if not Preprocessor.google_data_dois:
+            self.logger.warning('FsF-F4-01M : Google Search DOI File does not exist, see F-UJI installation instructions')
+        if not Preprocessor.google_data_urls:
+            self.logger.warning('FsF-F4-01M : Google Search URL File does not exist, see F-UJI installation instructions')
         for pid in pidlist:
             if pid:
                 pid = str(pid).lower()
@@ -46,3 +51,16 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
 
         return response
+
+    def create_lists(self, google_cache_file):
+        gs = pd.read_csv(google_cache_file)
+        google_doi_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_search_dois.txt')
+        google_url_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_search_urls.txt')
+        google_doi_set = set(gs['doi'].astype(str).str.lower().unique())
+        google_url_set = set(gs['url'].astype(str).str.lower().unique())
+        fu = open(google_url_path, "w")
+        fu.write('\n'.join(google_url_set))
+        fu.close()
+        fd = open(google_doi_path, "w")
+        fd.write('\n'.join(google_doi_set))
+        fd.close()

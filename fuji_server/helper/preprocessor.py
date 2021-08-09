@@ -92,7 +92,6 @@ class Preprocessor(object):
         if not os.path.exists(google_doi_path):
             cls.google_data_dois = []
             cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_doi_path))
-            print ('Google Search DOI File does not exist')
         else:
             with open(google_doi_path,'r') as f:
                 cls.google_data_dois = f.read().splitlines()
@@ -109,10 +108,10 @@ class Preprocessor(object):
         if not os.path.exists(google_url_path):
             cls.google_data_dois = []
             cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_url_path))
-            print ('Google Search URL File does not exist')
         else:
             with open(google_url_path,'r') as f:
                 cls.google_data_urls = f.read().splitlines()
+
 
     @classmethod
     def get_identifiers_org_data(cls):
