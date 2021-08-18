@@ -19,10 +19,12 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY /fuji_server ./fuji_server
 
-# Docker doesn't like localhost
+# Docker doesn't like 'localhost'
 RUN sed -i "s|localhost|0.0.0.0 |g" ./fuji_server/config/server.ini
 
 EXPOSE 1071
+
+ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app/"
 
 ENTRYPOINT ["python3"]
 
