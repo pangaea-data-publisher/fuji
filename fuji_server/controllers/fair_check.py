@@ -228,7 +228,7 @@ class FAIRCheck:
                 if urllib.urlopen('http://'+host+''+path).getcode() == 200:
                     isHostUp = True
             except Exception as e:
-                print('Remote logging not possible, please check config.ini, host not reachable: http://'+str(host)+''+str(path))
+                print('Remote logging not possible, please check config.ini, host not reachable: http://'+str(host)+'/'+str(path))
                 print(e)
             if isHostUp:
                 try:
