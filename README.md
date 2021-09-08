@@ -5,6 +5,8 @@ Developers: [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com), [Rob
 F-UJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
 The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.  
 
+The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
+
 ### Clients and User Interface
 
 A web demo using F-UJI is available at https://www.f-uji.net
