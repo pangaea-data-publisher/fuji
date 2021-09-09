@@ -116,13 +116,18 @@ class RequestHelper:
                 tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type, 'User-Agent': 'F-UJI'})
 
                 context = ssl._create_unverified_context()
+                context.set_ciphers('DEFAULT@SECLEVEL=1')
 
                 try:
                     tp_response =  urllib.request.urlopen(tp_request,context=context)
-                except Exception as e:
+                except urllib.error.URLError as e:
+                    self.logger.error('{0} : Request failed, reason -: {1}, {2} - {3}'.format(metric_id,self.request_url, self.accept_type, str(e)))
+                except urllib.error.HTTPError as e:
                     if e.code == 308:
                         self.logger.error('%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed' % metric_id)
-                        #print('#############################'+str(e))
+                    else:
+                        self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(metric_id, self.request_url,self.accept_type, str(e.code)))
+
                 if tp_response:
                     self.http_response = tp_response
                     self.response_content = tp_response.read()
