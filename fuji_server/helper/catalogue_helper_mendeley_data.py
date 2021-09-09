@@ -32,9 +32,9 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
                                 self.logger.info('FsF-F4-01M : Identifier not listed in Mendeley Data catalogue -:' + str(pid))
 
                     else:
-                        self.logger.warning('FsF-F4-01M : Mendeley Data API not available -:'+str(res.status_code))
+                        self.logger.error('FsF-F4-01M : Mendeley Data API not available -:'+str(res.status_code))
             except Exception as e:
-                self.logger.warning('FsF-F4-01M : Mendeley Data API not available or returns errors: '+ str(e))
+                self.logger.error('FsF-F4-01M : Mendeley Data API not available or returns errors: '+ str(e))
 
 
         return response

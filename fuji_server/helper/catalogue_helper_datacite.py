@@ -24,9 +24,9 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
             elif res.status_code == 404:
                 self.logger.info('FsF-F4-01M : Identifier not listed in DataCite catalogue -:' + str(pid))
             else:
-                self.logger.warning('FsF-F4-01M : DataCite API not available -:'+str(res.status_code))
+                self.logger.error( 'FsF-F4-01M : DataCite API not available -:'+str(res.status_code))
         except Exception as e:
-            self.logger.warning('FsF-F4-01M : DataCite API not available or returns errors')
+            self.logger.error('FsF-F4-01M : DataCite API not available or returns errors -:'+str(e))
 
 
         return response

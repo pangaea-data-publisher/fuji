@@ -121,12 +121,12 @@ class RequestHelper:
                 try:
                     tp_response =  urllib.request.urlopen(tp_request,context=context)
                 except urllib.error.URLError as e:
-                    self.logger.warning('{0} : Request failed, reason -: -: {1} '.format(metric_id, str(e.reason)))
+                    self.logger.error('{0} : Request failed, reason -: {1}, {2} - {3}'.format(metric_id,self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
                     if e.code == 308:
                         self.logger.error('%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed' % metric_id)
                     else:
-                        self.logger.warning('{0} : Request failed, status code -: {1} '.format(metric_id, str(e.code)))
+                        self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(metric_id, self.request_url,self.accept_type, str(e.code)))
 
                 if tp_response:
                     self.http_response = tp_response
