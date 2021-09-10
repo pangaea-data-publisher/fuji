@@ -52,6 +52,7 @@ def main():
     metric_specification = config['SERVICE']['metric_specification']
 
     #TODO further implementation on authentication needed
+    auth_enabled = config.getboolean('USER', 'auth_enabled')
     usr = config['USER']['usr']
     pwd = config['USER']['pwd']
     authen.service_username = usr
@@ -80,7 +81,6 @@ def main():
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
-    auth_enabled = False
     api_title = 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'
     if auth_enabled:
         api_args = {
@@ -92,8 +92,7 @@ def main():
             'title': api_title
         }
 
-    app.add_api(API_YAML, arguments=api_args
-        , validate_responses=True)
+    app.add_api(API_YAML, arguments=api_args, validate_responses=True)
     app.app.wsgi_app = ProxyFix(app.app.wsgi_app)
     app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 

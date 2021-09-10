@@ -704,6 +704,3 @@ components:
           explode: false
           schema:
             type: string
-
-security:
-- basicAuth: []
