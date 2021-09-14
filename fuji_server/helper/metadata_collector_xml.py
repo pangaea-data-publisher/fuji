@@ -84,6 +84,7 @@ class MetaDataCollectorXML (MetaDataCollector):
                 else:
                     metatree = tree
                 if metatree is not None:
+
                     root_namespace = None
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
                     schema_locations = set(metatree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
@@ -98,10 +99,10 @@ class MetaDataCollectorXML (MetaDataCollector):
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info(
                             'FsF-F2-01M : Identified DDI codeBook XML based on root tag')
-                    elif root_element=='dc':
+                    elif root_element=='dc' or any('http://dublincore.org/schemas/xmls/' in s for s in self.namespaces):
                         xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
                         self.logger.info(
-                            'FsF-F2-01M : Identified Dublin Core XML based on root tag')
+                            'FsF-F2-01M : Identified Dublin Core XML based on root tag or namespace')
                     elif root_element =='mods':
                         xml_mapping = Mapper.XML_MAPPING_MODS.value
                         self.logger.info(
