@@ -1,0 +1,125 @@
+name: fuji-server-main
+
+on: [push, pull_request]
+
+jobs:
+
+  docs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Cache python dependencies
+      id: cache-pip
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: pip-docs-${{ hashFiles('**/setup.json') }}
+        restore-keys: |
+          pip-docs-
+
+    - name: Install python dependencies
+      run: |
+        pip install -e .[docs]
+
+    - name: Install Latex compiler
+      run: |
+        sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+
+    - name: Build documentation
+      env:
+        READTHEDOCS: 'True'
+      run: |
+        SPHINXOPTS='-nW' make -C docs html
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        include:
+          - name: pre-commit-errors
+            skip-hooks: pylint-warnings
+            strict: false
+          - name: pre-commit-warnings
+            skip-hooks: pylint-errors
+            strict: true
+
+    name: ${{ matrix.name }}
+    continue-on-error: ${{ matrix.strict }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache python dependencies
+      id: cache-pip
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: pip-pre-commit-${{ hashFiles('**/setup.json') }}
+        restore-keys: |
+          pip-pre-commit-
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install python dependencies
+      run: |
+        pip install .[pre-commit]
+        pip freeze
+
+    - name: Run pre-commit
+      run: |
+        SKIP=${{ matrix.skip-hooks }} pre-commit run --all-files || (git status --short; git diff ; exit 1)
+
+
+  tests:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.8', '3.7', '3.6']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache python dependencies
+      id: cache-pip
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('**/setup.json') }}
+        restore-keys: |
+          pip-${{ matrix.python-version }}-tests
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+
+    - name: Install python dependencies
+      run: |
+        pip install .[testing]
+
+    - name: Run pytest
+      run: |
+        cd tests/ && ./run_all_cov.sh
+
+    - name: Upload code coverage report
+      run: |
+        pip install codecov
+        codecov
+
