@@ -67,7 +67,7 @@ http://localhost:1071/fuji/api/v1/ui/
 Your Swagger definition lives here:
 
 ```
-http://localhost:1071/uji/api/v1/swagger.json
+http://localhost:1071/fuji/api/v1/swagger.json
 ```
 
 You can provide a different server config file this way:
