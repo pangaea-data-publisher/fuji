@@ -2,6 +2,8 @@
 Developers: [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com), [Robert Huber](mailto:rhuber@marum.de)
 
 [![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
+
 
 ## Overview
 
