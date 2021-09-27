@@ -300,7 +300,8 @@ class Mapper(Enum):
         'object_identifier': {'path': ['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}identifier/{*}MD_Identifier/{*}code/{*}CharacterString',
                               './{*}dataSetURI/{*}CharacterString']
                               },
-        'creator':           {'path': './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/{*}CharacterString'},
+        'creator':           {'path': ['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/{*}CharacterString',
+                                       './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/']},
         'summary':           {'path': './{*}identificationInfo//{*}abstract'},
         'keywords':          {'path': ['./{*}identificationInfo//{*}descriptiveKeywords/{*}MD_Keywords/{*}keyword/{*}CharacterString',
                               './{*}identificationInfo//{*}topicCategory/{*}MD_TopicCategoryCode',
@@ -319,7 +320,8 @@ class Mapper(Enum):
                    './{*}identificationInfo//{*}resourceConstraints/{*}otherConstraints/{*}CharacterString',
                            './{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}otherConstraints/{*}Anchor',
                            './{*}identificationInfo//{*}resourceConstraints/{*}MD_LegalConstraints/{*}otherConstraints/{*}Anchor@@xlink:href']},
-        'related_resource':{'path':['./{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetName/*',
-                                    './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetIdentifier/*']},
-        'related_resource_type': {'path': './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation/{*}associationType/{*}DS_AssociationTypeCode@@codeListValue'}
+        'related_resource':{'path':['./{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetIdentifier/*',
+                                    './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation//{*}aggregateDataSetName/*']},
+        'related_resource_type': {'path': ['./{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation/{*}associationType/{*}DS_AssociationTypeCode@@codeListValue',
+                                  './{*}identificationInfo//{*}aggregationInfo/{*}MD_AggregateInformation/{*}associationType/{*}DS_AssociationTypeCode@@codeListValue']}
     }
