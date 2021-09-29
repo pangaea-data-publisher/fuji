@@ -28,6 +28,7 @@ import sys
 import traceback
 from enum import Enum
 import extruct
+import lxml
 import rdflib
 import requests
 import urllib
@@ -190,7 +191,12 @@ class RequestHelper:
                                             if at.name == 'xml': # TODO other types (xml)
                                                 #in case the XML indeed is a RDF:
                                                 # quick one:
-                                                if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
+
+                                                #if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
+                                                xmlparser = lxml.etree.XMLParser(strip_cdata=False)
+                                                xmltree = lxml.etree.XML(self.response_content, xmlparser)
+                                                root_element = xmltree.tag
+                                                if root_element.startswith('RDF'):
                                                     self.logger.info('%s : Found RDF document by tag!' % metric_id)
                                                     self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
                                                     source='rdf'
