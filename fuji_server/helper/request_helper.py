@@ -190,12 +190,14 @@ class RequestHelper:
                                                 break
                                             if at.name == 'xml': # TODO other types (xml)
                                                 #in case the XML indeed is a RDF:
-                                                # quick one:
-
+                                                root_element=''
                                                 #if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
-                                                xmlparser = lxml.etree.XMLParser(strip_cdata=False)
-                                                xmltree = lxml.etree.XML(self.response_content, xmlparser)
-                                                root_element = xmltree.tag
+                                                try:
+                                                    xmlparser = lxml.etree.XMLParser(strip_cdata=False)
+                                                    xmltree = lxml.etree.XML(self.response_content, xmlparser)
+                                                    root_element = xmltree.tag
+                                                except Exception as e:
+                                                    self.logger.warning('%s : Parsing XML document failed !' % metric_id)
                                                 if root_element=='RDF':
                                                     self.logger.info('%s : Found RDF document by root tag!' % metric_id)
                                                     self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
