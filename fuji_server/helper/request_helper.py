@@ -196,8 +196,8 @@ class RequestHelper:
                                                 xmlparser = lxml.etree.XMLParser(strip_cdata=False)
                                                 xmltree = lxml.etree.XML(self.response_content, xmlparser)
                                                 root_element = xmltree.tag
-                                                if root_element.startswith('RDF'):
-                                                    self.logger.info('%s : Found RDF document by tag!' % metric_id)
+                                                if root_element=='RDF':
+                                                    self.logger.info('%s : Found RDF document by root tag!' % metric_id)
                                                     self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
                                                     source='rdf'
                                                 else:
