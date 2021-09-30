@@ -1,9 +1,11 @@
 version: "3.3"
 services:
   fujirest:
-    image: "sneumann/fuji:latest"
+    image: "ghcr.io/pangaea-data-publisher/fuji:latest"
     ports:
       - "1071:1071"
+    environment:
+      - ENABLE_CORS=true
 
   notebook:
     image: "jupyter/minimal-notebook:latest"

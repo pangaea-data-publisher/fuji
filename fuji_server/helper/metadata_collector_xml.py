@@ -84,6 +84,7 @@ class MetaDataCollectorXML (MetaDataCollector):
                 else:
                     metatree = tree
                 if metatree is not None:
+
                     root_namespace = None
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
                     schema_locations = set(metatree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
@@ -92,16 +93,16 @@ class MetaDataCollectorXML (MetaDataCollector):
                     if nsmatch:
                         root_namespace = nsmatch[1]
                         root_element = nsmatch[2]
-                        print('#' + root_element + '#', root_namespace)
+                        #print('#' + root_element + '#', root_namespace)
                         self.namespaces.append(root_namespace)
                     if root_element=='codeBook':
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info(
                             'FsF-F2-01M : Identified DDI codeBook XML based on root tag')
-                    elif root_element=='dc':
+                    elif root_element=='dc' or any('http://dublincore.org/schemas/xmls/' in s for s in self.namespaces):
                         xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
                         self.logger.info(
-                            'FsF-F2-01M : Identified Dublin Core XML based on root tag')
+                            'FsF-F2-01M : Identified Dublin Core XML based on root tag or namespace')
                     elif root_element =='mods':
                         xml_mapping = Mapper.XML_MAPPING_MODS.value
                         self.logger.info(
@@ -111,7 +112,7 @@ class MetaDataCollectorXML (MetaDataCollector):
                         xml_mapping = Mapper.XML_MAPPING_EML.value
                         self.logger.info(
                             'FsF-F2-01M : Identified EML XML based on root tag')
-                    elif root_element =='MD_Metadata':
+                    elif root_element in ['MD_Metadata','MI_Metadata']:
                         xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
                         self.logger.info(
                             'FsF-F2-01M : Identified ISO 19115 XML based on root tag')
@@ -163,6 +164,8 @@ class MetaDataCollectorXML (MetaDataCollector):
                         res[prop] = propcontent[0].get('tree').text
                     else:
                         res[prop] = lxml.etree.tostring(propcontent[0].get('tree'), method='text', encoding='unicode')
+                        res[prop] = re.sub('\s+', ' ', res[prop])
+                        res[prop] = res[prop].strip()
                 else:
                     for propelem in propcontent:
                         if propelem.get('attribute'):
@@ -170,8 +173,10 @@ class MetaDataCollectorXML (MetaDataCollector):
                         elif len(propelem.get('tree')) == 0:
                             res[prop].append(propelem.get('tree').text)
                         else:
-                            res[prop].append(
-                                lxml.etree.tostring(propelem.get('tree'), method='text', encoding='unicode'))
+                            resprop=lxml.etree.tostring(propelem.get('tree'), method='text', encoding='unicode')
+                            resprop = re.sub('\s+', ' ', resprop)
+                            resprop = resprop.strip()
+                            res[prop].append(resprop)
 
         #related resources
         for kres, vres in res.items():
@@ -213,5 +218,5 @@ class MetaDataCollectorXML (MetaDataCollector):
             res.pop('object_content_identifier_type', None)
             res.pop('object_content_identifier_size', None)
             res.pop('object_content_identifier_url', None)
+            #print(self.removew(res))
         return res
-

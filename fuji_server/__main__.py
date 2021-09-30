@@ -29,6 +29,7 @@ import os
 from logging.config import fileConfig
 import connexion
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
 
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
@@ -52,6 +53,7 @@ def main():
     metric_specification = config['SERVICE']['metric_specification']
 
     #TODO further implementation on authentication needed
+    auth_enabled = config.getboolean('USER', 'auth_enabled')
     usr = config['USER']['usr']
     pwd = config['USER']['pwd']
     authen.service_username = usr
@@ -80,8 +82,21 @@ def main():
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
-    app.add_api(API_YAML, arguments={'title': 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'}, validate_responses=True)
-    app.app.wsgi_app = ProxyFix(app.app.wsgi_app)
+    api_title = 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'
+    if auth_enabled:
+        api_args = {
+            'title': api_title,
+            'security': [{'basicAuth': []}]
+        }
+    else:
+        api_args = {
+            'title': api_title
+        }
+
+    app.add_api(API_YAML, arguments=api_args, validate_responses=True)
+    app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
+    if os.getenv('ENABLE_CORS', 'False').lower() == 'true':
+        CORS(app.app)
     app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
