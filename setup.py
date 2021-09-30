@@ -20,7 +20,7 @@ setup(
     # add long_description from readme.md:
     long_description = long_description, # add contents of README.md
     long_description_content_type ='text/markdown',  # This is important to activate markdown!
-    url='https://github.com/JuDFTteam/masci-tools',
+    url='https://github.com/pangaea-data-publisher/fuji',
     author="See AUTHORS file",
     author_email="rhuber@marum.de",
     maintainer='Robert Huber',

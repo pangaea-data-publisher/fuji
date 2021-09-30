@@ -1,8 +1,9 @@
-include masci_tools/io/parsers/fleur/fleur_schema/*/*.xsd
-include masci_tools/io/parsers/fleur/fleur_schema/*/*.py
+include fuji_server/data/*
+include fuji_server/static/*
+include fuji_server/yaml/*
+include fuji_server/config/*
 include AUTHORS.txt
 include CHANGELOG.md
-include LICENSE.txt
+include LICENSE
 include README.md
 recursive-include docs *
-recursive-include docs masci_tools/tools/*
