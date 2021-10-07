@@ -177,6 +177,7 @@ class RequestHelper:
                                 #print(self.content_type)
                                 while (True):
                                     for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                        #print(at.name)
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
@@ -207,7 +208,7 @@ class RequestHelper:
                                                     self.parse_response  = self.response_content
                                                     source='xml'
                                                 break
-                                            if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
+                                            if at.name in ['json', 'jsonld', 'datacite_json','schemaorg']:
                                                 try:
                                                     self.parse_response  = json.loads(self.response_content)
                                                     source='json'
