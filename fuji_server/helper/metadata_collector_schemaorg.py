@@ -1,5 +1,8 @@
+import json
 import logging
 import jmespath
+import rdflib
+
 from fuji_server.helper.metadata_collector import MetaDataCollector
 # MIT License
 #
@@ -35,8 +38,26 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
+    #work around in case a lson-ld graph is given
+    def compact_jsonld(self, jsonld):
+        jsonldnodes = {}
+        schemadataset = {}
+        for jsonldnode in jsonld.get('@graph'):
+            if jsonldnode.get('@id'):
+                jsonldnodes[jsonldnode.get('@id')] = jsonldnode
+            if jsonldnode.get('@type') == 'Dataset':
+                schemadataset = jsonldnode
 
-
+        for propkey, propvalue in schemadataset.items():
+            if isinstance(propvalue, dict):
+                if propvalue.get('@id') and len(propvalue) == 1:
+                    schemadataset[propkey] = jsonldnodes[propvalue.get('@id')]
+            elif isinstance(propvalue, list):
+                for lpropkey, lpropvalue in enumerate(propvalue):
+                    if isinstance(lpropvalue, dict):
+                        if lpropvalue.get('@id') and len(lpropvalue) == 1:
+                            schemadataset[propkey][lpropkey] = jsonldnodes[lpropvalue.get('@id')]
+        return schemadataset
 
     def parse_metadata(self, ls=None):
         jsnld_metadata = {}
@@ -52,7 +73,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.schemaorg)
             neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
-        if ext_meta is not None:
+        if isinstance(ext_meta, dict):
             self.getNamespacesfromIRIs(ext_meta)
             self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
@@ -60,14 +81,27 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             check_context_type =  ["Dataset", "Collection"]
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
+                if str(ext_meta.get('@context')).find('://schema.org') > -1:
+                    schemaorgns = 'schema'
+                    if isinstance(ext_meta.get('@context'),dict):
+                        for contextname, contexturi in ext_meta.get('@context').items():
+                            if contexturi.endswith('schema.org/'):
+                                schemaorgns= contextname
+                    ext_meta=json.loads(json.dumps(ext_meta).replace('"'+schemaorgns+':','"'))
 
-                if str(ext_meta['@context']).find('://schema.org') > -1:
-                    if str(ext_meta['@type']).lower() not in self.SCHEMA_ORG_CONTEXT:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type')
-                    elif ext_meta['@type'] not in check_context_type:
+                    if ext_meta.get('@graph'):
+                        self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
+                        ext_meta= self.compact_jsonld(ext_meta)
+
+                    if not ext_meta.get('@type'):
+                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')
+
+                    elif str(ext_meta.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
+                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type -:'+str(ext_meta.get('@type')))
+                    elif ext_meta.get('@type') not in check_context_type:
                         self.logger.info('FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
                     else:
-                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type')
+                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'+str(ext_meta.get('@type')))
 
                         self.namespaces.append('http://schema.org/')
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
@@ -120,7 +154,9 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
                     # TODO quick-fix, expand mapping expression instead
                     if jsnld_metadata.get('object_size'):
-                        jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value'))
+                        #print(jsnld_metadata.get('object_size'))
+                        if isinstance(jsnld_metadata['object_size'], dict):
+                            jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value'))
 
                         #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
 

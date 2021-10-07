@@ -65,7 +65,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 self.score.earned = self.total_score - 1
                 test_status = 'pass'
             else:
-                if len(metadata_found) >=2:
+                if len(metadata_found) >=1:
                     self.logger.info('FsF-F2-01M : Found some descriptive metadata elements -: ' + str(metadata_found.keys()))
                     metadata_status = 'some metadata'
                     self.maturity = 1

@@ -28,6 +28,7 @@ import sys
 import traceback
 from enum import Enum
 import extruct
+import lxml
 import rdflib
 import requests
 import urllib
@@ -176,6 +177,7 @@ class RequestHelper:
                                 #print(self.content_type)
                                 while (True):
                                     for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                        #print(at.name)
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
@@ -189,9 +191,16 @@ class RequestHelper:
                                                 break
                                             if at.name == 'xml': # TODO other types (xml)
                                                 #in case the XML indeed is a RDF:
-                                                # quick one:
-                                                if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
-                                                    self.logger.info('%s : Found RDF document by tag!' % metric_id)
+                                                root_element=''
+                                                #if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
+                                                try:
+                                                    xmlparser = lxml.etree.XMLParser(strip_cdata=False)
+                                                    xmltree = lxml.etree.XML(self.response_content, xmlparser)
+                                                    root_element = xmltree.tag
+                                                except Exception as e:
+                                                    self.logger.warning('%s : Parsing XML document failed !' % metric_id)
+                                                if root_element=='RDF':
+                                                    self.logger.info('%s : Found RDF document by root tag!' % metric_id)
                                                     self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
                                                     source='rdf'
                                                 else:
@@ -199,7 +208,7 @@ class RequestHelper:
                                                     self.parse_response  = self.response_content
                                                     source='xml'
                                                 break
-                                            if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
+                                            if at.name in ['json', 'jsonld', 'datacite_json','schemaorg']:
                                                 try:
                                                     self.parse_response  = json.loads(self.response_content)
                                                     source='json'
