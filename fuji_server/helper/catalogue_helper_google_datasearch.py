@@ -1,5 +1,7 @@
 import enum
 import logging
+import sys
+
 import requests as re
 import pandas as pd
 import os
@@ -15,6 +17,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
 
     def query(self, pidlist):
+        #print(sys.getsizeof(Preprocessor.google_data_dois))
         response = None
         if not Preprocessor.google_data_dois:
             self.logger.warning('FsF-F4-01M : Google Search DOI File does not exist, see F-UJI installation instructions')

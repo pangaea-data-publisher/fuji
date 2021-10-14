@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from typing import Dict, Any
 from urllib.parse import urlparse
 import requests
@@ -94,7 +95,10 @@ class Preprocessor(object):
             cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_doi_path))
         else:
             with open(google_doi_path,'r') as f:
-                cls.google_data_dois = f.read().splitlines()
+                for doiline in f:
+                    cls.google_data_dois.append(re.sub(r"\n$", "",doiline))
+                #cls.google_data_dois = f.read().splitlines()
+        cls.google_data_dois = tuple(cls.google_data_dois)
 
     @classmethod
     def get_google_data_urls(cls):
@@ -106,11 +110,14 @@ class Preprocessor(object):
     def retrieve_google_data_urls(cls):
         google_url_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_urls.txt')
         if not os.path.exists(google_url_path):
-            cls.google_data_dois = []
+            cls.google_data_urls = []
             cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_url_path))
         else:
             with open(google_url_path,'r') as f:
-                cls.google_data_urls = f.read().splitlines()
+                for urlline in f:
+                    cls.google_data_urls.append(re.sub(r"\n$", "",urlline))
+                #cls.google_data_urls = f.read().splitlines()
+        cls.google_data_urls=tuple(cls.google_data_urls)
 
 
     @classmethod
