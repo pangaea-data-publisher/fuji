@@ -115,10 +115,12 @@ jobs:
       run: |
         pip install .[testing]
         pip install -r requirements.txt
+        pip freeze
 
     - name: Run pytest
       run: |
-        cd tests/ && ./run_all_cov.sh
+        cd tests/ && python3 print_install.py
+        cd ./run_all_cov.sh
 
     - name: Upload code coverage report
       run: |
