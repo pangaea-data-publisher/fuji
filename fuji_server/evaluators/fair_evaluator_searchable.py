@@ -51,15 +51,16 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 datacite_registry_helper.query(pidhelper.normalized_id)
                 if datacite_registry_helper.islisted:
                     registries_supported.append(datacite_registry_helper.source)
-        google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
-        google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-        if google_registry_helper.islisted:
-            registries_supported.append(google_registry_helper.source)
-
-        mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
-        mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-        if mendeley_registry_helper.islisted:
-            registries_supported.append(mendeley_registry_helper.source)
+        if not registries_supported:
+            google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
+            google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+            if google_registry_helper.islisted:
+                registries_supported.append(google_registry_helper.source)
+        if not registries_supported:
+            mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
+            mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+            if mendeley_registry_helper.islisted:
+                registries_supported.append(mendeley_registry_helper.source)
 
         return registries_supported
 

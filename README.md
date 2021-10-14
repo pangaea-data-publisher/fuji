@@ -3,7 +3,12 @@
 # F-UJI (FAIRsFAIR Research Data Object Assessment Service)
 Developers: [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com), [Robert Huber](mailto:rhuber@marum.de)
 
+[![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
+
+
 ## Overview
+
 F-UJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
 The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.  
 
@@ -46,15 +51,15 @@ Before running the service, please set user details in the config file, see conf
 To install F-UJI, you may execute the following python-based or docker-based installation commands from the root directory:
 
 #### Python module-based installation:
-```
+```bash
 pip3 install -r requirements.txt
-python3 -m fuji_server -c <path_to_server.ini>
+python3 -m fuji_server -c fuji_server/config/server.ini
 ```
 
 #### Docker-based installation:
-```
-docker build -t <tag_name> .
-docker run -d -p 1071:1071 <tag_name>
+
+```bash
+docker run -d -p 1071:1071 ghcr.io/pangaea-data-publisher/fuji
 ```
 
 To access the Swagger  user interface, open the url below on the browser:
@@ -66,9 +71,21 @@ http://localhost:1071/fuji/api/v1/ui/
 Your Swagger definition lives here:
 
 ```
-http://localhost:1071/uji/api/v1/swagger.json
+http://localhost:1071/fuji/api/v1/swagger.json
 ```
 
+You can provide a different server config file this way:
+
+```bash
+docker run -d -p 1071:1071 -v server.ini:/usr/src/app/fuji_server/config/server.ini ghcr.io/pangaea-data-publisher/fuji
+```
+
+You can also build the docker image from the source code:
+
+```bash
+docker build -t <tag_name> .
+docker run -d -p 1071:1071 <tag_name>
+```
 
 #### Notes
 

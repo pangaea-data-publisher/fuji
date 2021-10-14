@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # MIT License
 #
@@ -30,11 +29,11 @@ import os
 from logging.config import fileConfig
 import connexion
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
 
 from fuji_server import encoder
 from fuji_server.helper.preprocessor import Preprocessor
 import fuji_server.controllers.authorization_controller as authen
-
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
@@ -54,6 +53,7 @@ def main():
     metric_specification = config['SERVICE']['metric_specification']
 
     #TODO further implementation on authentication needed
+    auth_enabled = config.getboolean('USER', 'auth_enabled')
     usr = config['USER']['usr']
     pwd = config['USER']['pwd']
     authen.service_username = usr
@@ -70,7 +70,7 @@ def main():
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
     preproc.retrieve_default_namespaces()
-    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'], config['SERVICE']['remote_log_path'])
+    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'],config['SERVICE']['remote_log_path'])
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
     logger.info('Total re3repositories found from datacite api : {}'.format(len(preproc.getRE3repositories())))
@@ -82,23 +82,33 @@ def main():
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
     API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
     app.app.json_encoder = encoder.JSONEncoder
-    app.add_api(API_YAML,
-                arguments={'title': 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'},
-                validate_responses=True)
-    app.app.wsgi_app = ProxyFix(app.app.wsgi_app)
-    app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
+    api_title = 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'
+    if auth_enabled:
+        api_args = {
+            'title': api_title,
+            'security': [{'basicAuth': []}]
+        }
+    else:
+        api_args = {
+            'title': api_title
+        }
 
+    app.add_api(API_YAML, arguments=api_args, validate_responses=True)
+    app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
+    if os.getenv('ENABLE_CORS', 'False').lower() == 'true':
+        CORS(app.app)
+    app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
     global config
     my_path = os.path.abspath(os.path.dirname(__file__))
     parser = argparse.ArgumentParser()
     # add a new command line option, call it '-c' and set its destination to 'config_file'
-    parser.add_argument('-c', '--config', required=True, help='Path to server.ini config file')
+    parser.add_argument("-c", "--config", required=True, help="Path to server.ini config file")
     args = parser.parse_args()
     config = configparser.ConfigParser()
     config.read(args.config)
-    log_configfile = os.path.join(my_path, config['SERVICE']['log_config'])
+    log_configfile = os.path.join(my_path,config['SERVICE']['log_config'])
     log_dir = config['SERVICE']['logdir']
     log_directory = os.path.join(my_path, log_dir)
     log_file_path = os.path.join(log_directory, 'fuji.log')

@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import json
 import logging
 import os
+import re
 from typing import Dict, Any
 from urllib.parse import urlparse
 import requests
@@ -29,7 +29,6 @@ import requests
 
 import yaml
 
-
 class Preprocessor(object):
     # static elements belong to the class.
     all_metrics_list = []
@@ -45,11 +44,11 @@ class Preprocessor(object):
     BIOPORTAL_API = None
     BIOPORTAL_KEY = None
 
-    schema_org_context = []
+    schema_org_context=[]
     all_licenses = []
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
-    metadata_standards_uris = {}  #some additional namespace uris and all uris from above as key
+    metadata_standards_uris = {} #some additional namespace uris and all uris from above as key
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
@@ -63,7 +62,7 @@ class Preprocessor(object):
     google_data_urls = []
     # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
-    header = {'Accept': 'application/json'}
+    header = {"Accept": "application/json"}
     logger = logging.getLogger(__name__)
     data_files_limit = 3
     metric_specification = None
@@ -71,16 +70,16 @@ class Preprocessor(object):
     remote_log_path = None
 
     @classmethod
-    def set_remote_log_info(cls, host, path):
+    def set_remote_log_info(cls, host, path ):
         try:
-            request = requests.get('http://' + host + path)
+            request = requests.get('http://'+host+path)
             if request.status_code == 200:
-                cls.remote_log_host = host
-                cls.remote_log_path = path
+                cls.remote_log_host=host
+                cls.remote_log_path=path
             else:
-                cls.logger.warning('Remote Logging not possible, URL response: ' + str(request.status_code))
+                cls.logger.warning('Remote Logging not possible, URL response: '+str(request.status_code))
         except Exception as e:
-            cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host + ' ' + path))
+            cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host+' '+path))
 
     @classmethod
     def get_google_data_dois(cls):
@@ -93,11 +92,13 @@ class Preprocessor(object):
         google_doi_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_dois.txt')
         if not os.path.exists(google_doi_path):
             cls.google_data_dois = []
-            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' +
-                               str(google_doi_path))
+            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_doi_path))
         else:
-            with open(google_doi_path, 'r') as f:
-                cls.google_data_dois = f.read().splitlines()
+            with open(google_doi_path,'r') as f:
+                for doiline in f:
+                    cls.google_data_dois.append(re.sub(r"\n$", "",doiline))
+                #cls.google_data_dois = f.read().splitlines()
+        cls.google_data_dois = tuple(cls.google_data_dois)
 
     @classmethod
     def get_google_data_urls(cls):
@@ -109,12 +110,15 @@ class Preprocessor(object):
     def retrieve_google_data_urls(cls):
         google_url_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_urls.txt')
         if not os.path.exists(google_url_path):
-            cls.google_data_dois = []
-            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' +
-                               str(google_url_path))
+            cls.google_data_urls = []
+            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_url_path))
         else:
-            with open(google_url_path, 'r') as f:
-                cls.google_data_urls = f.read().splitlines()
+            with open(google_url_path,'r') as f:
+                for urlline in f:
+                    cls.google_data_urls.append(re.sub(r"\n$", "",urlline))
+                #cls.google_data_urls = f.read().splitlines()
+        cls.google_data_urls=tuple(cls.google_data_urls)
+
 
     @classmethod
     def get_identifiers_org_data(cls):
@@ -125,14 +129,12 @@ class Preprocessor(object):
     @classmethod
     def retrieve_identifiers_org_data(cls):
         std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'identifiers_org_resolver_data.json')
-        with open(std_uri_path, encoding='utf8') as f:
+        with open(std_uri_path,encoding='utf8') as f:
             identifiers_data = json.load(f)
         if identifiers_data:
             for namespace in identifiers_data['payload']['namespaces']:
-                cls.identifiers_org_data[namespace['prefix']] = {
-                    'pattern': namespace['pattern'],
-                    'url_pattern': namespace['resources'][0]['urlPattern']
-                }
+                cls.identifiers_org_data[namespace['prefix']] = {'pattern': namespace['pattern'],
+                                                             'url_pattern': namespace['resources'][0]['urlPattern']}
 
     @classmethod
     def get_resource_types(cls):
@@ -207,15 +209,15 @@ class Preprocessor(object):
             try:
                 req = requests.get(datacite_endpoint, params=p, headers=cls.header)
                 raw = req.json()
-                for r in raw['data']:
+                for r in raw["data"]:
                     cls.re3repositories[r['id']] = r['attributes']['re3data']
                 while 'next' in raw['links']:
                     response = requests.get(raw['links']['next']).json()
-                    for r in response['data']:
+                    for r in response["data"]:
                         cls.re3repositories[r['id']] = r['attributes']['re3data']
                     raw['links'] = response['links']
                 #fix wrong entry
-                cls.re3repositories['bl.imperial'] = 'http://doi.org/10.17616/R3K64N'
+                cls.re3repositories['bl.imperial']='http://doi.org/10.17616/R3K64N'
                 with open(re3dict_path, 'w') as f2:
                     json.dump(cls.re3repositories, f2)
             except requests.exceptions.RequestException as e:
@@ -273,7 +275,7 @@ class Preprocessor(object):
         with open(std_uri_path) as f:
             data = json.load(f)
         if data:
-            cls.metadata_standards_uris = data
+            cls.metadata_standards_uris  = data
 
     @classmethod
     def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
@@ -367,8 +369,8 @@ class Preprocessor(object):
 
     @classmethod
     def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
-        #def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
-        # may take around 20 minutes to test and import all vocabs
+    #def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
+    # may take around 20 minutes to test and import all vocabs
         cls.LOV_API = lov_api
         cls.LOD_CLOUDNET = lodcloud_api
         #cls.BIOPORTAL_API = bioportal_api
@@ -391,10 +393,10 @@ class Preprocessor(object):
                     uri = lov.get('uri')
                     nsp = lov.get('nsp')
                     if uri and nsp:
-                        if cls.isURIActive(uri):
-                            vocabs.append({'title': title, 'namespace': nsp, 'uri': uri, 'prefix': lov.get('prefix')})
-                        else:
-                            broken.append(uri)
+                      if cls.isURIActive(uri):
+                          vocabs.append({'title': title, 'namespace': nsp, 'uri': uri, 'prefix': lov.get('prefix')})
+                      else:
+                          broken.append(uri)
                     else:
                         broken.append(uri)
                 cls.logger.info('{0} vocabs uri specified are broken'.format(len(broken)))
@@ -418,12 +420,7 @@ class Preprocessor(object):
                     if website and ns:
                         if cls.isURIActive(website):
                             if website not in all_uris:
-                                temp = {
-                                    'title': d['title'],
-                                    'namespace': ns,
-                                    'uri': website,
-                                    'prefix': d.get('identifier')
-                                }
+                                temp = {'title': d['title'], 'namespace': ns, 'uri': website, 'prefix': d.get('identifier')}
                                 vocabs.append(temp)
                         else:
                             broken_lod.append(website)

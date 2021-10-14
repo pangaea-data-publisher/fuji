@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import enum
 import logging
+import sys
+
 import requests as re
 import pandas as pd
 import os
@@ -18,6 +20,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
 
     def query(self, pidlist):
+        #print(sys.getsizeof(Preprocessor.google_data_dois))
         response = None
         if not Preprocessor.google_data_dois:
             self.logger.warning(

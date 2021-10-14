@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -29,6 +28,7 @@ import sys
 import traceback
 from enum import Enum
 import extruct
+import lxml
 import rdflib
 import requests
 import urllib
@@ -56,21 +56,19 @@ class AcceptTypes(Enum):
     rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9,application/ld+json'
     default = '*/*'
 
-
 class RequestHelper:
-
     def __init__(self, url, logInst: object = None):
         if logInst:
             self.logger = logInst
-        else:
-            self.logger = Preprocessor.logger  #logging.getLogger(__name__)
+        else :
+            self.logger = Preprocessor.logger #logging.getLogger(__name__)
         self.request_url = url
         self.redirect_url = None
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
         self.response_status = None
-        self.response_content = None  # normally the response body
+        self.response_content = None # normally the response body
         self.response_header = None
         self.response_charset = 'utf-8'
         self.content_type = None
@@ -98,47 +96,38 @@ class RequestHelper:
     def getResponseHeader(self):
         return self.response_header
 
-    def content_decode(self, content):
+    def content_decode(self,content):
         if isinstance(content, 'str'):
-            a = 1
+          a=1
         return True
 
-    def content_negotiate(self, metric_id='', ignore_html=True):
+    def content_negotiate(self, metric_id='', ignore_html = True):
         #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
-        self.metric_id = metric_id
+        self.metric_id=metric_id
         source = 'html'
         status_code = None
         tp_response = None
         if self.request_url is not None:
             try:
                 #self.logger.info('{0} : Retrieving page {1}'.format(metric_id, self.request_url))
-                self.logger.info('{0} : Retrieving page -: {1} as {2}'.format(metric_id, self.request_url,
-                                                                              self.accept_type))
+                self.logger.info('{0} : Retrieving page -: {1} as {2}'.format(metric_id, self.request_url, self.accept_type))
 
                 #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
                 urllib.request.HTTPRedirectHandler.http_error_308 = urllib.request.HTTPRedirectHandler.http_error_301
-                tp_request = urllib.request.Request(self.request_url,
-                                                    headers={
-                                                        'Accept': self.accept_type,
-                                                        'User-Agent': 'F-UJI'
-                                                    })
+                tp_request = urllib.request.Request(self.request_url, headers={'Accept': self.accept_type, 'User-Agent': 'F-UJI'})
 
                 context = ssl._create_unverified_context()
                 context.set_ciphers('DEFAULT@SECLEVEL=1')
 
                 try:
-                    tp_response = urllib.request.urlopen(tp_request, context=context)
+                    tp_response =  urllib.request.urlopen(tp_request,context=context)
                 except urllib.error.URLError as e:
-                    self.logger.error('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
-                        metric_id, self.request_url, self.accept_type, str(e)))
+                    self.logger.error('{0} : Request failed, reason -: {1}, {2} - {3}'.format(metric_id,self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
                     if e.code == 308:
-                        self.logger.error(
-                            '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
-                            % metric_id)
+                        self.logger.error('%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed' % metric_id)
                     else:
-                        self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
-                            metric_id, self.request_url, self.accept_type, str(e.code)))
+                        self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(metric_id, self.request_url,self.accept_type, str(e.code)))
 
                 if tp_response:
                     self.http_response = tp_response
@@ -152,10 +141,10 @@ class RequestHelper:
                     #self.http_response = requests.get(self.request_url, headers={'Accept': self.accept_type})
                     #status_code = self.http_response.status_code
                     self.response_status = status_code = self.http_response.status
-                    self.logger.info('%s : Content negotiation accept=%s, status=%s ' %
-                                     (metric_id, self.accept_type, str(status_code)))
+                    self.logger.info(
+                        '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                     if status_code == 200:
-                        self.content_type = self.http_response.headers.get('Content-Type')
+                        self.content_type = self.http_response.headers.get("Content-Type")
                         #try to find out if content type is byte then fix
                         try:
                             self.response_content.decode('utf-8')
@@ -165,17 +154,13 @@ class RequestHelper:
                             self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                         if self.content_type is None:
                             #just in case tika is not running use this as quick check for the most obvious
-                            if re.search(r'<!doctype html>|<html',
-                                         str(self.response_content.decode(self.response_charset)).strip(),
-                                         re.IGNORECASE) is not None:
-                                self.content_type = 'text/html'
+                            if re.search(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is not None:
+                                self.content_type ='text/html'
                         if self.content_type is None:
                             parsedFile = parser.from_buffer(self.response_content)
-                            self.content_type = parsedFile.get('metadata').get('Content-Type')
+                            self.content_type = parsedFile.get("metadata").get('Content-Type')
                         if 'application/xhtml+xml' in self.content_type:
-                            if re.search(r'<!doctype html>|<html',
-                                         str(self.response_content.decode(self.response_charset)).strip(),
-                                         re.IGNORECASE) is None:
+                            if re.search(r"<!doctype html>|<html",str(self.response_content.decode(self.response_charset)).strip(),re.IGNORECASE) is None:
                                 self.content_type = 'text/xml'
                         if self.content_type is not None:
                             if 'text/plain' in self.content_type:
@@ -184,56 +169,58 @@ class RequestHelper:
                                 #try to find type by url
                                 guessed_format = rdflib.util.guess_format(self.request_url)
                                 if guessed_format is not None:
-                                    self.parse_response = self.parse_rdf(
-                                        self.response_content.decode(self.response_charset), guessed_format)
-                                    source = 'rdf'
-                                    #content_type = content_type.split(";", 1)[0]
+                                    self.parse_response  = self.parse_rdf(self.response_content.decode(self.response_charset), guessed_format)
+                                    source='rdf'
+                                      #content_type = content_type.split(";", 1)[0]
                             else:
-                                self.content_type = self.content_type.split(';', 1)[0]
+                                self.content_type = self.content_type.split(";", 1)[0]
                                 #print(self.content_type)
                                 while (True):
-                                    for at in AcceptTypes:  #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                    for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                        #print(at.name)
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
                                                 if ignore_html == False:
                                                     self.logger.info('%s : Found HTML page!' % metric_id)
-                                                    self.parse_response = self.parse_html(
-                                                        self.response_content.decode(self.response_charset))
+                                                    self.parse_response = self.parse_html(self.response_content.decode(self.response_charset))
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
-                                                source = 'html'
+                                                source='html'
                                                 break
-                                            if at.name == 'xml':  # TODO other types (xml)
+                                            if at.name == 'xml': # TODO other types (xml)
                                                 #in case the XML indeed is a RDF:
-                                                # quick one:
-                                                if self.response_content.decode(
-                                                        self.response_charset).find('<rdf:RDF') > -1:
-                                                    self.logger.info('%s : Found RDF document by tag!' % metric_id)
-                                                    self.parse_response = self.parse_rdf(
-                                                        self.response_content.decode(self.response_charset), at.name)
-                                                    source = 'rdf'
+                                                root_element=''
+                                                #if self.response_content.decode(self.response_charset).find('<rdf:RDF') > -1:
+                                                try:
+                                                    xmlparser = lxml.etree.XMLParser(strip_cdata=False)
+                                                    xmltree = lxml.etree.XML(self.response_content, xmlparser)
+                                                    root_element = xmltree.tag
+                                                except Exception as e:
+                                                    self.logger.warning('%s : Parsing XML document failed !' % metric_id)
+                                                if root_element=='RDF':
+                                                    self.logger.info('%s : Found RDF document by root tag!' % metric_id)
+                                                    self.parse_response = self.parse_rdf(self.response_content.decode(self.response_charset), at.name)
+                                                    source='rdf'
                                                 else:
                                                     self.logger.info('%s : Found XML document!' % metric_id)
-                                                    self.parse_response = self.response_content
-                                                    source = 'xml'
+                                                    self.parse_response  = self.response_content
+                                                    source='xml'
                                                 break
-                                            if at.name in ['schemaorg', 'json', 'jsonld', 'datacite_json']:
+                                            if at.name in ['json', 'jsonld', 'datacite_json','schemaorg']:
                                                 try:
-                                                    self.parse_response = json.loads(self.response_content)
-                                                    source = 'json'
+                                                    self.parse_response  = json.loads(self.response_content)
+                                                    source='json'
                                                     # result = json.loads(response.text)
                                                     break
                                                 except ValueError:
                                                     self.logger.info(
-                                                        '{0} : Retrieved response seems not to be valid JSON'.format(
-                                                            metric_id))
+                                                        '{0} : Retrieved response seems not to be valid JSON'.format(metric_id))
 
-                                            if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
-                                                self.parse_response = self.parse_rdf(
-                                                    self.response_content, self.content_type)
-                                                source = 'rdf'
+                                            if at.name in ['nt','rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
+                                                self.parse_response  = self.parse_rdf(self.response_content, self.content_type)
+                                                source='rdf'
                                                 break
 
                                         # TODO (IMPORTANT) how to handle the rest e.g., text/plain, specify result type
@@ -241,30 +228,28 @@ class RequestHelper:
                         else:
                             self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                     else:
-                        self.logger.warning('{0} : NO successful response received, status code -: {1}'.format(
-                            metric_id, str(status_code)))
+                        self.logger.warning('{0} : NO successful response received, status code -: {1}'.format(metric_id, str(status_code)))
                 else:
                     self.logger.warning('{0} : No response received from -: {1}'.format(metric_id, self.request_url))
             #except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
-                #    self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
-                #    self.logger.exception("SSLError: {}".format(e))
-                #    self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                #except requests.exceptions.RequestException as e:
+            #    self.logger.warning('%s : SSL Error: Untrusted SSL certificate, failed to connect to %s ' % (metric_id, self.request_url))
+            #    self.logger.exception("SSLError: {}".format(e))
+            #    self.logger.exception('%s : SSL Error: Failed to connect to %s ' % (metric_id, self.request_url))
+            #except requests.exceptions.RequestException as e:
                 #All exceptions that Requests explicitly raises inherit from requests.exceptions.RequestException
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
-                self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' %
-                                    (metric_id, self.accept_type, str(e.code)))
+                self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 self.response_status = int(e.code)
                 print(e)
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
             except urllib.error.URLError as e:
-                self.logger.warning('{} : RequestException -: {} : {}'.format(metric_id, e.reason, self.request_url))
+                self.logger.warning("{} : RequestException -: {} : {}".format(metric_id, e.reason, self.request_url))
                 #self.logger.warning('%s : Content negotiation failed: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
             except Exception as e:
-                self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
+                self.logger.warning("{} : Request Failed -: {} : {}".format(metric_id, str(e), self.request_url))
 
         return source, self.parse_response
 
@@ -276,9 +261,8 @@ class RequestHelper:
             extracted = extruct.extract(html_texts.encode('utf8'))
             #print('extr',self.content_type,self.request_url)
         except Exception as e:
-            extracted = None
-            self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' %
-                                (self.metric_id, self.request_url + ' ' + str(e)))
+            extracted=None
+            self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' % (self.metric_id, self.request_url+' '+str(e)))
         #filtered = {k: v for k, v in extracted.items() if v}
         return extracted
 
