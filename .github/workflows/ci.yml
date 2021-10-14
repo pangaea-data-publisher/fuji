@@ -31,7 +31,8 @@ jobs:
 
     - name: Install Latex compiler
       run: |
-        sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+        sudo apt-get update
+        # sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
 
     - name: Build documentation
       env:
@@ -113,6 +114,7 @@ jobs:
     - name: Install python dependencies
       run: |
         pip install .[testing]
+        pip install -r requirements.txt
 
     - name: Run pytest
       run: |
@@ -122,4 +124,3 @@ jobs:
       run: |
         pip install codecov
         codecov
-
