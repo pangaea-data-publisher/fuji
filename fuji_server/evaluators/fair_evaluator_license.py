@@ -30,9 +30,10 @@ from fuji_server.models.license_output_inner import LicenseOutputInner
 import idutils
 from fuji_server.helper.metadata_mapper import Mapper
 
+
 class FAIREvaluatorLicense(FAIREvaluator):
 
-    def isLicense (self, value, metric_id):
+    def isLicense(self, value, metric_id):
         islicense = False
         isurl = idutils.is_url(value)
         spdx_html = None
@@ -60,7 +61,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             if any(u in v for v in seeAlso) or licenseId == ul:
                 self.logger.info('{0} : Found SPDX license representation -: {1}'.format(metric_id, item['detailsUrl']))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
-                html_url = item['detailsUrl'].replace(".json", ".html")
+                html_url = item['detailsUrl'].replace('.json', '.html')
                 isOsiApproved = item['isOsiApproved']
                 break
         return html_url, isOsiApproved
@@ -77,20 +78,23 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 index_max = max(range(len(sim)), key=sim.__getitem__)
                 sim_license = self.fuji.SPDX_LICENSE_NAMES[index_max]
                 found = next((item for item in self.fuji.SPDX_LICENSES if item['name'] == sim_license), None)
-                self.logger.info('{0}: Found SPDX license representation -: {1}'.format(metric_id,found['detailsUrl']))
+                self.logger.info('{0}: Found SPDX license representation -: {1}'.format(metric_id, found['detailsUrl']))
                 # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
-                html_url = found['detailsUrl'].replace(".json", ".html")
+                html_url = found['detailsUrl'].replace('.json', '.html')
                 isOsiApproved = found['isOsiApproved']
         return html_url, isOsiApproved
 
     def evaluate(self):
-        self.result = License(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = License(id=self.metric_number,
+                              metric_identifier=self.metric_identifier,
+                              metric_name=self.metric_name)
         licenses_list = []
         specified_licenses = self.fuji.metadata_merged.get('license')
         self.score.earned = 0
         spdx_found = False
-        if specified_licenses is not None and specified_licenses !=[]:
-            self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found licence information in metadata'.format(self.metric_identifier))
+        if specified_licenses is not None and specified_licenses != []:
+            self.logger.log(self.fuji.LOG_SUCCESS,
+                            '{0} : Found licence information in metadata'.format(self.metric_identifier))
             if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
                 specified_licenses = [specified_licenses]
             for l in specified_licenses:
@@ -104,14 +108,18 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 else:  # maybe licence name
                     spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
                 if not spdx_html:
-                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(self.metric_identifier))
+                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
+                        self.metric_identifier))
                 else:
-                    self.logger.log(self.fuji.LOG_SUCCESS, '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(self.metric_identifier))
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+                            self.metric_identifier))
                     spdx_found = True
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
                 licenses_list.append(license_output)
-            self.result.test_status = "pass"
+            self.result.test_status = 'pass'
             self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
             self.score.earned = 1
             self.maturity = 1
@@ -126,4 +134,3 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.maturity = self.maturity
-

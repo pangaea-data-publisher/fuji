@@ -31,8 +31,10 @@ from pprint import pprint
 
 
 class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
+
     def evaluate(self):
-        self.result = StandardisedProtocolMetadata(id=self.metric_number, metric_identifier=self.metric_identifier,
+        self.result = StandardisedProtocolMetadata(id=self.metric_number,
+                                                   metric_identifier=self.metric_identifier,
                                                    metric_name=self.metric_name)
         metadata_output = data_output = None
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
@@ -45,10 +47,14 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
             metadata_parsed_url = urlparse(self.fuji.landing_url)
             metadata_url_scheme = metadata_parsed_url.scheme
             if len(self.fuji.metadata_merged) == 0:
-                self.logger.warning('FsF-A1-02M : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M')
+                self.logger.warning(
+                    'FsF-A1-02M : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M'
+                )
             else:
                 if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                    self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
 
                     metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
                     test_status = 'pass'
@@ -68,6 +74,3 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
-
-
-

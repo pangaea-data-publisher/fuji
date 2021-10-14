@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,15 @@ class OutputCoreMetadataFound(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, creator: List[str]=None, title: str=None, publisher: str=None, publication_date: date=None, summary: str=None, keywords: str=None, object_identifier: str=None):  # noqa: E501
+
+    def __init__(self,
+                 creator: List[str] = None,
+                 title: str = None,
+                 publisher: str = None,
+                 publication_date: date = None,
+                 summary: str = None,
+                 keywords: str = None,
+                 object_identifier: str = None):  # noqa: E501
         """OutputCoreMetadataFound - a model defined in Swagger
 
         :param creator: The creator of this OutputCoreMetadataFound.  # noqa: E501
@@ -89,7 +97,7 @@ class OutputCoreMetadataFound(Model):
         :type creator: List[str]
         """
         if creator is None:
-            raise ValueError("Invalid value for `creator`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `creator`, must not be `None`')  # noqa: E501
 
         self._creator = creator
 
@@ -112,7 +120,7 @@ class OutputCoreMetadataFound(Model):
         :type title: str
         """
         if title is None:
-            raise ValueError("Invalid value for `title`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `title`, must not be `None`')  # noqa: E501
 
         self._title = title
 
@@ -135,7 +143,7 @@ class OutputCoreMetadataFound(Model):
         :type publisher: str
         """
         if publisher is None:
-            raise ValueError("Invalid value for `publisher`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `publisher`, must not be `None`')  # noqa: E501
 
         self._publisher = publisher
 
@@ -158,7 +166,7 @@ class OutputCoreMetadataFound(Model):
         :type publication_date: date
         """
         if publication_date is None:
-            raise ValueError("Invalid value for `publication_date`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `publication_date`, must not be `None`')  # noqa: E501
 
         self._publication_date = publication_date
 
@@ -181,7 +189,7 @@ class OutputCoreMetadataFound(Model):
         :type summary: str
         """
         if summary is None:
-            raise ValueError("Invalid value for `summary`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `summary`, must not be `None`')  # noqa: E501
 
         self._summary = summary
 
@@ -204,7 +212,7 @@ class OutputCoreMetadataFound(Model):
         :type keywords: str
         """
         if keywords is None:
-            raise ValueError("Invalid value for `keywords`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `keywords`, must not be `None`')  # noqa: E501
 
         self._keywords = keywords
 
@@ -227,6 +235,6 @@ class OutputCoreMetadataFound(Model):
         :type object_identifier: str
         """
         if object_identifier is None:
-            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `object_identifier`, must not be `None`')  # noqa: E501
 
         self._object_identifier = object_identifier

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +15,11 @@ class CoreMetadataOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, core_metadata_status: str=None, core_metadata_found: OutputCoreMetadataFound=None, core_metadata_source: List[str]=None):  # noqa: E501
+
+    def __init__(self,
+                 core_metadata_status: str = None,
+                 core_metadata_found: OutputCoreMetadataFound = None,
+                 core_metadata_source: List[str] = None):  # noqa: E501
         """CoreMetadataOutput - a model defined in Swagger
 
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.  # noqa: E501
@@ -69,12 +73,10 @@ class CoreMetadataOutput(Model):
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.
         :type core_metadata_status: str
         """
-        allowed_values = ["insufficent metadata", "partial metadata", "all metadata"]  # noqa: E501
+        allowed_values = ['insufficent metadata', 'partial metadata', 'all metadata']  # noqa: E501
         if core_metadata_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `core_metadata_status` ({0}), must be one of {1}"
-                .format(core_metadata_status, allowed_values)
-            )
+            raise ValueError('Invalid value for `core_metadata_status` ({0}), must be one of {1}'.format(
+                core_metadata_status, allowed_values))
 
         self._core_metadata_status = core_metadata_status
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -27,11 +28,12 @@ from lxml import etree
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
+
 class RepositoryHelper:
 
     DATACITE_REPOSITORIES = Preprocessor.getRE3repositories()
-    ns = {"r3d": "http://www.re3data.org/schema/2-2"}
-    RE3DATA_APITYPES =['OAI-PMH','SOAP','SPARQL','SWORD','OpenDAP']
+    ns = {'r3d': 'http://www.re3data.org/schema/2-2'}
+    RE3DATA_APITYPES = ['OAI-PMH', 'SOAP', 'SPARQL', 'SWORD', 'OpenDAP']
 
     def __init__(self, client, pidscheme, logger):
         self.client_id = client
@@ -50,7 +52,7 @@ class RepositoryHelper:
             #print(self.client_id,'Re3DOI',re3doi, idutils.is_doi(re3doi))
             if re3doi:
                 if idutils.is_doi(re3doi):
-                    short_re3doi = idutils.normalize_pid(re3doi, scheme='doi') #https://doi.org/10.17616/R3XS37
+                    short_re3doi = idutils.normalize_pid(re3doi, scheme='doi')  #https://doi.org/10.17616/R3XS37
                 else:
                     re3doi = None
 
@@ -69,7 +71,7 @@ class RepositoryHelper:
                     #<link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
                     re3link = root.xpath('//link')[0].attrib['href']
                     if re3link is not None:
-                        self.logger.info('FsF-R1.3-01M : Found match re3data metadata record -: '+str(re3link))
+                        self.logger.info('FsF-R1.3-01M : Found match re3data metadata record -: ' + str(re3link))
                         # query reposiroty metadata
                         q2 = RequestHelper(url=re3link)
                         q2.setAcceptType(AcceptTypes.xml)
@@ -77,7 +79,7 @@ class RepositoryHelper:
                         self.re3metadata_raw = re3_response
                         self.parseRepositoryMetadata()
                 except Exception as e:
-                    self.logger.warning('FsF-R1.3-01M : Malformed re3data (DOI-based) record received: '+str(e))
+                    self.logger.warning('FsF-R1.3-01M : Malformed re3data (DOI-based) record received: ' + str(e))
             else:
                 self.logger.warning('FsF-R1.3-01M : No DOI of client id is available from datacite api')
 
@@ -108,4 +110,3 @@ class RepositoryHelper:
 
     def getRepoNameURL(self):
         return self.repository_name, self.repository_url
-

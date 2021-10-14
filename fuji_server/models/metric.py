@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,18 @@ class Metric(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metric_identifier: str=None, metric_name: str=None, description: str=None, fair_principle: str=None, evaluation_mechanism: str=None, date_created: date=None, date_updated: date=None, created_by: str=None, version: float=None, total_score: int=None):  # noqa: E501
+
+    def __init__(self,
+                 metric_identifier: str = None,
+                 metric_name: str = None,
+                 description: str = None,
+                 fair_principle: str = None,
+                 evaluation_mechanism: str = None,
+                 date_created: date = None,
+                 date_updated: date = None,
+                 created_by: str = None,
+                 version: float = None,
+                 total_score: int = None):  # noqa: E501
         """Metric - a model defined in Swagger
 
         :param metric_identifier: The metric_identifier of this Metric.  # noqa: E501

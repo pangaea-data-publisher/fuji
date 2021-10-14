@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class RelatedResourceOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, related_resource: str=None, relation_type: str=None):  # noqa: E501
+
+    def __init__(self, related_resource: str = None, relation_type: str = None):  # noqa: E501
         """RelatedResourceOutputInner - a model defined in Swagger
 
         :param related_resource: The related_resource of this RelatedResourceOutputInner.  # noqa: E501
@@ -22,15 +23,9 @@ class RelatedResourceOutputInner(Model):
         :param relation_type: The relation_type of this RelatedResourceOutputInner.  # noqa: E501
         :type relation_type: str
         """
-        self.swagger_types = {
-            'related_resource': str,
-            'relation_type': str
-        }
+        self.swagger_types = {'related_resource': str, 'relation_type': str}
 
-        self.attribute_map = {
-            'related_resource': 'related_resource',
-            'relation_type': 'relation_type'
-        }
+        self.attribute_map = {'related_resource': 'related_resource', 'relation_type': 'relation_type'}
         self._related_resource = related_resource
         self._relation_type = relation_type
 

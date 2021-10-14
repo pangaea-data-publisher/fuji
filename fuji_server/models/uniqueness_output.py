@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class UniquenessOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, guid: str=None, guid_scheme: str=None):  # noqa: E501
+
+    def __init__(self, guid: str = None, guid_scheme: str = None):  # noqa: E501
         """UniquenessOutput - a model defined in Swagger
 
         :param guid: The guid of this UniquenessOutput.  # noqa: E501
@@ -22,15 +23,9 @@ class UniquenessOutput(Model):
         :param guid_scheme: The guid_scheme of this UniquenessOutput.  # noqa: E501
         :type guid_scheme: str
         """
-        self.swagger_types = {
-            'guid': str,
-            'guid_scheme': str
-        }
+        self.swagger_types = {'guid': str, 'guid_scheme': str}
 
-        self.attribute_map = {
-            'guid': 'guid',
-            'guid_scheme': 'guid_scheme'
-        }
+        self.attribute_map = {'guid': 'guid', 'guid_scheme': 'guid_scheme'}
         self._guid = guid
         self._guid_scheme = guid_scheme
 

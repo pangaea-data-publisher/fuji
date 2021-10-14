@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,11 @@ class CommunityEndorsedStandardOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metadata_standard: str=None, urls: List[str]=None, subject_areas: List[str]=None):  # noqa: E501
+
+    def __init__(self,
+                 metadata_standard: str = None,
+                 urls: List[str] = None,
+                 subject_areas: List[str] = None):  # noqa: E501
         """CommunityEndorsedStandardOutputInner - a model defined in Swagger
 
         :param metadata_standard: The metadata_standard of this CommunityEndorsedStandardOutputInner.  # noqa: E501
@@ -24,11 +28,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         :param subject_areas: The subject_areas of this CommunityEndorsedStandardOutputInner.  # noqa: E501
         :type subject_areas: List[str]
         """
-        self.swagger_types = {
-            'metadata_standard': str,
-            'urls': List[str],
-            'subject_areas': List[str]
-        }
+        self.swagger_types = {'metadata_standard': str, 'urls': List[str], 'subject_areas': List[str]}
 
         self.attribute_map = {
             'metadata_standard': 'metadata_standard',

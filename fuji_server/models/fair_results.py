@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -16,7 +16,18 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, test_id: str=None, request: Dict=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, summary: Dict=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+
+    def __init__(self,
+                 test_id: str = None,
+                 request: Dict = None,
+                 timestamp: datetime = None,
+                 expiry_timestamp: datetime = None,
+                 metric_specification: str = None,
+                 metric_version: str = None,
+                 software_version: str = None,
+                 total_metrics: int = None,
+                 summary: Dict = None,
+                 results: List[AnyOfFAIRResultsResultsItems] = None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501

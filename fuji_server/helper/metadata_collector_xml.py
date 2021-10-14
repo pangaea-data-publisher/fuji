@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,20 +27,21 @@ from fuji_server.helper.metadata_mapper import Mapper
 import lxml
 import re
 
-class MetaDataCollectorXML (MetaDataCollector):
-    target_url=None
-    def __init__(self,  loggerinst, target_url, link_type='embedded'):
-        self.target_url=target_url
+
+class MetaDataCollectorXML(MetaDataCollector):
+    target_url = None
+
+    def __init__(self, loggerinst, target_url, link_type='embedded'):
+        self.target_url = target_url
         self.link_type = link_type
         super().__init__(logger=loggerinst)
-
 
     def parse_metadata(self):
         xml_metadata = None
         xml_mapping = None
-        metatree= None
-        envelope_metadata ={}
-        XSI = "http://www.w3.org/2001/XMLSchema-instance"
+        metatree = None
+        envelope_metadata = {}
+        XSI = 'http://www.w3.org/2001/XMLSchema-instance'
         if self.link_type == 'linked':
             source_name = self.getEnumSourceNames().TYPED_LINK.value
         if self.link_type == 'embedded':
@@ -59,67 +61,65 @@ class MetaDataCollectorXML (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Trying to extract/parse metadata from -: {}'.format(source_name))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
-                self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: '+str(neg_source))
+                self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_source))
             else:
                 parser = lxml.etree.XMLParser(strip_cdata=False)
                 tree = lxml.etree.XML(xml_response, parser)
                 root_element = tree.tag
                 if root_element.endswith('}OAI-PMH'):
                     self.logger.info(
-                        'FsF-F2-01M : Found OAI-PMH type XML envelope, unpacking \'metadata\' element for further processing')
+                        'FsF-F2-01M : Found OAI-PMH type XML envelope, unpacking \'metadata\' element for further processing'
+                    )
                     metatree = tree.find('.//{*}metadata/*')
                 elif root_element.endswith('}mets'):
                     self.logger.info(
-                        'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing')
+                        'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing'
+                    )
                     envelope_metadata = self.get_mapped_xml_metadata(tree, Mapper.XML_MAPPING_METS.value)
                     metatree = tree.find('.//{*}dmdSec/{*}mdWrap/{*}xmlData/*')
                 elif root_element.endswith('}GetRecordsResponse'):
                     self.logger.info(
-                        'FsF-F2-01M : Found OGC CSW GetRecords type XML envelope, unpacking \'SearchResults\' element for further processing')
+                        'FsF-F2-01M : Found OGC CSW GetRecords type XML envelope, unpacking \'SearchResults\' element for further processing'
+                    )
                     metatree = tree.find('.//{*}SearchResults/*')
                 elif root_element.endswith('}GetRecordByIdResponse'):
                     self.logger.info(
-                        'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing')
+                        'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing'
+                    )
                     metatree = tree.find('.//*')
                 else:
                     metatree = tree
                 if metatree is not None:
                     root_namespace = None
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
-                    schema_locations = set(metatree.xpath("//*/@xsi:schemaLocation", namespaces={'xsi': XSI}))
+                    schema_locations = set(metatree.xpath('//*/@xsi:schemaLocation', namespaces={'xsi': XSI}))
                     for schema_location in schema_locations:
-                        self.namespaces=re.split('\s',schema_location)
+                        self.namespaces = re.split('\s', schema_location)
                     if nsmatch:
                         root_namespace = nsmatch[1]
                         root_element = nsmatch[2]
                         print('#' + root_element + '#', root_namespace)
                         self.namespaces.append(root_namespace)
-                    if root_element=='codeBook':
+                    if root_element == 'codeBook':
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified DDI codeBook XML based on root tag')
-                    elif root_element=='dc':
+                        self.logger.info('FsF-F2-01M : Identified DDI codeBook XML based on root tag')
+                    elif root_element == 'dc':
                         xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified Dublin Core XML based on root tag')
-                    elif root_element =='mods':
+                        self.logger.info('FsF-F2-01M : Identified Dublin Core XML based on root tag')
+                    elif root_element == 'mods':
                         xml_mapping = Mapper.XML_MAPPING_MODS.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified MODS XML based on root tag')
+                        self.logger.info('FsF-F2-01M : Identified MODS XML based on root tag')
 
-                    elif root_element =='eml':
+                    elif root_element == 'eml':
                         xml_mapping = Mapper.XML_MAPPING_EML.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified EML XML based on root tag')
-                    elif root_element =='MD_Metadata':
+                        self.logger.info('FsF-F2-01M : Identified EML XML based on root tag')
+                    elif root_element == 'MD_Metadata':
                         xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
-                        self.logger.info(
-                            'FsF-F2-01M : Identified ISO 19115 XML based on root tag')
+                        self.logger.info('FsF-F2-01M : Identified ISO 19115 XML based on root tag')
                     elif root_namespace:
                         if 'datacite.org/schema' in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
-                            self.logger.info(
-                                'FsF-F2-01M : Identified DataCite XML based on namespace')
+                            self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
 
         if xml_mapping and metatree is not None:
             xml_metadata = self.get_mapped_xml_metadata(metatree, xml_mapping)
@@ -150,7 +150,7 @@ class MetaDataCollectorXML (MetaDataCollector):
                     attribute = pathdef[1]
                     if ':' in attribute:
                         if attribute.split(':')[0] == 'xlink':
-                            attribute = '{http://www.w3.org/1999/xlink}'+attribute.split(':')[1]
+                            attribute = '{http://www.w3.org/1999/xlink}' + attribute.split(':')[1]
                 subtrees = tree.findall(pathdef[0])
                 for subtree in subtrees:
                     propcontent.append({'tree': subtree, 'attribute': attribute})
@@ -177,20 +177,20 @@ class MetaDataCollectorXML (MetaDataCollector):
         for kres, vres in res.items():
             if vres:
                 if kres.startswith('related_resource') and 'related_resource_type' not in kres:
-                    if isinstance(vres,str):
-                        vres=[vres]
+                    if isinstance(vres, str):
+                        vres = [vres]
                     reltype = kres[17:]
                     if not reltype:
-                        reltype='related'
+                        reltype = 'related'
                     ri = 0
                     for relres in vres:
                         if relres:
                             if res.get('related_resource_type'):
                                 if ri < len(res['related_resource_type']):
                                     reltype = res['related_resource_type'][ri]
-                            relres = re.sub(r"[\n\t]*", "", str(relres)).strip()
+                            relres = re.sub(r'[\n\t]*', '', str(relres)).strip()
                         if relres and reltype:
-                            res['related_resources'].append({'related_resource':relres,'resource_type':reltype})
+                            res['related_resources'].append({'related_resource': relres, 'resource_type': reltype})
                         ri += 1
         #object_content_identifiers
 
@@ -198,7 +198,7 @@ class MetaDataCollectorXML (MetaDataCollector):
             res['object_content_identifier'] = []
             if not isinstance(res['object_content_identifier_url'], list):
                 res['object_content_identifier_url'] = [res['object_content_identifier_url']]
-            ci=0
+            ci = 0
             for content_url in res['object_content_identifier_url']:
                 content_size = None
                 content_type = None
@@ -208,10 +208,13 @@ class MetaDataCollectorXML (MetaDataCollector):
                 if res.get('object_content_identifier_type'):
                     if ci < len(res['object_content_identifier_type']):
                         content_type = res['object_content_identifier_type'][ci]
-                res['object_content_identifier'].append({'url': content_url, 'size': content_size,'type': content_type})
-                ci+=1
+                res['object_content_identifier'].append({
+                    'url': content_url,
+                    'size': content_size,
+                    'type': content_type
+                })
+                ci += 1
             res.pop('object_content_identifier_type', None)
             res.pop('object_content_identifier_size', None)
             res.pop('object_content_identifier_url', None)
         return res
-

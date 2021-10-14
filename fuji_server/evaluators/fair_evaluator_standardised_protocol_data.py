@@ -29,10 +29,13 @@ from fuji_server.models.standardised_protocol_data_output import StandardisedPro
 from fuji_server.helper.metadata_mapper import Mapper
 from urllib.parse import urlparse
 
+
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
+
     def evaluate(self):
 
-        self.result = StandardisedProtocolData(id=self.metric_number, metric_identifier=self.metric_identifier,
+        self.result = StandardisedProtocolData(id=self.metric_number,
+                                               metric_identifier=self.metric_identifier,
                                                metric_name=self.metric_name)
         metadata_output = data_output = None
         metadata_required = Mapper.REQUIRED_CORE_METADATA.value
@@ -49,15 +52,14 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
 
             if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
                 self.logger.log(self.fuji.LOG_SUCCESS,
-                    'FsF-A1-03D : Standard protocol for access to data object found: '+data_url_scheme)
+                                'FsF-A1-03D : Standard protocol for access to data object found: ' + data_url_scheme)
                 data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
                 self.setEvaluationCriteriumScore('FsF-A1-03D-1', 1, 'pass')
                 self.maturity = 3
                 test_status = 'pass'
                 score += 1
         else:
-            self.logger.info(
-                'FsF-A1-03D : NO content (data) identifier is given in metadata')
+            self.logger.info('FsF-A1-03D : NO content (data) identifier is given in metadata')
 
         self.score.earned = score
         self.result.score = self.score

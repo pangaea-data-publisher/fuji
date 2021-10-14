@@ -1,12 +1,5 @@
-import os
-
-import connexion
-from fuji_server.controllers.fair_check import FAIRCheck
-from fuji_server.helper.preprocessor import Preprocessor
-from fuji_server.models.body import Body  # noqa: E501
-from fuji_server.models.fair_results import FAIRResults  # noqa: E501
-from fuji_server.helper.identifier_helper import IdentifierHelper
-
+# -*- coding: utf-8 -*-
+################################################################################
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -28,15 +21,24 @@ from fuji_server.helper.identifier_helper import IdentifierHelper
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+################################################################################
 
 import datetime
+import os
+import connexion
+from fuji_server.controllers.fair_check import FAIRCheck
+from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.models.body import Body  # noqa: E501
+from fuji_server.models.fair_results import FAIRResults  # noqa: E501
+from fuji_server.helper.identifier_helper import IdentifierHelper
+
 
 def assess_by_id(body):  # noqa: E501
     """assess_by_id
 
     Evaluate FAIRness of a data object based on its identifier # noqa: E501
 
-    :param body: 
+    :param body:
     :type body: dict | bytes
 
     :rtype: FAIRResults
@@ -46,16 +48,21 @@ def assess_by_id(body):  # noqa: E501
         debug = True
         results = []
         body = Body.from_dict(connexion.request.get_json())
-        identifier=body.object_identifier
+        identifier = body.object_identifier
         debug = body.test_debug
         metadata_service_endpoint = body.metadata_service_endpoint
         oaipmh_endpoint = body.oaipmh_endpoint
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
         logger = Preprocessor.logger
-        logger.info('Assessment target: '+identifier)
+        logger.info('Assessment target: ' + identifier)
         print('Assessment target: ', identifier, flush=True)
-        ft = FAIRCheck(uid=identifier, test_debug=debug, metadata_service_url = metadata_service_endpoint, metadata_service_type =metadata_service_type, use_datacite=usedatacite, oaipmh_endpoint =oaipmh_endpoint)
+        ft = FAIRCheck(uid=identifier,
+                       test_debug=debug,
+                       metadata_service_url=metadata_service_endpoint,
+                       metadata_service_type=metadata_service_type,
+                       use_datacite=usedatacite,
+                       oaipmh_endpoint=oaipmh_endpoint)
         # set target for remote logging
         remote_log_host, remote_log_path = Preprocessor.remote_log_host, Preprocessor.remote_log_path
         #print(remote_log_host, remote_log_path)
@@ -118,7 +125,8 @@ def assess_by_id(body):  # noqa: E501
                 debug_messages = {}
         ft.logger.handlers = [ft.logger.handlers[-1]]
         #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
-        timestmp = datetime.datetime.now().replace(microsecond=0).isoformat() + "Z" # use timestamp format from RFC 3339 as specified in openapi3
+        timestmp = datetime.datetime.now().replace(
+            microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
         metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
@@ -126,6 +134,13 @@ def assess_by_id(body):  # noqa: E501
         if ft.pid_url:
             idhelper = IdentifierHelper(ft.pid_url)
             request['normalized_object_identifier'] = idhelper.get_normalized_id()
-        final_response = FAIRResults(request = request,timestamp= timestmp, software_version=ft.FUJI_VERSION,test_id= ft.test_id, metric_version=metric_version, metric_specification=metric_spec, total_metrics=totalmetrics, results=results, summary=summary)
+        final_response = FAIRResults(request=request,
+                                     timestamp=timestmp,
+                                     software_version=ft.FUJI_VERSION,
+                                     test_id=ft.test_id,
+                                     metric_version=metric_version,
+                                     metric_specification=metric_spec,
+                                     total_metrics=totalmetrics,
+                                     results=results,
+                                     summary=summary)
     return final_response
-

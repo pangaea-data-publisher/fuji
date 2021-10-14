@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,10 +27,11 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 from fuji_server.helper.preprocessor import Preprocessor
 
+
 class IdentifierHelper:
     IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
-    identifier_schemes=[]
-    preferred_schema = None # the preferred schema
+    identifier_schemes = []
+    preferred_schema = None  # the preferred schema
     identifier_url = None
     identifier = None
     method = 'idutils'
@@ -44,7 +46,7 @@ class IdentifierHelper:
                 #idutils.LANDING_URLS['lsid'] ='http://www.lsid.info/resolver/?lsid={pid}'
                 #workaround to recognize https purls
                 if 'https://purl.' in self.identifier:
-                    self.identifier = self.identifier.replace('https:','http:')
+                    self.identifier = self.identifier.replace('https:', 'http:')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
                 # idutils check
                 self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
@@ -59,8 +61,9 @@ class IdentifierHelper:
                             if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
                                 self.identifier_schemes = [found_prefix, 'identifiers_org']
                                 self.preferred_schema = found_prefix
-                            self.identifier_url = str(self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace('{$id}', found_suffix)
-                            self.normalized_id = found_prefix.lower()+':'+found_suffix
+                            self.identifier_url = str(self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace(
+                                '{$id}', found_suffix)
+                            self.normalized_id = found_prefix.lower() + ':' + found_suffix
                 else:
                     # preferred schema
                     if self.identifier_schemes:
@@ -69,9 +72,10 @@ class IdentifierHelper:
                                 if 'url' in self.identifier_schemes:  # ['doi', 'url']
                                     self.identifier_schemes.remove('url')
                             self.preferred_schema = self.identifier_schemes[0]
-                            self.normalized_id = idutils.normalize_pid(self.identifier,self.preferred_schema)
-                        self.identifier_url = idutils.to_url(self.identifier,self.preferred_schema)
-                if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys():
+                            self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
+                        self.identifier_url = idutils.to_url(self.identifier, self.preferred_schema)
+                if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
+                ):
                     self.is_persistent = True
 
     def get_preferred_schema(self):

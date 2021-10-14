@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -64,7 +65,7 @@ class MetadataProvider(ABC):
             vocabs = Preprocessor.getLinkedVocabs()
             lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
             for ns in namespaces:
-                if ns+'/' in lod_namespaces:
-                    self.namespaces.append(ns+'/')
-                elif ns+'#' in lod_namespaces:
-                    self.namespaces.append(ns+'#')
+                if ns + '/' in lod_namespaces:
+                    self.namespaces.append(ns + '/')
+                elif ns + '#' in lod_namespaces:
+                    self.namespaces.append(ns + '#')

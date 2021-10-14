@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class SemanticVocabularyOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, namespace: str=None, is_namespace_active: bool=False):  # noqa: E501
+
+    def __init__(self, namespace: str = None, is_namespace_active: bool = False):  # noqa: E501
         """SemanticVocabularyOutputInner - a model defined in Swagger
 
         :param namespace: The namespace of this SemanticVocabularyOutputInner.  # noqa: E501
@@ -22,15 +23,9 @@ class SemanticVocabularyOutputInner(Model):
         :param is_namespace_active: The is_namespace_active of this SemanticVocabularyOutputInner.  # noqa: E501
         :type is_namespace_active: bool
         """
-        self.swagger_types = {
-            'namespace': str,
-            'is_namespace_active': bool
-        }
+        self.swagger_types = {'namespace': str, 'is_namespace_active': bool}
 
-        self.attribute_map = {
-            'namespace': 'namespace',
-            'is_namespace_active': 'is_namespace_active'
-        }
+        self.attribute_map = {'namespace': 'namespace', 'is_namespace_active': 'is_namespace_active'}
         self._namespace = namespace
         self._is_namespace_active = is_namespace_active
 

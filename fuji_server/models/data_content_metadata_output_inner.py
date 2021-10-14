@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,11 @@ class DataContentMetadataOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, descriptor: str=None, descriptor_value: str=None, matches_content: bool=False):  # noqa: E501
+
+    def __init__(self,
+                 descriptor: str = None,
+                 descriptor_value: str = None,
+                 matches_content: bool = False):  # noqa: E501
         """DataContentMetadataOutputInner - a model defined in Swagger
 
         :param descriptor: The descriptor of this DataContentMetadataOutputInner.  # noqa: E501
@@ -24,11 +28,7 @@ class DataContentMetadataOutputInner(Model):
         :param matches_content: The matches_content of this DataContentMetadataOutputInner.  # noqa: E501
         :type matches_content: bool
         """
-        self.swagger_types = {
-            'descriptor': str,
-            'descriptor_value': str,
-            'matches_content': bool
-        }
+        self.swagger_types = {'descriptor': str, 'descriptor_value': str, 'matches_content': bool}
 
         self.attribute_map = {
             'descriptor': 'descriptor',

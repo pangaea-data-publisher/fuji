@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from connexion.apps.flask_app import FlaskJSONEncoder
 import six
 

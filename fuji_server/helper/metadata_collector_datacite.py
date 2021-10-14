@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,7 +27,7 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
-class MetaDataCollectorDatacite (MetaDataCollector):
+class MetaDataCollectorDatacite(MetaDataCollector):
 
     exclude_conversion: List[str]
 
@@ -42,7 +43,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
             self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
             requestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.datacite_json)
-            neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_source, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
             if ext_meta:
                 try:
                     dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
@@ -55,7 +56,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                             # default type of creator is []
                             if isinstance(first, list) and isinstance(last, list):
                                 if len(first) == len(last):
-                                    names = [i + " " + j for i, j in zip(first, last)]
+                                    names = [i + ' ' + j for i, j in zip(first, last)]
                                     dcite_metadata['creator'] = names
 
                         if dcite_metadata.get('related_resources'):

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class DataProvenanceOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, is_available: bool=True, provenance_metadata: List[Dict[str, str]]=None):  # noqa: E501
+
+    def __init__(self, is_available: bool = True, provenance_metadata: List[Dict[str, str]] = None):  # noqa: E501
         """DataProvenanceOutputInner - a model defined in Swagger
 
         :param is_available: The is_available of this DataProvenanceOutputInner.  # noqa: E501
@@ -22,15 +23,9 @@ class DataProvenanceOutputInner(Model):
         :param provenance_metadata: The provenance_metadata of this DataProvenanceOutputInner.  # noqa: E501
         :type provenance_metadata: List[Dict[str, str]]
         """
-        self.swagger_types = {
-            'is_available': bool,
-            'provenance_metadata': List[Dict[str, str]]
-        }
+        self.swagger_types = {'is_available': bool, 'provenance_metadata': List[Dict[str, str]]}
 
-        self.attribute_map = {
-            'is_available': 'is_available',
-            'provenance_metadata': 'provenance_metadata'
-        }
+        self.attribute_map = {'is_available': 'is_available', 'provenance_metadata': 'provenance_metadata'}
         self._is_available = is_available
         self._provenance_metadata = provenance_metadata
 

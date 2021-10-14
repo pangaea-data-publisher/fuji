@@ -21,10 +21,10 @@ setup(
     long_description = long_description, # add contents of README.md
     long_description_content_type ='text/markdown',  # This is important to activate markdown!
     url='https://github.com/JuDFTteam/masci-tools',
-    author="See AUTHORS file",
-    author_email="rhuber@marum.de",
+    author='See AUTHORS file',
+    author_email='rhuber@marum.de',
     maintainer='Robert Huber',
-    maintainer_email="rhuber@marum.de",
+    maintainer_email='rhuber@marum.de',
     license='MIT License',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -37,8 +37,8 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Topic :: Scientific/Engineering :: Information Analysis'
     ],
-    keywords=["PANGAEA", "FAIRsFAIR", "FAIR Principles", "Data Object Assessment","Swagger",'FAIR', 'Research Data', 'FAIR data', 'Metadata harvesting'],
-    packages=find_packages(exclude=['tests*', "logs"]),
+    keywords=['PANGAEA', 'FAIRsFAIR', 'FAIR Principles', 'Data Object Assessment','Swagger','FAIR', 'Research Data', 'FAIR data', 'Metadata harvesting'],
+    packages=find_packages(exclude=['tests*', 'logs']),
     package_data={'': ['data/*.*','yaml/*.yaml','config/*']},
     include_package_data=True,
     install_requires=[
@@ -76,7 +76,8 @@ setup(
         'docs': [
             'Sphinx',
             'docutils',
-            'sphinx_rtd_theme'
+            'sphinx_rtd_theme',
+            'sphinxcontrib-swaggerdoc'
         ],
         'testing': [
             'pytest>=4.3.1',
@@ -84,7 +85,7 @@ setup(
             'pytest-xprocess'
         ],
         'bokeh-plots': [
-            'bokeh' 
+            'bokeh'
         ]
     },
     entry_points={
