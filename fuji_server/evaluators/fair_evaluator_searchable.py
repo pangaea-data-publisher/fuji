@@ -42,25 +42,32 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         # DataCite registry, Google Dataset search, Mendeley data etc..
         #Using the DataCite API in case content negotiation does not work
         registries_supported = []
-        #DataCite only for DOIs
-        pidhelper = IdentifierHelper(self.fuji.pid_url)
-        if self.fuji.pid_scheme:
-            if 'doi' in self.fuji.pid_scheme:
-                datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
-                datacite_registry_helper.query(pidhelper.normalized_id)
-                if datacite_registry_helper.islisted:
-                    registries_supported.append(datacite_registry_helper.source)
-        if not registries_supported:
-            google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
-            google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-            if google_registry_helper.islisted:
-                registries_supported.append(google_registry_helper.source)
-        if not registries_supported:
-            mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
-            mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-            if mendeley_registry_helper.islisted:
-                registries_supported.append(mendeley_registry_helper.source)
+        if self.fuji.pid_url or self.fuji.landing_url:
+            #DataCite only for DOIs
+            pidhelper = IdentifierHelper(self.fuji.pid_url)
+            if self.fuji.pid_scheme:
+                if 'doi' in self.fuji.pid_scheme:
+                    datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
+                    datacite_registry_helper.query(pidhelper.normalized_id)
+                    if datacite_registry_helper.islisted:
+                        registries_supported.append(datacite_registry_helper.source)
+            if not registries_supported:
+                google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
+                google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+                if google_registry_helper.islisted:
+                    registries_supported.append(google_registry_helper.source)
+            else:
+                self.logger.info('FsF-F4-01M : Dataset already found in registry therefore skipping Google Dataset Search Cache query')
 
+            if not registries_supported:
+                mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
+                mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+                if mendeley_registry_helper.islisted:
+                    registries_supported.append(mendeley_registry_helper.source)
+            else:
+                self.logger.info('FsF-F4-01M : Dataset already found in registry therefore skipping Mendeley Data query')
+        else:
+            self.logger.warning('FsF-F4-01M : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests')
 
         return registries_supported
 

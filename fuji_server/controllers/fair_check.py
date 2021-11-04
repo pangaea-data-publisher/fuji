@@ -209,8 +209,8 @@ class FAIRCheck:
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
         #not needed locally ... but init class variable
-        Preprocessor.get_google_data_dois()
-        Preprocessor.get_google_data_urls()
+        #Preprocessor.get_google_data_dois()
+        #Preprocessor.get_google_data_urls()
 
 
     @staticmethod

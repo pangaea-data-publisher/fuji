@@ -81,44 +81,6 @@ class Preprocessor(object):
         except Exception as e:
             cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host+' '+path))
 
-    @classmethod
-    def get_google_data_dois(cls):
-        if not cls.google_data_dois:
-            cls.retrieve_google_data_dois()
-        return cls.google_data_dois
-
-    @classmethod
-    def retrieve_google_data_dois(cls):
-        google_doi_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_dois.txt')
-        if not os.path.exists(google_doi_path):
-            cls.google_data_dois = []
-            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_doi_path))
-        else:
-            with open(google_doi_path,'r') as f:
-                for doiline in f:
-                    cls.google_data_dois.append(re.sub(r"\n$", "",doiline))
-                #cls.google_data_dois = f.read().splitlines()
-        cls.google_data_dois = tuple(cls.google_data_dois)
-
-    @classmethod
-    def get_google_data_urls(cls):
-        if not cls.google_data_urls:
-            cls.retrieve_google_data_urls()
-        return cls.google_data_urls
-
-    @classmethod
-    def retrieve_google_data_urls(cls):
-        google_url_path = os.path.join(cls.fuji_server_dir, 'data', 'google_search_urls.txt')
-        if not os.path.exists(google_url_path):
-            cls.google_data_urls = []
-            cls.logger.warning('F-UJI is not properly installed, Google Search DOI File does not exist : ' + str(google_url_path))
-        else:
-            with open(google_url_path,'r') as f:
-                for urlline in f:
-                    cls.google_data_urls.append(re.sub(r"\n$", "",urlline))
-                #cls.google_data_urls = f.read().splitlines()
-        cls.google_data_urls=tuple(cls.google_data_urls)
-
 
     @classmethod
     def get_identifiers_org_data(cls):

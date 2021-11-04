@@ -1,6 +1,7 @@
 import enum
 import logging
 import sys
+import sqlite3 as sl
 
 import requests as re
 import pandas as pd
@@ -15,10 +16,32 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
     def __init__(self,logger: logging.Logger = None):
         self.logger = logger
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
+        self.google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_cache.db')
 
     def query(self, pidlist):
         #print(sys.getsizeof(Preprocessor.google_data_dois))
+        pidlist = [p for p in pidlist if p is not None]
         response = None
+        found_google_links = None
+        if not os.path.exists(self.google_cache_db_path):
+            self.logger.warning('FsF-F4-01M : Google Search Cache DB does not exist, see F-UJI installation instructions')
+        else:
+            try:
+                con = sl.connect(self.google_cache_db_path )
+                with con:
+                    dbquery = "SELECT LOWER(uri) FROM google_links where uri IN(" + ', '.join(
+                        f"'{str(pid).lower()}'" for pid in pidlist) + ")"
+
+                    dbres = con.execute(dbquery)
+                    found_google_links = dbres.fetchall()
+            except Exception as e:
+                self.logger.warning(
+                    'FsF-F4-01M : Google Search Cache DB Query Error: -:'+str(e))
+
+        if found_google_links:
+
+            self.islisted = True
+        '''
         if not Preprocessor.google_data_dois:
             self.logger.warning('FsF-F4-01M : Google Search DOI File does not exist, see F-UJI installation instructions')
         if not Preprocessor.google_data_urls:
@@ -33,11 +56,11 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 elif str(pid).lower() in Preprocessor.google_data_urls:
                     self.islisted = True
                     break
-
+        '''
         if self.islisted:
-            self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' + str(pid))
+            self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' + str(found_google_links))
         else:
-            self.logger.info('FsF-F4-01M : Identifier not listed in Google Dataset Search cache -:' + str(pid))
+            self.logger.info('FsF-F4-01M : Identifier not listed in Google Dataset Search cache -:' + str(pidlist))
             '''
         try:
             res= apiresponse = re.get(self.apiURI+'/'+pid)
@@ -67,3 +90,12 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         fd = open(google_doi_path, "w")
         fd.write('\n'.join(google_doi_set))
         fd.close()
+
+    def create_cache_db(self, google_cache_file):
+        gs = pd.read_csv(google_cache_file)
+        #google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data','google_cache.db')
+        con = sl.connect(self.google_cache_db_path )
+        pd.DataFrame(pd.concat([gs['url'],gs['doi']]), columns=['uri']).drop_duplicates().to_sql('google_links', con, if_exists='replace', index=False)
+        with con:
+            data = con.execute("CREATE INDEX google_uri_index ON google_links (uri) ")
+        con.close()
