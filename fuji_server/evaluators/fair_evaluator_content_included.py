@@ -32,11 +32,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         self.result = IdentifierIncluded(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = IdentifierIncludedOutput()
 
-        id_object = self.fuji.metadata_merged.get('object_identifier')
-        self.output.object_identifier_included = id_object
+        #id_object = self.fuji.metadata_merged.get('object_identifier')
+        #self.output.object_identifier_included = id_object
         contents = self.fuji.metadata_merged.get('object_content_identifier')
-        if id_object is not None:
-            self.logger.info('FsF-F3-01M : Object identifier specified -: {}'.format(id_object))
+        #if id_object is not None:
+        #    self.logger.info('FsF-F3-01M : Object identifier specified -: {}'.format(id_object))
         score = 0
         content_list = []
         if contents:
