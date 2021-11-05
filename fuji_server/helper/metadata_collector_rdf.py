@@ -174,7 +174,7 @@ class MetaDataCollectorRdf (MetaDataCollector):
             self.logger.info('FsF-F2-01M : RDF Graph seems to represent a OWL Ontology')
             ont_metadata=self.get_metadata(graph,ontologies[0],type='DefinedTermSet')
         else:
-            ontologies = list(graph[: RDF.type: SKOS.Collection])
+            ontologies = list(graph[: RDF.type: SKOS.ConceptScheme]) or list(graph[: RDF.type: SKOS.Collection])
             if len(ontologies)>0:
                 self.logger.info('FsF-F2-01M : RDF Graph seems to represent a SKOS Ontology')
                 ont_metadata = self.get_metadata(graph, ontologies[0], type='DefinedTermSet')

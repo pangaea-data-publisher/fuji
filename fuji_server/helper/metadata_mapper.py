@@ -79,7 +79,7 @@ class Mapper(Enum):
     # Schema.org
     # conditionsOfAccess, usageInfo?, isAccessibleForFree
     ## A license document that applies to this content, typically indicated by URL.
-    SCHEMAORG_MAPPING = '{title: name, object_type: "@type", '\
+    SCHEMAORG_MAPPING = '{title: name[*]."@value" || name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished || dateCreated, '\
                             'modified_date: dateModified."@value" ||dateModified, ' \
                            'creator: creator[?"@type" ==\'Person\'].name || creator[?"@type" ==\'Organization\'].name || author[*].name || creator.name || author.name, ' \
