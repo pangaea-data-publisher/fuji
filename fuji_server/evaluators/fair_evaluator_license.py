@@ -21,14 +21,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import Levenshtein
 
+import Levenshtein
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
-from fuji_server.models.license_output import LicenseOutput
 from fuji_server.models.license_output_inner import LicenseOutputInner
 import idutils
-from fuji_server.helper.metadata_mapper import Mapper
 
 
 class FAIREvaluatorLicense(FAIREvaluator):

@@ -23,7 +23,6 @@
 # SOFTWARE.
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-
 from fuji_server.models.data_file_format import DataFileFormat
 from fuji_server.models.data_file_format_output import DataFileFormatOutput
 from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner

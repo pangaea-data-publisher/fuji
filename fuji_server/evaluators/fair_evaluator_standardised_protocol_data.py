@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import List, Any
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.standardised_protocol_data import StandardisedProtocolData

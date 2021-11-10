@@ -24,7 +24,6 @@
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
-from fuji_server.models.semantic_vocabulary_output import SemanticVocabularyOutput
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
 
 

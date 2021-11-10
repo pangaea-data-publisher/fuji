@@ -26,7 +26,6 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.related_resource import RelatedResource
 from fuji_server.models.related_resource_output import RelatedResourceOutput
-#from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner
 
 
 class FAIREvaluatorRelatedResources(FAIREvaluator):
