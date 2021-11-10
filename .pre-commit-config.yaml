@@ -35,7 +35,7 @@ repos:
     verbose: true
     types: [python]
     language: system
-    exclude: '^(docs/)|(examples/)'
+    exclude: '^(docs/)|(examples/)|(fuji_server/models/)'
 
   - id: version-number
     name: Check version numbers
