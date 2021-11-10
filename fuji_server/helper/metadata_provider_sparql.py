@@ -22,11 +22,8 @@
 # SOFTWARE.
 
 from urllib.error import HTTPError
-
 import rdflib
 from SPARQLWrapper import SPARQLWrapper, SPARQLExceptions, RDFXML
-
-from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
 from fuji_server.helper.metadata_provider import MetadataProvider
 
 

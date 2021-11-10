@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import configparser as ConfigParser
-import io
-import json
-import logging
 import os
 from pathlib import Path
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
 import gc
-import tracemalloc
+
 # os
 #os.environ['TIKA_SERVER_JAR'] = 'file://Program Files\tika\tika-server-1.24.1.jar'
 

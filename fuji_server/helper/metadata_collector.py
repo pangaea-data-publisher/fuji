@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-import enum
-import logging
-from typing import Optional
 
-from urlextract import URLExtract
-
-from fuji_server.helper import metadata_mapper
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -28,6 +22,11 @@ from fuji_server.helper import metadata_mapper
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import enum
+import logging
+from typing import Optional
+from urlextract import URLExtract
+from fuji_server.helper import metadata_mapper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 

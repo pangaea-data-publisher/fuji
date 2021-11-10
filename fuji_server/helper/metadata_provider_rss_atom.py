@@ -22,8 +22,6 @@
 # SOFTWARE.
 
 from fuji_server.helper.metadata_provider import MetadataProvider
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-from lxml import etree
 import feedparser
 
 

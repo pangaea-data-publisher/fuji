@@ -22,9 +22,7 @@
 # SOFTWARE.
 
 from abc import ABC, abstractmethod
-
 from urlextract import URLExtract
-
 from fuji_server.helper.preprocessor import Preprocessor
 
 

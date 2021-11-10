@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-import enum
 import logging
-import sys
 import sqlite3 as sl
-
-import requests as re
 import pandas as pd
 import os
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue

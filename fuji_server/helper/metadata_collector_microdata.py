@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-import logging
-
 import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-
 
 class MetaDataCollectorMicroData(MetaDataCollector):
     source_name = None

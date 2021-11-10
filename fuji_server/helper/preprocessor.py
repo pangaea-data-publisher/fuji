@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-import logging
-import os
-import re
-from typing import Dict, Any
-from urllib.parse import urlparse
-import requests
+
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -29,6 +23,12 @@ import requests
 # SOFTWARE.
 
 import yaml
+import json
+import logging
+import os
+from typing import Dict, Any
+from urllib.parse import urlparse
+import requests
 
 
 class Preprocessor(object):
