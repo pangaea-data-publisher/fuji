@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-import logging
-import jmespath
-import rdflib
 
-from fuji_server.helper.metadata_collector import MetaDataCollector
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,10 +21,13 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from fuji_server.helper.preprocessor import Preprocessor
 
+import json
+import jmespath
+from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-from urlextract import URLExtract
+
 
 
 class MetaDataCollectorSchemaOrg(MetaDataCollector):

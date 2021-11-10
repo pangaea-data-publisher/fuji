@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-import logging
-
-import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class MetaDataCollectorOpenGraph(MetaDataCollector):

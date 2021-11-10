@@ -4,7 +4,6 @@ A simple script that checks the consistency between the version number specified
 setup.json, and the version in the __init__.py file.
 """
 
-import json
 import os
 import re
 import sys

@@ -2,7 +2,6 @@
 import enum
 import logging
 
-
 class MetaDataCatalogue(object):
 
     apiURI = None

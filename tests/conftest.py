@@ -8,9 +8,7 @@ import configparser
 
 from pprint import pprint
 #from fuji_server import main
-import connexion
 from pathlib import Path
-from flask.testing import FlaskClient
 from fuji_server.app.fuji_app import create_fuji_app
 
 pytest_plugins = ()

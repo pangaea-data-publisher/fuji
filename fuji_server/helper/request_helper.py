@@ -22,16 +22,13 @@
 # SOFTWARE.
 import gzip
 import json
-import logging
 import mimetypes
 import re
 import sys
-import traceback
 from enum import Enum
 import extruct
 import lxml
 import rdflib
-import requests
 import urllib
 import ssl
 from requests.packages.urllib3.exceptions import *
