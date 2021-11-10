@@ -112,13 +112,6 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_maturity_max = metric_test.get('metric_test_maturity')
                 self.metric_tests[metric_test.get('metric_test_identifier')] = evaluation_criterium
 
-<<<<<<< HEAD
-    def setEvaluationCriteriumScore(self,
-                                    criterium_id,
-                                    metric_test_score=0,
-                                    metric_test_status='fail',
-                                    metric_test_maturity=None):
-=======
     def setEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0, metric_test_status = 'fail', metric_test_maturity = None):
         """Set the evaluation criterium score of each evaluator.
 
@@ -132,7 +125,6 @@ class FAIREvaluator:
             the default is 'fail'
         metric_test_maturity : int, optional
         """
->>>>>>> feature/add-docs-fuji-evaluators
         evaluation_criterium = self.metric_tests.get(criterium_id)
         if evaluation_criterium is not None:
             if metric_test_score != evaluation_criterium.metric_test_score_max:

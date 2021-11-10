@@ -42,9 +42,6 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         formal metadata, e.g., RDF, JSON-LD, is accessible.
     """
     def evaluate(self):
-
-    def evaluate(self):
-
         self.result = FormalMetadata(id=self.metric_number,
                                      metric_identifier=self.metric_identifier,
                                      metric_name=self.metric_name)
