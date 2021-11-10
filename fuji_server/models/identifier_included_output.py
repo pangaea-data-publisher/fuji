@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,27 +15,19 @@ class IdentifierIncludedOutput(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 object_identifier_included: str = None,
-                 object_content_identifier_included: List[IdentifierIncludedOutputInner] = None):  # noqa: E501
+    def __init__(self, object_content_identifier_included: List[IdentifierIncludedOutputInner]=None):  # noqa: E501
         """IdentifierIncludedOutput - a model defined in Swagger
 
-        :param object_identifier_included: The object_identifier_included of this IdentifierIncludedOutput.  # noqa: E501
-        :type object_identifier_included: str
         :param object_content_identifier_included: The object_content_identifier_included of this IdentifierIncludedOutput.  # noqa: E501
         :type object_content_identifier_included: List[IdentifierIncludedOutputInner]
         """
         self.swagger_types = {
-            'object_identifier_included': str,
             'object_content_identifier_included': List[IdentifierIncludedOutputInner]
         }
 
         self.attribute_map = {
-            'object_identifier_included': 'object_identifier_included',
             'object_content_identifier_included': 'object_content_identifier_included'
         }
-        self._object_identifier_included = object_identifier_included
         self._object_content_identifier_included = object_content_identifier_included
 
     @classmethod
@@ -50,27 +42,6 @@ class IdentifierIncludedOutput(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def object_identifier_included(self) -> str:
-        """Gets the object_identifier_included of this IdentifierIncludedOutput.
-
-
-        :return: The object_identifier_included of this IdentifierIncludedOutput.
-        :rtype: str
-        """
-        return self._object_identifier_included
-
-    @object_identifier_included.setter
-    def object_identifier_included(self, object_identifier_included: str):
-        """Sets the object_identifier_included of this IdentifierIncludedOutput.
-
-
-        :param object_identifier_included: The object_identifier_included of this IdentifierIncludedOutput.
-        :type object_identifier_included: str
-        """
-
-        self._object_identifier_included = object_identifier_included
-
-    @property
     def object_content_identifier_included(self) -> List[IdentifierIncludedOutputInner]:
         """Gets the object_content_identifier_included of this IdentifierIncludedOutput.
 
@@ -81,8 +52,7 @@ class IdentifierIncludedOutput(Model):
         return self._object_content_identifier_included
 
     @object_content_identifier_included.setter
-    def object_content_identifier_included(self,
-                                           object_content_identifier_included: List[IdentifierIncludedOutputInner]):
+    def object_content_identifier_included(self, object_content_identifier_included: List[IdentifierIncludedOutputInner]):
         """Sets the object_content_identifier_included of this IdentifierIncludedOutput.
 
 

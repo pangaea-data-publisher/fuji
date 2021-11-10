@@ -112,7 +112,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = 'v1.4.0'
+    FUJI_VERSION = 'v1.4.1'
 
     def __init__(self,
                  uid,
@@ -222,8 +222,8 @@ class FAIRCheck:
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
         #not needed locally ... but init class variable
-        Preprocessor.get_google_data_dois()
-        Preprocessor.get_google_data_urls()
+        #Preprocessor.get_google_data_dois()
+        #Preprocessor.get_google_data_urls()
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
