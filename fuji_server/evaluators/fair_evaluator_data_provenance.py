@@ -30,7 +30,19 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 
 class FAIREvaluatorDataProvenance(FAIREvaluator):
+    """
+    A class to evaluate metadata that includes provenance information about data creation or generation (R1.2-01M).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    -------
+    evaluate()
+        This method will evaluate the provenance information such as properties representing data creation,
+        e.g., creator, contributor, modification date, version, source, and relations that indicate
+        data creation activities. Moreover, it evaluates whether provenance information is available in
+        a machine-readabe version such PROV-O or PAV
+    """
     def evaluate(self):
 
         self.result = DataProvenance(id=self.metric_number,

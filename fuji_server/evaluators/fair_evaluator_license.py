@@ -32,8 +32,19 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 
 class FAIREvaluatorLicense(FAIREvaluator):
+    """
+    A class to evaluate the license information under which data can be reused (R1.1-01M).
+    A child class of FAIREvaluator.
+    ...
 
-    def isLicense(self, value, metric_id):
+    Methods
+    ------
+    evaluate()
+        This method will evaluate metadata information about license that is represented by
+        using an appropriate metadata element and machine readable license
+
+    """
+    def isLicense (self, value, metric_id):
         islicense = False
         isurl = idutils.is_url(value)
         spdx_html = None

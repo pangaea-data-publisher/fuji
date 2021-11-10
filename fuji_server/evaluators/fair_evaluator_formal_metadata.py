@@ -31,6 +31,18 @@ from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutput
 
 
 class FAIREvaluatorFormalMetadata(FAIREvaluator):
+    """
+    A class to evaluate that the metadata is represented using a formal knowledge representation language (I1-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the metadata is parsable and has a structured data embedded in the landing page or
+        formal metadata, e.g., RDF, JSON-LD, is accessible.
+    """
+    def evaluate(self):
 
     def evaluate(self):
 

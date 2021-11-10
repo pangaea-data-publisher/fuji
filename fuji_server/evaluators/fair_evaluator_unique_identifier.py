@@ -34,7 +34,16 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 
 class FAIREvaluatorUniqueIdentifier(FAIREvaluator):
+    """
+    A class to evaluate the globally unique identifier of the data (F1-01D). A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that folows a proper syntax or
+        identifier is resolvable and follows a defined unique identifier syntax (URL, IRI).
+    """
     def evaluate(self):
         # ======= CHECK IDENTIFIER UNIQUENESS =======
         self.result = Uniqueness(id=self.metric_number,

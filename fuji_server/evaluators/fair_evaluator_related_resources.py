@@ -30,7 +30,17 @@ from fuji_server.models.related_resource_output import RelatedResourceOutput
 
 
 class FAIREvaluatorRelatedResources(FAIREvaluator):
+    """
+    A class to evaluate that the metadata links between the data and its related entities (I3-01M).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    -------
+    evaluate()
+        This method will evaluate the links between metadata whether they relate explicitly in metadata and
+        they relate by machine-readable links/identifier.
+    """
     def evaluate(self):
         self.result = RelatedResource(id=self.metric_number,
                                       metric_identifier=self.metric_identifier,

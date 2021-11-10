@@ -30,6 +30,18 @@ from fuji_server.models.community_endorsed_standard_output_inner import Communit
 
 
 class FAIREvaluatorCommunityMetadata(FAIREvaluator):
+    """
+    A class to evaluate metadata that follows a standard recommended by the target research of the data (R.13-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    -------
+    evaluate()
+        This method will evaluate whether the metadata follows community specific metadata standard listed in, e.g., re3data,
+        or metadata follows community specific metadata standard using namespaces or schemas found in the provided metadata
+        or the metadata service outputs.
+    """
 
     def evaluate(self):
         self.result = CommunityEndorsedStandard(id=self.metric_number,
