@@ -4,20 +4,23 @@ Configurations and fixtures for fuji_server tests
 """
 import os
 import pytest
+import configparser
+
 from pprint import pprint
 #from fuji_server import main
 import connexion
 from pathlib import Path
 from flask.testing import FlaskClient
+from fuji_server.app.fuji_app import create_fuji_app
 
 pytest_plugins = ()
 
-main_dir = Path(__file__).parent.parent
-swagger_filepath = os.path.join(main_dir, 'fuji_server', 'yaml', 'swagger.yaml')
-flask_app = connexion.FlaskApp(__name__)
-flask_app.add_api(swagger_filepath)
+THIS_PATH = Path(__file__).parent
+TEST_CONFIG_FILE_PATH = os.path.join(THIS_PATH, 'test_server.ini')
+config = configparser.ConfigParser()
+config.read(TEST_CONFIG_FILE_PATH)
+flask_app = create_fuji_app(config)
 flask_app.testing = True
-
 
 @pytest.fixture(scope='session')
 def fujiclient():

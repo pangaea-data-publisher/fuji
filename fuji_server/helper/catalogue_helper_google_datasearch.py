@@ -27,19 +27,19 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         response = None
         found_google_links = None
         if not os.path.exists(self.google_cache_db_path):
-            self.logger.warning('FsF-F4-01M : Google Search Cache DB does not exist, see F-UJI installation instructions')
+            self.logger.warning(
+                'FsF-F4-01M : Google Search Cache DB does not exist, see F-UJI installation instructions')
         else:
             try:
-                con = sl.connect(self.google_cache_db_path )
+                con = sl.connect(self.google_cache_db_path)
                 with con:
-                    dbquery = "SELECT LOWER(uri) FROM google_links where uri IN(" + ', '.join(
-                        f"'{str(pid).lower()}'" for pid in pidlist) + ")"
+                    dbquery = 'SELECT LOWER(uri) FROM google_links where uri IN(' + ', '.join(
+                        f"'{str(pid).lower()}'" for pid in pidlist) + ')'
 
                     dbres = con.execute(dbquery)
                     found_google_links = dbres.fetchall()
             except Exception as e:
-                self.logger.warning(
-                    'FsF-F4-01M : Google Search Cache DB Query Error: -:'+str(e))
+                self.logger.warning('FsF-F4-01M : Google Search Cache DB Query Error: -:' + str(e))
 
         if found_google_links:
 
@@ -63,7 +63,8 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                     break
         '''
         if self.islisted:
-            self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' + str(found_google_links))
+            self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' +
+                             str(found_google_links))
         else:
             self.logger.info('FsF-F4-01M : Identifier not listed in Google Dataset Search cache -:' + str(pidlist))
             '''
@@ -98,8 +99,11 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
     def create_cache_db(self, google_cache_file):
         gs = pd.read_csv(google_cache_file)
         #google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data','google_cache.db')
-        con = sl.connect(self.google_cache_db_path )
-        pd.DataFrame(pd.concat([gs['url'],gs['doi']]), columns=['uri']).drop_duplicates().to_sql('google_links', con, if_exists='replace', index=False)
+        con = sl.connect(self.google_cache_db_path)
+        pd.DataFrame(pd.concat([gs['url'], gs['doi']]), columns=['uri']).drop_duplicates().to_sql('google_links',
+                                                                                                  con,
+                                                                                                  if_exists='replace',
+                                                                                                  index=False)
         with con:
-            data = con.execute("CREATE INDEX google_uri_index ON google_links (uri) ")
+            data = con.execute('CREATE INDEX google_uri_index ON google_links (uri) ')
         con.close()
