@@ -28,7 +28,17 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 
 class FAIREvaluatorCoreMetadata(FAIREvaluator):
+    """
+    A class to evaluate the metadata that includes core descriptive elements (creator, title, data identifier, publisher, publication date, summary, and
+    keywords) to support data finding (F2-01M). A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate metadata whether it specifies the core metadata, e.g., creator, title, publication date, etc.,
+        through appropriate metadata fields.
+    """
     def evaluate(self):
         if self.fuji.landing_url is None:
             self.logger.warning(

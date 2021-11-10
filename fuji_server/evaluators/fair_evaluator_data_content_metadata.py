@@ -34,6 +34,16 @@ from tika import parser
 
 
 class FAIREvaluatorDataContentMetadata(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata specifies the content of the data (R1.01MD). A child class of FAIREvaluator.
+    ...
+
+    Methods
+    -------
+    evaluate()
+        This method will evaluate the metadata that specifies the content of the data, e.g., resource type and links. In addition, the metadata includes
+        verifiable data descriptor file info (size and type) and the measured variables observation types will also be evaluated.
+    """
 
     def evaluate(self):
         self.result = DataContentMetadata(id=self.metric_number,
