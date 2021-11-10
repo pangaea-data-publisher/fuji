@@ -6,23 +6,23 @@ def test_ui(fujiclient):
     print(response.data)
     assert response.status_code == 200
 
+def test_ui_break(fujiclient):
+    response = fujiclient.get('/fuji/500api/v1/ui/')
+    print(response.data)
+    assert response.status_code == 404
 
-#def test_ui2(client):
-#    response = client.get('/fuji/api/v1/ui/')
-#    print(response.data)
-#    assert response.status_code == 200
 
 
-def test_get_metrics(fujiclient, login_client):
+def test_get_metrics(fujiclient):#, login_client):
     #print(url_for('/fuji/api/v1/metrics'))
-    response = login_client(fujiclient)
-    assert response.status_code == 200
-    response = fujiclient.get('/fuji/api/v1/metrics')
+    #response = login_client(fujiclient)
+    #assert response.status_code == 200
+    response = fujiclient.get('/fuji/api/v1/metrics', headers={'Authorization': "Basic dXNlcm5hbWU6cGFzc3dvcmQ=", 'accept': 'application/json'})
     #, data=dict(
     #    username="username",
     #    password="password"
     #), follow_redirects=True)#  Authorization= "Basic dXNlcm5hbWU6cGFzc3dvcmQ=") # accept="application/json",
-    #print(response.json)
+    print(response.json)
     print(response)
     assert response.status_code == 200
 
