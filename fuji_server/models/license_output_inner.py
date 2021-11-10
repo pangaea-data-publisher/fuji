@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class LicenseOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, license: str=None, osi_approved: bool=False, details_url: str=None):  # noqa: E501
+
+    def __init__(self, license: str = None, osi_approved: bool = False, details_url: str = None):  # noqa: E501
         """LicenseOutputInner - a model defined in Swagger
 
         :param license: The license of this LicenseOutputInner.  # noqa: E501
@@ -24,17 +25,9 @@ class LicenseOutputInner(Model):
         :param details_url: The details_url of this LicenseOutputInner.  # noqa: E501
         :type details_url: str
         """
-        self.swagger_types = {
-            'license': str,
-            'osi_approved': bool,
-            'details_url': str
-        }
+        self.swagger_types = {'license': str, 'osi_approved': bool, 'details_url': str}
 
-        self.attribute_map = {
-            'license': 'license',
-            'osi_approved': 'OSI_approved',
-            'details_url': 'details_url'
-        }
+        self.attribute_map = {'license': 'license', 'osi_approved': 'OSI_approved', 'details_url': 'details_url'}
         self._license = license
         self._osi_approved = osi_approved
         self._details_url = details_url

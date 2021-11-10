@@ -24,7 +24,7 @@ setup(
     author="See AUTHORS file",
     author_email="rhuber@marum.de",
     maintainer='Robert Huber',
-    maintainer_email="rhuber@marum.de",
+    maintainer_email='rhuber@marum.de',
     license='MIT License',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -37,8 +37,8 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Topic :: Scientific/Engineering :: Information Analysis'
     ],
-    keywords=["PANGAEA", "FAIRsFAIR", "FAIR Principles", "Data Object Assessment","Swagger",'FAIR', 'Research Data', 'FAIR data', 'Metadata harvesting'],
-    packages=find_packages(exclude=['tests*', "logs"]),
+    keywords=['PANGAEA', 'FAIRsFAIR', 'FAIR Principles', 'Data Object Assessment','Swagger','FAIR', 'Research Data', 'FAIR data', 'Metadata harvesting'],
+    packages=find_packages(exclude=['tests*', 'logs']),
     package_data={'': ['data/*.*','yaml/*.yaml','config/*']},
     include_package_data=True,
     install_requires=[
@@ -70,13 +70,13 @@ setup(
         'pre-commit': [
             'pre-commit>=2.6.0',
             'yapf>=0.30.0',
-            'pylint>=2.5.2',
             'pytest>=4.3.1'
         ],
         'docs': [
             'Sphinx',
             'docutils',
-            'sphinx_rtd_theme'
+            'sphinx_rtd_theme',
+            'sphinxcontrib-swaggerdoc'
         ],
         'testing': [
             'pytest>=4.3.1',
@@ -84,7 +84,7 @@ setup(
             'pytest-xprocess'
         ],
         'bokeh-plots': [
-            'bokeh' 
+            'bokeh'
         ]
     },
     entry_points={

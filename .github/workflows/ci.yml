@@ -31,7 +31,8 @@ jobs:
 
     - name: Install Latex compiler
       run: |
-        sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+        sudo apt-get update
+        # sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
 
     - name: Build documentation
       env:
@@ -90,7 +91,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.9', '3.8', '3.7', '3.6']
+        python-version: ['3.9', '3.8', '3.7']
 
     steps:
     - uses: actions/checkout@v2
@@ -113,13 +114,15 @@ jobs:
     - name: Install python dependencies
       run: |
         pip install .[testing]
+        pip install -r requirements.txt
+        pip freeze
 
     - name: Run pytest
       run: |
-        cd tests/ && ./run_all_cov.sh
+        cd tests/ && python3 print_install.py
+        cd ./run_all_cov.sh
 
     - name: Upload code coverage report
       run: |
         pip install codecov
         codecov
-

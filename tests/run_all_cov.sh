@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-pytest --cov-report=xml --cov=fuji_server --cov=./
+pytest --xkill --cov-report=xml --cov=fuji_server --cov=./

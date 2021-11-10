@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,19 +15,16 @@ class SearchableOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, search_mechanisms: List[OutputSearchMechanisms]=None):  # noqa: E501
+
+    def __init__(self, search_mechanisms: List[OutputSearchMechanisms] = None):  # noqa: E501
         """SearchableOutput - a model defined in Swagger
 
         :param search_mechanisms: The search_mechanisms of this SearchableOutput.  # noqa: E501
         :type search_mechanisms: List[OutputSearchMechanisms]
         """
-        self.swagger_types = {
-            'search_mechanisms': List[OutputSearchMechanisms]
-        }
+        self.swagger_types = {'search_mechanisms': List[OutputSearchMechanisms]}
 
-        self.attribute_map = {
-            'search_mechanisms': 'search_mechanisms'
-        }
+        self.attribute_map = {'search_mechanisms': 'search_mechanisms'}
         self._search_mechanisms = search_mechanisms
 
     @classmethod

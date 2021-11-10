@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -20,14 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
 import re
 from bs4 import BeautifulSoup
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_collector import MetaDataCollector
 
 
-class MetaDataCollectorDublinCore (MetaDataCollector):
+class MetaDataCollectorDublinCore(MetaDataCollector):
 
     def __init__(self, sourcemetadata, mapping, loggerinst):
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
@@ -45,15 +45,16 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                 meta_dc_matches = []
                 try:
 
-                    metasoup = BeautifulSoup(self.source_metadata,"lxml")
-                    meta_dc_soupresult = metasoup.findAll("meta", attrs={'name':re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})
+                    metasoup = BeautifulSoup(self.source_metadata, 'lxml')
+                    meta_dc_soupresult = metasoup.findAll(
+                        'meta', attrs={'name': re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})
                     for meta_tag in meta_dc_soupresult:
                         dc_name_parts = str(meta_tag['name']).split('.')
-                        if(len(dc_name_parts)>1):
+                        if (len(dc_name_parts) > 1):
                             dc_t = None
                             if len(dc_name_parts) == 3:
                                 dc_t = dc_name_parts[2]
-                            meta_dc_matches.append([dc_name_parts[1],dc_t,meta_tag.get('content')])
+                            meta_dc_matches.append([dc_name_parts[1], dc_t, meta_tag.get('content')])
                     #meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
                     self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
@@ -69,13 +70,13 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
                         #key
-                        k = dc_meta[0]#2
+                        k = dc_meta[0]  #2
                         #type
-                        t = dc_meta[1] #3
+                        t = dc_meta[1]  #3
                         #value
-                        v = dc_meta[2] #5
+                        v = dc_meta[2]  #5
                         if k == 'date':
-                            if t =='dateAccepted':
+                            if t == 'dateAccepted':
                                 dc_core_metadata['accepted_date'] = v
                             elif t == 'dateSubmitted':
                                 dc_core_metadata['submitted_date'] = v
@@ -84,7 +85,8 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                         #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
                         if k in dcterms:
                             #self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
-                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value][0] # fuji ref fields
+                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value
+                                    ][0]  # fuji ref fields
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
@@ -93,14 +95,14 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                 #https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
                                 #https://www.dublincore.org/specifications/dublin-core/dcq-html/
 
-                                if k in ['source','references']:
+                                if k in ['source', 'references']:
                                     t = 'wasDerivedFrom'
                                 elif k == 'relation':
                                     if t in [None, '']:
                                         t = 'isRelatedTo'
                                 else:
                                     t = k
-                                v = [{'related_resource':v, 'relation_type':t}] # must be a list of dict
+                                v = [{'related_resource': v, 'relation_type': t}]  # must be a list of dict
                                 #v = dict(related_resource=v, relation_type=t)
                             if v:
                                 if elem in dc_core_metadata:
@@ -118,15 +120,18 @@ class MetaDataCollectorDublinCore (MetaDataCollector):
                                     dc_core_metadata[elem] = v
                     if dc_core_metadata.get('related_resources'):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
-                        self.logger.info('FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}'.format(count, source))
+                        self.logger.info(
+                            'FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}'.
+                            format(count, source))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
                     # process string-based file format
                     # https://www.dublincore.org/specifications/dublin-core/dcmi-dcsv/
                     if dc_core_metadata.get('file_format_only'):
                         format_str = dc_core_metadata.get('file_format_only')
-                        if isinstance(format_str,str):
-                            format_str = re.split(';|,',format_str)[0].strip() # assume first value as media type #TODO use regex to extract mimetype
+                        if isinstance(format_str, str):
+                            format_str = re.split(';|,', format_str)[0].strip(
+                            )  # assume first value as media type #TODO use regex to extract mimetype
                             dc_core_metadata['file_format_only'] = format_str
             except Exception as e:
                 self.logger.exception('Failed to extract DublinCore - {}'.format(e))

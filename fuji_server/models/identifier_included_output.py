@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +15,10 @@ class IdentifierIncludedOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier_included: str=None, object_content_identifier_included: List[IdentifierIncludedOutputInner]=None):  # noqa: E501
+
+    def __init__(self,
+                 object_identifier_included: str = None,
+                 object_content_identifier_included: List[IdentifierIncludedOutputInner] = None):  # noqa: E501
         """IdentifierIncludedOutput - a model defined in Swagger
 
         :param object_identifier_included: The object_identifier_included of this IdentifierIncludedOutput.  # noqa: E501
@@ -78,7 +81,8 @@ class IdentifierIncludedOutput(Model):
         return self._object_content_identifier_included
 
     @object_content_identifier_included.setter
-    def object_content_identifier_included(self, object_content_identifier_included: List[IdentifierIncludedOutputInner]):
+    def object_content_identifier_included(self,
+                                           object_content_identifier_included: List[IdentifierIncludedOutputInner]):
         """Sets the object_content_identifier_included of this IdentifierIncludedOutput.
 
 

@@ -30,10 +30,13 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urllib.parse import urlparse
 import re
 
+
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
     def evaluate(self):
-        self.result = Persistence(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = Persistence(id=self.metric_number,
+                                  metric_identifier=self.metric_identifier,
+                                  metric_name=self.metric_name)
         self.output = PersistenceOutput()
         # ======= CHECK IDENTIFIER PERSISTENCE =======
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
@@ -43,21 +46,22 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.fuji.id_scheme is not None:
             check_url = self.fuji.pid_url
             #check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
-        if self.fuji.id_scheme =='url':
+        if self.fuji.id_scheme == 'url':
             self.fuji.origin_url = self.fuji.id
-            check_url =self.fuji.id
+            check_url = self.fuji.id
         if check_url:
             # ======= RETRIEVE METADATA FROM LANDING PAGE =======
             requestHelper = RequestHelper(check_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
-            neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html = False)
+            neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
             if not 'html' in str(requestHelper.content_type):
-                self.logger.info('FsF-F2-01M :Content type is '+str(requestHelper.content_type)+', therefore skipping embedded metadata (microdata, RDFa) tests')
-                self.fuji.extruct_result={}
+                self.logger.info('FsF-F2-01M :Content type is ' + str(requestHelper.content_type) +
+                                 ', therefore skipping embedded metadata (microdata, RDFa) tests')
+                self.fuji.extruct_result = {}
             if type(self.fuji.extruct_result) != dict:
-                self.fuji.extruct_result ={}
+                self.fuji.extruct_result = {}
             r = requestHelper.getHTTPResponse()
-            response_status =requestHelper.response_status
+            response_status = requestHelper.response_status
 
             if r:
                 self.fuji.landing_url = requestHelper.redirect_url
@@ -65,8 +69,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 #print(self.fuji.landing_url, self.fuji.input_id)
                 if self.fuji.repeat_pid_check == True:
                     if self.fuji.landing_url != self.fuji.input_id:
-                        self.logger.warning('FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL')
-                        self.logger.warning('FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL resolved from PID found in metadata does not match with input URL')
+                        self.logger.warning(
+                            'FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL'
+                        )
+                        self.logger.warning(
+                            'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL resolved from PID found in metadata does not match with input URL'
+                        )
 
                         #self.fuji.repeat_pid_check = False
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
@@ -77,7 +85,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         if header_link_string is not None:
                             self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
 
-                            for preparsed_link  in header_link_string.split(','):
+                            for preparsed_link in header_link_string.split(','):
                                 found_link = None
                                 found_type, type_match = None, None
                                 found_rel, rel_match = None, None
@@ -97,7 +105,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                     found_rel = rel_match[1]
                                 if formats_match:
                                     found_formats = formats_match[1]
-                                signposting_link_dict = {'url': found_link[1:-1], 'type': found_type, 'rel': found_rel, 'profile':found_formats}
+                                signposting_link_dict = {
+                                    'url': found_link[1:-1],
+                                    'type': found_type,
+                                    'rel': found_rel,
+                                    'profile': found_formats
+                                }
                                 if found_link:
                                     self.fuji.signposting_header_links.append(signposting_link_dict)
 
@@ -128,23 +141,30 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         self.fuji.isMetadataAccessible = True
                     elif response_status in [401, 402, 403]:
                         self.fuji.isMetadataAccessible = False
-                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=response_status))
+                        self.logger.warning(
+                            'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
+                                code=response_status))
                     else:
                         self.fuji.isMetadataAccessible = False
-                        self.logger.warning("FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(code=response_status))
+                        self.logger.warning(
+                            'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
+                                code=response_status))
                 else:
-                    self.logger.warning("FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}".format(
-                        code=self.fuji.landing_url))
+                    self.logger.warning(
+                        'FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}'.format(code=self.fuji.landing_url))
 
             else:
                 self.fuji.isMetadataAccessible = False
-                self.logger.warning("FsF-F1-02D :Resource inaccessible, no response received from -: {}".format(check_url))
+                self.logger.warning(
+                    'FsF-F1-02D :Resource inaccessible, no response received from -: {}'.format(check_url))
                 if response_status in [401, 402, 403]:
                     self.logger.warning(
-                    "FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}".format(
-                        code=response_status))
+                        'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
+                            code=response_status))
         else:
-            self.logger.warning("FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier -: {}".format(self.fuji.id))
+            self.logger.warning(
+                'FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier -: {}'
+                .format(self.fuji.id))
 
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
@@ -157,7 +177,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             self.output.pid_scheme = self.fuji.pid_scheme
 
             self.output.pid = self.fuji.pid_url
-            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5,'pass')
+            self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5, 'pass')
             self.score.earned = 0.5
             self.maturity = 1
             if self.fuji.isMetadataAccessible:
@@ -168,7 +188,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
             #print(self.metric_tests)
 
-            self.logger.log(self.fuji.LOG_SUCCESS,'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
+            self.logger.log(self.fuji.LOG_SUCCESS,
+                            'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
             #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0

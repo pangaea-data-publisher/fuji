@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import enum
 import logging
 from typing import Optional
@@ -43,8 +44,8 @@ class MetaDataCollector(object):
         DATACITE_JSON = 'Datacite Search'
         TYPED_LINK = 'Typed Links'
         SIGN_POSTING = 'Signposting Typed Links'
-        RDF_TYPED_LINKS = 'RDF-based Typed Links' #Links in header which lead to a RDF resource
-        LINKED_DATA ='Linked Data (RDF)'
+        RDF_TYPED_LINKS = 'RDF-based Typed Links'  #Links in header which lead to a RDF resource
+        LINKED_DATA = 'Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
         GUESSED_XML = 'Guessed XML Link'
         XML_NEGOTIATED = 'Generic XML (Negotiated)'
@@ -52,7 +53,10 @@ class MetaDataCollector(object):
         MICRODATA = 'Embedded Microdata'
         OAI_ORE = 'OAI-ORE'
 
-    def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
+    def __init__(self,
+                 sourcemetadata: dict = None,
+                 mapping: metadata_mapper.Mapper = None,
+                 logger: logging.Logger = None):
         self.source_metadata = sourcemetadata
         self.metadata_mapping = mapping
         self.logger = logger
@@ -103,7 +107,7 @@ class MetaDataCollector(object):
             vocabs = Preprocessor.getLinkedVocabs()
             lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
             for ns in namespaces:
-                if ns+'/' in lod_namespaces:
-                    self.namespaces.append(ns+'/')
-                elif ns+'#' in lod_namespaces:
-                    self.namespaces.append(ns+'#')
+                if ns + '/' in lod_namespaces:
+                    self.namespaces.append(ns + '/')
+                elif ns + '#' in lod_namespaces:
+                    self.namespaces.append(ns + '#')

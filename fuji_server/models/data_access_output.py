@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class DataAccessOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, access_level: str=None, access_details: object=None):  # noqa: E501
+
+    def __init__(self, access_level: str = None, access_details: object = None):  # noqa: E501
         """DataAccessOutput - a model defined in Swagger
 
         :param access_level: The access_level of this DataAccessOutput.  # noqa: E501
@@ -22,15 +23,9 @@ class DataAccessOutput(Model):
         :param access_details: The access_details of this DataAccessOutput.  # noqa: E501
         :type access_details: object
         """
-        self.swagger_types = {
-            'access_level': str,
-            'access_details': object
-        }
+        self.swagger_types = {'access_level': str, 'access_details': object}
 
-        self.attribute_map = {
-            'access_level': 'access_level',
-            'access_details': 'access_details'
-        }
+        self.attribute_map = {'access_level': 'access_level', 'access_details': 'access_details'}
         self._access_level = access_level
         self._access_details = access_details
 
@@ -63,12 +58,10 @@ class DataAccessOutput(Model):
         :param access_level: The access_level of this DataAccessOutput.
         :type access_level: str
         """
-        allowed_values = ["public", "embargoed", "restricted", "closed", "metadataonly"]  # noqa: E501
+        allowed_values = ['public', 'embargoed', 'restricted', 'closed', 'metadataonly']  # noqa: E501
         if access_level not in allowed_values:
-            raise ValueError(
-                "Invalid value for `access_level` ({0}), must be one of {1}"
-                .format(access_level, allowed_values)
-            )
+            raise ValueError('Invalid value for `access_level` ({0}), must be one of {1}'.format(
+                access_level, allowed_values))
 
         self._access_level = access_level
 

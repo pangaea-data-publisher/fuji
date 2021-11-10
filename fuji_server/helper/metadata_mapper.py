@@ -301,14 +301,22 @@ class Mapper(Enum):
                               './{*}dataSetURI/{*}CharacterString']
                               },
         'creator':           {'path': ['./{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/{*}CharacterString',
-                                       './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/']},
+                                       './{*}identificationInfo//{*}citation/{*}CI_Citation/{*}citedResponsibleParty/{*}CI_ResponsibleParty/{*}individualName/',
+                                       './{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue=\'pointOfContact\']/../../{*}party//{*}name',
+                                       './{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue=\'author\']/../../{*}party//{*}name'
+                                       ]
+                              },
         'summary':           {'path': './{*}identificationInfo//{*}abstract'},
         'keywords':          {'path': ['./{*}identificationInfo//{*}descriptiveKeywords/{*}MD_Keywords/{*}keyword/{*}CharacterString',
                               './{*}identificationInfo//{*}topicCategory/{*}MD_TopicCategoryCode',
                               './{*}identificationInfo//{*}descriptiveKeywords/{*}MD_Keywords/{*}keyword']},
-        'publisher':         {'path': "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='pointOfContact']/../{*}organisationName/{*}CharacterString"},
+        'publisher':         {'path': ["./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='pointOfContact']/../{*}organisationName/{*}CharacterString",
+                                       './{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue=\'custodian\']/../../{*}party//{*}name',
+                                       './{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue=\'publisher\']/../../{*}party//{*}name'
+                              ]},
         'object_type':       {'path':['./{*}hierarchyLevel/{*}MD_ScopeCode','./{*}identificationInfo//{*}spatialRepresentationType/{*}MD_SpatialRepresentationTypeCode']},
-        'object_content_identifier_url':{'path':'./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL'},
+        'object_content_identifier_url':{'path':['./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL',
+                                                 './{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}linkage/{*}URL']},
         'measured_variable': {'path': ['./{*}contentInfo/{*}MD_CoverageDescription/{*}attributeDescription/{*}RecordType',
                                        #https://wiki.esipfed.org/Documenting_Resource_Content
                                        './{*}contentInfo/{*}MD_CoverageDescription/{*}dimension/{*}MD_Band/{*}sequenceIdentifier/{*}MemberName/{*}aName',

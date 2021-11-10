@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +15,10 @@ class DataProvenanceOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, provenance_metadata_included: DataProvenanceOutputInner=None, structured_provenance_available: DataProvenanceOutputInner=None):  # noqa: E501
+
+    def __init__(self,
+                 provenance_metadata_included: DataProvenanceOutputInner = None,
+                 structured_provenance_available: DataProvenanceOutputInner = None):  # noqa: E501
         """DataProvenanceOutput - a model defined in Swagger
 
         :param provenance_metadata_included: The provenance_metadata_included of this DataProvenanceOutput.  # noqa: E501

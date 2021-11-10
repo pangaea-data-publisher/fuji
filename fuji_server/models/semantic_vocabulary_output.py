@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,15 +15,14 @@ class SemanticVocabularyOutput(Model):
 
     Do not edit the class manually.
     """
+
     def __init__(self):  # noqa: E501
         """SemanticVocabularyOutput - a model defined in Swagger
 
         """
-        self.swagger_types = {
-        }
+        self.swagger_types = {}
 
-        self.attribute_map = {
-        }
+        self.attribute_map = {}
 
     @classmethod
     def from_dict(cls, dikt) -> 'SemanticVocabularyOutput':

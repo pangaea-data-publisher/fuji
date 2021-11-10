@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
 import enum
 import logging
+
 
 class MetaDataCatalogue(object):
 
     apiURI = None
+
     # Using enum class create enumerations of metadata catalogs
 
     class Sources(enum.Enum):
@@ -11,7 +14,7 @@ class MetaDataCatalogue(object):
         GOOGLE_DATASET = 'Google Dataset Search'
         MENDELEY_DATA = 'Mendeley Data'
 
-    def __init__(self,logger: logging.Logger = None):
+    def __init__(self, logger: logging.Logger = None):
         self.logger = logger
         self.islisted = False
         self.source = None

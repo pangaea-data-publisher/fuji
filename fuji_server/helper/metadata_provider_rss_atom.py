@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -25,9 +26,10 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from lxml import etree
 import feedparser
 
+
 class RSSAtomMetadataProvider(MetadataProvider):
 
-    rss_namespaces = {'atom':'http://www.w3.org/2005/Atom','georss': 'http://www.georss.org/georss/'}
+    rss_namespaces = {'atom': 'http://www.w3.org/2005/Atom', 'georss': 'http://www.georss.org/georss/'}
 
     def getMetadata(self):
         # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
@@ -48,8 +50,8 @@ class RSSAtomMetadataProvider(MetadataProvider):
                     self.namespaces.append(str(namespace_uri))
                     schemas[str(namespace_pre)] = str(namespace_uri)
         except:
-            self.logger.info(
-                '{0} : Could not parse response retrieved from RSS/Atom Feed endpoint'.format(self.metric_id))
+            self.logger.info('{0} : Could not parse response retrieved from RSS/Atom Feed endpoint'.format(
+                self.metric_id))
 
         return schemas
 

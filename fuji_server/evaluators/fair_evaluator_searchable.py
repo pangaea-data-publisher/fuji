@@ -35,6 +35,7 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from typing import List, Any
 
+
 class FAIREvaluatorSearchable(FAIREvaluator):
 
     def check_registry_support(self):
@@ -61,26 +62,28 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             if mendeley_registry_helper.islisted:
                 registries_supported.append(mendeley_registry_helper.source)
 
-
         return registries_supported
 
     def evaluate(self):
-        self.result = Searchable(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
+        self.result = Searchable(id=self.metric_number,
+                                 metric_identifier=self.metric_identifier,
+                                 metric_name=self.metric_name)
         self.output = SearchableOutput()
 
         search_mechanisms = []
-        sources_registry = [MetaDataCollector.Sources.DATACITE_JSON.value,
-                            MetaDataCatalogue.Sources.DATACITE.value,
-                            MetaDataCatalogue.Sources.MENDELEY_DATA,
-                            MetaDataCatalogue.Sources.GOOGLE_DATASET]
+        sources_registry = [
+            MetaDataCollector.Sources.DATACITE_JSON.value, MetaDataCatalogue.Sources.DATACITE.value,
+            MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
+        ]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
         self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction -: {}'.format(all))
-        search_engines_support = [MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value,
-                                  MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
-                                  MetaDataCollector.Sources.DUBLINCORE.value,
-                                  MetaDataCollector.Sources.RDFA.value]
+        search_engines_support = [
+            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value, MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
+            MetaDataCollector.Sources.DUBLINCORE.value, MetaDataCollector.Sources.RDFA.value
+        ]
         # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match: List[Any] = list(set(dict(self.fuji.metadata_sources).keys()).intersection(search_engines_support))
+        search_engine_support_match: List[Any] = list(
+            set(dict(self.fuji.metadata_sources).keys()).intersection(search_engines_support))
         if search_engine_support_match:
             self.setEvaluationCriteriumScore('FsF-F4-01M-1', 1, 'pass')
             self.maturity = 3
@@ -96,7 +99,6 @@ class FAIREvaluatorSearchable(FAIREvaluator):
 
         registry_support_match.extend(registries_listed)
 
-
         if registry_support_match:
             self.setEvaluationCriteriumScore('FsF-F4-01M-2', 1, 'pass')
             if self.maturity < 3:
@@ -105,8 +107,9 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
             self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
         else:
-            self.logger.warning('FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  -: {}'.format(
-                    sources_registry))
+            self.logger.warning(
+                'FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  -: {}'.
+                format(sources_registry))
         length = len(search_mechanisms)
         if length > 0:
             self.result.test_status = 'pass'
@@ -117,8 +120,8 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         else:
             self.logger.warning('NO search mechanism supported')
 
-        self.result.score =  self.score
+        self.result.score = self.score
         self.output.search_mechanisms = search_mechanisms
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
-        self.result.output =  self.output
+        self.result.output = self.output
