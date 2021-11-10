@@ -27,12 +27,7 @@ import argparse
 import configparser
 import logging
 import os
-from logging.config import fileConfig
-import connexion
-from werkzeug.middleware.proxy_fix import ProxyFix
-from flask_cors import CORS
-
-from fuji_server import encoder
+from fuji_server.app.fuji_app import create_fuji_app
 from fuji_server.helper.preprocessor import Preprocessor
 import fuji_server.controllers.authorization_controller as authen
 
@@ -54,13 +49,6 @@ def main():
     data_files_limit = int(config['SERVICE']['data_files_limit'])
     metric_specification = config['SERVICE']['metric_specification']
 
-    #TODO further implementation on authentication needed
-    auth_enabled = config.getboolean('USER', 'auth_enabled')
-    usr = config['USER']['usr']
-    pwd = config['USER']['pwd']
-    authen.service_username = usr
-    authen.service_password = pwd
-
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit, metric_specification)
     logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
@@ -80,20 +68,13 @@ def main():
     logger.info('Total LD vocabs imported : {}'.format(len(preproc.getLinkedVocabs())))
     logger.info('Total default namespaces specified : {}'.format(len(preproc.getDefaultNamespaces())))
 
-    #you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
-    app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
-    API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config['SERVICE']['swagger_yaml'])
-    app.app.json_encoder = encoder.JSONEncoder
-    api_title = 'F-UJI : FAIRsFAIR Research Data Object Assessment Service'
-    if auth_enabled:
-        api_args = {'title': api_title, 'security': [{'basicAuth': []}]}
-    else:
-        api_args = {'title': api_title}
+    #TODO further implementation on authentication needed
+    usr = config['USER']['usr']
+    pwd = config['USER']['pwd']
+    authen.service_username = usr
+    authen.service_password = pwd
 
-    app.add_api(API_YAML, arguments=api_args, validate_responses=True)
-    app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
-    if os.getenv('ENABLE_CORS', 'False').lower() == 'true':
-        CORS(app.app)
+    app = create_fuji_app(config)
     app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 

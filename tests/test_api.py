@@ -1,35 +1,34 @@
 # -*- coding: utf-8 -*-
-
+"""
+A collection of tests to test the reponses of a Fask tesk fuji client,
+i.e. if the app is working and there are no swagger problems.
+"""
 
 def test_ui(fujiclient):
+    """Basic smoke test to see if app is buildable"""
     response = fujiclient.get('/fuji/api/v1/ui/')
     print(response.data)
     assert response.status_code == 200
 
 
 def test_ui_break(fujiclient):
+    """Basic test if a path not in the UI gives a 404"""
     response = fujiclient.get('/fuji/500api/v1/ui/')
     print(response.data)
     assert response.status_code == 404
 
 
-def test_get_metrics(fujiclient):  #, login_client):
-    #print(url_for('/fuji/api/v1/metrics'))
-    #response = login_client(fujiclient)
-    #assert response.status_code == 200
+def test_get_metrics(fujiclient):
+    """Test if a client get returns the metric"""
     response = fujiclient.get('/fuji/api/v1/metrics',
                               headers={
                                   'Authorization': 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',
                                   'accept': 'application/json'
                               })
-    #, data=dict(
-    #    username="username",
-    #    password="password"
-    #), follow_redirects=True)#  Authorization= "Basic dXNlcm5hbWU6cGFzc3dvcmQ=") # accept="application/json",
-    print(response.json)
     print(response)
     assert response.status_code == 200
-
+    result = response.json
+    assert result != {}
 
 '''
 from swagger_tester import swagger_test
