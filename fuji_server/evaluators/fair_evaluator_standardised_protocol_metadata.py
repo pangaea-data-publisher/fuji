@@ -27,7 +27,6 @@ from fuji_server.models.standardised_protocol_metadata import StandardisedProtoc
 from fuji_server.models.standardised_protocol_metadata_output import StandardisedProtocolMetadataOutput
 from fuji_server.helper.metadata_mapper import Mapper
 from urllib.parse import urlparse
-from pprint import pprint
 
 
 class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):

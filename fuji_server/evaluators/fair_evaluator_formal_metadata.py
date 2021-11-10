@@ -26,7 +26,6 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.models.formal_metadata import FormalMetadata
-from fuji_server.models.formal_metadata_output import FormalMetadataOutput
 from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner
 
 

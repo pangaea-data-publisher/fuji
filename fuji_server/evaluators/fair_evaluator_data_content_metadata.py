@@ -21,15 +21,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import urllib
 
+import urllib
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
-import requests
 import time
-import traceback
 from tika import parser
 
 
