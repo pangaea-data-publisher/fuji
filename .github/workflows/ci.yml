@@ -120,7 +120,7 @@ jobs:
     - name: Run pytest
       run: |
         cd tests/ && python3 print_install.py
-        cd ./run_all_cov.sh
+        ./run_all_cov.sh
 
     - name: Upload code coverage report
       run: |
