@@ -3,7 +3,6 @@ from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalo
 
 g = MetaDataCatalogueGoogleDataSearch()
 
-
 # Step 1 visit: https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets
 # Step 2 download the latest Dataset Search corpus file
 # Step 3 indicate the location of the file below

@@ -21,8 +21,8 @@ setup(
     long_description = long_description, # add contents of README.md
     long_description_content_type ='text/markdown',  # This is important to activate markdown!
     url='https://github.com/pangaea-data-publisher/fuji',
-    author="See AUTHORS file",
-    author_email="rhuber@marum.de",
+    author='See AUTHORS file',
+    author_email='rhuber@marum.de',
     maintainer='Robert Huber',
     maintainer_email='rhuber@marum.de',
     license='MIT License',

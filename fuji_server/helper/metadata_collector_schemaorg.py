@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import logging
 import jmespath
@@ -30,9 +31,11 @@ from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urlextract import URLExtract
 
-class MetaDataCollectorSchemaOrg (MetaDataCollector):
-    source_name=None
+
+class MetaDataCollectorSchemaOrg(MetaDataCollector):
+    source_name = None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+
     def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
         #self.is_pid = ispid
         self.pid_url = pidurl
@@ -61,7 +64,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
 
     def parse_metadata(self, ls=None):
         jsnld_metadata = {}
-        ext_meta=None
+        ext_meta = None
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             ext_meta = self.source_metadata[0]
@@ -72,36 +75,43 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
             # fallback, request (doi) metadata specified in schema.org JSON-LD
             requestHelper: RequestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.schemaorg)
-            neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_source, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
         if isinstance(ext_meta, dict):
             self.getNamespacesfromIRIs(ext_meta)
-            self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(self.source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(
+                self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
-            check_context_type =  ["Dataset", "Collection"]
+            check_context_type = ['Dataset', 'Collection']
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta.get('@context')).find('://schema.org') > -1:
                     schemaorgns = 'schema'
-                    if isinstance(ext_meta.get('@context'),dict):
+                    if isinstance(ext_meta.get('@context'), dict):
                         for contextname, contexturi in ext_meta.get('@context').items():
                             if contexturi.endswith('schema.org/'):
-                                schemaorgns= contextname
-                    ext_meta=json.loads(json.dumps(ext_meta).replace('"'+schemaorgns+':','"'))
+                                schemaorgns = contextname
+                    ext_meta = json.loads(json.dumps(ext_meta).replace('"' + schemaorgns + ':', '"'))
 
                     if ext_meta.get('@graph'):
                         self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
-                        ext_meta= self.compact_jsonld(ext_meta)
+                        ext_meta = self.compact_jsonld(ext_meta)
 
                     if not ext_meta.get('@type'):
-                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')
+                        self.logger.info(
+                            'FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')
 
                     elif str(ext_meta.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
-                        self.logger.info('FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type -:'+str(ext_meta.get('@type')))
+                        self.logger.info(
+                            'FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type -:'
+                            + str(ext_meta.get('@type')))
                     elif ext_meta.get('@type') not in check_context_type:
-                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
+                        self.logger.info(
+                            'FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
                     else:
-                        self.logger.info('FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'+str(ext_meta.get('@type')))
+                        self.logger.info(
+                            'FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'
+                            + str(ext_meta.get('@type')))
 
                         self.namespaces.append('http://schema.org/')
                     jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
@@ -112,10 +122,10 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         last = jsnld_metadata.get('creator_last')
                         if isinstance(first, list) and isinstance(last, list):
                             if len(first) == len(last):
-                                names = [str(i) + " " + str(j) for i, j in zip(first, last)]
+                                names = [str(i) + ' ' + str(j) for i, j in zip(first, last)]
                                 jsnld_metadata['creator'] = names
                         else:
-                            jsnld_metadata['creator'] = [str(first) + " " + str(last)]
+                            jsnld_metadata['creator'] = [str(first) + ' ' + str(last)]
 
                     #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
                     invalid_license = False
@@ -127,7 +137,7 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             jsnld_metadata['license'] = jsnld_metadata['license'][0]
                         if isinstance(jsnld_metadata.get('license'), dict):
                             ls_type = jsnld_metadata.get('license').get('@type')
-                            if ls_type =='CreativeWork':
+                            if ls_type == 'CreativeWork':
                                 ls = jsnld_metadata.get('license').get('url')
                                 if not ls:
                                     ls = jsnld_metadata.get('license').get('name')
@@ -138,7 +148,9 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                             else:
                                 invalid_license = True
                     if invalid_license:
-                        self.logger.warning('FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.')
+                        self.logger.warning(
+                            'FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.'
+                        )
                         jsnld_metadata['license'] = None
 
                     # filter out None values of related_resources
@@ -147,7 +159,8 @@ class MetaDataCollectorSchemaOrg (MetaDataCollector):
                         relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
                         if relateds:
                             jsnld_metadata['related_resources'] = relateds
-                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(len(jsnld_metadata['related_resources']), self.source_name))
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
+                                len(jsnld_metadata['related_resources']), self.source_name))
                         else:
                             del jsnld_metadata['related_resources']
                             self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')

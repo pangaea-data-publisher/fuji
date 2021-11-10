@@ -15,10 +15,14 @@ pids = ['https://archive.materialscloud.org/record/2021.146']
 #with open('dois.txt', 'r') as fileo:
 #    pids = fileo.readlines()
 
-fuji_api_url = "http://localhost:1071/fuji/api/v1/evaluate"
+fuji_api_url = 'http://localhost:1071/fuji/api/v1/evaluate'
 # the Authorization key you get from your running swagger API instance
-headers = {"accept": "application/json", "Authorization": "Basic bWFydmVsOndvbmRlcndvbWFu", "Content-Type": "application/json"}
-base_request_dict = {"object_identifier": None, "test_debug": True, "use_datacite": True}
+headers = {
+    'accept': 'application/json',
+    'Authorization': 'Basic bWFydmVsOndvbmRlcndvbWFu',
+    'Content-Type': 'application/json'
+}
+base_request_dict = {'object_identifier': None, 'test_debug': True, 'use_datacite': True}
 
 # Store one file per pid for later report creation
 for pid in pids:
@@ -27,7 +31,7 @@ for pid in pids:
     req = requests.post(fuji_api_url, json=req_dict, headers=headers)
 
     rs_json = req.json()
-    res_filename = '{}.json'.format(pid.split('/')[-1]) # depending on the pid you may want to change this
+    res_filename = '{}.json'.format(pid.split('/')[-1])  # depending on the pid you may want to change this
     res_filename_path = os.path.join(results_folder, res_filename)
 
     with open(res_filename_path, 'w', encoding='utf-8') as fileo:

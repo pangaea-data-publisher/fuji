@@ -108,7 +108,9 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                             'FsF-F3-01M : Content identifier inaccessible -: {0} , HTTPError code {1} '.format(
                                 content_link.get('url'), e.code))
                     except urllib.error.URLError as e:
-                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0} , URLError code {1} '.format(content_link.get('url'), e.reason))
+                        self.logger.warning(
+                            'FsF-F3-01M : Content identifier inaccessible -: {0} , URLError code {1} '.format(
+                                content_link.get('url'), e.reason))
                         #self.logger.exception(e.reason)
                     except:
                         self.logger.warning('FsF-F3-01M : Could not access the resource')
