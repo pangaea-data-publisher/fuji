@@ -30,6 +30,17 @@ from fuji_server.helper.metadata_mapper import Mapper
 from urllib.parse import urlparse
 
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
+    """
+    A class to evaluate whether the data is accessible through a standardized communication protocol (A1-03D).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+        This method will evaluate the accesibility of the data on whether the URI's scheme is based on
+        a shared application protocol.
+    """
     def evaluate(self):
 
         self.result = StandardisedProtocolData(id=self.metric_number, metric_identifier=self.metric_identifier,

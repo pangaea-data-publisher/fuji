@@ -28,6 +28,18 @@ from fuji_server.models.identifier_included_output_inner import IdentifierInclud
 import urllib
 
 class FAIREvaluatorContentIncluded(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata includes the identifier of the data is being described (F3-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the metadata contains an identifier, e.g., PID or URL, which indicates the location of the downloadable data content or
+        a data identifier that matches the identifier as part of the assessment request.
+    """
+
     def evaluate(self):
         self.result = IdentifierIncluded(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = IdentifierIncludedOutput()

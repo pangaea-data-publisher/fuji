@@ -28,6 +28,16 @@ from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 
 
 class FAIREvaluatorMetadataPreserved(FAIREvaluator):
+    """
+    A class to evaluate that the metadata remains available, even if the data is no longer available (A2-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+
+    """
     def evaluate(self):
         registry_bound_pid = ['doi']
         self.result = MetadataPreserved(id=self.metric_number, metric_identifier=self.metric_identifier,

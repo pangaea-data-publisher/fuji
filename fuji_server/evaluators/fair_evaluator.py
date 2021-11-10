@@ -26,6 +26,30 @@ from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvalua
 from fuji_server.helper.metadata_mapper import Mapper
 
 class FAIREvaluator:
+    """
+    A super class of all the FUJI evaluators.
+
+    ...
+    Attributes
+    ----------
+    maturity_levels : dict
+        A dictionary showing the maturity level, {0: 'incomplete', 1: 'initial', 2: 'moderate', 3: 'advanced'}
+    fuji : Fuji
+        A fuji instance object
+    metric_identifier : str
+        The identifier of FAIR FUJI implementation
+    metrics : str
+        FUJI metrics
+    result : Result
+        Result that contains score, output, metric tests, test status, and maturity of each evaluator
+    maturity : int
+        Maturity level of each evaluator
+    isDebug : bool
+        Boolean to enable debugging process
+    logger : Logger
+        Logger to log during the evaluation process
+    """
+
     #according to the CMMI model
     maturity_levels = Mapper.MATURITY_LEVELS.value
         #{0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
@@ -43,6 +67,15 @@ class FAIREvaluator:
 
 
     def set_metric(self, metric_identifier, metrics):
+        """Set the metric for evaluation process.
+
+        Parameters
+        ----------
+        metric_identifier:str
+            The metric identifier
+        metrics: str
+            FUJI metrics
+        """
         self.metrics = metrics
         self.metric_identifier = metric_identifier
         if self.metric_identifier is not None:
@@ -54,15 +87,18 @@ class FAIREvaluator:
 
 
     def evaluate(self):
+        """To be implemented (override) in the sub class"""
         #Do the main FAIR check here
-         return True
+        return True
 
     def getResult(self):
+        """Get result of evaluation and pack it into dictionary."""
         self.evaluate()
         return self.result.to_dict()
 
 
     def initializeEvaluationCriteria(self):
+        """Initialize the evaluation criteria."""
         all_metric_tests = self.metrics.get(self.metric_identifier).get('metric_tests')
         if all_metric_tests is not None:
             for metric_test in all_metric_tests:
@@ -77,6 +113,18 @@ class FAIREvaluator:
                 self.metric_tests[metric_test.get('metric_test_identifier')] = evaluation_criterium
 
     def setEvaluationCriteriumScore(self, criterium_id, metric_test_score = 0, metric_test_status = 'fail', metric_test_maturity = None):
+        """Set the evaluation criterium score of each evaluator.
+
+        Parameters
+        ----------
+        criterium_id : str
+            The metric identifier
+        metric_test_score : float, optional
+            the default is 0
+        metric_test_status : str, optional
+            the default is 'fail'
+        metric_test_maturity : int, optional
+        """
         evaluation_criterium = self.metric_tests.get(criterium_id)
         if evaluation_criterium is not None:
             if metric_test_score != evaluation_criterium.metric_test_score_max:

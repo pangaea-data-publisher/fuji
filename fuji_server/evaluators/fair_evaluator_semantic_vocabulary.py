@@ -28,6 +28,18 @@ from fuji_server.models.semantic_vocabulary_output import SemanticVocabularyOutp
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
 
 class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata uses semantic resources (I1-02M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+        This method will evaluate the metadata uses namespace of known semantic resources are present in
+        the metadata of an object. These common namespaces such as RDF, RDFS, XSD, OWL, etc, will be
+        excluded from the evaluation.
+    """
     def evaluate(self):
 
         self.result = SemanticVocabulary(id=self.metric_number, metric_identifier=self.metric_identifier,

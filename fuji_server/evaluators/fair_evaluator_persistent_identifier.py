@@ -31,7 +31,16 @@ from urllib.parse import urlparse
 import re
 
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
+    """
+    A class to evaluate that the data is assigned a persistent identifier (F1-02D). A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the data is specified based on a commonly accepted persistent identifier scheme or
+        the identifier is web-accesible, i.e., it resolves to a landing page with metadata of the data object.
+    """
     def evaluate(self):
         self.result = Persistence(id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name)
         self.output = PersistenceOutput()
