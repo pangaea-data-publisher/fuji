@@ -81,11 +81,9 @@ setup(
         'testing': [
             'pytest>=4.3.1',
             'pytest-cov',
-            'pytest-xprocess'
+            'pytest-xprocess',
+            'pylint'
         ],
-        'bokeh-plots': [
-            'bokeh'
-        ]
     },
     entry_points={
         'console_scripts': ['fuji_server=fuji_server.__main__:main']},
