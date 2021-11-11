@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import logging
-import jmespath
-from fuji_server.helper.metadata_collector import MetaDataCollector
-import feedparser
+
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -24,10 +21,8 @@ import feedparser
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from fuji_server.helper.preprocessor import Preprocessor
-
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-from urlextract import URLExtract
+from fuji_server.helper.metadata_collector import MetaDataCollector
+import feedparser
 
 
 class MetaDataCollectorOreAtom(MetaDataCollector):

@@ -21,15 +21,26 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import List, Any
 
+from typing import List
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.community_endorsed_standard import CommunityEndorsedStandard
-from fuji_server.models.community_endorsed_standard_output import CommunityEndorsedStandardOutput
 from fuji_server.models.community_endorsed_standard_output_inner import CommunityEndorsedStandardOutputInner
 
 
 class FAIREvaluatorCommunityMetadata(FAIREvaluator):
+    """
+    A class to evaluate metadata that follows a standard recommended by the target research of the data (R.13-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    -------
+    evaluate()
+        This method will evaluate whether the metadata follows community specific metadata standard listed in, e.g., re3data,
+        or metadata follows community specific metadata standard using namespaces or schemas found in the provided metadata
+        or the metadata service outputs.
+    """
 
     def evaluate(self):
         self.result = CommunityEndorsedStandard(id=self.metric_number,

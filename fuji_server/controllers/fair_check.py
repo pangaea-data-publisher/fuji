@@ -28,27 +28,15 @@ score assessment. An instance of this gets parsed to all evaluators.
 '''
 import io
 import logging, logging.handlers
-import mimetypes
-import os
 import re
-import sys
 import urllib
 import urllib.request as urllib
-from typing import List, Any
 from urllib.parse import urlparse, urljoin
 import pandas as pd
-
-import Levenshtein
-import idutils
 import lxml
 import rdflib
-from rdflib.exceptions import ParserError
-from rdflib.namespace import RDF
-from rdflib.namespace import DCTERMS
-from rdflib.namespace import DC
 from rapidfuzz import fuzz
 from rapidfuzz import process
-from tika import parser
 import hashlib
 
 from tldextract import extract

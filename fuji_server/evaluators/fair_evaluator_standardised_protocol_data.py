@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import List, Any
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
@@ -31,7 +30,17 @@ from urllib.parse import urlparse
 
 
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
+    """
+    A class to evaluate whether the data is accessible through a standardized communication protocol (A1-03D).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate the accesibility of the data on whether the URI's scheme is based on
+        a shared application protocol.
+    """
     def evaluate(self):
 
         self.result = StandardisedProtocolData(id=self.metric_number,

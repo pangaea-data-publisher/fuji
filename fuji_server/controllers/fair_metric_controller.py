@@ -23,7 +23,7 @@
 # SOFTWARE.
 ################################################################################
 from fuji_server.helper.preprocessor import Preprocessor
-from fuji_server.models.metrics import Metrics  # noqa: E501
+
 
 
 def get_metrics():  # noqa: E501

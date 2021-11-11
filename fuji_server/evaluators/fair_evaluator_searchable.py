@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import idutils
 
 from fuji_server import OutputSearchMechanisms
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
@@ -37,7 +36,17 @@ from typing import List, Any
 
 
 class FAIREvaluatorSearchable(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata is offered to be retrievable by the machine (F4-01M).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the metadata is registered in major research data registries such as DataCite or
+        the metadata is given in a way major search engines can ingest it, e.g., JSON-LD, Dublin Core, RDFa.
+    """
     def check_registry_support(self):
         # check if record is listed in major catalogs -> searchable
         # DataCite registry, Google Dataset search, Mendeley data etc..

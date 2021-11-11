@@ -26,14 +26,22 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.models.formal_metadata import FormalMetadata
-from fuji_server.models.formal_metadata_output import FormalMetadataOutput
 from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner
 
 
 class FAIREvaluatorFormalMetadata(FAIREvaluator):
+    """
+    A class to evaluate that the metadata is represented using a formal knowledge representation language (I1-01M).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the metadata is parsable and has a structured data embedded in the landing page or
+        formal metadata, e.g., RDF, JSON-LD, is accessible.
+    """
     def evaluate(self):
-
         self.result = FormalMetadata(id=self.metric_number,
                                      metric_identifier=self.metric_identifier,
                                      metric_name=self.metric_name)

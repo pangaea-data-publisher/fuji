@@ -27,11 +27,21 @@ from fuji_server.models.standardised_protocol_metadata import StandardisedProtoc
 from fuji_server.models.standardised_protocol_metadata_output import StandardisedProtocolMetadataOutput
 from fuji_server.helper.metadata_mapper import Mapper
 from urllib.parse import urlparse
-from pprint import pprint
 
 
 class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata is accessible through a standardized communication protocol (A1-02M).
+    A child class of FAIREvaluator.
+    ...
 
+    Methods
+    ------
+    evaluate()
+        This method will evaluate the accesibility of the metadata on whether the URI's scheme is based on
+        a shared application protocol.
+
+    """
     def evaluate(self):
         self.result = StandardisedProtocolMetadata(id=self.metric_number,
                                                    metric_identifier=self.metric_identifier,
