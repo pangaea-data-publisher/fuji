@@ -39,6 +39,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
     """
     A class to collect the metadata given the Resource Description Framework (RDF) graph. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     source_name : str

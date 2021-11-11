@@ -6,6 +6,8 @@ class MetaDataCollectorMicroData(MetaDataCollector):
     """
     A class to collect the Microdata metadata from the data. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     source_name : str

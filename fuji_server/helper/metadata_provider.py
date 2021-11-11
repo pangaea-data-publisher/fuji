@@ -27,6 +27,33 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetadataProvider(ABC):
+    """
+    An abstract base class for providing a metadata from an endpoint
+
+    ...
+
+    Attributes
+    ----------
+    logger : logging.Logger
+        Logger object
+    endpoint : str
+        Endpoint url
+    metric_id : str
+        FUJI FAIR metric identifier
+    namespaces : list
+        List of namespace
+
+    Methods
+    -------
+    getNamespaces()
+        Abstract method
+    getMetadata()
+        Abstract method
+    getMetadataStandards()
+        Abstract method
+    getNamespacefromIRIs(meta_source)
+        Generate list of namespaces given IRI and store it class attributes of namespaces
+    """
 
     def __init__(self, logger=None, endpoint=None, metric_id=None):
         self.logger = logger
