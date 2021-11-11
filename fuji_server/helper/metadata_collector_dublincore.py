@@ -28,11 +28,30 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 
 
 class MetaDataCollectorDublinCore(MetaDataCollector):
+    """
+    A class to collect Dublin Core metadata. This class is child class of MetadataCollector.
+
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse Dublin Core metadata from the data.
+
+    """
 
     def __init__(self, sourcemetadata, mapping, loggerinst):
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
     def parse_metadata(self):
+        """Parse the Dublin Core metadata from the data
+
+        Returns
+        ------
+        str
+            a string of source name
+        dict
+            a dictionary of Dublin Core metadata
+        """
         dc_core_metadata = {}
         source = None
         if self.source_metadata is not None:

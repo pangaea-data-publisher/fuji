@@ -32,10 +32,51 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollector(object):
+
     metadata_mapping: Optional[Mapper]
+    """
+    A class to collect a metadata from different metadata sources.
+    ...
+    Attributes
+    ----------
+    metadata_mapping : Mapper, optional
+    Sources : enum.Enum
+        Enum class to enumerate metadata sources.
+    source_metadata : dict
+        Metadata souce in a dictionary.
+    metadata_mapping : metadata_mapper.Mapper
+    logger : logging.Logger
+    target_metadata : dict
+    namespaces : list
+        List of namespace.
+
+    Methods
+    -------
+    getEnumSourceNames()
+        Class method returning the source names.
+    getMetadataMapping()
+        Get/return the metadata mapping.
+    getLogger()
+        Get/return the logger object.
+    setLogger(l)
+        Set the logger according to inpur paramter l.
+    getSourceMetadata()
+        Get source metadata.
+    setSourceMetadata(em)
+        Set the source metadata according to input parameter em.
+    setTargetMetadata(tm)
+        Set the target metadata according to input parameter tm.
+    getTargetMetadata()
+        Returm the target metadata.
+    getNamespaces()
+        Return the namespaces of the metadata.
+    getNamespacesfromIRIs(meta_source)
+        Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
+    """
 
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
+        """"Enum class to enumerate metadata sources."""
         DUBLINCORE = 'Embedded DublinCore'
         OPENGRAPH = 'Embedded OpenGraph'
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
