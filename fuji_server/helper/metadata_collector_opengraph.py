@@ -6,6 +6,8 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
     """
     A class to collect the Open Graph metadata from the data. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     source_name : str

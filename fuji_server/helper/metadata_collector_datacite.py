@@ -33,6 +33,8 @@ class MetaDataCollectorDatacite(MetaDataCollector):
     Several metadata are excluded from the collection, those are 'creator', 'license',
     'related_resources', and 'access_level'.
 
+    ...
+
     Attributes
     ----------
     exclude_conversion : list

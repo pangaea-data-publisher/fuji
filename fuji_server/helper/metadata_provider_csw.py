@@ -27,7 +27,8 @@ from lxml import etree
 
 
 class OGCCSWMetadataProvider(MetadataProvider):
-
+    """A metadata provider class that will provide metadata from OGCCSW
+    """
     csw_namespaces = {
         'csw': 'http://www.opengis.net/cat/csw/2.0.2',
         'ogc': 'http://www.opengis.net/ogc',
@@ -45,6 +46,13 @@ class OGCCSWMetadataProvider(MetadataProvider):
         return None
 
     def getMetadataStandards(self):
+        """Method to get the metadata schema from the OGCCSW namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of schemas in OGCCSW
+        """
         csw_endpoint = self.endpoint.split('?')[0]
         csw_listmetadata_url = csw_endpoint + '?service=CSW&request=GetCapabilities'
         requestHelper = RequestHelper(url=csw_listmetadata_url, logInst=self.logger)

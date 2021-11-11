@@ -25,6 +25,10 @@ from enum import Enum
 
 
 class Mapper(Enum):
+    """
+    Enum class to Map metadata into reference metadata list, access right code, provenance,
+    and metadata sources, e.g., Dublin Core, Open Graph, Microdata, Datacite, ORE Atom, Schema.org, etc.
+    """
     ## ============================ CONFIGURATIONS ============================ ##
     # List of PIDS e.g. those listed in datacite schema
     VALID_PIDS = [

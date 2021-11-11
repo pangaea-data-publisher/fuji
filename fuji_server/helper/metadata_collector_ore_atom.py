@@ -29,6 +29,8 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
     """
     A class to collect the Object Reuse and Exchange (ORE) Atom metadata from the data. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     source_name : str

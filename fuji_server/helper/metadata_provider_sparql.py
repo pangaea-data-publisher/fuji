@@ -28,12 +28,43 @@ from fuji_server.helper.metadata_provider import MetadataProvider
 
 
 class SPARQLMetadataProvider(MetadataProvider):
+    """A metadata provider class to get the metadata from a SPARQL query
 
+    ...
+
+    Methods
+    -------
+    getMetadataStandards()
+        Method will return the metadata standards in the namespaces
+    getMetadata(queryString)
+        Method that will return RDF graph and content type given the SPARQL query
+    getNamespaces()
+        Method to get namespaces
+
+    """
     def getMetadataStandards(self):
+        """Method will return the matadata standards in the namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of metadata standards.
+
+        """
+
         standards = {v: k for v, k in enumerate(self.namespaces)}
         return standards
 
     def getMetadata(self, queryString):
+        """Method will return RDF graph and namespace given the SPARQL query
+
+        Returns
+        -------
+        rdflib.ConjunctiveGraph
+            RDF graph from the result of SPARQL query
+        str
+            Content type of the result of SPARQL query
+        """
 
         wrapper = SPARQLWrapper(self.endpoint)
         wrapper.setQuery(queryString)

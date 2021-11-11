@@ -34,6 +34,8 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
     """
     A class to collect the schema.org. metadata form the data. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     source_name : str

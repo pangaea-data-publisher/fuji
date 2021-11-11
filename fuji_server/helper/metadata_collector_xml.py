@@ -32,6 +32,8 @@ class MetaDataCollectorXML(MetaDataCollector):
     """
     A class to collect the  XML metadata given the data. This class is child class of MetadataCollector.
 
+    ...
+
     Attributes
     ----------
     target_url : str

@@ -36,15 +36,18 @@ class MetaDataCollector(object):
     metadata_mapping: Optional[Mapper]
     """
     A class to collect a metadata from different metadata sources.
+
     ...
+
     Attributes
     ----------
     metadata_mapping : Mapper, optional
     Sources : enum.Enum
-        Enum class to enumerate metadata sources.
+        Enum class to enumerate metadata sources
     source_metadata : dict
         Metadata souce in a dictionary.
     metadata_mapping : metadata_mapper.Mapper
+        Metadata mapping to metadata sources
     logger : logging.Logger
     target_metadata : dict
     namespaces : list

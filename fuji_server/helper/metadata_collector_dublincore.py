@@ -31,6 +31,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
     """
     A class to collect Dublin Core metadata. This class is child class of MetadataCollector.
 
+    ...
 
     Methods
     --------
