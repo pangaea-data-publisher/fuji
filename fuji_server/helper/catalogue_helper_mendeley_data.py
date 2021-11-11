@@ -6,7 +6,19 @@ from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 
 
 class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
-
+    """A class to access Mendeley Data metadata catalogue
+    Attributes
+    ----------
+    isListed : bool
+        Boolean to check whether the metadata is listed in the metadata catalog
+    apiURI : str
+        The URI for API of metadata catalogue
+    
+    Methods
+    -------
+    query(pidlist)
+        Method to check whether the metadata given by PID is listed in Mendeley Data 
+    """
     islisted = False
     apiURI = 'https://api.datasearch.elsevier.com/api/v2/search?query='
 
@@ -15,6 +27,17 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
         self.source = self.getEnumSourceNames().MENDELEY_DATA.value
 
     def query(self, pidlist):
+        """Method to check whether the metadata given by PID is listed in Mendeley Data
+        Parameters 
+        ----------
+        pidlist:list
+            A list of PID
+            
+        Returns
+        -------
+        response
+            session response
+        """
         response = None
         for pid in pidlist:
             try:

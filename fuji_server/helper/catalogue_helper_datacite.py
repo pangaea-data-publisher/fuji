@@ -6,15 +6,44 @@ from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 
 
 class MetaDataCatalogueDataCite(MetaDataCatalogue):
-
+    """A class to access Datacite  metadata catalogue
+    Attributes
+    ----------
+    isListed : bool
+        Boolean to check whether the metadata is listed in the metadata catalog
+    apiURI : str
+        The URI for API of metadata catalogue
+    
+    Methods
+    -------
+    query(pid)
+        Method to check whether the metadata given by PID is listed in Datacite 
+    """
     islisted = False
     apiURI = 'https://api.datacite.org/dois'
 
     def __init__(self, logger: logging.Logger = None):
+        """
+        Parameters
+        ----------
+        logger: logging.Logger, option
+            Logger instance, default is None
+        """
         self.logger = logger
         self.source = self.getEnumSourceNames().DATACITE.value
 
     def query(self, pid):
+        """Method to check whether the metadata given by PID is listed in Datacite
+        Parameters 
+        ----------
+        pid:str
+            A PID
+            
+        Returns
+        -------
+        response
+            session response
+        """
         response = None
         try:
             res = apiresponse = re.get(self.apiURI + '/' + pid, timeout=5)
