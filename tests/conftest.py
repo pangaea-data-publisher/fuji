@@ -12,22 +12,54 @@ import connexion
 from pathlib import Path
 from flask.testing import FlaskClient
 from fuji_server.app.fuji_app import create_fuji_app
+from fuji_server.helper.preprocessor import  Preprocessor
 
 pytest_plugins = ()
 
 THIS_PATH = Path(__file__).parent
 TEST_CONFIG_FILE_PATH = os.path.join(THIS_PATH, 'test_server.ini')
-config = configparser.ConfigParser()
-config.read(TEST_CONFIG_FILE_PATH)
-flask_app = create_fuji_app(config)
+config_fuji = configparser.ConfigParser()
+config_fuji.read(TEST_CONFIG_FILE_PATH)
+flask_app = create_fuji_app(config_fuji)
 flask_app.testing = True
+
+##### Add some markers to pytest to group tests
+# control skipping test on command line options, for test collection
+# https://docs.pytest.org/en/stable/example/simple.html?highlight=pytest_configure
+
+def pytest_configure(config):
+    """
+    Here you can add things by a pytest config, could be also part of a separate file
+    So far we add some markers here to be able to execute a certain group of tests
+    We make them all lowercaps as convention
+    """
+    config.addinivalue_line("markers", "manual: tests which should be trickered manual only")
+    config.addinivalue_line("markers", "noci: tests which should not run on the CI")
+
+
 
 @pytest.fixture(scope='session')
 def fujiclient():
+    """Fixture providing a fuji flask test_client, for real requests to"""
     with flask_app.app.test_client() as test_client:
         #login(test_client, "username", "password")
         yield test_client
 
+
+@pytest.fixture(scope='function')
+def test_config():
+    """Fixture returning the read config object by configparser"""
+
+    return config_fuji
+
+
+@pytest.fixture(scope='function')
+def temp_preprocessor():
+    """Fixture which provides a clean temporary Preprocessor (singledton) for a test and tears it down"""
+    preproc = Preprocessor()#.copy()
+    yield preproc
+    # tear down code
+    del preproc
 
 '''
 class MyResponse(Response):
