@@ -32,8 +32,6 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollector(object):
-
-    metadata_mapping: Optional[Mapper]
     """
     A class to collect a metadata from different metadata sources.
 
@@ -77,6 +75,8 @@ class MetaDataCollector(object):
         Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
     """
 
+    metadata_mapping: Optional[Mapper]
+
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
         """"Enum class to enumerate metadata sources."""
@@ -100,6 +100,16 @@ class MetaDataCollector(object):
                  sourcemetadata: dict = None,
                  mapping: metadata_mapper.Mapper = None,
                  logger: logging.Logger = None):
+        """
+        Parameters
+        ----------
+        sourcemetadata : dict, optional
+            Metadata souce in a dictionary, default is None
+        mapping : metadata_mapper.Mapper, optional
+            Metadata mapping to metadata sources, default is None
+        logger : logging.Logger, optional
+            Logger object, default is None
+        """
         self.source_metadata = sourcemetadata
         self.metadata_mapping = mapping
         self.logger = logger
@@ -135,6 +145,12 @@ class MetaDataCollector(object):
         return self.namespaces
 
     def getNamespacesfromIRIs(self, meta_source):
+        """Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
+
+        Parameters
+        ----------
+        meta_source:str
+        """
         extractor = URLExtract()
         namespaces = set()
         if meta_source is not None:

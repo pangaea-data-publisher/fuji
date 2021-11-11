@@ -46,6 +46,14 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
     source_name = None
 
     def __init__(self, loggerinst, target_url):
+        """
+        Parameters
+        ----------
+        loggerinst : logging.Logger
+            Logger instance
+        target_url : str
+            Target URL
+        """
         #self.is_pid = ispid
         self.target_url = target_url
         super().__init__(logger=loggerinst)

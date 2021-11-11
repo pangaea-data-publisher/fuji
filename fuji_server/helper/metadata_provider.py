@@ -56,6 +56,16 @@ class MetadataProvider(ABC):
     """
 
     def __init__(self, logger=None, endpoint=None, metric_id=None):
+        """
+        Parameters
+        ----------
+        logger : logging.Logger
+            Logger object, default is None
+        endpoint : str
+            Endpoint url, default is None
+        metric_id : str
+            FUJI FAIR metric identifier, default is None
+        """
         self.logger = logger
         self.endpoint = endpoint
         self.metric_id = metric_id

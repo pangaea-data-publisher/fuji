@@ -41,6 +41,18 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
     """
 
     def __init__(self, sourcemetadata, mapping, loggerinst):
+        """
+        Parameters
+        ----------
+        sourcemetadata : str
+            Source of metadata
+        mapping : Mapper
+            Mapper to metedata sources
+        loggerinst : logging.Logger
+            Logger instance
+        target_url : str
+            Target URL
+        """
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
     def parse_metadata(self):

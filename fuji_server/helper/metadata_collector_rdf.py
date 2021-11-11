@@ -70,6 +70,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
     target_url = None
 
     def __init__(self, loggerinst, target_url, source, rdf_graph=None):
+        """
+        Parameters
+        ----------
+        source : str
+            Source of metadata
+        loggerinst : logging.Logger
+            Logger instance
+        target_url : str
+            Target URL
+        rdf_graph : rdflib.ConjunctiveGraph, optional
+            RDF graph, default=None
+        """
         self.target_url = target_url
         self.content_type = None
         self.source_name = source

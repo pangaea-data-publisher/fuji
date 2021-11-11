@@ -52,6 +52,16 @@ class MetaDataCollectorXML(MetaDataCollector):
     target_url = None
 
     def __init__(self, loggerinst, target_url, link_type='embedded'):
+        """
+        Parameters
+        ----------
+        mapping : Mapper
+            Mapper to metedata sources
+        loggerinst : logging.Logger
+            Logger instance
+        link_type : str, optional
+            Link Type, default is 'embedded'
+        """
         self.target_url = target_url
         self.link_type = link_type
         super().__init__(logger=loggerinst)

@@ -51,6 +51,16 @@ class MetaDataCollectorDatacite(MetaDataCollector):
     exclude_conversion: List[str]
 
     def __init__(self, mapping, pid_url=None, loggerinst=None):
+        """
+        Parameters
+        ----------
+        mapping: Mapper
+            Mapper to metedata sources
+        pid_url : str, optional
+            URL of PID
+        loggerinst : logging.logger, optional
+            Logger instance
+        """
         super().__init__(logger=loggerinst, mapping=mapping)
         self.pid_url = pid_url
         self.exclude_conversion = ['creator', 'license', 'related_resources', 'access_level']

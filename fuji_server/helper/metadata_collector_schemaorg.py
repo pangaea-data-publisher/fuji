@@ -57,6 +57,18 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
 
     def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
+        """
+        Parameters
+        ----------
+        sourcemetadata : str
+            Source of metadata
+        mapping : Mapper
+            Mapper to metedata sources
+        loggerinst : logging.Logger
+            Logger instance
+        pidurl : str
+            PID URL
+        """
         #self.is_pid = ispid
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)

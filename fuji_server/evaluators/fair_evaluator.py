@@ -57,6 +57,12 @@ class FAIREvaluator:
 
     #{0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
     def __init__(self, fuji_instance):
+        """
+        Parameters
+        ----------
+        fuji_instance:Fuji
+            Fuji instance
+        """
         self.fuji = fuji_instance
         self.metric_identifier = None
         self.metrics = None
@@ -88,7 +94,7 @@ class FAIREvaluator:
             self.initializeEvaluationCriteria()
 
     def evaluate(self):
-        """To be implemented (override) in the sub class"""
+        """To be implemented (override) in the child class"""
         #Do the main FAIR check here
         return True
 
