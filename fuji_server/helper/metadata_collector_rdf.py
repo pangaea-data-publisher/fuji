@@ -36,6 +36,35 @@ from fuji_server.helper.metadata_mapper import Mapper
 
 
 class MetaDataCollectorRdf(MetaDataCollector):
+    """
+    A class to collect the metadata given the Resource Description Framework (RDF) graph. This class is child class of MetadataCollector.
+
+    Attributes
+    ----------
+    source_name : str
+        Source name of metadata
+    target_url : str
+        Target URL of the metadata
+    content_type : str
+        Content type of HTTP response
+    rdf_graph : rdflib.ConjunctiveGraph
+        An object of RDF graph
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse the metadata given RDF graph
+    get_default_metadata(g)
+        Method to get the default metadata given RDF graph
+    get_metadata(g, item, type='Dataset')
+        Method to get the core metadata in RDF graph
+    get_ontology_metadata(graph)
+        Method to get ontology by matching the type of IRI into OWL or SKOS class in the RDF graph
+    get_dcat_metadata(graph)
+        Method to get Data Catalog(DCAT) metadata in RDF graph
+    get_content_type()
+        Method to get the content type attribute in the class
+    """
     target_url = None
 
     def __init__(self, loggerinst, target_url, source, rdf_graph=None):
@@ -46,6 +75,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
         super().__init__(logger=loggerinst)
 
     def parse_metadata(self):
+        """Parse the metadata given RDF graph.
+
+        Returns
+        ------
+        str
+            a string of source name
+        dict
+            a dictionary of metadata in RDF graph
+        """
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
         #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata = dict()
@@ -97,6 +135,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return self.source_name, rdf_metadata
 
     def get_default_metadata(self, g):
+        """Get the default metadata given the RDF graph.
+
+        Parameters
+        ----------
+        g : RDF.ConjunctiveGraph
+            RDF Conjunctive Graph object
+
+        Returns
+        ------
+        dict
+            a dictionary of metadata in RDF graph
+        """
         meta = dict()
         try:
             if (len(g) > 1):
@@ -135,6 +185,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
     #TODO rename to: get_core_metadata
     def get_metadata(self, g, item, type='Dataset'):
+        """Get the core metadata given RDF graph.
+
+        Parameters
+        ----------
+        g : RDF.ConjunctiveGraph
+            RDF Conjunctive Graph object
+        item : Any
+            item to be found the metadata
+        type : str
+            type of object
+
+        Returns
+        ------
+        dict
+            a dictionary of core metadata in RDF graph
+        """
         DCAT = Namespace('http://www.w3.org/ns/dcat#')
         meta = dict()
         #default sparql
@@ -183,6 +249,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return meta
 
     def get_ontology_metadata(self, graph):
+        """Get the ontology given RDF graph.
+
+        Parameters
+        ----------
+        graph : RDF.ConjunctiveGraph
+            RDF Conjunctive Graph object
+
+        Returns
+        ------
+        dict
+            a dictionary of Ontology in RDF graph
+        """
         ont_metadata = dict()
         OWL = Namespace('http://www.w3.org/2002/07/owl#')
         SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
@@ -200,6 +278,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return ont_metadata
 
     def get_dcat_metadata(self, graph):
+        """Get the Data Catalog (DCAT) metadata given RDF graph.
+
+        Parameters
+        ----------
+        graph : RDF.ConjunctiveGraph
+            RDF Conjunctive Graph object
+
+        Returns
+        ------
+        dict
+            a dictionary of Ontology in RDF graph
+        """
         dcat_metadata = dict()
         DCAT = Namespace('http://www.w3.org/ns/dcat#')
 
@@ -284,4 +374,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #return None
 
     def get_content_type(self):
+        """Get the content type.
+
+        Returns
+        ------
+        str
+            a string of content type
+        """
         return self.content_type

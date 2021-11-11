@@ -48,7 +48,7 @@ class FAIREvaluator:
         Maturity level of each evaluator
     isDebug : bool
         Boolean to enable debugging process
-    logger : Logger
+    logger : logging.Logger
         Logger to log during the evaluation process
     """
 

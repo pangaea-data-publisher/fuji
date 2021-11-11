@@ -26,6 +26,21 @@ import feedparser
 
 
 class MetaDataCollectorOreAtom(MetaDataCollector):
+    """
+    A class to collect the Object Reuse and Exchange (ORE) Atom metadata from the data. This class is child class of MetadataCollector.
+
+    Attributes
+    ----------
+    source_name : str
+        Source name of metadata
+    target_url : str
+        Target URL of the metadata
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse the ORE Atom metadata from the data.
+    """
     source_name = None
 
     def __init__(self, loggerinst, target_url):
@@ -34,6 +49,15 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
         super().__init__(logger=loggerinst)
 
     def parse_metadata(self):
+        """Parse the ORE Atom metadata from the data
+
+        Returns
+        ------
+        str
+            a string of source name
+        dict
+            a dictionary of ORE Atom metadata
+        """
         ore_metadata = {}
         if self.target_url:
             self.source_name = self.getEnumSourceNames().OAI_ORE.value
