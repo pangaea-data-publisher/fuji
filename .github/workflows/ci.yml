@@ -27,7 +27,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install -e .[docs]
+        pip install .[dev]
 
     - name: Install Latex compiler
       run: |
@@ -76,7 +76,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install .[pre-commit]
+        pip install .[dev]
         pip freeze
 
     - name: Run pre-commit
@@ -113,8 +113,8 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install .[testing]
-        pip install -r requirements.txt
+        pip install .[dev]
+        # pip install -r requirements.txt
         pip freeze
 
     - name: Run pytest
