@@ -60,10 +60,11 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                 contents = contents[:self.fuji.FILES_LIMIT]
 
             for content_link in contents:
+                # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
+                did_output_content = IdentifierIncludedOutputInner()
+                did_output_content.content_identifier_included = content_link
+
                 if content_link.get('url'):
-                    # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
-                    did_output_content = IdentifierIncludedOutputInner()
-                    did_output_content.content_identifier_included = content_link
                     self.fuji.content_identifier.append(content_link)
                     try:
                         # only check the status, do not download the content
@@ -74,18 +75,6 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         if content_link['header_content_type'] != content_link.get('type'):
                             self.logger.warning('FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: (' + str(content_link.get(
                                 'type')) + ') vs. (' + str(content_link['header_content_type']) + ')')
-                            '''
-                            if 'html' not in content_link['header_content_type']:
-                                if content_link['header_content_type'] not in ['application/octet-stream','binary/octet-stream']:
-                                    self.logger.info(
-                                        'FsF-F3-01M : Replacing metadata content type with content type from HTTP header response -: ' + str(
-                                            content_link['header_content_type']))
-                                    content_link['type'] = content_link['header_content_type']
-                                else:
-                                    self.logger.info('FsF-F3-01M : Ignoring HTTP header response for generic content type -:' + str(
-                                            content_link['header_content_type']))
-                            else:
-                            '''
                             if 'html' in content_link['header_content_type']:
                                 self.logger.warning(
                                     'FsF-F3-01M : Header response returned html type, assuming login page or similar -: ' + str(
@@ -108,9 +97,10 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         #self.fuji.content_identifier.append(content_link)
                         did_output_content.content_identifier_active = True
 
-                    content_list.append(did_output_content)
+
                 else:
                     self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
+            content_list.append(did_output_content)
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
 
