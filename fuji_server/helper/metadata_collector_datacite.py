@@ -28,15 +28,53 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class MetaDataCollectorDatacite(MetaDataCollector):
+    """
+    A class to collect Datacite metadata. This class is child class of MetadataCollector.
+    Several metadata are excluded from the collection, those are 'creator', 'license',
+    'related_resources', and 'access_level'.
+
+    ...
+
+    Attributes
+    ----------
+    exclude_conversion : list
+        List of string to store the excluded metadata
+    pid_url : str
+        URL of PID
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse Datacite metadata from the data
+    """
 
     exclude_conversion: List[str]
 
     def __init__(self, mapping, pid_url=None, loggerinst=None):
+        """
+        Parameters
+        ----------
+        mapping: Mapper
+            Mapper to metedata sources
+        pid_url : str, optional
+            URL of PID
+        loggerinst : logging.logger, optional
+            Logger instance
+        """
         super().__init__(logger=loggerinst, mapping=mapping)
         self.pid_url = pid_url
         self.exclude_conversion = ['creator', 'license', 'related_resources', 'access_level']
 
     def parse_metadata(self):
+        """ Parse the Datacite metadata from the data
+
+        Returns
+        ------
+        str
+            string of source name
+        list
+            a list of strings of Datacite metadata exclude 'creator', 'license', 'related_resources', 'access_level'
+        """
         source_name = None
         dcite_metadata = {}
         if self.pid_url:

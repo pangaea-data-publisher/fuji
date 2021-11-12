@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+title: F-UJI - An Automated FAIR Data Assessment Tool
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Anusuriya
+    family-names: Devaraju
+    email: anusuriya.devaraju@googlemail.com
+    orcid: 'https://orcid.org/0000-0003-0870-3192'
+  - given-names: Robert
+    family-names: Huber
+    email: rhuber@marum.de
+    orcid: 'https://orcid.org/0000-0003-3000-0020'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.3934401
+repository-code: 'https://github.com/pangaea-data-publisher/fuji'
+url: >-
+  https://www.fairsfair.eu/f-uji-automated-fair-data-assessment-tool
+abstract: >-
+  FAIRsFAIR has developed F-UJI, a service based on
+  REST, and is piloting a programmatic assessment of
+  the FAIRness of research datasets in five
+  trustworthy data repositories.
+keywords:
+  - PANGAEA
+  - FAIRsFAIR
+  - FAIR Principles
+  - Data Object Assessment
+  - Swagger
+  - FAIR
+  - Research Data
+  - FAIR data
+  - Metadata harvesting
+license: MIT

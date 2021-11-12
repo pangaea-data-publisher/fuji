@@ -27,6 +27,20 @@ from lxml import etree
 
 
 class OAIMetadataProvider(MetadataProvider):
+    """A metadata provider class to provide the metadata from OAI
+
+    ...
+
+    Methods
+    -------
+    getMetadataStandards()
+        Method will return the metadata standards in the namespaces
+    getMetadata(queryString)
+        Method that will return schemas of OAI
+    getNamespaces()
+        Method to get namespaces
+
+    """
 
     oai_namespaces = {'oai': 'http://www.openarchives.org/OAI/2.0/'}
 
@@ -40,6 +54,13 @@ class OAIMetadataProvider(MetadataProvider):
         return None
 
     def getMetadataStandards(self):
+        """Method to get the metadata schema from the OAI namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of schemas in OAI
+        """
         filter = ['datacite.org', 'openarchives.org', 'purl.org/dc/']  # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
         oai_endpoint = self.endpoint.split('?')[0]

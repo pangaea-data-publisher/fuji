@@ -29,14 +29,53 @@ import re
 
 
 class MetaDataCollectorXML(MetaDataCollector):
+    """
+    A class to collect the  XML metadata given the data. This class is child class of MetadataCollector.
+
+    ...
+
+    Attributes
+    ----------
+    target_url : str
+        Target URL of the metadata
+    link_type : str
+        Link type of XML
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse the  XML metadata given the data
+    get_mapped_xml_metadata(tree, mapping)
+        Get mapped xml metadata
+
+    """
     target_url = None
 
     def __init__(self, loggerinst, target_url, link_type='embedded'):
+        """
+        Parameters
+        ----------
+        mapping : Mapper
+            Mapper to metedata sources
+        loggerinst : logging.Logger
+            Logger instance
+        link_type : str, optional
+            Link Type, default is 'embedded'
+        """
         self.target_url = target_url
         self.link_type = link_type
         super().__init__(logger=loggerinst)
 
     def parse_metadata(self):
+        """Parse the XML metadata from the data.
+
+        Returns
+        ------
+        str
+            a string of source name
+        dict
+            a dictionary of XML metadata
+        """
         xml_metadata = None
         xml_mapping = None
         metatree = None
@@ -133,6 +172,21 @@ class MetaDataCollectorXML(MetaDataCollector):
         return source_name, xml_metadata
 
     def get_mapped_xml_metadata(self, tree, mapping):
+        """Get the mapped XML metadata.
+
+        Parameters
+        ----------
+        tree
+            XML Tree
+        mapping
+            Mapping object
+
+        Returns
+        ------
+
+        dict
+            a dictionary of mapped XML metadata
+        """
         res = dict()
         #make sure related_resources are not listed in the mapping dict instead related_resource_Reltype has to be used
         res['related_resources'] = []

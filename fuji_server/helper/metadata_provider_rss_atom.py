@@ -26,6 +26,20 @@ import feedparser
 
 
 class RSSAtomMetadataProvider(MetadataProvider):
+    """A metadata provider class to provide the metadata from GeoRSS ATOM
+
+    ...
+
+    Methods
+    -------
+    getMetadataStandards()
+        Method will return the metadata standards in the namespaces
+    getMetadata(queryString)
+        Method that will return schemas of GeoRSS Atom
+    getNamespaces()
+        Method to get namespaces
+
+    """
 
     rss_namespaces = {'atom': 'http://www.w3.org/2005/Atom', 'georss': 'http://www.georss.org/georss/'}
 
@@ -39,6 +53,13 @@ class RSSAtomMetadataProvider(MetadataProvider):
         return None
 
     def getMetadataStandards(self):
+        """Method to get the metadata schema from the GeoRSS Atom namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of schemas in GeoRSS Atom
+        """
         schemas = {}
         try:
             feed = feedparser.parse(self.endpoint)

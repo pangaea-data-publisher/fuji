@@ -31,16 +31,62 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class MetaDataCollectorSchemaOrg(MetaDataCollector):
+    """
+    A class to collect the schema.org. metadata form the data. This class is child class of MetadataCollector.
+
+    ...
+
+    Attributes
+    ----------
+    source_name : str
+        Source name of metadata
+    pid_url : str
+        Persistance Identifier URL
+    SCHEMA_ORG_CONTEXT : list
+        A list of schema.org context
+
+    Methods
+    --------
+    parse_metadata(ls)
+        Method to parse the schema.org metadata given JSON-LD.
+    compact_jsonld(jsonld)
+        Method to have the Compacted JSON-LD
+
+    """
     source_name = None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
 
     def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
+        """
+        Parameters
+        ----------
+        sourcemetadata : str
+            Source of metadata
+        mapping : Mapper
+            Mapper to metedata sources
+        loggerinst : logging.Logger
+            Logger instance
+        pidurl : str
+            PID URL
+        """
         #self.is_pid = ispid
         self.pid_url = pidurl
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
     #work around in case a lson-ld graph is given
     def compact_jsonld(self, jsonld):
+        """Compact JSON-LD representation.
+
+        Parameters
+        ----------
+        jsonld: Any
+            jsonld object
+
+        Returns
+        ------
+        dict
+            a dictionary of schema dataset of JSON-LD
+        """
         jsonldnodes = {}
         schemadataset = {}
         for jsonldnode in jsonld.get('@graph'):
@@ -61,6 +107,20 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
         return schemadataset
 
     def parse_metadata(self, ls=None):
+        """Parse the metadata given JSON-LD schema.org.
+
+        Parameters
+        ----------
+        ls: str
+            License
+
+        Returns
+        ------
+        str
+            a string of source name
+        dict
+            a dictionary of metadata in RDF graph
+        """
         jsnld_metadata = {}
         ext_meta = None
         if self.source_metadata:

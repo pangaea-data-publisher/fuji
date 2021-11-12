@@ -8,7 +8,21 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
+    """A class to access Google Data Search metadata catalogue
+    Attributes
+    ----------
+    isListed : bool, optional
+        Boolean to check whether the metadata is listed in the metadata catalog, 
+        default is False
 
+    Methods
+    -------
+    query(pid)
+        Method to check whether the metadata given by PID is listed in Google Data Search
+    create_list(google_cache_file) 
+    create_cache_db(google_cache_file) 
+
+    """
     islisted = False
 
     #apiURI = 'https://api.datacite.org/dois'
