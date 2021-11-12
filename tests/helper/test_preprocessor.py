@@ -7,6 +7,7 @@ Preprocessor is a singledton, therefore we need to proper tear it up and down.
 
 isDebug=True read the files in fuji_server/data
 isDebug=False, run harvesting code
+
 All CI tests should be run with isDebug=True, to not call harvester code
 Alternative one would have to mock the server responses to not make real calls.
 
@@ -22,13 +23,11 @@ def test_preprocessor_licences(test_config, temp_preprocessor):
     """Test preprocessor if retrieve_licences works"""
 
     SPDX_URL = test_config['EXTERNAL']['spdx_license_github']
-    preproc = temp_preprocessor
-    assert preproc.total_licenses == 0
+    assert temp_preprocessor.total_licenses == 0
 
-    preproc.retrieve_licenses(SPDX_URL, isDebug)
-    
-    assert preproc.total_licenses > 0
-    assert len(preproc.all_licenses) == preproc.total_licenses
+    temp_preprocessor.retrieve_licenses(SPDX_URL, isDebug)
+    assert temp_preprocessor.total_licenses > 0
+    assert len(temp_preprocessor.all_licenses) == temp_preprocessor.total_licenses
 
 
 def test_preprocessor_re3repos(test_config, temp_preprocessor):
@@ -37,14 +36,13 @@ def test_preprocessor_re3repos(test_config, temp_preprocessor):
     DATACITE_API_REPO = test_config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = test_config['EXTERNAL']['re3data_api']
 
-    assert temp_preprocessor.re3repositories == {} # this is initialized why?
+    assert  len(temp_preprocessor.re3repositories.keys()) == 0 # this is initialized why?
 
     temp_preprocessor.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
     
-    assert temp_preprocessor.re3repositories != {}
+    assert temp_preprocessor.re3repositories
     assert len(temp_preprocessor.re3repositories.keys()) > 10
-    print(len(temp_preprocessor.re3repositories.keys()))
-    assert False
+    #print(len(temp_preprocessor.re3repositories.keys()))
 
 
 def test_preprocessor_metadata_standards(test_config, temp_preprocessor):
@@ -52,17 +50,26 @@ def test_preprocessor_metadata_standards(test_config, temp_preprocessor):
 
     METADATACATALOG_API = test_config['EXTERNAL']['metadata_catalog']
 
-    assert temp_preprocessor.metadata_standards == {}
+    assert not temp_preprocessor.metadata_standards
 
     temp_preprocessor.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     
-    assert temp_preprocessor.metadata_standards != {}
+    assert temp_preprocessor.metadata_standards
+    print(temp_preprocessor.metadata_standards)
     assert len(temp_preprocessor.metadata_standards.keys()) > 10
 
 
 def test_preprocessor_retrieve_linkedvocabs(test_config, temp_preprocessor):
     """Test preprocessor if retrieve_linkedvocabs works"""
-    pass
+
+    LOV_API = test_config['EXTERNAL']['lov_api']
+    LOD_CLOUDNET = test_config['EXTERNAL']['lod_cloudnet']
+    assert not temp_preprocessor.linked_vocabs
+
+    temp_preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    
+    assert temp_preprocessor.linked_vocabs
+    assert len(temp_preprocessor.linked_vocabs) > 10
 
 
 

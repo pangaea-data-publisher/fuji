@@ -33,6 +33,8 @@ import requests
 
 class Preprocessor(object):
     # static elements belong to the class.
+    _instance = None
+
     all_metrics_list = []
     formatted_specification = {}
     total_metrics = 0
@@ -70,6 +72,15 @@ class Preprocessor(object):
     metric_specification = None
     remote_log_host = None
     remote_log_path = None
+
+
+    def __new__(cls):
+        """Define what happens on object creation to ensure preprocessor is a singledton"""
+        if cls._instance is None:
+            #print('Creating the Preprocessor')
+            cls._instance = super(Preprocessor, cls).__new__(cls)
+            # Put any initialization here.
+        return cls._instance
 
     @classmethod
     def set_remote_log_info(cls, host, path):
