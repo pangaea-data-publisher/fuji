@@ -42,7 +42,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
         using an appropriate metadata element and machine readable license
 
     """
-    def isLicense (self, value, metric_id):
+
+    def isLicense(self, value, metric_id):
         islicense = False
         isurl = idutils.is_url(value)
         spdx_html = None

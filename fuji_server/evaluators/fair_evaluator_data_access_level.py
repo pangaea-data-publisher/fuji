@@ -42,6 +42,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         This method will evaluate the metadata that includes the level of data access, e.g., public, embargoed, restricted, whether
         using a appropriate metadata field or using a machine-readable and verified against controlled vocabularies.
     """
+
     def evaluate(self):
         #Focus on machine readable rights -> URIs only
         #1) http://vocabularies.coar-repositories.org/documentation/access_rights/

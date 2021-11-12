@@ -41,6 +41,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         This method will evaluate whether the metadata is parsable and has a structured data embedded in the landing page or
         formal metadata, e.g., RDF, JSON-LD, is accessible.
     """
+
     def evaluate(self):
         self.result = FormalMetadata(id=self.metric_number,
                                      metric_identifier=self.metric_identifier,

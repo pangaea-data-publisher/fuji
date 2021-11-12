@@ -16,9 +16,10 @@ summaries_should = []
 for ref in reference_files:
     with open(ref, 'r', encoding='utf-8') as file_o:
         data = json.load(file_o)
-        summaries_should.append(data)#['summary']['score_percent'])
-  
+        summaries_should.append(data)  #['summary'])#['score_percent'])
+
 debug = True
+
 
 # Maybe change such that on changes test data can easily be updated
 @pytest.mark.parametrize('identifier, oai_pmh, summary_expected', zip(identifiers, oai_pmhs, summaries_should))
@@ -29,7 +30,7 @@ def test_fair_check(identifier, oai_pmh, summary_expected):
     not if all the log details and so on also are.
     These tests may take long.
     """
- 
+
     ft = FAIRCheck(uid=identifier, oaipmh_endpoint=oai_pmh, test_debug=debug)
     uid_result, pid_result = ft.check_unique_persistent()
     ft.retrieve_metadata_embedded(ft.extruct_result)
@@ -66,4 +67,4 @@ def test_fair_check(identifier, oai_pmh, summary_expected):
     summary = ft.get_assessment_summary(results)
     print(summary)
 
-    assert summary_expected == summary#['score_percent']
+    assert summary_expected == summary  #['score_percent']

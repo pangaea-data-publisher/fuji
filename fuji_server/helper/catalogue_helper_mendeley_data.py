@@ -13,11 +13,11 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
         Boolean to check whether the metadata is listed in the metadata catalog
     apiURI : str
         The URI for API of metadata catalogue
-    
+
     Methods
     -------
     query(pidlist)
-        Method to check whether the metadata given by PID is listed in Mendeley Data 
+        Method to check whether the metadata given by PID is listed in Mendeley Data
     """
     islisted = False
     apiURI = 'https://api.datasearch.elsevier.com/api/v2/search?query='
@@ -28,11 +28,11 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
 
     def query(self, pidlist):
         """Method to check whether the metadata given by PID is listed in Mendeley Data
-        Parameters 
+        Parameters
         ----------
         pidlist:list
             A list of PID
-            
+
         Returns
         -------
         response

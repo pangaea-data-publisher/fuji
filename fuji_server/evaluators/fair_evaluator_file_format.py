@@ -42,6 +42,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         This method will evaluate whether the data format is available in a long-term format (as defined in ISO/TR 22299)
         or in open format (see e.g., https://en.wikipedia.org/wiki/List_of_open_formats) or in a scientific file format.
     """
+
     def evaluate(self):
 
         text_format_regex = r'(^text)[\/]|[\/\+](xml|text|json)'

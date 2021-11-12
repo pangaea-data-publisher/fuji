@@ -12,15 +12,15 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
     Attributes
     ----------
     isListed : bool, optional
-        Boolean to check whether the metadata is listed in the metadata catalog, 
+        Boolean to check whether the metadata is listed in the metadata catalog,
         default is False
 
     Methods
     -------
     query(pid)
         Method to check whether the metadata given by PID is listed in Google Data Search
-    create_list(google_cache_file) 
-    create_cache_db(google_cache_file) 
+    create_list(google_cache_file)
+    create_cache_db(google_cache_file)
 
     """
     islisted = False

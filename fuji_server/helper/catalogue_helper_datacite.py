@@ -13,11 +13,11 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
         Boolean to check whether the metadata is listed in the metadata catalog
     apiURI : str
         The URI for API of metadata catalogue
-    
+
     Methods
     -------
     query(pid)
-        Method to check whether the metadata given by PID is listed in Datacite 
+        Method to check whether the metadata given by PID is listed in Datacite
     """
     islisted = False
     apiURI = 'https://api.datacite.org/dois'
@@ -34,11 +34,11 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
 
     def query(self, pid):
         """Method to check whether the metadata given by PID is listed in Datacite
-        Parameters 
+        Parameters
         ----------
         pid:str
             A PID
-            
+
         Returns
         -------
         response

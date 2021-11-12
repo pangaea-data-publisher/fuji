@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import os
 import connexion
 from flask_cors import CORS
@@ -30,10 +31,12 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 def create_fuji_app(config):
+    """
+    Function which initializes the FUJI connexion flask app and returns it
+    """
     #you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
-    ROOT_DIR = main_dir = Path(__file__).parent.parent#os.path.dirname(os.path.abspath(__file__))
+    ROOT_DIR = main_dir = Path(__file__).parent.parent
     YAML_DIR = config['SERVICE']['yaml_directory']
-
 
     auth_enabled = config.getboolean('USER', 'auth_enabled')
 
@@ -50,4 +53,5 @@ def create_fuji_app(config):
     app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
     if os.getenv('ENABLE_CORS', 'False').lower() == 'true':
         CORS(app.app)
+
     return app

@@ -2,6 +2,7 @@
 import enum
 import logging
 
+
 class MetaDataCatalogue(object):
     """ A base class of to access a metadata catalogue
     Attributes
@@ -49,7 +50,7 @@ class MetaDataCatalogue(object):
         ----------
         pid:str
             Persistence Identifier
-        
+
         Returns
         -------
         response

@@ -42,6 +42,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
         a shared application protocol.
 
     """
+
     def evaluate(self):
         self.result = StandardisedProtocolMetadata(id=self.metric_number,
                                                    metric_identifier=self.metric_identifier,

@@ -25,7 +25,6 @@
 from fuji_server.helper.preprocessor import Preprocessor
 
 
-
 def get_metrics():  # noqa: E501
     """Return all metrics and their definitions
      # noqa: E501

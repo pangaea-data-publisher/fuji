@@ -4,6 +4,7 @@ A collection of tests to test the reponses of a Fask tesk fuji client,
 i.e. if the app is working and there are no swagger problems.
 """
 
+
 def test_ui(fujiclient):
     """Basic smoke test to see if app is buildable"""
     response = fujiclient.get('/fuji/api/v1/ui/')
@@ -29,6 +30,7 @@ def test_get_metrics(fujiclient):
     assert response.status_code == 200
     result = response.json
     assert result != {}
+
 
 '''
 from swagger_tester import swagger_test

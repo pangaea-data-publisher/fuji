@@ -73,7 +73,6 @@ class Preprocessor(object):
     remote_log_host = None
     remote_log_path = None
 
-
     def __new__(cls):
         """Define what happens on object creation to ensure preprocessor is a singledton"""
         if cls._instance is None:

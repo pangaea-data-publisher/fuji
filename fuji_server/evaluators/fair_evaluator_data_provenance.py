@@ -43,6 +43,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         data creation activities. Moreover, it evaluates whether provenance information is available in
         a machine-readabe version such PROV-O or PAV
     """
+
     def evaluate(self):
 
         self.result = DataProvenance(id=self.metric_number,

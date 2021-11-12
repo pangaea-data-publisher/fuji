@@ -10,7 +10,7 @@ from pprint import pprint
 #from fuji_server import main
 from pathlib import Path
 from fuji_server.app.fuji_app import create_fuji_app
-from fuji_server.helper.preprocessor import  Preprocessor
+from fuji_server.helper.preprocessor import Preprocessor
 
 pytest_plugins = ()
 
@@ -25,16 +25,18 @@ flask_app.testing = True
 # control skipping test on command line options, for test collection
 # https://docs.pytest.org/en/stable/example/simple.html?highlight=pytest_configure
 
+
 def pytest_configure(config):
     """
     Here you can add things by a pytest config, could be also part of a separate file
     So far we add some markers here to be able to execute a certain group of tests
     We make them all lowercaps as convention
     """
-    config.addinivalue_line("markers", "manual: tests which should be trickered manual only")
-    config.addinivalue_line("markers", "noci: tests which should not run on the CI")
-    config.addinivalue_line("markers", "regression: tests which run a fuji as a whole")
-    config.addinivalue_line("markers", "smoke: tests which run very fast")
+    config.addinivalue_line('markers', 'manual: tests which should be trickered manual only')
+    config.addinivalue_line('markers', 'noci: tests which should not run on the CI')
+    config.addinivalue_line('markers', 'regression: tests which run a fuji as a whole')
+    config.addinivalue_line('markers', 'smoke: tests which run very fast')
+
 
 @pytest.fixture(scope='session')
 def fujiclient():
@@ -71,6 +73,7 @@ def initialize_preprocessor(test_config):
     preproc.retrieve_default_namespaces()
     preproc.set_remote_log_info(test_config['SERVICE']['remote_log_host'], test_config['SERVICE']['remote_log_path'])
 
+
 @pytest.fixture(scope='function')
 def test_config():
     """Fixture returning the read config object by configparser"""
@@ -80,13 +83,13 @@ def test_config():
 
 @pytest.fixture(scope='function')
 def temp_preprocessor():
-    """Fixture which provides a clean temporary Preprocessor (singledton) for a test and tears it down"""
-    preproc = Preprocessor#.copy()
+    """Fixture which resets the Preprocessor (singledton) for a test and restores its prior state afterwards"""
+    preproc = Preprocessor
 
     # save current state
     with open('temp_proprocessor_dump.pkl', 'bw') as fileo:
         pickle.dump(preproc, fileo)
-    print(preproc.total_licenses)
+
     # reseting the preprocessor (everything from class header)
     preproc.all_metrics_list = []
     preproc.formatted_specification = {}
@@ -124,7 +127,7 @@ def temp_preprocessor():
     preproc.remote_log_host = None
     preproc.remote_log_path = None
 
-    yield preproc # test is running
+    yield preproc  # test is running
 
     # tear down code, restore the state
     with open('temp_proprocessor_dump.pkl', 'br') as fileo:

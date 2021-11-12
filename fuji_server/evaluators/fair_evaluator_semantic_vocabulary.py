@@ -40,6 +40,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         the metadata of an object. These common namespaces such as RDF, RDFS, XSD, OWL, etc, will be
         excluded from the evaluation.
     """
+
     def evaluate(self):
 
         self.result = SemanticVocabulary(id=self.metric_number,

@@ -42,6 +42,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         This method will evaluate whether the data is specified based on a commonly accepted persistent identifier scheme or
         the identifier is web-accesible, i.e., it resolves to a landing page with metadata of the data object.
     """
+
     def evaluate(self):
         self.result = Persistence(id=self.metric_number,
                                   metric_identifier=self.metric_identifier,

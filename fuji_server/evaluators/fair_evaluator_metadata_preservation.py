@@ -38,6 +38,7 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
     evaluate()
 
     """
+
     def evaluate(self):
         registry_bound_pid = ['doi']
         self.result = MetadataPreserved(id=self.metric_number,

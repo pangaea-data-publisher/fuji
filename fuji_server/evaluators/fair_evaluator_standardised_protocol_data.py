@@ -41,6 +41,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         This method will evaluate the accesibility of the data on whether the URI's scheme is based on
         a shared application protocol.
     """
+
     def evaluate(self):
 
         self.result = StandardisedProtocolData(id=self.metric_number,

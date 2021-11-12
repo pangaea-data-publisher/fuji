@@ -40,6 +40,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         This method will evaluate metadata whether it specifies the core metadata, e.g., creator, title, publication date, etc.,
         through appropriate metadata fields.
     """
+
     def evaluate(self):
         if self.fuji.landing_url is None:
             self.logger.warning(

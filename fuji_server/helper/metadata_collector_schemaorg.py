@@ -29,7 +29,6 @@ from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
-
 class MetaDataCollectorSchemaOrg(MetaDataCollector):
     """
     A class to collect the schema.org. metadata form the data. This class is child class of MetadataCollector.

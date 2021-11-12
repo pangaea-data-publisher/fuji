@@ -2,6 +2,7 @@
 import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
 
+
 class MetaDataCollectorMicroData(MetaDataCollector):
     """
     A class to collect the Microdata metadata from the data. This class is child class of MetadataCollector.
