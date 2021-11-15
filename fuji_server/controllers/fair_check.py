@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-################################################################################
+
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,16 +21,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-################################################################################
-'''
-This module contains the FAIRCheck class, which is the main class for a FAIR
-score assessment. An instance of this gets parsed to all evaluators.
-'''
 import io
 import logging, logging.handlers
 import re
 import urllib
 import urllib.request as urllib
+from typing import List, Any
 from urllib.parse import urlparse, urljoin
 import pandas as pd
 import lxml
@@ -100,7 +96,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.1'
+    FUJI_VERSION = '1.4.3'
 
     def __init__(self,
                  uid,
@@ -311,7 +307,7 @@ class FAIRCheck:
             self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
             if self.use_datacite:
                 client_id = self.metadata_merged.get('datacite_client')
-                self.logger.info(f'FsF-R1.3-01M : re3data/datacite client id -: {client_id}')
+                self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
             else:
                 client_id = None
                 self.logger.warning(
@@ -366,9 +362,9 @@ class FAIRCheck:
                             '{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format(
                                 'FsF-R1.3-01M', stds))
                 else:
-                    self.logger.info('FsF-R1.3-01M : Invalid endpoint')
+                    self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
             else:
-                self.logger.warning('FsF-R1.3-01M : NO valid OAI-PMH endpoint found')
+                self.logger.warning('{} : NO valid OAI-PMH endpoint found'.format('FsF-R1.3-01M'))
 
             # retrieve metadata standards info from OGC CSW
             if self.csw_endpoint:
@@ -388,7 +384,7 @@ class FAIRCheck:
                             '{} : Found disciplinary standards that are listed in OGC CSW endpoint -: {}'.format(
                                 'FsF-R1.3-01M', stds))
                 else:
-                    self.logger.info('FsF-R1.3-01M : Invalid OGC CSW endpoint')
+                    self.logger.info('{} : Invalid OGC CSW endpoint'.format('FsF-R1.3-01M'))
 
             # retrieve metadata standards info from SPARQL endpoint
             if self.sparql_endpoint:
@@ -405,9 +401,10 @@ class FAIRCheck:
                         stds = list(self.community_standards_uri.keys())
                         self.logger.log(
                             self.LOG_SUCCESS,
-                            f'FsF-R1.3-01M : Found disciplinary standards that are listed in SPARQL endpoint -: {stds}')
+                            '{} : Found disciplinary standards that are listed in SPARQL endpoint -: {}'.format(
+                                'FsF-R1.3-01M', stds))
                 else:
-                    self.logger.info('FsF-R1.3-01M : Invalid SPARQL endpoint')
+                    self.logger.info('{} : Invalid SPARQL endpoint'.format('FsF-R1.3-01M'))
 
         else:
             self.logger.warning(
@@ -424,10 +421,8 @@ class FAIRCheck:
             #test if content is html otherwise skip embedded tests
             #print(self.landing_content_type)
             if 'html' in str(self.landing_content_type):
-
                 # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
                 ext_meta = extruct_metadata.get('json-ld')
-                #print(ext_meta)
                 self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
                 schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
@@ -699,64 +694,65 @@ class FAIRCheck:
         # ========= retrieve xml metadata namespaces by content negotiation ========
         if self.landing_url:
             if self.use_datacite is True:
-                target_url = self.pid_url
+                target_url_list = [self.pid_url, self.landing_url]
             else:
-                target_url = self.landing_url
-            if target_url is None:
-                target_url = self.origin_url
+                target_url_list = [self.landing_url]
+            if not target_url_list:
+                target_url_list = [self.origin_url]
+            for target_url in target_url_list:
+                self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
+                negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
+                                                                target_url=self.landing_url,
+                                                                link_type='negotiated')
+                source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
+                #print('### ',metadata_neg_dict)
+                metadata_neg_dict = self.exclude_null(metadata_neg_dict)
 
-            self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
-            negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
-                                                            target_url=self.landing_url,
-                                                            link_type='negotiated')
-            source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
-            #print('### ',metadata_neg_dict)
-            metadata_neg_dict = self.exclude_null(metadata_neg_dict)
+                if metadata_neg_dict:
+                    self.metadata_sources.append((source_neg_xml, 'negotiated'))
+                    if metadata_neg_dict.get('related_resources'):
+                        self.related_resources.extend(metadata_neg_dict.get('related_resources'))
+                    if metadata_neg_dict.get('object_content_identifier'):
+                        self.logger.info('FsF-F3-01M : Found data links in XML metadata -: ' +
+                                         str(metadata_neg_dict.get('object_content_identifier')))
+                    # add object type for future reference
+                    for i in metadata_neg_dict.keys():
+                        if i in self.reference_elements:
+                            self.metadata_merged[i] = metadata_neg_dict[i]
+                            self.reference_elements.remove(i)
+                    self.logger.log(
+                        self.LOG_SUCCESS, 'FsF-F2-01M : Found XML metadata through content negotiation-: ' +
+                        str(metadata_neg_dict.keys()))
+                    self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
+                #TODO: Finish  this ...
 
-            if metadata_neg_dict:
-                self.metadata_sources.append((source_neg_xml, 'negotiated'))
-                if metadata_neg_dict.get('related_resources'):
-                    self.related_resources.extend(metadata_neg_dict.get('related_resources'))
-                if metadata_neg_dict.get('object_content_identifier'):
-                    self.logger.info('FsF-F3-01M : Found data links in XML metadata -: ' +
-                                     str(metadata_neg_dict.get('object_content_identifier')))
-                # add object type for future reference
-                for i in metadata_neg_dict.keys():
-                    if i in self.reference_elements:
-                        self.metadata_merged[i] = metadata_neg_dict[i]
-                        self.reference_elements.remove(i)
-                self.logger.log(
-                    self.LOG_SUCCESS,
-                    'FsF-F2-01M : Found XML metadata through content negotiation-: ' + str(metadata_neg_dict.keys()))
-                self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
-            #TODO: Finish  this ...
-
-            # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
-            self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation')
-            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
-                                                             sourcemetadata=None,
-                                                             mapping=Mapper.SCHEMAORG_MAPPING,
-                                                             pidurl=target_url)
-            source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
-            schemaorg_dict = self.exclude_null(schemaorg_dict)
-            if schemaorg_dict:
-                self.namespace_uri.extend(schemaorg_collector.namespaces)
-                self.metadata_sources.append((source_schemaorg, 'negotiated'))
-                if schemaorg_dict.get('related_resources'):
-                    self.related_resources.extend(schemaorg_dict.get('related_resources'))
-                if schemaorg_dict.get('object_content_identifier'):
-                    self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' +
-                                     str(schemaorg_dict.get('object_content_identifier')))
-                # add object type for future reference
-                for i in schemaorg_dict.keys():
-                    if i in self.reference_elements:
-                        self.metadata_merged[i] = schemaorg_dict[i]
-                        self.reference_elements.remove(i)
-                self.logger.log(
-                    self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata through content negotiation-: ' +
-                    str(schemaorg_dict.keys()))
-            else:
-                self.logger.info('FsF-F2-01M : Schema.org metadata through content negotiation UNAVAILABLE')
+                # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
+                self.logger.info(
+                    'FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation')
+                schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
+                                                                 sourcemetadata=None,
+                                                                 mapping=Mapper.SCHEMAORG_MAPPING,
+                                                                 pidurl=target_url)
+                source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+                schemaorg_dict = self.exclude_null(schemaorg_dict)
+                if schemaorg_dict:
+                    self.namespace_uri.extend(schemaorg_collector.namespaces)
+                    self.metadata_sources.append((source_schemaorg, 'negotiated'))
+                    if schemaorg_dict.get('related_resources'):
+                        self.related_resources.extend(schemaorg_dict.get('related_resources'))
+                    if schemaorg_dict.get('object_content_identifier'):
+                        self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' +
+                                         str(schemaorg_dict.get('object_content_identifier')))
+                    # add object type for future reference
+                    for i in schemaorg_dict.keys():
+                        if i in self.reference_elements:
+                            self.metadata_merged[i] = schemaorg_dict[i]
+                            self.reference_elements.remove(i)
+                    self.logger.log(
+                        self.LOG_SUCCESS, 'FsF-F2-01M : Found Schema.org metadata through content negotiation-: ' +
+                        str(schemaorg_dict.keys()))
+                else:
+                    self.logger.info('FsF-F2-01M : Schema.org metadata through content negotiation UNAVAILABLE')
 
             # ========= retrieve rdf metadata namespaces by content negotiation ========
             self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation')
@@ -784,7 +780,7 @@ class FAIRCheck:
 
                     test_content_negotiation = True
                     self.logger.log(self.LOG_SUCCESS,
-                                    f'FsF-F2-01M : Found Linked Data metadata -: {str(rdf_dict.keys())}')
+                                    'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf, 'negotiated'))
 
                     for r in rdf_dict.keys():
@@ -814,7 +810,7 @@ class FAIRCheck:
                 # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append((source_dcitejsn, 'negotiated'))
                 self.logger.log(self.LOG_SUCCESS,
-                                f'FsF-F2-01M : Found Datacite metadata -: {str(dcitejsn_dict.keys())}')
+                                'FsF-F2-01M : Found Datacite metadata -: {}'.format(str(dcitejsn_dict.keys())))
                 if dcitejsn_dict.get('object_content_identifier'):
                     self.logger.info('FsF-F3-01M : Found data links in Datacite metadata -: ' +
                                      str(dcitejsn_dict.get('object_content_identifier')))
@@ -879,7 +875,7 @@ class FAIRCheck:
                     ore_dict = self.exclude_null(ore_dict)
                     if ore_dict:
                         self.logger.log(self.LOG_SUCCESS,
-                                        f'FsF-F2-01M : Found OAI ORE metadata -: {str(ore_dict.keys())}')
+                                        'FsF-F2-01M : Found OAI ORE metadata -: {}'.format(str(ore_dict.keys())))
                         self.metadata_sources.append((source_ore, 'linked'))
                         for r in ore_dict.keys():
                             if r in self.reference_elements:
@@ -919,7 +915,7 @@ class FAIRCheck:
                 if rdf_dict:
                     test_typed_links = True
                     self.logger.log(self.LOG_SUCCESS,
-                                    f'FsF-F2-01M : Found Linked Data metadata -: {str(rdf_dict.keys())}')
+                                    'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                     self.metadata_sources.append((source_rdf, 'linked'))
                     for r in rdf_dict.keys():
                         if r in self.reference_elements:
@@ -931,7 +927,8 @@ class FAIRCheck:
                     self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
 
         if self.reference_elements:
-            self.logger.debug(f'FsF-F2-01M : Reference metadata elements NOT FOUND -: {self.reference_elements}')
+            self.logger.debug('FsF-F2-01M : Reference metadata elements NOT FOUND -: {}'.format(
+                self.reference_elements))
         else:
             self.logger.debug('FsF-F2-01M : ALL reference metadata elements available')
         # Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..

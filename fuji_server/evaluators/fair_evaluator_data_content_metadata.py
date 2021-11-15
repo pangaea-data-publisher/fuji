@@ -21,8 +21,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import io
 import urllib
+
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
@@ -32,16 +33,6 @@ from tika import parser
 
 
 class FAIREvaluatorDataContentMetadata(FAIREvaluator):
-    """
-    A class to evaluate whether the metadata specifies the content of the data (R1.01MD). A child class of FAIREvaluator.
-    ...
-
-    Methods
-    -------
-    evaluate()
-        This method will evaluate the metadata that specifies the content of the data, e.g., resource type and links. In addition, the metadata includes
-        verifiable data descriptor file info (size and type) and the measured variables observation types will also be evaluated.
-    """
 
     def evaluate(self):
         self.result = DataContentMetadata(id=self.metric_number,
@@ -99,20 +90,23 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     response_body = []
                     timeout = 10
                     tika_content_size = 0
-                    max_download_size = 1000000
-
+                    max_download_size = 100000
+                    file_buffer_object = io.BytesIO()
                     start = time.time()
                     #r = requests.get(test_data_content_url, verify=False, stream=True)
                     try:
                         response = urllib.request.urlopen(test_data_content_url)
+                        content_type = response.info().get_content_type()
+                        chunksize = 1024
                         while True:
-                            chunk = response.read(1024)
+                            chunk = response.read(chunksize)
                             if not chunk:
                                 break
                             else:
-                                response_body.append(chunk)
+                                #response_body.append(chunk)
+                                file_buffer_object.write(chunk)
                                 # avoiding large file sizes to test with TIKA.. truncate after 1 Mb
-                                tika_content_size = tika_content_size + len(chunk)
+                                tika_content_size = tika_content_size + chunksize
                                 if time.time() > (start + timeout) or tika_content_size >= max_download_size:
                                     self.logger.warning('FsF-R1-01MD : File too large.., skipped download after -:' +
                                                         str(timeout) + ' sec or receiving > ' + str(max_download_size) +
@@ -132,14 +126,15 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.exception(e.reason)
                     except Exception as e:
                         self.logger.warning('FsF-F3-01M : Could not access the resource -:' + str(e))
-                    if response_body:
-                        response_content = b''.join(response_body)
+                    #if response_body:
+                    #response_content = b''.join(response_body)
+                    #response_body = None
 
                     status = 'tika error'
                     parsed_content = ''
                     try:
-                        if response_content:
-                            parsedFile = parser.from_buffer(response_content)
+                        if len(file_buffer_object.getvalue()) > 0:
+                            parsedFile = parser.from_buffer(file_buffer_object.getvalue())
                             status = parsedFile.get('status')
                             tika_content_types = parsedFile.get('metadata').get('Content-Type')
                             parsed_content = parsedFile.get('content')
@@ -165,6 +160,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.logger.info('{0} : File request status code -: {1}'.format(self.metric_identifier, status))
 
                     test_data_content_text = str(parsed_content)
+
                     # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                     if test_data_content_text:
                         #parsed_files = parsedFile.get("metadata").get('resourceName')
@@ -175,7 +171,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 except Exception as e:
                     self.logger.warning('{0} : Could not retrieve/parse content object -: {1}'.format(
                         self.metric_identifier, e))
-                    #traceback.print_exc()
             else:
                 self.logger.warning(
                     'FsF-R1-01MD : NO data object content available/accessible to perform file descriptors (type and size) tests'
@@ -223,7 +218,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 '{0} : Could not verify content size (received: 0 bytes) from downloaded file'.format(
                                     self.metric_identifier))
                         else:
-                            #print(type(data_object.get('size')))
                             try:
                                 object_size = int(float(data_object.get('size')))
                                 if object_size == tika_content_size:

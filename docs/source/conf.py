@@ -68,7 +68,7 @@ copyright = u'2020-today PANGAEA'
 # built documents.
 #
 
-version = '1.4.1' #'.'.join(fuji_server.__version__.split('.')[:2])
+version = '1.4.3' #'.'.join(fuji_server.__version__.split('.')[:2])
 # The full version, including alpha/beta/rc tags.
 release = version #fuji_server.__version__
 author = 'The F-uji authors'
