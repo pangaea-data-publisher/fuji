@@ -3,28 +3,22 @@
 Welcome to the `F-uji`_'s documentation!
 ########################################
 
+.. |logo1| image:: images/fuji_logo.png
+    :width: 100 %
+    :align: middle
+
+.. _F-uji: https://www.f-uji.net
 
 
-Requirements to use this code:
-------------------------------
+|logo1|
 
+FUJIs README
+############
 
-Installation Instructions:
---------------------------
+.. toctree::
+   :maxdepth: 2
 
-Install from pypi the latest release::
-
-    $ pip install fuji
-
-
-or from the fuji source folder any branch::
-
-    $ pip install .
-    # or which is very useful to keep track of the changes (developers)
-    $ pip install -e . 
-
-Acknowledgments:
-----------------
+   readme_link.md
 
 
 User's Guide

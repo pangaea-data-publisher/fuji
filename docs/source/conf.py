@@ -12,7 +12,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import fuji_server
+#import fuji_server
 import sys
 import os
 
@@ -32,13 +32,16 @@ PROJECTNAME = u'Fuji' #u'F-uji Server'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.doctest',
-              'sphinx.ext.todo',
-              'sphinx.ext.coverage',
-              'sphinx.ext.imgmath',
-              'sphinx.ext.ifconfig',
+              'sphinx.ext.napoleon',
+              #'sphinx.ext.doctest',
+              #'sphinx.ext.todo',
+              #'sphinx.ext.coverage',
+              #'sphinx.ext.imgmath',
+              #'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
-              'sphinx.ext.intersphinx']
+              'myst_parser'
+              #'sphinx.ext.intersphinx'
+              ]
 
 intersphinx_mapping = {'numpy': ('https://numpy.org/doc/stable/', None)}
 
@@ -65,9 +68,9 @@ copyright = u'2020-today PANGAEA'
 # built documents.
 #
 
-version = '.'.join(fuji_server.__version__.split('.')[:2])
+version = '1.4.1' #'.'.join(fuji_server.__version__.split('.')[:2])
 # The full version, including alpha/beta/rc tags.
-release = fuji_server.__version__
+release = version #fuji_server.__version__
 author = 'The F-uji authors'
 
 
@@ -112,7 +115,7 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
+# The theme to use for HTML and HTMfL Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'default'
 
@@ -391,10 +394,8 @@ nitpick_ignore = [
     ('py:obj', 'Mapping')
 ]
 
-html_static_path = ['_static']
-
-html_context = {
-    'css_files': [
-        '_static/theme_overrides.css',  # override wide tables in RTD theme
-    ],
-}
+#html_context = {
+#    'css_files': [
+#        '_static/theme_overrides.css',  # override wide tables in RTD theme
+#    ],
+#}

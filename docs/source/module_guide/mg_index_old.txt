@@ -1,0 +1,17 @@
+Source code Documentation (API reference)
+=========================================
+
+Fuji 
+----
+
+.. automodule:: fuji_server.app
+   :members:
+
+.. automodule:: fuji_server.controllers
+   :members:
+
+.. automodule:: fuji_server.client
+   :members:
+
+.. automodule:: fuji_server.helper
+   :members:

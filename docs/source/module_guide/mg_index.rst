@@ -1,8 +1,7 @@
-Source code Documentation (API reference)
-=========================================
+Module reference (API)
+######################
 
-Fuji 
-----
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: fuji_server
-   :members:
+   fuji_server
