@@ -1,5 +1,5 @@
 # F-UJI (FAIRsFAIR Research Data Object Assessment Service)
-Developers: [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com), [Robert Huber](mailto:rhuber@marum.de)
+Developers:[Robert Huber](mailto:rhuber@marum.de), [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com)
 
 [![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
@@ -11,6 +11,10 @@ F-UJI is a web service to programatically assess FAIRness of research data objec
 The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.  
 
 The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
+
+**Cite as**
+
+Devaraju, A. and Huber, R. (2021). An automated solution for measuring the progress toward FAIR research data. Patterns, vol 2(11), https://doi.org/10.1016/j.patter.2021.100370
 
 ### Clients and User Interface
 

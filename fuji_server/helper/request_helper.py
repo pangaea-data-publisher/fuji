@@ -144,11 +144,16 @@ class RequestHelper:
                     self.logger.info(
                         '%s : Content negotiation accept=%s, status=%s ' % (metric_id, self.accept_type, str(status_code)))
                     if status_code == 200:
+
                         self.content_type = self.http_response.headers.get("Content-Type")
                         #try to find out if content type is byte then fix
                         try:
                             self.response_content.decode('utf-8')
-                        except (UnicodeDecodeError, AttributeError):
+                        except (UnicodeDecodeError, AttributeError) as e:
+                            self.logger.warning(
+                                '%s : Content UTF-8 encoding problem, trying to fix.. ' % metric_id)
+
+                            self.response_content = self.response_content.decode('utf-8', errors="replace")
                             self.response_content = str(self.response_content).encode('utf-8')
                         if self.content_type is None:
                             self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
@@ -177,7 +182,6 @@ class RequestHelper:
                                 #print(self.content_type)
                                 while (True):
                                     for at in AcceptTypes: #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
-                                        #print(at.name)
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
@@ -241,7 +245,6 @@ class RequestHelper:
                 #self.logger.warning('%s : Request Error: Failed to connect to %s ' % (metric_id, self.request_url))
                 self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' % (metric_id, self.accept_type, str(e.code)))
                 self.response_status = int(e.code)
-                print(e)
                 #self.logger.exception("{} : RequestException: {}".format(metric_id, e))
                 #traceback.print_exc()
                 #self.logger.exception('%s : Failed to connect to %s ' % (metric_id, self.request_url))
@@ -257,9 +260,7 @@ class RequestHelper:
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         try:
-            #print(html_texts.encode('utf8'))
-            extracted = extruct.extract(html_texts.encode('utf8'))
-            #print('extr',self.content_type,self.request_url)
+            extracted = extruct.extract(html_texts.encode('utf8'),syntaxes=['microdata', 'opengraph', 'json-ld'])
         except Exception as e:
             extracted=None
             self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' % (self.metric_id, self.request_url+' '+str(e)))
