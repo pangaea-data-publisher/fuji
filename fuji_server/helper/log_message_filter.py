@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -23,8 +24,6 @@
 import logging
 
 
-
-
 class MessageFilter(logging.Filter):
 
     def __init__(self):
@@ -35,7 +34,7 @@ class MessageFilter(logging.Filter):
         #print(record.getMessage())
         if record.msg.startswith('FsF-'):
             level = record.levelname
-            m = record.msg.split(":", 1)
+            m = record.msg.split(':', 1)
             msg = '%s: %s' % (level, m[1].strip())
             record.msg = msg
         return True
@@ -43,6 +42,7 @@ class MessageFilter(logging.Filter):
     def getMessage(self, m_id):
         # return debug messages by metric id or return None
         return self.messages.get(m_id)
+
 
 # class RequestsHandler(logging.Handler):
 #     messages = []

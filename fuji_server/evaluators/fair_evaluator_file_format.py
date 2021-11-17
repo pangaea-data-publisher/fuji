@@ -23,20 +23,33 @@
 # SOFTWARE.
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-
 from fuji_server.models.data_file_format import DataFileFormat
 from fuji_server.models.data_file_format_output import DataFileFormatOutput
 from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner
 import mimetypes
 import re
 
+
 class FAIREvaluatorFileFormat(FAIREvaluator):
+    """
+    A class to evaluate whether the data is available in a file format recommended by the targe research community (R1.3-02D).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    -------
+    evaluate()
+        This method will evaluate whether the data format is available in a long-term format (as defined in ISO/TR 22299)
+        or in open format (see e.g., https://en.wikipedia.org/wiki/List_of_open_formats) or in a scientific file format.
+    """
+
     def evaluate(self):
 
         text_format_regex = r'(^text)[\/]|[\/\+](xml|text|json)'
 
-        self.result = DataFileFormat(id=self.metric_number, metric_identifier=self.metric_identifier,
-                                                 metric_name=self.metric_name)
+        self.result = DataFileFormat(id=self.metric_number,
+                                     metric_identifier=self.metric_identifier,
+                                     metric_name=self.metric_name)
         self.output = DataFileFormatOutput()
         data_file_list = []
 
@@ -60,14 +73,15 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
-                    if mime_type is None or mime_type in ['application/octet-stream','binary/octet-stream']:
+                    if mime_type is None or mime_type in ['application/octet-stream', 'binary/octet-stream']:
                         self.logger.info(
                             'FsF-R1.3-02D : Guessing  the type of a file based on its filename or URL -: {}'.format(
                                 data_file.get('url')))
                         # if mime type not given try to guess it based on the file name
                         guessed_mime_type = mimetypes.guess_type(data_file.get('url'))
                         self.logger.info('FsF-R1.3-02D : Guess return value -: {}'.format(guessed_mime_type))
-                        mime_type = guessed_mime_type[0]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
+                        mime_type = guessed_mime_type[
+                            0]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
 
                     if mime_type:
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
@@ -75,22 +89,26 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                 'FsF-R1.3-02D : Archiving/compression format specified -: {}'.format(mime_type))
                             if 'unverified' not in self.fuji.tika_content_types_list:
                                 # exclude archive format
-                                if file_index == len(self.fuji.content_identifier)-1:
-                                    self.fuji.tika_content_types_list = [n for n in self.fuji.tika_content_types_list if
-                                                                    n not in self.fuji.ARCHIVE_MIMETYPES]
+                                if file_index == len(self.fuji.content_identifier) - 1:
+                                    self.fuji.tika_content_types_list = [
+                                        n for n in self.fuji.tika_content_types_list
+                                        if n not in self.fuji.ARCHIVE_MIMETYPES
+                                    ]
                                     self.logger.info(
-                                        'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'.format(self.fuji.tika_content_types_list))
+                                        'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'
+                                        .format(self.fuji.tika_content_types_list))
                                     for t in self.fuji.tika_content_types_list:
                                         mime_url_pair[t] = data_file.get('url')
                             else:
                                 self.logger.warning(
-                                    'FsF-R1.3-02D : Content type not verified during FsF-R1-01MD, assuming login page or similar instead of -: {}'.format(mime_type))
+                                    'FsF-R1.3-02D : Content type not verified during FsF-R1-01MD, assuming login page or similar instead of -: {}'
+                                    .format(mime_type))
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
                             if self.fuji.tika_content_types_list:
                                 #add tika detected mimes
                                 for tika_mime in self.fuji.tika_content_types_list:
-                                    if tika_mime !='unverified' and tika_mime not in mime_url_pair:
+                                    if tika_mime != 'unverified' and tika_mime not in mime_url_pair:
                                         mime_url_pair[tika_mime] = data_file.get('url')
 
             # FILE FORMAT CHECKS....
@@ -152,10 +170,15 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
                 #self.maturity = 3
-                self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community -:'+str(mimetype))
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community -:' +
+                    str(mimetype))
                 self.result.test_status = 'pass'
         else:
-            self.logger.warning('FsF-R1.3-02D : Could not perform file format checks as data content identifier(s) unavailable/inaccesible')
+            self.logger.warning(
+                'FsF-R1.3-02D : Could not perform file format checks as data content identifier(s) unavailable/inaccesible'
+            )
             self.result.test_status = 'fail'
 
         self.output = data_file_list

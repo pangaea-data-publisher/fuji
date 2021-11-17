@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -24,7 +25,22 @@ from fuji_server.helper.metadata_provider import MetadataProvider
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from lxml import etree
 
+
 class OAIMetadataProvider(MetadataProvider):
+    """A metadata provider class to provide the metadata from OAI
+
+    ...
+
+    Methods
+    -------
+    getMetadataStandards()
+        Method will return the metadata standards in the namespaces
+    getMetadata(queryString)
+        Method that will return schemas of OAI
+    getNamespaces()
+        Method to get namespaces
+
+    """
 
     oai_namespaces = {'oai': 'http://www.openarchives.org/OAI/2.0/'}
 
@@ -38,11 +54,18 @@ class OAIMetadataProvider(MetadataProvider):
         return None
 
     def getMetadataStandards(self):
-        filter =['datacite.org','openarchives.org','purl.org/dc/'] # TODO expand filters
+        """Method to get the metadata schema from the OAI namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of schemas in OAI
+        """
+        filter = ['datacite.org', 'openarchives.org', 'purl.org/dc/']  # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
         oai_endpoint = self.endpoint.split('?')[0]
         #oai_endpoint = oai_endpoint.rstrip('/')
-        oai_listmetadata_url = oai_endpoint+'?verb=ListMetadataFormats'
+        oai_listmetadata_url = oai_endpoint + '?verb=ListMetadataFormats'
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
         response_type, xml = requestHelper.content_negotiate(self.metric_id)
@@ -50,21 +73,26 @@ class OAIMetadataProvider(MetadataProvider):
         if xml:
             try:
                 root = etree.fromstring(requestHelper.response_content)
-                metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat', namespaces=OAIMetadataProvider.oai_namespaces)
+                metadata_nodes = root.xpath('//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat',
+                                            namespaces=OAIMetadataProvider.oai_namespaces)
                 for node in metadata_nodes:
                     ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
-                    metadata_prefix = ele('string(oai:metadataPrefix/text())') # <metadataPrefix>oai_dc</metadataPrefix>
-                    metadata_schema = ele('string(oai:schema/text())') #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
+                    metadata_prefix = ele(
+                        'string(oai:metadataPrefix/text())')  # <metadataPrefix>oai_dc</metadataPrefix>
+                    metadata_schema = ele(
+                        'string(oai:schema/text())')  #<schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
                     metadata_schema = metadata_schema.strip()
                     self.namespaces.append(metadata_schema)
                     # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
                     if not any(s in metadata_schema for s in filter):
-                        schemas[metadata_prefix]= [metadata_schema]
+                        schemas[metadata_prefix] = [metadata_schema]
                     else:
-                        self.logger.info('{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {1}'.format(self.metric_id,metadata_prefix))
+                        self.logger.info(
+                            '{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {1}'.format(
+                                self.metric_id, metadata_prefix))
             except:
-                self.logger.info(
-                    '{0} : Could not parse XML response retrieved from OAI-PMH endpoint'.format(self.metric_id))
+                self.logger.info('{0} : Could not parse XML response retrieved from OAI-PMH endpoint'.format(
+                    self.metric_id))
 
         return schemas
 

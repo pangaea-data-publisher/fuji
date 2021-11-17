@@ -1,0 +1,9 @@
+include fuji_server/data/*
+include fuji_server/static/*
+include fuji_server/yaml/*
+include fuji_server/config/*
+include AUTHORS.txt
+include CHANGELOG.md
+include LICENSE
+include README.md
+recursive-include docs *

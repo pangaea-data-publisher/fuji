@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,14 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None, oaipmh_endpoint: str=None):  # noqa: E501
+
+    def __init__(self,
+                 object_identifier: str = None,
+                 test_debug: bool = False,
+                 metadata_service_endpoint: str = None,
+                 metadata_service_type: str = None,
+                 use_datacite: bool = None,
+                 oaipmh_endpoint: str = None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -86,7 +93,7 @@ class Body(Model):
         :type object_identifier: str
         """
         if object_identifier is None:
-            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `object_identifier`, must not be `None`')  # noqa: E501
 
         self._object_identifier = object_identifier
 

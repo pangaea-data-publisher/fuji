@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,7 +15,10 @@ class DataContentMetadataOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_type: str=None, data_content_descriptor: List[DataContentMetadataOutputInner]=None):  # noqa: E501
+
+    def __init__(self,
+                 object_type: str = None,
+                 data_content_descriptor: List[DataContentMetadataOutputInner] = None):  # noqa: E501
         """DataContentMetadataOutput - a model defined in Swagger
 
         :param object_type: The object_type of this DataContentMetadataOutput.  # noqa: E501
@@ -23,15 +26,9 @@ class DataContentMetadataOutput(Model):
         :param data_content_descriptor: The data_content_descriptor of this DataContentMetadataOutput.  # noqa: E501
         :type data_content_descriptor: List[DataContentMetadataOutputInner]
         """
-        self.swagger_types = {
-            'object_type': str,
-            'data_content_descriptor': List[DataContentMetadataOutputInner]
-        }
+        self.swagger_types = {'object_type': str, 'data_content_descriptor': List[DataContentMetadataOutputInner]}
 
-        self.attribute_map = {
-            'object_type': 'object_type',
-            'data_content_descriptor': 'data_content_descriptor'
-        }
+        self.attribute_map = {'object_type': 'object_type', 'data_content_descriptor': 'data_content_descriptor'}
         self._object_type = object_type
         self._data_content_descriptor = data_content_descriptor
 

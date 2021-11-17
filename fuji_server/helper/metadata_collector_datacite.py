@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,23 +27,61 @@ from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
-class MetaDataCollectorDatacite (MetaDataCollector):
+class MetaDataCollectorDatacite(MetaDataCollector):
+    """
+    A class to collect Datacite metadata. This class is child class of MetadataCollector.
+    Several metadata are excluded from the collection, those are 'creator', 'license',
+    'related_resources', and 'access_level'.
+
+    ...
+
+    Attributes
+    ----------
+    exclude_conversion : list
+        List of string to store the excluded metadata
+    pid_url : str
+        URL of PID
+
+    Methods
+    --------
+    parse_metadata()
+        Method to parse Datacite metadata from the data
+    """
 
     exclude_conversion: List[str]
 
     def __init__(self, mapping, pid_url=None, loggerinst=None):
+        """
+        Parameters
+        ----------
+        mapping: Mapper
+            Mapper to metedata sources
+        pid_url : str, optional
+            URL of PID
+        loggerinst : logging.logger, optional
+            Logger instance
+        """
         super().__init__(logger=loggerinst, mapping=mapping)
         self.pid_url = pid_url
         self.exclude_conversion = ['creator', 'license', 'related_resources', 'access_level']
 
     def parse_metadata(self):
+        """ Parse the Datacite metadata from the data
+
+        Returns
+        ------
+        str
+            string of source name
+        list
+            a list of strings of Datacite metadata exclude 'creator', 'license', 'related_resources', 'access_level'
+        """
         source_name = None
         dcite_metadata = {}
         if self.pid_url:
             self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
             requestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(AcceptTypes.datacite_json)
-            neg_source,ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_source, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
             if ext_meta:
                 try:
                     dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
@@ -55,7 +94,7 @@ class MetaDataCollectorDatacite (MetaDataCollector):
                             # default type of creator is []
                             if isinstance(first, list) and isinstance(last, list):
                                 if len(first) == len(last):
-                                    names = [i + " " + j for i, j in zip(first, last)]
+                                    names = [i + ' ' + j for i, j in zip(first, last)]
                                     dcite_metadata['creator'] = names
 
                         if dcite_metadata.get('related_resources'):

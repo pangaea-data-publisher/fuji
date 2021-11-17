@@ -1,10 +1,5 @@
-import enum
-import logging
-from typing import Optional
+# -*- coding: utf-8 -*-
 
-from urlextract import URLExtract
-
-from fuji_server.helper import metadata_mapper
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -27,15 +22,64 @@ from fuji_server.helper import metadata_mapper
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import enum
+import logging
+from typing import Optional
+from urlextract import URLExtract
+from fuji_server.helper import metadata_mapper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollector(object):
+    """
+    A class to collect a metadata from different metadata sources.
+
+    ...
+
+    Attributes
+    ----------
+    metadata_mapping : Mapper, optional
+    Sources : enum.Enum
+        Enum class to enumerate metadata sources
+    source_metadata : dict
+        Metadata souce in a dictionary.
+    metadata_mapping : metadata_mapper.Mapper
+        Metadata mapping to metadata sources
+    logger : logging.Logger
+    target_metadata : dict
+    namespaces : list
+        List of namespace.
+
+    Methods
+    -------
+    getEnumSourceNames()
+        Class method returning the source names.
+    getMetadataMapping()
+        Get/return the metadata mapping.
+    getLogger()
+        Get/return the logger object.
+    setLogger(l)
+        Set the logger according to inpur paramter l.
+    getSourceMetadata()
+        Get source metadata.
+    setSourceMetadata(em)
+        Set the source metadata according to input parameter em.
+    setTargetMetadata(tm)
+        Set the target metadata according to input parameter tm.
+    getTargetMetadata()
+        Returm the target metadata.
+    getNamespaces()
+        Return the namespaces of the metadata.
+    getNamespacesfromIRIs(meta_source)
+        Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
+    """
+
     metadata_mapping: Optional[Mapper]
 
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
+        """"Enum class to enumerate metadata sources."""
         DUBLINCORE = 'Embedded DublinCore'
         OPENGRAPH = 'Embedded OpenGraph'
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
@@ -43,8 +87,8 @@ class MetaDataCollector(object):
         DATACITE_JSON = 'Datacite Search'
         TYPED_LINK = 'Typed Links'
         SIGN_POSTING = 'Signposting Typed Links'
-        RDF_TYPED_LINKS = 'RDF-based Typed Links' #Links in header which lead to a RDF resource
-        LINKED_DATA ='Linked Data (RDF)'
+        RDF_TYPED_LINKS = 'RDF-based Typed Links'  #Links in header which lead to a RDF resource
+        LINKED_DATA = 'Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
         GUESSED_XML = 'Guessed XML Link'
         XML_NEGOTIATED = 'Generic XML (Negotiated)'
@@ -52,7 +96,20 @@ class MetaDataCollector(object):
         MICRODATA = 'Embedded Microdata'
         OAI_ORE = 'OAI-ORE'
 
-    def __init__(self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None):
+    def __init__(self,
+                 sourcemetadata: dict = None,
+                 mapping: metadata_mapper.Mapper = None,
+                 logger: logging.Logger = None):
+        """
+        Parameters
+        ----------
+        sourcemetadata : dict, optional
+            Metadata souce in a dictionary, default is None
+        mapping : metadata_mapper.Mapper, optional
+            Metadata mapping to metadata sources, default is None
+        logger : logging.Logger, optional
+            Logger object, default is None
+        """
         self.source_metadata = sourcemetadata
         self.metadata_mapping = mapping
         self.logger = logger
@@ -88,6 +145,12 @@ class MetaDataCollector(object):
         return self.namespaces
 
     def getNamespacesfromIRIs(self, meta_source):
+        """Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
+
+        Parameters
+        ----------
+        meta_source:str
+        """
         extractor = URLExtract()
         namespaces = set()
         if meta_source is not None:
@@ -103,7 +166,7 @@ class MetaDataCollector(object):
             vocabs = Preprocessor.getLinkedVocabs()
             lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
             for ns in namespaces:
-                if ns+'/' in lod_namespaces:
-                    self.namespaces.append(ns+'/')
-                elif ns+'#' in lod_namespaces:
-                    self.namespaces.append(ns+'#')
+                if ns + '/' in lod_namespaces:
+                    self.namespaces.append(ns + '/')
+                elif ns + '#' in lod_namespaces:
+                    self.namespaces.append(ns + '#')

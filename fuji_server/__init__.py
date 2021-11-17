@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 # flake8: noqa
 from __future__ import absolute_import
@@ -30,3 +30,5 @@ from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
+
+__version__ = '1.4.3'

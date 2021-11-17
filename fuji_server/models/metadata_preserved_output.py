@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,19 +14,16 @@ class MetadataPreservedOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metadata_preservation_method: List[str]=None):  # noqa: E501
+
+    def __init__(self, metadata_preservation_method: List[str] = None):  # noqa: E501
         """MetadataPreservedOutput - a model defined in Swagger
 
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.  # noqa: E501
         :type metadata_preservation_method: List[str]
         """
-        self.swagger_types = {
-            'metadata_preservation_method': List[str]
-        }
+        self.swagger_types = {'metadata_preservation_method': List[str]}
 
-        self.attribute_map = {
-            'metadata_preservation_method': 'metadata_preservation_method'
-        }
+        self.attribute_map = {'metadata_preservation_method': 'metadata_preservation_method'}
         self._metadata_preservation_method = metadata_preservation_method
 
     @classmethod
@@ -58,12 +55,13 @@ class MetadataPreservedOutput(Model):
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.
         :type metadata_preservation_method: List[str]
         """
-        allowed_values = ["datacite", "tombstone"]  # noqa: E501
+        allowed_values = ['datacite', 'tombstone']  # noqa: E501
         if not set(metadata_preservation_method).issubset(set(allowed_values)):
             raise ValueError(
-                "Invalid values for `metadata_preservation_method` [{0}], must be a subset of [{1}]"  # noqa: E501
-                .format(", ".join(map(str, set(metadata_preservation_method) - set(allowed_values))),  # noqa: E501
-                        ", ".join(map(str, allowed_values)))
-            )
+                'Invalid values for `metadata_preservation_method` [{0}], must be a subset of [{1}]'  # noqa: E501
+                .format(
+                    ', '.join(map(str,
+                                  set(metadata_preservation_method) - set(allowed_values))),  # noqa: E501
+                    ', '.join(map(str, allowed_values))))
 
         self._metadata_preservation_method = metadata_preservation_method

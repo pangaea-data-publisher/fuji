@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,8 @@ class OutputSearchMechanisms(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, mechanism: str=None, mechanism_info: List[str]=None):  # noqa: E501
+
+    def __init__(self, mechanism: str = None, mechanism_info: List[str] = None):  # noqa: E501
         """OutputSearchMechanisms - a model defined in Swagger
 
         :param mechanism: The mechanism of this OutputSearchMechanisms.  # noqa: E501
@@ -22,15 +23,9 @@ class OutputSearchMechanisms(Model):
         :param mechanism_info: The mechanism_info of this OutputSearchMechanisms.  # noqa: E501
         :type mechanism_info: List[str]
         """
-        self.swagger_types = {
-            'mechanism': str,
-            'mechanism_info': List[str]
-        }
+        self.swagger_types = {'mechanism': str, 'mechanism_info': List[str]}
 
-        self.attribute_map = {
-            'mechanism': 'mechanism',
-            'mechanism_info': 'mechanism_info'
-        }
+        self.attribute_map = {'mechanism': 'mechanism', 'mechanism_info': 'mechanism_info'}
         self._mechanism = mechanism
         self._mechanism_info = mechanism_info
 
@@ -63,12 +58,10 @@ class OutputSearchMechanisms(Model):
         :param mechanism: The mechanism of this OutputSearchMechanisms.
         :type mechanism: str
         """
-        allowed_values = ["metadata registry", "structured data"]  # noqa: E501
+        allowed_values = ['metadata registry', 'structured data']  # noqa: E501
         if mechanism not in allowed_values:
-            raise ValueError(
-                "Invalid value for `mechanism` ({0}), must be one of {1}"
-                .format(mechanism, allowed_values)
-            )
+            raise ValueError('Invalid value for `mechanism` ({0}), must be one of {1}'.format(
+                mechanism, allowed_values))
 
         self._mechanism = mechanism
 

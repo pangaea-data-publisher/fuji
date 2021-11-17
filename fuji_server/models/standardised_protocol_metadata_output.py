@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,19 +14,16 @@ class StandardisedProtocolMetadataOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, standard_metadata_protocol: str=None):  # noqa: E501
+
+    def __init__(self, standard_metadata_protocol: str = None):  # noqa: E501
         """StandardisedProtocolMetadataOutput - a model defined in Swagger
 
         :param standard_metadata_protocol: The standard_metadata_protocol of this StandardisedProtocolMetadataOutput.  # noqa: E501
         :type standard_metadata_protocol: str
         """
-        self.swagger_types = {
-            'standard_metadata_protocol': str
-        }
+        self.swagger_types = {'standard_metadata_protocol': str}
 
-        self.attribute_map = {
-            'standard_metadata_protocol': 'standard_metadata_protocol'
-        }
+        self.attribute_map = {'standard_metadata_protocol': 'standard_metadata_protocol'}
         self._standard_metadata_protocol = standard_metadata_protocol
 
     @classmethod

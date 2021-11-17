@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,13 +22,26 @@
 # SOFTWARE.
 
 from fuji_server.helper.metadata_provider import MetadataProvider
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-from lxml import etree
 import feedparser
 
-class RSSAtomMetadataProvider(MetadataProvider):
 
-    rss_namespaces = {'atom':'http://www.w3.org/2005/Atom','georss': 'http://www.georss.org/georss/'}
+class RSSAtomMetadataProvider(MetadataProvider):
+    """A metadata provider class to provide the metadata from GeoRSS ATOM
+
+    ...
+
+    Methods
+    -------
+    getMetadataStandards()
+        Method will return the metadata standards in the namespaces
+    getMetadata(queryString)
+        Method that will return schemas of GeoRSS Atom
+    getNamespaces()
+        Method to get namespaces
+
+    """
+
+    rss_namespaces = {'atom': 'http://www.w3.org/2005/Atom', 'georss': 'http://www.georss.org/georss/'}
 
     def getMetadata(self):
         # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
@@ -39,6 +53,13 @@ class RSSAtomMetadataProvider(MetadataProvider):
         return None
 
     def getMetadataStandards(self):
+        """Method to get the metadata schema from the GeoRSS Atom namespaces
+
+        Returns
+        -------
+        dict
+            A dictionary of schemas in GeoRSS Atom
+        """
         schemas = {}
         try:
             feed = feedparser.parse(self.endpoint)
@@ -48,8 +69,8 @@ class RSSAtomMetadataProvider(MetadataProvider):
                     self.namespaces.append(str(namespace_uri))
                     schemas[str(namespace_pre)] = str(namespace_uri)
         except:
-            self.logger.info(
-                '{0} : Could not parse response retrieved from RSS/Atom Feed endpoint'.format(self.metric_id))
+            self.logger.info('{0} : Could not parse response retrieved from RSS/Atom Feed endpoint'.format(
+                self.metric_id))
 
         return schemas
 

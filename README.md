@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
+
 # F-UJI (FAIRsFAIR Research Data Object Assessment Service)
 Developers:[Robert Huber](mailto:rhuber@marum.de), [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com)
 
@@ -52,13 +54,30 @@ Before running the service, please set user details in the config file, see conf
 
 To install F-UJI, you may execute the following python-based or docker-based installation commands from the root directory:
 
-#### Python module-based installation:
+### Python module-based installation:
+
+From the fuji source folder run
 ```bash
+pip3 install .
+```
+or to install the last fixed dependencies
+```
 pip3 install -r requirements.txt
+```
+The F-uji server can now be started with.
+```
 python3 -m fuji_server -c fuji_server/config/server.ini
 ```
+Alternative you can install the latest F-UJI release on PyPI
+```bash
+pip3 install fuji
+```
+you can also use poetry
+```bash
+poetry install fuji
+```
 
-#### Docker-based installation:
+### Docker-based installation:
 
 ```bash
 docker run -d -p 1071:1071 ghcr.io/pangaea-data-publisher/fuji
@@ -89,7 +108,7 @@ docker build -t <tag_name> .
 docker run -d -p 1071:1071 <tag_name>
 ```
 
-#### Notes
+### Notes
 
 To avoid tika startup warning message, set environment variable TIKA_LOG_PATH. For more information, see [https://github.com/chrismattmann/tika-python](https://github.com/chrismattmann/tika-python)
 
@@ -99,3 +118,10 @@ If you receive the exception 'urllib2.URLError: <urlopen error [SSL: CERTIFICATE
 
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
+
+
+## Acknowledgements
+
+F-UJI is a result of the [FAIRsFAIR](https://www.fairsfair.eu/) “Fostering FAIR Data Practices In Europe” project which received funding from the European Union’s Horizon 2020 project call H2020-INFRAEOSC-2018-2020 (grant agreement 831558).
+
+The project was also supported through our contributors by the [Helmholtz Metadata Collaboration (HMC)](https://www.helmholtz-metadaten.de/en), an incubator-platform of the Helmholtz Association within the framework of the Information and Data Science strategic initiative.

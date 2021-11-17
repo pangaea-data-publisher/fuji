@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,11 @@ class FormalMetadataOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, serialization_format: str=None, source: str=None, is_metadata_found: bool=False):  # noqa: E501
+
+    def __init__(self,
+                 serialization_format: str = None,
+                 source: str = None,
+                 is_metadata_found: bool = False):  # noqa: E501
         """FormalMetadataOutputInner - a model defined in Swagger
 
         :param serialization_format: The serialization_format of this FormalMetadataOutputInner.  # noqa: E501
@@ -24,11 +28,7 @@ class FormalMetadataOutputInner(Model):
         :param is_metadata_found: The is_metadata_found of this FormalMetadataOutputInner.  # noqa: E501
         :type is_metadata_found: bool
         """
-        self.swagger_types = {
-            'serialization_format': str,
-            'source': str,
-            'is_metadata_found': bool
-        }
+        self.swagger_types = {'serialization_format': str, 'source': str, 'is_metadata_found': bool}
 
         self.attribute_map = {
             'serialization_format': 'serialization_format',
@@ -89,12 +89,9 @@ class FormalMetadataOutputInner(Model):
         :param source: The source of this FormalMetadataOutputInner.
         :type source: str
         """
-        allowed_values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]  # noqa: E501
+        allowed_values = ['typed_link', 'content_negotiate', 'structured_data', 'sparql_endpoint']  # noqa: E501
         if source not in allowed_values:
-            raise ValueError(
-                "Invalid value for `source` ({0}), must be one of {1}"
-                .format(source, allowed_values)
-            )
+            raise ValueError('Invalid value for `source` ({0}), must be one of {1}'.format(source, allowed_values))
 
         self._source = source
 

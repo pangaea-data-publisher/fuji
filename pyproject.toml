@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "fuji"
+version = "1.4.3"
+description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
+authors = [
+    "Robert Huber <rhuber@marum.de>",
+    "Anusuriya Devaraju <anusuriya.devaraju@googlemail.com>",
+]
+license = "MIT"
+readme = "README.md"
+homepage = "https://www.fairsfair.eu/f-uji-automated-fair-data-assessment-tool"
+repository = "https://github.com/pangaea-data-publisher/fuji"
+keywords=[
+    "PANGAEA",
+    "FAIRsFAIR",
+    "FAIR Principles",
+    "Data Object Assessment",
+    "Swagger",
+    "FAIR",
+    "Research Data",
+    "FAIR data",
+    "Metadata harvesting",
+]
+classifiers=[
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+packages = [
+    { include = "fuji_server" }
+]
+include = ["docs/"]
+
+[tool.poetry.dependencies]
+python = "^3.7.1"
+requests = "~2.24.0"
+pyyaml = "~5.3"
+extruct = "~0.9.0"
+rdflib = "~4.2.2"
+idutils = "~1.1.5"
+lxml = "^4.6.3"
+Levenshtein = "~0.12.0"
+sparqlwrapper = "~1.8.5"
+jmespath = "~0.9.5"
+six = "~1.15.0"
+connexion = {version = "~2.7.0", extras = ["swagger-ui"]}
+tika = "~1.24"
+configparser = "~5.0.0"
+werkzeug = "~2.0"
+flask-cors = "~3.0.10"
+rapidfuzz = "~0.9.1"
+setuptools = "~45.2.0"
+urlextract = "~1.2.0"
+feedparser = "~6.0.2"
+beautifulsoup4 = "~4.8.2"
+hashid = "~3.1.4"
+pandas = "~1.2.1"
+tldextract = "~3.1.0"
+bokeh = {version = "^2.4.1", optional = true}
+jupyter = {version = "^1.0.0", optional = true}
+pre-commit = {version = "^2.6.0", optional = true}
+yapf = {version = "^0.30.0", optional = true}
+pytest = {version = "^4.3.1", optional = true}
+pytest-cov = {version = "^3.0.0", optional = true}
+sphinx = {version = "^4.2.0", optional = true}
+docutils = {version =">=0.14,<0.18", optional = true}
+sphinx-rtd-theme = {version = "^1.0.0", optional = true}
+
+[tool.poetry.extras]
+report = ["bokeh", "jupyter"]
+testing = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint"] 
+docs = ["sphinx-rtd-theme", "sphinx", "docutils"]
+dev = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint", "sphinx-rtd-theme", "sphinx", "docutils"]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

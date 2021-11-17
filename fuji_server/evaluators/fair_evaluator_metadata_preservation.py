@@ -28,10 +28,22 @@ from fuji_server.models.metadata_preserved_output import MetadataPreservedOutput
 
 
 class FAIREvaluatorMetadataPreserved(FAIREvaluator):
+    """
+    A class to evaluate that the metadata remains available, even if the data is no longer available (A2-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+
+    """
+
     def evaluate(self):
         registry_bound_pid = ['doi']
-        self.result = MetadataPreserved(id=self.metric_number, metric_identifier=self.metric_identifier,
-                                                metric_name=self.metric_name)
+        self.result = MetadataPreserved(id=self.metric_number,
+                                        metric_identifier=self.metric_identifier,
+                                        metric_name=self.metric_name)
         outputs = []
         test_status = 'fail'
         score = 0
@@ -42,8 +54,9 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
                 score = 1
                 self.setEvaluationCriteriumScore('FsF-A2-01M-1', 1, 'pass')
                 self.maturity = 3
-                self.logger.log(self.fuji.LOG_SUCCESS,
-                    '{0} : Metadata registry bound PID system used: ' + self.fuji.pid_scheme.format(self.metric_identifier))
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS, '{0} : Metadata registry bound PID system used: ' +
+                    self.fuji.pid_scheme.format(self.metric_identifier))
             else:
                 self.logger.warning('{0} : NO metadata registry bound PID system used'.format(self.metric_identifier))
         self.score.earned = score

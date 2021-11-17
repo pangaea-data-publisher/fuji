@@ -1,0 +1,51 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    hooks:
+    - id: double-quote-string-fixer
+      types: [python]
+    - id: end-of-file-fixer
+    - id: fix-encoding-pragma
+    - id: mixed-line-ending
+      types: [python]
+    - id: trailing-whitespace
+      types: [python]
+    - id: check-yaml
+    - id: check-json
+
+- repo: git://github.com/pre-commit/mirrors-yapf
+  rev: v0.31.0
+  hooks:
+  - id: yapf
+    name: yapf
+    types: [python]
+    exclude: &exclude_files >
+        (?x)^(
+            docs/.*|
+        )$
+    args: ['-i']
+
+
+- repo: local
+  hooks:
+
+  - id: pylint
+    name: pylint
+    entry: pylint
+    verbose: true
+    types: [python]
+    language: system
+    exclude: '^(docs/)|(examples/)|(fuji_server/models/)'
+
+  - id: version-number
+    name: Check version numbers
+    entry: python ./utils/validate_version_consistency.py
+    language: system
+    files: >-
+      (?x)^(
+        setup.py|
+        utils/validate_version_consistency.py|
+        masci_tools/__init__.py|
+        .bumpversion.cfg
+      )$
+    pass_filenames: false

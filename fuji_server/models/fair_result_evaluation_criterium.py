@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,12 @@ class FAIRResultEvaluationCriterium(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metric_test_name: str=None, metric_test_score: float=None, metric_test_maturity: int=None, metric_test_status: str='fail'):  # noqa: E501
+
+    def __init__(self,
+                 metric_test_name: str = None,
+                 metric_test_score: float = None,
+                 metric_test_maturity: int = None,
+                 metric_test_status: str = 'fail'):  # noqa: E501
         """FAIRResultEvaluationCriterium - a model defined in Swagger
 
         :param metric_test_name: The metric_test_name of this FAIRResultEvaluationCriterium.  # noqa: E501
@@ -136,11 +141,9 @@ class FAIRResultEvaluationCriterium(Model):
         :param metric_test_status: The metric_test_status of this FAIRResultEvaluationCriterium.
         :type metric_test_status: str
         """
-        allowed_values = ["pass", "fail"]  # noqa: E501
+        allowed_values = ['pass', 'fail']  # noqa: E501
         if metric_test_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `metric_test_status` ({0}), must be one of {1}"
-                .format(metric_test_status, allowed_values)
-            )
+            raise ValueError('Invalid value for `metric_test_status` ({0}), must be one of {1}'.format(
+                metric_test_status, allowed_values))
 
         self._metric_test_status = metric_test_status

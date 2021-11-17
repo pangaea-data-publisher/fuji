@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,7 +14,12 @@ class PersistenceOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, pid: str=None, pid_scheme: str=None, resolvable_status: bool=False, resolved_url: str=None):  # noqa: E501
+
+    def __init__(self,
+                 pid: str = None,
+                 pid_scheme: str = None,
+                 resolvable_status: bool = False,
+                 resolved_url: str = None):  # noqa: E501
         """PersistenceOutput - a model defined in Swagger
 
         :param pid: The pid of this PersistenceOutput.  # noqa: E501
@@ -26,12 +31,7 @@ class PersistenceOutput(Model):
         :param resolved_url: The resolved_url of this PersistenceOutput.  # noqa: E501
         :type resolved_url: str
         """
-        self.swagger_types = {
-            'pid': str,
-            'pid_scheme': str,
-            'resolvable_status': bool,
-            'resolved_url': str
-        }
+        self.swagger_types = {'pid': str, 'pid_scheme': str, 'resolvable_status': bool, 'resolved_url': str}
 
         self.attribute_map = {
             'pid': 'pid',
