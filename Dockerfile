@@ -13,9 +13,10 @@ RUN apt-get update \
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements.txt setup.py ./
+RUN pip3 install pyproject.toml
+#COPY requirements.txt ./
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+#RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY /fuji_server ./fuji_server
 
