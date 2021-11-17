@@ -13,6 +13,8 @@ RUN apt-get update \
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+COPY pyproject.toml ./
+
 RUN pip3 install .
 #COPY requirements.txt ./
 
