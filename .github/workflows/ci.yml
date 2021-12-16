@@ -27,7 +27,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install .[dev]
+        pip install .[docs]
 
     - name: Install Latex compiler
       run: |

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+FAIR Metric controller.
+"""
+# -*- coding: utf-8 -*-
 ################################################################################
 # MIT License
 #
@@ -26,8 +30,7 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 def get_metrics():  # noqa: E501
-    """Return all metrics and their definitions
-     # noqa: E501
+    """Return all metrics and their definitions.
     :rtype: Metrics
     """
     response = Preprocessor.get_metrics()
