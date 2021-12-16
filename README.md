@@ -62,7 +62,7 @@ pip3 install .
 ```
 or to install the last fixed dependencies
 ```
-pip3 install -r requirements.txt
+pip3 install .
 ```
 The F-uji server can now be started with.
 ```
