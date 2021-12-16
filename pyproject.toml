@@ -7,7 +7,7 @@ authors = [
     "Anusuriya Devaraju <anusuriya.devaraju@googlemail.com>",
 ]
 license = "MIT"
-readme = "README.md"
+#readme = "README.md"
 homepage = "https://www.fairsfair.eu/f-uji-automated-fair-data-assessment-tool"
 repository = "https://github.com/pangaea-data-publisher/fuji"
 keywords=[
@@ -34,7 +34,17 @@ classifiers=[
 packages = [
     { include = "fuji_server" }
 ]
-include = ["docs/"]
+include = [
+    "docs/**",
+    "fuji_server/data/*",
+    "fuji_server/static/*",
+    "fuji_server/yaml/*",
+    "fuji_server/config/*",
+    "AUTHORS.txt",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
