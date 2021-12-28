@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.identifier_included import IdentifierIncluded
 from fuji_server.models.identifier_included_output import IdentifierIncludedOutput
@@ -29,6 +30,17 @@ import urllib
 
 
 class FAIREvaluatorContentIncluded(FAIREvaluator):
+    """
+    A class to evaluate whether the metadata includes the identifier of the data is being described (F3-01M).
+    A child class of FAIREvaluator.
+    ...
+
+    Methods
+    ------
+    evaluate()
+        This method will evaluate whether the metadata contains an identifier, e.g., PID or URL, which indicates the location of the downloadable data content or
+        a data identifier that matches the identifier as part of the assessment request.
+    """
 
     def evaluate(self):
         self.result = IdentifierIncluded(id=self.metric_number,

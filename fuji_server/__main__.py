@@ -27,10 +27,14 @@ import argparse
 import configparser
 import logging
 import os
+
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 from fuji_server.app.fuji_app import create_fuji_app
 from fuji_server.helper.preprocessor import Preprocessor
 import fuji_server.controllers.authorization_controller as authen
-
+from waitress import serve
 
 def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
@@ -75,8 +79,15 @@ def main():
     authen.service_password = pwd
 
     app = create_fuji_app(config)
-    app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
-
+    limiter = Limiter(
+        app.app,
+        key_func=get_remote_address,
+        default_limits=[str(config['SERVICE']['rate_limit'])]
+    )
+    #comment in case waitress is wished
+    #app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']),debug=False)
+    #switch to waitress
+    serve(app, host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']))
 
 if __name__ == '__main__':
     global config

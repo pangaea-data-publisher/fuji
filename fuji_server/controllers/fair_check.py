@@ -164,7 +164,11 @@ class FAIRCheck:
             self.logger.propagate = False
             self.logger.setLevel(logging.INFO)  # set to debug in testing environment
             self.logger.addHandler(self.logStreamHandler)
-
+            self.weblogger = None
+            if Preprocessor.remote_log_host:
+                self.weblogger = logging.handlers.HTTPHandler(Preprocessor.remote_log_host, Preprocessor.remote_log_path + '?testid=' + str(self.test_id),
+                                                      method='POST')
+                self.webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
         self.count = 0
         self.embedded_retrieved = False
         FAIRCheck.load_predata()
@@ -216,25 +220,6 @@ class FAIRCheck:
             return all([r.scheme, r.netloc])
         except:
             return False
-
-    def set_remote_logging_target(self, host, path):
-        if host and path:
-            isHostUp = False
-            try:
-                if urllib.urlopen('http://' + host + '' + path).getcode() == 200:
-                    isHostUp = True
-            except Exception as e:
-                print('Remote logging not possible, please check config.ini, host not reachable: http://' + str(host) +
-                      '/' + str(path))
-                print(e)
-            if isHostUp:
-                try:
-                    weblogger = logging.handlers.HTTPHandler(host, path + '?testid=' + str(self.test_id), method='POST')
-                    webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
-                    weblogger.setFormatter(webformatter)
-                    self.logger.addHandler(weblogger)
-                except Exception as e:
-                    print(e)
 
     def validate_service_url(self):
         # checks if service url and landing page url have same domain in order to avoid manipulations
