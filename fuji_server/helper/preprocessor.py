@@ -150,7 +150,7 @@ class Preprocessor(object):
         cls.METRIC_YML_PATH = yaml_metric_path
         cls.data_files_limit = limit
         cls.metric_specification = specification_uri
-        stream = open(cls.METRIC_YML_PATH, 'r')
+        stream = open(cls.METRIC_YML_PATH, 'r', encoding="utf8")
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as e:
