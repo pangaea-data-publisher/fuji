@@ -13,11 +13,10 @@ RUN apt-get update \
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements.txt setup.py ./
-
-RUN pip3 install --no-cache-dir -r requirements.txt
-
+COPY pyproject.toml ./
 COPY /fuji_server ./fuji_server
+
+RUN pip3 install --no-cache-dir .
 
 # Docker doesn't like 'localhost'
 RUN sed -i "s|localhost|0.0.0.0 |g" ./fuji_server/config/server.ini

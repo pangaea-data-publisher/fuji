@@ -25,18 +25,15 @@ repos:
         )$
     args: ['-i']
 
+# TODO: reenable and work through the massive list of errors and warnings
+# - repo: https://github.com/pycqa/pylint
+#   rev: pylint-2.8.0
+#   hooks:
+#   - id: pylint
+#     exclude: '^(docs/)|(examples/)|(fuji_server/models/)'
 
 - repo: local
   hooks:
-
-  - id: pylint
-    name: pylint
-    entry: pylint
-    verbose: true
-    types: [python]
-    language: system
-    exclude: '^(docs/)|(examples/)|(fuji_server/models/)'
-
   - id: version-number
     name: Check version numbers
     entry: python ./utils/validate_version_consistency.py

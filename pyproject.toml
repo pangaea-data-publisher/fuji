@@ -7,7 +7,8 @@ authors = [
     "Anusuriya Devaraju <anusuriya.devaraju@googlemail.com>",
 ]
 license = "MIT"
-readme = "README.md"
+#TODO: figure out why the README causes failure of building the docker container
+#readme = "README.md"
 homepage = "https://www.fairsfair.eu/f-uji-automated-fair-data-assessment-tool"
 repository = "https://github.com/pangaea-data-publisher/fuji"
 keywords=[
@@ -34,7 +35,17 @@ classifiers=[
 packages = [
     { include = "fuji_server" }
 ]
-include = ["docs/"]
+include = [
+    "docs/**",
+    "fuji_server/data/*",
+    "fuji_server/static/*",
+    "fuji_server/yaml/*",
+    "fuji_server/config/*",
+    "AUTHORS.txt",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
@@ -70,11 +81,12 @@ pytest-cov = {version = "^3.0.0", optional = true}
 sphinx = {version = "^4.2.0", optional = true}
 docutils = {version =">=0.14,<0.18", optional = true}
 sphinx-rtd-theme = {version = "^1.0.0", optional = true}
+myst-parser = {version= "^0.16.1", optional = true}
 
 [tool.poetry.extras]
 report = ["bokeh", "jupyter"]
 testing = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint"] 
-docs = ["sphinx-rtd-theme", "sphinx", "docutils"]
+docs = ["sphinx-rtd-theme", "sphinx", "docutils", "myst-parser"]
 dev = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint", "sphinx-rtd-theme", "sphinx", "docutils"]
 
 
