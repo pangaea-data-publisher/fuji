@@ -124,9 +124,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
         #required for metric knowledge representation
 
-
         if requestHelper.getHTTPResponse() is not None:
-
             self.content_type = requestHelper.content_type
             if self.content_type is not None:
                 self.content_type = self.content_type.split(';', 1)[0]
@@ -143,17 +141,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
-                    try:
-                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
-                        graph = rdflib.Graph()
-                        parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
-                        graph.parse(data=rdf_response, format=parseformat[1])
-                        rdf_response_graph = graph
-                    except:
-                        error = sys.exc_info()[0]
-                        self.logger.warning(
-                            'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(error)))
-                        self.logger.debug(error)
+                    parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
+                    if 'html' in str(parseformat[1]):
+                        try:
+                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
+                            graph = rdflib.Graph()
+                            print(parseformat[1])
+                            graph.parse(data=rdf_response, format=parseformat[1])
+                            rdf_response_graph = graph
+                        except:
+                            error = sys.exc_info()[0]
+                            self.logger.warning(
+                                'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(error)))
+                            self.logger.debug(error)
+                    else:
+                        self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
+
         #else:
         #    neg_source, rdf_response = 'html', self.rdf_graph
 
@@ -162,10 +165,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')
         ]
         if isinstance(rdf_response_graph, rdflib.graph.Graph):
-            self.logger.info('FsF-F2-01M : Found RDF Graph')
-            #print(str(rdf_response))
-            graph_text = rdf_response
-            #print(graph_text)
+            self.logger.info('FsF-F2-01M : Found RDF Graph which was sucessfully parsed')
             self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
             graph_namespaces = self.get_namespaces(rdf_response_graph)
             #self.getNamespacesfromIRIs(graph_text)
