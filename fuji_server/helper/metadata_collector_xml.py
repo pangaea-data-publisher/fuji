@@ -97,7 +97,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.getHTTPResponse() is not None:
-            self.logger.info('FsF-F2-01M : Trying to extract/parse metadata from -: {}'.format(source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}'.format(source_name))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
                 self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_source))
@@ -129,7 +129,9 @@ class MetaDataCollectorXML(MetaDataCollector):
                 else:
                     metatree = tree
                 if metatree is not None:
-
+                    self.logger.info(
+                        'FsF-F2-01M : Found some XML properties, trying to identify (domain) specific format to parse'
+                    )
                     root_namespace = None
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
                     schema_locations = set(metatree.xpath('//*/@xsi:schemaLocation', namespaces={'xsi': XSI}))
@@ -162,6 +164,14 @@ class MetaDataCollectorXML(MetaDataCollector):
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
 
+                    if xml_mapping is None:
+                        self.logger.info(
+                            'FsF-F2-01M : Could not identify (domain) specific XML format to parse'
+                        )
+                else:
+                    self.logger.info(
+                        'FsF-F2-01M : Could not find XML properties, could not identify specific XML format to parse'
+                    )
         if xml_mapping and metatree is not None:
             xml_metadata = self.get_mapped_xml_metadata(metatree, xml_mapping)
 
@@ -169,6 +179,12 @@ class MetaDataCollectorXML(MetaDataCollector):
             for envelope_key, envelope_values in envelope_metadata.items():
                 if envelope_key not in xml_metadata:
                     xml_metadata[envelope_key] = envelope_values
+        if xml_metadata:
+            self.logger.info(
+                'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata))
+            )
+        else:
+            self.logger.info('FsF-F2-01M : Could not identify XML metadata')
         return source_name, xml_metadata
 
     def get_mapped_xml_metadata(self, tree, mapping):

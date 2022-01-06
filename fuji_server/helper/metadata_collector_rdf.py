@@ -21,10 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import json
+import re
+import sys
+
 import idutils
 import rdflib
 import requests
-from rdflib import Namespace
+from rdflib import Namespace, Graph
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
@@ -69,7 +72,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
     """
     target_url = None
 
-    def __init__(self, loggerinst, target_url, source, rdf_graph=None):
+    def __init__(self, loggerinst, target_url, source):
         """
         Parameters
         ----------
@@ -85,8 +88,20 @@ class MetaDataCollectorRdf(MetaDataCollector):
         self.target_url = target_url
         self.content_type = None
         self.source_name = source
-        self.rdf_graph = rdf_graph
+        #self.rdf_graph = rdf_graph
         super().__init__(logger=loggerinst)
+
+    def get_namespaces(self,graph):
+        namespaces = {}
+        try:
+            nm = graph.namespace_manager
+            possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
+            for predicate in possible:
+                prefix, namespace, local = nm.compute_qname_strict(predicate)
+                namespaces[prefix] = namespace
+        except Exception as e:
+            self.logger.info('FsF-F2-01M : RDF Namespace detection error -: {}'.format(e))
+        return namespaces
 
     def parse_metadata(self):
         """Parse the metadata given RDF graph.
@@ -101,49 +116,71 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
         #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata = dict()
-        if self.rdf_graph is None:
+        rdf_response_graph = None
+        #if self.rdf_graph is None:
             #print(self.target_url)
-            requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.rdf)
-            neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
-            #required for metric knowledge representation
+        requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
+        requestHelper.setAcceptType(AcceptTypes.rdf)
+        neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+        #required for metric knowledge representation
 
-            if requestHelper.getHTTPResponse() is not None:
-                self.content_type = requestHelper.getHTTPResponse().headers.get('content-type')
-                if self.content_type is not None:
-                    self.content_type = self.content_type.split(';', 1)[0]
-                    #handle JSON-LD
-                    DCAT = Namespace('http://www.w3.org/ns/dcat#')
-                    if self.content_type == 'application/ld+json':
-                        try:
-                            jsonldgraph = rdflib.ConjunctiveGraph()
-                            rdf_response = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
-                            rdf_response = jsonldgraph
-                        except Exception as e:
-                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
-        else:
-            neg_source, rdf_response = 'html', self.rdf_graph
+
+        if requestHelper.getHTTPResponse() is not None:
+
+            self.content_type = requestHelper.content_type
+            if self.content_type is not None:
+                self.content_type = self.content_type.split(';', 1)[0]
+
+                #handle JSON-LD
+                DCAT = Namespace('http://www.w3.org/ns/dcat#')
+                if self.content_type == 'application/ld+json':
+                    try:
+                        self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
+                        jsonldgraph = rdflib.ConjunctiveGraph()
+                        rdf_response_graph = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
+                        rdf_response_graph = jsonldgraph
+                    except Exception as e:
+                        self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
+                else:
+                    # parse RDF
+                    try:
+                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
+                        graph = rdflib.Graph()
+                        parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
+                        graph.parse(data=rdf_response, format=parseformat[1])
+                        rdf_response_graph = graph
+                    except:
+                        error = sys.exc_info()[0]
+                        self.logger.warning(
+                            'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(error)))
+                        self.logger.debug(error)
+        #else:
+        #    neg_source, rdf_response = 'html', self.rdf_graph
 
         ontology_indicator = [
             rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),
             rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')
         ]
-        if isinstance(rdf_response, rdflib.graph.Graph):
+        if isinstance(rdf_response_graph, rdflib.graph.Graph):
             self.logger.info('FsF-F2-01M : Found RDF Graph')
-            graph_text = rdf_response.serialize(format='ttl')
-            self.getNamespacesfromIRIs(graph_text)
+            #print(str(rdf_response))
+            graph_text = rdf_response
+            #print(graph_text)
+            self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
+            graph_namespaces = self.get_namespaces(rdf_response_graph)
+            #self.getNamespacesfromIRIs(graph_text)
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
-            if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in dict(list(rdf_response.namespaces())).values():
+            if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in graph_namespaces.values():
                 self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
-                rdf_metadata = self.get_dcat_metadata(rdf_response)
-            elif bool(set(ontology_indicator) & set(dict(list(rdf_response.namespaces())).values())):
-                rdf_metadata = self.get_ontology_metadata(rdf_response)
+                rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
+            elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
+                rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
             else:
-                rdf_metadata = self.get_default_metadata(rdf_response)
+                rdf_metadata = self.get_default_metadata(rdf_response_graph)
             #add found namespaces URIs to namespace
-            for ns in rdf_response.namespaces():
-                self.namespaces.append(str(ns[1]))
+            for ns in graph_namespaces.values():
+                self.namespaces.append(ns)
         else:
             self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
         return self.source_name, rdf_metadata
@@ -218,6 +255,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         DCAT = Namespace('http://www.w3.org/ns/dcat#')
         meta = dict()
         #default sparql
+
         meta = self.get_default_metadata(g)
         meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
         '''
@@ -232,8 +270,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     g.value(item, DCTERMS.issued))
         meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher))
         meta['keywords'] = []
-        for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.keyword)) +
-                        list(g.objects(item, DC.keyword))):
+        for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
+                        list(g.objects(item, DC.subject))):
             meta['keywords'].append(str(keyword))
         #TODO creators, contributors
         meta['creator'] = g.value(item, DC.creator)
@@ -378,8 +416,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata -: ' +
                                  str(dcat_metadata['object_content_identifier']))
                 #TODO: add provenance metadata retrieval
-        else:
-            self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
+        #else:
+        #    self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
             #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
             #dcat_metadata['object_type'] = 'Dataset'
         return dcat_metadata

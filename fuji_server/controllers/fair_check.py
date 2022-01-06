@@ -96,7 +96,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.3'
+    FUJI_VERSION = '1.4.4'
 
     def __init__(self,
                  uid,
@@ -134,6 +134,7 @@ class FAIRCheck:
         self.signposting_header_links = []
         self.pid_scheme = None
         self.id_scheme = None
+        self.checked_pages = []
         self.logger = logging.getLogger(self.test_id)
         self.metadata_sources = []
         self.isDebug = test_debug
@@ -490,8 +491,7 @@ class FAIRCheck:
                     rdfagraph.parse(data=self.landing_html, format='rdfa')
                     rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                           target_url=self.landing_url,
-                                                          source=rdfasource,
-                                                          rdf_graph=rdfagraph)
+                                                          source=rdfasource)
                     source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
                     if (len(rdfa_dict) > 0):
                         self.metadata_sources.append((rdfasource, 'embedded'))
@@ -684,8 +684,9 @@ class FAIRCheck:
                 target_url_list = [self.landing_url]
             if not target_url_list:
                 target_url_list = [self.origin_url]
+            target_url_list = set(tu for tu in target_url_list if tu is not None)
             for target_url in target_url_list:
-                self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation')
+                self.logger.info('FsF-F2-01M : Trying to retrieve XML metadata through content negotiation from URL -: '+str(target_url))
                 negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                 target_url=self.landing_url,
                                                                 link_type='negotiated')
@@ -713,7 +714,7 @@ class FAIRCheck:
 
                 # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
                 self.logger.info(
-                    'FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation')
+                    'FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation from URL -: '+str(target_url))
                 schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
                                                                  sourcemetadata=None,
                                                                  mapping=Mapper.SCHEMAORG_MAPPING,
@@ -740,13 +741,13 @@ class FAIRCheck:
                     self.logger.info('FsF-F2-01M : Schema.org metadata through content negotiation UNAVAILABLE')
 
             # ========= retrieve rdf metadata namespaces by content negotiation ========
-            self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation')
             source = MetaDataCollector.Sources.LINKED_DATA.value
             #TODO: handle this the same way as with datacite based content negotiation->use the use_datacite switch
             if self.pid_scheme == 'purl':
                 targeturl = self.pid_url
             else:
                 targeturl = self.landing_url
+            self.logger.info('FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation from URL -: '+str(targeturl))
 
             neg_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=targeturl, source=source)
             if neg_rdf_collector is not None:
@@ -1074,7 +1075,7 @@ class FAIRCheck:
                 summary_dict['fair_category'].append(fair_category)
                 summary_dict['fair_principle'].append(fair_principle)
                 #An easter egg for Mustapha
-                if self.input_id == 'https://www.rd-alliance.org/users/mustapha-mokrane':
+                if self.input_id in ['https://www.rd-alliance.org/users/mustapha-mokrane','https://www.rd-alliance.org/users/ilona-von-stein']:
                     summary_dict['score_earned'].append(res_v['score']['total'])
                     summary_dict['maturity'].append(3)
                     summary_dict['status'].append(1)
