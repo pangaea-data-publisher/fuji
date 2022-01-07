@@ -68,14 +68,6 @@ The F-uji server can now be started with.
 ```
 python3 -m fuji_server -c fuji_server/config/server.ini
 ```
-Alternative you can install the latest F-UJI release on PyPI
-```bash
-pip3 install fuji
-```
-you can also use poetry
-```bash
-poetry install fuji
-```
 
 ### Docker-based installation:
 
