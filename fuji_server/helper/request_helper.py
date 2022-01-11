@@ -93,7 +93,7 @@ class RequestHelper:
         return self.http_response
 
     def getResponseContent(self):
-        return self.response_content.decode(self.response_charset)
+        return self.response_content
 
     def getParsedResponse(self):
         return self.parse_response
@@ -183,6 +183,7 @@ class RequestHelper:
                         if status_code == 200:
                             self.response_content = tp_response.read()
                             #try to find out if content type is byte then fix
+                            print('Charset: ',self.response_charset)
                             try:
                                 self.response_content.decode('utf-8')
                             except (UnicodeDecodeError, AttributeError) as e:
@@ -190,12 +191,14 @@ class RequestHelper:
 
                                 self.response_content = self.response_content.decode('utf-8', errors='replace')
                                 self.response_content = str(self.response_content).encode('utf-8')
+                            #Now content should be utf-8 encoded
+
                             if self.content_type is None:
                                 self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                             if self.content_type is None:
                                 #just in case tika is not running use this as quick check for the most obvious
                                 if re.search(r'<!doctype html>|<html',
-                                             str(self.response_content.decode(self.response_charset)).strip(),
+                                             self.response_content.strip(),
                                              re.IGNORECASE) is not None:
                                     self.content_type = 'text/html'
                             if self.content_type is None:
@@ -203,7 +206,7 @@ class RequestHelper:
                                 self.content_type = parsedFile.get('metadata').get('Content-Type')
                             if 'application/xhtml+xml' in self.content_type:
                                 if re.search(r'<!doctype html>|<html',
-                                             str(self.response_content.decode(self.response_charset)).strip(),
+                                             self.response_content.strip(),
                                              re.IGNORECASE) is None:
                                     self.content_type = 'text/xml'
                             if self.content_type is not None:
@@ -225,15 +228,13 @@ class RequestHelper:
 
                                 self.content_type = self.content_type.split(';', 1)[0]
                                 while (True):
-
                                     for at in AcceptTypes:  #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
                                                 if ignore_html == False:
                                                     self.logger.info('%s : Found HTML page!' % metric_id)
-                                                    self.parse_response = self.parse_html(
-                                                        self.response_content.decode(self.response_charset))
+                                                    self.parse_response = self.parse_html(self.response_content)
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
@@ -252,6 +253,7 @@ class RequestHelper:
                                                 if re.match(r'(\{.+\})?RDF', root_element):
                                                     self.logger.info('%s : Expected XML but found RDF document by root tag!' % metric_id)
                                                     self.parse_response = self.response_content
+                                                    #self.content_type ='application/xml+rdf'
                                                     source = 'rdf'
                                                 else:
                                                     self.logger.info('%s : Found XML document!' % metric_id)
@@ -299,7 +301,7 @@ class RequestHelper:
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         try:
-            extracted = extruct.extract(html_texts.encode('utf8'), syntaxes=['microdata', 'opengraph', 'json-ld'])
+            extracted = extruct.extract(html_texts, syntaxes=['microdata', 'opengraph', 'json-ld'])
         except Exception as e:
             extracted = None
             self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' %
