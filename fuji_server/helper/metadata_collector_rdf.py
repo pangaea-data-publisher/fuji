@@ -97,7 +97,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             nm = graph.namespace_manager
             possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
             for predicate in possible:
-                prefix, namespace, local = nm.compute_qname_strict(predicate)
+                prefix, namespace, local = nm.compute_qname(predicate)
                 namespaces[prefix] = namespace
         except Exception as e:
             self.logger.info('FsF-F2-01M : RDF Namespace detection error -: {}'.format(e))
@@ -142,11 +142,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
-                    if 'html' in str(parseformat[1]):
+                    if 'html' not in str(parseformat[1]):
                         try:
                             self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
                             graph = rdflib.Graph()
-                            print(parseformat[1])
                             graph.parse(data=rdf_response, format=parseformat[1])
                             rdf_response_graph = graph
                         except:
