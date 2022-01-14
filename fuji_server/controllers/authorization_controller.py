@@ -40,7 +40,6 @@ def checkUser(username: str,
     """
     #service_username = 'marvel'
     #service_password = 'wonderwoman'
-    print('check user')
     if username in user_dict:
         if password == user_dict.get(username):
             return {'username': username, 'password': user_dict.get(username)}
