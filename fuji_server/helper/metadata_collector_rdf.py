@@ -27,7 +27,7 @@ import sys
 import idutils
 import rdflib
 import requests
-from rdflib import Namespace, Graph
+from rdflib import Namespace, Graph, URIRef
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
@@ -91,14 +91,38 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #self.rdf_graph = rdf_graph
         super().__init__(logger=loggerinst)
 
-    def get_namespaces(self,graph):
+    def set_namespaces(self,graph):
         namespaces = {}
+        known_namespace_regex = [r'https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/',
+                                 r'https?:\/\/purl\.obolibrary\.org\/obo\/[a-z]+(\.owl|#)']
         try:
             nm = graph.namespace_manager
             possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
+            alluris = set(graph.objects()).union(set(graph.subjects()))
+            #namespaces from mentioned objects and subjects uris (best try)
+            for uri in alluris:
+                if idutils.is_url(uri):
+                    for known_pattern in known_namespace_regex:
+                        kpm = re.match(known_pattern, uri)
+                        if kpm :
+                            uri = kpm[0]
+                            self.namespaces.append(uri)
+                        else:
+                            uri = str(uri).strip().rstrip("/#")
+                            namespace_candidate = uri.rsplit('/', 1)[0]
+                            if namespace_candidate != uri:
+                                self.namespaces.append(namespace_candidate)
+                            else:
+                                namespace_candidate = uri.rsplit('#', 1)[0]
+                                if namespace_candidate != uri:
+                                    self.namespaces.append(namespace_candidate)
+            #defined namespaces
             for predicate in possible:
                 prefix, namespace, local = nm.compute_qname(predicate)
                 namespaces[prefix] = namespace
+                self.namespaces.append(str(namespace))
+            self.namespaces = list(set(self.namespaces))
+
         except Exception as e:
             self.logger.info('FsF-F2-01M : RDF Namespace detection error -: {}'.format(e))
         return namespaces
@@ -124,7 +148,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
         #required for metric knowledge representation
 
-        if requestHelper.getHTTPResponse() is not None:
+        if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
             if self.content_type is not None:
                 self.content_type = self.content_type.split(';', 1)[0]
@@ -142,17 +166,33 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
-                    if 'html' not in str(parseformat[1]):
-                        try:
-                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
-                            graph = rdflib.Graph()
-                            graph.parse(data=rdf_response, format=parseformat[1])
-                            rdf_response_graph = graph
-                        except:
-                            error = sys.exc_info()[0]
-                            self.logger.warning(
-                                'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(error)))
-                            self.logger.debug(error)
+                    if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
+                        RDFparsed = False
+                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
+                        while not RDFparsed:
+                            try:
+                                graph = rdflib.Graph(identifier = self.target_url)
+                                graph.parse(data=rdf_response, format=parseformat[1])
+                                rdf_response_graph = graph
+                                RDFparsed = True
+                            except Exception as e:
+                                errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
+                                if errorlinematch:
+                                    badline = int(errorlinematch[1])
+                                    self.logger.warning(
+                                        'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
+                                    splitRDF = rdf_response.splitlines()
+                                    if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
+                                        rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                    else:
+                                        RDFparsed = True # end reached
+                                else:
+                                    RDFparsed = True # give up
+                                if not RDFparsed:
+                                    continue
+                                else:
+                                    self.logger.warning(
+                                        'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
                     else:
                         self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
 
@@ -166,7 +206,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if isinstance(rdf_response_graph, rdflib.graph.Graph):
             self.logger.info('FsF-F2-01M : Found RDF Graph which was sucessfully parsed')
             self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
-            graph_namespaces = self.get_namespaces(rdf_response_graph)
+            graph_namespaces = self.set_namespaces(rdf_response_graph)
             #self.getNamespacesfromIRIs(graph_text)
             # TODO: set credit score for being valid RDF
             # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
@@ -178,8 +218,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
             else:
                 rdf_metadata = self.get_default_metadata(rdf_response_graph)
             #add found namespaces URIs to namespace
-            for ns in graph_namespaces.values():
-                self.namespaces.append(ns)
+            #for ns in graph_namespaces.values():
+            #    self.namespaces.append(ns)
         else:
             self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
         return self.source_name, rdf_metadata

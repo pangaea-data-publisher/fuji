@@ -106,6 +106,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     try:
                         response = urllib.request.urlopen(test_data_content_url)
                         content_type = response.info().get_content_type()
+                        header_content_types = response.headers.get('content-type')
                         chunksize = 1024
                         while True:
                             chunk = response.read(chunksize)
@@ -123,6 +124,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                     tika_content_size = 0
                                     tika_content_size = str(response.headers.get('content-length')).split(';')[0]
                                     break
+                        response.close()
 
                     except urllib.error.HTTPError as e:
                         self.logger.warning(
@@ -135,9 +137,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.exception(e.reason)
                     except Exception as e:
                         self.logger.warning('FsF-F3-01M : Could not access the resource -:' + str(e))
-                    #if response_body:
-                    #response_content = b''.join(response_body)
-                    #response_body = None
+
 
                     status = 'tika error'
                     parsed_content = ''
@@ -149,6 +149,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             parsed_content = parsedFile.get('content')
                             self.logger.info('{0} : Successfully parsed data object file using TIKA'.format(
                                 self.metric_identifier))
+                            file_buffer_object.close()
+                            parsedFile.clear()
                         else:
                             self.logger.warning('{0} : Could not parse data object file using TIKA'.format(
                                 self.metric_identifier))
@@ -157,7 +159,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.warning('{0} : File parsing using TIKA failed -: {1}'.format(
                             self.metric_identifier, e))
                         # in case TIKA request fails use response header info
-                        tika_content_types = str(response.headers.get('content-type')).split(';')[0]
+                        tika_content_types = str(header_content_types).split(';')[0]
 
                     if isinstance(tika_content_types, list):
                         self.fuji.tika_content_types_list = list(set(i.split(';')[0] for i in tika_content_types))
@@ -172,7 +174,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
                     # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
                     if test_data_content_text:
-                        #parsed_files = parsedFile.get("metadata").get('resourceName')
                         self.logger.info(
                             'FsF-R1-01MD : Succesfully parsed data file(s) -: {}'.format(test_data_content_url))
                 #else:

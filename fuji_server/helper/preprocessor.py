@@ -72,6 +72,7 @@ class Preprocessor(object):
     metric_specification = None
     remote_log_host = None
     remote_log_path = None
+    max_content_size = 5000000
 
     def __new__(cls):
         """Define what happens on object creation to ensure preprocessor is a singledton"""
@@ -80,6 +81,10 @@ class Preprocessor(object):
             cls._instance = super(Preprocessor, cls).__new__(cls)
             # Put any initialization here.
         return cls._instance
+
+    @classmethod
+    def set_max_content_size(cls, size):
+        cls.max_content_size = int(size)
 
     @classmethod
     def set_remote_log_info(cls, host, path):

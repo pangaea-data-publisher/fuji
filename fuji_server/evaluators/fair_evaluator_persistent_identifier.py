@@ -70,10 +70,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.fuji.extruct_result = {}
             if type(self.fuji.extruct_result) != dict:
                 self.fuji.extruct_result = {}
-            r = requestHelper.getHTTPResponse()
+            #r = requestHelper.getHTTPResponse()
             response_status = requestHelper.response_status
 
-            if r:
+            if requestHelper.response_content:
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
                 #print(self.fuji.landing_url, self.fuji.input_id)
@@ -91,7 +91,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
                     if response_status == 200:
                         # identify signposting links in header
-                        header_link_string = requestHelper.getHTTPResponse().getheader('Link')
+                        header_link_string = requestHelper.getResponseHeader().get('Link')
+                        #header_link_string = requestHelper.getHTTPResponse().getheader('Link')
                         if header_link_string is not None:
                             self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
 

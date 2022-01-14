@@ -24,7 +24,7 @@
 import io
 import logging, logging.handlers
 import re
-import urllib
+#import urllib
 import urllib.request as urllib
 from typing import List, Any
 from urllib.parse import urlparse, urljoin
@@ -663,7 +663,7 @@ class FAIRCheck:
                                 'rel': 'alternate'
                             }
                             self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at -: ' + guessed_link)
-
+                        response.close()
                     except:
                         self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: ' + guessed_link)
         return datalink
@@ -1051,6 +1051,7 @@ class FAIRCheck:
                     logger_messages[metric] = []
                 if message not in logger_messages[metric]:
                     logger_messages[metric].append(level.replace('\n', '') + ': ' + message.strip())
+        self.logger_message_stream = io.StringIO
 
         return logger_messages
 

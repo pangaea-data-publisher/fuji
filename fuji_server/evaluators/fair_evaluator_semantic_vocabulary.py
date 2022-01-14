@@ -90,8 +90,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             not_exists = [x for x in self.fuji.namespace_uri if x not in exists]
             if not_exists:
                 self.logger.warning(
-                    '{0} : Vocabulary namespace (s) specified but no match is found in LOD reference list -: {1}'.
-                    format(self.metric_identifier, not_exists))
+                    '{0} : Vocabulary namespace (s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
+                    format(self.metric_identifier, not_exists[:10]))
         else:
             self.logger.warning('{0} : NO namespaces of semantic vocabularies found in the metadata'.format(
                 self.metric_identifier))

@@ -28,17 +28,17 @@ import re
 import sys
 import traceback
 from enum import Enum
+from io import BytesIO
+from zipfile import ZipFile
+
 import extruct
 import lxml
 import rdflib
-import requests
 import urllib
 import ssl
-from requests.packages.urllib3.exceptions import *
 from tika import parser
 
 from fuji_server.helper.preprocessor import Preprocessor
-from fuji_server.helper.content_cache import ContentCache
 
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
@@ -58,11 +58,17 @@ class AcceptTypes(Enum):
     rdf = 'text/turtle, application/turtle, application/x-turtle;q=0.8, application/rdf+xml, text/n3;q=0.9, text/rdf+n3;q=0.9,application/ld+json'
     default = '*/*'
 
+    @staticmethod
+    def list():
+        atypes = []
+        al = list(map(lambda c: c.value.split(','), AcceptTypes))
+        return list(set([item.strip().split(';', 1)[0] for sublist in al for item in sublist]))
+
 
 class RequestHelper:
     checked_content = {}
-
     def __init__(self, url, logInst: object = None):
+
         if logInst:
             self.logger = logInst
         else:
@@ -77,6 +83,9 @@ class RequestHelper:
         self.response_header = None
         self.response_charset = 'utf-8'
         self.content_type = None
+        self.content_size = 0
+        #maximum size which will be downloaded and analysed by F-UJU
+        self.max_content_size = Preprocessor.max_content_size
 
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
@@ -89,8 +98,8 @@ class RequestHelper:
     def setRequestUrl(self, url):
         self.request_url = url
 
-    def getHTTPResponse(self):
-        return self.http_response
+    #def getHTTPResponse(self):
+    #    return self.http_response
 
     def getResponseContent(self):
         return self.response_content
@@ -99,7 +108,7 @@ class RequestHelper:
         return self.parse_response
 
     def getResponseHeader(self):
-        return self.response_header
+        return dict(self.response_header)
 
     def content_decode(self, content):
         if isinstance(content, 'str'):
@@ -130,6 +139,7 @@ class RequestHelper:
                 try:
                     tp_response = urllib.request.urlopen(tp_request, context=context)
                 except urllib.error.URLError as e:
+
                     if e.code >= 500:
                         if 'doi.org' in self.request_url:
                             self.logger.error(
@@ -142,6 +152,7 @@ class RequestHelper:
                         self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
+
                     if e.code == 308:
                         self.logger.error(
                             '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
@@ -162,54 +173,89 @@ class RequestHelper:
                     metric_id = 'FsF-F2-01M'
 
                 if tp_response:
-                    self.http_response = tp_response
+                    #self.http_response = tp_response
                     if tp_response.info().get('Content-Encoding') == 'gzip':
+                        self.logger.info('FsF-F2-01M : Retrieving gzipped content')
                         self.response_content = gzip.decompress(self.response_content)
+                    if tp_response.info().get('Content-Type') == 'application/zip':
+                        self.logger.warning('FsF-F2-01M : Received zipped content which contains several files, therefore skipping tests')
+                        self.response_content = None
+                        source = 'zip'
                     if tp_response.info().get_content_charset():
                         self.response_charset = tp_response.info().get_content_charset()
                     self.response_header = tp_response.getheaders()
                     self.redirect_url = tp_response.geturl()
-                    self.response_status = status_code = self.http_response.status
+                    self.response_status = status_code = tp_response.status
                     self.logger.info('%s : Content negotiation accept=%s, status=%s ' %
                                      (metric_id, self.accept_type, str(status_code)))
 
-                    self.content_type = self.http_response.headers.get('Content-Type')
+                    self.content_type = self.getResponseHeader().get('Content-Type')
                     # key for content cache
                     checked_content_id = hash(str(self.redirect_url ) + str(self.content_type))
+
                     if checked_content_id in self.checked_content:
-                        source, self.parse_response, self.response_content, self.content_type = self.checked_content.get(checked_content_id)
+                        source, self.parse_response, self.response_content, self.content_type, self.content_size, content_truncated = self.checked_content.get(checked_content_id)
                         self.logger.info('%s : Using Cached response content' % metric_id)
                     else:
+                        content_truncated = False
                         if status_code == 200:
-                            self.response_content = tp_response.read()
-                            #try to find out if content type is byte then fix
-                            print('Charset: ',self.response_charset)
+
                             try:
-                                self.response_content.decode('utf-8')
-                            except (UnicodeDecodeError, AttributeError) as e:
-                                self.logger.warning('%s : Content UTF-8 encoding problem, trying to fix.. ' % metric_id)
+                                self.content_size = int(self.getResponseHeader().get('content-length'))
+                            except Exception as e:
+                                self.content_size = 0
+                                pass
 
-                                self.response_content = self.response_content.decode('utf-8', errors='replace')
-                                self.response_content = str(self.response_content).encode('utf-8')
+                            if source != 'zip':
+                                if self.content_size > self.max_content_size:
+                                    content_truncated = True
+                                if sys.getsizeof(self.response_content) >= self.max_content_size or content_truncated:
+                                    self.logger.warning('%s : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: %s' % (metric_id, str(self.max_content_size)))
+                                self.response_content = tp_response.read(self.max_content_size)
+                            if self.content_size == 0:
+                                self.content_size = sys.getsizeof(self.response_content)
+                            #try to find out if content type is byte then fix
+                            if self.response_content:
+                                try:
+                                    self.response_content.decode('utf-8')
+                                except (UnicodeDecodeError, AttributeError) as e:
+                                    self.logger.warning('%s : Content UTF-8 encoding problem, trying to fix.. ' % metric_id)
+
+                                    self.response_content = self.response_content.decode('utf-8', errors='replace')
+                                    self.response_content = str(self.response_content).encode('utf-8')
+
                             #Now content should be utf-8 encoded
-
+                            if content_truncated == True:
+                                try:
+                                    self.response_content =  self.response_content.rsplit(b'\n',1)[0]
+                                except Exception as e:
+                                    print('Error: '+str(e))
                             if self.content_type is None:
                                 self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
                             if self.content_type is None:
                                 #just in case tika is not running use this as quick check for the most obvious
-                                if re.search(r'<!doctype html>|<html',
-                                             self.response_content.strip(),
-                                             re.IGNORECASE) is not None:
-                                    self.content_type = 'text/html'
+                                try:
+                                    if re.search(b'<!doctype html>|<html',
+                                                 self.response_content.strip(),
+                                                 re.IGNORECASE) is not None:
+                                        self.content_type = 'text/html'
+                                except Exception as e:
+                                    print(e)
                             if self.content_type is None:
                                 parsedFile = parser.from_buffer(self.response_content)
                                 self.content_type = parsedFile.get('metadata').get('Content-Type')
                             if 'application/xhtml+xml' in self.content_type:
-                                if re.search(r'<!doctype html>|<html',
-                                             self.response_content.strip(),
-                                             re.IGNORECASE) is None:
-                                    self.content_type = 'text/xml'
+                                try:
+                                    if re.search(b'<!doctype html>|<html',
+                                                 self.response_content.strip(),
+                                                 re.IGNORECASE) is None:
+                                        self.content_type = 'text/xml'
+                                except Exception as e:
+                                    print(e)
+
+
                             if self.content_type is not None:
+
                                 if 'text/plain' in self.content_type:
                                     source = 'text'
                                     self.logger.info('%s : Plain text has been responded as content type! Trying to verify' % metric_id)
@@ -244,9 +290,11 @@ class RequestHelper:
                                                 #in case the XML indeed is a RDF:
                                                 root_element = ''
                                                 try:
-                                                    xmlparser = lxml.etree.XMLParser(strip_cdata=False)
+                                                    xmlparser = lxml.etree.XMLParser(strip_cdata=False,recover=True)
                                                     xmltree = lxml.etree.XML(self.response_content, xmlparser)
                                                     root_element = xmltree.tag
+                                                    if content_truncated:
+                                                        self.response_content = lxml.etree.tostring(xmltree)
                                                 except Exception as e:
                                                     self.logger.warning('%s : Parsing XML document failed !' %
                                                                         metric_id)
@@ -277,13 +325,15 @@ class RequestHelper:
                                                 break
                                     break
                                 # cache downloaded content
-                                self.checked_content[checked_content_id] = (source, self.parse_response, self.response_content, self.content_type)
+                                self.checked_content[checked_content_id] = (source, self.parse_response, self.response_content, self.content_type, self.content_size, content_truncated)
                             else:
                                 self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                         else:
                             self.logger.warning('{0} : NO successful response received, status code -: {1}'.format(
                                 metric_id, str(status_code)))
+                    tp_response.close()
                 else:
+
                     self.logger.warning('{0} : No response received from -: {1}'.format(metric_id, self.request_url))
             #except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
@@ -294,7 +344,6 @@ class RequestHelper:
                 self.logger.warning('{} : RequestException -: {} : {}'.format(metric_id, e.reason, self.request_url))
             except Exception as e:
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
-
         return source, self.parse_response
 
     def parse_html(self, html_texts):

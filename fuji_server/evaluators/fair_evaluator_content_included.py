@@ -101,7 +101,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         # will pass even if the url cannot be accessed which is OK
                         # did_result.test_status = "pass"
                         # did_score.earned=1
-
+                        response.close()
                         did_output_content.content_identifier_active = False
                         #content_list.append(did_output_content)
                     except urllib.error.HTTPError as e:

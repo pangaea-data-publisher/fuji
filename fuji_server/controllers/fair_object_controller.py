@@ -123,7 +123,7 @@ def assess_by_id(body):  # noqa: E501
         results.append(standard_protocol_data_result)
         results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
-        ft.logger_message_stream.flush()
+        #ft.logger_message_stream.flush()
         summary = ft.get_assessment_summary(results)
         for res_k, res_v in enumerate(results):
             if ft.isDebug:
