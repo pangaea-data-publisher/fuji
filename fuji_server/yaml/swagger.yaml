@@ -27,6 +27,8 @@ paths:
     post:
       tags:
       - FAIR object
+      security:
+        - basicAuth: []
       description: Evaluate FAIRness of a data object based on its identifier
       operationId: assess_by_id
       requestBody:

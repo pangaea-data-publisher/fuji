@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import configparser as ConfigParser
+import json
 import os
+import tracemalloc
 from pathlib import Path
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
@@ -316,7 +318,14 @@ testpids = sorted(set(muchotestpids))
 #testpids=['10.5284/1088084']
 #testpids=['https://fairsfair.fair-dtls.surf-hosted.nl/dataset/043ea683-a3e4-441e-b8de-d376b5a9991f']
 #testpids=['10.17045/sthlmuni.5857716.v4']
+#testpids=['http://purl.obolibrary.org/obo/doid.owl']
+#testpids=['http://purl.obolibrary.org/obo/zfa.owl']
+#testpids=['http://purl.obolibrary.org/obo/bfo.owl']
+#testpids=['http://vocab.nerc.ac.uk/collection/L05/current/']
+#testpids = ['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
+#testpids=['http://vocab.nerc.ac.uk/collection/L22/current/?_profile=nvs&_mediatype=text/turtle']
 startpid = ''
+#testpids = ['10.11583/DTU.10259936.v1']* 10
 metadata_service_endpoint = ''
 metadata_service_type = ''
 oaipmh_endpoint = ''
@@ -360,15 +369,16 @@ def main():
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     preproc.retrieve_science_file_formats(isDebug)
     preproc.retrieve_long_term_file_formats(isDebug)
-
+    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'], config['SERVICE']['remote_log_path'])
+    preproc.set_max_content_size(config['SERVICE']['max_content_size'])
     print(f'Total SPDX licenses : {preproc.get_total_licenses()}')
     print(f'Total re3repositories found from datacite api : {len(preproc.getRE3repositories())}')
     print(f'Total subjects area of imported metadata standards : {len(preproc.metadata_standards)}')
     start = False
-    usedatacite = True
-    #tracemalloc.start()
+    usedatacite = False
     n = 1
     for identifier in testpids:
+        tracemalloc.start()
 
         print(identifier)
         print(n)
@@ -385,8 +395,8 @@ def main():
 
             #ft = FAIRCheck(uid=identifier,  test_debug=True, use_datacite=usedatacite)
             #set target for remote logging
-            if remote_log_host and remote_log_path:
-                ft.set_remote_logging_target(remote_log_host, remote_log_path)
+            #if remote_log_host and remote_log_path:
+            #    ft.set_remote_logging_target(remote_log_host, remote_log_path)
 
             uid_result, pid_result = ft.check_unique_persistent()
             ft.retrieve_metadata_embedded(ft.extruct_result)
@@ -420,7 +430,7 @@ def main():
             ]
             #print(ft.metadata_merged)
             debug_messages = ft.get_log_messages_dict()
-            ft.logger_message_stream.flush()
+            #ft.logger_message_stream.flush()
             summary = ft.get_assessment_summary(results)
             #print('summary: ', summary)
             for res_k, res_v in enumerate(results):
@@ -439,23 +449,23 @@ def main():
             #remove unused logger handlers and filters to avoid memory leaks
             ft.logger.handlers = [ft.logger.handlers[-1]]
             #ft.logger.filters = [ft.logger.filters]
-            #current, peak = tracemalloc.get_traced_memory()
-            #print(f"Current memory usage is {current / 10 ** 6}MB; Peak was {peak / 10 ** 6}MB")
-            #snapshot = tracemalloc.take_snapshot()
-            #top_stats = snapshot.statistics('traceback')
+            current, peak = tracemalloc.get_traced_memory()
+            print(f"Current memory usage is {current / 10 ** 6}MB; Peak was {peak / 10 ** 6}MB")
+            snapshot = tracemalloc.take_snapshot()
+            top_stats = snapshot.statistics('traceback')
 
             # pick the biggest memory block
-            #stat = top_stats[0]
-            #print("%s memory blocks: %.1f KiB" % (stat.count, stat.size / 1024))
-            #for line in stat.traceback.format():
-            #    print(line)
+            stat = top_stats[0]
+            print("%s memory blocks: %.1f KiB" % (stat.count, stat.size / 1024))
+            for line in stat.traceback.format():
+                print(line)
 
             #for i, stat in enumerate(snapshot.statistics('filename')[:5], 1):
-            #    print(i,  str(stat))
-
+            #     print(i,  str(stat))
+            results=[]
             #preproc.logger.
             gc.collect()
-    #tracemalloc.stop()
+        tracemalloc.stop()
 
 
 if __name__ == '__main__':
