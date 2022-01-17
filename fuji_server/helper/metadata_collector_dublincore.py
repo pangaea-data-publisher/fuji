@@ -86,7 +86,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             dc_t = None
                             if len(dc_name_parts) == 3:
                                 dc_t = dc_name_parts[2]
-                            meta_dc_matches.append([dc_name_parts[1], dc_t, meta_tag.get('content')])
+                            meta_dc_matches.append([dc_name_parts[1].lower(), dc_t, meta_tag.get('content')])
                     #meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
                     self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
