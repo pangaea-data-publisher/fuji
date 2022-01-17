@@ -149,7 +149,11 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                             if contexturi.endswith('schema.org/'):
                                 schemaorgns = contextname
                     ext_meta = json.loads(json.dumps(ext_meta).replace('"' + schemaorgns + ':', '"'))
-
+                    #special case #1
+                    if ext_meta.get('mainEntity'):
+                        self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
+                        ext_meta = ext_meta.get('mainEntity')
+                    #special case #2
                     if ext_meta.get('@graph'):
                         self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
                         ext_meta = self.compact_jsonld(ext_meta)
