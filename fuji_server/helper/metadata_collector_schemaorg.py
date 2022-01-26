@@ -54,7 +54,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
     """
     source_name = None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
-
+    SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
     def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
         """
         Parameters
@@ -93,7 +93,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                 jsonldnodes[jsonldnode.get('@id')] = jsonldnode
             if jsonldnode.get('@type') == 'Dataset':
                 schemadataset = jsonldnode
-
         for propkey, propvalue in schemadataset.items():
             if isinstance(propvalue, dict):
                 if propvalue.get('@id') and len(propvalue) == 1:
@@ -139,7 +138,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                 self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
-            check_context_type = ['Dataset', 'Collection']
+
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta.get('@context')).find('://schema.org') > -1:
@@ -152,12 +151,12 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                     #special case #1
                     if ext_meta.get('mainEntity'):
                         self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
-                        ext_meta = ext_meta.get('mainEntity')
+                        for mainEntityprop in ext_meta.get('mainEntity'):
+                            ext_meta[mainEntityprop] = ext_meta.get('mainEntity').get(mainEntityprop)
                     #special case #2
                     if ext_meta.get('@graph'):
                         self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
                         ext_meta = self.compact_jsonld(ext_meta)
-
                     if not ext_meta.get('@type'):
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')
@@ -166,7 +165,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type -:'
                             + str(ext_meta.get('@type')))
-                    elif ext_meta.get('@type') not in check_context_type:
+                    elif ext_meta.get('@type') not in self.SCHEMA_ORG_CREATIVEWORKS:
                         self.logger.info(
                             'FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
                     else:
