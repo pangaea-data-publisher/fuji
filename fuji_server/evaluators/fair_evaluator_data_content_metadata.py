@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import io
+import sys
 import urllib
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.data_content_metadata import DataContentMetadata
@@ -99,7 +100,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     response_body = []
                     timeout = 10
                     tika_content_size = 0
-                    max_download_size = 100000
+                    max_download_size = 1000000
                     file_buffer_object = io.BytesIO()
                     start = time.time()
                     #r = requests.get(test_data_content_url, verify=False, stream=True)
@@ -116,7 +117,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 #response_body.append(chunk)
                                 file_buffer_object.write(chunk)
                                 # avoiding large file sizes to test with TIKA.. truncate after 1 Mb
-                                tika_content_size = tika_content_size + chunksize
+                                tika_content_size = tika_content_size + len(chunk)
                                 if time.time() > (start + timeout) or tika_content_size >= max_download_size:
                                     self.logger.warning('FsF-R1-01MD : File too large.., skipped download after -:' +
                                                         str(timeout) + ' sec or receiving > ' + str(max_download_size) +
