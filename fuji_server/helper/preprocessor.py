@@ -49,6 +49,7 @@ class Preprocessor(object):
     BIOPORTAL_KEY = None
 
     schema_org_context = []
+    schema_org_creativeworks=[]
     all_licenses = []
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
@@ -143,6 +144,19 @@ class Preprocessor(object):
                     schemauri = schemadict.get('@id')
                     if str(schemauri).startswith('schema:'):
                         cls.schema_org_context.append(str(context).lower())
+    @classmethod
+    def retrieve_schema_org_creativeworks(cls):
+        data=[]
+        cw_path = os.path.join(cls.fuji_server_dir, 'data', 'creativeworktypes.txt')
+        with open(cw_path) as f:
+            data = f.read().splitlines()
+        cls.schema_org_creativeworks = data
+
+    @classmethod
+    def get_schema_org_creativeworks(cls):
+        if not cls.schema_org_creativeworks:
+            cls.retrieve_schema_org_creativeworks()
+        return cls.schema_org_creativeworks
 
     @classmethod
     def get_schema_org_context(cls):
