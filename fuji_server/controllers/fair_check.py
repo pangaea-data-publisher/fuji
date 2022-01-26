@@ -31,6 +31,7 @@ from urllib.parse import urlparse, urljoin
 import pandas as pd
 import lxml
 import rdflib
+from pyRdfa import pyRdfa
 from rapidfuzz import fuzz
 from rapidfuzz import process
 import hashlib
@@ -96,7 +97,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.5'
+    FUJI_VERSION = '1.4.6'
 
     def __init__(self,
                  uid,
@@ -479,20 +480,15 @@ class FAIRCheck:
 
                 #================== RDFa
                 self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
-
-                RDFA_ns = rdflib.Namespace('http://www.w3.org/ns/rdfa#')
                 rdfasource = MetaDataCollector.Sources.RDFA.value
-                rdfagraph = None
-                errors = []
                 try:
                     rdflib_logger = logging.getLogger('rdflib')
                     rdflib_logger.setLevel(logging.ERROR)
-                    rdfagraph = rdflib.Graph()
-                    rdfagraph.parse(data=self.landing_html, format='rdfa')
+                    rdfabuffer= io.StringIO(self.landing_html.decode('utf-8'))
+                    rdfa_graph = pyRdfa(media_type='text/html').graph_from_source(rdfabuffer)
                     rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
-                                                          target_url=self.landing_url,
-                                                          source=rdfasource)
-                    source_rdfa, rdfa_dict = rdfa_collector.parse_metadata()
+                                                          target_url=self.landing_url, source=rdfasource)
+                    rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
                     if (len(rdfa_dict) > 0):
                         self.metadata_sources.append((rdfasource, 'embedded'))
                         self.namespace_uri.extend(rdfa_collector.getNamespaces())
@@ -505,6 +501,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS,
                                         'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
                 except Exception as e:
+                    print(e)
                     self.logger.info(
                         'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
 
@@ -611,6 +608,10 @@ class FAIRCheck:
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # Use links to find domains specific metadata
         datalinks = []
+        try:
+            self.landing_html = self.landing_html.decode()
+        except (UnicodeDecodeError, AttributeError):
+            pass
         if isinstance(self.landing_html, str):
             if self.landing_html:
                 try:
