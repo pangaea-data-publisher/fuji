@@ -28,7 +28,10 @@ import re
 import sys
 import traceback
 from enum import Enum
+import http.cookiejar
+
 from io import BytesIO
+from urllib.request import build_opener, HTTPCookieProcessor
 from zipfile import ZipFile
 
 import extruct
@@ -125,21 +128,23 @@ class RequestHelper:
             try:
                 self.logger.info('{0} : Retrieving page -: {1} as {2}'.format(metric_id, self.request_url,
                                                                               self.accept_type))
-                #TODO: find another way to handle SSL certficate problems; e.g. perform the request twice and return at least a warning
                 urllib.request.HTTPRedirectHandler.http_error_308 = urllib.request.HTTPRedirectHandler.http_error_301
-                tp_request = urllib.request.Request(self.request_url,
-                                                    headers={
-                                                        'Accept': self.accept_type,
-                                                        'User-Agent': 'F-UJI'
-                                                    })
 
+                cookiejar =  http.cookiejar.MozillaCookieJar()
                 context = ssl._create_unverified_context()
                 context.set_ciphers('DEFAULT@SECLEVEL=1')
 
-                try:
-                    tp_response = urllib.request.urlopen(tp_request, context=context)
-                except urllib.error.URLError as e:
+                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context))
+                urllib.request.install_opener(opener)
 
+                tp_request = urllib.request.Request(self.request_url,
+                                                    headers={
+                                                        'Accept': self.accept_type,
+                                                        'User-Agent': 'F-UJI'})
+
+                try:
+                    tp_response = opener.open(tp_request)
+                except urllib.error.URLError as e:
                     if e.code >= 500:
                         if 'doi.org' in self.request_url:
                             self.logger.error(
@@ -152,7 +157,6 @@ class RequestHelper:
                         self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
-
                     if e.code == 308:
                         self.logger.error(
                             '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
@@ -343,6 +347,8 @@ class RequestHelper:
             except urllib.error.URLError as e:
                 self.logger.warning('{} : RequestException -: {} : {}'.format(metric_id, e.reason, self.request_url))
             except Exception as e:
+                print(e)
+
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
         return source, self.parse_response
 

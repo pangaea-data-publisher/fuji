@@ -179,6 +179,11 @@ class MetaDataCollectorXML(MetaDataCollector):
             for envelope_key, envelope_values in envelope_metadata.items():
                 if envelope_key not in xml_metadata:
                     xml_metadata[envelope_key] = envelope_values
+
+        #delete empty properties
+        if xml_metadata:
+            xml_metadata = {k: v for k, v in xml_metadata.items() if v}
+
         if xml_metadata:
             self.logger.info(
                 'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata))
