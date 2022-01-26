@@ -20,22 +20,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import json
+import json, rdflib_jsonld
 import re
 import sys
 
 import idutils
 import rdflib
 import requests
-from rdflib import Namespace, Graph, URIRef
+from rdflib import Namespace, Graph, URIRef, plugin
 from rdflib.namespace import RDF
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import DC
 from rdflib.namespace import FOAF
+from rdflib.namespace import SDO #schema.org
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollectorRdf(MetaDataCollector):
@@ -69,6 +72,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
         Method to get Data Catalog(DCAT) metadata in RDF graph
     get_content_type()
         Method to get the content type attribute in the class
+    get_metadata_from_graph(g)
+        Method to get all metadata from a graph object
     """
     target_url = None
 
@@ -127,6 +132,37 @@ class MetaDataCollectorRdf(MetaDataCollector):
             self.logger.info('FsF-F2-01M : RDF Namespace detection error -: {}'.format(e))
         return namespaces
 
+    def get_metadata_from_graph(self, rdf_response_graph):
+        rdf_metadata ={}
+        if rdf_response_graph:
+            ontology_indicator = [
+                rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),
+                rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')
+            ]
+            if isinstance(rdf_response_graph, rdflib.graph.Graph):
+                self.logger.info('FsF-F2-01M : Found RDF Graph which was sucessfully parsed')
+                self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
+                graph_namespaces = self.set_namespaces(rdf_response_graph)
+                #self.getNamespacesfromIRIs(graph_text)
+                # TODO: set credit score for being valid RDF
+                # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
+                if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in graph_namespaces.values():
+                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
+                    rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
+                elif rdflib.term.URIRef('http://schema.org/') in graph_namespaces.values():
+                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements')
+                    rdf_metadata = self.get_schemaorg_metadata(rdf_response_graph)
+                elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
+                    rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
+                else:
+                    rdf_metadata = self.get_default_metadata(rdf_response_graph)
+                #add found namespaces URIs to namespace
+                #for ns in graph_namespaces.values():
+                #    self.namespaces.append(ns)
+            else:
+                self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
+        return rdf_metadata
+
     def parse_metadata(self):
         """Parse the metadata given RDF graph.
 
@@ -162,66 +198,49 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         rdf_response_graph = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
                         rdf_response_graph = jsonldgraph
                     except Exception as e:
+                        print(e)
                         self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
-                    if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
-                        RDFparsed = False
-                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
-                        while not RDFparsed:
-                            try:
-                                graph = rdflib.Graph(identifier = self.target_url)
-                                graph.parse(data=rdf_response, format=parseformat[1])
-                                rdf_response_graph = graph
-                                RDFparsed = True
-                            except Exception as e:
-                                errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
-                                if errorlinematch:
-                                    badline = int(errorlinematch[1])
-                                    self.logger.warning(
-                                        'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
-                                    splitRDF = rdf_response.splitlines()
-                                    if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
-                                        rdf_response = b'\n'.join(splitRDF[:badline-1])
+                    if parseformat:
+                        if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
+                            RDFparsed = False
+                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
+                            while not RDFparsed:
+                                try:
+                                    graph = rdflib.Graph(identifier = self.target_url)
+                                    graph.parse(data=rdf_response, format=parseformat[1])
+                                    rdf_response_graph = graph
+                                    RDFparsed = True
+                                except Exception as e:
+                                    errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
+                                    if errorlinematch:
+                                        badline = int(errorlinematch[1])
+                                        self.logger.warning(
+                                            'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
+                                        splitRDF = rdf_response.splitlines()
+                                        if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
+                                            rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                        else:
+                                            RDFparsed = True # end reached
                                     else:
-                                        RDFparsed = True # end reached
-                                else:
-                                    RDFparsed = True # give up
-                                if not RDFparsed:
-                                    continue
-                                else:
-                                    self.logger.warning(
-                                        'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
+                                        RDFparsed = True # give up
+                                    if not RDFparsed:
+                                        continue
+                                    else:
+                                        self.logger.warning(
+                                            'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
+                        else:
+                            self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
                     else:
-                        self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
+                        self.logger.info('FsF-F2-01M : Could not determine RDF serialisation format for -: {}'.format(self.target_url))
 
         #else:
         #    neg_source, rdf_response = 'html', self.rdf_graph
 
-        ontology_indicator = [
-            rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),
-            rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')
-        ]
-        if isinstance(rdf_response_graph, rdflib.graph.Graph):
-            self.logger.info('FsF-F2-01M : Found RDF Graph which was sucessfully parsed')
-            self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
-            graph_namespaces = self.set_namespaces(rdf_response_graph)
-            #self.getNamespacesfromIRIs(graph_text)
-            # TODO: set credit score for being valid RDF
-            # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
-            if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in graph_namespaces.values():
-                self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
-                rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
-            elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
-                rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
-            else:
-                rdf_metadata = self.get_default_metadata(rdf_response_graph)
-            #add found namespaces URIs to namespace
-            #for ns in graph_namespaces.values():
-            #    self.namespaces.append(ns)
-        else:
-            self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
+        rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
+
         return self.source_name, rdf_metadata
 
     def get_default_metadata(self, g):
@@ -292,32 +311,43 @@ class MetaDataCollectorRdf(MetaDataCollector):
             a dictionary of core metadata in RDF graph
         """
         DCAT = Namespace('http://www.w3.org/ns/dcat#')
+        SMA = Namespace('http://schema.org/')
         meta = dict()
         #default sparql
 
         meta = self.get_default_metadata(g)
-        meta['object_identifier'] = (g.value(item, DC.identifier) or g.value(item, DCTERMS.identifier))
+        meta['object_identifier'] = (g.value(item, DC.identifier) or
+                                     g.value(item, DCTERMS.identifier) or
+                                     g.value(item, SDO.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
 
-        meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title))
-        meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description))
+        meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
+        meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description) or
+                           g.value(item, SMA.description) or g.value(item, SDO.description)
+                           or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
         meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date) or
-                                    g.value(item, DCTERMS.issued))
-        meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher))
+                                    g.value(item, DCTERMS.issued)
+                                    or  g.value(item, SMA.datePublished) or  g.value(item, SMA.dateCreated)
+                                    or g.value(item, SDO.datePublished) or g.value(item, SDO.dateCreated)
+                                    )
+        meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
+                             g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
         meta['keywords'] = []
         for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
-                        list(g.objects(item, DC.subject))):
+                        list(g.objects(item, DC.subject))
+                        or list(g.objects(item, SMA.keywords)) or list(g.objects(item, SDO.keywords))):
             meta['keywords'].append(str(keyword))
         #TODO creators, contributors
-        meta['creator'] = g.value(item, DC.creator)
+        meta['creator'] = (g.value(item, DC.creator))
         meta['license'] = g.value(item, DCTERMS.license)
         meta['related_resources'] = []
         meta['access_level'] = (g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
-                                g.value(item, DC.rights))
+                                g.value(item, DC.rights)
+                                or g.value(item, SDO.conditionsOfAccess) or g.value(item, SMA.conditionsOfAccess) )
         for dctrelationtype in [
                 DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf,
                 DCTERMS.hasVersion, DCTERMS.replaces, DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires,
@@ -328,6 +358,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 meta['related_resources'].append({
                     'related_resource': str(dctrelation),
                     'relation_type': str(dctrelationtype)
+                })
+        for schemarelationtype in [
+            SMA.isPartOf,  SMA.includedInDataCatalog, SMA.subjectOf, SMA.isBasedOn, SMA.sameAs,
+            SDO.isPartOf, SDO.includedInDataCatalog, SDO.subjectOf, SDO.isBasedOn, SDO.sameAs
+        ]:
+            schemarelation = g.value(item, schemarelationtype)
+            if schemarelation:
+                meta['related_resources'].append({
+                    'related_resource': str(schemarelation),
+                    'relation_type': str(schemarelationtype)
                 })
 
         # quick fix (avoid rdflib literal type exception)
@@ -367,6 +407,54 @@ class MetaDataCollectorRdf(MetaDataCollector):
             else:
                 self.logger.info('FsF-F2-01M : Could not parse Ontology RDF')
         return ont_metadata
+
+    def get_schemaorg_metadata(self, graph):
+        #TODO: this is only some basic RDF/RDFa schema.org parsing... complete..
+        #we will only test creative works and subtypes
+        creative_work_types = Preprocessor.get_schema_org_creativeworks()
+        creative_work = None
+        schema_metadata={}
+        SMA = Namespace('http://schema.org/')
+        schema_org_nodes = []
+        # use only schema.org properties and create graph using these.
+        # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
+        creative_work_type = 'Dataset'
+        try:
+            for root in rdflib.util.find_roots(graph, RDF.type):
+                # we have https and http as allowed schema.org namespace protocols
+                if 'schema.org' in str(root):
+                    root_name = str(root).rsplit('/')[-1].strip()
+                    if root_name in creative_work_types:
+                        creative_works = list(graph[:RDF.type:root])
+                        # Finding the schema.org root
+                        if len(list(graph.subjects(object=creative_works[0]))) == 0:
+                            creative_work = creative_works[0]
+                            creative_work_type = root_name
+                            break
+        except Exception as e:
+            self.logger.info('FsF-F2-01M : Schema.org RDF graph parsing failed -: '+str(e))
+        if creative_work:
+            schema_metadata = self.get_metadata(graph, creative_work, type = creative_work_type)
+            # creator
+            creator_node = None
+            if graph.value(creative_work, SMA.creator):
+                creator_node = SMA.creator
+            elif graph.value(creative_work, SDO.creator):
+                creator_node = SDO.creator
+            elif graph.value(creative_work, SMA.author):
+                creator_node = SMA.author
+            elif graph.value(creative_work, SDO.author):
+                creator_node = SDO.author
+
+            if creator_node:
+                creators = graph.objects(creative_work, creator_node)
+                creator_name = []
+                for creator in creators:
+                    creator_name.append((graph.value(creator, SMA.familyName) or graph.value(creator, SDO.familyName)
+                                         or graph.value(creator, SDO.name) or graph.value(creator, SMA.name) ))
+                if len(creator_name) > 0:
+                    schema_metadata['creator'] = creator_name
+        return schema_metadata
 
     def get_dcat_metadata(self, graph):
         """Get the Data Catalog (DCAT) metadata given RDF graph.
