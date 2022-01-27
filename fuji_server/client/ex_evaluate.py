@@ -324,8 +324,11 @@ testpids = sorted(set(muchotestpids))
 #testpids=['http://vocab.nerc.ac.uk/collection/L05/current/']
 #testpids = ['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://vocab.nerc.ac.uk/collection/L22/current/?_profile=nvs&_mediatype=text/turtle']
-startpid = ''
-#testpids = ['10.11583/DTU.10259936.v1']* 10
+#testpids=['https://www.emerald.com/insight/content/doi/10.1108/eb027016/full/html']
+startpid = '10.25500/edata.bham.00000592'
+#testpids = ['http://purl.org/np/RAwAiO4hKhDUZm5fN-Qwta2ee5X9RJ0F_ebadkFCxipd4']
+#testpids=['http://fuji.localhost/test/?config=rdfa']
+#testpids=['https://www.science.org/doi/10.1126/science.abe6230']
 metadata_service_endpoint = ''
 metadata_service_type = ''
 oaipmh_endpoint = ''
@@ -445,7 +448,7 @@ def main():
                     results[res_k]['test_debug'] = ['INFO: Debugging disabled']
                     debug_messages = {}
             #print(json.dumps(results, indent=4, sort_keys=True))
-            #print(json.dumps([core_metadata_result,check_searchable_result], indent=4, sort_keys=True))
+            print(json.dumps([core_metadata_result], indent=4, sort_keys=True))
             #remove unused logger handlers and filters to avoid memory leaks
             ft.logger.handlers = [ft.logger.handlers[-1]]
             #ft.logger.filters = [ft.logger.filters]

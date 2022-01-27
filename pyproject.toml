@@ -57,7 +57,7 @@ idutils = "~1.1.5"
 lxml = "^4.7.1"
 Levenshtein = "~0.12.0"
 sparqlwrapper = "~1.8.5"
-jmespath = "~0.9.5"
+jmespath = "~0.10.0"
 six = "~1.16.0"
 connexion = {version = "~2.9.0", extras = ["swagger-ui"]}
 tika = "~1.24"
