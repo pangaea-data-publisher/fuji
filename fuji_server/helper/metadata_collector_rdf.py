@@ -154,8 +154,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     rdf_metadata = self.get_schemaorg_metadata(rdf_response_graph)
                 elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
                     rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
-                else:
-                    rdf_metadata = self.get_default_metadata(rdf_response_graph)
+                #else:
+                if not rdf_metadata:
+                    #try to find root node
+                    typed_objects = list(rdf_response_graph.objects(predicate=RDF.type))
+                    if typed_objects:
+                        typed_nodes = list(rdf_response_graph[:RDF.type:typed_objects[0]])
+                        if typed_nodes:
+                            rdf_metadata = self.get_metadata(rdf_response_graph, typed_nodes[0], str(typed_objects[0]))
+                    if not rdf_metadata:
+                        rdf_metadata = self.get_default_metadata(rdf_response_graph)
                 #add found namespaces URIs to namespace
                 #for ns in graph_namespaces.values():
                 #    self.namespaces.append(ns)
@@ -257,6 +265,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             a dictionary of metadata in RDF graph
         """
         meta = dict()
+
         try:
             if (len(g) > 1):
                 self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
@@ -264,6 +273,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 #this will only return the first result set (row)
 
                 for row in sorted(r):
+
                     for l, v in row.asdict().items():
                         if l is not None:
                             if l in [
@@ -314,8 +324,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
         SMA = Namespace('http://schema.org/')
         meta = dict()
         #default sparql
-
         meta = self.get_default_metadata(g)
+
+
         meta['object_identifier'] = (g.value(item, DC.identifier) or
                                      g.value(item, DCTERMS.identifier) or
                                      g.value(item, SDO.identifier))
@@ -325,16 +336,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
 
-        meta['title'] = (g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
-        meta['summary'] = (g.value(item, DC.description) or g.value(item, DCTERMS.description) or
+        meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
+        meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or
                            g.value(item, SMA.description) or g.value(item, SDO.description)
                            or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
-        meta['publication_date'] = (g.value(item, DC.date) or g.value(item, DCTERMS.date) or
+        meta['publication_date'] = str(g.value(item, DC.date) or g.value(item, DCTERMS.date) or
                                     g.value(item, DCTERMS.issued)
                                     or  g.value(item, SMA.datePublished) or  g.value(item, SMA.dateCreated)
                                     or g.value(item, SDO.datePublished) or g.value(item, SDO.dateCreated)
                                     )
-        meta['publisher'] = (g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
+        meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
                              g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
         meta['keywords'] = []
         for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
@@ -342,10 +353,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         or list(g.objects(item, SMA.keywords)) or list(g.objects(item, SDO.keywords))):
             meta['keywords'].append(str(keyword))
         #TODO creators, contributors
-        meta['creator'] = (g.value(item, DC.creator))
-        meta['license'] = g.value(item, DCTERMS.license)
+        meta['creator'] = str(g.value(item, DC.creator))
+        meta['license'] = str(g.value(item, DCTERMS.license))
         meta['related_resources'] = []
-        meta['access_level'] = (g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
+        meta['access_level'] = str(g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
                                 g.value(item, DC.rights)
                                 or g.value(item, SDO.conditionsOfAccess) or g.value(item, SMA.conditionsOfAccess) )
         for dctrelationtype in [
@@ -370,13 +381,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     'relation_type': str(schemarelationtype)
                 })
 
-        # quick fix (avoid rdflib literal type exception)
-        for v in [meta['title'], meta['summary'], meta['publisher']]:
-            if v:
-                v = v.toPython()
+
         if meta:
             meta['object_type'] = type
-
+        print(meta)
         return meta
 
     def get_ontology_metadata(self, graph):
