@@ -180,12 +180,13 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                         #TODO: handle None values for first and last name
                         first = jsnld_metadata.get('creator_first')
                         last = jsnld_metadata.get('creator_last')
-                        if isinstance(first, list) and isinstance(last, list):
-                            if len(first) == len(last):
-                                names = [str(i) + ' ' + str(j) for i, j in zip(first, last)]
-                                jsnld_metadata['creator'] = names
-                        else:
-                            jsnld_metadata['creator'] = [str(first) + ' ' + str(last)]
+                        if last:
+                            if isinstance(first, list) and isinstance(last, list):
+                                if len(first) == len(last):
+                                    names = [str(i) + ' ' + str(j) for i, j in zip(first, last)]
+                                    jsnld_metadata['creator'] = names
+                            else:
+                                jsnld_metadata['creator'] = [str(first) + ' ' + str(last)]
 
                     #TODO instead of custom check there should a valdiator to evaluate the whole schema.org metadata
                     invalid_license = False
