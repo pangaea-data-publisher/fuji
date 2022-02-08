@@ -202,8 +202,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if self.content_type == 'application/ld+json':
                     try:
                         self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
+                        #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
+                        if rdf_response['@context'].startswith('http://schema.org'):
+                            rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
                         jsonldgraph = rdflib.ConjunctiveGraph()
-                        rdf_response_graph = jsonldgraph.parse(data=json.dumps(rdf_response), format='json-ld')
+                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
+
                         rdf_response_graph = jsonldgraph
                     except Exception as e:
                         print(e)
@@ -384,7 +388,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         if meta:
             meta['object_type'] = type
-        print(meta)
         return meta
 
     def get_ontology_metadata(self, graph):
