@@ -296,7 +296,17 @@ class MetaDataCollectorRdf(MetaDataCollector):
         except Exception as e:
             self.logger.info('FsF-F2-01M : SPARQLing error -: {}'.format(e))
         if len(meta) <= 0:
-            if len(g) > 1:
+            goodtriples = []
+            has_xhtml = False
+            for t in list(g):
+                # exclude xhtml properties/predicates:
+                if not '/xhtml/vocab' in t[2]:
+                    goodtriples.append(t)
+                else:
+                    has_xhtml = True
+            if has_xhtml:
+                self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML properties which are excluded')
+            if len(goodtriples) > 1:
                 meta['object_type'] = 'Other'
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
