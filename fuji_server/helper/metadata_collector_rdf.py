@@ -39,7 +39,7 @@ from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSch
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
-
+from pyld import jsonld
 
 class MetaDataCollectorRdf(MetaDataCollector):
     """
@@ -205,12 +205,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
                         if rdf_response['@context'].startswith('http://schema.org'):
                             rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                        rdf_response = jsonld.expand( rdf_response)
+                        rdf_response = json.dumps(rdf_response)
                         jsonldgraph = rdflib.ConjunctiveGraph()
                         rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
-
                         rdf_response_graph = jsonldgraph
                     except Exception as e:
-                        print(e)
+                        print('JSON-LD parsing error',e)
                         self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
