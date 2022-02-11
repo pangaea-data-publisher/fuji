@@ -85,7 +85,6 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     if len(meta_dc_soupresult) <= 0:
                         meta_dc_soupresult = metasoup.findAll(
                             'meta', attrs={'name':re.compile(r'('+'|'.join(dc_core_base_props)+')')})
-                        print(meta_dc_soupresult)
 
                     for meta_tag in meta_dc_soupresult:
                         dc_name_parts = str(meta_tag['name']).split('.')
