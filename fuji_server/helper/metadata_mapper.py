@@ -102,8 +102,7 @@ class Mapper(Enum):
         'publisher':
         'publisher',
         'publication_date': ['date', 'available', 'issued'],
-        'summary':
-        'abstract',
+        'summary': ['abstract', 'description'],
         'keywords':
         'subject',
         'object_type':

@@ -66,6 +66,8 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
             a dictionary of Dublin Core metadata
         """
         dc_core_metadata = {}
+        dc_core_base_props = ['contributor', 'coverage', 'creator', 'date', 'description', 'format', 'identifier',
+                              'language', 'publisher', 'relation', 'rights', 'source', 'subject', 'title', 'type']
         source = None
         if self.source_metadata is not None:
             try:
@@ -76,12 +78,19 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                 #exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
                 meta_dc_matches = []
                 try:
-
                     metasoup = BeautifulSoup(self.source_metadata, 'lxml')
                     meta_dc_soupresult = metasoup.findAll(
                         'meta', attrs={'name': re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})
+
+                    if len(meta_dc_soupresult) <= 0:
+                        meta_dc_soupresult = metasoup.findAll(
+                            'meta', attrs={'name':re.compile(r'('+'|'.join(dc_core_base_props)+')')})
+                        print(meta_dc_soupresult)
+
                     for meta_tag in meta_dc_soupresult:
                         dc_name_parts = str(meta_tag['name']).split('.')
+                        if len(dc_name_parts) == 1 and dc_name_parts[0] in dc_core_base_props:
+                            dc_name_parts = ['dc',dc_name_parts[0]]
                         if (len(dc_name_parts) > 1):
                             dc_t = None
                             if len(dc_name_parts) == 3:
