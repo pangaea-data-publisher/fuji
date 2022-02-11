@@ -145,6 +145,7 @@ class RequestHelper:
                 try:
                     tp_response = opener.open(tp_request)
                 except urllib.error.URLError as e:
+                    '''
                     if e.code >= 500:
                         if 'doi.org' in self.request_url:
                             self.logger.error(
@@ -154,8 +155,9 @@ class RequestHelper:
                             self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
                                 metric_id, self.request_url, self.accept_type, str(e.code)))
                     else:
-                        self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
-                            metric_id, self.request_url, self.accept_type, str(e)))
+                    '''
+                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
+                        metric_id, self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
                     if e.code == 308:
                         self.logger.error(
