@@ -276,9 +276,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 #this will only return the first result set (row)
-
                 for row in sorted(r):
-
                     for l, v in row.asdict().items():
                         if l is not None:
                             if l in [
@@ -319,7 +317,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
     #TODO rename to: get_core_metadata
     def get_metadata(self, g, item, type='Dataset'):
-        """Get the core metadata given RDF graph.
+        """Get the core (domain agnostic, DCAT, DC, schema.org) metadata given in RDF graph.
 
         Parameters
         ----------
@@ -341,7 +339,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #default sparql
         meta = self.get_default_metadata(g)
 
-
+        self.logger.info('FsF-F2-01M : Trying to get some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph')
         meta['object_identifier'] = (g.value(item, DC.identifier) or
                                      g.value(item, DCTERMS.identifier) or
                                      g.value(item, SDO.identifier))
@@ -399,6 +397,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         if meta:
             meta['object_type'] = type
+            self.logger.info(
+                'FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: '+str(meta.keys()))
+
         return meta
 
     def get_ontology_metadata(self, graph):
