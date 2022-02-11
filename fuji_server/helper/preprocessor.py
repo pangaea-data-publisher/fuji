@@ -89,15 +89,16 @@ class Preprocessor(object):
 
     @classmethod
     def set_remote_log_info(cls, host, path):
-        try:
-            request = requests.get('http://' + host + path)
-            if request.status_code == 200:
-                cls.remote_log_host = host
-                cls.remote_log_path = path
-            else:
-                cls.logger.warning('Remote Logging not possible, URL response: ' + str(request.status_code))
-        except Exception as e:
-            cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host + ' ' + path))
+        if host:
+            try:
+                request = requests.get('http://' + host + path)
+                if request.status_code == 200:
+                    cls.remote_log_host = host
+                    cls.remote_log_path = path
+                else:
+                    cls.logger.warning('Remote Logging not possible, URL response: ' + str(request.status_code))
+            except Exception as e:
+                cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host) + ' ' + str(path))
 
     @classmethod
     def get_identifiers_org_data(cls):

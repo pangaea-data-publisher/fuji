@@ -63,7 +63,7 @@ def main():
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
-    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'], config['SERVICE']['remote_log_path'])
+    preproc.set_remote_log_info(config['SERVICE'].get('remote_log_host'), config['SERVICE'].get('remote_log_path'))
     preproc.set_max_content_size(config['SERVICE']['max_content_size'])
 
     logger.info('Total SPDX licenses : {}'.format(preproc.get_total_licenses()))
