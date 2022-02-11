@@ -20,3 +20,4 @@ http://www.w3.org/2005/xqt-errors#
 http://www.w3.org/2005/xpath-functions#
 http://schema.org/
 http://ogp.me/ns#
+http://www.w3.org/1999/xhtml/vocab
