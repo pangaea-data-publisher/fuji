@@ -270,10 +270,19 @@ class FAIRCheck:
 
         # TODO quick-fix to merge size information - should do it at mapper
         if 'object_content_identifier' in self.metadata_merged:
+
             if self.metadata_merged.get('object_content_identifier'):
+                oi = 0
                 for c in self.metadata_merged['object_content_identifier']:
                     if not c.get('size') and self.metadata_merged.get('object_size'):
                         c['size'] = self.metadata_merged.get('object_size')
+                    # clean mime types in case these are in URI form:
+                    if c.get('type'):
+                        mime_parts = c.get('type').split('/')
+                        if len(mime_parts) > 2:
+                            if mime_parts[-2] in ['application','audio','font','example','image','message','model','multipart','text','video']:
+                                self.metadata_merged['object_content_identifier'][oi]['type'] = str(mime_parts[-2])+'/'+str(mime_parts[-1])
+                    oi+=1
 
         for mk, mv in list(self.metadata_merged.items()):
             if mv == '' or mv is None:
@@ -501,7 +510,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS,
                                         'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
                 except Exception as e:
-                    print(e)
+                    print('RFa parsing error',e)
                     self.logger.info(
                         'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
 
@@ -575,6 +584,13 @@ class FAIRCheck:
                 'FsF-F2-01M : Skipped EMBEDDED metadata identification, no landing page URL could be determined')
 
     def check_pidtest_repeat(self):
+        if self.related_resources:
+            for relation in self.related_resources:
+                if relation.get('relation_type') == 'isPartOf':
+                    parent_identifier = IdentifierHelper(relation.get('related_resource'))
+                    if parent_identifier.is_persistent:
+                        self.logger.info('FsF-F2-01M : Found parent (isPartOf) identifier which is a PID in metadata, you may consider to assess the parent')
+
         if self.metadata_merged.get('object_identifier'):
             if isinstance(self.metadata_merged.get('object_identifier'), list):
                 identifiertotest = self.metadata_merged.get('object_identifier')
