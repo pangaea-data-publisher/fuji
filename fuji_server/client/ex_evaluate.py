@@ -264,18 +264,18 @@ testpids=['https://doi.pangaea.de/10.1594/PANGAEA.896543',
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://dda.dk/catalogue/868']
 #testpids=['https://ckan.govdata.de/ja/dataset/bebauungsplan-rahlstedt-65-hamburg']
-testpids = ['https://doi.org/10.1594/PANGAEA.833812']
+#testpids = ['https://doi.org/10.1594/PANGAEA.833812']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/294']
 #testpids=['https://doi.org/10.15482/USDA.ADC/1324677']
 #testpids=['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://doi.org/10.5255/UKDA-SN-1329-1']
 #testpids=['http://purl.org/vocommons/voaf']
-#testpids=['https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm']
+testpids=['https://meta.icos-cp.eu/objects/9ri1elaogsTv9LQFLNTfDNXm']
 #testpids=['http://doi.org/10.22033/ESGF/CMIP6.4397']
 #testpids=['https://su.figshare.com/articles/Data_for_Does_historical_land_use_affect_the_regional_distribution_of_fleshy-fruited_woody_plants_Arnell_et_al_2019_/10318046']
 #testpids=['http://doi.org/10.1007/s10531-013-0468-6']
 #rdf
-testpids = ['http://tun.fi/JX.1099769']
+#testpids = ['http://tun.fi/JX.1099769']
 #testpids=['https://ortus.rtu.lv/science/en/datamodule/3']
 #rdf
 #testpids=['https://databank.ora.ox.ac.uk/UniversityCollege/datasets/04156fde-dabb-48fd-baf6-533182f74b5b']
@@ -325,10 +325,15 @@ testpids = sorted(set(muchotestpids))
 #testpids = ['https://www.proteinatlas.org/ENSG00000110651-CD81/cell']
 #testpids=['http://vocab.nerc.ac.uk/collection/L22/current/?_profile=nvs&_mediatype=text/turtle']
 #testpids=['https://www.emerald.com/insight/content/doi/10.1108/eb027016/full/html']
-startpid = '10.25500/edata.bham.00000592'
+startpid = ''
 #testpids = ['http://purl.org/np/RAwAiO4hKhDUZm5fN-Qwta2ee5X9RJ0F_ebadkFCxipd4']
 #testpids=['http://fuji.localhost/test/?config=rdfa']
 #testpids=['https://www.science.org/doi/10.1126/science.abe6230']
+#testpids=['http://fdp.duchennedatafoundation.org:7070/catalog/ea2a751b-34e5-49cc-ad40-14346ac30676']
+#testpids=['https://www.gbif.org/dataset/e6fab7b3-c733-40b9-8df3-2a03e49532c1']
+#testpids=['https://www.repository.cam.ac.uk/handle/1810/268269']
+#testpids=['http://www.idee.es/csw-codsi-idee/srv/api/records/spaignwms_unidades_administrativas']
+testpids=['http://fuji.localhost/test/?config=2']
 metadata_service_endpoint = ''
 metadata_service_type = ''
 oaipmh_endpoint = ''
@@ -359,8 +364,8 @@ def main():
     isDebug = config.getboolean('SERVICE', 'debug_mode')
     data_files_limit = int(config['SERVICE']['data_files_limit'])
     metric_specification = config['SERVICE']['metric_specification']
-    remote_log_host = config['SERVICE']['remote_log_host']
-    remote_log_path = config['SERVICE']['remote_log_path']
+    remote_log_host = config['SERVICE'].get('remote_log_host')
+    remote_log_path = config['SERVICE'].get('remote_log_path')
 
     preproc = Preprocessor()
     preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit, metric_specification)
@@ -372,7 +377,7 @@ def main():
     preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
     preproc.retrieve_science_file_formats(isDebug)
     preproc.retrieve_long_term_file_formats(isDebug)
-    preproc.set_remote_log_info(config['SERVICE']['remote_log_host'], config['SERVICE']['remote_log_path'])
+    preproc.set_remote_log_info(config['SERVICE'].get('remote_log_host'), config['SERVICE'].get('remote_log_path'))
     preproc.set_max_content_size(config['SERVICE']['max_content_size'])
     print(f'Total SPDX licenses : {preproc.get_total_licenses()}')
     print(f'Total re3repositories found from datacite api : {len(preproc.getRE3repositories())}')
@@ -382,7 +387,6 @@ def main():
     n = 1
     for identifier in testpids:
         tracemalloc.start()
-
         print(identifier)
         print(n)
         n += 1
