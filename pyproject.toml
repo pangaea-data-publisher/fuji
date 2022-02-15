@@ -94,6 +94,6 @@ dev = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint", "sphinx-rtd-theme
 
 
 [build-system]
-requires = ["poetry>=1.1.13"]
+requires = ["poetry>=1.2.0"]
 build-backend = "poetry.masonry.api"
 
