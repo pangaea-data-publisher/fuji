@@ -49,8 +49,6 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-wheel = "~0.37.0"
-autosemver = "~0.5.5"
 requests = "~2.24.0"
 pyyaml = "~5.4"
 extruct = "~0.13.0"
@@ -96,5 +94,5 @@ dev = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint", "sphinx-rtd-theme
 
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["wheel","poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
