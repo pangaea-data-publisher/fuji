@@ -44,9 +44,12 @@ class IdentifierHelper:
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
                 #workaround to resolve lsids:
                 #idutils.LANDING_URLS['lsid'] ='http://www.lsid.info/resolver/?lsid={pid}'
-                #workaround to recognize https purls
-                if 'https://purl.' in self.identifier:
+                #workaround to recognize https purls and arks
+                if 'https://purl.' in self.identifier or '/ark:' in self.identifier:
                     self.identifier = self.identifier.replace('https:', 'http:')
+                #workaround to identify arks properly:
+                self.identifier = self.identifier.replace('/ark:' , '/ark:/' )
+                self.identifier = self.identifier.replace('/ark://', '/ark:/')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
                 # idutils check
                 self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
