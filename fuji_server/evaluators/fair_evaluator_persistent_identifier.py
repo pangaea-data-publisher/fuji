@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from extruct import extract
 
 from fuji_server import Persistence, PersistenceOutput
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
@@ -78,12 +79,16 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 #in case the test has been repeated because a PID has been found in metadata
                 #print(self.fuji.landing_url, self.fuji.input_id)
                 if self.fuji.repeat_pid_check == True:
-                    if self.fuji.landing_url != self.fuji.input_id:
+                    input_id_parts = extract(self.fuji.input_id)
+                    landing_url_parts = extract(self.fuji.landing_url)
+                    input_id_domain = input_id_parts.domain + '.' + input_id_parts.suffix
+                    landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
+                    if landing_domain != input_id_domain:
                         self.logger.warning(
-                            'FsF-F1-02D : Landing page URL resolved from PID found in metadata does not match with input URL'
+                            'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
                         )
                         self.logger.warning(
-                            'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL resolved from PID found in metadata does not match with input URL'
+                            'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
                         )
 
                         #self.fuji.repeat_pid_check = False
