@@ -21,6 +21,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         Method to check whether the metadata given by PID is listed in Google Data Search
     create_list(google_cache_file)
     create_cache_db(google_cache_file)
+    random_sample(limit)
 
     """
     islisted = False
@@ -30,6 +31,17 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         self.logger = logger
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
         self.google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_cache.db')
+
+    def random_sample(self, limit):
+        sample = []
+        try:
+            con = sl.connect(self.google_cache_db_path)
+            with con:
+                samplef = pd.read_sql_query("SELECT uri FROM google_links ORDER BY RANDOM() LIMIT "+str(limit), con)
+                sample = samplef['uri'].values.tolist()
+        except Exception as e:
+            print(e)
+        return sample
 
     def query(self, pidlist):
         #print(sys.getsizeof(Preprocessor.google_data_dois))
