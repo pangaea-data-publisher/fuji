@@ -102,32 +102,37 @@ class MetaDataCollectorXML(MetaDataCollector):
             if neg_source != 'xml':
                 self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_source))
             else:
-                parser = lxml.etree.XMLParser(strip_cdata=False,recover=True)
-                tree = lxml.etree.XML(xml_response, parser)
-                root_element = tree.tag
-                if root_element.endswith('}OAI-PMH'):
+                try:
+                    parser = lxml.etree.XMLParser(strip_cdata=False,recover=True)
+                    tree = lxml.etree.XML(xml_response, parser)
+                    root_element = tree.tag
+                    if root_element.endswith('}OAI-PMH'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found OAI-PMH type XML envelope, unpacking \'metadata\' element for further processing'
+                        )
+                        metatree = tree.find('.//{*}metadata/*')
+                    elif root_element.endswith('}mets'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing'
+                        )
+                        envelope_metadata = self.get_mapped_xml_metadata(tree, Mapper.XML_MAPPING_METS.value)
+                        metatree = tree.find('.//{*}dmdSec/{*}mdWrap/{*}xmlData/*')
+                    elif root_element.endswith('}GetRecordsResponse'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found OGC CSW GetRecords type XML envelope, unpacking \'SearchResults\' element for further processing'
+                        )
+                        metatree = tree.find('.//{*}SearchResults/*')
+                    elif root_element.endswith('}GetRecordByIdResponse'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing'
+                        )
+                        metatree = tree.find('.//*')
+                    else:
+                        metatree = tree
+                except Exception as e:
                     self.logger.info(
-                        'FsF-F2-01M : Found OAI-PMH type XML envelope, unpacking \'metadata\' element for further processing'
+                        'FsF-F2-01M : XML parsing failed -: '+str(e)
                     )
-                    metatree = tree.find('.//{*}metadata/*')
-                elif root_element.endswith('}mets'):
-                    self.logger.info(
-                        'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing'
-                    )
-                    envelope_metadata = self.get_mapped_xml_metadata(tree, Mapper.XML_MAPPING_METS.value)
-                    metatree = tree.find('.//{*}dmdSec/{*}mdWrap/{*}xmlData/*')
-                elif root_element.endswith('}GetRecordsResponse'):
-                    self.logger.info(
-                        'FsF-F2-01M : Found OGC CSW GetRecords type XML envelope, unpacking \'SearchResults\' element for further processing'
-                    )
-                    metatree = tree.find('.//{*}SearchResults/*')
-                elif root_element.endswith('}GetRecordByIdResponse'):
-                    self.logger.info(
-                        'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing'
-                    )
-                    metatree = tree.find('.//*')
-                else:
-                    metatree = tree
                 if metatree is not None:
                     self.logger.info(
                         'FsF-F2-01M : Found some XML properties, trying to identify (domain) specific format to parse'
@@ -152,7 +157,6 @@ class MetaDataCollectorXML(MetaDataCollector):
                     elif root_element == 'mods':
                         xml_mapping = Mapper.XML_MAPPING_MODS.value
                         self.logger.info('FsF-F2-01M : Identified MODS XML based on root tag')
-
                     elif root_element == 'eml':
                         xml_mapping = Mapper.XML_MAPPING_EML.value
                         self.logger.info('FsF-F2-01M : Identified EML XML based on root tag')
@@ -163,7 +167,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         if 'datacite.org/schema' in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
-
+                    print('XML Details: ',(root_namespace, root_element))
                     if xml_mapping is None:
                         self.logger.info(
                             'FsF-F2-01M : Could not identify (domain) specific XML format to parse'

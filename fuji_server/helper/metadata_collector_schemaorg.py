@@ -123,7 +123,16 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
         ext_meta = None
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
-            ext_meta = self.source_metadata[0]
+            # in case two or more JSON-LD strings are embedded
+            if len(self.source_metadata) > 1:
+
+                self.logger.info('FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify CreativeWork type')
+                for meta_rec in self.source_metadata:
+                    if meta_rec.get('@type') in self.SCHEMA_ORG_CREATIVEWORKS:
+                        ext_meta = meta_rec
+
+            if not ext_meta:
+                ext_meta = self.source_metadata[0]
         elif self.pid_url:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
             # TODO (IMPORTANT) PID agency may support Schema.org in JSON-LD
