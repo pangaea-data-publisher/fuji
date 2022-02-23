@@ -24,6 +24,8 @@ A web demo using F-UJI is available at https://www.f-uji.net
 
 An R client package that was generated from the F-UJI OpenAPI definition is available from https://github.com/NFDI4Chem/rfuji.
 
+An open source web client for F-UJI is available is available at https://github.com/MaastrichtU-IDS/fairificator  
+
 ## Assessment Scope, Constraint and Limitation
 The service is **in development** and its assessment depends on several factors. 
 - In the FAIR ecosystem, FAIR assessment must go beyond the object itself. FAIR enabling services and repositories are vital to ensure that research data objects remain FAIR over time. Importantly, machine-readable services (e.g., registries) and documents (e.g., policies) are required to enable automated tests. 
