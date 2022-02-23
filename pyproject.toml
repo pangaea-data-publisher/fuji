@@ -86,6 +86,7 @@ myst-parser = {version= "^0.16.1", optional = true}
 waitress ="~2.0.0"
 flask-limiter ="<=2.0.0"
 pyld =""
+autosemver=""
 
 [tool.poetry.extras]
 report = ["bokeh", "jupyter"]
