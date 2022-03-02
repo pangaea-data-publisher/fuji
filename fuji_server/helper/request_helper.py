@@ -357,10 +357,17 @@ class RequestHelper:
     def parse_html(self, html_texts):
         # extract contents from the landing page using extruct, which returns a dict with
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
+        syntaxes = ['microdata', 'opengraph', 'json-ld']
         try:
-            extracted = extruct.extract(html_texts, syntaxes=['microdata', 'opengraph', 'json-ld'])
+            self.logger.info('%s : Trying to identify HTML embedded microdata or JSON -: %s' %
+                                (self.metric_id, self.request_url))
+            extracted = extruct.extract(html_texts, syntaxes=syntaxes)
         except Exception as e:
             extracted = None
             self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' %
                                 (self.metric_id, self.request_url + ' ' + str(e)))
+        if isinstance(extracted, dict):
+            extracted = dict([(k, v) for k, v in extracted.items() if len(v) > 0])
+            if len(extracted) == 0:
+                extracted = None
         return extracted

@@ -72,11 +72,6 @@ def main():
     logger.info('Total LD vocabs imported : {}'.format(len(preproc.getLinkedVocabs())))
     logger.info('Total default namespaces specified : {}'.format(len(preproc.getDefaultNamespaces())))
 
-    #TODO further implementation on authentication needed
-    usr = config['USER']['usr']
-    pwd = config['USER']['pwd']
-    authen.service_username = usr
-    authen.service_password = pwd
 
     app = create_fuji_app(config)
     limiter = Limiter(

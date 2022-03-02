@@ -147,7 +147,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                 self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
-
             try:
                 #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta.get('@context')).find('://schema.org') > -1:
