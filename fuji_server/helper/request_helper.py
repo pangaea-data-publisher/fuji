@@ -71,7 +71,6 @@ class AcceptTypes(Enum):
 class RequestHelper:
     checked_content = {}
     def __init__(self, url, logInst: object = None):
-
         if logInst:
             self.logger = logInst
         else:
@@ -134,16 +133,16 @@ class RequestHelper:
                 context = ssl._create_unverified_context()
                 context.set_ciphers('DEFAULT@SECLEVEL=1')
 
-                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context))
+                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context),urllib.request.HTTPHandler())
+
                 urllib.request.install_opener(opener)
 
                 tp_request = urllib.request.Request(self.request_url,
                                                     headers={
                                                         'Accept': self.accept_type,
                                                         'User-Agent': 'F-UJI'})
-
                 try:
-                    tp_response = opener.open(tp_request)
+                    tp_response = opener.open(tp_request,timeout = 10)
                 except urllib.error.URLError as e:
                     '''
                     if e.code >= 500:
@@ -173,6 +172,9 @@ class RequestHelper:
                     else:
                         self.logger.warning('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e.code)))
+                except Exception as e:
+                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
+                        metric_id, self.request_url, self.accept_type, str(e)))
                 # redirect logger messages to metadata collection metric
                 if metric_id == 'FsF-F1-02D':
                     self.logger.info('FsF-F2-01M : Trying to identify some EMBEDDED metadata in content retrieved during PID verification process (FsF-F1-02D)')
