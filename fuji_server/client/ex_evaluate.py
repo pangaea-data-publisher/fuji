@@ -7,6 +7,7 @@ import os
 import tracemalloc
 from pathlib import Path
 from fuji_server.controllers.fair_check import FAIRCheck
+from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
 from fuji_server.helper.preprocessor import Preprocessor
 import gc
 
@@ -333,7 +334,19 @@ startpid = ''
 #testpids=['https://www.gbif.org/dataset/e6fab7b3-c733-40b9-8df3-2a03e49532c1']
 #testpids=['https://www.repository.cam.ac.uk/handle/1810/268269']
 #testpids=['http://www.idee.es/csw-codsi-idee/srv/api/records/spaignwms_unidades_administrativas']
-testpids=['http://fuji.localhost/test/?config=2']
+#testpids=['https://test.com/ark:/12345/x54xz321']
+#FTP landing site
+#testpids=['https://doi.org/10.5066/f7q81b46']
+#MODS
+#10.7925/drs1.duchas_4759592
+#DDI StudyUnit Study
+#http://dda.dk/catalogue/1422?lang=da
+#testpids=['https://bmrb.io/data_library/summary/?bmrbId=50750']
+#testpids=['https://www.ncbi.nlm.nih.gov/nuccore/X57093.1']
+#testpids =['https://physionet.org/content/ptb-xl/1.0.1']
+#google_registry_helper = MetaDataCatalogueGoogleDataSearch()
+#testpids = google_registry_helper.random_sample(500)
+
 metadata_service_endpoint = ''
 metadata_service_type = ''
 oaipmh_endpoint = ''
@@ -452,7 +465,7 @@ def main():
                     results[res_k]['test_debug'] = ['INFO: Debugging disabled']
                     debug_messages = {}
             #print(json.dumps(results, indent=4, sort_keys=True))
-            print(json.dumps([core_metadata_result], indent=4, sort_keys=True))
+            #print(json.dumps([core_metadata_result], indent=4, sort_keys=True))
             #remove unused logger handlers and filters to avoid memory leaks
             ft.logger.handlers = [ft.logger.handlers[-1]]
             #ft.logger.filters = [ft.logger.filters]
