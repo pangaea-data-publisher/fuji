@@ -674,12 +674,11 @@ class FAIRCheck:
             if suff_res is not None:
                 if suff_res[1] is not None:
                     guessed_link = self.landing_url.replace(suff_res[1], 'xml')
-            else:
-                guessed_link = self.landing_url+'.xml'
+            #else:
+            #    guessed_link = self.landing_url+'.xml'
             if guessed_link:
                 try:
                     response = urllib.urlopen(guessed_link)
-                    print(response.getheader('Content-Type'))
                     content_type = str(response.getheader('Content-Type')).split(';')[0]
                     if content_type.strip() in ['application/xml','text/xml', 'application/rdf+xml']:
                         datalink = {
