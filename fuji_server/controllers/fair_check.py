@@ -668,6 +668,7 @@ class FAIRCheck:
         # in case object landing page URL ends with '.html' or '/html'
         # try to find out if there is some xml content if suffix is replaced by 'xml
         datalink = None
+        guessed_link = None
         if self.landing_url is not None:
             suff_res = re.search(r'.*[\.\/](html?)?$', self.landing_url)
             if suff_res is not None:
