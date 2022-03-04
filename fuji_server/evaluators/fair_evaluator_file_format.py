@@ -70,7 +70,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
             preferred_detected = False
             for file_index, data_file in enumerate(self.fuji.content_identifier):
-
                 mime_type = data_file.get('type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream', 'binary/octet-stream']:

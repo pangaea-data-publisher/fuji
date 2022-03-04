@@ -30,7 +30,7 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from urllib.parse import urlparse
 import re
-
+from bs4 import BeautifulSoup
 
 class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
     """
@@ -75,6 +75,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             response_status = requestHelper.response_status
 
             if requestHelper.response_content:
+
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
                 #print(self.fuji.landing_url, self.fuji.input_id)
@@ -95,6 +96,18 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
 
                     if response_status == 200:
+                        # check if javascript generated content only:
+                        try:
+                            soup = BeautifulSoup(requestHelper.response_content, features="html.parser")
+                            script_content = soup.findAll('script')
+                            for script in soup(["script", "style", "title", "noscript"]):
+                                script.extract()
+
+                            text_content = soup.get_text(strip=True)
+                            if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
+                                self.logger.warning('FsF-F1-02D : Landing page seems to be JavaScript generated, could not detect enough content')
+                        except Exception as e:
+                            pass
                         # identify signposting links in header
                         header_link_string = requestHelper.getResponseHeader().get('Link')
                         #header_link_string = requestHelper.getHTTPResponse().getheader('Link')

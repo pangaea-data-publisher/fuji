@@ -278,7 +278,10 @@ class FAIRCheck:
                         c['size'] = self.metadata_merged.get('object_size')
                     # clean mime types in case these are in URI form:
                     if c.get('type'):
-                        mime_parts = c.get('type').split('/')
+                        if isinstance(c['type'], list):
+                            c['type'] = c['type'][0]
+                            self.metadata_merged['object_content_identifier'][oi]['type'] = c['type'][0]
+                        mime_parts = str(c.get('type')).split('/')
                         if len(mime_parts) > 2:
                             if mime_parts[-2] in ['application','audio','font','example','image','message','model','multipart','text','video']:
                                 self.metadata_merged['object_content_identifier'][oi]['type'] = str(mime_parts[-2])+'/'+str(mime_parts[-1])
