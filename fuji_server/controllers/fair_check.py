@@ -673,19 +673,24 @@ class FAIRCheck:
             if suff_res is not None:
                 if suff_res[1] is not None:
                     guessed_link = self.landing_url.replace(suff_res[1], 'xml')
-                    try:
-                        response = urllib.urlopen(guessed_link)
-                        if response.getheader('Content-Type') in ['text/xml', 'application/rdf+xml']:
-                            datalink = {
-                                'source': 'guessed',
-                                'url': guessed_link,
-                                'type': response.getheader('Content-Type'),
-                                'rel': 'alternate'
-                            }
-                            self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at -: ' + guessed_link)
-                        response.close()
-                    except:
-                        self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: ' + guessed_link)
+            else:
+                guessed_link = self.landing_url+'.xml'
+            if guessed_link:
+                try:
+                    response = urllib.urlopen(guessed_link)
+                    print(response.getheader('Content-Type'))
+                    content_type = str(response.getheader('Content-Type')).split(';')[0]
+                    if content_type.strip() in ['application/xml','text/xml', 'application/rdf+xml']:
+                        datalink = {
+                            'source': 'guessed',
+                            'url': guessed_link,
+                            'type': content_type,
+                            'rel': 'alternate'
+                        }
+                        self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at -: ' + guessed_link)
+                    response.close()
+                except:
+                    self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: ' + guessed_link)
         return datalink
 
     def retrieve_metadata_external(self):
