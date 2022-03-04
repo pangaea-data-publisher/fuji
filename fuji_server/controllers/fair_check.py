@@ -678,7 +678,8 @@ class FAIRCheck:
                 guessed_link = self.landing_url+'.xml'
             if guessed_link:
                 try:
-                    response = urllib.urlopen(guessed_link)
+                    req = urllib.Request(guessed_link, method="HEAD")
+                    response = urllib.urlopen(req)
                     content_type = str(response.getheader('Content-Type')).split(';')[0]
                     if content_type.strip() in ['application/xml','text/xml', 'application/rdf+xml']:
                         datalink = {
