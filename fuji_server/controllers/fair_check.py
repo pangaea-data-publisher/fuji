@@ -674,8 +674,8 @@ class FAIRCheck:
             if suff_res is not None:
                 if suff_res[1] is not None:
                     guessed_link = self.landing_url.replace(suff_res[1], 'xml')
-            #else:
-            #    guessed_link = self.landing_url+'.xml'
+            else:
+                guessed_link = self.landing_url+'.xml'
             if guessed_link:
                 try:
                     response = urllib.urlopen(guessed_link)
