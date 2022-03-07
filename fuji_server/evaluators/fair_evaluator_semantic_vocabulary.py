@@ -40,7 +40,6 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         the metadata of an object. These common namespaces such as RDF, RDFS, XSD, OWL, etc, will be
         excluded from the evaluation.
     """
-
     def evaluate(self):
 
         self.result = SemanticVocabulary(id=self.metric_number,
@@ -50,7 +49,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         # remove duplicates
         if self.fuji.namespace_uri:
             self.fuji.namespace_uri = list(set(self.fuji.namespace_uri))
-            self.fuji.namespace_uri = [x.strip() for x in self.fuji.namespace_uri]
+            self.fuji.namespace_uri = [x.strip().rstrip('/#') for x in self.fuji.namespace_uri]
         self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
             self.metric_identifier, len(self.fuji.namespace_uri)))
 
@@ -72,7 +71,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         if self.fuji.namespace_uri:
             self.maturity = 1
             self.setEvaluationCriteriumScore('FsF-I1-02M-1', 0, 'pass')
-            lod_namespaces = [d['namespace'] for d in self.fuji.VOCAB_NAMESPACES if 'namespace' in d]
+            lod_namespaces = [d['namespace'].strip().rstrip('/#') for d in self.fuji.VOCAB_NAMESPACES if 'namespace' in d]
             exists = list(set(lod_namespaces) & set(self.fuji.namespace_uri))
             self.logger.info('{0} : Check the remaining namespace(s) exists in LOD -: {1}'.format(
                 self.metric_identifier, exists))
