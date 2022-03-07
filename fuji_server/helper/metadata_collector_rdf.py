@@ -215,7 +215,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
-                    parseformat = re.search(r'[\/+]([a-z]+)$', str(requestHelper.content_type))
+                    parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                     if parseformat:
                         if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
                             RDFparsed = False
