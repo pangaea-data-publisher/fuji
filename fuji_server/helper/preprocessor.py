@@ -458,6 +458,8 @@ class Preprocessor(object):
                     cls.linked_vocabs = vocabs
             except IOError as e:
                 cls.logger.error("Couldn't write to file {}.".format(ld_path))
+        #for vocab in vocabs.items():
+
 
     @staticmethod
     def uri_validator(u):
