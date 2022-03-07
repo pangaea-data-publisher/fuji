@@ -31,6 +31,7 @@ from urllib.parse import urlparse, urljoin
 import pandas as pd
 import lxml
 import rdflib
+from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz
 from rapidfuzz import process
@@ -133,6 +134,7 @@ class FAIRCheck:
         self.landing_content_type = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
         self.signposting_header_links = []
+        self.typed_links = []
         self.pid_scheme = None
         self.id_scheme = None
         self.checked_pages = []
@@ -416,6 +418,7 @@ class FAIRCheck:
             isPid = True
         self.embedded_retrieved = True
         if self.landing_url:
+            self.set_html_typed_links()
             self.logger.info('FsF-F2-01M : Starting to identify EMBEDDED metadata at -: ' + str(self.landing_url))
             #test if content is html otherwise skip embedded tests
             #print(self.landing_content_type)
@@ -513,7 +516,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS,
                                         'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
                 except Exception as e:
-                    print('RFa parsing error',e)
+                    #print('RDFa parsing error',e)
                     self.logger.info(
                         'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
 
@@ -623,10 +626,7 @@ class FAIRCheck:
     # Comment: not sure if we really need a separate class as proposed below. Instead we can use a dictionary
     # TODO (important) separate class to represent https://www.iana.org/assignments/link-relations/link-relations.xhtml
     # use IANA relations for extracting metadata and meaningful links
-    def get_html_typed_links(self, rel='item'):
-        # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
-        # Use links to find domains specific metadata
-        datalinks = []
+    def set_html_typed_links(self):
         try:
             self.landing_html = self.landing_html.decode()
         except (UnicodeDecodeError, AttributeError):
@@ -635,26 +635,34 @@ class FAIRCheck:
             if self.landing_html:
                 try:
                     dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
-                    links = dom.xpath('/*/head/link[@rel="' + rel + '"]')
+                    links = dom.xpath('/*/head/link')
                     for l in links:
                         href = l.attrib.get('href')
+                        rel = l.attrib.get('rel')
+                        type = l.attrib.get('type')
+                        profile = l.attrib.get('format')
                         #handle relative paths
                         if urlparse(href).scheme == '':
                             href = urljoin(self.landing_url, href)
-                            #landingpath = urlparse(self.landing_url).path
-                            #landingdir, landingfile = os.path.split(landingpath)
-                            #href= landingdir+'/'+href
-                        datalinks.append({
+                        self.typed_links.append({
                             'url': href,
-                            'type': l.attrib.get('type'),
-                            'rel': l.attrib.get('rel'),
-                            'profile': l.attrib.get('format')
+                            'type': type,
+                            'rel': rel,
+                            'profile': profile,
+                            'source' : 'typed'
                         })
                 except:
                     self.logger.info('FsF-F2-01M : Typed links identification failed -:')
             else:
                 self.logger.info('FsF-F2-01M : Expected HTML to check for typed links but received empty string ')
 
+    def get_html_typed_links(self, rel='item'):
+        # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
+        # Use links to find domains specific metadata
+        datalinks = []
+        for typed_link in self.typed_links:
+            if typed_link.get('rel') == rel:
+                datalinks.append((typed_link))
         return datalinks
 
     def get_signposting_links(self, rel='item'):
@@ -663,6 +671,18 @@ class FAIRCheck:
             if signposting_links.get('rel') == rel:
                 signlinks.append(signposting_links)
         return signlinks
+
+    def get_html_xml_links(self):
+        xmllinks=[]
+        try:
+            soup = BeautifulSoup(self.landing_html, features="html.parser")
+            links = soup.findAll('a')
+            for link in links.get('href'):
+                if str(link).endswith('.xml'):
+                    xmllinks.append({'source': 'scraped', 'url':str(link).strip(),'type': 'text/xml','rel': 'href' })
+        except Exception as e:
+            pass
+        return xmllinks
 
     def get_guessed_xml_link(self):
         # in case object landing page URL ends with '.html' or '/html'
@@ -674,8 +694,8 @@ class FAIRCheck:
             if suff_res is not None:
                 if suff_res[1] is not None:
                     guessed_link = self.landing_url.replace(suff_res[1], 'xml')
-            else:
-                guessed_link = self.landing_url+'.xml'
+            #else:
+            #    guessed_link = self.landing_url+'.xml'
             if guessed_link:
                 try:
                     req = urllib.Request(guessed_link, method="HEAD")
@@ -845,6 +865,8 @@ class FAIRCheck:
         if self.get_signposting_links('describedby'):
             sign_header_links = self.get_signposting_links('describedby')
             self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value, 'signposting'))
+        typed_metadata_links = self.typed_links
+        '''
         typed_metadata_links = []
         if self.landing_html:
             #dcat style meta links
@@ -859,12 +881,17 @@ class FAIRCheck:
         typed_metadata_links.extend(sign_meta_links)
         typed_metadata_links.extend(rel_meta_links)
         typed_metadata_links.extend(sign_header_links)
+        '''
         guessed_metadata_link = self.get_guessed_xml_link()
+        href_metadata_links = self.get_html_xml_links()
+
+        if href_metadata_links:
+            print('HREF XML:', href_metadata_links)
 
         if guessed_metadata_link is not None:
             typed_metadata_links.append(guessed_metadata_link)
 
-        if typed_metadata_links is not None:
+        if typed_metadata_links:
             typed_rdf_collector = None
             #unique entries for typed links
             typed_metadata_links = [dict(t) for t in {tuple(d.items()) for d in typed_metadata_links}]
@@ -897,7 +924,7 @@ class FAIRCheck:
                     #elif metadata_link['type'] in ['text/xml', 'application/xml', 'application/x-ddi-l+xml',
                     #                               'application/x-ddametadata+xml']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' +
-                                     str(metadata_link['type'] + ')'))
+                                     str(metadata_link['type'] + ' '+metadata_link['url']+')'))
                     linked_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                 target_url=metadata_link['url'],
                                                                 link_type=metadata_link.get('source'))
