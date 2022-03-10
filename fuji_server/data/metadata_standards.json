@@ -216,6 +216,19 @@
       "Climatology"
     ]
   },
+  "Component MetaData (CMD)": {
+    "identifier": "msc:m1005",
+    "urls": [
+      "http://www.clarin.eu/cmd/",
+      "https://www.clarin.eu/cmd/1",
+      "https://www.clarin.eu/content/component-metadata",
+      "https://pure.mpg.de/pubman/faces/ViewItemOverviewPage.jsp?itemId=item_1480943"
+    ],
+    "subject_areas": [
+      "Linguistics",
+      "Languages"
+    ]
+  },
   "COARDS Conventions": {
     "identifier": "msc:m51",
     "urls": [
@@ -384,6 +397,16 @@
       "Social policy",
       "Sociology",
       "Statistics"
+    ]
+  },
+  "Digital Item Declaration Language (DIDL)": {
+    "identifier": "msc:m1003",
+    "urls": [
+      "urn:mpeg:mpeg21:2002:02-DIDL-NS",
+      "http://www.dlib.org/dlib/november03/bekaert/11bekaert.html"
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
     ]
   },
   "DIF (Directory Interchange Format)": {
@@ -1095,12 +1118,22 @@
       "Astronomy"
     ]
   },
-  "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)": {
+  "RIF-CS (Registry Interchange Format â€“ Collections and Services)": {
     "identifier": "msc:m98",
     "urls": [
       "https://www.ands.org.au/online-services/rif-cs-schema",
       "http://services.ands.org.au/documentation/rifcs/schemadocs/registryObjects.html",
       "http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd"
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "RIOXX Metadata Application Profile": {
+    "identifier": "msc:m1004",
+    "urls": [
+      "http://www.rioxx.net/schema/v2.0/rioxx/",
+      "https://www.rioxx.net/"
     ],
     "subject_areas": [
       "Multidisciplinary"

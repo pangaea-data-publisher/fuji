@@ -444,6 +444,38 @@
       "Climatology"
     ]
   },
+  "http://www.clarin.eu/cmd/": {
+    "title": "Component MetaData (CMD)",
+    "identifier": "msc:m1005",
+    "subject_areas": [
+      "Linguistics",
+      "Languages"
+    ]
+  },
+  "https://www.clarin.eu/cmd/1": {
+    "title": "Component MetaData (CMD)",
+    "identifier": "msc:m1005",
+    "subject_areas": [
+      "Linguistics",
+      "Languages"
+    ]
+  },
+  "https://www.clarin.eu/content/component-metadata": {
+    "title": "Component MetaData (CMD)",
+    "identifier": "msc:m1005",
+    "subject_areas": [
+      "Linguistics",
+      "Languages"
+    ]
+  },
+  "https://pure.mpg.de/pubman/faces/ViewItemOverviewPage.jsp?itemId=item_1480943": {
+    "title": "Component MetaData (CMD)",
+    "identifier": "msc:m1005",
+    "subject_areas": [
+      "Linguistics",
+      "Languages"
+    ]
+  },
   "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html": {
     "title": "COARDS Conventions",
     "identifier": "msc:m51",
@@ -1061,6 +1093,20 @@
       "Social policy",
       "Sociology",
       "Statistics"
+    ]
+  },
+  "urn:mpeg:mpeg21:2002:02-DIDL-NS": {
+    "title": "Digital Item Declaration Language (DIDL)",
+    "identifier": "msc:m1003",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.dlib.org/dlib/november03/bekaert/11bekaert.html": {
+    "title": "Digital Item Declaration Language (DIDL)",
+    "identifier": "msc:m1003",
+    "subject_areas": [
+      "Multidisciplinary"
     ]
   },
   "http://gcmd.nasa.gov/add/difguide/WRITEADIF.pdf": {
@@ -2320,22 +2366,36 @@
     ]
   },
   "https://www.ands.org.au/online-services/rif-cs-schema": {
-    "title": "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)",
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
     "identifier": "msc:m98",
     "subject_areas": [
       "Multidisciplinary"
     ]
   },
   "http://services.ands.org.au/documentation/rifcs/schemadocs/registryObjects.html": {
-    "title": "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)",
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
     "identifier": "msc:m98",
     "subject_areas": [
       "Multidisciplinary"
     ]
   },
   "http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd": {
-    "title": "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)",
+    "title": "RIF-CS (Registry Interchange Format â€“ Collections and Services)",
     "identifier": "msc:m98",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.rioxx.net/schema/v2.0/rioxx/": {
+    "title": "RIOXX Metadata Application Profile",
+    "identifier": "msc:m1004",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.rioxx.net/": {
+    "title": "RIOXX Metadata Application Profile",
+    "identifier": "msc:m1004",
     "subject_areas": [
       "Multidisciplinary"
     ]
