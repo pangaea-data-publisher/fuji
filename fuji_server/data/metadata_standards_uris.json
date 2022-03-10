@@ -2271,6 +2271,21 @@
     "identifier": "msc:m1001",
     "subject_areas": null
   },
+  "info:ofi/fmt:xml:xsd:ctx": {
+    "title": "The XML ContextObject Format",
+    "identifier": "msc:m1006",
+    "subject_areas": "-Multidisciplinary"
+  },
+  "info:ofi/fmt:kev:mtx:ctx": {
+    "title": "The XML ContextObject Format",
+    "identifier": "msc:m1006",
+    "subject_areas": "-Multidisciplinary"
+  },
+  "https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf": {
+    "title": "The XML ContextObject Format",
+    "identifier": "msc:m1006",
+    "subject_areas": "-Multidisciplinary"
+  },
   "http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Index/": {
     "title": "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)",
     "identifier": "msc:m30",

@@ -1028,6 +1028,15 @@
     ],
     "subject_areas": null
   },
+  "The XML ContextObject Format": {
+    "identifier": "msc:m1006",
+    "urls": [
+      "info:ofi/fmt:xml:xsd:ctx",
+      "info:ofi/fmt:kev:mtx:ctx",
+      "https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf"
+    ],
+    "subject_areas": "-Multidisciplinary"
+  },
   "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)": {
     "identifier": "msc:m30",
     "urls": [
