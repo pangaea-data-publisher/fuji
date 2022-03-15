@@ -434,7 +434,7 @@ class Mapper(Enum):
             'path': './{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size'
         }
     }
-    XML_MAPPING_CMI ={
+    XML_MAPPING_CMD ={
         'object_identifier': {
             'path': './{*}Header/{*}MdSelfLink'
         },
