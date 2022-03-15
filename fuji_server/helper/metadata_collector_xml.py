@@ -181,7 +181,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         if 'datacite.org/schema' in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
-                    print('XML Details: ',(self.target_url,root_namespace, root_element))
+                    #print('XML Details: ',(self.target_url,root_namespace, root_element))
                     f = open("xml.txt", "a")
                     f.write(str(self.target_url)+'\t'+str(root_namespace)+'\t'+str(root_element)+'\r\n')
                     f.close()
@@ -323,5 +323,5 @@ class MetaDataCollectorXML(MetaDataCollector):
             res.pop('object_content_identifier_size', None)
             res.pop('object_content_identifier_url', None)
             #print(self.removew(res))
-        print(res)
+        #print(res)
         return res
