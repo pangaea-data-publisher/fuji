@@ -434,7 +434,93 @@ class Mapper(Enum):
             'path': './{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size'
         }
     }
-    XML_MAPPING_DDI_STUDY = {}
+    XML_MAPPING_CMI ={
+        'object_identifier': {
+            'path': './{*}Header/{*}MdSelfLink'
+        },
+        'creator': {
+            'path': './{*}Header/{*}MdCreator'
+        },
+        'publication_date': {
+            'path': './{*}Header/{*}MdCreationDate'
+        },
+        'publisher': {
+            'path': './{*}Header/{*}MdCollectionDisplayName'
+        },
+        'object_content_identifier_url': {
+            'path':'./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceRef'
+        },
+        'object_content_identifier_type': {
+            'path': './{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceType@@mimetype'
+        }
+    }
+    '''
+    local standard? dda.dk/metadata/1.0.0 see: http://dda.dk/search-technical-information/schema/MetaDataSchema.xsd
+    XML_MAPPING_DDA_DK_STUDY ={
+        'object_identifier': {
+            'path': './{*}PIDs/{*}PID/{*}ID'
+        },
+        'title': {
+            'path': './{*}Titles/{*}Title'
+        },
+        'creator':{
+            'path': './{*}PrincipalInvestigators/{*}PrincipalInvestigator'
+        },
+        'publication_date': {
+            'path': './{*}StudyPublicationDate'
+        },
+        'access_level': {
+            'path':'./{*}Access/{*}Condition'
+        },
+        'publisher': {
+            'path': './{*}Archive'
+        },
+        'summary': {
+            'path':"./{*}StudyDescriptions/{*}StudyDescription[{*}Type='Abstract']"
+        },
+        'keywords': {
+            'path':['./{*}TopicalCoverage/{*}Subjects/{*}Subject', './{*}TopicalCoverage/{*}Keywords/{*}Keyword']
+        }
+
+    }
+    '''
+    XML_MAPPING_DDI_STUDYUNIT = {
+        'title':{
+            'path':'./{*}Citation/{*}Title'
+        },'creator': {
+            'path': './{*}Citation/{*}Creator'
+        },
+        'object_identifier':{
+            'path':'./{*}Citation/{*}InternationalIdentifier'
+        },
+        'publisher': {
+            'path':'./{*}Citation/{*}Publisher'
+        },
+        'publication_date': {
+            'path':'./{*}Citation/{*}PublicationDate'
+        },
+        'summary': {
+            'path': './{*}Abstract'
+        },
+        'keywords': {
+            'path':'./{*}Coverage/{*}TopicalCoverage/{*}Subject'
+        },
+        'access_level': {
+            'path':'.//{*}AccessConditions'
+        },
+        'related_resource':{
+            'path':'./{*}RelatedOtherMaterialReference'
+        },
+        'related_resource_hasVersion': {
+            'path': './{*}Version'
+        },
+        'related_resource_isBasedOn': {
+            'path':'./{*}BasedOnObject'
+        },
+        'measured_variable': {
+            'path': './{*}LogicalProduct/{*}VariableScheme/{*}Variable/{*}Label'
+        }
+    }
 
     XML_MAPPING_DDI_CODEBOOK = {
         'title': {
@@ -491,7 +577,53 @@ class Mapper(Enum):
             'path': './{*}dataDscr/{*}var@@name'
         }
     }
-
+    XML_MAPPING_DIF ={
+        'object_identifier':{
+            'path':'./{*}Dataset_Citation/{*}Persistent_Identifier'
+        },
+        'title': {
+            'path':'./{*}Dataset_Citation/{*}Dataset_Title'
+        },
+        'publication_date': {
+            'path':'./{*}Dataset_Citation/{*}Dataset_Release_Date'
+        },
+        'creator': {
+            'path': './{*}Dataset_Citation/{*}Dataset_Creator'
+        },
+        'summary': {
+            'path': './{*}Summary/{*}Abstract'
+        },
+        'publisher': {
+            'path':['./{*}Dataset_Citation/{*}Dataset_Publisher','./{*}Data_Center/{*}Data_Center_Name']
+        },
+        'keywords': {
+            'path':['./{*}Science_Keywords/{*}Category','./{*}Science_Keywords/{*}Topic','./{*}Science_Keywords/{*}Term']
+        },
+        'object_content_identifier_url': {
+            'path':'./{*}Distribution/{*}Distribution_Media'
+        },
+        'object_content_identifier_size': {
+            'path': './{*}Distribution/{*}Distribution_Size'
+        },
+        'object_content_identifier_type': {
+            'path': './{*}Distribution/{*}Distribution_Format'
+        },
+        'measured_variable': {
+            'path':'./{*}Science_Keywords/{*}Detailed_Variable'
+        },
+        'access_level': {
+            'path': ['./{*}Access_Constraints','./{*}Use_Constraints']
+        },
+        'related_resource': {
+            'path':'./{*}Related_URL/{*}URL'
+        },
+        'related_resource_type':{
+            'path': './{*}Related_URL/{*}Type'
+        },
+        'related_resource_hasVersion': {
+            'path': './{*}Dataset_Citation/{*}Version'
+        }
+    }
     XML_MAPPING_GCMD_ISO = {
         'title': {
             'path': [

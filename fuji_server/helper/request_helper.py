@@ -207,7 +207,6 @@ class RequestHelper:
                     else:
                         content_truncated = False
                         if status_code == 200:
-
                             try:
                                 self.content_size = int(self.getResponseHeader().get('content-length'))
                             except Exception as e:
@@ -263,16 +262,26 @@ class RequestHelper:
 
 
                             if self.content_type is not None:
-
                                 if 'text/plain' in self.content_type:
                                     source = 'text'
                                     self.logger.info('%s : Plain text has been responded as content type! Trying to verify' % metric_id)
                                     #try to find type by url
                                     guessed_format = rdflib.util.guess_format(self.request_url)
+                                    guess_format_type_dict = {'xml': 'application/xml', 'json-ld':'application/ld+json',
+                                                              'turtle':'text/ttl','rdfa':'application/xhtml+xml',
+                                                              'n3':'text/rdf+n3', 'nt':'application/n-triples',
+                                                              'nquads':'application/n-quads','trix':'text/xml'
+                                                              }
+
+
+
                                     if guessed_format is not None:
                                         if guessed_format in ['xml']:
                                             source ='xml'
                                             self.content_type = 'application/xml'
+                                        elif guessed_format in guess_format_type_dict:
+                                            source = 'rdf'
+                                            self.content_type = guess_format_type_dict.get(guessed_format)
                                         else:
                                             source ='rdf'
                                             #not really the true mime types...
@@ -327,7 +336,7 @@ class RequestHelper:
                                                         '{0} : Retrieved response seems not to be valid JSON'.format(
                                                             metric_id))
 
-                                            if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle']:
+                                            if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle','ttl','n3']:
                                                 self.parse_response = self.response_content
                                                 source = 'rdf'
                                                 break

@@ -127,6 +127,11 @@ class MetaDataCollectorXML(MetaDataCollector):
                             'FsF-F2-01M : Found OGC CSW GetRecordByIdResponse type XML envelope, unpacking metadata element for further processing'
                         )
                         metatree = tree.find('.//*')
+                    elif root_element.endswith('}DIDL'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found DIDL (MPEG21) type XML envelope, unpacking metadata element for further processing'
+                        )
+                        metatree = tree.find('.//{*}Item/{*}Component/{*}Resource/*')
                     else:
                         metatree = tree
                 except Exception as e:
@@ -150,6 +155,15 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if root_element == 'codeBook':
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info('FsF-F2-01M : Identified DDI codeBook XML based on root tag')
+                    elif root_element == 'StudyUnit':
+                        xml_mapping = Mapper.XML_MAPPING_DDI_STUDYUNIT.value
+                        self.logger.info('FsF-F2-01M : Identified DDI StudyUnit XML based on root tag')
+                    elif root_element == 'CMD':
+                        xml_mapping = Mapper.XML_MAPPING_CMD.value
+                        self.logger.info('FsF-F2-01M : Identified DDI CMD XML based on root tag')
+                    elif root_element == 'DIF':
+                        xml_mapping = Mapper.XML_MAPPING_DIF.value
+                        self.logger.info('FsF-F2-01M : Identified Directory Interchange Format (DIF) XML based on root tag')
                     elif root_element == 'dc' or any(
                             'http://dublincore.org/schemas/xmls/' in s for s in self.namespaces):
                         xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
@@ -167,7 +181,10 @@ class MetaDataCollectorXML(MetaDataCollector):
                         if 'datacite.org/schema' in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
-                    print('XML Details: ',(root_namespace, root_element))
+                    print('XML Details: ',(self.target_url,root_namespace, root_element))
+                    f = open("xml.txt", "a")
+                    f.write(str(self.target_url)+'\t'+str(root_namespace)+'\t'+str(root_element)+'\r\n')
+                    f.close()
                     if xml_mapping is None:
                         self.logger.info(
                             'FsF-F2-01M : Could not identify (domain) specific XML format to parse'
@@ -179,7 +196,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         if xml_mapping and metatree is not None:
             xml_metadata = self.get_mapped_xml_metadata(metatree, xml_mapping)
 
-        if envelope_metadata:
+        if envelope_metadata and xml_metadata:
             for envelope_key, envelope_values in envelope_metadata.items():
                 if envelope_key not in xml_metadata:
                     xml_metadata[envelope_key] = envelope_values
@@ -232,7 +249,10 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if ':' in attribute:
                         if attribute.split(':')[0] == 'xlink':
                             attribute = '{http://www.w3.org/1999/xlink}' + attribute.split(':')[1]
-                subtrees = tree.findall(pathdef[0])
+                try:
+                    subtrees = tree.findall(pathdef[0])
+                except Exception as e:
+                    print('XML XPATH error ',str(e))
                 for subtree in subtrees:
                     propcontent.append({'tree': subtree, 'attribute': attribute})
                     # propcontent.extend({'tree':tree.findall(pathdef[0]),'attribute':attribute})
@@ -303,4 +323,5 @@ class MetaDataCollectorXML(MetaDataCollector):
             res.pop('object_content_identifier_size', None)
             res.pop('object_content_identifier_url', None)
             #print(self.removew(res))
+        print(res)
         return res

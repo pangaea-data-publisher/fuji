@@ -186,25 +186,25 @@ class MetaDataCollectorRdf(MetaDataCollector):
         rdf_metadata = dict()
         rdf_response_graph = None
         #if self.rdf_graph is None:
-            #print(self.target_url)
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.rdf)
         neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
         #required for metric knowledge representation
-
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
             if self.content_type is not None:
                 self.content_type = self.content_type.split(';', 1)[0]
-
                 #handle JSON-LD
                 DCAT = Namespace('http://www.w3.org/ns/dcat#')
                 if self.content_type == 'application/ld+json':
+                    self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
                     try:
-                        self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
                         #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
-                        if rdf_response['@context'].startswith('http://schema.org'):
-                            rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                        try:
+                            if rdf_response['@context'].startswith('http://schema.org'):
+                                rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                        except Exception as e:
+                            pass
                         rdf_response = jsonld.expand( rdf_response)
                         rdf_response = json.dumps(rdf_response)
                         jsonldgraph = rdflib.ConjunctiveGraph()
