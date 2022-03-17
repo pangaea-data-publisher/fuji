@@ -272,9 +272,6 @@ class RequestHelper:
                                                               'n3':'text/rdf+n3', 'nt':'application/n-triples',
                                                               'nquads':'application/n-quads','trix':'text/xml'
                                                               }
-
-
-
                                     if guessed_format is not None:
                                         if guessed_format in ['xml']:
                                             source ='xml'
@@ -289,9 +286,14 @@ class RequestHelper:
                                         self.logger.info(
                                             '%s : Expected plain text but identified different content type by file extension -: %s' % (metric_id, str(guessed_format)))
 
+
                                 self.content_type = self.content_type.split(';', 1)[0]
+
+
                                 while (True):
                                     for at in AcceptTypes:  #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
+                                        if at.name =='xml' and str(self.content_type).endswith('+xml'):
+                                            self.content_type = 'text/xml'
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
