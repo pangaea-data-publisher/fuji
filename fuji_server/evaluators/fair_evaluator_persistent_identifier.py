@@ -122,11 +122,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                 parsed_link = preparsed_link.strip().split(';')
                                 found_link = parsed_link[0].strip()
                                 for link_prop in parsed_link[1:]:
-                                    if str(link_prop).startswith('rel="'):
+                                    link_prop=str(link_prop).strip()
+                                    if link_prop.startswith('rel="'):
                                         rel_match = re.search('rel=\"(.*?)\"', link_prop)
-                                    elif str(link_prop).startswith('type="'):
+                                    elif link_prop.startswith('type="'):
                                         type_match = re.search('type=\"(.*?)\"', link_prop)
-                                    elif str(link_prop).startswith('formats="'):
+                                    elif link_prop.startswith('formats="'):
                                         formats_match = re.search('formats=\"(.*?)\"', link_prop)
                                 if type_match:
                                     found_type = type_match[1]
