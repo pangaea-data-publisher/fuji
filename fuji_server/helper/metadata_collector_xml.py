@@ -113,7 +113,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         metatree = tree.find('.//{*}metadata/*')
                     elif root_element.endswith('}mets'):
                         self.logger.info(
-                            'FsF-F2-01M : Found METS type XML envelope, unpacking all \'mods\' elements for further processing'
+                            'FsF-F2-01M : Found METS type XML envelope, unpacking all \'xmlData\' elements for further processing'
                         )
                         envelope_metadata = self.get_mapped_xml_metadata(tree, Mapper.XML_MAPPING_METS.value)
                         metatree = tree.find('.//{*}dmdSec/{*}mdWrap/{*}xmlData/*')
@@ -210,7 +210,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                 'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata))
             )
         else:
-            self.logger.info('FsF-F2-01M : Could not identify XML metadata')
+            self.logger.info('FsF-F2-01M : Could not identify metadata properties in XML')
         return source_name, xml_metadata
 
     def get_mapped_xml_metadata(self, tree, mapping):
