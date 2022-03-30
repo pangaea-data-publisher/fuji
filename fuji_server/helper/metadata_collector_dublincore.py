@@ -85,7 +85,6 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     if len(meta_dc_soupresult) <= 0:
                         meta_dc_soupresult = metasoup.findAll(
                             'meta', attrs={'name':re.compile(r'('+'|'.join(dc_core_base_props)+')')})
-
                     for meta_tag in meta_dc_soupresult:
                         dc_name_parts = str(meta_tag['name']).split('.')
                         if len(dc_name_parts) == 1 and dc_name_parts[0] in dc_core_base_props:
@@ -104,9 +103,11 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     dcterms = []
                     for dcitems in self.metadata_mapping.value.values():
                         if isinstance(dcitems, list):
-                            dcterms.extend(dcitems)
+                            for dcitem in dcitems:
+                                dcterms.append(str(dcitem).lower())
+                            #dcterms.extend(dcitems)
                         else:
-                            dcterms.append(dcitems)
+                            dcterms.append(str(dcitems).lower())
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
                         #key
@@ -123,10 +124,13 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
 
                         # if self.isDebug:
                         #   self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v)
-                        if k in dcterms:
+                        if k.lower() in dcterms:
                             #self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
-                            elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in value
-                                    ][0]  # fuji ref fields
+                            try:
+                                elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in str(value).lower()
+                                        ][0]  # fuji ref fields
+                            except Exception as e:
+                                pass
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation
