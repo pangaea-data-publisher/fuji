@@ -112,8 +112,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         header_link_string = requestHelper.getResponseHeader().get('Link')
                         #header_link_string = requestHelper.getHTTPResponse().getheader('Link')
                         if header_link_string is not None:
-                            self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage')
-
                             for preparsed_link in header_link_string.split(','):
                                 found_link = None
                                 found_type, type_match = None, None
@@ -123,12 +121,12 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                 found_link = parsed_link[0].strip()
                                 for link_prop in parsed_link[1:]:
                                     link_prop=str(link_prop).strip()
-                                    if link_prop.startswith('rel="'):
-                                        rel_match = re.search('rel=\"(.*?)\"', link_prop)
-                                    elif link_prop.startswith('type="'):
-                                        type_match = re.search('type=\"(.*?)\"', link_prop)
-                                    elif link_prop.startswith('formats="'):
-                                        formats_match = re.search('formats=\"(.*?)\"', link_prop)
+                                    if link_prop.startswith('rel'):
+                                        rel_match = re.search('rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                                    elif link_prop.startswith('type'):
+                                        type_match = re.search('type\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                                    elif link_prop.startswith('formats'):
+                                        formats_match = re.search('formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
                                 if type_match:
                                     found_type = type_match[1]
                                 if rel_match:
@@ -141,8 +139,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                                     'rel': found_rel,
                                     'profile': found_formats
                                 }
-                                if found_link:
+                                if signposting_link_dict.get('url'):
                                     self.fuji.signposting_header_links.append(signposting_link_dict)
+
+                            self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage -: ' + str(self.fuji.signposting_header_links))
 
                         #check if there is a cite-as signposting link
                         if self.fuji.pid_scheme is None:
