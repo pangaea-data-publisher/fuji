@@ -358,7 +358,7 @@ class Preprocessor(object):
         ns_file_path = os.path.join(cls.fuji_server_dir, 'data', 'default_namespaces.txt')
         with open(ns_file_path) as f:
             #ns = [line.split(':',1)[1].strip() for line in f]
-            ns = [line.rstrip() for line in f]
+            ns = [line.rstrip().rstrip('/#') for line in f]
         if ns:
             cls.default_namespaces = ns
 
