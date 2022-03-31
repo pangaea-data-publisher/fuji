@@ -93,7 +93,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             dc_t = None
                             if len(dc_name_parts) == 3:
                                 dc_t = dc_name_parts[2]
-                            meta_dc_matches.append([dc_name_parts[1].lower(), dc_t, meta_tag.get('content')])
+                            meta_dc_matches.append([dc_name_parts[1], dc_t, meta_tag.get('content')])
                     #meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
                     self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
@@ -111,12 +111,13 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     for dc_meta in meta_dc_matches:
                         # dc_meta --> ('', 'DC', 'creator', ' ', 'Hillenbrand, Claus-Dieter')
                         #key
-                        k = dc_meta[0]  #2
+                        k = str(dc_meta[0])  #2
                         #type
                         t = dc_meta[1]  #3
                         #value
                         v = dc_meta[2]  #5
-                        if k == 'date':
+
+                        if k.lower() == 'date':
                             if t == 'dateAccepted':
                                 dc_core_metadata['accepted_date'] = v
                             elif t == 'dateSubmitted':
@@ -127,9 +128,10 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                         if k.lower() in dcterms:
                             #self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
                             try:
-                                elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k in str(value).lower()
+                                elem = [key for (key, value) in Mapper.DC_MAPPING.value.items() if k.lower() in str(value).lower()
                                         ][0]  # fuji ref fields
                             except Exception as e:
+                                #nothing found so just continue
                                 pass
                             if elem == 'related_resources':
                                 #dc_core_metadata['related_resources'] = []
@@ -138,7 +140,6 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                                 #qualifiers, subproperties (t):
                                 #https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
                                 #https://www.dublincore.org/specifications/dublin-core/dcq-html/
-
                                 if k in ['source', 'references']:
                                     t = 'wasDerivedFrom'
                                 elif k == 'relation':

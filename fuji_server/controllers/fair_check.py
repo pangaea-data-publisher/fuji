@@ -561,7 +561,7 @@ class FAIRCheck:
                 data_sign_links = self.get_signposting_links('item')
                 if data_sign_links:
                     self.logger.info('FsF-F3-01M : Found data links in response header (signposting) -: ' +
-                                     str(len(data_sign_links)))
+                                     str(data_sign_links))
                     if self.metadata_merged.get('object_content_identifier') is None:
                         self.metadata_merged['object_content_identifier'] = data_sign_links
 
@@ -589,7 +589,7 @@ class FAIRCheck:
                 data_meta_links = self.get_html_typed_links(rel='item')
                 if data_meta_links:
                     self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' +
-                                     str(len(data_meta_links)))
+                                     str(data_meta_links))
                     if self.metadata_merged.get('object_content_identifier') is None:
                         self.metadata_merged['object_content_identifier'] = data_meta_links
                 # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
@@ -604,6 +604,7 @@ class FAIRCheck:
                 'FsF-F2-01M : Skipped EMBEDDED metadata identification, no landing page URL could be determined')
 
     def check_pidtest_repeat(self):
+        self.repeat_pid_check = False
         if self.related_resources:
             for relation in self.related_resources:
                 if relation.get('relation_type') == 'isPartOf':
@@ -630,7 +631,6 @@ class FAIRCheck:
                         self.LOG_SUCCESS,
                         'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
                     self.repeat_pid_check = True
-
                     if 'doi' in found_pids:
                         self.id = found_pids['doi']
                         self.pid_scheme = 'doi'

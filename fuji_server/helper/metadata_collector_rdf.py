@@ -24,6 +24,7 @@ import json, rdflib_jsonld
 import re
 import sys
 
+import extruct
 import idutils
 import rdflib
 import requests
@@ -198,21 +199,33 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 DCAT = Namespace('http://www.w3.org/ns/dcat#')
                 if self.content_type == 'application/ld+json':
                     self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
-                    try:
-                        #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
+                    if isinstance(rdf_response, dict):
                         try:
-                            if rdf_response['@context'].startswith('http://schema.org'):
-                                rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
+                                                                             sourcemetadata=[rdf_response],
+                                                                             mapping=Mapper.SCHEMAORG_MAPPING,
+                                                                             pidurl=None)
+                            source_schemaorg, rdf_metadata = schemaorg_collector.parse_metadata()
                         except Exception as e:
+                            print(e)
                             pass
-                        rdf_response = jsonld.expand( rdf_response)
-                        rdf_response = json.dumps(rdf_response)
-                        jsonldgraph = rdflib.ConjunctiveGraph()
-                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
-                        rdf_response_graph = jsonldgraph
-                    except Exception as e:
-                        print('JSON-LD parsing error',e)
-                        self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
+                    #graph
+                    else:
+                        try:
+                            #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
+                            try:
+                                if rdf_response['@context'].startswith('http://schema.org'):
+                                    rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                            except Exception as e:
+                                pass
+                            rdf_response = jsonld.expand( rdf_response)
+                            rdf_response = json.dumps(rdf_response)
+                            jsonldgraph = rdflib.ConjunctiveGraph()
+                            rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
+                            rdf_response_graph = jsonldgraph
+                        except Exception as e:
+                            print('JSON-LD parsing error', e)
+                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
@@ -251,8 +264,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         #else:
         #    neg_source, rdf_response = 'html', self.rdf_graph
-
-        rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
+        if not rdf_metadata:
+            rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
 
         return self.source_name, rdf_metadata
 
