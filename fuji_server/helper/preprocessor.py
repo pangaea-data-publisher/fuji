@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import mimetypes
 
 import yaml
 import json
@@ -82,6 +83,18 @@ class Preprocessor(object):
             cls._instance = super(Preprocessor, cls).__new__(cls)
             # Put any initialization here.
         return cls._instance
+
+    @classmethod
+    def set_mime_types(cls):
+        try:
+            mimes = requests.get('https://raw.githubusercontent.com/jshttp/mime-db/master/db.json').json()
+            for mime_type, mime_data in mimes.items():
+                if mime_data.get('extensions'):
+                    for ext in mime_data.get('extensions'):
+                        if '.' + ext not in mimetypes.types_map:
+                            mimetypes.add_type(mime_type, "." + ext, strict=True)
+        except Exception as e:
+            cls.logger.warning('Loading additional mime types failed, will continue with standard set')
 
     @classmethod
     def set_max_content_size(cls, size):

@@ -24,6 +24,7 @@
 import io
 import json
 import logging, logging.handlers
+import mimetypes
 import re
 #import urllib
 import urllib.request as urllib
@@ -99,7 +100,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.8b'
+    FUJI_VERSION = '1.4.8c'
 
     def __init__(self,
                  uid,
@@ -215,6 +216,7 @@ class FAIRCheck:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
+        Preprocessor.set_mime_types()
         #not needed locally ... but init class variable
         #Preprocessor.get_google_data_dois()
         #Preprocessor.get_google_data_urls()
@@ -915,6 +917,12 @@ class FAIRCheck:
             typed_metadata_links = self.get_preferred_links(typed_metadata_links)
 
             for metadata_link in typed_metadata_links:
+                if not metadata_link['type']:
+                    # guess type based on e.g. file suffix
+                    try:
+                        metadata_link['type'] = mimetypes.guess_type(metadata_link['url'])[0]
+                    except Exception:
+                        pass
                 if metadata_link['type'] in ['application/rdf+xml', 'text/rdf','text/n3', 'text/rdf+n3','application/rdf+n3','text/ttl','text/turtle','application/turtle', 'application/x-turtle', 'application/ld+json']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: (' +
                                      str(metadata_link['type']) + ' ' + str(metadata_link['url']) + ')')
@@ -988,7 +996,8 @@ class FAIRCheck:
                         # also add found xml namespaces without recognized data
                         elif len(linked_xml_collector.getNamespaces())>0:
                             self.merge_metadata(dict(), metadata_link['url'], source_linked_xml,'xml',lkd_namespace)
-
+                else:
+                    self.logger.info('FsF-F2-01M : Found typed link or signposting link but cannot handle given mime type -:'+str(metadata_link['type']))
 
         if self.reference_elements:
             self.logger.debug('FsF-F2-01M : Reference metadata elements NOT FOUND -: {}'.format(
