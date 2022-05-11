@@ -120,15 +120,19 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
             a dictionary of metadata in RDF graph
         """
         jsnld_metadata = {}
+        #Don't trust e.g. non creative work schema.org
+        trusted = True
         ext_meta = None
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             # in case two or more JSON-LD strings are embedded
             if len(self.source_metadata) > 1:
-
-                self.logger.info('FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify CreativeWork type')
+                self.logger.info('FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type')
                 for meta_rec in self.source_metadata:
-                    if meta_rec.get('@type') in self.SCHEMA_ORG_CREATIVEWORKS:
+                    if str(meta_rec.get('@type')).lower() in ['dataset']:
+                        ext_meta = meta_rec
+                        break
+                    if str(meta_rec.get('@type')).lower() in self.SCHEMA_ORG_CREATIVEWORKS:
                         ext_meta = meta_rec
 
             if not ext_meta:
@@ -170,12 +174,14 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                             'FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')
 
                     elif str(ext_meta.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
+                        trusted = False
                         self.logger.info(
-                            'FsF-F2-01M : Found JSON-LD but seems not to be a schema.org object based on the given context type -:'
+                            'FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:'
                             + str(ext_meta.get('@type')))
-                    elif ext_meta.get('@type') not in self.SCHEMA_ORG_CREATIVEWORKS:
+                    elif str(ext_meta.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                        trusted = False
                         self.logger.info(
-                            'FsF-F2-01M : Found schema.org JSON-LD but seems not to be a research data object')
+                            'FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:'+str(ext_meta.get('@type')))
                     else:
                         self.logger.info(
                             'FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'
@@ -243,7 +249,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                         #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
 
                 else:
-                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset"')
+                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset" based on context -: '+str(ext_meta.get('@context')))
 
             except Exception as err:
                 #print(err.with_traceback())
@@ -251,4 +257,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
         else:
             self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
 
+        if not trusted:
+            jsnld_metadata = {}
         return self.source_name, jsnld_metadata
