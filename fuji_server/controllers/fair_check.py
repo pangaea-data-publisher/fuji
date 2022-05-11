@@ -665,14 +665,16 @@ class FAIRCheck:
                         if linkparts.path.endswith('.xml'):
                             if type not in ['application/xml','text/xml'] and not type.endswith('+xml'):
                                 type += '+xml'
-
-                        self.typed_links.append({
-                            'url': href,
-                            'type': type,
-                            'rel': rel,
-                            'profile': profile,
-                            'source' : 'typed'
-                        })
+                        #signposting links
+                        #https://www.w3.org/2001/sw/RDFCore/20031212-rdfinhtml/ recommends: link rel="meta" as well as "alternate meta"
+                        if rel in ['meta','alternate meta','metadata','author','collection','describes','item','type','search','alternate','describedby','cite-as']:
+                            self.typed_links.append({
+                                'url': href,
+                                'type': type,
+                                'rel': rel,
+                                'profile': profile,
+                                'source' : 'typed'
+                            })
                 except:
                     self.logger.info('FsF-F2-01M : Typed links identification failed -:')
             else:
@@ -923,7 +925,7 @@ class FAIRCheck:
                         metadata_link['type'] = mimetypes.guess_type(metadata_link['url'])[0]
                     except Exception:
                         pass
-                if metadata_link['type'] in ['application/rdf+xml', 'text/rdf','text/n3', 'text/rdf+n3','application/rdf+n3','text/ttl','text/turtle','application/turtle', 'application/x-turtle', 'application/ld+json']:
+                if re.search(r'[\/+](rdf|(?:x-)?turtle|ttl|n3|n-triples|ld\+json)+|$', str(metadata_link['type'])) :
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: (' +
                                      str(metadata_link['type']) + ' ' + str(metadata_link['url']) + ')')
                     source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value
@@ -971,7 +973,7 @@ class FAIRCheck:
                                      str(metadata_link['type'] + ' '+metadata_link['url']+')'))
                     linked_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                 target_url=metadata_link['url'],
-                                                                link_type=metadata_link.get('source'))
+                                                                link_type=metadata_link.get('source'), pref_mime_type=metadata_link['type'])
 
                     if linked_xml_collector is not None:
                         source_linked_xml, linked_xml_dict = linked_xml_collector.parse_metadata()
