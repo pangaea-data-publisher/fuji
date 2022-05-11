@@ -51,7 +51,7 @@ class MetaDataCollectorXML(MetaDataCollector):
     """
     target_url = None
 
-    def __init__(self, loggerinst, target_url, link_type='embedded'):
+    def __init__(self, loggerinst, target_url, link_type='embedded', pref_mime_type=None):
         """
         Parameters
         ----------
@@ -61,9 +61,12 @@ class MetaDataCollectorXML(MetaDataCollector):
             Logger instance
         link_type : str, optional
             Link Type, default is 'embedded'
+        pref_mime_type : str, optional
+            Preferred mime type, e.g. specific XML format
         """
         self.target_url = target_url
         self.link_type = link_type
+        self.pref_mime_type = pref_mime_type
         super().__init__(logger=loggerinst)
 
     def parse_metadata(self):
@@ -94,6 +97,8 @@ class MetaDataCollectorXML(MetaDataCollector):
         dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
+        if self.pref_mime_type:
+            requestHelper.addAcceptType(self.pref_mime_type)
         #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.response_content is not None:
