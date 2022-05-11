@@ -323,7 +323,7 @@ class FAIRCheck:
         if self.namespace_uri:
             self.namespace_uri = list(set(self.namespace_uri))
 
-        print(json.dumps(self.metadata_unmerged))
+        #print(json.dumps(self.metadata_unmerged))
 
     def retrieve_apis_standards(self):
         if self.landing_url is not None:
