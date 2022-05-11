@@ -412,6 +412,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta['object_type'] = type
             self.logger.info(
                 'FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: '+str(meta.keys()))
+            meta = {k:v for k,v in meta.items() if v not in [None,'None']}
 
         return meta
 

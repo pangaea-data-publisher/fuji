@@ -94,6 +94,9 @@ class RequestHelper:
             raise TypeError('type must be an instance of AcceptTypes enum')
         self.accept_type = accepttype.value
 
+    def addAcceptType(self, mime_type):
+        self.accept_type= mime_type+','+self.accept_type
+
     def getAcceptType(self):
         return self.accept_type
 
