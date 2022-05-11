@@ -100,7 +100,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.8c'
+    FUJI_VERSION = '1.4.9'
 
     def __init__(self,
                  uid,
