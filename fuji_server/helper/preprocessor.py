@@ -164,7 +164,7 @@ class Preprocessor(object):
         cw_path = os.path.join(cls.fuji_server_dir, 'data', 'creativeworktypes.txt')
         with open(cw_path) as f:
             data = f.read().splitlines()
-        cls.schema_org_creativeworks = data
+        cls.schema_org_creativeworks = [item.lower() for item in data]
 
     @classmethod
     def get_schema_org_creativeworks(cls):
