@@ -100,7 +100,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.9'
+    FUJI_VERSION = '1.4.9b'
 
     def __init__(self,
                  uid,
@@ -680,19 +680,27 @@ class FAIRCheck:
             else:
                 self.logger.info('FsF-F2-01M : Expected HTML to check for typed links but received empty string ')
 
-    def get_html_typed_links(self, rel='item'):
+    def get_html_typed_links(self, rel='item', allkeys=True):
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
         # Use links to find domains specific metadata
         datalinks = []
+        if not isinstance(rel, list):
+            rel = [rel]
         for typed_link in self.typed_links:
-            if typed_link.get('rel') == rel:
+            if typed_link.get('rel') in rel:
+                if not allkeys:
+                    typed_link = {tlkey: typed_link[tlkey] for tlkey in ['url','type']}
                 datalinks.append((typed_link))
         return datalinks
 
-    def get_signposting_links(self, rel='item'):
+    def get_signposting_links(self, rel='item', allkeys=True):
         signlinks = []
+        if not isinstance(rel, list):
+            rel = [rel]
         for signposting_links in self.signposting_header_links:
-            if signposting_links.get('rel') == rel:
+            if signposting_links.get('rel') in rel:
+                if not allkeys:
+                    signposting_links = {slkey: signposting_links[slkey] for slkey in ['url','type']}
                 signlinks.append(signposting_links)
         return signlinks
 
@@ -893,11 +901,12 @@ class FAIRCheck:
         rel_meta_links = []
         sign_meta_links = []
 
-        typed_metadata_links = self.typed_links
+        #typed_metadata_links = self.typed_links
+        typed_metadata_links = self.get_html_typed_links(['describedby', 'meta','alternate meta','metadata'], False)
 
         #signposting header links
         if self.get_signposting_links('describedby'):
-            sign_header_links = self.get_signposting_links('describedby')
+            sign_header_links = self.get_signposting_links('describedby', False)
             self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value, 'signposting'))
 
         guessed_metadata_link = self.get_guessed_xml_link()
@@ -917,6 +926,8 @@ class FAIRCheck:
             #unique entries for typed links
             typed_metadata_links = [dict(t) for t in {tuple(d.items()) for d in typed_metadata_links}]
             typed_metadata_links = self.get_preferred_links(typed_metadata_links)
+
+            print('Typed links: ',typed_metadata_links)
 
             for metadata_link in typed_metadata_links:
                 if not metadata_link['type']:
