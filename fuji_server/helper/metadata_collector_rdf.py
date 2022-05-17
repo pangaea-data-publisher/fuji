@@ -204,8 +204,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
                                                                              sourcemetadata=[rdf_response],
                                                                              mapping=Mapper.SCHEMAORG_MAPPING,
-                                                                             pidurl=None)
+                                                                             pidurl=None, source = MetaDataCollectorSchemaOrg.getEnumSourceNames().RDF_TYPED_LINKS.value)
                             source_schemaorg, rdf_metadata = schemaorg_collector.parse_metadata()
+                            schemaorg_collector.getNamespacesfromIRIs(rdf_metadata)
+                            self.namespaces = schemaorg_collector.namespaces
+                            #wrong one given above
                         except Exception as e:
                             print(e)
                             pass
@@ -223,6 +226,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             jsonldgraph = rdflib.ConjunctiveGraph()
                             rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
                             rdf_response_graph = jsonldgraph
+
                         except Exception as e:
                             print('JSON-LD parsing error', e)
                             self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
@@ -266,7 +270,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #    neg_source, rdf_response = 'html', self.rdf_graph
         if not rdf_metadata:
             rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
-
         return self.source_name, rdf_metadata
 
     def get_default_metadata(self, g):

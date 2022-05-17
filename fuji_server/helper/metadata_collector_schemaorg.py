@@ -55,7 +55,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
     source_name = None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
     SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
-    def __init__(self, sourcemetadata, mapping, loggerinst, pidurl):
+    def __init__(self, sourcemetadata, mapping, loggerinst, pidurl, source = None):
         """
         Parameters
         ----------
@@ -67,9 +67,12 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
             Logger instance
         pidurl : str
             PID URL
+        source : str
+            Source (e.g. typed links etc..)
         """
         #self.is_pid = ispid
         self.pid_url = pidurl
+        self.source_name = source
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
     #work around in case a lson-ld graph is given
@@ -120,11 +123,13 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
             a dictionary of metadata in RDF graph
         """
         jsnld_metadata = {}
+        self.content_type = 'application/ld+json'
         #Don't trust e.g. non creative work schema.org
         trusted = True
         ext_meta = None
         if self.source_metadata:
-            self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
+            if not self.source_name:
+                self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             # in case two or more JSON-LD strings are embedded
             if len(self.source_metadata) > 1:
                 self.logger.info('FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type')
