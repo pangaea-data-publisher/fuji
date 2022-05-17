@@ -115,6 +115,7 @@ class MetaDataCollector(object):
         self.logger = logger
         self.target_metadata = {}
         self.namespaces = []
+        self.content_type = None
 
     @classmethod
     def getEnumSourceNames(cls) -> Sources:
@@ -143,6 +144,9 @@ class MetaDataCollector(object):
 
     def getNamespaces(self):
         return self.namespaces
+
+    def getContentType(self):
+        return self.content_type
 
     def getNamespacesfromIRIs(self, meta_source):
         """Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
