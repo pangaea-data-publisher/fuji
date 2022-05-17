@@ -45,6 +45,7 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
         dict
             a dictionary of Open Graph metadata
         """
+        self.content_type = 'text/html'
         og_metadata = {}
         ext_meta = None
         if self.source_metadata:

@@ -77,7 +77,9 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)
                 #exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
                 meta_dc_matches = []
+                self.content_type = 'text/html'
                 try:
+
                     metasoup = BeautifulSoup(self.source_metadata, 'lxml')
                     meta_dc_soupresult = metasoup.findAll(
                         'meta', attrs={'name': re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})

@@ -68,6 +68,7 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
         dict
             a dictionary of ORE Atom metadata
         """
+        self.content_type = 'application/atom+xml'
         ore_metadata = {}
         if self.target_url:
             self.source_name = self.getEnumSourceNames().OAI_ORE.value

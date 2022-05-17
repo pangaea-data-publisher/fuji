@@ -48,6 +48,7 @@ class MetaDataCollectorMicroData(MetaDataCollector):
         """
         micro_metadata = {}
         ext_meta = None
+        self.content_type = 'text/html'
         if self.source_metadata:
             self.source_name = self.getEnumSourceNames().MICRODATA.value
             ext_meta = self.source_metadata[0]
