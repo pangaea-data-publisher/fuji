@@ -83,6 +83,8 @@ class MetaDataCollectorXML(MetaDataCollector):
         xml_mapping = None
         metatree = None
         envelope_metadata = {}
+        self.content_type = 'application/xml'
+
         XSI = 'http://www.w3.org/2001/XMLSchema-instance'
         if self.link_type == 'linked':
             source_name = self.getEnumSourceNames().TYPED_LINK.value
@@ -102,6 +104,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.response_content is not None:
+            self.content_type = requestHelper.content_type
             self.logger.info('FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}'.format(source_name))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
