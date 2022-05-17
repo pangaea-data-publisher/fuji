@@ -201,6 +201,9 @@ class RequestHelper:
                                      (metric_id, self.accept_type, str(status_code)))
 
                     self.content_type = self.getResponseHeader().get('Content-Type')
+                    if not self.content_type:
+                        self.content_type = self.getResponseHeader().get('content-type')
+                    print(self.accept_type,self.content_type)
                     # key for content cache
                     checked_content_id = hash(str(self.redirect_url ) + str(self.content_type))
 
