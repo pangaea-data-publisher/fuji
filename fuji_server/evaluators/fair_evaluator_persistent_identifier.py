@@ -53,7 +53,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
             Mapper.VALID_PIDS.value))
         check_url = None
-        signposting_pid = None
+        signposting_pid = []
         if self.fuji.id_scheme is not None:
             check_url = self.fuji.pid_url
             #check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
@@ -75,7 +75,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             response_status = requestHelper.response_status
 
             if requestHelper.response_content:
-
                 self.fuji.landing_url = requestHelper.redirect_url
                 #in case the test has been repeated because a PID has been found in metadata
                 #print(self.fuji.landing_url, self.fuji.input_id)
@@ -94,72 +93,15 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
                         #self.fuji.repeat_pid_check = False
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
-
                     if response_status == 200:
                         # check if javascript generated content only:
-                        try:
-                            soup = BeautifulSoup(requestHelper.response_content, features="html.parser")
-                            script_content = soup.findAll('script')
-                            for script in soup(["script", "style", "title", "noscript"]):
-                                script.extract()
-
-                            text_content = soup.get_text(strip=True)
-                            if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
-                                self.logger.warning('FsF-F1-02D : Landing page seems to be JavaScript generated, could not detect enough content')
-                        except Exception as e:
-                            pass
+                        self.fuji.raise_warning_if_javascript_page(requestHelper.response_content)
                         # identify signposting links in header
-                        header_link_string = requestHelper.getResponseHeader().get('Link')
-                        #header_link_string = requestHelper.getHTTPResponse().getheader('Link')
-                        if header_link_string is not None:
-                            for preparsed_link in header_link_string.split(','):
-                                found_link = None
-                                found_type, type_match = None, None
-                                found_rel, rel_match = None, None
-                                found_formats, formats_match = None, None
-                                parsed_link = preparsed_link.strip().split(';')
-                                found_link = parsed_link[0].strip()
-                                for link_prop in parsed_link[1:]:
-                                    link_prop=str(link_prop).strip()
-                                    if link_prop.startswith('rel'):
-                                        rel_match = re.search('rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
-                                    elif link_prop.startswith('type'):
-                                        type_match = re.search('type\s*=\s*\"?([^,;"]+)\"?', link_prop)
-                                    elif link_prop.startswith('formats'):
-                                        formats_match = re.search('formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
-                                if type_match:
-                                    found_type = type_match[1]
-                                if rel_match:
-                                    found_rel = rel_match[1]
-                                if formats_match:
-                                    found_formats = formats_match[1]
-                                signposting_link_dict = {
-                                    'url': found_link[1:-1],
-                                    'type': found_type,
-                                    'rel': found_rel,
-                                    'profile': found_formats
-                                }
-                                if signposting_link_dict.get('url'):
-                                    self.fuji.signposting_header_links.append(signposting_link_dict)
-
-                            self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage -: ' + str(self.fuji.signposting_header_links))
-
-                        #check if there is a cite-as signposting link
-                        if self.fuji.pid_scheme is None:
-                            signposting_pid_link = self.fuji.get_signposting_links('cite-as')
-                            if signposting_pid_link:
-                                signposting_pid = signposting_pid_link[0].get('url')
-                            if signposting_pid:
-                                signidhelper = IdentifierHelper
-                                #found_ids = idutils.detect_identifier_schemes(signposting_pid[0])
-                                found_id = signidhelper.preferred_schema
-                                #if len(found_ids) > 1:
-                                #    found_ids.remove('url')
-                                #    found_id = found_ids[0]
-                                if signidhelper.is_persistent:
-                                    self.logger.info('FsF-F1-02D : Found object identifier in signposting header links')
-                                    self.fuji.pid_scheme = found_id
-
+                        self.fuji.set_signposting_links(requestHelper.response_content, requestHelper.getResponseHeader())
+                        signposting_pids = self.fuji.get_signposting_links('cite-as')
+                        if isinstance(signposting_pids, list):
+                            for signpid in signposting_pids:
+                                signposting_pid.append(signpid.get('url'))
                         up = urlparse(self.fuji.landing_url)
                         self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
                         self.fuji.landing_html = requestHelper.getResponseContent()
@@ -198,7 +140,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
 
         if self.fuji.pid_scheme is not None:
             # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
-            if signposting_pid is None:
+            if not signposting_pid:
                 idhelper = IdentifierHelper(self.fuji.id)
                 self.fuji.pid_url = idhelper.identifier_url
                 #self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
@@ -229,3 +171,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         self.result.maturity = self.maturity
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output
+
+
+
