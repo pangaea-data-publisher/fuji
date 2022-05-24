@@ -25,6 +25,8 @@ import logging
 
 import idutils
 from lxml import etree
+from tldextract import extract
+
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
@@ -35,8 +37,9 @@ class RepositoryHelper:
     ns = {'r3d': 'http://www.re3data.org/schema/2-2'}
     RE3DATA_APITYPES = ['OAI-PMH', 'SOAP', 'SPARQL', 'SWORD', 'OpenDAP']
 
-    def __init__(self, client, pidscheme, logger):
+    def __init__(self, client, pidscheme, logger, landingpage):
         self.client_id = client
+        self.landing_page_url = landingpage
         self.pid_scheme = pidscheme
         self.re3metadata_raw = None
         self.repository_name = None
@@ -49,7 +52,6 @@ class RepositoryHelper:
         if self.client_id and self.pid_scheme:
 
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
-            #print(self.client_id,'Re3DOI',re3doi, idutils.is_doi(re3doi))
             if re3doi:
                 if idutils.is_doi(re3doi):
                     short_re3doi = idutils.normalize_pid(re3doi, scheme='doi')  #https://doi.org/10.17616/R3XS37
@@ -93,14 +95,26 @@ class RepositoryHelper:
             self.repository_name = name[0].text
         if url:
             self.repository_url = url[0].text
-        apis = root.xpath('//r3d:api', namespaces=RepositoryHelper.ns)
-        for a in apis:
-            apiType = a.attrib['apiType']
-            if apiType in RepositoryHelper.RE3DATA_APITYPES:
-                self.repo_apis[a.attrib['apiType']] = a.text
-        standards = root.xpath('//r3d:metadataStandard/r3d:metadataStandardName', namespaces=RepositoryHelper.ns)
-        #we only use the name as the url specified in re3data is dcc-based, e.g., http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format
-        self.repo_standards = [s.text for s in standards]
+        repo_domain_verified = False
+        repo_url_parts = extract(self.repository_url)
+        landing_url_parts = extract(self.landing_page_url)
+        repo_domain = repo_url_parts.domain + '.' + repo_url_parts.suffix
+        landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
+        if landing_domain == repo_domain:
+            repo_domain_verified = True
+            self.logger.info('FsF-R1.3-01M : Domain name listed in re3data metadata record matches landing page domain-: ' + str(repo_domain))
+        else:
+            self.logger.warning('FsF-R1.3-01M : Domain name listed in re3data metadata record does not match landing page domain, therefore ignoring re3data records -: ' + str(repo_domain)+' - '+str(landing_domain))
+        if repo_domain_verified:
+            apis = root.xpath('//r3d:api', namespaces=RepositoryHelper.ns)
+            for a in apis:
+                apiType = a.attrib['apiType']
+                if apiType in RepositoryHelper.RE3DATA_APITYPES:
+                    self.repo_apis[a.attrib['apiType']] = a.text
+            standards = root.xpath('//r3d:metadataStandard/r3d:metadataStandardName', namespaces=RepositoryHelper.ns)
+            #we only use the name as the url specified in re3data is dcc-based, e.g., http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format
+
+            self.repo_standards = [s.text for s in standards]
 
     def getRe3MetadataStandards(self):
         return self.repo_standards
