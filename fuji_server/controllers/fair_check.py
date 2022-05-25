@@ -845,6 +845,7 @@ class FAIRCheck:
                 neg_namespace = 'unknown xml'
                 metadata_neg_dict = self.exclude_null(metadata_neg_dict)
                 if len(negotiated_xml_collector.getNamespaces()) > 0:
+                    self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
                     neg_namespace = negotiated_xml_collector.getNamespaces()[0]
                 if metadata_neg_dict:
                     self.metadata_sources.append((source_neg_xml, 'negotiated'))
@@ -1048,6 +1049,7 @@ class FAIRCheck:
                         lkd_namespace = 'unknown xml'
                         if len(linked_xml_collector.getNamespaces()) > 0:
                             lkd_namespace = linked_xml_collector.getNamespaces()[0]
+                            self.namespace_uri.extend(linked_xml_collector.getNamespaces())
                             #print(lkd_namespace)
                         if linked_xml_dict:
                             self.metadata_sources.append((source_linked_xml, 'linked'))
@@ -1063,7 +1065,6 @@ class FAIRCheck:
                             self.logger.log(
                                 self.LOG_SUCCESS,
                                 'FsF-F2-01M : Found XML metadata through typed links-: ' + str(linked_xml_dict.keys()))
-                            self.namespace_uri.extend(linked_xml_collector.getNamespaces())
                         # also add found xml namespaces without recognized data
                         elif len(linked_xml_collector.getNamespaces())>0:
                             print('Unidentified XML: ', str(lkd_namespace))

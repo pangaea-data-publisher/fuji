@@ -105,7 +105,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
-            self.logger.info('FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}'.format(source_name))
+            self.logger.info('FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}'.format(self.target_url))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_source != 'xml':
                 self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_source))
