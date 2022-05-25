@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import io
+import re
 import sys
 import urllib
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
@@ -213,6 +214,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
                     #if data_object.get('header_content_type') == data_object.get('type'):
                     # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
+                    self.fuji.tika_content_types_list = self.fuji.extend_mime_type_list(self.fuji.tika_content_types_list)
+
                     if d == 'type':
                         if data_object.get('type') in self.fuji.tika_content_types_list:
                             matches_content = True
@@ -231,7 +234,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         else:
                             try:
                                 object_size = int(float(data_object.get('size')))
-                                if object_size == tika_content_size:
+                                if object_size == int(float(tika_content_size)):
                                     matches_content = True
                                     matches_size = True
                                 else:

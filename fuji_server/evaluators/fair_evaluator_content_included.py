@@ -89,10 +89,13 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         content_link['header_content_type'] = response.getheader('Content-Type')
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
-                        if content_link['header_content_type'] != content_link.get('type'):
+                        content_header_link_set = set(self.fuji.extend_mime_type_list(content_link['header_content_type']))
+                        content_link_set = set(self.fuji.extend_mime_type_list(content_link.get('type')))
+                        if not (content_link_set & content_header_link_set):
+                        #if content_link['header_content_type'] != content_link.get('type'):
                             self.logger.warning(
                                 'FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: ('
-                                + str(content_link.get('type')) + ') vs. (' + str(content_link['header_content_type']) +
+                                + str(content_link_set) + ') vs. (' + str(content_header_link_set) +
                                 ')')
                             if 'html' in content_link['header_content_type']:
                                 self.logger.warning(

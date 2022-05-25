@@ -100,7 +100,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
-    FUJI_VERSION = '1.4.9b'
+    FUJI_VERSION = '1.5.0'
 
     def __init__(self,
                  uid,
@@ -1297,3 +1297,14 @@ class FAIRCheck:
         summary['status_passed'].update(sf.groupby(by='fair_category')['status'].sum().to_dict())
         summary['status_passed']['FAIR'] = int(sf['status'].sum())
         return summary
+
+    #in case experimental mime types are detected add mime types without x. or x. prefix
+    def extend_mime_type_list(self, mime_list):
+        if isinstance(mime_list, str):
+            mime_list = [mime_list]
+        for mime in mime_list:
+            xm = re.split(r'/(?:[xX][-\.])?', mime)
+            if len(xm) == 2:
+                if str(xm[0] + '/' + xm[1]) not in mime_list:
+                    mime_list.append(str(xm[0] + '/' + xm[1]))
+        return mime_list
