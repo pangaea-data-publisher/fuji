@@ -151,6 +151,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 access_details['accessible_free'] = access_free
                 if self.maturity <= 2:
                     self.maturity = 2
+                self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
                 self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
             #TODO assume access_level = restricted if access_rights provided?
 
