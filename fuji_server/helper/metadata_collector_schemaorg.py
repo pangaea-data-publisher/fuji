@@ -174,6 +174,10 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                     if ext_meta.get('@graph'):
                         self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
                         ext_meta = self.compact_jsonld(ext_meta)
+
+                    if isinstance(ext_meta.get('@type'), list):
+                        ext_meta['@type'] = ext_meta.get('@type')[0]
+
                     if not ext_meta.get('@type'):
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD but seems to be a schema.org object but has no context type')

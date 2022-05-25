@@ -1034,8 +1034,6 @@ class FAIRCheck:
                         self.merge_metadata(ore_dict,metadata_link['url'],source_ore,ore_atom_collector.getContentType(), 'http://www.openarchives.org/ore/terms','http://www.openarchives.org/ore/terms')
 
                 elif re.search(r'[+\/]xml$', str(metadata_link['type'])):
-                    print('XML LT: ', metadata_link)
-
                     #elif metadata_link['type'] in ['text/xml', 'application/xml', 'application/x-ddi-l+xml',
                     #                               'application/x-ddametadata+xml']:
                     self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' +

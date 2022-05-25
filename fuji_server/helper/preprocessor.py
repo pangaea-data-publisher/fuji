@@ -158,18 +158,27 @@ class Preprocessor(object):
                     schemauri = schemadict.get('@id')
                     if str(schemauri).startswith('schema:'):
                         cls.schema_org_context.append(str(context).lower())
+            bioschema_context = cls.get_schema_org_creativeworks()
+            cls.schema_org_context.extend(bioschema_context)
+            cls.schema_org_context = list(set(cls.schema_org_context))
+
     @classmethod
-    def retrieve_schema_org_creativeworks(cls):
+    def retrieve_schema_org_creativeworks(cls, include_bioschemas=True):
         data=[]
         cw_path = os.path.join(cls.fuji_server_dir, 'data', 'creativeworktypes.txt')
         with open(cw_path) as f:
             data = f.read().splitlines()
+        if include_bioschemas:
+            bs_path = os.path.join(cls.fuji_server_dir, 'data', 'bioschemastypes.txt')
+            with open(bs_path) as f:
+                bdata = f.read().splitlines()
+                data.extend(bdata)
         cls.schema_org_creativeworks = [item.lower() for item in data]
 
     @classmethod
-    def get_schema_org_creativeworks(cls):
+    def get_schema_org_creativeworks(cls, include_bioschemas=True):
         if not cls.schema_org_creativeworks:
-            cls.retrieve_schema_org_creativeworks()
+            cls.retrieve_schema_org_creativeworks(include_bioschemas)
         return cls.schema_org_creativeworks
 
     @classmethod
