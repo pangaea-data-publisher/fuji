@@ -54,7 +54,7 @@ class IdentifierHelper:
         if self.identifier and isinstance(self.identifier, str):
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
                 #workaround to identify nbn urns given together with standard resolver urls:
-                if 'urn:' in self.identifier:
+                if 'urn:' in self.identifier and not self.identifier.startswith('urn:'):
                     try:
                         urnsplit = self.identifier.split(r'(urn:(?:nbn|doi|lex|):[a-z]+)',re.IGNORECASE)
                         if len(urnsplit) > 1:
