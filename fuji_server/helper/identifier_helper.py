@@ -35,14 +35,38 @@ class IdentifierHelper:
     identifier_url = None
     identifier = None
     method = 'idutils'
+    resolver = None
     is_persistent = False
+    URN_RESOLVER = {'urn:doi:': 'https://dx.doi.org/',
+                    'urn:lex:br':'https://www.lexml.gov.br/',
+                    'urn:nbn:de':'https://nbn-resolving.org/',
+                    'urn:nbn:se':'https://urn.kb.se/resolve?urn=',
+                    'urn:nbn:at':'https://resolver.obvsg.at/',
+                    'urn:nbn:hr':'https://urn.nsk.hr/',
+                    'urn:nbn:no':'https://urn.nb.no/',
+                    'urn:nbn:fi':'https://urn.fi/',
+                    'urn:nbn:it':'https://nbn.depositolegale.it/',
+                    'urn:nbn:nl':'https://www.persistent-identifier.nl/'}
 
     def __init__(self, idstring):
         self.identifier = idstring
         self.normalized_id = self.identifier
         if self.identifier and isinstance(self.identifier, str):
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
-                #workaround to resolve lsids:
+                #workaround to identify nbn urns given together with standard resolver urls:
+                if 'urn:' in self.identifier:
+                    try:
+                        urnsplit = self.identifier.split(r'(urn:(?:nbn|doi|lex|):[a-z]+)',re.IGNORECASE)
+                        if len(urnsplit) > 1:
+                            urnid = urnsplit[1]
+                            candidateurn = urnid+str(urnsplit[2])
+                            candresolver = re.sub(r'https?://','',urnsplit[0])
+                            if candresolver in self.URN_RESOLVER.values():
+                                self.resolver = candresolver
+                                self.identifier = candidateurn
+                    except Exception as e:
+                        print('URN split error',e)
+                   #workaround to resolve lsids:
                 #idutils.LANDING_URLS['lsid'] ='http://www.lsid.info/resolver/?lsid={pid}'
                 #workaround to recognize https purls and arks
                 if 'https://purl.' in self.identifier or '/ark:' in self.identifier:
