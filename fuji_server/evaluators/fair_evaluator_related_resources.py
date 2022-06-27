@@ -58,6 +58,11 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
             self.fuji.related_resources = [
                 item for item in self.fuji.related_resources if item.get('related_resource') != self.fuji.pid_url
             ]
+            #uniquify
+            try:
+                self.fuji.related_resources = [dict(ry) for ry in set(tuple(rx.items()) for rx in self.fuji.related_resources)]
+            except:
+                pass
 
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
