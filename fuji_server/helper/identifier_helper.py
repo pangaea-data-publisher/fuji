@@ -37,16 +37,37 @@ class IdentifierHelper:
     method = 'idutils'
     resolver = None
     is_persistent = False
-    URN_RESOLVER = {'urn:doi:': 'https://dx.doi.org/',
-                    'urn:lex:br':'https://www.lexml.gov.br/',
-                    'urn:nbn:de':'https://nbn-resolving.org/',
-                    'urn:nbn:se':'https://urn.kb.se/resolve?urn=',
-                    'urn:nbn:at':'https://resolver.obvsg.at/',
-                    'urn:nbn:hr':'https://urn.nsk.hr/',
-                    'urn:nbn:no':'https://urn.nb.no/',
-                    'urn:nbn:fi':'https://urn.fi/',
-                    'urn:nbn:it':'https://nbn.depositolegale.it/',
-                    'urn:nbn:nl':'https://www.persistent-identifier.nl/'}
+    URN_RESOLVER = {'urn:doi:': 'dx.doi.org/',
+                    'urn:lex:br':'www.lexml.gov.br/',
+                    'urn:nbn:de':'nbn-resolving.org/',
+                    'urn:nbn:se':'urn.kb.se/resolve?urn=',
+                    'urn:nbn:at':'resolver.obvsg.at/',
+                    'urn:nbn:hr':'urn.nsk.hr/',
+                    'urn:nbn:no':'urn.nb.no/',
+                    'urn:nbn:fi':'urn.fi/',
+                    'urn:nbn:it':'nbn.depositolegale.it/',
+                    'urn:nbn:nl':'www.persistent-identifier.nl/'}
+
+    #check if the urn is a urn plus resolver URL
+    def check_resolver_urn(self, idstring):
+        ret = False
+        if 'urn:' in idstring and not idstring.startswith('urn:'):
+            try:
+                urnsplit = re.split(r'(urn:(?:nbn|doi|lex|):[a-z]+)', idstring, re.IGNORECASE)
+                if len(urnsplit) > 1:
+                    urnid = urnsplit[1]
+                    candidateurn = urnid + str(urnsplit[2])
+                    candresolver = re.sub(r'https?://', '', urnsplit[0])
+                    if candresolver in self.URN_RESOLVER.values():
+                        if idutils.is_urn(candidateurn):
+                            self.identifier_schemes = ['url', 'urn']
+                            self.preferred_schema = 'urn'
+                            self.normalized_id = candidateurn
+                            self.identifier_url = 'https://' + candresolver + candidateurn
+                            ret = True
+            except Exception as e:
+                print('URN parsing error', e)
+        return ret
 
     def __init__(self, idstring):
         self.identifier = idstring
@@ -54,19 +75,8 @@ class IdentifierHelper:
         if self.identifier and isinstance(self.identifier, str):
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
                 #workaround to identify nbn urns given together with standard resolver urls:
-                if 'urn:' in self.identifier and not self.identifier.startswith('urn:'):
-                    try:
-                        urnsplit = self.identifier.split(r'(urn:(?:nbn|doi|lex|):[a-z]+)',re.IGNORECASE)
-                        if len(urnsplit) > 1:
-                            urnid = urnsplit[1]
-                            candidateurn = urnid+str(urnsplit[2])
-                            candresolver = re.sub(r'https?://','',urnsplit[0])
-                            if candresolver in self.URN_RESOLVER.values():
-                                self.resolver = candresolver
-                                self.identifier = candidateurn
-                    except Exception as e:
-                        print('URN split error',e)
-                   #workaround to resolve lsids:
+                self.check_resolver_urn(self.identifier)
+                 #workaround to resolve lsids:
                 #idutils.LANDING_URLS['lsid'] ='http://www.lsid.info/resolver/?lsid={pid}'
                 #workaround to recognize https purls and arks
                 if 'https://purl.' in self.identifier or '/ark:' in self.identifier:
@@ -76,7 +86,9 @@ class IdentifierHelper:
                 self.identifier = self.identifier.replace('/ark://', '/ark:/')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
                 # idutils check
-                self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
+                if not self.identifier_schemes:
+                    self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
+
                 # identifiers.org check
                 if not self.identifier_schemes:
                     self.method = 'identifiers.org'
@@ -99,8 +111,10 @@ class IdentifierHelper:
                                 if 'url' in self.identifier_schemes:  # ['doi', 'url']
                                     self.identifier_schemes.remove('url')
                             self.preferred_schema = self.identifier_schemes[0]
-                            self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
-                        self.identifier_url = idutils.to_url(self.identifier, self.preferred_schema)
+                            if not self.normalized_id:
+                                self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
+                            if not self.identifier_url:
+                                self.identifier_url = idutils.to_url(self.identifier, self.preferred_schema)
                 if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
                 ):
                     self.is_persistent = True
