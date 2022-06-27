@@ -89,6 +89,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         content_link['header_content_type'] = response.getheader('Content-Type')
                         content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
                         content_link['header_content_length'] = response.getheader('Content-Length')
+
                         content_header_link_set = set(self.fuji.extend_mime_type_list(content_link['header_content_type']))
                         content_link_set = set(self.fuji.extend_mime_type_list(content_link.get('type')))
                         if not (content_link_set & content_header_link_set):
