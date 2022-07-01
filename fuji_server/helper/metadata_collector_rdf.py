@@ -97,6 +97,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #self.rdf_graph = rdf_graph
         super().__init__(logger=loggerinst)
 
+    def getAllURIS(self, graph):
+        founduris = []
+        for link in list(graph.objects()):
+            if isinstance(link, rdflib.term.URIRef):
+                founduris.append(str(link))
+        return founduris
+
     def set_namespaces(self,graph):
         namespaces = {}
         known_namespace_regex = [r'https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/',
@@ -199,6 +206,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 DCAT = Namespace('http://www.w3.org/ns/dcat#')
                 if self.content_type == 'application/ld+json':
                     self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
+                    #dict (from extruct)
                     if isinstance(rdf_response, dict):
                         try:
                             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
@@ -206,8 +214,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                                                              mapping=Mapper.SCHEMAORG_MAPPING,
                                                                              pidurl=None, source = MetaDataCollectorSchemaOrg.getEnumSourceNames().RDF_TYPED_LINKS.value)
                             source_schemaorg, rdf_metadata = schemaorg_collector.parse_metadata()
-                            schemaorg_collector.getNamespacesfromIRIs(rdf_metadata)
+                            schemaorg_collector.setLinkedNamespaces(rdf_metadata)
                             self.namespaces = schemaorg_collector.namespaces
+                            self.setLinkedNamespaces(str(rdf_response))
                             #wrong one given above
                         except Exception as e:
                             print(e)
@@ -226,7 +235,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             jsonldgraph = rdflib.ConjunctiveGraph()
                             rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
                             rdf_response_graph = jsonldgraph
-
+                            self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                         except Exception as e:
                             print('JSON-LD parsing error', e)
                             self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
@@ -242,6 +251,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     graph = rdflib.Graph(identifier = self.target_url)
                                     graph.parse(data=rdf_response, format=parseformat[1])
                                     rdf_response_graph = graph
+                                    self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
                                     RDFparsed = True
                                 except Exception as e:
                                     errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
@@ -291,8 +301,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             if (len(g) > 1):
                 self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
                 r = g.query(Mapper.GENERIC_SPARQL.value)
-                #this will only return the first result set (row)
-                for row in sorted(r):
+                for row in r:
                     for l, v in row.asdict().items():
                         if l is not None:
                             if l in [

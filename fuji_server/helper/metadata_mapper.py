@@ -233,8 +233,8 @@ class Mapper(Enum):
             OPTIONAL {?dataset  dct:replaces ?replaces}
             OPTIONAL {?dataset  dct:hasPart ?hasPart}
             OPTIONAL {?dataset  dct:requires ?requires}
-            OPTIONAL {?dataset  dct:isRequiredBy ?isRequiredBy}
-            }
+            OPTIONAL {?dataset  dct:isRequiredBy ?isRequiredBy}            
+            }LIMIT 1
             """
 
     #################  XML Mappings ###############
