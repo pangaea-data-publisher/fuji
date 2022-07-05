@@ -25,6 +25,7 @@
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
+from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
 class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
@@ -41,7 +42,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         excluded from the evaluation.
     """
     def evaluate(self):
-
+        lov_helper = linked_vocab_helper(self.fuji.LINKED_VOCAB_INDEX)
         self.result = SemanticVocabulary(id=self.metric_number,
                                          metric_identifier=self.metric_identifier,
                                          metric_name=self.metric_name)
@@ -68,30 +69,43 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         score = 0
         test_status = 'fail'
         # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
-        if self.fuji.namespace_uri:
+        if self.fuji.namespace_uri or self.fuji.linked_namespace_uri:
             self.maturity = 1
             self.setEvaluationCriteriumScore('FsF-I1-02M-1', 0, 'pass')
+        exists = []
+        if self.fuji.namespace_uri:
+            self.logger.info('{0} : Check if the remaining namespace(s) exist(s) in a LOD registry -: {1}'.format(
+                self.metric_identifier, self.fuji.namespace_uri))
             lod_namespaces = [d['namespace'].strip().rstrip('/#') for d in self.fuji.VOCAB_NAMESPACES if 'namespace' in d]
             exists = list(set(lod_namespaces) & set(self.fuji.namespace_uri))
-            self.logger.info('{0} : Check the remaining namespace(s) exists in LOD -: {1}'.format(
-                self.metric_identifier, exists))
-            if exists:
-                score = self.total_score
-                self.setEvaluationCriteriumScore('FsF-I1-02M-2', 1, 'pass')
-                self.maturity = 3
-                self.logger.log(self.fuji.LOG_SUCCESS,
-                                '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, exists))
-                for e in exists:
-                    outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
-            else:
-                self.logger.warning('{0} : NO vocabulary namespace match is found'.format(self.metric_identifier))
-
-            not_exists = [x for x in self.fuji.namespace_uri if x not in exists]
-            if not_exists:
-                self.logger.warning(
-                    '{0} : Vocabulary namespace (s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
-                    format(self.metric_identifier, not_exists[:10]))
+            for ns_uri in self.fuji.namespace_uri:
+                lov_entry = lov_helper.get_linked_vocab_by_iri(ns_uri, isnamespaceIRI=True)
+                if lov_entry and ns_uri not in exists:
+                   exists.append(ns_uri)
+        if self.fuji.linked_namespace_uri:
+            self.logger.info('{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
+                self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
+            for linked_ns in self.fuji.linked_namespace_uri:
+                if linked_ns not in exists:
+                    exists.append(linked_ns)
+        if exists:
+            score = self.total_score
+            self.setEvaluationCriteriumScore('FsF-I1-02M-2', 1, 'pass')
+            self.maturity = 3
+            self.logger.log(self.fuji.LOG_SUCCESS,
+                            '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, exists))
+            for e in exists:
+                outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
         else:
+            self.logger.warning('{0} : NO vocabulary namespace match is found'.format(self.metric_identifier))
+
+        not_exists = [x for x in self.fuji.namespace_uri if x not in exists]
+        if not_exists:
+            self.logger.warning(
+                '{0} : Vocabulary namespace (s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
+                format(self.metric_identifier, not_exists[:10]))
+
+        if not self.fuji.namespace_uri and not self.fuji.linked_namespace_uri:
             self.logger.warning('{0} : NO namespaces of semantic vocabularies found in the metadata'.format(
                 self.metric_identifier))
 
