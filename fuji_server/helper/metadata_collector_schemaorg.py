@@ -151,7 +151,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
             requestHelper.setAcceptType(AcceptTypes.schemaorg)
             neg_source, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
         if isinstance(ext_meta, dict):
-            self.getNamespacesfromIRIs(ext_meta)
+            self.setLinkedNamespaces(ext_meta)
             self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(
                 self.source_name))
             # TODO check syntax - not ending with /, type and @type
