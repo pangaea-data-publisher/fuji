@@ -10,7 +10,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 1.2.0
+  version: 1.5.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -88,6 +88,41 @@ paths:
         "404":
           description: Object not found
       x-openapi-router-controller: fuji_server.controllers.fair_metric_controller
+  /harvest:
+    post:
+      tags:
+      - metadata
+      security:
+        - basicAuth: []
+      description: Harvest metadata of a data object based on its identifier
+      operationId: harvest_by_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/harvest'
+            example:
+              object_identifier: https://doi.org/10.1594/PANGAEA.908011
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HarvestResults'
+        "400":
+          description: Invalid identifier supplied
+        "401":
+          description: Authentication information is missing or invalid
+          headers:
+            WWW_Authenticate:
+              style: simple
+              explode: false
+              schema:
+                type: string
+        "404":
+          description: Object not found
+      x-openapi-router-controller: fuji_server.controllers.harvest_controller
 components:
   securitySchemes:
     basicAuth:
@@ -95,6 +130,31 @@ components:
       scheme: basic
       x-basicInfoFunc: fuji_server.controllers.authorization_controller.checkUser
   schemas:
+    HarvestResults:
+      type: object
+      properties:
+        target_uri:
+          type: string
+        metadata:
+          type: array
+          items:
+            type: object
+            properties:
+              method:
+                type: string
+              url:
+                type: string
+              format:
+                type: string
+              schema:
+                type: string
+              namespaces:
+                type: array
+                items:
+                  type: string
+              metadata:
+                type: object
+                additionalProperties: true
     FAIRResults:
       type: object
       properties:
@@ -586,6 +646,14 @@ components:
           deprecated: true
           type: string
           description: (Deprecated) The URL of the OAI-PMH data-provider
+    harvest:
+      required:
+      - object_identifier
+      type: object
+      properties:
+        object_identifier:
+          type: string
+          description: The full identifier of data object that needs to be harvested
     IdentifierIncluded_output_inner:
       type: object
       properties:
