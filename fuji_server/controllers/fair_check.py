@@ -76,6 +76,7 @@ from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvide
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.identifier_helper import IdentifierHelper
+from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
 class FAIRCheck:
@@ -100,6 +101,7 @@ class FAIRCheck:
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
+    LINKED_VOCAB_INDEX = {}
     FUJI_VERSION = '1.5.0'
 
     def __init__(self,
@@ -150,6 +152,7 @@ class FAIRCheck:
         self.community_standards = []
         self.community_standards_uri = {}
         self.namespace_uri = []
+        self.linked_namespace_uri = {}
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy(
         )  # all metadata elements required for FUJI metrics
         self.related_resources = []
@@ -182,6 +185,7 @@ class FAIRCheck:
         self.extruct = None
         self.extruct_result = {}
         self.tika_content_types_list = []
+        self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
 
     @classmethod
     def load_predata(cls):
@@ -216,6 +220,8 @@ class FAIRCheck:
             cls.VALID_RESOURCE_TYPES = Preprocessor.get_resource_types()
         if not cls.IDENTIFIERS_ORG_DATA:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
+        if not cls.LINKED_VOCAB_INDEX:
+            cls.LINKED_VOCAB_INDEX = Preprocessor.get_linked_vocab_index()
         Preprocessor.set_mime_types()
         #not needed locally ... but init class variable
         #Preprocessor.get_google_data_dois()
@@ -461,6 +467,7 @@ class FAIRCheck:
                 schemaorg_dict = self.exclude_null(schemaorg_dict)
                 if schemaorg_dict:
                     self.namespace_uri.extend(schemaorg_collector.namespaces)
+                    self.linked_namespace_uri.update(schemaorg_collector.getLinkedNamespaces())
                     self.metadata_sources.append((source_schemaorg, 'embedded'))
                     if schemaorg_dict.get('related_resources'):
                         self.related_resources.extend(schemaorg_dict.get('related_resources'))
@@ -847,6 +854,7 @@ class FAIRCheck:
                 if len(negotiated_xml_collector.getNamespaces()) > 0:
                     self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
                     neg_namespace = negotiated_xml_collector.getNamespaces()[0]
+                self.linked_namespace_uri.update(negotiated_xml_collector.getLinkedNamespaces())
                 if metadata_neg_dict:
                     self.metadata_sources.append((source_neg_xml, 'negotiated'))
                     #if metadata_neg_dict.get('related_resources'):
@@ -1049,6 +1057,8 @@ class FAIRCheck:
                             lkd_namespace = linked_xml_collector.getNamespaces()[0]
                             self.namespace_uri.extend(linked_xml_collector.getNamespaces())
                             #print(lkd_namespace)
+                            print('XML LINKED NS',linked_xml_collector.getLinkedNamespaces())
+                        self.linked_namespace_uri.update(linked_xml_collector.getLinkedNamespaces())
                         if linked_xml_dict:
                             self.metadata_sources.append((source_linked_xml, 'linked'))
                             #if linked_xml_dict.get('related_resources'):
@@ -1082,7 +1092,12 @@ class FAIRCheck:
         if type(dt) is dict:
             return dict((k, self.exclude_null(v)) for k, v in dt.items() if v and self.exclude_null(v))
         elif type(dt) is list:
-            return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
+            try:
+                return list(set([self.exclude_null(v) for v in dt if v and self.exclude_null(v)]))
+            except Exception as e:
+                return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
+        elif type(dt) is str:
+            return dt.strip()
         else:
             return dt
 
@@ -1100,8 +1115,9 @@ class FAIRCheck:
         highest = process.extractOne(value,
                                      FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS_LIST,
                                      scorer=fuzz.token_sort_ratio)
-        if highest[1] > 90:
-            found = highest[0]
+        if highest:
+            if highest[1] > 90:
+                found = highest[0]
         return found
 
     def check_unique_identifier(self):
