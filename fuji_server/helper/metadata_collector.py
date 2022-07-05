@@ -29,6 +29,7 @@ from urlextract import URLExtract
 from fuji_server.helper import metadata_mapper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
 class MetaDataCollector(object):
@@ -114,8 +115,12 @@ class MetaDataCollector(object):
         self.metadata_mapping = mapping
         self.logger = logger
         self.target_metadata = {}
+        #namespaces used in the declaration parts
         self.namespaces = []
+        #namespaces recognized in lonked URIs
+        self.linked_namespaces = {}
         self.content_type = None
+        self.uris = []
 
     @classmethod
     def getEnumSourceNames(cls) -> Sources:
@@ -145,20 +150,35 @@ class MetaDataCollector(object):
     def getNamespaces(self):
         return self.namespaces
 
+    def getLinkedNamespaces(self):
+        return self.linked_namespaces
+
     def getContentType(self):
         return self.content_type
 
-    def getNamespacesfromIRIs(self, meta_source):
+    def setLinkedNamespaces(self, meta_source):
         """Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
 
         Parameters
         ----------
-        meta_source:str
+        meta_source:str or lst
         """
         extractor = URLExtract()
-        namespaces = set()
+        namespaces = {}
+        found_urls = []
+        lov_helper = linked_vocab_helper(Preprocessor.linked_vocab_index)
         if meta_source is not None:
-            for url in set(extractor.gen_urls(str(meta_source))):
+            if isinstance(meta_source, str):
+                found_urls = set(extractor.gen_urls(str(meta_source)))
+            elif isinstance(meta_source, list):
+                found_urls = meta_source
+            for url in found_urls:
+                if isinstance(url, str):
+                    found_lov = lov_helper.get_linked_vocab_by_iri(url)
+                    if found_lov:
+                        self.linked_namespaces[found_lov.get('namespace')] = found_lov
+
+                '''
                 namespace_candidate = url.rsplit('/', 1)[0]
                 if namespace_candidate != url:
                     namespaces.add(namespace_candidate)
@@ -166,11 +186,15 @@ class MetaDataCollector(object):
                     namespace_candidate = url.rsplit('#', 1)[0]
                     if namespace_candidate != url:
                         namespaces.add(namespace_candidate)
-
+                
+            print('NS : ', namespaces)
             vocabs = Preprocessor.getLinkedVocabs()
+
             lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
+            
             for ns in namespaces:
                 if ns + '/' in lod_namespaces:
                     self.namespaces.append(ns + '/')
                 elif ns + '#' in lod_namespaces:
                     self.namespaces.append(ns + '#')
+            '''
