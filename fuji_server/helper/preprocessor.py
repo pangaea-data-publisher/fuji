@@ -30,6 +30,7 @@ import os
 from typing import Dict, Any
 from urllib.parse import urlparse
 import requests
+from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
 class Preprocessor(object):
@@ -60,6 +61,7 @@ class Preprocessor(object):
     open_file_formats = {}
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
+    linked_vocab_index = {}
     default_namespaces = []
     standard_protocols = {}
     resource_types = []
@@ -383,6 +385,20 @@ class Preprocessor(object):
             ns = [line.rstrip().rstrip('/#') for line in f]
         if ns:
             cls.default_namespaces = ns
+
+    @classmethod
+    def get_linked_vocab_index(cls):
+        if not cls.linked_vocab_index:
+            cls.retrieve_linked_vocab_index()
+        return cls.linked_vocab_index
+
+    @classmethod
+    def retrieve_linked_vocab_index(cls):
+        lov_helper = linked_vocab_helper()
+        lov_helper.set_linked_vocab_index()
+        cls.linked_vocab_index = lov_helper.linked_vocab_index
+
+
 
     @classmethod
     def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
