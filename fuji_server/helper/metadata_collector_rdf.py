@@ -363,62 +363,69 @@ class MetaDataCollectorRdf(MetaDataCollector):
         meta = dict()
         #default sparql
         meta = self.get_default_metadata(g)
-
         self.logger.info('FsF-F2-01M : Trying to get some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph')
-        meta['object_identifier'] = (g.value(item, DC.identifier) or
-                                     g.value(item, DCTERMS.identifier) or
-                                     g.value(item, SDO.identifier))
+        if not meta.get('object_identifier'):
+            meta['object_identifier'] = (g.value(item, DC.identifier) or
+                                         g.value(item, DCTERMS.identifier) or
+                                         g.value(item, SDO.identifier))
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
-
-        meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
-        meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or
-                           g.value(item, SMA.description) or g.value(item, SDO.description)
-                           or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
-        meta['publication_date'] = str(g.value(item, DC.date) or g.value(item, DCTERMS.date) or
-                                    g.value(item, DCTERMS.issued)
-                                    or  g.value(item, SMA.datePublished) or  g.value(item, SMA.dateCreated)
-                                    or g.value(item, SDO.datePublished) or g.value(item, SDO.dateCreated)
-                                    )
-        meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
-                             g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
-        meta['keywords'] = []
-        for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
-                        list(g.objects(item, DC.subject))
-                        or list(g.objects(item, SMA.keywords)) or list(g.objects(item, SDO.keywords))):
-            meta['keywords'].append(str(keyword))
+        if not meta.get('title'):
+            meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
+        if not meta.get('summary'):
+            meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or
+                               g.value(item, SMA.description) or g.value(item, SDO.description)
+                               or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
+        if not meta.get('publication_date'):
+            meta['publication_date'] = str(g.value(item, DC.date) or g.value(item, DCTERMS.date) or
+                                        g.value(item, DCTERMS.issued)
+                                        or  g.value(item, SMA.datePublished) or  g.value(item, SMA.dateCreated)
+                                        or g.value(item, SDO.datePublished) or g.value(item, SDO.dateCreated)
+                                        )
+        if not meta.get('publisher'):
+            meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
+                                 g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
+        if not meta.get('keywords'):
+            meta['keywords'] = []
+            for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
+                            list(g.objects(item, DC.subject))
+                            or list(g.objects(item, SMA.keywords)) or list(g.objects(item, SDO.keywords))):
+                meta['keywords'].append(str(keyword))
         #TODO creators, contributors
-        meta['creator'] = str(g.value(item, DC.creator))
-        meta['license'] = str(g.value(item, DCTERMS.license))
-        meta['related_resources'] = []
-        meta['access_level'] = str(g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
-                                g.value(item, DC.rights)
-                                or g.value(item, SDO.conditionsOfAccess) or g.value(item, SMA.conditionsOfAccess) )
-        for dctrelationtype in [
-                DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf,
-                DCTERMS.hasVersion, DCTERMS.replaces, DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires,
-                DCTERMS.isRequiredBy
-        ]:
-            dctrelation = g.value(item, dctrelationtype)
-            if dctrelation:
-                meta['related_resources'].append({
-                    'related_resource': str(dctrelation),
-                    'relation_type': str(dctrelationtype)
-                })
-        for schemarelationtype in [
-            SMA.isPartOf,  SMA.includedInDataCatalog, SMA.subjectOf, SMA.isBasedOn, SMA.sameAs,
-            SDO.isPartOf, SDO.includedInDataCatalog, SDO.subjectOf, SDO.isBasedOn, SDO.sameAs
-        ]:
-            schemarelation = g.value(item, schemarelationtype)
-            if schemarelation:
-                meta['related_resources'].append({
-                    'related_resource': str(schemarelation),
-                    'relation_type': str(schemarelationtype)
-                })
-
+        if not meta.get('creator'):
+            meta['creator'] = str(g.value(item, DC.creator))
+        if not meta.get('license'):
+            meta['license'] = str(g.value(item, DCTERMS.license))
+        if not meta.get('access_level'):
+            meta['access_level'] = str(g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
+                                    g.value(item, DC.rights)
+                                    or g.value(item, SDO.conditionsOfAccess) or g.value(item, SMA.conditionsOfAccess) )
+        if not meta.get('related_resources'):
+            meta['related_resources'] = []
+            for dctrelationtype in [
+                    DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf,
+                    DCTERMS.hasVersion, DCTERMS.replaces, DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires,
+                    DCTERMS.isRequiredBy
+            ]:
+                dctrelation = g.value(item, dctrelationtype)
+                if dctrelation:
+                    meta['related_resources'].append({
+                        'related_resource': str(dctrelation),
+                        'relation_type': str(dctrelationtype)
+                    })
+            for schemarelationtype in [
+                SMA.isPartOf,  SMA.includedInDataCatalog, SMA.subjectOf, SMA.isBasedOn, SMA.sameAs,
+                SDO.isPartOf, SDO.includedInDataCatalog, SDO.subjectOf, SDO.isBasedOn, SDO.sameAs
+            ]:
+                schemarelation = g.value(item, schemarelationtype)
+                if schemarelation:
+                    meta['related_resources'].append({
+                        'related_resource': str(schemarelation),
+                        'relation_type': str(schemarelationtype)
+                    })
 
         if meta:
             meta['object_type'] = type
