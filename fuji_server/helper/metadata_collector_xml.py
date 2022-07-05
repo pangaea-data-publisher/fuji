@@ -20,6 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import idutils
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
@@ -68,6 +69,31 @@ class MetaDataCollectorXML(MetaDataCollector):
         self.link_type = link_type
         self.pref_mime_type = pref_mime_type
         super().__init__(logger=loggerinst)
+
+    def getAllURIs(self, metatree):
+        founduris = []
+        try:
+            #all text element values
+            elr = metatree.xpath('//text()')
+            for el in elr:
+                if str(el).strip():
+                    if el not in founduris:
+                        if idutils.is_url(el) or idutils.is_urn(el):
+                            founduris.append(str(el))
+            #all attribute values
+            alr = metatree.xpath('//@*')
+            for al in alr:
+                if al not in founduris:
+                    if idutils.is_url(al) or idutils.is_urn(al):
+                        founduris.append(str(al))
+            founduris =  list(set(founduris))
+            print('FOUND URIS in XML: ', founduris)
+            #xpath
+            # //text()
+            # //@*
+        except Exception as e:
+            print('getAllURIs XML error: '+str(e))
+        return founduris
 
     def parse_metadata(self):
         """Parse the XML metadata from the data.
@@ -147,6 +173,9 @@ class MetaDataCollectorXML(MetaDataCollector):
                         'FsF-F2-01M : XML parsing failed -: '+str(e)
                     )
                 if metatree is not None:
+                    #self.setURIValues(metatree)
+                    #print(list(set(self.getURIValues())))
+
                     self.logger.info(
                         'FsF-F2-01M : Found some XML properties, trying to identify (domain) specific format to parse'
                     )
@@ -190,9 +219,8 @@ class MetaDataCollectorXML(MetaDataCollector):
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info('FsF-F2-01M : Identified DataCite XML based on namespace')
                     #print('XML Details: ',(self.target_url,root_namespace, root_element))
-                    f = open("xml.txt", "a")
-                    f.write(str(self.target_url)+'\t'+str(root_namespace)+'\t'+str(root_element)+'\r\n')
-                    f.close()
+                    linkeduris = self.getAllURIs(metatree)
+                    self.setLinkedNamespaces(linkeduris)
                     if xml_mapping is None:
                         self.logger.info(
                             'FsF-F2-01M : Could not identify (domain) specific XML format to parse'
