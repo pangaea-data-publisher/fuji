@@ -71,7 +71,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         # test if exists in imported list, and the namespace is assumed to be active as it is tested during the LOD import.
         if self.fuji.namespace_uri or self.fuji.linked_namespace_uri:
             self.maturity = 1
-            self.setEvaluationCriteriumScore('FsF-I1-02M-1', 0, 'pass')
+            self.setEvaluationCriteriumScore('FsF-I2-01M-1', 0, 'pass')
         exists = []
         if self.fuji.namespace_uri:
             self.logger.info('{0} : Check if the remaining namespace(s) exist(s) in a LOD registry -: {1}'.format(
@@ -90,7 +90,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     exists.append(linked_ns)
         if exists:
             score = self.total_score
-            self.setEvaluationCriteriumScore('FsF-I1-02M-2', 1, 'pass')
+            self.setEvaluationCriteriumScore('FsF-I2-01M-2', 1, 'pass')
             self.maturity = 3
             self.logger.log(self.fuji.LOG_SUCCESS,
                             '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, exists))

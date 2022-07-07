@@ -102,7 +102,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '1.5.0'
+    FUJI_VERSION = '2.0.0'
 
     def __init__(self,
                  uid,
@@ -769,18 +769,19 @@ class FAIRCheck:
 
     def get_html_xml_links(self):
         xmllinks=[]
-        try:
-            soup = BeautifulSoup(self.landing_html, features="html.parser")
-            links = soup.findAll('a')
-            if links:
-                for link in links:
-                    if link.get('href'):
-                        linkparts = urlparse(link.get('href'))
-                        if str(linkparts.path).endswith('.xml'):
-                            xmllinks.append({'source': 'scraped', 'url':str(link.get('href')).strip(),'type': 'text/xml','rel': 'href' })
-        except Exception as e:
-            print('html links error: '+str(e))
-            pass
+        if self.landing_html:
+            try:
+                soup = BeautifulSoup(self.landing_html, features="html.parser")
+                links = soup.findAll('a')
+                if links:
+                    for link in links:
+                        if link.get('href'):
+                            linkparts = urlparse(link.get('href'))
+                            if str(linkparts.path).endswith('.xml'):
+                                xmllinks.append({'source': 'scraped', 'url':str(link.get('href')).strip(),'type': 'text/xml','rel': 'href' })
+            except Exception as e:
+                print('html links error: '+str(e))
+                pass
         return xmllinks
 
     def get_guessed_xml_link(self):
@@ -1190,7 +1191,7 @@ class FAIRCheck:
 
     def check_semantic_vocabulary(self):
         semantic_vocabulary_check = FAIREvaluatorSemanticVocabulary(self)
-        semantic_vocabulary_check.set_metric('FsF-I1-02M', metrics=FAIRCheck.METRICS)
+        semantic_vocabulary_check.set_metric('FsF-I2-01M', metrics=FAIRCheck.METRICS)
         return semantic_vocabulary_check.getResult()
 
     def check_metadata_preservation(self):

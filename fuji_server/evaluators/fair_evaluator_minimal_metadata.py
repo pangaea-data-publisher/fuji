@@ -45,7 +45,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.fuji.landing_url is None:
             self.logger.warning(
                 'FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
-
+        #Do we need this ?
         self.fuji.retrieve_metadata(self.fuji.extruct_result)
         self.result = CoreMetadata(id=self.metric_number,
                                    metric_identifier=self.metric_identifier,
