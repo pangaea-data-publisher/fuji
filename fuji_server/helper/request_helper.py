@@ -88,7 +88,7 @@ class RequestHelper:
         self.content_size = 0
         #maximum size which will be downloaded and analysed by F-UJU
         self.max_content_size = Preprocessor.max_content_size
-
+        self.checked_content_hash = None
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
             raise TypeError('type must be an instance of AcceptTypes enum')
@@ -146,6 +146,7 @@ class RequestHelper:
                                                         'User-Agent': 'F-UJI'})
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
+
                 except urllib.error.URLError as e:
                     '''
                     if e.code >= 500:
@@ -208,13 +209,21 @@ class RequestHelper:
                     checked_content_id = hash(str(self.redirect_url ) + str(self.content_type))
 
                     if checked_content_id in self.checked_content:
-                        source, self.parse_response, self.response_content, self.content_type, self.content_size, content_truncated = self.checked_content.get(checked_content_id)
+                        self.checked_content_hash = checked_content_id
+                        source = self.checked_content.get(checked_content_id).get('source')
+                        self.parse_response = self.checked_content.get(checked_content_id).get('parse_response')
+                        self.response_content = self.checked_content.get(checked_content_id).get('response_content')
+                        self.content_type = self.checked_content.get(checked_content_id).get('content_type')
+                        self.content_size = self.checked_content.get(checked_content_id).get('content_size')
+                        content_truncated = self.checked_content.get(checked_content_id).get('content_truncated')
                         self.logger.info('%s : Using Cached response content' % metric_id)
                     else:
                         content_truncated = False
                         if status_code == 200:
                             try:
-                                self.content_size = int(self.getResponseHeader().get('content-length'))
+                                self.content_size = int(self.getResponseHeader().get('Content-Length'))
+                                if not self.content_size:
+                                    self.content_size = int(self.getResponseHeader().get('content-length'))
                             except Exception as e:
                                 self.content_size = 0
                                 pass
@@ -350,7 +359,12 @@ class RequestHelper:
                                                 break
                                     break
                                 # cache downloaded content
-                                self.checked_content[checked_content_id] = (source, self.parse_response, self.response_content, self.content_type, self.content_size, content_truncated)
+                                self.checked_content[checked_content_id] = {'source':source,
+                                                                            'parse_response':self.parse_response,
+                                                                            'response_content':self.response_content,
+                                                                            'content_type':self.content_type,
+                                                                            'content_size':self.content_size,
+                                                                            'content_truncated':content_truncated}
                             else:
                                 self.logger.warning('{0} : Content-type is NOT SPECIFIED'.format(metric_id))
                         else:
