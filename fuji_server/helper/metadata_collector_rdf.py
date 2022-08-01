@@ -196,7 +196,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #if self.rdf_graph is None:
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.rdf)
+
         neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+        if requestHelper.checked_content_hash:
+            if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
+                requestHelper.response_content = None
+                self.logger.info('FsF-F2-01M : Ignoring RDF since content already has been parsed as XML')
+
         #required for metric knowledge representation
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
@@ -242,10 +248,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
+                    print('RDF parse format: ',parseformat)
                     if parseformat:
                         if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
                             RDFparsed = False
-                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s' % (self.target_url))
+                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parseformat[1]))
+                            badline = None
                             while not RDFparsed:
                                 try:
                                     graph = rdflib.Graph(identifier = self.target_url)
@@ -254,16 +262,23 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
                                     RDFparsed = True
                                 except Exception as e:
+                                    #<unknown>:74964:92: unclosed token
                                     errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
-                                    if errorlinematch:
-                                        badline = int(errorlinematch[1])
-                                        self.logger.warning(
-                                            'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
-                                        splitRDF = rdf_response.splitlines()
-                                        if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
-                                            rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                    if not errorlinematch:
+                                        errorlinematch = re.search(r'<unknown>:([0-9]+)',str(e))
+                                    if errorlinematch and parseformat[1] !='xml':
+                                        print('bad line in RDF', errorlinematch[1])
+                                        if  int(errorlinematch[1])+1 != badline:
+                                            badline = int(errorlinematch[1])
+                                            self.logger.warning(
+                                                'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
+                                            splitRDF = rdf_response.splitlines()
+                                            if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
+                                                rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                            else:
+                                                RDFparsed = True # end reached
                                         else:
-                                            RDFparsed = True # end reached
+                                            RDFparsed = True
                                     else:
                                         RDFparsed = True # give up
                                     if not RDFparsed:
