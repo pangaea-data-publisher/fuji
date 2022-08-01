@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fuji"
-version = "1.5.0"
+version = "2.0.1"
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 authors = [
     "Robert Huber <rhuber@marum.de>",
@@ -9,7 +9,7 @@ authors = [
 license = "MIT"
 #TODO: figure out why the README causes failure of building the docker container
 #readme = "README.md"
-homepage = "https://www.fairsfair.eu/f-uji-automated-fair-data-assessment-tool"
+homepage = "https://www.f-uji.net"
 repository = "https://github.com/pangaea-data-publisher/fuji"
 keywords=[
     "PANGAEA",
