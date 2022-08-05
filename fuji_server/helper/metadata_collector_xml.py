@@ -242,8 +242,8 @@ class MetaDataCollectorXML(MetaDataCollector):
             xml_metadata = {k: v for k, v in xml_metadata.items() if v}
 
         if xml_metadata:
-            print('Checked Content: ',requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked'))
-            requestHelper.checked_content.get(requestHelper.checked_content_hash)['checked'] = True
+            if requestHelper.checked_content_hash:
+                requestHelper.checked_content.get(requestHelper.checked_content_hash)['checked'] = True
             self.logger.info(
                 'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata))
             )

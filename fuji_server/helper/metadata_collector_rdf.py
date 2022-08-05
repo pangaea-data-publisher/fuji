@@ -248,7 +248,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
-                    print('RDF parse format: ',parseformat)
                     if parseformat:
                         if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
                             RDFparsed = False
@@ -267,7 +266,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     if not errorlinematch:
                                         errorlinematch = re.search(r'<unknown>:([0-9]+)',str(e))
                                     if errorlinematch and parseformat[1] !='xml':
-                                        print('bad line in RDF', errorlinematch[1])
                                         if  int(errorlinematch[1])+1 != badline:
                                             badline = int(errorlinematch[1])
                                             self.logger.warning(
