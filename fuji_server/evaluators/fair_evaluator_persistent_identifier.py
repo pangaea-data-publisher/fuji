@@ -90,6 +90,10 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                         self.logger.warning(
                             'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
                         )
+                    else:
+                        self.logger.info(
+                            'FsF-F1-02D : Verified PID found in metadata since it is resolving to user input URL domain'
+                        )
 
                         #self.fuji.repeat_pid_check = False
                 if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
