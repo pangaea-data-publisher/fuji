@@ -102,7 +102,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '2.0.1'
+    FUJI_VERSION = '2.0.2'
 
     def __init__(self,
                  uid,
@@ -728,18 +728,22 @@ class FAIRCheck:
                 self.signposting_header_links))
             # check if there is a cite-as signposting link
             signposting_pid = None
-            if self.pid_scheme is None:
-                signposting_pid_link = self.get_signposting_links('cite-as')
-                if signposting_pid_link:
-                    signposting_pid = signposting_pid_link[0].get('url')
-                if signposting_pid:
-                    signidhelper = IdentifierHelper(signposting_pid)
-                    found_id = signidhelper.preferred_schema
-                    if signidhelper.is_persistent:
+            signposting_pid_link_list = self.get_signposting_links('cite-as')
+            if signposting_pid_link_list:
+                for signposting_pid_link in signposting_pid_link_list:
+                    signposting_pid = signposting_pid_link.get('url')
+                    if signposting_pid:
                         self.logger.info(
                             'FsF-F1-02D : Found object identifier (cite-as) in signposting header links -:' + str(
-                                found_id))
-                        self.pid_scheme = found_id
+                                signposting_pid))
+                        if not signposting_pid_link.get('type'):
+                            self.logger.warning(
+                                'FsF-F1-02D : Found cite-as signposting links has no type attribute-:' + str(
+                                    signposting_pid))
+                        signidhelper = IdentifierHelper(signposting_pid)
+                        found_id = signidhelper.preferred_schema
+                        if signidhelper.is_persistent and self.pid_scheme is None:
+                                self.pid_scheme = found_id
 
     def get_html_typed_links(self, rel='item', allkeys=True):
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
@@ -974,6 +978,9 @@ class FAIRCheck:
         #signposting header links
         if self.get_signposting_links('describedby'):
             sign_header_links = self.get_signposting_links('describedby', False)
+            self.logger.info(
+                'FsF-F1-02D : Found metadata link as (describedby) signposting header links -:' + str(
+                    sign_header_links))
             self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING.value, 'signposting'))
 
         guessed_metadata_link = self.get_guessed_xml_link()
