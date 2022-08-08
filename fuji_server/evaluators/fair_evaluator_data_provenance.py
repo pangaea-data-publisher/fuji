@@ -87,7 +87,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
                         rm.get('related_resource')
                     })
         else:
-            self.logger.info('FsF-R1.2-01M : No provenance information found in metadata about related resources')
+            self.logger.warning('FsF-R1.2-01M : No provenance information found in metadata about related resources')
 
         if provenance_metadata_output.is_available:
             self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.2-01M : Found data creation-related provenance information')

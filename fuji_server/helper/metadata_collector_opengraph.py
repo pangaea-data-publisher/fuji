@@ -61,6 +61,6 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
                 self.namespaces.append('http://ogp.me/ns#')
             #else:
             #    self.logger.info('FsF-F2-01M : Non-metadata OpenGraph properties -:'+str(ext_meta))
-            self.logger.info('FsF-F2-01M : Could not identify OpenGraph metadata')
+            #self.logger.info('FsF-F2-01M : Could not identify OpenGraph metadata')
 
         return self.source_name, og_metadata

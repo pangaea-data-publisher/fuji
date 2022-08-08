@@ -69,7 +69,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
                 test_status = 'pass'
                 score += 1
         else:
-            self.logger.info('FsF-A1-03D : NO content (data) identifier is given in metadata')
+            self.logger.warning('FsF-A1-03D : NO content (data) identifier is given in metadata')
 
         self.score.earned = score
         self.result.score = self.score
