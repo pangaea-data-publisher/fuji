@@ -155,6 +155,7 @@ class Mapper(Enum):
                             'access_free:  (isAccessibleForFree || free), ' \
                             'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
                             'related_resources: [{related_resource: (isPartOf."@id" || isPartOf[0]."@id" || isPartOf.url || isPartOf[0].url || isPartOf), relation_type: \'isPartOf\'}, ' \
+                            '{related_resource: (sameAs."@id" || sameAs[0]."@id" || sameAs.url || sameAs[0].url || sameAs), relation_type: \'sameAs\'},' \
                             '{related_resource: (includedInDataCatalog."@id" || includedInDataCatalog[0]."@id" || includedInDataCatalog.url || includedInDataCatalog[0].url || includedInDataCatalog.name || includedInDataCatalog[0].name || includedInDataCatalog), relation_type: \'isPartOf\'}, ' \
                             '{related_resource: (subjectOf."@id" || subjectOf[0]."@id" || subjectOf.url ||subjectOf[0].url || subjectOf.name || subjectOf[0].name || subjectOf), relation_type: \'isReferencedBy\'},' \
                             '{related_resource: (isBasedOn."@id" || isBasedOn[0]."@id" || isBasedOn.url || isBasedOn[0].url || isBasedOn) , relation_type: \'isBasedOn\'} , ' \
