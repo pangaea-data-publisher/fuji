@@ -88,7 +88,8 @@ class MetaDataCollector(object):
         DATACITE_JSON = 'Datacite Search'
         TYPED_LINK = 'Typed Links'
         SIGN_POSTING = 'Signposting Typed Links'
-        RDF_TYPED_LINKS = 'RDF-based Typed Links'  #Links in header which lead to a RDF resource
+        XML_TYPED_LINKS = 'Generic XML, Typed Links'
+        RDF_TYPED_LINKS = 'Linked Data (RDF), Typed Links'  #Links in header which lead to a RDF resource
         LINKED_DATA = 'Linked Data (RDF)'
         B2FIND = 'B2FIND Metadata Aggregator'
         GUESSED_XML = 'Guessed XML Link'
@@ -177,24 +178,3 @@ class MetaDataCollector(object):
                     found_lov = lov_helper.get_linked_vocab_by_iri(url)
                     if found_lov:
                         self.linked_namespaces[found_lov.get('namespace')] = found_lov
-
-                '''
-                namespace_candidate = url.rsplit('/', 1)[0]
-                if namespace_candidate != url:
-                    namespaces.add(namespace_candidate)
-                else:
-                    namespace_candidate = url.rsplit('#', 1)[0]
-                    if namespace_candidate != url:
-                        namespaces.add(namespace_candidate)
-                
-            print('NS : ', namespaces)
-            vocabs = Preprocessor.getLinkedVocabs()
-
-            lod_namespaces = [d['namespace'] for d in vocabs if 'namespace' in d]
-            
-            for ns in namespaces:
-                if ns + '/' in lod_namespaces:
-                    self.namespaces.append(ns + '/')
-                elif ns + '#' in lod_namespaces:
-                    self.namespaces.append(ns + '#')
-            '''
