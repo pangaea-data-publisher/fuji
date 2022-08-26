@@ -311,7 +311,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         meta = dict()
 
         try:
-            if (len(g) > 1):
+            if (len(g) >= 1):
                 self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
@@ -328,8 +328,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 meta[l] = str(v)
                     break
             else:
-                self.logger.info(
-                    'FsF-F2-01M : Graph seems to contain only one triple, skipping core metadata element test')
+                self.logger.warning(
+                    'FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test')
         except Exception as e:
             self.logger.info('FsF-F2-01M : SPARQLing error -: {}'.format(e))
         if len(meta) <= 0:
@@ -411,7 +411,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if not meta.get('creator'):
             meta['creator'] = str(g.value(item, DC.creator))
         if not meta.get('license'):
-            meta['license'] = str(g.value(item, DCTERMS.license))
+            meta['license'] = str(g.value(item, DCTERMS.license) or g.value(item, SDO.license) or  g.value(item, SMA.license))
         if not meta.get('access_level'):
             meta['access_level'] = str(g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
                                     g.value(item, DC.rights)
