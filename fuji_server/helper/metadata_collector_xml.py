@@ -87,7 +87,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if idutils.is_url(al) or idutils.is_urn(al):
                         founduris.append(str(al))
             founduris =  list(set(founduris))
-            print('FOUND URIS in XML: ', founduris)
+            #print('FOUND URIS in XML: ', founduris)
             #xpath
             # //text()
             # //@*
