@@ -115,6 +115,8 @@ class IdentifierHelper:
                                 self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
                             if not self.identifier_url:
                                 self.identifier_url = idutils.to_url(self.identifier, self.preferred_schema)
+                            if self.preferred_schema in ['doi','handle']:
+                                self.identifier_url = self.identifier_url.replace('http:','https:')
                 if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
                 ):
                     self.is_persistent = True
