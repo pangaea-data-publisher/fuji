@@ -53,20 +53,21 @@ def harvest_by_id(body=None):  # noqa: E501
         identifier = body.object_identifier
         logger = Preprocessor.logger
         ft = FAIRCheck(uid=identifier,
-                       test_debug=True,
+                       test_debug=False,
                        metadata_service_url=None,
                        metadata_service_type=None,
                        use_datacite=False,
                        oaipmh_endpoint=None)
-        uid_result, pid_result = ft.check_unique_persistent()
-        ft.retrieve_metadata_embedded(ft.extruct_result)
+        ft.harvest_all_metadata()
+
+        ft.check_unique_persistent()
         if ft.repeat_pid_check:
-            uid_result, pid_result = ft.check_unique_persistent()
-        include_embedded = True
-        ft.retrieve_metadata_external()
-        if ft.repeat_pid_check:
-            uid_result, pid_result = ft.check_unique_persistent()
+            ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_datacite()
             print(type(ft.metadata_unmerged))
+
         harvest_result =[]
         for metadata in ft.metadata_unmerged:
             harvest_result.append(HarvestResultsMetadata(

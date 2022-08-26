@@ -81,15 +81,15 @@ def assess_by_id(body):  # noqa: E501
             print('Remote logging disabled...')
             if ft.weblogger:
                 ft.logger.removeHandler(ft.weblogger)
-        uid_result, pid_result = ft.check_unique_persistent()
-        ft.retrieve_metadata_embedded(ft.extruct_result)
-        if ft.repeat_pid_check:
-            uid_result, pid_result = ft.check_unique_persistent()
-        include_embedded = True
-        ft.retrieve_metadata_external()
-        if ft.repeat_pid_check:
-            uid_result, pid_result = ft.check_unique_persistent()
 
+        ft.harvest_all_metadata()
+
+        uid_result, pid_result = ft.check_unique_persistent()
+        if ft.repeat_pid_check:
+            ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
+            ft.retrieve_metadata_external_datacite()
         core_metadata_result = ft.check_minimal_metatadata()
         content_identifier_included_result = ft.check_content_identifier_included()
         access_level_result = ft.check_data_access_level()
@@ -136,7 +136,8 @@ def assess_by_id(body):  # noqa: E501
             else:
                 results[res_k]['test_debug'] = ['INFO: Debugging disabled']
                 debug_messages = {}
-        ft.logger.handlers = [ft.logger.handlers[-1]]
+        if len(ft.logger.handlers) > 1:
+            ft.logger.handlers = [ft.logger.handlers[-1]]
         #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         timestmp = datetime.datetime.now().replace(
             microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
