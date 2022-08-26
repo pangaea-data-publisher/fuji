@@ -51,6 +51,7 @@ class AcceptTypes(Enum):
     html = 'text/html, application/xhtml+xml'
     html_xml = 'text/html, application/xhtml+xml, application/xml;q=0.5, text/xml;q=0.5, application/rdf+xml;q=0.5'
     xml = 'application/xml, text/xml;q=0.5'
+    linkset = 'application/linkset+json, application/json, application/linkset'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
     atom = 'application/atom+xml'
@@ -137,28 +138,15 @@ class RequestHelper:
                 context.set_ciphers('DEFAULT@SECLEVEL=1')
 
                 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context),urllib.request.HTTPHandler())
-
                 urllib.request.install_opener(opener)
-
                 tp_request = urllib.request.Request(self.request_url,
                                                     headers={
                                                         'Accept': self.accept_type,
                                                         'User-Agent': 'F-UJI'})
+
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
-
                 except urllib.error.URLError as e:
-                    '''
-                    if e.code >= 500:
-                        if 'doi.org' in self.request_url:
-                            self.logger.error(
-                                '{0} : DataCite/DOI content negotiation failed, status code -: {1}, {2} - {3}'.format(
-                                    metric_id, self.request_url, self.accept_type, str(e.code)))
-                        else:
-                            self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
-                                metric_id, self.request_url, self.accept_type, str(e.code)))
-                    else:
-                    '''
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
@@ -177,6 +165,8 @@ class RequestHelper:
                         self.logger.warning('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e.code)))
                 except Exception as e:
+                    print('ERROR', e)
+
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                 # redirect logger messages to metadata collection metric
@@ -198,8 +188,8 @@ class RequestHelper:
                     self.response_header = tp_response.getheaders()
                     self.redirect_url = tp_response.geturl()
                     self.response_status = status_code = tp_response.status
-                    self.logger.info('%s : Content negotiation accept=%s, status=%s ' %
-                                     (metric_id, self.accept_type, str(status_code)))
+                    self.logger.info('%s : Content negotiation on %s accept=%s, status=%s ' %
+                                     (metric_id, self.request_url, self.accept_type ,str(status_code)))
 
                     self.content_type = self.getResponseHeader().get('Content-Type')
                     if not self.content_type:
@@ -314,7 +304,7 @@ class RequestHelper:
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
                                                 if ignore_html == False:
                                                     self.logger.info('%s : Found HTML page!' % metric_id)
-                                                    self.parse_response = self.parse_html(self.response_content)
+                                                    self.parse_response = self.response_content
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
@@ -342,7 +332,7 @@ class RequestHelper:
                                                     self.parse_response = self.response_content
                                                     source = 'xml'
                                                 break
-                                            if at.name in ['json', 'jsonld', 'datacite_json', 'schemaorg']:
+                                            if at.name in ['json', 'jsonld', 'datacite_json', 'schemaorg'] or str(self.content_type).endswith('+json'):
                                                 try:
                                                     self.parse_response = json.loads(self.response_content)
                                                     source = 'json'
@@ -356,6 +346,10 @@ class RequestHelper:
                                             if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle','ttl','n3']:
                                                 self.parse_response = self.response_content
                                                 source = 'rdf'
+                                                break
+                                            if at.name in ['linkset']:
+                                                self.parse_response = self.response_content
+                                                source = 'txt'
                                                 break
                                     break
                                 # cache downloaded content
@@ -386,21 +380,3 @@ class RequestHelper:
 
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
         return source, self.parse_response
-
-    def parse_html(self, html_texts):
-        # extract contents from the landing page using extruct, which returns a dict with
-        # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
-        syntaxes = ['microdata', 'opengraph', 'json-ld']
-        try:
-            self.logger.info('%s : Trying to identify HTML embedded microdata or JSON -: %s' %
-                                (self.metric_id, self.request_url))
-            extracted = extruct.extract(html_texts, syntaxes=syntaxes)
-        except Exception as e:
-            extracted = None
-            self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' %
-                                (self.metric_id, self.request_url + ' ' + str(e)))
-        if isinstance(extracted, dict):
-            extracted = dict([(k, v) for k, v in extracted.items() if len(v) > 0])
-            if len(extracted) == 0:
-                extracted = None
-        return extracted
