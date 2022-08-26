@@ -213,23 +213,24 @@ class Mapper(Enum):
     GENERIC_SPARQL = """
             PREFIX dct: <http://purl.org/dc/terms/>
             PREFIX dc: <http://purl.org/dc/elements/1.1/>
+            PREFIX sdo: <http://schema.org/>
             SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level ?keywords ?references ?source ?isVersionOf ?isReferencedBy ?isPartOf ?hasVersion ?replaces ?hasPart ?isReplacedBy ?requires ?isRequiredBy
             WHERE {
-            OPTIONAL {?dataset  dct:title|dc:title ?title}
-            OPTIONAL {?dataset dct:identifier|dc:identifier ?object_identifier}
-            OPTIONAL {?dataset  dct:description|dc:description ?summary}
-            OPTIONAL {?dataset  dct:publisher|dc:publisher ?publisher}
-            OPTIONAL {?dataset  dct:created|dct:issued|dct:date|dc:created|dc:issued|dc:date ?publication_date}
-            OPTIONAL {?dataset  dct:creator|dc:creator ?creator}
+            OPTIONAL {?dataset  dct:title|dc:title|sdo:name ?title}
+            OPTIONAL {?dataset dct:identifier|dc:identifier|sdo:identifier ?object_identifier}
+            OPTIONAL {?dataset  dct:description|dc:description|sdo:abstract ?summary}
+            OPTIONAL {?dataset  dct:publisher|dc:publisher|sdo:publisher ?publisher}
+            OPTIONAL {?dataset  dct:created|dct:issued|dct:date|dc:created|dc:issued|dc:date|sdo:dateCreated|sdo:datePublished ?publication_date}
+            OPTIONAL {?dataset  dct:creator|dc:creator|sdo:author ?creator}
             OPTIONAL {?dataset  dct:type|dc:type ?object_type}
-            OPTIONAL {?dataset  dct:license|dc:license ?license}
+            OPTIONAL {?dataset  dct:license|dc:license|sdo:license ?license}
             OPTIONAL {?dataset  dct:accessRights|dct:rights|dc:rights ?access_level}
-            OPTIONAL {?dataset  dct:subject|dc:subject ?keywords}
+            OPTIONAL {?dataset  dct:subject|dc:subject|sdo:keywords ?keywords}
             OPTIONAL {?dataset  dct:references|dc:references ?references}
             OPTIONAL {?dataset  dct:isReferencedBy ?isReferencedBy}
             OPTIONAL {?dataset  dc:source|dct:source ?source}
             OPTIONAL {?dataset  dct:isVersionOf ?isVersionOf}
-            OPTIONAL {?dataset  dct:isPartOf ?isPartOf}
+            OPTIONAL {?dataset  dct:isPartOf|sdo:isPartOf ?isPartOf}
             OPTIONAL {?dataset  dct:hasVersion ?hasVersion}
             OPTIONAL {?dataset  dct:replaces ?replaces}
             OPTIONAL {?dataset  dct:hasPart ?hasPart}
