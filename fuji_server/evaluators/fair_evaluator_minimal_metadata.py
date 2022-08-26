@@ -45,8 +45,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.fuji.landing_url is None:
             self.logger.warning(
                 'FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
-        #Do we need this ?
-        self.fuji.retrieve_metadata(self.fuji.extruct_result)
+        #self.fuji.retrieve_metadata_all(self.fuji.extruct_result)
         self.result = CoreMetadata(id=self.metric_number,
                                    metric_identifier=self.metric_identifier,
                                    metric_name=self.metric_name)
@@ -105,11 +104,11 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                                     str(partial_missing))
 
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
-                                         core_metadata_source=self.fuji.metadata_sources)
+                                         core_metadata_source=list(set(self.fuji.metadata_sources)))
         #meta_output: CoreMetadataOutput = CoreMetadataOutput(core_metadata_status=metadata_status,
         #                                                     core_metadata_source=self.metadata_sources)
         self.output.core_metadata_found = metadata_found
-        source_mechanisms = dict((y, x) for x, y in self.fuji.metadata_sources)
+        source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
         for source_mechanism in source_mechanisms:
             if source_mechanism == 'embedded':
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0, 'pass')

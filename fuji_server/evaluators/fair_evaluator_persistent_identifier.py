@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import requests
 from tldextract import extract
 
 from fuji_server import Persistence, PersistenceOutput
@@ -43,6 +44,48 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         This method will evaluate whether the data is specified based on a commonly accepted persistent identifier scheme or
         the identifier is web-accesible, i.e., it resolves to a landing page with metadata of the data object.
     """
+    pids_which_resolve = {}
+
+    def check_if_pid_resolves(self, candidate_pid):
+        if candidate_pid not in self.pids_which_resolve:
+            try:
+                requestHelper = RequestHelper(candidate_pid, self.logger)
+                requestHelper.setAcceptType(AcceptTypes.default)  # request
+                requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
+
+                if requestHelper.response_content:
+                    self.pids_which_resolve[candidate_pid] = requestHelper.redirect_url
+                    return requestHelper.redirect_url
+                else:
+                    return None
+            except Exception as e:
+                print('PID resolve test error',e)
+                return None
+        else:
+            return self.pids_which_resolve.get(candidate_pid)
+    # check if PID resolves to (known) landing page
+    def pid_resolves_to_landing_page(self, candidate_pid):
+        candidate_landing_url = self.check_if_pid_resolves(candidate_pid)
+        if candidate_landing_url and self.fuji.landing_url:
+            candidate_landing_url_parts = extract(candidate_landing_url)
+            landing_url_parts = extract(self.fuji.landing_url)
+            input_id_domain = candidate_landing_url_parts.domain + '.' + candidate_landing_url_parts.suffix
+            landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
+            if landing_domain != input_id_domain:
+                self.logger.warning(
+                    'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
+                )
+                self.logger.warning(
+                    'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
+                )
+                return False
+            else:
+                self.logger.info(
+                    'FsF-F1-02D : Verified PID found in metadata since it is resolving to user input URL domain'
+                )
+                return True
+        else:
+            return False
 
     def evaluate(self):
         self.result = Persistence(id=self.metric_number,
@@ -53,106 +96,42 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
             Mapper.VALID_PIDS.value))
         check_url = None
-        signposting_pid = []
-        if self.fuji.id_scheme is not None:
-            check_url = self.fuji.pid_url
-            #check_url = idutils.to_url(self.fuji.id, scheme=self.fuji.id_scheme)
-        if self.fuji.id_scheme == 'url':
-            self.fuji.origin_url = self.fuji.id
-            check_url = self.fuji.id
-        if check_url:
-            # ======= RETRIEVE METADATA FROM LANDING PAGE =======
-            requestHelper = RequestHelper(check_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
-            neg_source, self.fuji.extruct_result = requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
-            if not 'html' in str(requestHelper.content_type):
-                self.logger.info('FsF-F2-01M :Content type is ' + str(requestHelper.content_type) +
-                                 ', therefore skipping embedded metadata (microdata, RDFa) tests')
-                self.fuji.extruct_result = {}
-            if type(self.fuji.extruct_result) != dict:
-                self.fuji.extruct_result = {}
-            #r = requestHelper.getHTTPResponse()
-            response_status = requestHelper.response_status
-
-            if requestHelper.response_content:
-                self.fuji.landing_url = requestHelper.redirect_url
-                #in case the test has been repeated because a PID has been found in metadata
-                #print(self.fuji.landing_url, self.fuji.input_id)
-                if self.fuji.repeat_pid_check == True:
-                    input_id_parts = extract(self.fuji.input_id)
-                    landing_url_parts = extract(self.fuji.landing_url)
-                    input_id_domain = input_id_parts.domain + '.' + input_id_parts.suffix
-                    landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
-                    if landing_domain != input_id_domain:
-                        self.logger.warning(
-                            'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
-                        )
-                        self.logger.warning(
-                            'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
-                        )
-                    else:
-                        self.logger.info(
-                            'FsF-F1-02D : Verified PID found in metadata since it is resolving to user input URL domain'
-                        )
-
-                        #self.fuji.repeat_pid_check = False
-                if self.fuji.landing_url not in ['https://datacite.org/invalid.html']:
-                    if response_status == 200:
-                        # check if javascript generated content only:
-                        self.fuji.raise_warning_if_javascript_page(requestHelper.response_content)
-                        # identify signposting links in header
-                        self.fuji.set_signposting_links(requestHelper.response_content, requestHelper.getResponseHeader())
-                        signposting_pids = self.fuji.get_signposting_links('cite-as')
-                        if isinstance(signposting_pids, list):
-                            for signpid in signposting_pids:
-                                signposting_pid.append(signpid.get('url'))
-                        up = urlparse(self.fuji.landing_url)
-                        self.fuji.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
-                        self.fuji.landing_html = requestHelper.getResponseContent()
-                        self.fuji.landing_content_type = requestHelper.content_type
-
-                        self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
-                        self.output.resolvable_status = True
-                        self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
-                        self.fuji.isMetadataAccessible = True
-                    elif response_status in [401, 402, 403]:
-                        self.fuji.isMetadataAccessible = False
-                        self.logger.warning(
-                            'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
-                                code=response_status))
-                    else:
-                        self.fuji.isMetadataAccessible = False
-                        self.logger.warning(
-                            'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
-                                code=response_status))
-                else:
-                    self.logger.warning(
-                        'FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}'.format(code=self.fuji.landing_url))
-
-            else:
-                self.fuji.isMetadataAccessible = False
-                self.logger.warning(
-                    'FsF-F1-02D :Resource inaccessible, no response received from -: {}'.format(check_url))
-                if response_status in [401, 402, 403]:
-                    self.logger.warning(
-                        'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
-                            code=response_status))
+        identifiers_to_test = None
+        # if PID found in unique identifier test..
+        if self.fuji.pid_scheme:
+            identifiers_to_test = [self.fuji.pid_url]
         else:
-            self.logger.warning(
-                'FsF-F1-02D :Resource inaccessible, could not identify an actionable representation for the given identfier -: {}'
-                .format(self.fuji.id))
-
-        if self.fuji.pid_scheme is not None:
-            # short_pid = id.normalize_pid(self.id, scheme=pid_scheme)
-            if not signposting_pid:
-                idhelper = IdentifierHelper(self.fuji.id)
-                self.fuji.pid_url = idhelper.identifier_url
-                #self.fuji.pid_url = idutils.to_url(self.fuji.id, scheme=self.fuji.pid_scheme)
+            identifiers_to_test = [self.fuji.id]
+        if self.fuji.metadata_merged.get('object_identifier'):
+            if isinstance(self.fuji.metadata_merged.get('object_identifier'), list):
+                identifiers_to_test.extend(self.fuji.metadata_merged.get('object_identifier'))
             else:
-                self.fuji.pid_url = signposting_pid[0]
-            self.output.pid_scheme = self.fuji.pid_scheme
+                identifiers_to_test.append(self.fuji.metadata_merged.get('object_identifier'))
+        identifiers_to_test = list(set(identifiers_to_test))
 
-            self.output.pid = self.fuji.pid_url
+        verified_pids = []
+        verified_pid_schemes = []
+        if identifiers_to_test:
+            for test_pid in identifiers_to_test:
+                idhelper = IdentifierHelper(test_pid)
+                if idhelper.is_persistent:
+                    if test_pid != self.fuji.id:
+                        if self.pid_resolves_to_landing_page(test_pid):
+                            verified_pids.append(test_pid)
+                            verified_pid_schemes.append(idhelper.preferred_schema)
+                    else:
+                        verified_pids.append(test_pid)
+                        verified_pid_schemes.append(idhelper.preferred_schema)
+
+            if self.fuji.landing_url:
+                self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
+                self.output.resolvable_status = True
+                self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
+                self.fuji.isMetadataAccessible = True
+
+        if verified_pids:
+            self.output.pid_scheme = str(verified_pid_schemes)
+            self.output.pid = str(verified_pids)
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5, 'pass')
             self.score.earned = 0.5
             self.maturity = 1
@@ -161,12 +140,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 self.maturity = 3
                 self.result.test_status = 'pass'
                 self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
-
-            #print(self.metric_tests)
-
             self.logger.log(self.fuji.LOG_SUCCESS,
                             'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
-            #self.logger.info('FsF-F1-02D : Persistence identifier scheme - {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
             self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
