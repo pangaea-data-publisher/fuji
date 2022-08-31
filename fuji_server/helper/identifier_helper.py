@@ -20,6 +20,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import urllib
+
 import idutils
 import re
 
@@ -72,6 +74,7 @@ class IdentifierHelper:
     def __init__(self, idstring):
         self.identifier = idstring
         self.normalized_id = self.identifier
+        idparts = urllib.parse.urlparse(self.identifier)
         if self.identifier and isinstance(self.identifier, str):
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
                 #workaround to identify nbn urns given together with standard resolver urls:
@@ -85,6 +88,13 @@ class IdentifierHelper:
                 self.identifier = self.identifier.replace('/ark:' , '/ark:/' )
                 self.identifier = self.identifier.replace('/ark://', '/ark:/')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
+                #w3id check
+                if not self.identifier_schemes:
+                    if idparts.scheme == 'https' and idparts.netloc in ['w3id.org','www.w3id.org'] and idparts.path != '':
+                        self.identifier_schemes = ['w3id','url']
+                        self.preferred_schema = 'w3id'
+                        self.identifier_url = self.identifier
+                        self.normalized_id =self.identifier
                 # idutils check
                 if not self.identifier_schemes:
                     self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
