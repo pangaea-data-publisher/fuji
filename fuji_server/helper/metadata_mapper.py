@@ -33,7 +33,7 @@ class Mapper(Enum):
     # List of PIDS e.g. those listed in datacite schema
     VALID_PIDS = [
         'ark', 'arxiv', 'bioproject', 'biosample', 'doi', 'ensembl', 'genome', 'gnd', 'handle', 'lsid', 'pmid', 'pmcid',
-        'purl', 'refseq', 'sra', 'uniprot', 'urn'
+        'purl', 'refseq', 'sra', 'uniprot', 'urn','identifiers.org','w3id'
     ]
 
     #identifiers.org pattern
