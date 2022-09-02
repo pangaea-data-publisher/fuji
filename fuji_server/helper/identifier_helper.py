@@ -74,8 +74,8 @@ class IdentifierHelper:
     def __init__(self, idstring):
         self.identifier = idstring
         self.normalized_id = self.identifier
-        idparts = urllib.parse.urlparse(self.identifier)
         if self.identifier and isinstance(self.identifier, str):
+            idparts = urllib.parse.urlparse(self.identifier)
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
                 #workaround to identify nbn urns given together with standard resolver urls:
                 self.check_resolver_urn(self.identifier)
