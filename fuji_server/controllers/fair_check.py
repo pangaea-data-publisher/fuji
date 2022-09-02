@@ -482,15 +482,16 @@ class FAIRCheck:
             # check if is PID in this case complete to URL
             input_url = None
             extruct_metadata = {}
-            input_urlscheme = urlparse(self.id).scheme
-            if input_urlscheme not in self.STANDARD_PROTOCOLS:
-                idhelper = IdentifierHelper(self.id)
-                self.pid_url = input_url = idhelper.get_identifier_url()
-            else:
-                input_url = self.id
-            if input_url:
+
+            idhelper = IdentifierHelper(self.id)
+            if idhelper.is_persistent:
+                self.pid_url = idhelper.get_identifier_url()
+            input_url = idhelper.get_identifier_url()
+            input_urlscheme = urlparse(input_url).scheme
+            if input_urlscheme in self.STANDARD_PROTOCOLS:
+                self.origin_url = input_url
                 requestHelper = RequestHelper(input_url, self.logger)
-                requestHelper.setAcceptType(AcceptTypes.default)  # request
+                requestHelper.setAcceptType(AcceptTypes.html)  # request
                 neg_source, landingpage_html = requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
                 if not 'html' in str(requestHelper.content_type):
                     self.logger.info('FsF-F2-01M :Content type is ' + str(requestHelper.content_type) +
@@ -724,7 +725,7 @@ class FAIRCheck:
             self.repeat_pid_check = False
         if self.related_resources:
             for relation in self.related_resources:
-                if relation.get('relation_type') == 'isPartOf':
+                if relation.get('relation_type') == 'isPartOf' and isinstance(relation.get('related_resource'), str):
                     parent_identifier = IdentifierHelper(relation.get('related_resource'))
                     if parent_identifier.is_persistent:
                         self.logger.info('FsF-F2-01M : Found parent (isPartOf) identifier which is a PID in metadata, you may consider to assess the parent')
@@ -1258,18 +1259,16 @@ class FAIRCheck:
         self.logger.info(
             'FsF-F2-01M : Starting to identify EXTERNAL metadata through content negotiation or typed (signposting) links')
         if self.landing_url:
-            if self.use_datacite is True:
-                target_url_list = [self.pid_url, self.landing_url]
-            else:
-                target_url_list = [self.landing_url]
-            if not target_url_list:
-                target_url_list = [self.origin_url]
-
+            target_url_list = [self.origin_url, self.pid_url, self.landing_url]
+            if self.use_datacite is False and 'doi' in self.pid_scheme:
+                if self.origin_url == self.pid_url:
+                    target_url_list = [self.landing_url]
+                else:
+                    target_url_list = [self.origin_url,self.landing_url]
             if isinstance(target_url, str):
                 target_url_list = [target_url]
 
             target_url_list = set(tu for tu in target_url_list if tu is not None)
-
             self.retrieve_metadata_external_xml_negotiated(target_url_list)
             self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
             self.retrieve_metadata_external_rdf_negotiated(target_url_list)
