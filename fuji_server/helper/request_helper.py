@@ -171,7 +171,7 @@ class RequestHelper:
                         metric_id, self.request_url, self.accept_type, str(e)))
                 # redirect logger messages to metadata collection metric
                 if metric_id == 'FsF-F1-02D':
-                    self.logger.info('FsF-F2-01M : Trying to identify some EMBEDDED metadata in content retrieved during PID verification process (FsF-F1-02D)')
+                    #self.logger.info('FsF-F2-01M : Trying to identify some EMBEDDED metadata in content retrieved during PID verification process (FsF-F1-02D)')
                     metric_id = 'FsF-F2-01M'
 
                 if tp_response:
@@ -190,7 +190,6 @@ class RequestHelper:
                     self.response_status = status_code = tp_response.status
                     self.logger.info('%s : Content negotiation on %s accept=%s, status=%s ' %
                                      (metric_id, self.request_url, self.accept_type ,str(status_code)))
-
                     self.content_type = self.getResponseHeader().get('Content-Type')
                     if not self.content_type:
                         self.content_type = self.getResponseHeader().get('content-type')
