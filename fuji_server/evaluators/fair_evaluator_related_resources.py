@@ -71,6 +71,8 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
 
         if self.fuji.related_resources:  # TODO include source of relation
             for relation in self.fuji.related_resources:
+                if isinstance(relation.get('related_resource'), list):
+                    relation['related_resource'] = relation.get('related_resource')[0]
                 relation_identifier = IdentifierHelper(relation.get('related_resource'))
                 if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
                     pid_used = True
