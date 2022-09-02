@@ -161,17 +161,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     self.logger.info('FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements')
                     rdf_metadata = self.get_schemaorg_metadata(rdf_response_graph)
                 elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
+                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements')
                     rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
                 #else:
                 if not rdf_metadata:
+                    self.logger.info('FsF-F2-01M : Could not find DCAT, schema.org or SKOS/OWL metadata, continuing with generic SPARQL')
                     #try to find root node
+                    '''
                     typed_objects = list(rdf_response_graph.objects(predicate=RDF.type))
                     if typed_objects:
                         typed_nodes = list(rdf_response_graph[:RDF.type:typed_objects[0]])
                         if typed_nodes:
                             rdf_metadata = self.get_metadata(rdf_response_graph, typed_nodes[0], str(typed_objects[0]))
-                    if not rdf_metadata:
-                        rdf_metadata = self.get_sparqled_metadata(rdf_response_graph)
+                    '''
+                    #if not rdf_metadata or len(list(rdf_metadata)) <= 1:
+                    rdf_metadata = self.get_sparqled_metadata(rdf_response_graph)
+
                 #add found namespaces URIs to namespace
                 #for ns in graph_namespaces.values():
                 #    self.namespaces.append(ns)
@@ -212,7 +217,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 DCAT = Namespace('http://www.w3.org/ns/dcat#')
                 if self.content_type in ['application/ld+json','application/json']:
                     self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
-                    #dict (from extruct)
                     if isinstance(rdf_response, dict):
                         try:
                             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
@@ -230,14 +234,19 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     #graph
                     else:
                         try:
+                            '''
                             #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
+                            #but it is no dict anymore here... 
                             try:
                                 if rdf_response['@context'].startswith('http://schema.org'):
                                     rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                                    print('SCHEMA.ORG')
                             except Exception as e:
                                 pass
-                            rdf_response = jsonld.expand( rdf_response)
+                            
+                            rdf_response = jsonld.expand(rdf_response)
                             rdf_response = json.dumps(rdf_response)
+                            '''
                             jsonldgraph = rdflib.ConjunctiveGraph()
                             rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
                             #rdf_response_graph = jsonldgraph
@@ -312,7 +321,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         try:
             if (len(g) >= 1):
-                self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF')
+                self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:'+str(len(g)))
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
                     for l, v in row.asdict().items():
@@ -403,12 +412,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
             for publisher in (list(g.objects(item, DC.publisher)) or list(g.objects(item, DCTERMS.publisher)) or
                                  list(g.objects(item, SMA.publisher)) or list(g.objects(item, SDO.publisher)) or
                                  list(g.objects(item, SMA.provider)) or list(g.objects(item, SDO.provider))):
-                print(publisher)
                 if g.value(publisher,FOAF.name):
                     meta['publisher'].append(str(g.value(publisher,FOAF.name)))
                 else:
                     meta['publisher'].append(str(publisher))
-            print(meta['publisher'])
             #meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
             #                     g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
         if not meta.get('keywords'):
@@ -462,10 +469,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         if meta:
             meta['object_type'] = type
+            meta = {k: v for k, v in meta.items() if v not in [None, 'None',[]]}
             self.logger.info(
-                'FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: '+str(meta.keys()))
-            meta = {k:v for k,v in meta.items() if v not in [None,'None']}
-
+                'FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: '+str(meta))
         return meta
 
     def get_ontology_metadata(self, graph):
@@ -562,20 +568,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
         DCAT = Namespace('http://www.w3.org/ns/dcat#')
 
         datasets = list(graph[:RDF.type:DCAT.Dataset])
+        if len(datasets) > 1:
+            self.logger.info('FsF-F2-01M : Found more than one DCAT Dataset description, will use first one')
         if len(datasets) > 0:
             dcat_metadata = self.get_metadata(graph, datasets[0], type='Dataset')
-            # publisher
-            '''
-            if idutils.is_url(dcat_metadata.get('publisher')) or dcat_metadata.get('publisher') is None:
-                publisher = graph.value(datasets[0], DCTERMS.publisher)
-                # FOAF preferred DCAT compliant
-                publisher_name = graph.value(publisher, FOAF.name)
-                dcat_metadata['publisher'] = publisher_name
-                # in some cases a dc title is used (not exactly DCAT compliant)
-                if dcat_metadata.get('publisher') is None:
-                    publisher_title = graph.value(publisher, DCTERMS.title)
-                    dcat_metadata['publisher'] = publisher_title
-            '''
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
             dcat_metadata['object_content_identifier'] = []
@@ -628,7 +624,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #    self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
             #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
             #dcat_metadata['object_type'] = 'Dataset'
-        print('DCAT ',dcat_metadata)
         return dcat_metadata
         #rdf_meta.query(self.metadata_mapping.value)
         #print(rdf_meta)
