@@ -21,6 +21,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import re
+import urllib.parse
 
 import Levenshtein
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
@@ -43,18 +45,22 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     """
 
-    def isLicense(self, value, metric_id):
-        islicense = False
-        isurl = idutils.is_url(value)
-        spdx_html = None
-        spdx_osi = None
-        if isurl:
-            spdx_html, spdx_osi = self.lookup_license_by_url(value, metric_id)
-        else:
-            spdx_html, spdx_osi = self.lookup_license_by_name(value, metric_id)
-        if spdx_html or spdx_osi:
-            islicense = True
-        return islicense
+    def isCreativeCommonsLicense(self,license_url, metric_id):
+        iscc = False
+        genericcc = None
+        try:
+            #https://wiki.creativecommons.org/wiki/License_Properties
+            ccregex= r'https?://creativecommons\.org/licenses/(by(-nc)?(-nd)?(-sa)?)/(1\.0|2\.0|2\.5|3\.0|4\.0)'
+            ccmatch = re.match(ccregex, license_url)
+            if ccmatch:
+                self.logger.info('{0} : Found CreativeCommons license -: {1}'.format(metric_id, license_url))
+                genericcc = ccmatch[0]
+                iscc = True
+            else:
+                iscc =  False
+        except Exception as e:
+            iscc =  False
+        return iscc, genericcc
 
     def lookup_license_by_url(self, u, metric_id):
         self.logger.info('{0} : Verify URL through SPDX registry -: {1}'.format(metric_id, u))
@@ -114,6 +120,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 if isinstance(l, str):
                     isurl = idutils.is_url(l)
                 if isurl:
+                    iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
+                    if iscc:
+                        l = generic_cc
                     spdx_html, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
                 else:  # maybe licence name
                     spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
