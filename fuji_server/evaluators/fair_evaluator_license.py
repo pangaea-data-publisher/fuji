@@ -62,6 +62,22 @@ class FAIREvaluatorLicense(FAIREvaluator):
             iscc =  False
         return iscc, genericcc
 
+    def isLicense(self, value, metric_id):
+        islicense = False
+        isurl = idutils.is_url(value)
+        spdx_html = None
+        spdx_osi = None
+        if isurl:
+            iscc, generic_cc = self.isCreativeCommonsLicense(value, metric_id)
+            if iscc:
+                l = generic_cc
+            spdx_html, spdx_osi = self.lookup_license_by_url(value, metric_id)
+        else:
+            spdx_html, spdx_osi = self.lookup_license_by_name(value, metric_id)
+        if spdx_html or spdx_osi:
+            islicense = True
+        return islicense
+
     def lookup_license_by_url(self, u, metric_id):
         self.logger.info('{0} : Verify URL through SPDX registry -: {1}'.format(metric_id, u))
         html_url = None
