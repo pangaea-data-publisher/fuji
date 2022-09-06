@@ -12,6 +12,7 @@ ComicStory
 Comment
 Conversation
 Course
+CreativeWork
 CreativeWorkSeason
 CreativeWorkSeries
 DataCatalog
