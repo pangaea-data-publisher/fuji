@@ -425,7 +425,7 @@ class FAIRCheck:
             # retrieve metadata standards info from SPARQL endpoint
             if self.sparql_endpoint:
                 self.logger.info('{} : Use SPARQL endpoint to retrieve standards used by the repository -: {}'.format(
-                    'FsF-R1.3-01M', self.oaipmh_endpoint))
+                    'FsF-R1.3-01M', self.sparql_endpoint))
                 if (self.uri_validator(self.sparql_endpoint)):
                     sparql_provider = SPARQLMetadataProvider(endpoint=self.sparql_endpoint,
                                                              logger=self.logger,

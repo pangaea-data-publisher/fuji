@@ -229,7 +229,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.setLinkedNamespaces(str(rdf_response))
                             #wrong one given above
                         except Exception as e:
-                            print(e)
+                            print('RDF Collector Error: ',e)
                             pass
                     #graph
                     else:

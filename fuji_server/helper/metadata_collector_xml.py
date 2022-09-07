@@ -287,6 +287,8 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if ':' in attribute:
                         if attribute.split(':')[0] == 'xlink':
                             attribute = '{http://www.w3.org/1999/xlink}' + attribute.split(':')[1]
+                        elif attribute.split(':')[0] == 'xml':
+                            attribute = '{http://www.w3.org/XML/1998/namespace}' + attribute.split(':')[1]
                 try:
                     subtrees = tree.findall(pathdef[0])
                 except Exception as e:
