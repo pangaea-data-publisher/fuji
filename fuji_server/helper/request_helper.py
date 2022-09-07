@@ -165,8 +165,7 @@ class RequestHelper:
                         self.logger.warning('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e.code)))
                 except Exception as e:
-                    print('ERROR', e)
-
+                    print('Request ERROR: ', e)
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                 # redirect logger messages to metadata collection metric
