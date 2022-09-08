@@ -188,7 +188,8 @@ class MetaDataCollectorXML(MetaDataCollector):
                         root_namespace = nsmatch[1]
                         root_element = nsmatch[2]
                         #print('#' + root_element + '#', root_namespace)
-                        self.namespaces.append(root_namespace)
+                        #put the root namespace at the start f list
+                        self.namespaces.insert(0,root_namespace)
                     if root_element == 'codeBook':
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info('FsF-F2-01M : Identified DDI codeBook XML based on root tag')
