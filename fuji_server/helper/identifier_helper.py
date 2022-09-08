@@ -82,6 +82,8 @@ class IdentifierHelper:
                  #workaround to resolve lsids:
                 #idutils.LANDING_URLS['lsid'] ='http://www.lsid.info/resolver/?lsid={pid}'
                 #workaround to recognize https purls and arks
+                if '/purl.archive.org/' in self.identifier:
+                    self.identifier = self.identifier.replace('/purl.archive.org/', '/purl.org/')
                 if 'https://purl.' in self.identifier or '/ark:' in self.identifier:
                     self.identifier = self.identifier.replace('https:', 'http:')
                 #workaround to identify arks properly:
