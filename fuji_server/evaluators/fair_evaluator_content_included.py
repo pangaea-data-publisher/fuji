@@ -21,6 +21,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import socket
+
+import requests
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.identifier_included import IdentifierIncluded
@@ -43,6 +46,8 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
     """
 
     def evaluate(self):
+        socket.setdefaulttimeout(1)
+
         self.result = IdentifierIncluded(id=self.metric_number,
                                          metric_identifier=self.metric_identifier,
                                          metric_name=self.metric_name)
@@ -65,6 +70,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             #contents = list({cv['url']:cv for cv in contents}.values())
             #print(contents)
             number_of_contents = len(contents)
+
             self.logger.log(self.fuji.LOG_SUCCESS,
                             'FsF-F3-01M : Number of object content identifier found -: {}'.format(number_of_contents))
             self.maturity = 1
@@ -78,54 +84,15 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
             for content_link in contents:
                 # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
-                did_output_content = IdentifierIncludedOutputInner()
-                did_output_content.content_identifier_included = content_link
 
                 if content_link.get('url'):
+                    did_output_content = IdentifierIncludedOutputInner()
+                    did_output_content.content_identifier_included = content_link
                     self.fuji.content_identifier.append(content_link)
-                    try:
-                        # only check the status, do not download the content
-                        response = urllib.request.urlopen(content_link.get('url'))
-                        content_link['header_content_type'] = response.getheader('Content-Type')
-                        content_link['header_content_type'] = str(content_link['header_content_type']).split(';')[0]
-                        content_link['header_content_length'] = response.getheader('Content-Length')
-
-                        content_header_link_set = set(self.fuji.extend_mime_type_list(content_link['header_content_type']))
-                        content_link_set = set(self.fuji.extend_mime_type_list(content_link.get('type')))
-                        if not (content_link_set & content_header_link_set):
-                        #if content_link['header_content_type'] != content_link.get('type'):
-                            self.logger.warning(
-                                'FsF-F3-01M : Content type given in metadata differs from content type given in Header response -: ('
-                                + str(content_link_set) + ') vs. (' + str(content_header_link_set) +
-                                ')')
-                            if 'html' in content_link['header_content_type']:
-                                self.logger.warning(
-                                    'FsF-F3-01M : Header response returned html type, assuming login page or similar -: '
-                                    + str(content_link['header_content_type']))
-                        # will pass even if the url cannot be accessed which is OK
-                        # did_result.test_status = "pass"
-                        # did_score.earned=1
-                        response.close()
-                        did_output_content.content_identifier_active = False
-                        #content_list.append(did_output_content)
-                    except urllib.error.HTTPError as e:
-                        self.logger.warning(
-                            'FsF-F3-01M : Content identifier inaccessible -: {0} , HTTPError code {1} '.format(
-                                content_link.get('url'), e.code))
-                    except urllib.error.URLError as e:
-                        self.logger.warning(
-                            'FsF-F3-01M : Content identifier inaccessible -: {0} , URLError code {1} '.format(
-                                content_link.get('url'), e.reason))
-                        #self.logger.exception(e.reason)
-                    except:
-                        self.logger.warning('FsF-F3-01M : Could not access the resource')
-                    else:  # will be executed if there is no exception
-                        #self.fuji.content_identifier.append(content_link)
-                        did_output_content.content_identifier_active = True
-
+                    content_list.append(did_output_content)
                 else:
                     self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
-            content_list.append(did_output_content)
+
         else:
             self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
 

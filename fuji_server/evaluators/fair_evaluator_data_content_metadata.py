@@ -217,15 +217,16 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.fuji.tika_content_types_list = self.fuji.extend_mime_type_list(self.fuji.tika_content_types_list)
 
                     if d == 'type':
-                        if data_object.get('type') in self.fuji.tika_content_types_list:
-                            matches_content = True
-                            matches_type = True
-                        else:
-                            self.logger.warning(
-                                '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
-                                .format(self.metric_identifier, data_object.get('type'),
-                                        str(self.fuji.tika_content_types_list)))
-                            self.fuji.tika_content_types_list.append('unverified')
+                        if data_object.get('type'):
+                            if data_object.get('type') in self.fuji.tika_content_types_list:
+                                matches_content = True
+                                matches_type = True
+                            else:
+                                self.logger.warning(
+                                    '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
+                                    .format(self.metric_identifier, data_object.get('type'),
+                                            str(self.fuji.tika_content_types_list)))
+                                self.fuji.tika_content_types_list.append('unverified')
                     elif d == 'size':
                         if tika_content_size == 0:
                             self.logger.warning(
@@ -233,15 +234,16 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                     self.metric_identifier))
                         else:
                             try:
-                                object_size = int(float(data_object.get('size')))
-                                if object_size == int(float(tika_content_size)):
-                                    matches_content = True
-                                    matches_size = True
-                                else:
-                                    self.logger.warning(
-                                        '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
-                                        .format(self.metric_identifier, str(data_object.get('size')),
-                                                str(tika_content_size)))
+                                if data_object.get('size'):
+                                    object_size = int(float(data_object.get('size')))
+                                    if object_size == int(float(tika_content_size)):
+                                        matches_content = True
+                                        matches_size = True
+                                    else:
+                                        self.logger.warning(
+                                            '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
+                                            .format(self.metric_identifier, str(data_object.get('size')),
+                                                    str(tika_content_size)))
 
                             except Exception as e:
                                 self.logger.warning(

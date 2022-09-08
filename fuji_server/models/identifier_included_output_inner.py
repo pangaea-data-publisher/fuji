@@ -14,23 +14,20 @@ class IdentifierIncludedOutputInner(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self, content_identifier_included: str = None, content_identifier_active: bool = False):  # noqa: E501
+    def __init__(self, content_identifier_included: str=None):  # noqa: E501
         """IdentifierIncludedOutputInner - a model defined in Swagger
 
         :param content_identifier_included: The content_identifier_included of this IdentifierIncludedOutputInner.  # noqa: E501
         :type content_identifier_included: str
-        :param content_identifier_active: The content_identifier_active of this IdentifierIncludedOutputInner.  # noqa: E501
-        :type content_identifier_active: bool
         """
-        self.swagger_types = {'content_identifier_included': str, 'content_identifier_active': bool}
+        self.swagger_types = {
+            'content_identifier_included': str
+        }
 
         self.attribute_map = {
-            'content_identifier_included': 'content_identifier_included',
-            'content_identifier_active': 'content_identifier_active'
+            'content_identifier_included': 'content_identifier_included'
         }
         self._content_identifier_included = content_identifier_included
-        self._content_identifier_active = content_identifier_active
 
     @classmethod
     def from_dict(cls, dikt) -> 'IdentifierIncludedOutputInner':
@@ -63,24 +60,3 @@ class IdentifierIncludedOutputInner(Model):
         """
 
         self._content_identifier_included = content_identifier_included
-
-    @property
-    def content_identifier_active(self) -> bool:
-        """Gets the content_identifier_active of this IdentifierIncludedOutputInner.
-
-
-        :return: The content_identifier_active of this IdentifierIncludedOutputInner.
-        :rtype: bool
-        """
-        return self._content_identifier_active
-
-    @content_identifier_active.setter
-    def content_identifier_active(self, content_identifier_active: bool):
-        """Sets the content_identifier_active of this IdentifierIncludedOutputInner.
-
-
-        :param content_identifier_active: The content_identifier_active of this IdentifierIncludedOutputInner.
-        :type content_identifier_active: bool
-        """
-
-        self._content_identifier_active = content_identifier_active

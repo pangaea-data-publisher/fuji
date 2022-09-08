@@ -659,9 +659,6 @@ components:
       properties:
         content_identifier_included:
           type: string
-        content_identifier_active:
-          type: boolean
-          default: false
     License_output_inner:
       type: object
       properties:
