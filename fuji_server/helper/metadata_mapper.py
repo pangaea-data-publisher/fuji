@@ -551,7 +551,8 @@ class Mapper(Enum):
         'object_identifier': {
             'path': [
                 './{*}stdyDscr/{*}dataAccs/{*}setAvail/{*}accsPlac@@URI',
-                './{*}docDscr/{*}citation/{*}titlStmt/{*}IDNo', './{*}docDscr/{*}citation/{*}holdings@@URI',
+                './{*}docDscr/{*}citation/{*}titlStmt/{*}IDNo',
+                './{*}docDscr/{*}citation/{*}holdings@@URI',
                 './{*}stdyDscr/{*}citation/{*}titlStmt/{*}IDNo'
             ]
         },
