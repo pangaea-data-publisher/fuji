@@ -957,7 +957,7 @@ class FAIRCheck:
         xmllinks=[]
         if self.landing_html:
             try:
-                soup = BeautifulSoup(self.landing_html, features="html.parser")
+                soup = BeautifulSoup(self.landing_html, features='html.parser')
                 links = soup.findAll('a')
                 if links:
                     for link in links:
@@ -984,7 +984,7 @@ class FAIRCheck:
                 guessed_link = self.landing_url+'.xml'
             if guessed_link:
                 try:
-                    req = urllib.Request(guessed_link, method="HEAD")
+                    req = urllib.Request(guessed_link, method='HEAD')
                     response = urllib.urlopen(req)
                     content_type = str(response.getheader('Content-Type')).split(';')[0]
                     if content_type.strip() in ['application/xml','text/xml', 'application/rdf+xml']:
@@ -1408,9 +1408,9 @@ class FAIRCheck:
     def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
         try:
-            soup = BeautifulSoup(response_content, features="html.parser")
+            soup = BeautifulSoup(response_content, features='html.parser')
             script_content = soup.findAll('script')
-            for script in soup(["script", "style", "title", "noscript"]):
+            for script in soup(['script', 'style', 'title', 'noscript']):
                 script.extract()
 
             text_content = soup.get_text(strip=True)

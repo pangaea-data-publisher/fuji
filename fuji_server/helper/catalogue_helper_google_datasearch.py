@@ -37,7 +37,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         try:
             con = sl.connect(self.google_cache_db_path)
             with con:
-                samplef = pd.read_sql_query("SELECT uri FROM google_links ORDER BY RANDOM() LIMIT "+str(limit), con)
+                samplef = pd.read_sql_query('SELECT uri FROM google_links ORDER BY RANDOM() LIMIT '+str(limit), con)
                 sample = samplef['uri'].values.tolist()
         except Exception as e:
             print(e)
@@ -56,7 +56,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 con = sl.connect(self.google_cache_db_path)
                 with con:
                     dbquery = 'SELECT LOWER(uri) FROM google_links where uri IN(' + ', '.join(
-                        f"'{str(pid).lower()}'" for pid in pidlist) + ')'
+                        f'\'{str(pid).lower()}\'' for pid in pidlist) + ')'
 
                     dbres = con.execute(dbquery)
                     found_google_links = dbres.fetchall()

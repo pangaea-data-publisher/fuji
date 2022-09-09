@@ -94,7 +94,7 @@ class Preprocessor(object):
                 if mime_data.get('extensions'):
                     for ext in mime_data.get('extensions'):
                         if '.' + ext not in mimetypes.types_map:
-                            mimetypes.add_type(mime_type, "." + ext, strict=True)
+                            mimetypes.add_type(mime_type, '.' + ext, strict=True)
         except Exception as e:
             cls.logger.warning('Loading additional mime types failed, will continue with standard set')
 
@@ -194,7 +194,7 @@ class Preprocessor(object):
         cls.METRIC_YML_PATH = yaml_metric_path
         cls.data_files_limit = limit
         cls.metric_specification = specification_uri
-        stream = open(cls.METRIC_YML_PATH, 'r', encoding="utf8")
+        stream = open(cls.METRIC_YML_PATH, 'r', encoding='utf8')
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as e:
@@ -495,7 +495,7 @@ class Preprocessor(object):
                     json.dump(vocabs, f)
                     cls.linked_vocabs = vocabs
             except IOError as e:
-                cls.logger.error("Couldn't write to file {}.".format(ld_path))
+                cls.logger.error('Couldn\'t write to file {}.'.format(ld_path))
         #for vocab in vocabs.items():
 
 

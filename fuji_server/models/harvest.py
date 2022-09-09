@@ -61,6 +61,6 @@ class Harvest(Model):
         :type object_identifier: str
         """
         if object_identifier is None:
-            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+            raise ValueError('Invalid value for `object_identifier`, must not be `None`')  # noqa: E501
 
         self._object_identifier = object_identifier
