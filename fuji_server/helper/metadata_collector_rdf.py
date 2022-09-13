@@ -224,29 +224,19 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                                                              mapping=Mapper.SCHEMAORG_MAPPING,
                                                                              pidurl=None, source = MetaDataCollectorSchemaOrg.getEnumSourceNames().RDF_TYPED_LINKS.value)
                             source_schemaorg, rdf_metadata = schemaorg_collector.parse_metadata()
-                            schemaorg_collector.setLinkedNamespaces(rdf_metadata)
-                            self.namespaces = schemaorg_collector.namespaces
-                            self.setLinkedNamespaces(str(rdf_response))
+                            if rdf_metadata:
+                                schemaorg_collector.setLinkedNamespaces(rdf_metadata)
+                                self.namespaces = schemaorg_collector.namespaces
+                                self.setLinkedNamespaces(str(rdf_response))
+                            else:
+                                rdf_response = json.dumps(rdf_response)
                             #wrong one given above
                         except Exception as e:
                             print('RDF Collector Error: ',e)
                             pass
                     #graph
-                    else:
+                    if isinstance(rdf_response, str):
                         try:
-                            '''
-                            #this is a workaraund for a rdflib JSON-LD parsing issue proposed here: https://github.com/RDFLib/rdflib/issues/1423
-                            #but it is no dict anymore here... 
-                            try:
-                                if rdf_response['@context'].startswith('http://schema.org'):
-                                    rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
-                                    print('SCHEMA.ORG')
-                            except Exception as e:
-                                pass
-                            
-                            rdf_response = jsonld.expand(rdf_response)
-                            rdf_response = json.dumps(rdf_response)
-                            '''
                             jsonldgraph = rdflib.ConjunctiveGraph()
                             rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
                             #rdf_response_graph = jsonldgraph
@@ -395,6 +385,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
+
+        if not meta.get('language'):
+            meta['language'] = str(g.value(item, DC.language) or g.value(item, DCTERMS.language) or
+                                   g.value(item, SDO.inLanguage) or g.value(item, SMA.inLanguage))
         if not meta.get('title'):
             meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
         if not meta.get('summary'):
@@ -412,8 +406,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
             for publisher in (list(g.objects(item, DC.publisher)) or list(g.objects(item, DCTERMS.publisher)) or
                                  list(g.objects(item, SMA.publisher)) or list(g.objects(item, SDO.publisher)) or
                                  list(g.objects(item, SMA.provider)) or list(g.objects(item, SDO.provider))):
-                if g.value(publisher,FOAF.name):
-                    meta['publisher'].append(str(g.value(publisher,FOAF.name)))
+                publishername = (g.value(publisher,FOAF.name) or (g.value(publisher,SMA.name))or (g.value(publisher,SDO.name)))
+                if publishername:
+                    meta['publisher'].append(str(publishername))
                 else:
                     meta['publisher'].append(str(publisher))
             #meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
@@ -519,7 +514,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 # we have https and http as allowed schema.org namespace protocols
                 if 'schema.org' in str(root):
                     root_name = str(root).rsplit('/')[-1].strip()
-                    if root_name in creative_work_types:
+                    if root_name.lower() in creative_work_types:
                         creative_works = list(graph[:RDF.type:root])
                         # Finding the schema.org root
                         if len(list(graph.subjects(object=creative_works[0]))) == 0:
@@ -549,6 +544,32 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                          or graph.value(creator, SDO.name) or graph.value(creator, SMA.name) ))
                 if len(creator_name) > 0:
                     schema_metadata['creator'] = creator_name
+
+            distribution = (graph.objects(creative_works[0], SMA.distribution) or graph.objects(creative_works[0], SDO.distribution))
+            schema_metadata['object_content_identifier'] = []
+            for dist in distribution:
+                durl = (graph.value(dist, SMA.contentUrl) or graph.value(dist, SDO.contentUrl))
+                dtype = (graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat))
+                dsize = (graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize))
+                if durl or dtype or dsize:
+                    if idutils.is_url(str(durl)):
+                        dtype = '/'.join(str(dtype).split('/')[-2:])
+                    schema_metadata['object_content_identifier'].append({
+                        'url': str(durl),
+                        'type': dtype,
+                        'size': str(dsize)
+                    })
+            schema_metadata['measured_variable'] = []
+            for variable  in (list(graph.objects(creative_works[0], SMA.variableMeasured))
+                              or list(graph.objects(creative_works[0], SDO.variableMeasured))):
+                variablename = (graph.value(variable, SMA.name) or graph.value(variable, SDO.name))
+                if variablename:
+                    schema_metadata['measured_variable'].append(variablename)
+                else:
+                    schema_metadata['measured_variable'].append(variable)
+
+            #'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
+
         return schema_metadata
 
     def get_dcat_metadata(self, graph):

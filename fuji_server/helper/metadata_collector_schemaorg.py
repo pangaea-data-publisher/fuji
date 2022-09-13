@@ -24,6 +24,8 @@
 
 import json
 import jmespath
+from pyld import jsonld
+
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
@@ -74,38 +76,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
         self.pid_url = pidurl
         self.source_name = source
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
-
-    #work around in case a lson-ld graph is given
-    def compact_jsonld(self, jsonld):
-        """Compact JSON-LD representation.
-
-        Parameters
-        ----------
-        jsonld: Any
-            jsonld object
-
-        Returns
-        ------
-        dict
-            a dictionary of schema dataset of JSON-LD
-        """
-        jsonldnodes = {}
-        schemadataset = {}
-        for jsonldnode in jsonld.get('@graph'):
-            if jsonldnode.get('@id'):
-                jsonldnodes[jsonldnode.get('@id')] = jsonldnode
-            if jsonldnode.get('@type') == 'Dataset':
-                schemadataset = jsonldnode
-        for propkey, propvalue in schemadataset.items():
-            if isinstance(propvalue, dict):
-                if propvalue.get('@id') and len(propvalue) == 1:
-                    schemadataset[propkey] = jsonldnodes[propvalue.get('@id')]
-            elif isinstance(propvalue, list):
-                for lpropkey, lpropvalue in enumerate(propvalue):
-                    if isinstance(lpropvalue, dict):
-                        if lpropvalue.get('@id') and len(lpropvalue) == 1:
-                            schemadataset[propkey][lpropkey] = jsonldnodes[lpropvalue.get('@id')]
-        return schemadataset
 
     def parse_metadata(self, ls=None):
         """Parse the metadata given JSON-LD schema.org.
@@ -170,10 +140,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                         self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
                         for mainEntityprop in ext_meta.get('mainEntity'):
                             ext_meta[mainEntityprop] = ext_meta.get('mainEntity').get(mainEntityprop)
-                    #special case #2
-                    if ext_meta.get('@graph'):
-                        self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
-                        ext_meta = self.compact_jsonld(ext_meta)
 
                     if isinstance(ext_meta.get('@type'), list):
                         ext_meta['@type'] = ext_meta.get('@type')[0]
@@ -197,7 +163,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                             + str(ext_meta.get('@type')))
 
                         self.namespaces.append('http://schema.org/')
-                    jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                        jsnld_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     # TODO all properties with null values extracted through jmespath should be excluded
                     if jsnld_metadata.get('creator') is None:
                         #TODO: handle None values for first and last name
@@ -258,13 +224,15 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                         #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
 
                 else:
-                    self.logger.info('FsF-F2-01M : Found JSON-LD schema.org but record is not of type "Dataset" based on context -: '+str(ext_meta.get('@context')))
+                    self.logger.info('FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: '+str(ext_meta.get('@context')))
 
             except Exception as err:
                 #print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
         else:
-            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata')
+            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata from dict')
+
+
 
         if not trusted:
             jsnld_metadata = {}
