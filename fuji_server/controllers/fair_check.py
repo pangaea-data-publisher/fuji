@@ -101,6 +101,7 @@ class FAIRCheck:
     SCHEMA_ORG_CONTEXT = []
     FILES_LIMIT = None
     LOG_SUCCESS = 25
+    LOG_FAILURE = 35
     VALID_RESOURCE_TYPES = []
     IDENTIFIERS_ORG_DATA = {}
     GOOGLE_DATA_DOI_CACHE = []
@@ -168,6 +169,8 @@ class FAIRCheck:
         self.repeat_pid_check = False
         self.logger_message_stream = io.StringIO()
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
+        logging.addLevelName(self.LOG_FAILURE, 'FAILURE')
+
         # in case log messages shall be sent to a remote server
         self.remoteLogPath = None
         self.remoteLogHost = None
