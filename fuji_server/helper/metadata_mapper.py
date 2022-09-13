@@ -287,7 +287,11 @@ class Mapper(Enum):
         },
         'provenance_general': {
             'path': './{*}provenance'
-        }
+        },
+        'language': {
+            'path': './{*}language'
+        },
+
     }
 
     XML_MAPPING_DATACITE = {
