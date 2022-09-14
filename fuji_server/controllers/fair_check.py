@@ -107,7 +107,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '2.1.0'
+    FUJI_VERSION = '2.1.1'
 
     def __init__(self,
                  uid,
@@ -194,6 +194,7 @@ class FAIRCheck:
         self.tika_content_types_list = []
         self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
 
+
     @classmethod
     def load_predata(cls):
         cls.FILES_LIMIT = Preprocessor.data_files_limit
@@ -241,6 +242,16 @@ class FAIRCheck:
             return all([r.scheme, r.netloc])
         except:
             return False
+
+    def set_auth_token(self, auth_token, auth_token_type='Basic'):
+        if auth_token:
+            self.auth_token = auth_token
+        if auth_token_type:
+            if auth_token_type in ['Basic','Bearer']:
+                self.auth_token_type = auth_token_type
+            else:
+                self.auth_token_type = 'Basic'
+
 
     def validate_service_url(self):
         # checks if service url and landing page url have same domain in order to avoid manipulations
@@ -1253,7 +1264,7 @@ class FAIRCheck:
                                                 linked_xml_collector.getNamespaces())
                 else:
                     self.logger.info(
-                        'FsF-F2-01M : Found typed link or signposting link but cannot handle given mime type -:' + str(
+                        'FsF-F2-01M : Found typed link or signposting link but will ignore mime type -:' + str(
                             metadata_link['type']))
 
 
