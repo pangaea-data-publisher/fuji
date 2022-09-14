@@ -230,7 +230,7 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                 #print(err.with_traceback())
                 self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
         else:
-            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata from dict')
+            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict')
 
 
 

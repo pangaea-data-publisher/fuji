@@ -216,8 +216,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 #handle JSON-LD
                 DCAT = Namespace('http://www.w3.org/ns/dcat#')
                 if self.content_type in ['application/ld+json','application/json']:
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
                     self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
                     if isinstance(rdf_response, dict):
+                        self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (self.target_url))
+
                         try:
                             schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
                                                                              sourcemetadata=[rdf_response],
@@ -229,6 +232,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 self.namespaces = schemaorg_collector.namespaces
                                 self.setLinkedNamespaces(str(rdf_response))
                             else:
+                                self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
                                 rdf_response = json.dumps(rdf_response)
                             #wrong one given above
                         except Exception as e:
@@ -236,6 +240,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             pass
                     #graph
                     if isinstance(rdf_response, str):
+                        self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (self.target_url))
                         try:
                             jsonldgraph = rdflib.ConjunctiveGraph()
                             rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
@@ -243,7 +248,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                         except Exception as e:
                             print('JSON-LD parsing error', e)
-                            self.logger.info('FsF-F2-01M : Parsing error, failed to extract JSON-LD -: {}'.format(e))
+                            self.logger.info('FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}'.format(e))
                 else:
                     # parse RDF
                     parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
@@ -268,7 +273,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                         if  int(errorlinematch[1])+1 != badline:
                                             badline = int(errorlinematch[1])
                                             self.logger.warning(
-                                                'FsF-F2-01M : Failed to parse RDF, trying to fix and retry parsing everything before line -: %s ' % str(badline))
+                                                'FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s ' % str(badline))
                                             splitRDF = rdf_response.splitlines()
                                             if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
                                                 rdf_response = b'\n'.join(splitRDF[:badline-1])
