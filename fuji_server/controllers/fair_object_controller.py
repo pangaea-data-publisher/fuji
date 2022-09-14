@@ -60,6 +60,8 @@ def assess_by_id(body):  # noqa: E501
         oaipmh_endpoint = body.oaipmh_endpoint
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
+        auth_token = body.auth_token
+        auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
         logger.info('Assessment target: ' + identifier)
         print('Assessment target: ', identifier, flush=True)
@@ -69,8 +71,10 @@ def assess_by_id(body):  # noqa: E501
                        metadata_service_type=metadata_service_type,
                        use_datacite=usedatacite,
                        oaipmh_endpoint=oaipmh_endpoint)
+        #dataset level authentication
+        if auth_token:
+            ft.set_auth_token(auth_token, auth_token_type)
         # set target for remote logging
-
         remote_log_host, remote_log_path = Preprocessor.remote_log_host, Preprocessor.remote_log_path
         #print(remote_log_host, remote_log_path)
         if remote_log_host and remote_log_path and allow_remote_logging:
