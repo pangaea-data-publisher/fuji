@@ -246,7 +246,7 @@ class MetaDataCollectorXML(MetaDataCollector):
             if requestHelper.checked_content_hash:
                 requestHelper.checked_content.get(requestHelper.checked_content_hash)['checked'] = True
             self.logger.info(
-                'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata))
+                'FsF-F2-01M : Found some metadata in XML -: '+(str(xml_metadata.keys()))
             )
         else:
             self.logger.info('FsF-F2-01M : Could not identify metadata properties in XML')
