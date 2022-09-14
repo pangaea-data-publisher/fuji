@@ -84,7 +84,6 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             self.logger.warning(
                 'FsF-F4-01M : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
             )
-
         return registries_supported
 
     def evaluate(self):
@@ -115,13 +114,9 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             self.logger.info('FsF-F4-01M : Metadata found through - structured data')
         else:
             self.logger.warning('FsF-F4-01M : Metadata is NOT found through -: {}'.format(search_engines_support))
-        #TODO: replace this metadata format based test by real lookup at registries
-        registry_support_match = list(set(dict(self.fuji.metadata_sources).keys()).intersection(sources_registry))
 
         registries_listed = self.check_registry_support()
-
-        registry_support_match.extend(registries_listed)
-
+        registry_support_match = registries_listed
         if registry_support_match:
             self.setEvaluationCriteriumScore('FsF-F4-01M-2', 1, 'pass')
             if self.maturity < 3:
