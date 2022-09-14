@@ -90,6 +90,15 @@ class RequestHelper:
         #maximum size which will be downloaded and analysed by F-UJU
         self.max_content_size = Preprocessor.max_content_size
         self.checked_content_hash = None
+        self.authtoken = None
+        self.tokentype = None
+
+    def setAuthToken(self,authtoken, tokentype):
+        if isinstance(authtoken, str):
+            self.authtoken = authtoken
+        if tokentype in ['Bearer', 'Basic']:
+            self.tokentype = tokentype
+
     def setAcceptType(self, accepttype):
         if not isinstance(accepttype, AcceptTypes):
             raise TypeError('type must be an instance of AcceptTypes enum')
@@ -139,10 +148,13 @@ class RequestHelper:
 
                 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context),urllib.request.HTTPHandler())
                 urllib.request.install_opener(opener)
+                request_headers = {
+                    'Accept': self.accept_type,
+                    'User-Agent': 'F-UJI'}
+                if self.authtoken:
+                    request_headers['Authorization'] = self.tokentype+' '+self.authtoken
                 tp_request = urllib.request.Request(self.request_url,
-                                                    headers={
-                                                        'Accept': self.accept_type,
-                                                        'User-Agent': 'F-UJI'})
+                                                    headers=request_headers)
 
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
