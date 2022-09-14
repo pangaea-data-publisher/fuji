@@ -51,6 +51,8 @@ def harvest_by_id(body=None):  # noqa: E501
     if connexion.request.is_json:
         body = Harvest.from_dict(connexion.request.get_json())  # noqa: E501
         identifier = body.object_identifier
+        auth_token = body.auth_token
+        auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
         ft = FAIRCheck(uid=identifier,
                        test_debug=False,
@@ -58,6 +60,10 @@ def harvest_by_id(body=None):  # noqa: E501
                        metadata_service_type=None,
                        use_datacite=False,
                        oaipmh_endpoint=None)
+
+        #dataset level authentication
+        if auth_token:
+            ft.set_auth_token(auth_token, auth_token_type)
         ft.harvest_all_metadata()
 
         ft.check_unique_persistent()
