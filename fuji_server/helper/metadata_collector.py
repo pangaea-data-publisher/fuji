@@ -122,6 +122,8 @@ class MetaDataCollector(object):
         self.linked_namespaces = {}
         self.content_type = None
         self.uris = []
+        self.auth_token_type = 'Basic'
+        self.auth_token = None
 
     @classmethod
     def getEnumSourceNames(cls) -> Sources:
@@ -178,3 +180,7 @@ class MetaDataCollector(object):
                     found_lov = lov_helper.get_linked_vocab_by_iri(url)
                     if found_lov:
                         self.linked_namespaces[found_lov.get('namespace')] = found_lov
+
+    def set_auth_token(self, authtoken, authtokentype):
+        self.auth_token = authtoken
+        self.auth_token_type = authtokentype
