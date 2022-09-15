@@ -125,6 +125,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
+        requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
         if self.pref_mime_type:
             requestHelper.addAcceptType(self.pref_mime_type)
         #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))

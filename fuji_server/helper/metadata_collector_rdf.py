@@ -201,7 +201,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #if self.rdf_graph is None:
         requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.rdf)
-
+        requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
         neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
         if requestHelper.checked_content_hash:
             if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
