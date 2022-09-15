@@ -116,7 +116,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 idhelper = IdentifierHelper(test_pid)
                 if idhelper.is_persistent:
                     if test_pid != self.fuji.id:
-                        if self.pid_resolves_to_landing_page(test_pid):
+                        if self.pid_resolves_to_landing_page(idhelper.identifier_url):
                             verified_pids.append(test_pid)
                             verified_pid_schemes.append(idhelper.preferred_schema)
                     else:
