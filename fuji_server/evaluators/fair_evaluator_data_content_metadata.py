@@ -106,7 +106,14 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     start = time.time()
                     #r = requests.get(test_data_content_url, verify=False, stream=True)
                     try:
-                        response = urllib.request.urlopen(test_data_content_url)
+                        request_headers = {
+                            'Accept': '*/*',
+                            'User-Agent': 'F-UJI'}
+                        if self.fuji.auth_token:
+                            request_headers['Authorization'] = self.fuji.auth_token_type+' '+self.fuji.auth_token
+                        request = urllib.request.Request(test_data_content_url, headers=request_headers)
+                        response = urllib.request.urlopen(request)
+
                         content_type = response.info().get_content_type()
                         header_content_types = response.headers.get('content-type')
                         chunksize = 1024
@@ -137,8 +144,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 test_data_content_url, e.code))
                     except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
+                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, URLError code {1} '.format(
+                                test_data_content_url, e.code))
+
                     except Exception as e:
-                        self.logger.warning('FsF-F3-01M : Could not access the resource -:' + str(e))
+                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -:' + str(e))
 
 
                     status = 'tika error'
