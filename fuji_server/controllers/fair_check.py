@@ -193,6 +193,8 @@ class FAIRCheck:
         self.extruct_result = {}
         self.tika_content_types_list = []
         self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
+        self.auth_token = None
+        self.auth_token_type = 'Basic'
 
 
     @classmethod
@@ -505,6 +507,7 @@ class FAIRCheck:
             if input_urlscheme in self.STANDARD_PROTOCOLS:
                 self.origin_url = input_url
                 requestHelper = RequestHelper(input_url, self.logger)
+                requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
                 requestHelper.setAcceptType(AcceptTypes.html)  # request
                 neg_source, landingpage_html = requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
                 if not 'html' in str(requestHelper.content_type):
@@ -632,7 +635,12 @@ class FAIRCheck:
                 try:
                     rdflib_logger = logging.getLogger('rdflib')
                     rdflib_logger.setLevel(logging.ERROR)
-                    rdfabuffer= io.StringIO(self.landing_html.decode('utf-8'))
+                    try:
+                        rdfa_html = self.landing_html.decode('utf-8')
+                    except Exception as e:
+                        rdfa_html = self.landing_html
+                        pass
+                    rdfabuffer= io.StringIO(rdfa_html)
                     rdfa_graph = pyRdfa(media_type='text/html').graph_from_source(rdfabuffer)
                     rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                           target_url=self.landing_url, source=rdfasource)
@@ -647,7 +655,7 @@ class FAIRCheck:
                         self.logger.log(self.LOG_SUCCESS,
                                         'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
                 except Exception as e:
-                    #print('RDFa parsing error',e)
+                    print('RDFa parsing error',e)
                     self.logger.info(
                         'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
 
@@ -1038,6 +1046,7 @@ class FAIRCheck:
                 'FsF-F2-01M : Trying to retrieve RDF metadata through content negotiation from URL -: ' + str(
                     targeturl))
             neg_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger, target_url=targeturl, source=source)
+            neg_rdf_collector.set_auth_token(self.auth_token, self.auth_token_type)
             if neg_rdf_collector is not None:
                 source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
                 # in case F-UJi was redirected and the landing page content negotiation doesnt return anything try the origin URL
@@ -1092,6 +1101,7 @@ class FAIRCheck:
             negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                             target_url=self.landing_url,
                                                             link_type='negotiated')
+            negotiated_xml_collector.set_auth_token(self.auth_token,self.auth_token_type)
             source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
             # print('### ',metadata_neg_dict)
             neg_namespace = 'unknown xml'
