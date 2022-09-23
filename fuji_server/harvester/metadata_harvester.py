@@ -4,7 +4,7 @@ import logging
 import mimetypes
 import re
 import urllib
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 import extruct
 import lxml
@@ -30,7 +30,7 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 class MetadataHarvester():
     LOG_SUCCESS = 25
     LOG_FAILURE = 35
-
+    signposting_relation_types = ['describedby', 'item','license','type','collection', 'author','linkset','cite-as']
     def __init__(self, uid, use_datacite = True, auth_token = None, auth_token_type = 'Basic'):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
@@ -209,9 +209,9 @@ class MetadataHarvester():
                                 type += '+xml'
                         #signposting links
                         #https://www.w3.org/2001/sw/RDFCore/20031212-rdfinhtml/ recommends: link rel="meta" as well as "alternate meta"
-                        if rel in ['meta','alternate meta','metadata','author','collection','describes','item','type','search','alternate','describedby','cite-as','linkset','license']:
+                        if rel in ['meta','alternate meta','metadata','collection','author','describes','item','type','search','alternate','describedby','cite-as','linkset','license']:
                             source = 'typed'
-                            if rel in ['describedby', 'item','license','type','collection', 'linkset','cite-as']:
+                            if rel in self.signposting_relation_types:
                                 source = 'signposting'
                             self.typed_links.append({
                                 'url': href,
@@ -230,11 +230,11 @@ class MetadataHarvester():
         header_link_string = header.get('Link')
         if header_link_string is not None:
             self.signposting_header_links = self.parse_signposting_http_link_format(header_link_string)
-
+        if self.signposting_header_links:
             self.logger.info('FsF-F1-02D : Found signposting links in response header of landingpage -: ' + str(len(
                 self.signposting_header_links)))
 
-    def set_signposting_typeset_links(self):
+    def set_signposting_linkset_links(self):
         linksetlinks = []
         linksetlink ={}
         if self.get_html_typed_links('linkset'):
@@ -262,13 +262,14 @@ class MetadataHarvester():
                                     if not isinstance(links, list):
                                         links = [links]
                                     for link in links:
-                                          self.typed_links.append({
-                                            'url': link.get('href'),
-                                            'type': link.get('type'),
-                                            'rel': linktype,
-                                            'profile': link.get('profile'),
-                                            'source' : 'signposting'
-                                        })
+                                        if linktype in self.signposting_relation_types:
+                                            self.typed_links.append({
+                                                'url': link.get('href'),
+                                                'type': link.get('type'),
+                                                'rel': linktype,
+                                                'profile': link.get('profile'),
+                                                'source' : 'signposting'
+                                            })
                             self.logger.info('FsF-F2-01M : Found valid Signposting Linkset in provided JSON file')
                         else:
                             self.logger.warning('FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing oage or PID')
@@ -366,14 +367,14 @@ class MetadataHarvester():
                 found_formats = formats_match[1]
             signposting_link_dict = {
                 'url': found_link[1:-1],
-                'type': found_type,
-                'rel': found_rel,
+                'type': str(found_type).strip(),
+                'rel': str(found_rel).strip(),
                 'profile': found_formats,
                 'source': 'signposting'
             }
             if anchor_match:
                 signposting_link_dict['anchor'] = anchor_match[1]
-            if signposting_link_dict.get('url'):
+            if signposting_link_dict.get('url') and signposting_link_dict.get('rel') in self.signposting_relation_types:
                 found_signposting_links.append(signposting_link_dict)
         return  found_signposting_links
 
@@ -480,7 +481,7 @@ class MetadataHarvester():
         if self.landing_url and self.is_html_page:
             self.set_html_typed_links()
             self.set_signposting_header_links(requestHelper.response_content, requestHelper.getResponseHeader())
-            self.set_signposting_typeset_links()
+            self.set_signposting_linkset_links()
 
             self.logger.info('FsF-F2-01M : Starting to analyse EMBEDDED metadata at -: ' + str(self.landing_url))
             #test if content is html otherwise skip embedded tests
