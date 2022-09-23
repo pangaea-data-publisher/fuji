@@ -39,7 +39,6 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
         self.google_custom_search_id = Preprocessor.google_custom_search_id
         self.google_custom_search_api_key = Preprocessor.google_custom_search_api_key
-        self.enable_google_web_search = Preprocessor.google_web_search_enabled
         self.object_type = object_type
         print('OBJECT TYPE: ',self.object_type, self.google_custom_search_id)
 

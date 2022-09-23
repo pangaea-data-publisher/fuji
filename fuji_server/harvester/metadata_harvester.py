@@ -430,8 +430,6 @@ class MetadataHarvester():
                 self.pid_url = idhelper.get_identifier_url()
             input_url = idhelper.get_identifier_url()
 
-            print('INPUT URL: ',input_url)
-
             input_urlscheme = urlparse(input_url).scheme
             if input_urlscheme in self.STANDARD_PROTOCOLS:
                 self.origin_url = input_url
@@ -440,7 +438,6 @@ class MetadataHarvester():
                 #requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 neg_source, landingpage_html = requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
-                print('CONTENT TYPE: ',requestHelper.content_type)
                 if not 'html' in str(requestHelper.content_type):
                     self.logger.info('FsF-F2-01M :Content type is ' + str(requestHelper.content_type) +
                                      ', therefore skipping Embedded metadata (microdata, RDFa) tests')
