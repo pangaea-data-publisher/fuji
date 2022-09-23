@@ -90,10 +90,11 @@ def assess_by_id(body):  # noqa: E501
 
         uid_result, pid_result = ft.check_unique_persistent()
         if ft.repeat_pid_check:
-            ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
-            ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
-            ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
-            ft.retrieve_metadata_external_datacite()
+            ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
+            #ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
+            #ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
+            #ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
+            #ft.retrieve_metadata_external_datacite()
         core_metadata_result = ft.check_minimal_metatadata()
         content_identifier_included_result = ft.check_content_identifier_included()
         access_level_result = ft.check_data_access_level()
