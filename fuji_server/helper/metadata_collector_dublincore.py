@@ -66,7 +66,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
             a dictionary of Dublin Core metadata
         """
         dc_core_metadata = {}
-        dc_core_base_props = ['contributor', 'coverage', 'creator', 'date', 'description', 'format', 'identifier',
+        dc_core_base_props = ['contributor', 'coverage', 'creator', 'date', 'issued', 'description', 'format', 'identifier',
                               'language', 'publisher', 'relation', 'rights', 'source', 'subject', 'title', 'type']
         source = None
         if self.source_metadata is not None:
