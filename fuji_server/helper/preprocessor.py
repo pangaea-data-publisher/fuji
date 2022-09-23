@@ -77,6 +77,8 @@ class Preprocessor(object):
     remote_log_host = None
     remote_log_path = None
     max_content_size = 5000000
+    google_custom_search_id = None
+    google_custom_search_api_key = None
 
     def __new__(cls):
         """Define what happens on object creation to ensure preprocessor is a singledton"""
@@ -114,6 +116,13 @@ class Preprocessor(object):
                     cls.logger.warning('Remote Logging not possible, URL response: ' + str(request.status_code))
             except Exception as e:
                 cls.logger.warning('Remote Logging not possible ,please correct : ' + str(host) + ' ' + str(path))
+
+    @classmethod
+    def set_google_custom_search_info(cls, search_id, api_key, web_search):
+        if api_key:
+            cls.google_custom_search_id = search_id
+            cls.google_custom_search_api_key= api_key
+            cls.google_web_search_enabled = web_search
 
     @classmethod
     def get_identifiers_org_data(cls):

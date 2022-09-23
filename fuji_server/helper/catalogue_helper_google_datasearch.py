@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
+import re
 import sqlite3 as sl
 import pandas as pd
 import os
+
+import requests
+from bs4 import BeautifulSoup
+
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -27,10 +32,16 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
     islisted = False
 
     #apiURI = 'https://api.datacite.org/dois'
-    def __init__(self, logger: logging.Logger = None):
+    def __init__(self, logger: logging.Logger = None, object_type = None):
         self.logger = logger
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
         self.google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_cache.db')
+
+        self.google_custom_search_id = Preprocessor.google_custom_search_id
+        self.google_custom_search_api_key = Preprocessor.google_custom_search_api_key
+        self.enable_google_web_search = Preprocessor.google_web_search_enabled
+        self.object_type = object_type
+        print('OBJECT TYPE: ',self.object_type, self.google_custom_search_id)
 
     def random_sample(self, limit):
         sample = []
@@ -64,68 +75,66 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 self.logger.warning('FsF-F4-01M : Google Search Cache DB Query Error: -:' + str(e))
 
         if found_google_links:
-
             self.islisted = True
-        '''
-        if not Preprocessor.google_data_dois:
-            self.logger.warning(
-                'FsF-F4-01M : Google Search DOI File does not exist, see F-UJI installation instructions')
-        if not Preprocessor.google_data_urls:
-            self.logger.warning(
-                'FsF-F4-01M : Google Search URL File does not exist, see F-UJI installation instructions')
-        for pid in pidlist:
-            if pid:
-                pid = str(pid).lower()
-                self.logger.info('FsF-F4-01M : Querying Google Dataset Search cache for -:' + str(pid))
-                if str(pid).lower() in Preprocessor.google_data_dois:
+        else:
+            for url_to_test in pidlist:
+                found_at_google = self.query_google_custom_search(url_to_test, pidlist)
+                if found_at_google:
                     self.islisted = True
                     break
-                elif str(pid).lower() in Preprocessor.google_data_urls:
-                    self.islisted = True
-                    break
-        '''
+
         if self.islisted:
             self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' +
                              str(found_google_links))
         else:
             self.logger.info('FsF-F4-01M : Identifier not listed in Google Dataset Search cache -:' + str(pidlist))
-            '''
-        try:
-            res= apiresponse = re.get(self.apiURI+'/'+pid)
-            if res.status_code == 200:
-                self.islisted =True
-                self.logger.info('FsF-F4-01M : Querying DataCite API for -:' + str(pid))
-            elif res.status_code == 404:
-                self.logger.info('FsF-F4-01M : Identifier not listed in DataCite catalogue -:' + str(pid))
-            else:
-                self.logger.warning('FsF-F4-01M : DataCite API not available -:'+str(res.status_code))
-        except Exception as e:
-            self.logger.warning('FsF-F4-01M : DataCite API not available or returns errors')
-        '''
 
         return response
-
-    def create_lists(self, google_cache_file):
-        gs = pd.read_csv(google_cache_file)
-        google_doi_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_search_dois.txt')
-        google_url_path = os.path.join(Preprocessor.fuji_server_dir, 'data', 'google_search_urls.txt')
-        google_doi_set = set(gs['doi'].astype(str).str.lower().unique())
-        google_url_set = set(gs['url'].astype(str).str.lower().unique())
-        fu = open(google_url_path, 'w')
-        fu.write('\n'.join(google_url_set))
-        fu.close()
-        fd = open(google_doi_path, 'w')
-        fd.write('\n'.join(google_doi_set))
-        fd.close()
 
     def create_cache_db(self, google_cache_file):
         gs = pd.read_csv(google_cache_file)
         #google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, 'data','google_cache.db')
         con = sl.connect(self.google_cache_db_path)
-        pd.DataFrame(pd.concat([gs['url'], gs['doi']]), columns=['uri']).drop_duplicates().to_sql('google_links',
-                                                                                                  con,
-                                                                                                  if_exists='replace',
-                                                                                                  index=False)
+        gf = pd.DataFrame(pd.concat([gs['url'], gs['doi']]), columns=['uri']).drop_duplicates()
+        gf['source'] = 0
+        gf.to_sql('google_links', con, if_exists='replace', index=False)
         with con:
             data = con.execute('CREATE INDEX google_uri_index ON google_links (uri) ')
         con.close()
+
+    def add_google_search_record(self, url_to_save, source = 1):
+        #three sourced (int) : 0 = from kaggle file, 1 = from custom search match, 2 = google search (scraped)
+        con = sl.connect(self.google_cache_db_path)
+        try:
+            with con:
+                data = con.execute('INSERT INTO google_links (uri, source) values (\''+str(url_to_save)+'\',1)')
+            return
+        except Exception as e:
+            print('GOOGLE CACHE INSERT FAILED', e)
+        con.close()
+        return True
+        ##test
+
+    def query_google_custom_search(self, url_to_test, pidlist):
+        url_to_test = str(url_to_test).strip()
+        if str(self.object_type).strip().lower() == 'dataset':
+            found_url_in_google = False
+            if self.google_custom_search_id and self.google_custom_search_api_key:
+                google_url = 'https://customsearch.googleapis.com/customsearch/v1?cx=' + self.google_custom_search_id + '&q=url:' + url_to_test + '&key=' + self.google_custom_search_api_key
+                res = requests.get(google_url)
+                if res:
+                    try:
+                        google_json = res.json()
+                        if google_json.get('items'):
+                            for google_item in google_json.get('items'):
+                                if google_item.get('link') == url_to_test:
+                                    for url_to_save in pidlist:
+                                        self.add_google_search_record(url_to_save)
+                                    found_url_in_google = True
+                    except Exception as e:
+                        print(e)
+            return found_url_in_google
+
+    def init_google_custom_search(self, custom_search_id, api_key):
+        self.google_custom_search_id = custom_search_id
+        self.google_custom_search_api_key = api_key
