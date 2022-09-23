@@ -63,7 +63,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     if datacite_registry_helper.islisted:
                         registries_supported.append(datacite_registry_helper.source)
             if not registries_supported:
-                google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger)
+                google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger, self.fuji.metadata_merged.get('object_type'))
                 google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
                 if google_registry_helper.islisted:
                     registries_supported.append(google_registry_helper.source)
