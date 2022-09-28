@@ -102,40 +102,53 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             identifiers_to_test = [self.fuji.pid_url]
         else:
             identifiers_to_test = [self.fuji.id]
+
         if self.fuji.metadata_merged.get('object_identifier'):
             if isinstance(self.fuji.metadata_merged.get('object_identifier'), list):
                 identifiers_to_test.extend(self.fuji.metadata_merged.get('object_identifier'))
             else:
-                identifiers_to_test.append(self.fuji.metadata_merged.get('object_identifier'))
-        identifiers_to_test = list(set(identifiers_to_test))
+                identifiers_to_test.append(str(self.fuji.metadata_merged.get('object_identifier')))
+        cleaned_identifiers_to_test = []
+        for id_to_test in identifiers_to_test:
+            idhelper = IdentifierHelper(id_to_test)
+            if idhelper.is_persistent and idhelper.preferred_schema in Mapper.VALID_PIDS.value:
+                cleaned_identifiers_to_test.append(idhelper.identifier_url)
+
+        identifiers_to_test = list(set(cleaned_identifiers_to_test))
+        #print('ID TO TEST ',identifiers_to_test)
 
         verified_pids = []
         verified_pid_schemes = []
         if identifiers_to_test:
             for test_pid in identifiers_to_test:
                 idhelper = IdentifierHelper(test_pid)
-                if idhelper.is_persistent:
-                    if test_pid != self.fuji.id:
-                        if self.pid_resolves_to_landing_page(idhelper.identifier_url):
-                            verified_pids.append(test_pid)
-                            verified_pid_schemes.append(idhelper.preferred_schema)
-                    else:
+                #if idhelper.is_persistent:
+                if test_pid != self.fuji.id:
+                    if self.pid_resolves_to_landing_page(test_pid):
+                        self.logger.info(
+                            'FsF-F1-02D : Object identifier active (status code = 200) -: ' + str(
+                                idhelper.identifier_url))
                         verified_pids.append(test_pid)
                         verified_pid_schemes.append(idhelper.preferred_schema)
-
-            if self.fuji.landing_url:
-                self.output.resolved_url = self.fuji.landing_url  # url is active, although the identifier is not based on a pid scheme
-                self.output.resolvable_status = True
-                self.logger.info('FsF-F1-02D : Object identifier active (status code = 200)')
-                self.fuji.isMetadataAccessible = True
+                        # verified PID resolves so landing page is accessible
+                        self.fuji.isLandingPageAccessible = True
+                else:
+                    verified_pids.append(test_pid)
+                    verified_pid_schemes.append(idhelper.preferred_schema)
+                    #isLandingPageAccessible  set to False in case landing page cannot be reached anyway
+                    #if self.fuji.landing_url:
+                        # verified
+                    #    self.fuji.isLandingPageAccessible = True
 
         if verified_pids:
+            self.output.resolved_url = self.fuji.landing_url
+            self.output.resolvable_status = True
             self.output.pid_scheme = str(verified_pid_schemes)
             self.output.pid = str(verified_pids)
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5, 'pass')
             self.score.earned = 0.5
             self.maturity = 1
-            if self.fuji.isMetadataAccessible:
+            if self.fuji.isLandingPageAccessible:
                 self.setEvaluationCriteriumScore('FsF-F1-02D-2', 0.5, 'pass')
                 self.maturity = 3
                 self.result.test_status = 'pass'
@@ -144,7 +157,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                             'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
-            self.logger.warning('FsF-F1-02D : Not a persistent identifier scheme -: {}'.format(self.fuji.id_scheme))
+            self.logger.warning('FsF-F1-02D : Could not identify a valid peristent identifier based on scheme and resolution -: {}'.format(self.fuji.id_scheme))
 
         self.result.score = self.score
         self.result.maturity = self.maturity
