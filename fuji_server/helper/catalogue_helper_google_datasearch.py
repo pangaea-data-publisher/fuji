@@ -40,7 +40,6 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         self.google_custom_search_id = Preprocessor.google_custom_search_id
         self.google_custom_search_api_key = Preprocessor.google_custom_search_api_key
         self.object_type = object_type
-        print('OBJECT TYPE: ',self.object_type, self.google_custom_search_id)
 
     def random_sample(self, limit):
         sample = []
@@ -75,7 +74,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
         if found_google_links:
             self.islisted = True
-        else:
+        elif self.google_custom_search_id and self.google_custom_search_api_key:
             for url_to_test in pidlist:
                 found_at_google = self.query_google_custom_search(url_to_test, pidlist)
                 if found_at_google:
