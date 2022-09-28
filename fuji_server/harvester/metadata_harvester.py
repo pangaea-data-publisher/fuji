@@ -464,12 +464,12 @@ class MetadataHarvester():
                     self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                 elif response_status in [401, 402, 403]:
-                    self.isMetadataAccessible = False
+                    self.isLandingPageAccessible = False
                     self.logger.warning(
                         'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
                             code=response_status))
                 else:
-                    self.isMetadataAccessible = False
+                    self.isLandingPageAccessible = False
                     self.logger.warning(
                         'FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {code}'.format(
                             code=response_status))
@@ -570,8 +570,13 @@ class MetadataHarvester():
                     except Exception as e:
                         rdfa_html = self.landing_html
                         pass
+
                     rdfabuffer= io.StringIO(rdfa_html)
+                    # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
+                    # https://github.com/RDFLib/rdflib/discussions/1582
+
                     rdfa_graph = pyRdfa(media_type='text/html').graph_from_source(rdfabuffer)
+
                     rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                           target_url=self.landing_url, source=rdfasource)
                     rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
@@ -585,7 +590,7 @@ class MetadataHarvester():
                         self.logger.log(self.LOG_SUCCESS,
                                         'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
                 except Exception as e:
-                    print('RDFa parsing error',e)
+                    print('RDFa parsing error',str(e))
                     self.logger.info(
                         'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
 
