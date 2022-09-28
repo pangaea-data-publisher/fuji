@@ -121,17 +121,31 @@ class IdentifierHelper:
                         if len(self.identifier_schemes) > 0:
                             if len(self.identifier_schemes) > 1:
                                 if 'url' in self.identifier_schemes:  # ['doi', 'url']
-                                    self.identifier_schemes.remove('url')
+                                    #move url to end of list
+                                    self.identifier_schemes.append(self.identifier_schemes.pop(self.identifier_schemes.index('url')))
+                                    #self.identifier_schemes.remove('url')
                             self.preferred_schema = self.identifier_schemes[0]
                             if not self.normalized_id:
                                 self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
                             if not self.identifier_url:
-                                self.identifier_url = idutils.to_url(self.identifier, self.preferred_schema)
-                            if self.preferred_schema in ['doi','handle']:
-                                self.identifier_url = self.identifier_url.replace('http:','https:')
+                                self.identifier_url = self.to_url(self.identifier, self.preferred_schema)
+                            #print('IDURL ',self.identifier_url, self.preferred_schema)
                 if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
                 ):
                     self.is_persistent = True
+
+    def to_url(self, id, schema):
+        idurl = None
+        try:
+            if schema == 'ark':
+                idurl = id
+            else:
+                idurl = idutils.to_url(id, schema)
+            if schema in ['doi', 'handle']:
+                idurl = idurl.replace('http:', 'https:')
+        except Exception as e:
+            print('ID helper to_url error '+str(e))
+        return idurl
 
     def get_preferred_schema(self):
         return self.preferred_schema
