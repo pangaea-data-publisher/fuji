@@ -151,7 +151,7 @@ class FAIRCheck:
         self.logger = logging.getLogger(self.test_id)
         self.metadata_sources = []
         self.isDebug = test_debug
-        self.isMetadataAccessible = None
+        self.isLandingPageAccessible = None
         self.metadata_merged = {}
         self.metadata_unmerged = []
         self.content_identifier = []
