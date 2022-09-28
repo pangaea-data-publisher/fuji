@@ -397,7 +397,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if not meta.get('title'):
             meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
         if not meta.get('summary'):
-            meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or
+            meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or g.value(item, DCTERMS.abstract) or
                                g.value(item, SMA.description) or g.value(item, SDO.description)
                                or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
         if not meta.get('publication_date'):
