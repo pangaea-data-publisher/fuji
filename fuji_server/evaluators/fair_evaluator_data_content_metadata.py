@@ -57,7 +57,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         score = 0
 
         self.logger.info('FsF-R1-01MD : Object landing page accessible status -: {}'.format(
-            self.fuji.isMetadataAccessible))
+            self.fuji.isLandingPageAccessible))
 
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
         # http://doi.org/10.1007/s10531-013-0468-6
