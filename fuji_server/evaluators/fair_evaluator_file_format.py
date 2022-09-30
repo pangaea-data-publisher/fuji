@@ -112,7 +112,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
             # FILE FORMAT CHECKS....
             # check if format is a scientific one:
-
+            preferred_mimetype = None
             for mimetype, url in mime_url_pair.items():
                 data_file_output = DataFileFormatOutputInner()
                 preferance_reason = []
@@ -159,12 +159,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
                 if preferance_reason:
                     preferred_detected = True
+                    preferred_mimetype = mimetype
 
                 data_file_output.mime_type = mimetype
                 data_file_output.file_uri = url
                 data_file_output.preference_reason = list(set(preferance_reason))
                 data_file_output.subject_areas = list(set(subject_area))
                 data_file_list.append(data_file_output)
+
             if preferred_detected:
                 self.score.earned = 1
                 self.setEvaluationCriteriumScore('FsF-R1.3-02D-1', 1, 'pass')
@@ -172,7 +174,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     'FsF-R1.3-02D : Could identify a file format commonly used by the scientific community -:' +
-                    str(mimetype))
+                    str(preferred_mimetype))
                 self.result.test_status = 'pass'
         else:
             self.logger.warning(
