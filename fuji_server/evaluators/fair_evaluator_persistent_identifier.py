@@ -136,13 +136,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     verified_pids.append(test_pid)
                     verified_pid_schemes.append(idhelper.preferred_schema)
                     #isLandingPageAccessible  set to False in case landing page cannot be reached anyway
-                    #if self.fuji.landing_url:
+                    if self.fuji.landing_url:
                         # verified
-                    #    self.fuji.isLandingPageAccessible = True
+                        self.fuji.isLandingPageAccessible = True
 
         if verified_pids:
             self.output.resolved_url = self.fuji.landing_url
-            self.output.resolvable_status = True
+            self.output.resolvable_status = self.fuji.isLandingPageAccessible
             self.output.pid_scheme = str(verified_pid_schemes)
             self.output.pid = str(verified_pids)
             self.setEvaluationCriteriumScore('FsF-F1-02D-1', 0.5, 'pass')
