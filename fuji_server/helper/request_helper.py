@@ -131,7 +131,6 @@ class RequestHelper:
         return True
 
     def content_negotiate(self, metric_id='', ignore_html=True):
-        #TODO: not necessarily to be done with the landing page e.g. http://purl.org/vocommons/voaf resolves to a version URL which responds HTML instead of RDF
         self.metric_id = metric_id
         source = 'html'
         status_code = None
