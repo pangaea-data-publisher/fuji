@@ -131,7 +131,7 @@ class Mapper(Enum):
     SCHEMAORG_MAPPING = '{title: name[*]."@value" || name, object_type: "@type", '\
                             'publication_date: datePublished."@value" || datePublished || dateCreated, '\
                             'modified_date: dateModified."@value" ||dateModified, ' \
-                           'creator: creator[?"@type" ==\'Person\'].name || creator[?"@type" ==\'Organization\'].name || author[*].name || creator.name || author.name, ' \
+                           'creator: creator[?"@type" ==\'Person\'].name || creator[?"@type" ==\'Organization\'].name || author[*].name || creator[*].name || creator.name || author.name, ' \
                            'creator_first: creator[*].givenName || author[*].givenName || creator.givenName || author.givenName,' \
                            'creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,' \
                            'contributor: contributor[*].name || contributor[*].familyName, ' \
