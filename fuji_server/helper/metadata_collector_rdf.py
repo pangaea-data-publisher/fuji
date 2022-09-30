@@ -265,7 +265,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     if 'schema.org' in rdf_response.get('@context'):
                                         rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
                             rdf_response = json.dumps(rdf_response)
-                            print('CONVERTING .....   ', type(rdf_response), rdf_response)
                     except Exception as e:
                         print('RDF Collector Error: ',e)
                         pass
