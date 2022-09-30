@@ -14,14 +14,9 @@ DataRecord
 Dataset
 Disease
 Enzyme
-Event
-FormalParameter
 Gene
-Journal
 LabProtocol
 MolecularEntity
-Organization
-Person
 Phenotype
 Protein
 ProteinAnnotation
@@ -38,5 +33,4 @@ SequenceRange
 Study
 Taxon
 TaxonName
-Tool
 TrainingMaterial
