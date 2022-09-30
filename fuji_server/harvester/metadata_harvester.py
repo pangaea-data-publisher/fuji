@@ -61,6 +61,9 @@ class MetadataHarvester():
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         logging.addLevelName(self.LOG_FAILURE, 'FAILURE')
 
+        idhelper = IdentifierHelper(self.id)
+        self.pid_scheme = idhelper.preferred_schema
+
 
     def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
         if not isinstance(namespaces, list):
@@ -496,7 +499,6 @@ class MetadataHarvester():
                 schemaorg_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                      json_ld_content=ext_meta,
                                                      source = MetaDataCollector.Sources.SCHEMAORG_EMBED.value)
-
                 source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
                 '''
                 schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
@@ -727,6 +729,7 @@ class MetadataHarvester():
                     target_url))
             schemaorg_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                        target_url=target_url)
+            schemaorg_collector.setAcceptType(AcceptTypes.jsonld)
             source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
             schemaorg_dict = self.exclude_null(schemaorg_dict)
             if schemaorg_dict:
