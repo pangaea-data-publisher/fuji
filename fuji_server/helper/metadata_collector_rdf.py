@@ -26,6 +26,7 @@ import sys
 
 import extruct
 import idutils
+import jmespath
 import rdflib
 import requests
 from rdflib import Namespace, Graph, URIRef, plugin
@@ -77,8 +78,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
         Method to get all metadata from a graph object
     """
     target_url = None
-
-    def __init__(self, loggerinst, target_url, source):
+    SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
+    SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
+    def __init__(self, loggerinst, target_url=None, source=None, json_ld_content = None):
         """
         Parameters
         ----------
@@ -94,8 +96,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
         self.target_url = target_url
         self.content_type = None
         self.source_name = source
+        self.json_ld_content = json_ld_content
         #self.rdf_graph = rdf_graph
         super().__init__(logger=loggerinst)
+
 
     def getAllURIS(self, graph):
         founduris = []
@@ -159,7 +163,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
                 elif rdflib.term.URIRef('http://schema.org/') in graph_namespaces.values():
                     self.logger.info('FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements')
-                    rdf_metadata = self.get_schemaorg_metadata(rdf_response_graph)
+                    rdf_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_graph)
                 elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
                     self.logger.info('FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements')
                     rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
@@ -198,100 +202,134 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata = dict()
         rdf_response_graph = None
+
         #if self.rdf_graph is None:
-        requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
-        requestHelper.setAcceptType(AcceptTypes.rdf)
-        requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
-        neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
-        if requestHelper.checked_content_hash:
-            if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
-                requestHelper.response_content = None
-                self.logger.info('FsF-F2-01M : Ignoring RDF since content already has been parsed as XML')
+        if not self.json_ld_content:
+            requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.rdf)
+            requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
+            neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            if requestHelper.checked_content_hash:
+                if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
+                    requestHelper.response_content = None
+                    self.logger.info('FsF-F2-01M : Ignoring RDF since content already has been parsed as XML')
+            if requestHelper.response_content is not None:
+                self.content_type = requestHelper.content_type
+        else:
+            self.content_type = 'application/ld+json'
+            rdf_response = self.json_ld_content
 
-        #required for metric knowledge representation
-        if requestHelper.response_content is not None:
-            self.content_type = requestHelper.content_type
-            if self.content_type is not None:
-                self.content_type = self.content_type.split(';', 1)[0]
-                #handle JSON-LD
-                DCAT = Namespace('http://www.w3.org/ns/dcat#')
-                if self.content_type in ['application/ld+json','application/json']:
-                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
-                    self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (self.target_url))
-                    if isinstance(rdf_response, dict):
-                        self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (self.target_url))
 
-                        try:
-                            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
-                                                                             sourcemetadata=[rdf_response],
-                                                                             mapping=Mapper.SCHEMAORG_MAPPING,
-                                                                             pidurl=None, source = MetaDataCollectorSchemaOrg.getEnumSourceNames().RDF_TYPED_LINKS.value)
-                            source_schemaorg, rdf_metadata = schemaorg_collector.parse_metadata()
-                            if rdf_metadata:
-                                schemaorg_collector.setLinkedNamespaces(rdf_metadata)
-                                self.namespaces = schemaorg_collector.namespaces
-                                self.setLinkedNamespaces(str(rdf_response))
-                            else:
-                                self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
-                                rdf_response = json.dumps(rdf_response)
-                            #wrong one given above
-                        except Exception as e:
-                            print('RDF Collector Error: ',e)
-                            pass
-                    #graph
-                    if isinstance(rdf_response, str):
-                        self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (self.target_url))
-                        try:
-                            jsonldgraph = rdflib.ConjunctiveGraph()
-                            rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
-                            #rdf_response_graph = jsonldgraph
-                            self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
-                        except Exception as e:
-                            print('JSON-LD parsing error', e)
-                            self.logger.info('FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}'.format(e))
+        if self.content_type is not None:
+            self.content_type = self.content_type.split(';', 1)[0]
+            #handle JSON-LD
+            if self.content_type in ['application/ld+json','application/json']:
+                if self.target_url:
+                    jsonld_source_url = self.target_url
                 else:
-                    # parse RDF
-                    parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
-                    if parseformat:
-                        if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
-                            RDFparsed = False
-                            self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parseformat[1]))
-                            badline = None
-                            while not RDFparsed:
-                                try:
-                                    graph = rdflib.Graph(identifier = self.target_url)
-                                    graph.parse(data=rdf_response, format=parseformat[1])
-                                    rdf_response_graph = graph
-                                    self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
-                                    RDFparsed = True
-                                except Exception as e:
-                                    #<unknown>:74964:92: unclosed token
-                                    errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
-                                    if not errorlinematch:
-                                        errorlinematch = re.search(r'<unknown>:([0-9]+)',str(e))
-                                    if errorlinematch and parseformat[1] !='xml':
-                                        if  int(errorlinematch[1])+1 != badline:
-                                            badline = int(errorlinematch[1])
-                                            self.logger.warning(
-                                                'FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s ' % str(badline))
-                                            splitRDF = rdf_response.splitlines()
-                                            if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
-                                                rdf_response = b'\n'.join(splitRDF[:badline-1])
-                                            else:
-                                                RDFparsed = True # end reached
-                                        else:
-                                            RDFparsed = True
-                                    else:
-                                        RDFparsed = True # give up
-                                    if not RDFparsed:
-                                        continue
-                                    else:
-                                        self.logger.warning(
-                                            'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
+                    jsonld_source_url = 'landing page'
+                if self.json_ld_content:
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
+                else:
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
+                self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
+                if isinstance(rdf_response, dict) or isinstance(rdf_response, list):
+                    self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (jsonld_source_url))
+                    # in case two or more JSON-LD strings are embedded
+                    if isinstance(rdf_response, list):
+                        json_dict = None
+                        if len(rdf_response) > 1:
+                            self.logger.info(
+                                'FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type')
+                            for meta_rec in rdf_response:
+                                meta_rec_type = str(meta_rec.get('@type')).lower().lstrip('schema:')
+                                if meta_rec_type in ['dataset']:
+                                    json_dict = meta_rec
+                                    break
+                                if meta_rec_type in self.SCHEMA_ORG_CREATIVEWORKS:
+                                    json_dict = meta_rec
+                        if not json_dict:
+                            rdf_response = rdf_response[0]
                         else:
-                            self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
+                            rdf_response = json_dict
+                    try:
+                        rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response)
+                        if rdf_metadata:
+                            self.setLinkedNamespaces(str(rdf_response))
+                        else:
+                            self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
+                            # quick fix for https://github.com/RDFLib/rdflib/issues/1484
+                            # needs to be done before dict is converted to string
+                            if rdf_response.get('@context'):
+                                if isinstance(rdf_response.get('@context'), str):
+                                    if 'schema.org' in rdf_response.get('@context'):
+                                        rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                            rdf_response = json.dumps(rdf_response)
+                            print('CONVERTING .....   ', type(rdf_response), rdf_response)
+                    except Exception as e:
+                        print('RDF Collector Error: ',e)
+                        pass
+                #t ry to make graph from JSON-LD string
+                if isinstance(rdf_response, str) or isinstance(rdf_response, bytes):
+                    try:
+                        rdf_response = str(rdf_response).encode('utf-8')
+                    except:
+                        pass
+
+                    self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (jsonld_source_url))
+                    try:
+                        jsonldgraph = rdflib.ConjunctiveGraph()
+                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
+                        #rdf_response_graph = jsonldgraph
+                        self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
+                    except Exception as e:
+                        print('JSON-LD parsing error', e, rdf_response[:100])
+                        self.logger.info('FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}'.format(e))
+
+            else:
+                # parse all other RDF formats (non JSON-LD schema.org)
+                # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
+                parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
+                if parseformat:
+                    if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
+                        RDFparsed = False
+                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parseformat[1]))
+                        badline = None
+                        while not RDFparsed:
+                            try:
+                                graph = rdflib.Graph(identifier = self.target_url)
+                                graph.parse(data=rdf_response, format=parseformat[1])
+                                rdf_response_graph = graph
+                                self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
+                                RDFparsed = True
+                            except Exception as e:
+                                #<unknown>:74964:92: unclosed token
+                                errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
+                                if not errorlinematch:
+                                    errorlinematch = re.search(r'<unknown>:([0-9]+)',str(e))
+                                if errorlinematch and parseformat[1] !='xml':
+                                    if  int(errorlinematch[1])+1 != badline:
+                                        badline = int(errorlinematch[1])
+                                        self.logger.warning(
+                                            'FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s ' % str(badline))
+                                        splitRDF = rdf_response.splitlines()
+                                        if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
+                                            rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                        else:
+                                            RDFparsed = True # end reached
+                                    else:
+                                        RDFparsed = True
+                                else:
+                                    RDFparsed = True # give up
+                                if not RDFparsed:
+                                    continue
+                                else:
+                                    self.logger.warning(
+                                        'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
                     else:
-                        self.logger.info('FsF-F2-01M : Could not determine RDF serialisation format for -: {}'.format(self.target_url))
+                        self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
+                else:
+                    self.logger.info('FsF-F2-01M : Could not determine RDF serialisation format for -: {}'.format(self.target_url))
 
         #else:
         #    neg_source, rdf_response = 'html', self.rdf_graph
@@ -503,7 +541,127 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info('FsF-F2-01M : Could not parse Ontology RDF')
         return ont_metadata
 
-    def get_schemaorg_metadata(self, graph):
+    def get_schemorg_metadata_from_dict(self, json_dict):
+        jsnld_metadata ={}
+        trusted = True
+
+        if isinstance(json_dict, dict):
+            self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(
+                self.source_name))
+            # TODO check syntax - not ending with /, type and @type
+            # TODO (important) extend mapping to detect other pids (link to related entities)?
+            try:
+                #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
+                if str(json_dict.get('@context')).find('://schema.org') > -1:
+                    schemaorgns = 'schema'
+                    if isinstance(json_dict.get('@context'), dict):
+                        for contextname, contexturi in json_dict.get('@context').items():
+                            if contexturi.endswith('schema.org/'):
+                                schemaorgns = contextname
+                    json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ':', '"'))
+                    #special case #1
+                    if json_dict.get('mainEntity'):
+                        self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
+                        for mainEntityprop in json_dict.get('mainEntity'):
+                            json_dict[mainEntityprop] = json_dict.get('mainEntity').get(mainEntityprop)
+                    #special case #2
+                    #if json_dict.get('@graph'):
+                    #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
+                        #ext_meta = self.compact_jsonld(ext_meta)
+
+                    if isinstance(json_dict.get('@type'), list):
+                        json_dict['@type'] = json_dict.get('@type')[0]
+
+                    if not json_dict.get('@type'):
+                        self.logger.info(
+                            'FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type')
+
+                    elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
+                        trusted = False
+                        self.logger.info(
+                            'FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:'
+                            + str(json_dict.get('@type')))
+                    elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                        trusted = False
+                        self.logger.info(
+                            'FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:'+str(json_dict.get('@type')))
+                    else:
+                        self.logger.info(
+                            'FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'
+                            + str(json_dict.get('@type')))
+
+                        self.namespaces.append('http://schema.org/')
+                        jsnld_metadata = jmespath.search(Mapper.SCHEMAORG_MAPPING.value, json_dict)
+                    if jsnld_metadata.get('creator') is None:
+                        first = jsnld_metadata.get('creator_first')
+                        last = jsnld_metadata.get('creator_last')
+                        if last:
+                            if isinstance(first, list) and isinstance(last, list):
+                                if len(first) == len(last):
+                                    names = [str(i) + ' ' + str(j) for i, j in zip(first, last)]
+                                    jsnld_metadata['creator'] = names
+                            else:
+                                jsnld_metadata['creator'] = [str(first) + ' ' + str(last)]
+
+                    invalid_license = False
+                    if jsnld_metadata.get('license'):
+                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) -: {}'.format(
+                            jsnld_metadata.get('license')))
+
+                        if isinstance(jsnld_metadata.get('license'), list):
+                            jsnld_metadata['license'] = jsnld_metadata['license'][0]
+                        if isinstance(jsnld_metadata.get('license'), dict):
+                            ls_type = jsnld_metadata.get('license').get('@type')
+                            if ls_type == 'CreativeWork':
+                                ls = jsnld_metadata.get('license').get('url')
+                                if not ls:
+                                    ls = jsnld_metadata.get('license').get('name')
+                                if ls:
+                                    jsnld_metadata['license'] = ls
+                                else:
+                                    invalid_license = True
+                            else:
+                                invalid_license = True
+                    if invalid_license:
+                        self.logger.warning(
+                            'FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.'
+                        )
+                        jsnld_metadata['license'] = None
+
+                    # filter out None values of related_resources
+
+                    if jsnld_metadata.get('related_resources'):
+                        relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                        if relateds:
+                            jsnld_metadata['related_resources'] = relateds
+                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
+                                len(jsnld_metadata['related_resources']), self.source_name))
+                        else:
+                            del jsnld_metadata['related_resources']
+                            self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+
+                    if jsnld_metadata.get('object_size'):
+                        #print(jsnld_metadata.get('object_size'))
+                        if isinstance(jsnld_metadata['object_size'], dict):
+                            jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value'))
+
+                        #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+
+                else:
+                    self.logger.info('FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: ' + str(json_dict.get('@context')))
+
+            except Exception as err:
+                #print(err.with_traceback())
+                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
+        else:
+            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict')
+
+        if not trusted:
+            jsnld_metadata = {}
+
+        return jsnld_metadata
+
+    def get_schemaorg_metadata_from_graph(self, graph):
         #TODO: this is only some basic RDF/RDFa schema.org parsing... complete..
         #we will only test creative works and subtypes
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
