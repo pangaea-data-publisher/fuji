@@ -1,5 +1,6 @@
 import hashlib
 import io
+import json
 import logging
 import mimetypes
 import re
@@ -19,7 +20,6 @@ from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMic
 from fuji_server.helper.metadata_collector_opengraph import MetaDataCollectorOpenGraph
 from fuji_server.helper.metadata_collector_ore_atom import MetaDataCollectorOreAtom
 from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
-from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvider
@@ -62,7 +62,7 @@ class MetadataHarvester():
         logging.addLevelName(self.LOG_FAILURE, 'FAILURE')
 
 
-    def merge_metadata(self, metadict, sourceurl, method_source, format, schema='', namespaces = []):
+    def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
         if not isinstance(namespaces, list):
             namespaces = [namespaces]
         if isinstance(metadict,dict):
@@ -81,8 +81,8 @@ class MetadataHarvester():
             ## add: mechanism ('content negotiation', 'typed links', 'embedded')
             ## add: format namespace
             self.metadata_unmerged.append(
-                    {'method' : method_source,
-                     'url' : sourceurl,
+                    {'method' : method,
+                     'url' : url,
                      'format' : format,
                      'schema' : schema,
                      'metadata' : metadict,
@@ -493,11 +493,18 @@ class MetadataHarvester():
                 ext_meta = extruct_metadata.get('json-ld')
                 self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
+                schemaorg_collector = MetaDataCollectorRdf(loggerinst=self.logger,
+                                                     json_ld_content=ext_meta,
+                                                     source = MetaDataCollector.Sources.SCHEMAORG_EMBED.value)
+
+                source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+                '''
                 schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
                                                                  sourcemetadata=ext_meta,
                                                                  mapping=Mapper.SCHEMAORG_MAPPING,
                                                                  pidurl=None)
                 source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
+                '''
                 schemaorg_dict = self.exclude_null(schemaorg_dict)
                 if schemaorg_dict:
                     self.namespace_uri.extend(schemaorg_collector.namespaces)
@@ -673,7 +680,7 @@ class MetadataHarvester():
                                     str(self.landing_content_type))
         else:
             self.logger.warning(
-                'FsF-F2-01M : Skipped EMBEDDED metadata identification, no landing page URL could be determined')
+                'FsF-F2-01M : Skipped EMBEDDED metadata identification, no landing page URL or HTML content could be determined')
         self.check_pidtest_repeat()
 
 
@@ -718,10 +725,8 @@ class MetadataHarvester():
             self.logger.info(
                 'FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata through content negotiation from URL -: ' + str(
                     target_url))
-            schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
-                                                             sourcemetadata=None,
-                                                             mapping=Mapper.SCHEMAORG_MAPPING,
-                                                             pidurl=target_url)
+            schemaorg_collector = MetaDataCollectorRdf(loggerinst=self.logger,
+                                                       target_url=target_url)
             source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
             schemaorg_dict = self.exclude_null(schemaorg_dict)
             if schemaorg_dict:
