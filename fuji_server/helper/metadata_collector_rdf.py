@@ -98,6 +98,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         self.source_name = source
         self.json_ld_content = json_ld_content
         #self.rdf_graph = rdf_graph
+        self.accept_type = AcceptTypes.rdf
         super().__init__(logger=loggerinst)
 
 
@@ -204,9 +205,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
         rdf_response_graph = None
 
         #if self.rdf_graph is None:
-        if not self.json_ld_content:
+        if not self.json_ld_content and self.target_url:
+            if not self.accept_type:
+                self.accept_type = AcceptTypes.rdf
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
-            requestHelper.setAcceptType(AcceptTypes.rdf)
+            requestHelper.setAcceptType(self.accept_type)
             requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
             neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
             if requestHelper.checked_content_hash:
@@ -223,7 +226,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if self.content_type is not None:
             self.content_type = self.content_type.split(';', 1)[0]
             #handle JSON-LD
-            if self.content_type in ['application/ld+json','application/json']:
+            if self.content_type in ['application/ld+json','application/json','application/vnd.schemaorg.ld+json']:
                 if self.target_url:
                     jsonld_source_url = self.target_url
                 else:
@@ -290,14 +293,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                 parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
                 if parseformat:
-                    if 'html' not in str(parseformat[1]) and 'zip' not in str(parseformat[1]) :
+                    parse_format = parseformat[1]
+                    if 'html' not in str(parse_format) and 'zip' not in str(parse_format) :
                         RDFparsed = False
-                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parseformat[1]))
+                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parse_format))
                         badline = None
                         while not RDFparsed:
                             try:
                                 graph = rdflib.Graph(identifier = self.target_url)
-                                graph.parse(data=rdf_response, format=parseformat[1])
+                                graph.parse(data=rdf_response, format=parse_format)
                                 rdf_response_graph = graph
                                 self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
                                 RDFparsed = True
