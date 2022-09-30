@@ -124,10 +124,14 @@ class MetaDataCollector(object):
         self.uris = []
         self.auth_token_type = 'Basic'
         self.auth_token = None
+        self.accept_type = None
 
     @classmethod
     def getEnumSourceNames(cls) -> Sources:
         return cls.Sources
+
+    def setAcceptType(self, type):
+        self.accept_type = type
 
     def getMetadataMapping(self):
         return self.metadata_mapping
