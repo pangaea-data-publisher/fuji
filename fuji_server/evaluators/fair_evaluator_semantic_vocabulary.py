@@ -54,11 +54,15 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
             self.metric_identifier, len(self.fuji.namespace_uri)))
 
+        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
+            self.metric_identifier, len(self.fuji.namespace_uri)))
+
         # exclude white list
         excluded = []
         for n in self.fuji.namespace_uri:
             for i in self.fuji.DEFAULT_NAMESPACES:
                 if n.startswith(i):
+                    #print(i, n)
                     excluded.append(n)
         self.fuji.namespace_uri[:] = [x for x in self.fuji.namespace_uri if x not in excluded]
         if excluded:
@@ -86,8 +90,15 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             self.logger.info('{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
                 self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
             for linked_ns in self.fuji.linked_namespace_uri:
+                linked_ns = linked_ns.strip().rstrip('/#')
                 if linked_ns not in exists:
-                    exists.append(linked_ns)
+                    linked_exclude = False
+                    for i in self.fuji.DEFAULT_NAMESPACES:
+                        if linked_ns.startswith(i):
+                            linked_exclude = True
+                            break
+                    if not linked_exclude:
+                        exists.append(linked_ns)
         if exists:
             score = self.total_score
             self.setEvaluationCriteriumScore('FsF-I2-01M-2', 1, 'pass')
