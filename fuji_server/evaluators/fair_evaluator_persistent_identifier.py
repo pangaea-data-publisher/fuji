@@ -96,20 +96,23 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         self.logger.info('FsF-F1-02D : PID schemes-based assessment supported by the assessment service - {}'.format(
             Mapper.VALID_PIDS.value))
         check_url = None
-        identifiers_to_test = None
+        identifiers_to_test = []
         # if PID found in unique identifier test..
+        '''    
         if self.fuji.pid_scheme:
             identifiers_to_test = [self.fuji.pid_url]
         else:
-            identifiers_to_test = [self.fuji.id]
-
+            identifiers_to_test = [self.fuji.id]        
+        
         if self.fuji.metadata_merged.get('object_identifier'):
             if isinstance(self.fuji.metadata_merged.get('object_identifier'), list):
                 identifiers_to_test.extend(self.fuji.metadata_merged.get('object_identifier'))
             else:
                 identifiers_to_test.append(str(self.fuji.metadata_merged.get('object_identifier')))
         cleaned_identifiers_to_test = []
+               
         for id_to_test in identifiers_to_test:
+            
             idhelper = IdentifierHelper(id_to_test)
             if idhelper.is_persistent and idhelper.preferred_schema in Mapper.VALID_PIDS.value:
                 cleaned_identifiers_to_test.append(idhelper.identifier_url)
@@ -139,6 +142,15 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                     if self.fuji.landing_url:
                         # verified
                         self.fuji.isLandingPageAccessible = True
+        '''
+        verified_pids = []
+        verified_pid_schemes = []
+        for pid, pid_info in self.fuji.pid_collector.items():
+            if pid_info.get('verified'):
+                verified_pids.append(pid)
+                verified_pid_schemes.append(pid_info.get('scheme'))
+                if pid_info.get('resolved_url'):
+                    self.fuji.isLandingPageAccessible = True
 
         if verified_pids:
             self.output.resolved_url = self.fuji.landing_url
