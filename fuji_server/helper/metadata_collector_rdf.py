@@ -382,17 +382,17 @@ class MetaDataCollectorRdf(MetaDataCollector):
             has_xhtml = False
             for t in list(g):
                 # exclude xhtml properties/predicates:
-                if not '/xhtml/vocab' in t[2]:
+                if not '/xhtml/vocab' in t[1] and not '/ogp.me' in t[1]:
                     goodtriples.append(t)
                 else:
                     has_xhtml = True
             if has_xhtml:
-                self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML properties which are excluded')
+                self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML or OpenGraph properties which are excluded')
             if len(goodtriples) > 1:
                 meta['object_type'] = 'Other'
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
-                    + str(len(g)) + ' triples in the given graph')
+                    + str(len(goodtriples)) + ' triples in the given graph: '+str([x[1] for x in goodtriples]))
         else:
             self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: ' +
                              str(meta.keys()))
