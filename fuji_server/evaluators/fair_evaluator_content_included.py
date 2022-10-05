@@ -78,18 +78,18 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
-                    'FsF-F3-01M : The total number of object (content) specified is above threshold, so use the first -: {} content identifiers'
+                    'FsF-F3-01M : The total number of object (content) identifiers specified is above threshold, will use the first -: {} content identifiers for the tests'
                     .format(self.fuji.FILES_LIMIT))
                 contents = contents[:self.fuji.FILES_LIMIT]
 
             for content_link in contents:
                 # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
+                did_output_content = IdentifierIncludedOutputInner()
+                did_output_content.content_identifier_included = content_link
 
                 if content_link.get('url'):
-                    did_output_content = IdentifierIncludedOutputInner()
-                    did_output_content.content_identifier_included = content_link
-                    self.fuji.content_identifier.append(content_link)
                     content_list.append(did_output_content)
+                    self.fuji.content_identifier.append(content_link)
                 else:
                     self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
 
