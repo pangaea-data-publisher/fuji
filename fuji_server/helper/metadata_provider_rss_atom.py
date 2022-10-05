@@ -20,9 +20,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import re
+
+import lxml
 
 from fuji_server.helper.metadata_provider import MetadataProvider
 import feedparser
+
+from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class RSSAtomMetadataProvider(MetadataProvider):
@@ -61,16 +66,23 @@ class RSSAtomMetadataProvider(MetadataProvider):
             A dictionary of schemas in GeoRSS Atom
         """
         schemas = {}
+        XSI = 'http://www.w3.org/2001/XMLSchema-instance'
+
         try:
-            feed = feedparser.parse(self.endpoint)
+            requestHelper = RequestHelper(self.endpoint, self.logger)
+            requestHelper.setAcceptType(AcceptTypes.default)
+            neg_source, rss_response = requestHelper.content_negotiate('FsF-F2-01M')
+            if requestHelper.response_content is not None:
+                feed = feedparser.parse(requestHelper.response_content)
             #print(feed.namespaces)
             for namespace_pre, namespace_uri in feed.namespaces.items():
                 if namespace_uri not in self.namespaces:
                     self.namespaces.append(str(namespace_uri))
                     schemas[str(namespace_pre)] = str(namespace_uri)
-        except:
-            self.logger.info('{0} : Could not parse response retrieved from RSS/Atom Feed endpoint'.format(
-                self.metric_id))
+        except Exception as e:
+            print('RSS Error ',e)
+            self.logger.info('{0} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {1}'.format(
+                self.metric_id, str(e)))
 
         return schemas
 
