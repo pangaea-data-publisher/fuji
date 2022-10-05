@@ -112,7 +112,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         if self.fuji.auth_token:
                             request_headers['Authorization'] = self.fuji.auth_token_type+' '+self.fuji.auth_token
                         request = urllib.request.Request(test_data_content_url, headers=request_headers)
-                        response = urllib.request.urlopen(request)
+                        response = urllib.request.urlopen(request, timeout=10)
 
                         content_type = response.info().get_content_type()
                         header_content_types = response.headers.get('content-type')
@@ -142,17 +142,27 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         self.logger.warning(
                             'FsF-R1-01MD : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
                                 test_data_content_url, e.code))
+                        self.logger.warning(
+                            'FsF-R1.3-02D : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
+                                test_data_content_url, e.code))
                     except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
                         self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, URLError code {1} '.format(
                                 test_data_content_url, e.code))
+                        self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -: {0}, URLError code {1} '.format(
+                                test_data_content_url, e.code))
+                        self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -: {0}, URLError code {1} '.format(
+                                test_data_content_url, e.code))
 
                     except Exception as e:
                         self.logger.warning('FsF-F3-01M : Content identifier inaccessible -:' + str(e))
+                        self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -:' + str(e))
+                        self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -:' + str(e))
 
 
                     status = 'tika error'
                     parsed_content = ''
+                    tika_content_types = ''
                     try:
                         if len(file_buffer_object.getvalue()) > 0:
                             parsedFile = parser.from_buffer(file_buffer_object.getvalue())
