@@ -46,47 +46,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
     """
     pids_which_resolve = {}
 
-    def check_if_pid_resolves(self, candidate_pid):
-        if candidate_pid not in self.pids_which_resolve:
-            try:
-                requestHelper = RequestHelper(candidate_pid, self.logger)
-                requestHelper.setAcceptType(AcceptTypes.default)  # request
-                requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
-
-                if requestHelper.response_content:
-                    self.pids_which_resolve[candidate_pid] = requestHelper.redirect_url
-                    return requestHelper.redirect_url
-                else:
-                    return None
-            except Exception as e:
-                print('PID resolve test error',e)
-                return None
-        else:
-            return self.pids_which_resolve.get(candidate_pid)
-    # check if PID resolves to (known) landing page
-    def pid_resolves_to_landing_page(self, candidate_pid):
-        candidate_landing_url = self.check_if_pid_resolves(candidate_pid)
-        if candidate_landing_url and self.fuji.landing_url:
-            candidate_landing_url_parts = extract(candidate_landing_url)
-            landing_url_parts = extract(self.fuji.landing_url)
-            input_id_domain = candidate_landing_url_parts.domain + '.' + candidate_landing_url_parts.suffix
-            landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
-            if landing_domain != input_id_domain:
-                self.logger.warning(
-                    'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
-                )
-                self.logger.warning(
-                    'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
-                )
-                return False
-            else:
-                self.logger.info(
-                    'FsF-F1-02D : Verified PID found in metadata since it is resolving to user input URL domain'
-                )
-                return True
-        else:
-            return False
-
     def evaluate(self):
         self.result = Persistence(id=self.metric_number,
                                   metric_identifier=self.metric_identifier,
@@ -98,51 +57,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         check_url = None
         identifiers_to_test = []
         # if PID found in unique identifier test..
-        '''    
-        if self.fuji.pid_scheme:
-            identifiers_to_test = [self.fuji.pid_url]
-        else:
-            identifiers_to_test = [self.fuji.id]        
-        
-        if self.fuji.metadata_merged.get('object_identifier'):
-            if isinstance(self.fuji.metadata_merged.get('object_identifier'), list):
-                identifiers_to_test.extend(self.fuji.metadata_merged.get('object_identifier'))
-            else:
-                identifiers_to_test.append(str(self.fuji.metadata_merged.get('object_identifier')))
-        cleaned_identifiers_to_test = []
-               
-        for id_to_test in identifiers_to_test:
-            
-            idhelper = IdentifierHelper(id_to_test)
-            if idhelper.is_persistent and idhelper.preferred_schema in Mapper.VALID_PIDS.value:
-                cleaned_identifiers_to_test.append(idhelper.identifier_url)
 
-        identifiers_to_test = list(set(cleaned_identifiers_to_test))
-        #print('ID TO TEST ',identifiers_to_test)
-
-        verified_pids = []
-        verified_pid_schemes = []
-        if identifiers_to_test:
-            for test_pid in identifiers_to_test:
-                idhelper = IdentifierHelper(test_pid)
-                #if idhelper.is_persistent:
-                if test_pid != self.fuji.id:
-                    if self.pid_resolves_to_landing_page(test_pid):
-                        self.logger.info(
-                            'FsF-F1-02D : Object identifier active (status code = 200) -: ' + str(
-                                idhelper.identifier_url))
-                        verified_pids.append(test_pid)
-                        verified_pid_schemes.append(idhelper.preferred_schema)
-                        # verified PID resolves so landing page is accessible
-                        self.fuji.isLandingPageAccessible = True
-                else:
-                    verified_pids.append(test_pid)
-                    verified_pid_schemes.append(idhelper.preferred_schema)
-                    #isLandingPageAccessible  set to False in case landing page cannot be reached anyway
-                    if self.fuji.landing_url:
-                        # verified
-                        self.fuji.isLandingPageAccessible = True
-        '''
         verified_pids = []
         verified_pid_schemes = []
         for pid, pid_info in self.fuji.pid_collector.items():
