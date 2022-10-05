@@ -43,6 +43,13 @@ from tika import parser
 
 from fuji_server.helper.preprocessor import Preprocessor
 
+
+class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
+    redirect_list = []
+    def http_error_302(self, req, fp, code, msg, headers):
+        self.redirect_list.append(headers["location"])
+        return super().http_error_302(req, fp, code, msg, headers)
+
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
     datacite_json = 'application/vnd.datacite.datacite+json'
@@ -78,6 +85,7 @@ class RequestHelper:
             self.logger = Preprocessor.logger  #logging.getLogger(__name__)
         self.request_url = url
         self.redirect_url = None
+        self.redirect_list = []
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
@@ -144,8 +152,8 @@ class RequestHelper:
                 cookiejar =  http.cookiejar.MozillaCookieJar()
                 context = ssl._create_unverified_context()
                 context.set_ciphers('DEFAULT@SECLEVEL=1')
-
-                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context),urllib.request.HTTPHandler())
+                redirect_handler = FUJIHTTPRedirectHandler()
+                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookiejar), urllib.request.HTTPSHandler(context=context),urllib.request.HTTPHandler(),redirect_handler )
                 urllib.request.install_opener(opener)
                 request_headers = {
                     'Accept': self.accept_type,
@@ -154,11 +162,28 @@ class RequestHelper:
                     request_headers['Authorization'] = self.tokentype+' '+self.authtoken
                 tp_request = urllib.request.Request(self.request_url,
                                                     headers=request_headers)
-
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
+                    self.redirect_list = redirect_handler.redirect_list
                 except urllib.error.URLError as e:
-                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
+                    if e.code == 400:
+                        try:
+                            #browsers automatically redirect to https in case a 400 occured for a http URL
+                            if redirect_handler.redirect_list:
+                                last_redirect_url = redirect_handler.redirect_list[-1]
+                                if 'http://' in last_redirect_url:
+                                    self.logger.warning(
+                                        '{0} : HTTP 400 Error after redirect to http page , trying to redirect to https page for -: {1}'.format(
+                                            metric_id, redirect_handler.redirect_list[-1]))
+                                    # This is what Browsers sometimes do:
+                                    last_redirect_url = last_redirect_url.replace('http:','https:')
+                                    tp_request = urllib.request.Request(last_redirect_url,
+                                                                        headers=request_headers)
+                                    tp_response = opener.open(tp_request, timeout=10)
+                        except Exception as e:
+                            print('Redirect fix error:'+str(e))
+                            pass
+                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - URLError: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                 except urllib.error.HTTPError as e:
                     if e.code == 308:
@@ -177,7 +202,7 @@ class RequestHelper:
                             metric_id, self.request_url, self.accept_type, str(e.code)))
                 except Exception as e:
                     print('Request ERROR: ', e)
-                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - {3}'.format(
+                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - Error: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                 # redirect logger messages to metadata collection metric
                 if metric_id == 'FsF-F1-02D':
@@ -375,8 +400,7 @@ class RequestHelper:
                                 metric_id, str(status_code)))
                     tp_response.close()
                 else:
-
-                    self.logger.warning('{0} : No response received from -: {1}'.format(metric_id, self.request_url))
+                    self.logger.warning('{0} : No response received from -: {1}, {2}'.format(metric_id, self.request_url,self.accept_type))
             #except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
                 self.logger.warning('%s : Content negotiation failed -: accept=%s, status=%s ' %
@@ -386,6 +410,5 @@ class RequestHelper:
                 self.logger.warning('{} : RequestException -: {} : {}'.format(metric_id, e.reason, self.request_url))
             except Exception as e:
                 print(e)
-
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
         return source, self.parse_response
