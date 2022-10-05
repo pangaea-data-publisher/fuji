@@ -48,6 +48,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                                          metric_name=self.metric_name)
 
         # remove duplicates
+        print(self.fuji.namespace_uri)
+        print(self.fuji.linked_namespace_uri)
         if self.fuji.namespace_uri:
             self.fuji.namespace_uri = list(set(self.fuji.namespace_uri))
             self.fuji.namespace_uri = [x.strip().rstrip('/#') for x in self.fuji.namespace_uri]
@@ -98,7 +100,9 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                             linked_exclude = True
                             break
                     if not linked_exclude:
-                        exists.append(linked_ns)
+                        linked_lov_entry = lov_helper.get_linked_vocab_by_iri(linked_ns, isnamespaceIRI=True)
+                        if linked_lov_entry:
+                            exists.append(linked_ns)
         if exists:
             score = self.total_score
             self.setEvaluationCriteriumScore('FsF-I2-01M-2', 1, 'pass')
