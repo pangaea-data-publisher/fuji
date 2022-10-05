@@ -21,13 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import urllib
-
 import idutils
 import re
 
 from fuji_server.helper.metadata_mapper import Mapper
-
 from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class IdentifierHelper:
@@ -73,7 +72,7 @@ class IdentifierHelper:
 
     def __init__(self, idstring):
         self.identifier = idstring
-        self.normalized_id = self.identifier
+        self.normalized_id = None
         if self.identifier and isinstance(self.identifier, str):
             idparts = urllib.parse.urlparse(self.identifier)
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
@@ -133,6 +132,8 @@ class IdentifierHelper:
                 if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
                 ):
                     self.is_persistent = True
+            if not self.normalized_id:
+                self.normalized_id = self.identifier
 
     def to_url(self, id, schema):
         idurl = None
@@ -147,6 +148,23 @@ class IdentifierHelper:
             print('ID helper to_url error '+str(e))
         return idurl
 
+    def get_resolved_url(self, pid_collector = {}):
+        candidate_pid = self.identifier_url
+        if candidate_pid not in pid_collector or not pid_collector:
+            try:
+                requestHelper = RequestHelper(candidate_pid)
+                requestHelper.setAcceptType(AcceptTypes.default)  # request
+                requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
+                if requestHelper.response_content:
+                    return requestHelper.redirect_url
+                else:
+                    return None
+            except Exception as e:
+                print('PID resolve test error',e)
+                return None
+        else:
+            return pid_collector[candidate_pid].get('landing_page')
+
     def get_preferred_schema(self):
         return self.preferred_schema
 
@@ -158,3 +176,11 @@ class IdentifierHelper:
 
     def get_normalized_id(self):
         return self.normalized_id
+
+    def get_identifier_info(self, pidcollector = {}):
+        return {'pid':self.identifier,
+                'normalized':self.normalized_id,
+                'pid_url':self.identifier_url,
+                'scheme':self.preferred_schema,
+                'is_persistent':self.is_persistent,
+                'resolved_url': self.get_resolved_url(pidcollector)}
