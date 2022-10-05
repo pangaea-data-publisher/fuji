@@ -63,15 +63,6 @@ from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAI
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import FAIREvaluatorStandardisedProtocolMetadata
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
 
-from fuji_server.helper.metadata_collector import MetaDataCollector
-from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
-from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
-from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMicroData
-from fuji_server.helper.metadata_collector_opengraph import MetaDataCollectorOpenGraph
-from fuji_server.helper.metadata_collector_ore_atom import MetaDataCollectorOreAtom
-from fuji_server.helper.metadata_collector_rdf import MetaDataCollectorRdf
-from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
-from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
@@ -198,6 +189,7 @@ class FAIRCheck:
         self.auth_token = None
         self.auth_token_type = 'Basic'
         self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite)
+        self.pid_collector = {}
 
     @classmethod
     def load_predata(cls):
@@ -292,7 +284,7 @@ class FAIRCheck:
                 self.related_resources.extend(metadict.get('related_resources'))
             if metadict.get('object_content_identifier'):
                 self.logger.info('FsF-F3-01M : Found data links in '+str(format)+' metadata -: ' +
-                                 str(metadict.get('object_content_identifier')))
+                                 str(len(metadict.get('object_content_identifier'))))
             ## add: mechanism ('content negotiation', 'typed links', 'embedded')
             ## add: format namespace
             self.metadata_unmerged.append(
@@ -480,6 +472,7 @@ class FAIRCheck:
         self.origin_url =  self.metadata_harvester.origin_url
         self.pid_url =  self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
+        self.pid_collector.update(self.metadata_harvester.pid_collector)
 
     def retrieve_metadata_external(self, target_url = None, repeat_mode = False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode = repeat_mode)
@@ -490,6 +483,7 @@ class FAIRCheck:
         self.metadata_sources.extend( self.metadata_harvester.metadata_sources)
         self.linked_namespace_uri.update( self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend( self.metadata_harvester.related_resources)
+        self.pid_collector.update(self.metadata_harvester.pid_collector)
 
     def lookup_metadatastandard_by_name(self, value):
         found = None
