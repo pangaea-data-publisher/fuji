@@ -184,7 +184,13 @@ class MetaDataCollectorXML(MetaDataCollector):
                     nsmatch = re.match(r'^\{(.+)\}(.+)$', metatree.tag)
                     schema_locations = set(metatree.xpath('//*/@xsi:schemaLocation', namespaces={'xsi': XSI}))
                     for schema_location in schema_locations:
-                        self.namespaces = re.split('\s', schema_location)
+                        self.namespaces.extend(re.split(r'\s', re.sub(r'\s+', r' ',schema_location)))
+                        #self.namespaces = re.split('\s', schema_location)
+                    element_namespaces = set(metatree.xpath('//namespace::*'))
+                    for el_ns in element_namespaces:
+                        if len(el_ns) == 2:
+                            if el_ns[1] not in self.namespaces:
+                                self.namespaces.append(el_ns[1])
                     if nsmatch:
                         root_namespace = nsmatch[1]
                         root_element = nsmatch[2]
@@ -216,6 +222,8 @@ class MetaDataCollectorXML(MetaDataCollector):
                     elif root_element in ['MD_Metadata', 'MI_Metadata']:
                         xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
                         self.logger.info('FsF-F2-01M : Identified ISO 19115 XML based on root tag')
+                    elif root_element == 'rss':
+                        self.logger.info('FsF-F2-01M : Identified RSS/GEORSS XML based on root tag')
                     elif root_namespace:
                         if 'datacite.org/schema' in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
