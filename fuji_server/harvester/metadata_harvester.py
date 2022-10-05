@@ -6,7 +6,7 @@ import mimetypes
 import re
 import urllib
 from urllib.parse import urlparse, urljoin
-
+from tldextract import extract
 import extruct
 import lxml
 from bs4 import BeautifulSoup
@@ -50,6 +50,7 @@ class MetadataHarvester():
         self.typed_links =[]
         self.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()
+        self.valid_pid_types = Mapper.VALID_PIDS.value
         self.namespace_uri = []
         self.metadata_sources = []
         self.metadata_unmerged = []
@@ -58,11 +59,12 @@ class MetadataHarvester():
         self.signposting_header_links = []
         self.use_datacite = use_datacite
         self.is_html_page = False
+        #Do something with this
+        self.pid_collector = {}
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         logging.addLevelName(self.LOG_FAILURE, 'FAILURE')
 
-        idhelper = IdentifierHelper(self.id)
-        self.pid_scheme = idhelper.preferred_schema
+
 
 
     def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
@@ -70,17 +72,27 @@ class MetadataHarvester():
             namespaces = [namespaces]
         if isinstance(metadict,dict):
             #self.metadata_sources.append((method_source, 'negotiated'))
-
             for r in metadict.keys():
                 if r in self.reference_elements:
                     self.metadata_merged[r] = metadict[r]
                     self.reference_elements.remove(r)
+            if metadict.get('object_identifier'):
+                if not isinstance(metadict.get('object_identifier'), list):
+                    metadict['object_identifier'] = [metadict.get('object_identifier')]
+                for object_identifier in metadict.get('object_identifier'):
+                    resolves_to_landing_domain = False
+                    pid_helper = IdentifierHelper(object_identifier)
+                    if pid_helper.identifier_url not in self.pid_collector and pid_helper.is_persistent and pid_helper.preferred_schema in self.valid_pid_types:
+                        pid_record = pid_helper.get_identifier_info()
+                        self.pid_collector[pid_helper.identifier_url] = pid_record
+                        resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(pid_helper.identifier_url)
+                        self.pid_collector[pid_helper.identifier_url]['verified'] = resolves_to_landing_domain
 
             if metadict.get('related_resources'):
                 self.related_resources.extend(metadict.get('related_resources'))
             if metadict.get('object_content_identifier'):
                 self.logger.info('FsF-F3-01M : Found data links in '+str(format)+' metadata -: ' +
-                                 str(metadict.get('object_content_identifier')))
+                                 str(len(metadict.get('object_content_identifier'))))
             ## add: mechanism ('content negotiation', 'typed links', 'embedded')
             ## add: format namespace
             self.metadata_unmerged.append(
@@ -105,6 +117,34 @@ class MetadataHarvester():
         else:
             return dt
 
+    def check_if_pid_resolves_to_landing_page(self, pid_url = None):
+        if pid_url in self.pid_collector:
+            candidate_landing_url = self.pid_collector[pid_url].get('resolved_url')
+            if candidate_landing_url and self.landing_url:
+                candidate_landing_url_parts = extract(candidate_landing_url)
+                landing_url_parts = extract(self.landing_url)
+                input_id_domain = candidate_landing_url_parts.domain + '.' + candidate_landing_url_parts.suffix
+                landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
+                if landing_domain != input_id_domain:
+                    self.logger.warning(
+                        'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
+                    )
+                    self.logger.warning(
+                        'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
+                    )
+                    return False
+                else:
+                    self.logger.info(
+                        'FsF-F1-02D : Verified PID found in metadata since it is resolving to user input URL domain'
+                    )
+                    return True
+            else:
+                return False
+        else:
+            return False
+
+    #Datacite search not checked
+    #https: // zenodo.org / record / 6481639  # .Yn5uBXUzZHc
     def check_pidtest_repeat(self):
         if not self.repeat_pid_check:
             self.repeat_pid_check = False
@@ -428,10 +468,14 @@ class MetadataHarvester():
         response_status = None
         try:
             self.logger.info('FsF-F2-01M : Trying to resolve input URL -: ' + str(self.id))
-            # check if is PID in this case complete to URL
+            # check if is PID in this case complete to URL and add to pid_collector
             idhelper = IdentifierHelper(self.id)
             if idhelper.is_persistent:
-                self.pid_url = idhelper.get_identifier_url()
+                self.pid_scheme = idhelper.preferred_schema
+                self.pid_url = idhelper.identifier_url
+                pid_record = idhelper.get_identifier_info(self.pid_collector)
+                self.pid_collector[self.pid_url] = pid_record
+
             input_url = idhelper.get_identifier_url()
 
             input_urlscheme = urlparse(input_url).scheme
@@ -448,7 +492,12 @@ class MetadataHarvester():
                 else:
                     self.is_html_page = True
                 if requestHelper.redirect_url:
+                    self.isLandingPageAccessible = True
                     self.landing_url = requestHelper.redirect_url
+                    if self.pid_url in self.pid_collector:
+                        self.pid_collector[self.pid_url]['verified'] = True
+                        self.pid_collector[self.pid_url]['resolved_url'] = self.landing_url
+
                 response_status = requestHelper.response_status
                 #if requestHelper.response_content:
                     #self.landing_url = requestHelper.redirect_url
@@ -628,7 +677,7 @@ class MetadataHarvester():
                 data_sign_links = self.get_signposting_header_links('item')
                 if data_sign_links:
                     self.logger.info('FsF-F3-01M : Found data links in response header (signposting) -: ' +
-                                     str(data_sign_links))
+                                     str(len(data_sign_links)))
                     if self.metadata_merged.get('object_content_identifier') is None:
                         self.metadata_merged['object_content_identifier'] = data_sign_links
 
@@ -640,22 +689,13 @@ class MetadataHarvester():
                                          str(search['url']))
                         self.namespace_uri.append('http://a9.com/-/spec/opensearch/1.1/')
 
-                #========= retrieve atom, GeoRSS links
-                feed_links = self.get_html_typed_links(rel='alternate')
-                for feed in feed_links:
-                    if feed.get('type') in ['application/rss+xml']:
-                        self.logger.info(
-                            'FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' +
-                            str(feed.get('url')))
-                        feed_helper = RSSAtomMetadataProvider(self.logger, feed['url'], 'FsF-R1.3-01M')
-                        feed_helper.getMetadataStandards()
-                        self.namespace_uri.extend(feed_helper.getNamespaces())
+
                 #========= retrieve typed data object links =========
 
                 data_meta_links = self.get_html_typed_links(rel='item')
                 if data_meta_links:
                     self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' +
-                                     str(data_meta_links))
+                                     str(len(data_meta_links)))
                     if self.metadata_merged.get('object_content_identifier') is None:
                         self.metadata_merged['object_content_identifier'] = data_meta_links
                 # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
@@ -776,6 +816,19 @@ class MetadataHarvester():
             elif len(negotiated_xml_collector.getNamespaces()) > 0:
                 self.merge_metadata({}, self.landing_url, source_neg_xml, negotiated_xml_collector.getContentType(),
                                     neg_namespace)
+    '''
+    def retrieve_metadata_external_georss(self):
+        # ========= retrieve atom, GeoRSS links
+        feed_links = self.get_html_typed_links(rel='alternate')
+        for feed in feed_links:
+            if feed.get('type') in ['application/rss+xml']:
+                self.logger.info(
+                    'FsF-R1.3-01M : Found atom/rss/georss feed link in HTML head (link rel=alternate) -: ' +
+                    str(feed.get('url')))
+                #feed_helper = RSSAtomMetadataProvider(self.logger, feed['url'], 'FsF-R1.3-01M')
+                #feed_helper.getMetadataStandards()
+                #self.namespace_uri.extend(feed_helper.getNamespaces())
+    '''
     def retrieve_metadata_external_oai_ore(self):
         oai_link = self.get_html_typed_links('resourcemap')
         if oai_link:
@@ -797,21 +850,20 @@ class MetadataHarvester():
                                         'http://www.openarchives.org/ore/terms')
 
     def retrieve_metadata_external_datacite(self):
-        if self.pid_scheme:
-            # ================= datacite by content negotiation ===========
-            # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
-            if self.use_datacite is True:
-                datacite_target_url = self.pid_url
-            else:
-                datacite_target_url = self.landing_url
+        #if self.pid_scheme:
+        # ================= datacite by content negotiation ===========
+        # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
+        if self.use_datacite is True and self.pid_url:
+            datacite_target_url = self.pid_url
+        else:
+            datacite_target_url = self.landing_url
+        if datacite_target_url:
             dcite_collector = MetaDataCollectorDatacite(mapping=Mapper.DATACITE_JSON_MAPPING,
                                                         loggerinst=self.logger,
                                                         pid_url=datacite_target_url)
             source_dcitejsn, dcitejsn_dict = dcite_collector.parse_metadata()
             dcitejsn_dict = self.exclude_null(dcitejsn_dict)
             if dcitejsn_dict:
-                test_content_negotiation = True
-                # not_null_dcite = [k for k, v in dcitejsn_dict.items() if v is not None]
                 self.metadata_sources.append((source_dcitejsn, 'negotiated'))
                 self.logger.log(self.LOG_SUCCESS,
                                 'FsF-F2-01M : Found Datacite metadata -: {}'.format(str(dcitejsn_dict.keys())))
@@ -822,7 +874,7 @@ class MetadataHarvester():
             else:
                 self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
         else:
-            self.logger.info('FsF-F2-01M : Not a PID, therefore Datacite metadata (json) not requested.')
+            self.logger.info('FsF-F2-01M : No target URL (PID or landing page) given, therefore Datacite metadata (json) not requested.')
 
     def get_connected_metadata_links(self,allowedmethods = ['signposting','typed','guessed']):
         # get all links which lead to metadata are given by signposting, typed links, guessing or in html href
@@ -952,6 +1004,7 @@ class MetadataHarvester():
             if not repeat_mode:
                 self.retrieve_metadata_external_linked_metadata(['signposting', 'linked'])
                 self.retrieve_metadata_external_oai_ore()
+
 
         if self.reference_elements:
             self.logger.debug('FsF-F2-01M : Reference metadata elements NOT FOUND -: {}'.format(
