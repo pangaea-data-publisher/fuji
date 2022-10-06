@@ -475,6 +475,8 @@ class MetadataHarvester():
                 self.pid_url = idhelper.identifier_url
                 pid_record = idhelper.get_identifier_info(self.pid_collector)
                 self.pid_collector[self.pid_url] = pid_record
+                #as a input PID it is verified even if it is not resolved
+                self.pid_collector[self.pid_url]['verified'] = True
 
             input_url = idhelper.get_identifier_url()
 
@@ -563,18 +565,9 @@ class MetadataHarvester():
                     self.metadata_sources.append((source_schemaorg, 'embedded'))
                     if schemaorg_dict.get('related_resources'):
                         self.related_resources.extend(schemaorg_dict.get('related_resources'))
-                    #if schemaorg_dict.get('object_content_identifier'):
-                    #    self.logger.info('FsF-F3-01M : Found data links in Schema.org metadata -: ' +
-                    #                     str(schemaorg_dict.get('object_content_identifier')))
+
                     # add object type for future reference
                     self.merge_metadata(schemaorg_dict, self.landing_url, source_schemaorg, 'application/ld+json','http://schema.org', schemaorg_collector.namespaces)
-
-                    '''
-                    for i in schemaorg_dict.keys():
-                        if i in self.reference_elements:
-                            self.metadata_merged[i] = schemaorg_dict[i]
-                            self.reference_elements.remove(i)
-                    '''
                     self.logger.log(
                         self.LOG_SUCCESS,
                         'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: ' + str(schemaorg_dict.keys()))
@@ -802,6 +795,7 @@ class MetadataHarvester():
                 self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
                 neg_namespace = negotiated_xml_collector.getNamespaces()[0]
             self.linked_namespace_uri.update(negotiated_xml_collector.getLinkedNamespaces())
+            #print('LINKED NS XML ',self.linked_namespace_uri)
             if metadata_neg_dict:
                 self.metadata_sources.append((source_neg_xml, 'negotiated'))
 
@@ -985,7 +979,10 @@ class MetadataHarvester():
     def retrieve_metadata_external(self, target_url = None, repeat_mode = False):
         self.logger.info(
             'FsF-F2-01M : Starting to identify EXTERNAL metadata through content negotiation or typed (signposting) links')
-        if self.landing_url:
+        if self.landing_url or self.pid_url:
+            if not self.landing_url:
+                self.logger.warning(
+                    'FsF-F2-01M : Landing page could not be identified, therefore EXTERNAL metadata is based on PID only and may be incomplete')
             target_url_list = [self.origin_url, self.pid_url, self.landing_url]
             if self.use_datacite is False and 'doi' == self.pid_scheme:
                 if self.origin_url == self.pid_url:
