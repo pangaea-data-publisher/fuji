@@ -139,7 +139,8 @@ class Mapper(Enum):
                            'publisher: publisher.name || provider.name || publisher || provider, ' \
                            'license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, ' \
                            'summary: description, keywords: keywords, ' \
-                           'object_identifier: (identifier.value || identifier[0].value || identifier || "@id") || (url || url."@id") , ' \
+                           'object_identifier: [((identifier.value || identifier[*].value || identifier || "@id") || (url || url."@id")) , ' \
+                        '(sameAs."@id" || sameAs[0]."@id" || sameAs.url || sameAs[0].url || sameAs)][], ' \
                             'access_level: conditionsOfAccess, ' \
                             'access_free:  (isAccessibleForFree || free), ' \
                             'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \

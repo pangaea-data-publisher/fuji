@@ -267,6 +267,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if isinstance(rdf_response.get('@context'), str):
                                     if 'schema.org' in rdf_response.get('@context'):
                                         rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                            rdf_response = jsonld.expand(rdf_response)
                             rdf_response = json.dumps(rdf_response)
                     except Exception as e:
                         print('RDF Collector Error: ',e)
@@ -277,7 +278,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         rdf_response = str(rdf_response).encode('utf-8')
                     except:
                         pass
-
                     self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (jsonld_source_url))
                     try:
                         jsonldgraph = rdflib.ConjunctiveGraph()
@@ -423,15 +423,24 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #meta = self.get_default_metadata(g)
         self.logger.info('FsF-F2-01M : Trying to get some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph')
         if not meta.get('object_identifier'):
-            meta['object_identifier'] = (g.value(item, DC.identifier) or
-                                         g.value(item, DCTERMS.identifier) or
-                                         g.value(item, SDO.identifier))
+            meta['object_identifier'] = []
+            for identifier in (list(g.objects(item, DC.identifier)) + list(g.objects(item, DCTERMS.identifier)) +
+                               list(g.objects(item, SDO.identifier)) + list(g.objects(item, SMA.identifier)) +
+                               list(g.objects(item, SDO.sameAs))+ list(g.objects(item, SMA.sameAs))):
+                meta['object_identifier'].append(str(identifier))
+
+            '''
+             meta['object_identifier'] = (g.value(item, DC.identifier) or
+                 g.value(item, DCTERMS.identifier) or
+                 g.value(item, SDO.identifier) or
+                 g.value(item, SMA.identifier) or
+                 g.value(item, SMA.sameAs))
+            '''
         '''
         if self.source_name != self.getEnumSourceNames().RDFA.value:
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
         '''
-
         if not meta.get('language'):
             meta['language'] = str(g.value(item, DC.language) or g.value(item, DCTERMS.language) or
                                    g.value(item, SDO.inLanguage) or g.value(item, SMA.inLanguage))

@@ -450,7 +450,7 @@ class MetadataHarvester():
             try:
                 self.logger.info('%s : Trying to identify EMBEDDED  Microdata, OpenGraph or JSON -: %s' %
                                  ('FsF-F2-01M', self.landing_url))
-                extracted = extruct.extract(extruct_target, syntaxes=syntaxes)
+                extracted = extruct.extract(extruct_target, syntaxes=syntaxes,encoding="utf-8")
             except Exception as e:
                 extracted = {}
                 self.logger.warning('%s : Failed to parse HTML embedded microdata or JSON -: %s' %
