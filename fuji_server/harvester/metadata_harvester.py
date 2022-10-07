@@ -432,6 +432,8 @@ class MetadataHarvester():
             text_content = soup.get_text(strip=True)
             if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
                 self.logger.warning('FsF-F1-02D : Landing page seems to be JavaScript generated, could not detect enough content')
+                self.logger.warning('FsF-F2-01M : Landing page seems to be JavaScript generated, could not detect enough content')
+
         except Exception as e:
             pass
 
