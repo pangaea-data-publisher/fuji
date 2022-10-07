@@ -127,10 +127,10 @@ class MetadataHarvester():
                 landing_domain = landing_url_parts.domain + '.' + landing_url_parts.suffix
                 if landing_domain != input_id_domain:
                     self.logger.warning(
-                        'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain'
+                        'FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain -:'+str(pid_url)
                     )
                     self.logger.warning(
-                        'FsF-F2-01M : Seems to be a catalogue entry or alternative representation of the data set, landing page URL domain resolved from PID found in metadata does not match with input URL domain'
+                        'FsF-F2-01M : Landing page domain resolved from PID found in metadata does not match with input URL domain -:'+str(pid_url)
                     )
                     return False
                 else:
