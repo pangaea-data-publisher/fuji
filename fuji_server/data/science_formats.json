@@ -149,5 +149,6 @@
   "application/x-matlab-data": "Generic",
   "application/x-matlab-figure": "Generic",
   "application/x-matlab-workspace": "Generic",
-  "application/x-nsdstat": "Generic"
+  "application/x-nsdstat": "Generic",
+  "application/vnd.fdsn.mseed" : "Geophysics"
 }
