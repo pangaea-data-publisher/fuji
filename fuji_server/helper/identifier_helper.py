@@ -24,6 +24,8 @@ import urllib
 import idutils
 import re
 
+import requests
+
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
@@ -99,7 +101,12 @@ class IdentifierHelper:
                 # idutils check
                 if not self.identifier_schemes:
                     self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
-
+                    if 'url' not in self.identifier_schemes and idparts.scheme in ['http','https']:
+                        self.identifier_schemes.append('url')
+                # verify handles
+                if 'handle' in self.identifier_schemes:
+                    if not self.verify_handle(self.identifier):
+                        self.identifier_schemes.remove('handle')
                 # identifiers.org check
                 if not self.identifier_schemes:
                     self.method = 'identifiers.org'
@@ -134,6 +141,44 @@ class IdentifierHelper:
                     self.is_persistent = True
             if not self.normalized_id:
                 self.normalized_id = self.identifier
+
+    def verify_handle(self, val, includeparams=True):
+        try:
+            handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([^/.]+(?:\.[^/.]+)*)/(.+)$")
+
+            ures = urllib.parse.urlparse(val)
+            if ures:
+                if ures.query:
+                    for query in ures.query.split('&'):
+                        try:
+                            param = query.split('=')[1]
+                            if param.startswith('hdl.handle') or param.startswith('hdl:'):
+                                val = param
+                        except Exception as e:
+                            pass
+            m = handle_regexp.match(val)
+            if m:
+                if m[1]:
+                    return True
+                elif isinstance(str(m[2]).split('.')[0], int):
+                    return True
+                elif m[2]:
+                    if m[2] in ['http:', 'https:']:
+                        return False
+                    else:
+                        hdlres = requests.get('https://hdl.handle.net/api/handles/' + m[2])
+                        hdljson = hdlres.json()
+                        if hdljson.get('responseCode') == 1:
+                            return True
+                        else:
+                            return False
+                else:
+                    return False
+            else:
+                return False
+        except Exception as e:
+            print('handle verificatio error: '+str(e))
+            return False
 
     def to_url(self, id, schema):
         idurl = None
