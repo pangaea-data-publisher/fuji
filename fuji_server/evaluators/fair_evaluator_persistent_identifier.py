@@ -66,6 +66,8 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                 verified_pid_schemes.append(pid_info.get('scheme'))
                 if pid_info.get('resolved_url'):
                     self.fuji.isLandingPageAccessible = True
+            else:
+                self.logger.info('FsF-F1-02D : Found PID which could not be verified (does not resolve properly) -: '+str(pid))
 
         if verified_pids:
             self.output.resolved_url = self.fuji.landing_url
@@ -84,7 +86,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
                             'FsF-F1-02D : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
         else:
             self.score.earned = 0
-            self.logger.warning('FsF-F1-02D : Could not identify a valid peristent identifier based on scheme and resolution -: {}'.format(self.fuji.id_scheme))
+            self.logger.warning('FsF-F1-02D : Could not identify a valid peristent identifier based on scheme and resolution')
 
         self.result.score = self.score
         self.result.maturity = self.maturity

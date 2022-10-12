@@ -81,7 +81,7 @@ class MetadataHarvester():
                     metadict['object_identifier'] = [metadict.get('object_identifier')]
                 for object_identifier in metadict.get('object_identifier'):
                     resolves_to_landing_domain = False
-                    pid_helper = IdentifierHelper(object_identifier)
+                    pid_helper = IdentifierHelper(object_identifier, self.logger)
                     if pid_helper.identifier_url not in self.pid_collector and pid_helper.is_persistent and pid_helper.preferred_schema in self.valid_pid_types:
                         pid_record = pid_helper.get_identifier_info()
                         self.pid_collector[pid_helper.identifier_url] = pid_record
@@ -151,7 +151,7 @@ class MetadataHarvester():
         if self.related_resources:
             for relation in self.related_resources:
                 if relation.get('relation_type') == 'isPartOf' and isinstance(relation.get('related_resource'), str):
-                    parent_identifier = IdentifierHelper(relation.get('related_resource'))
+                    parent_identifier = IdentifierHelper(relation.get('related_resource'), self.logger)
                     if parent_identifier.is_persistent:
                         self.logger.info('FsF-F2-01M : Found parent (isPartOf) identifier which is a PID in metadata, you may consider to assess the parent')
 
@@ -163,16 +163,15 @@ class MetadataHarvester():
             if self.pid_scheme is None:
                 found_pids = {}
                 for pidcandidate in identifiertotest:
-                    idhelper = IdentifierHelper(pidcandidate)
+                    idhelper = IdentifierHelper(pidcandidate, self.logger)
                     found_id_scheme = idhelper.preferred_schema
                     if idhelper.is_persistent:
                         found_pids[found_id_scheme] = idhelper.get_identifier_url()
                 if len(found_pids) >= 1 and self.repeat_pid_check == False:
                     self.logger.info(
                         'FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D')
-                    self.logger.log(
-                        self.LOG_SUCCESS,
-                        'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, PID check was repeated')
+                    self.logger.info(
+                        'FsF-F1-02D : Found object identifier in metadata during FsF-F2-01M, therefore PID check was repeated')
                     self.repeat_pid_check = True
                     if 'doi' in found_pids:
                         self.pid_url = found_pids['doi']
@@ -351,7 +350,7 @@ class MetadataHarvester():
                         self.logger.warning(
                             'FsF-F1-02D : Found cite-as signposting links has no type attribute-:' + str(
                                 signposting_pid))
-                    signidhelper = IdentifierHelper(signposting_pid)
+                    signidhelper = IdentifierHelper(signposting_pid, self.logger)
                     found_id = signidhelper.preferred_schema
                     if signidhelper.is_persistent and self.pid_scheme is None:
                         self.pid_scheme = found_id
@@ -471,7 +470,7 @@ class MetadataHarvester():
         try:
             self.logger.info('FsF-F2-01M : Trying to resolve input URL -: ' + str(self.id))
             # check if is PID in this case complete to URL and add to pid_collector
-            idhelper = IdentifierHelper(self.id)
+            idhelper = IdentifierHelper(self.id, self.logger)
             if idhelper.is_persistent:
                 self.pid_scheme = idhelper.preferred_schema
                 self.pid_url = idhelper.identifier_url

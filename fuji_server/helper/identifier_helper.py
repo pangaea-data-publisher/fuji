@@ -72,9 +72,10 @@ class IdentifierHelper:
                 print('URN parsing error', e)
         return ret
 
-    def __init__(self, idstring):
+    def __init__(self, idstring, logger = None):
         self.identifier = idstring
         self.normalized_id = None
+        self.logger = logger
         if self.identifier and isinstance(self.identifier, str):
             idparts = urllib.parse.urlparse(self.identifier)
             if len(self.identifier) > 4 and not self.identifier.isnumeric():
@@ -197,7 +198,7 @@ class IdentifierHelper:
         candidate_pid = self.identifier_url
         if candidate_pid not in pid_collector or not pid_collector:
             try:
-                requestHelper = RequestHelper(candidate_pid)
+                requestHelper = RequestHelper(candidate_pid, self.logger)
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 requestHelper.content_negotiate('FsF-F1-02D', ignore_html=False)
                 if requestHelper.response_content:
