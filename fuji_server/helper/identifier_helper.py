@@ -105,7 +105,7 @@ class IdentifierHelper:
                     if 'url' not in self.identifier_schemes and idparts.scheme in ['http','https']:
                         self.identifier_schemes.append('url')
                 # verify handles
-                if 'handle' in self.identifier_schemes:
+                if self.identifier_schemes  == ['handle']:
                     if not self.verify_handle(self.identifier):
                         self.identifier_schemes.remove('handle')
                 # identifiers.org check
