@@ -81,6 +81,7 @@ class MetaDataCollector(object):
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
         """"Enum class to enumerate metadata sources."""
+        HIGHWIRE_EPRINTS ='Embedded Highwire or Eprints'
         DUBLINCORE = 'Embedded DublinCore'
         OPENGRAPH = 'Embedded OpenGraph'
         SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
