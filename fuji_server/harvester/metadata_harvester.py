@@ -16,6 +16,7 @@ from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.metadata_collector import MetaDataCollector
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
+from fuji_server.helper.metadata_collector_highwire_eprints import MetaDataCollectorHighwireEprints
 from fuji_server.helper.metadata_collector_microdata import MetaDataCollectorMicroData
 from fuji_server.helper.metadata_collector_opengraph import MetaDataCollectorOpenGraph
 from fuji_server.helper.metadata_collector_ore_atom import MetaDataCollectorOreAtom
@@ -150,11 +151,14 @@ class MetadataHarvester():
             self.repeat_pid_check = False
         if self.related_resources:
             for relation in self.related_resources:
-                if relation.get('relation_type') == 'isPartOf' and isinstance(relation.get('related_resource'), str):
-                    parent_identifier = IdentifierHelper(relation.get('related_resource'), self.logger)
-                    if parent_identifier.is_persistent:
-                        self.logger.info('FsF-F2-01M : Found parent (isPartOf) identifier which is a PID in metadata, you may consider to assess the parent')
-
+                try:
+                    if relation.get('relation_type') == 'isPartOf' and isinstance(relation.get('related_resource'), str):
+                        parent_identifier = IdentifierHelper(relation.get('related_resource'), self.logger)
+                        if parent_identifier.is_persistent:
+                            self.logger.info('FsF-F2-01M : Found parent (isPartOf) identifier which is a PID in metadata, you may consider to assess the parent')
+                except Exception as e:
+                    print('Relation error: ',e)
+                    pass
         if self.metadata_merged.get('object_identifier'):
             if isinstance(self.metadata_merged.get('object_identifier'), list):
                 identifiertotest = self.metadata_merged.get('object_identifier')
@@ -574,7 +578,25 @@ class MetadataHarvester():
                         'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: ' + str(schemaorg_dict.keys()))
                 else:
                     self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
+                # ========= retrieve highwire and eprints embedded in html page =========
+                if self.reference_elements and 1 == 2 :
+                    self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
+                    hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
+                                                               sourcemetadata=self.landing_html)
+                    source_hw, hw_dict = hw_collector.parse_metadata()
+                    hw_dict = self.exclude_null(hw_dict)
+                    if hw_dict:
+                        self.namespace_uri.extend(hw_collector.namespaces)
+                        #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                        self.metadata_sources.append((source_hw, 'embedded'))
+                        if hw_dict.get('related_resources'):
+                            self.related_resources.extend(hw_dict.get('related_resources'))
+                        self.merge_metadata(hw_dict, self.landing_url, source_hw,'text/html','highwire_eprints', hw_collector.namespaces)
 
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F2-01M : Found Highwire or eprints metadata -: ' + str(hw_dict.keys()))
+                    else:
+                        self.logger.info('FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE')
                 # ========= retrieve dublin core embedded in html page =========
                 if self.reference_elements:
                     self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
