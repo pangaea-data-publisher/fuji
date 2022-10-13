@@ -25,6 +25,17 @@ from enum import Enum
 
 
 class Mapper(Enum):
+    def flip_dict(dict_to_flip):
+        flipped_dict = {}
+        if isinstance(dict_to_flip, dict):
+            for dkey, dvalue in dict_to_flip.items():
+                if isinstance(dvalue, list):
+                    for dval in dvalue:
+                        flipped_dict[dval] = dkey
+                else:
+                    flipped_dict[dvalue] = dkey
+        return flipped_dict
+
     """
     Enum class to Map metadata into reference metadata list, access right code, provenance,
     and metadata sources, e.g., Dublin Core, Open Graph, Microdata, Datacite, ORE Atom, Schema.org, etc.
@@ -86,6 +97,30 @@ class Mapper(Enum):
         'application/gzip', 'application/zstd', 'application/octet-stream', 'application/vnd.ms-cab-compressed',
         'application/zip', 'application/x-gzip'
     ]
+    HIGHWIRE_MAPPING = {
+        'object_identifier': ['citation_arxiv_id','citation_pmid','citation_doi','citation_id'],
+        'creator': ['citation_author','citation_authors'],
+        'title': 'citation_title',
+        'publisher': 'citation_publisher',
+        'publication_date': ['citation_date', 'citation_publication_date'],
+        'summary': ['citation_abstract_html_url'],
+        'keywords': 'citation_keywords',
+        'related_resources': [
+            'citation_reference', 'citation_collection_id'
+        ],
+        'language': 'citation_language'
+    }
+
+    EPRINTS_MAPPING = {
+        'object_identifier': ['id_number','official_url'],
+        'creator': 'creators_name',
+        'title': 'title',
+        'publication_date': ['date', 'datestamp'],
+        'object_type': 'type',
+        'publisher': 'publisher',
+        'summary' :'abstract'
+    }
+
 
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
     # dc: rights, dcterm: accessRights, rightsHolder?
