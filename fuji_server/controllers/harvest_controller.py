@@ -72,7 +72,6 @@ def harvest_by_id(body=None):  # noqa: E501
             ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
             ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
             ft.retrieve_metadata_external_datacite()
-            print(type(ft.metadata_unmerged))
 
         harvest_result =[]
         for metadata in ft.metadata_unmerged:

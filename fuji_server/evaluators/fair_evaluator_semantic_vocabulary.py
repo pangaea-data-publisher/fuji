@@ -48,8 +48,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                                          metric_name=self.metric_name)
 
         # remove duplicates
-        print(self.fuji.namespace_uri)
-        print(self.fuji.linked_namespace_uri)
+        #print(self.fuji.namespace_uri)
+        #print(self.fuji.linked_namespace_uri)
         if self.fuji.namespace_uri:
             self.fuji.namespace_uri = list(set(self.fuji.namespace_uri))
             self.fuji.namespace_uri = [x.strip().rstrip('/#') for x in self.fuji.namespace_uri]
