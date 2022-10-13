@@ -579,7 +579,7 @@ class MetadataHarvester():
                 else:
                     self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
                 # ========= retrieve highwire and eprints embedded in html page =========
-                if self.reference_elements and 1 == 2 :
+                if self.reference_elements:
                     self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
                     hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
                                                                sourcemetadata=self.landing_html)
