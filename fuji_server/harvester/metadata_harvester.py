@@ -43,6 +43,7 @@ class MetadataHarvester():
         self.auth_token = auth_token
         self.auth_token_type = auth_token_type
         self.landing_url = None
+        self.landing_page_status = None
         self.origin_url = None
         self.pid_url = None
         self.repeat_pid_check = False
@@ -84,7 +85,7 @@ class MetadataHarvester():
                     resolves_to_landing_domain = False
                     pid_helper = IdentifierHelper(object_identifier, self.logger)
                     if pid_helper.identifier_url not in self.pid_collector and pid_helper.is_persistent and pid_helper.preferred_schema in self.valid_pid_types:
-                        pid_record = pid_helper.get_identifier_info()
+                        pid_record = pid_helper.get_identifier_info(self.pid_collector)
                         self.pid_collector[pid_helper.identifier_url] = pid_record
                         resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(pid_helper.identifier_url)
                         self.pid_collector[pid_helper.identifier_url]['verified'] = resolves_to_landing_domain
@@ -478,8 +479,10 @@ class MetadataHarvester():
             if idhelper.is_persistent:
                 self.pid_scheme = idhelper.preferred_schema
                 self.pid_url = idhelper.identifier_url
-                pid_record = idhelper.get_identifier_info(self.pid_collector)
-                self.pid_collector[self.pid_url] = pid_record
+                self.pid_collector[self.pid_url] = {'pid':self.id,
+                                                    'pid_url':self.pid_url,
+                                                    'scheme':self.pid_scheme,
+                                                    'is_persistent': True}
                 #as a input PID it is verified even if it is not resolved
                 self.pid_collector[self.pid_url]['verified'] = True
 
@@ -506,6 +509,7 @@ class MetadataHarvester():
                         self.pid_collector[self.pid_url]['resolved_url'] = self.landing_url
 
                 response_status = requestHelper.response_status
+                self.landing_page_status = response_status
                 #if requestHelper.response_content:
                     #self.landing_url = requestHelper.redirect_url
             else:
