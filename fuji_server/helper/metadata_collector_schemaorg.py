@@ -134,7 +134,6 @@ class MetaDataCollectorSchemaOrg(MetaDataCollector):
                 self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
             # in case two or more JSON-LD strings are embedded
             if len(self.source_metadata) > 1:
-                print('******************************************')
                 self.logger.info('FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type')
                 for meta_rec in self.source_metadata:
                     if str(meta_rec.get('@type')).lower() in ['dataset']:
