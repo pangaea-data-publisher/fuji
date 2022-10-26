@@ -179,7 +179,7 @@ class MetaDataCollector(object):
             if isinstance(meta_source, str):
                 found_urls = set(extractor.gen_urls(str(meta_source)))
             elif isinstance(meta_source, list):
-                found_urls = meta_source
+                found_urls = set(meta_source)
             for url in found_urls:
                 if isinstance(url, str):
                     found_lov = lov_helper.get_linked_vocab_by_iri(url)
