@@ -138,9 +138,10 @@ class linked_vocab_helper:
                                 comb_match = re.search(comb_regex, iri_parts.get('path'))
                                 score = self.get_overlap(iri_parts.get('path'), reg_res.get('pattern').split('$1')[0])
                             if comb_match:
-                                if len(comb_match.groups()) > 0:
-                                    if comb_match[1]:
-                                        reg_res['namespace'] = IRI.split(comb_match[1])[0] + comb_match[1]
+                                #if len(comb_match.groups()) > 0:
+                                #    if comb_match[1]:
+                                #        print('++++++',comb_match[1],reg_res.get('namespace'))
+                                #        reg_res['namespace'] = IRI.split(comb_match[1])[0] + comb_match[1]
                                 onto_match.append({'score': score, 'match': reg_res})
             maxscore = 0
             if onto_match:

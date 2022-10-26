@@ -91,7 +91,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         if self.fuji.linked_namespace_uri:
             self.logger.info('{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
                 self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
-            for linked_ns in self.fuji.linked_namespace_uri:
+            for linked_ns, linked_ns_data in self.fuji.linked_namespace_uri.items():
                 linked_ns = linked_ns.strip().rstrip('/#')
                 if linked_ns not in exists:
                     linked_exclude = False
@@ -100,9 +100,9 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                             linked_exclude = True
                             break
                     if not linked_exclude:
-                        linked_lov_entry = lov_helper.get_linked_vocab_by_iri(linked_ns, isnamespaceIRI=True)
-                        if linked_lov_entry:
-                            exists.append(linked_ns)
+                        #linked_lov_entry = lov_helper.get_linked_vocab_by_iri(linked_ns, isnamespaceIRI=True)
+                        #if linked_lov_entry:
+                        exists.append(linked_ns)
         if exists:
             score = self.total_score
             self.setEvaluationCriteriumScore('FsF-I2-01M-2', 1, 'pass')
