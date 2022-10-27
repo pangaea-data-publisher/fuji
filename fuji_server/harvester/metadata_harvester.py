@@ -170,7 +170,15 @@ class MetadataHarvester():
                 for pidcandidate in identifiertotest:
                     idhelper = IdentifierHelper(pidcandidate, self.logger)
                     found_id_scheme = idhelper.preferred_schema
-                    if idhelper.is_persistent:
+                    #print(self.pid_collector)
+                    #print('#####', self.pid_collector.get(idhelper.identifier_url))
+                    validated = False
+                    if self.pid_collector.get(idhelper.identifier_url):
+                        if self.pid_collector.get(idhelper.identifier_url).get('verified'):
+                            validated = True
+                    else:
+                        validated = False
+                    if idhelper.is_persistent and validated:
                         found_pids[found_id_scheme] = idhelper.get_identifier_url()
                 if len(found_pids) >= 1 and self.repeat_pid_check == False:
                     self.logger.info(
@@ -343,23 +351,35 @@ class MetadataHarvester():
     def get_signposting_object_identifier(self):
         # check if there is a cite-as signposting link
         signposting_pid = None
-        signposting_pid_link_list = self.get_signposting_header_links('cite-as')
+        signposting_header_pids = self.get_signposting_header_links('cite-as')
+        signposting_html_pids = self.get_html_typed_links('cite-as')
+        signposting_pid_link_list = []
+        if isinstance(signposting_header_pids, list):
+            signposting_pid_link_list = signposting_header_pids
+        if isinstance(signposting_html_pids, list):
+            signposting_pid_link_list.extend(signposting_html_pids)
+
         if signposting_pid_link_list:
             for signposting_pid_link in signposting_pid_link_list:
                 signposting_pid = signposting_pid_link.get('url')
                 if signposting_pid:
                     self.logger.info(
-                        'FsF-F1-02D : Found object identifier (cite-as) in signposting header links -:' + str(
+                        'FsF-F1-02D : Found object identifier (cite-as) in signposting links -:' + str(
                             signposting_pid))
                     if not signposting_pid_link.get('type'):
                         self.logger.warning(
                             'FsF-F1-02D : Found cite-as signposting links has no type attribute-:' + str(
                                 signposting_pid))
                     signidhelper = IdentifierHelper(signposting_pid, self.logger)
-                    found_id = signidhelper.preferred_schema
-                    if signidhelper.is_persistent and self.pid_scheme is None:
-                        self.pid_scheme = found_id
-                        self.pid_url = signposting_pid
+                    if self.metadata_merged.get('object_identifier'):
+                        if isinstance(self.metadata_merged.get('object_identifier'), list):
+                            self.metadata_merged['object_identifier'].append(signposting_pid)
+                    else:
+                        self.metadata_merged['object_identifier'] = [signposting_pid]
+                    if signidhelper.identifier_url not in self.pid_collector and signidhelper.is_persistent and signidhelper.preferred_schema in self.valid_pid_types:
+                        signpid_record = signidhelper.get_identifier_info(self.pid_collector)
+                        self.pid_collector[signidhelper.identifier_url] = signpid_record
+
 
     def get_html_typed_links(self, rel='item', allkeys=True):
         # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
@@ -560,13 +580,7 @@ class MetadataHarvester():
                                                      json_ld_content=ext_meta,
                                                      source = MetaDataCollector.Sources.SCHEMAORG_EMBED.value)
                 source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
-                '''
-                schemaorg_collector = MetaDataCollectorSchemaOrg(loggerinst=self.logger,
-                                                                 sourcemetadata=ext_meta,
-                                                                 mapping=Mapper.SCHEMAORG_MAPPING,
-                                                                 pidurl=None)
-                source_schemaorg, schemaorg_dict = schemaorg_collector.parse_metadata()
-                '''
+
                 schemaorg_dict = self.exclude_null(schemaorg_dict)
                 if schemaorg_dict:
                     self.namespace_uri.extend(schemaorg_collector.namespaces)
@@ -710,8 +724,7 @@ class MetadataHarvester():
                         self.namespace_uri.append('http://a9.com/-/spec/opensearch/1.1/')
 
 
-                #========= retrieve typed data object links =========
-
+                #========= retrieve signposting or typed data object links =========
                 data_meta_links = self.get_html_typed_links(rel='item')
                 if data_meta_links:
                     self.logger.info('FsF-F3-01M : Found data links in HTML head (link rel=item) -: ' +
@@ -719,23 +732,6 @@ class MetadataHarvester():
                     if self.metadata_merged.get('object_content_identifier') is None:
                         self.metadata_merged['object_content_identifier'] = data_meta_links
                 # self.metadata_sources.append((MetaDataCollector.Sources.TYPED_LINK.value,'linked'))
-                # signposting pid links
-                signposting_header_pids = self.get_signposting_header_links('cite-as')
-                signposting_html_pids = self.get_html_typed_links('cite-as')
-                signposting_pids = []
-                if isinstance(signposting_header_pids, list):
-                    signposting_pids = signposting_header_pids
-                if isinstance(signposting_html_pids, list):
-                    signposting_pids.extend(signposting_html_pids)
-                if signposting_pids:
-                    for signpid in signposting_pids:
-                        if self.metadata_merged.get('object_identifier'):
-                            if isinstance(self.metadata_merged.get('object_identifier'), list):
-                                if signpid not in self.metadata_merged.get('object_identifier'):
-                                    self.metadata_merged['object_identifier'].append(signpid.get('url'))
-                            else:
-                                self.metadata_merged['object_identifier'] = [signpid.get('url')]
-
             else:
                 self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' +
                                     str(self.landing_url) + ' expected html content but received: ' +
