@@ -165,8 +165,19 @@ class RequestHelper:
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
                     self.redirect_list = redirect_handler.redirect_list
-                except urllib.error.URLError as e:
-                    if e.code == 400:
+                except urllib.error.HTTPError as e:
+                    if e.code == 308:
+                        self.logger.error(
+                            '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
+                            % metric_id)
+                    elif e.code >= 500:
+                        if 'doi.org' in self.request_url:
+                            self.logger.error('{0} : DataCite/DOI content negotiation failed, status code -: {1}, {2} - {3}'.format(
+                                    metric_id, self.request_url, self.accept_type, str(e.code)))
+                        else:
+                            self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
+                                metric_id, self.request_url, self.accept_type, str(e.code)))
+                    elif e.code == 400:
                         try:
                             #browsers automatically redirect to https in case a 400 occured for a http URL
                             if redirect_handler.redirect_list:
@@ -183,23 +194,13 @@ class RequestHelper:
                         except Exception as e:
                             print('Redirect fix error:'+str(e))
                             pass
-                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - URLError: {3}'.format(
-                        metric_id, self.request_url, self.accept_type, str(e)))
-                except urllib.error.HTTPError as e:
-                    if e.code == 308:
-                        self.logger.error(
-                            '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
-                            % metric_id)
-                    elif e.code >= 500:
-                        if 'doi.org' in self.request_url:
-                            self.logger.error('{0} : DataCite/DOI content negotiation failed, status code -: {1}, {2} - {3}'.format(
-                                    metric_id, self.request_url, self.accept_type, str(e.code)))
-                        else:
-                            self.logger.error('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
-                                metric_id, self.request_url, self.accept_type, str(e.code)))
                     else:
                         self.logger.warning('{0} : Request failed, status code -: {1}, {2} - {3}'.format(
                             metric_id, self.request_url, self.accept_type, str(e.code)))
+                except urllib.error.URLError as e:
+                    self.logger.warning('{0} : Request failed, reason -: {1}, {2} - URLError: {3}'.format(
+                        metric_id, self.request_url, self.accept_type, str(e)))
+
                 except Exception as e:
                     print('Request ERROR: ', e)
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - Error: {3}'.format(
