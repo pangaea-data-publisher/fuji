@@ -147,12 +147,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 test_data_content_url, e.code))
                     except urllib.error.URLError as e:
                         self.logger.exception(e.reason)
-                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, URLError code {1} '.format(
-                                test_data_content_url, e.code))
-                        self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -: {0}, URLError code {1} '.format(
-                                test_data_content_url, e.code))
-                        self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -: {0}, URLError code {1} '.format(
-                                test_data_content_url, e.code))
+                        self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, URLError reason {1} '.format(
+                                test_data_content_url, e.reason))
+                        self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -: {0}, URLError reason {1} '.format(
+                                test_data_content_url, e.reason))
+                        self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -: {0}, URLError reason {1} '.format(
+                                test_data_content_url, e.reason))
 
                     except Exception as e:
                         self.logger.warning('FsF-F3-01M : Content identifier inaccessible -:' + str(e))
