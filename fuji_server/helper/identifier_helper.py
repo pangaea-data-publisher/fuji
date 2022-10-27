@@ -144,12 +144,21 @@ class IdentifierHelper:
                 self.normalized_id = self.identifier
 
     def verify_handle(self, val, includeparams=True):
+        #additional checks for handles since the syntax is very generic
         try:
-            handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([^/.]+(?:\.[^/.]+)*)/(.+)$")
+            #see: https://www.icann.org/en/system/files/files/octo-002-14oct19-en.pdf :
+            # One of the Handle System's main features is that prefixes do not include names. Dr. Kahn
+            # explains that the Handle System "does not rely on name semantics". For example, organization
+            # names are usually not included in handle prefixes. To date, except for a few special (and
+            # primarily administrative) cases, prefixes contain only digits.
+            # Therefore:
+            #handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([^/.]+(?:\.[^/.]+)*)/(.+)$")
+            handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([0-9]+(?:\.[0-9]+)*)/(.+)$", flags=re.I)
 
             ures = urllib.parse.urlparse(val)
             if ures:
                 if ures.query:
+                    #detect handles in uri
                     for query in ures.query.split('&'):
                         try:
                             param = query.split('=')[1]
@@ -159,26 +168,11 @@ class IdentifierHelper:
                             pass
             m = handle_regexp.match(val)
             if m:
-                if m[1]:
-                    return True
-                elif isinstance(str(m[2]).split('.')[0], int):
-                    return True
-                elif m[2]:
-                    if m[2] in ['http:', 'https:']:
-                        return False
-                    else:
-                        hdlres = requests.get('https://hdl.handle.net/api/handles/' + m[2])
-                        hdljson = hdlres.json()
-                        if hdljson.get('responseCode') == 1:
-                            return True
-                        else:
-                            return False
-                else:
-                    return False
+                return True
             else:
                 return False
         except Exception as e:
-            print('handle verificatio error: '+str(e))
+            print('handle verification error: '+str(e))
             return False
 
     def to_url(self, id, schema):
