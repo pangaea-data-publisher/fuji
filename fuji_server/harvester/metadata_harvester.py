@@ -457,6 +457,21 @@ class MetadataHarvester():
         except Exception as e:
             pass
 
+    def clean_html_language_tag(self, response_content):
+        # avoid RDFa errors
+        try:
+            langregex = r'<html\s.*lang\s*=\s*\"([^\"]+)\"'
+            lm = re.search(langregex,response_content)
+            if lm:
+                lang = lm[1]
+                if not re.match(r'^[a-zA-Z]+(?:-[a-zA-Z0-9]+)*$', lang):
+                    self.logger.warning(
+                        'FsF-F1-02D : Trying to fix invalid language tag detected in HTML -: '+str(lang))
+                    response_content = response_content.replace(lang, 'en')
+        except Exception as e:
+            pass
+        return response_content
+
 
     def retrieve_metadata_embedded_extruct(self):
         # extract contents from the landing page using extruct, which returns a dict with
@@ -658,7 +673,7 @@ class MetadataHarvester():
                     except Exception as e:
                         rdfa_html = self.landing_html
                         pass
-
+                    rdfa_html = self.clean_html_language_tag(rdfa_html)
                     rdfabuffer= io.StringIO(rdfa_html)
                     # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
                     # https://github.com/RDFLib/rdflib/discussions/1582
