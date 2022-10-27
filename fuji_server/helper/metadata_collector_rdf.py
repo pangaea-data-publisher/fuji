@@ -273,7 +273,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         print('RDF Collector Error: ',e)
                         pass
                 #t ry to make graph from JSON-LD string
-                if isinstance(rdf_response, str) or isinstance(rdf_response, bytes):
+                if isinstance(rdf_response, str):
                     try:
                         rdf_response = str(rdf_response).encode('utf-8')
                     except:
