@@ -145,8 +145,6 @@ class MetadataHarvester():
         else:
             return False
 
-    #Datacite search not checked
-    #https: // zenodo.org / record / 6481639  # .Yn5uBXUzZHc
     def check_pidtest_repeat(self):
         if not self.repeat_pid_check:
             self.repeat_pid_check = False
@@ -170,8 +168,6 @@ class MetadataHarvester():
                 for pidcandidate in identifiertotest:
                     idhelper = IdentifierHelper(pidcandidate, self.logger)
                     found_id_scheme = idhelper.preferred_schema
-                    #print(self.pid_collector)
-                    #print('#####', self.pid_collector.get(idhelper.identifier_url))
                     validated = False
                     if self.pid_collector.get(idhelper.identifier_url):
                         if self.pid_collector.get(idhelper.identifier_url).get('verified'):
