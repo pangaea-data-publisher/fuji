@@ -283,6 +283,20 @@
       "Materials engineering"
     ]
   },
+  "da|ra Metadata Schema": {
+    "identifier": "msc:m1009",
+    "urls": [
+      "http://da-ra.de/schema/kernel-4",
+      "http://da-ra.de/dara/schemadefinitions/dara.xsd",
+      "dara_v2.2.1_de_en_19112012.xsd",
+      "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd",
+      "https://www.da-ra.de/downloads#version-3-0"
+    ],
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
   "Darwin Core Geospatial Extension": {
     "identifier": "msc:m54",
     "urls": [
@@ -550,6 +564,18 @@
     ],
     "subject_areas": null
   },
+  "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)": {
+    "identifier": "msc:m1007",
+    "urls": [
+      "http://www.fdsn.org/xml/station/1",
+      "http://www.fdsn.org/xml/station/",
+      "http://docs.fdsn.org/projects/stationxml/en/latest/"
+    ],
+    "subject_areas": [
+      "Earth sciences",
+      "Geophysics"
+    ]
+  },
   "FGDC/CSDGM Biological Data Profile": {
     "identifier": "msc:m59",
     "urls": [
@@ -669,7 +695,9 @@
   },
   "IDF (International DOI Foundation) Metadata Kernel": {
     "identifier": "msc:m86",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": null
   },
   "IMPEx Data Model": {
@@ -825,7 +853,9 @@
   },
   "JSON-LD (JavaScript Object Notation for Linked Data)": {
     "identifier": "msc:m95",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": [
       "Information/library standards",
       "Standards"
@@ -833,7 +863,9 @@
   },
   "MAGE-TAB": {
     "identifier": "msc:m87",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": null
   },
   "MARC (Machine-Readable Cataloging)": {
@@ -924,7 +956,9 @@
   },
   "NetCDF Attribute Convention for Dataset Discovery": {
     "identifier": "msc:m89",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": null
   },
   "NeXus": {
@@ -973,14 +1007,31 @@
       "Remote sensing"
     ]
   },
+  "ODAM Structural Metadata": {
+    "identifier": null,
+    "urls": [
+      "https://inrae.github.io/ODAM/data-preparation/"
+    ],
+    "subject_areas": [
+      "biochemistry",
+      "molecular-biology",
+      "metabolic-biochemistry",
+      "biomaterials",
+      "bioengineering"
+    ]
+  },
   "OECD Dataset Metadata": {
     "identifier": "msc:m90",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": null
   },
   "OECD Minimum Data Set": {
     "identifier": "msc:m91",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": null
   },
   "OME-TIFF (Open Microscopy Environment TIFF)": {
@@ -1103,7 +1154,9 @@
   },
   "Repository-Developed Metadata Schemas": {
     "identifier": "msc:m36",
-    "urls": [],
+    "urls": [
+
+    ],
     "subject_areas": [
       "Biochemistry",
       "Cartography",

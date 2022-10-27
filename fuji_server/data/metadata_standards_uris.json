@@ -573,6 +573,46 @@
       "Materials engineering"
     ]
   },
+  "http://da-ra.de/schema/kernel-4": {
+    "title": "da|ra Metadata Schema",
+    "identifier": "msc:m1009",
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
+  "http://da-ra.de/dara/schemadefinitions/dara.xsd": {
+    "title": "da|ra Metadata Schema",
+    "identifier": "msc:m1009",
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
+  "dara_v2.2.1_de_en_19112012.xsd": {
+    "title": "da|ra Metadata Schema",
+    "identifier": "msc:m1009",
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
+  "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd": {
+    "title": "da|ra Metadata Schema",
+    "identifier": "msc:m1009",
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
+  "https://www.da-ra.de/downloads#version-3-0": {
+    "title": "da|ra Metadata Schema",
+    "identifier": "msc:m1009",
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ]
+  },
   "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension": {
     "title": "Darwin Core Geospatial Extension",
     "identifier": "msc:m54",
@@ -1551,6 +1591,30 @@
     "identifier": "msc:m85",
     "subject_areas": null
   },
+  "http://www.fdsn.org/xml/station/1": {
+    "title": "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)",
+    "identifier": "msc:m1007",
+    "subject_areas": [
+      "Earth sciences",
+      "Geophysics"
+    ]
+  },
+  "http://www.fdsn.org/xml/station/": {
+    "title": "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)",
+    "identifier": "msc:m1007",
+    "subject_areas": [
+      "Earth sciences",
+      "Geophysics"
+    ]
+  },
+  "http://docs.fdsn.org/projects/stationxml/en/latest/": {
+    "title": "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)",
+    "identifier": "msc:m1007",
+    "subject_areas": [
+      "Earth sciences",
+      "Geophysics"
+    ]
+  },
   "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf": {
     "title": "FGDC/CSDGM Biological Data Profile",
     "identifier": "msc:m59",
@@ -2221,6 +2285,17 @@
       "Geology",
       "Meteorology",
       "Remote sensing"
+    ]
+  },
+  "https://inrae.github.io/ODAM/data-preparation/": {
+    "title": "ODAM Structural Metadata",
+    "identifier": null,
+    "subject_areas": [
+      "biochemistry",
+      "molecular-biology",
+      "metabolic-biochemistry",
+      "biomaterials",
+      "bioengineering"
     ]
   },
   "http://www.openmicroscopy.org/site/support/file-formats/ome-tiff": {
