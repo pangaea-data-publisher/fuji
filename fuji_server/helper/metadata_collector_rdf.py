@@ -392,7 +392,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 meta['object_type'] = 'Other'
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
-                    + str(len(goodtriples)) + ' triples in the given graph: '+str([x[1] for x in goodtriples]))
+                    + str(len(goodtriples)) + ' triples in the given graph')
         else:
             self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: ' +
                              str(meta.keys()))
