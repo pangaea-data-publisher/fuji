@@ -166,6 +166,7 @@ class RequestHelper:
                     tp_response = opener.open(tp_request,timeout = 10)
                     self.redirect_list = redirect_handler.redirect_list
                 except urllib.error.HTTPError as e:
+                    self.response_status = int(e.code)
                     if e.code == 308:
                         self.logger.error(
                             '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
