@@ -101,14 +101,13 @@ class IdentifierHelper:
                         self.identifier_url = self.identifier
                         self.normalized_id = self.identifier
                     #identifiers.org
+
                     elif idparts.netloc == 'identifiers.org':
                         idorgparts = idparts.path.split('/')
                         if len(idorgparts) == 3:
-                            idorgid = idorgparts[1]+':'+idorgparts[2]
-                        else:
-                            idorgid = self.identifier
-                    print(idparts.path, idorgparts,idorgid)
-                    idmatch = re.search(generic_identifiers_org_pattern, idorgid)
+                            self.identifier = idorgparts[1]+':'+idorgparts[2]
+
+                    idmatch = re.search(generic_identifiers_org_pattern, self.identifier)
                     if idmatch:
                         found_prefix = idmatch[1]
                         found_suffix = idmatch[2]
