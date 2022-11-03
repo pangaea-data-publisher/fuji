@@ -92,13 +92,34 @@ class IdentifierHelper:
                 self.identifier = self.identifier.replace('/ark:' , '/ark:/' )
                 self.identifier = self.identifier.replace('/ark://', '/ark:/')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
-                #w3id check
-                if not self.identifier_schemes:
+
+                if not self.identifier_schemes or self.identifier_schemes == ['url']:
+                    # w3id check
                     if idparts.scheme == 'https' and idparts.netloc in ['w3id.org','www.w3id.org'] and idparts.path != '':
                         self.identifier_schemes = ['w3id','url']
                         self.preferred_schema = 'w3id'
                         self.identifier_url = self.identifier
-                        self.normalized_id =self.identifier
+                        self.normalized_id = self.identifier
+                    #identifiers.org
+                    elif idparts.netloc == 'identifiers.org':
+                        idorgparts = idparts.path.split('/')
+                        if len(idorgparts) == 3:
+                            idorgid = idorgparts[1]+':'+idorgparts[2]
+                        else:
+                            idorgid = self.identifier
+                    print(idparts.path, idorgparts,idorgid)
+                    idmatch = re.search(generic_identifiers_org_pattern, idorgid)
+                    if idmatch:
+                        found_prefix = idmatch[1]
+                        found_suffix = idmatch[2]
+                        if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
+                            if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
+                                self.identifier_schemes = ['identifiers_org',found_prefix]
+                                self.preferred_schema = found_prefix
+                                self.identifier_url = str(
+                                    self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace(
+                                    '{$id}', found_suffix)
+                                self.normalized_id = found_prefix.lower() + ':' + found_suffix
                 # idutils check
                 if not self.identifier_schemes:
                     self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
@@ -109,20 +130,7 @@ class IdentifierHelper:
                     if not self.verify_handle(self.identifier):
                         self.identifier_schemes.remove('handle')
                 # identifiers.org check
-                if not self.identifier_schemes:
-                    self.method = 'identifiers.org'
-                    idmatch = re.search(generic_identifiers_org_pattern, self.identifier)
-                    if idmatch:
-                        found_prefix = idmatch[1]
-                        found_suffix = idmatch[2]
-                        if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
-                            if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
-                                self.identifier_schemes = [found_prefix, 'identifiers_org']
-                                self.preferred_schema = found_prefix
-                            self.identifier_url = str(self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace(
-                                '{$id}', found_suffix)
-                            self.normalized_id = found_prefix.lower() + ':' + found_suffix
-                else:
+                if self.identifier_schemes:
                     # preferred schema
                     if self.identifier_schemes:
                         if len(self.identifier_schemes) > 0:
