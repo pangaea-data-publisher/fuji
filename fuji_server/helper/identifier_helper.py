@@ -154,7 +154,6 @@ class IdentifierHelper:
             # Therefore:
             #handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([^/.]+(?:\.[^/.]+)*)/(.+)$")
             handle_regexp = re.compile(r"(hdl:\s*|(?:https?://)?hdl\.handle\.net/)?([0-9]+(?:\.[0-9]+)*)/(.+)$", flags=re.I)
-
             ures = urllib.parse.urlparse(val)
             if ures:
                 if ures.query:
