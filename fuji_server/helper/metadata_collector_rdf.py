@@ -263,7 +263,21 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
                             # quick fix for https://github.com/RDFLib/rdflib/issues/1484
                             # needs to be done before dict is converted to string
+                            print(rdf_response)
                             if rdf_response.get('@context'):
+                                if rdf_response.get('@graph'):
+                                    try:
+                                        #drop duplicate context in graph
+                                        if isinstance(rdf_response.get('@graph'), list):
+                                            for grph in rdf_response.get('@graph'):
+                                                if grph.get('@context'):
+                                                    del grph['@context']
+                                        else:
+                                            if rdf_response.get('@graph').get('@context'):
+                                                del rdf_response['@graph']['@context']
+                                    except Exception as e:
+                                        print('Faile drop duplicate JSON-LD context in graph')
+                                        pass
                                 if isinstance(rdf_response.get('@context'), str):
                                     if 'schema.org' in rdf_response.get('@context'):
                                         rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
