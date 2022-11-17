@@ -20,7 +20,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F1-02D
@@ -43,7 +43,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F2-01M
@@ -87,7 +87,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-01
-  version: 0.4
+  version: 0.5
   total_score: 2
   passed: false
 
@@ -111,7 +111,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F4-01M
@@ -134,7 +134,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-A1-01M
@@ -162,7 +162,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A1-03D
@@ -181,7 +181,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A1-02M
@@ -200,7 +200,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A2-01M
@@ -219,7 +219,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-I1-01M
@@ -242,7 +242,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-I2-01M
@@ -265,7 +265,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-I3-01M
@@ -288,7 +288,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-R1-01MD
@@ -331,7 +331,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-07-08
-  version: 0.4
+  version: 0.5
   total_score: 4
 
 - metric_identifier: FsF-R1.1-01M
@@ -354,7 +354,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-R1.2-01M
@@ -383,7 +383,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-R1.3-01M
@@ -410,7 +410,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-R1.3-02D
@@ -443,5 +443,5 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
