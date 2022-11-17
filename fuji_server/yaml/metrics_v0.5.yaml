@@ -89,7 +89,6 @@ metrics:
   date_updated: 2020-12-01
   version: 0.5
   total_score: 2
-  passed: false
 
 - metric_identifier: FsF-F3-01M
   metric_number: 4
