@@ -46,6 +46,7 @@ class MetadataHarvester():
         self.landing_url = None
         self.landing_page_status = None
         self.landing_redirect_list =[]
+        self.landing_content_type = None
         self.origin_url = None
         self.pid_url = None
         self.repeat_pid_check = False
