@@ -263,7 +263,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
                             # quick fix for https://github.com/RDFLib/rdflib/issues/1484
                             # needs to be done before dict is converted to string
-                            print(rdf_response)
+                            #print(rdf_response)
                             if rdf_response.get('@context'):
                                 if rdf_response.get('@graph'):
                                     try:
