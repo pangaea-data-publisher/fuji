@@ -42,8 +42,10 @@ class MetadataHarvester():
         self.logger = logging.getLogger(self.test_id)
         self.auth_token = auth_token
         self.auth_token_type = auth_token_type
+        self.landing_html = None
         self.landing_url = None
         self.landing_page_status = None
+        self.landing_redirect_list =[]
         self.origin_url = None
         self.pid_url = None
         self.repeat_pid_check = False
@@ -557,6 +559,7 @@ class MetadataHarvester():
                     self.landing_origin = '{uri.scheme}://{uri.netloc}'.format(uri=up)
                     self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
+                    self.landing_redirect_list = requestHelper.redirect_list
                 elif response_status in [401, 402, 403]:
                     self.isLandingPageAccessible = False
                     self.logger.warning(
