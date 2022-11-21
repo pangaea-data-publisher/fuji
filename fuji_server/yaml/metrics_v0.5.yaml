@@ -6,7 +6,7 @@ metrics:
   metric_name: Data is assigned a globally unique identifier.
   description: A data object may be assigned with a globally unique identifier such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your data or metadata when you publish and make it available through their services.
   fair_principle: F1
-  target: Dataset
+  target: Data
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   metric_tests:
     - metric_test_identifier: FsF-F1-01D-1
@@ -20,7 +20,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F1-02D
@@ -29,7 +29,7 @@ metrics:
   metric_name : Data is assigned a persistent identifier.
   description: We make a distinction between the uniqueness and persistence of an identifier. An HTTP URL (the address of a given unique resource on the web) is globally unique, but may not be persistent as the URL of data may be not accessible (link rot problem) or the data available under the original URL may be changed (content drift problem). Identifiers based on the Handle System, DOI, ARK are both globally unique and persistent. They are maintained and governed such that they remain stable and resolvable for the long term. The persistent identifier (PID) of a data object may be resolved (point) to a landing page with metadata containing further information on how to access the data content, in some cases a downloadable artefact, or none if the data or repository is no longer maintained. Therefore, ensuring persistence is a shared responsibility between a PID service provider (e.g., datacite) and its clients (e.g., data repositories). For example, the DOI system guarantees the persistence of its identifiers through its social (e.g., policy) and technical infrastructures, whereas a data provider ensures the availability of the resource (e.g., landing page, downloadable artefact) associated with the identifier.
   fair_principle: F1
-  target: Dataset
+  target: Data
   evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
   metric_tests:
     - metric_test_identifier: FsF-F1-02D-1
@@ -43,7 +43,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F2-01M
@@ -87,9 +87,8 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-01
-  version: 0.4
+  version: 0.5
   total_score: 2
-  passed: false
 
 - metric_identifier: FsF-F3-01M
   metric_number: 4
@@ -111,7 +110,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-F4-01M
@@ -134,7 +133,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-A1-01M
@@ -162,7 +161,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A1-03D
@@ -181,7 +180,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A1-02M
@@ -200,7 +199,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-10-23
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-A2-01M
@@ -219,7 +218,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-05
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-I1-01M
@@ -242,7 +241,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-I2-01M
@@ -265,7 +264,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-I3-01M
@@ -288,7 +287,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-R1-01MD
@@ -331,7 +330,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-07-08
-  version: 0.4
+  version: 0.5
   total_score: 4
 
 - metric_identifier: FsF-R1.1-01M
@@ -354,7 +353,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-R1.2-01M
@@ -383,7 +382,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 2
 
 - metric_identifier: FsF-R1.3-01M
@@ -410,7 +409,7 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
 
 - metric_identifier: FsF-R1.3-02D
@@ -443,5 +442,5 @@ metrics:
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
-  version: 0.4
+  version: 0.5
   total_score: 1
