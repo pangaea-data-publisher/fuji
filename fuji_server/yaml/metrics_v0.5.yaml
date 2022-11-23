@@ -207,7 +207,7 @@ metrics:
   metric_short_name: Metadata Preservation
   metric_name: Metadata remains available, even if the data is no longer available.
   description: This metric determines if the metadata will be preserved even when the data they represent are no longer available, replaced or lost.
-  fair_principle: A1
+  fair_principle: A2
   target: Metadata
   evaluation_mechanism: Currently this metric can only be assessed using the persistent identifier as an indicator. DOI metadata is preserved by DataCite.
   metric_tests:
