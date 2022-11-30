@@ -98,7 +98,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '2.2.1'
+    FUJI_VERSION = '2.2.2'
 
     def __init__(self,
                  uid,
