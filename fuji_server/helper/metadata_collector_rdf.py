@@ -459,7 +459,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta['language'] = str(g.value(item, DC.language) or g.value(item, DCTERMS.language) or
                                    g.value(item, SDO.inLanguage) or g.value(item, SMA.inLanguage))
         if not meta.get('title'):
-            meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name))
+            meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name) or g.value(item, SMA.headline) or g.value(item, SDO.headline))
         if not meta.get('summary'):
             meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or g.value(item, DCTERMS.abstract) or
                                g.value(item, SMA.description) or g.value(item, SDO.description)
