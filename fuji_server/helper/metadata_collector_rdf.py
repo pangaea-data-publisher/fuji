@@ -276,8 +276,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                             if rdf_response.get('@graph').get('@context'):
                                                 del rdf_response['@graph']['@context']
                                     except Exception as e:
-                                        print('Faile drop duplicate JSON-LD context in graph')
+                                        print('Failed drop duplicate JSON-LD context in graph')
                                         pass
+                                #Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
+                                if isinstance(rdf_response.get('@context'), list):
+                                    for ctxi, ctxt in enumerate(rdf_response.get('@context')):
+                                        if 'schema.org' in ctxt:
+                                            rdf_response['@context'][ctxi] = 'https://schema.org/docs/jsonldcontext.json'
                                 if isinstance(rdf_response.get('@context'), str):
                                     if 'schema.org' in rdf_response.get('@context'):
                                         rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
@@ -584,6 +589,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         for contextname, contexturi in json_dict.get('@context').items():
                             if contexturi.endswith('schema.org/'):
                                 schemaorgns = contextname
+
                     json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ':', '"'))
                     #special case #1
                     if json_dict.get('mainEntity'):
