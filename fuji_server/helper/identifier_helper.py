@@ -223,10 +223,14 @@ class IdentifierHelper:
     def get_normalized_id(self):
         return self.normalized_id
 
-    def get_identifier_info(self, pidcollector = {}):
+    def get_identifier_info(self, pidcollector = {}, resolve = True):
+        if resolve:
+            resolved_url = self.get_resolved_url(pidcollector)
+        else:
+            resolved_url = None
         return {'pid':self.identifier,
                 'normalized':self.normalized_id,
                 'pid_url':self.identifier_url,
                 'scheme':self.preferred_schema,
                 'is_persistent':self.is_persistent,
-                'resolved_url': self.get_resolved_url(pidcollector)}
+                'resolved_url': resolved_url}
