@@ -41,5 +41,11 @@
     "name": "European Science Vocabulary (EuroSciVoc)",
     "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1",
     "subjects": ["science and technology studies"]
+  },
+  "meta-share" : {
+    "prefix": "fuji.meta-share",
+    "name": "META-SHARE ontology",
+    "uri_format": "http://w3id.org/meta-share/meta-share/$1",
+    "subjects" : ["humanities", "languages and literature"]
   }
 }

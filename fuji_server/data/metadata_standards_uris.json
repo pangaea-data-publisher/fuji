@@ -245,6 +245,11 @@
       "Social policy"
     ]
   },
+  "https://www.w3.org/2005/Atom": {
+    "title": "The Atom Syndication Format",
+    "identifier": "msc:m1013",
+    "subject_areas": null
+  },
   "http://www.virtualastronomy.org/avm_metadata.php#2": {
     "title": "AVM (Astronomy Visualization Metadata)",
     "identifier": "msc:m3",
@@ -444,12 +449,60 @@
       "Climatology"
     ]
   },
+  "http://www.clarin.eu/cmd/1": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
   "http://www.clarin.eu/cmd/": {
     "title": "Component MetaData (CMD)",
     "identifier": "msc:m1005",
     "subject_areas": [
       "Linguistics",
       "Languages"
+    ]
+  },
+  "http://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1290431694484/xsd": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "https://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://www.clarin.eu/cmd/1/profiles/clarin.eu:cr1:p_1290431694484": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "https://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/1.x/profiles/clarin.eu:cr1:p_1290431694484/xsd": {
+    "title": "CLARIN Component Metadata",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
     ]
   },
   "https://www.clarin.eu/cmd/1": {
@@ -727,6 +780,13 @@
     ]
   },
   "http://schema.datacite.org": {
+    "title": "DataCite Metadata Schema",
+    "identifier": "msc:m11",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://datacite.org/schema/kernel": {
     "title": "DataCite Metadata Schema",
     "identifier": "msc:m11",
     "subject_areas": [
@@ -1336,7 +1396,7 @@
       "Multidisciplinary"
     ]
   },
-  "- type: namespace": {
+  "http://www.openarchives.org/OAI/2.0/oai_dc.xsd": {
     "title": "Dublin Core",
     "identifier": "msc:m15",
     "subject_areas": [
@@ -1358,6 +1418,13 @@
     ]
   },
   "http://purl.org/dc/dcmitype/": {
+    "title": "Dublin Core",
+    "identifier": "msc:m15",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.openarchives.org/OAI/2.0/oai_dc/": {
     "title": "Dublin Core",
     "identifier": "msc:m15",
     "subject_areas": [
@@ -1506,6 +1573,27 @@
       "Soil sciences"
     ]
   },
+  "http://diglib.hab.de/rules/schema/emblem": {
+    "title": "Emblem XML-Schema",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
+  "http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd": {
+    "title": "Emblem XML-Schema",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
+  "http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd": {
+    "title": "Emblem XML-Schema",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
   "https://eml.ecoinformatics.org/": {
     "title": "EML (Ecological Metadata Language)",
     "identifier": "msc:m16",
@@ -1584,6 +1672,48 @@
       "Botany",
       "Ecology",
       "Zoology"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.1/": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.0/": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.1/etdms11.xsd": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdc.xsd": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdcterms.xsd": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "http://www.ndltd.org/standards/metadata/etdms/1.0/etdms.xsd": {
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
+    "identifier": null,
+    "subject_areas": [
+      "Multidisciplinary"
     ]
   },
   "http://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/upload/MISC/EURISCO_Descriptors.pdf": {
@@ -1786,6 +1916,30 @@
     "identifier": "msc:m64",
     "subject_areas": [
       "Botany"
+    ]
+  },
+  "http://www.mpi.nl/IMDI/Schema/IMDI": {
+    "title": "IMDI Metadata Standard",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://www.mpi.nl/IMDI/schemas/xsd/": {
+    "title": "IMDI Metadata Standard",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "https://www.mpi.nl/IMDI/Schema/IMDI_3.0.xsd": {
+    "title": "IMDI Metadata Standard",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
     ]
   },
   "http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf": {
@@ -2064,6 +2218,34 @@
       "Topography"
     ]
   },
+  "www.lido-schema.org/schema/latest/lido.xsd": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
+  "www.lido-schema.org/schema/v1.1/lido-v1.1.xsd": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
+  "http://www.lido-schema.org": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
+  "https://cidoc.mini.icom.museum/working-groups/lido/lido-overview/about-lido/what-is-lido/": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1011",
+    "subject_areas": [
+      "Humanities"
+    ]
+  },
   "http://www.loc.gov/marc/": {
     "title": "MARC (Machine-Readable Cataloging)",
     "identifier": "msc:m88",
@@ -2098,6 +2280,57 @@
       "Hydrology",
       "Meteorology",
       "Oceanography"
+    ]
+  },
+  "http://www.ilsp.gr/META-XMLSchema": {
+    "title": "META-SHARE - Description of Language Resources",
+    "identifier": "msc:m1012",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://w3id.org/meta-share/meta-share/": {
+    "title": "META-SHARE - Description of Language Resources",
+    "identifier": "msc:m1012",
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://www.loc.gov/METS/": {
+    "title": "METS - Metadata Encoding and Transmission Standard",
+    "identifier": "msc:m1010",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.loc.gov/standards/mets/profile_docs/mets.profile.v1-2.xsd": {
+    "title": "METS - Metadata Encoding and Transmission Standard",
+    "identifier": "msc:m1010",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-1.xsd": {
+    "title": "METS - Metadata Encoding and Transmission Standard",
+    "identifier": "msc:m1010",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-0.xsd": {
+    "title": "METS - Metadata Encoding and Transmission Standard",
+    "identifier": "msc:m1010",
+    "subject_areas": [
+      "Multidisciplinary"
+    ]
+  },
+  "https://www.loc.gov/standards/mets/mets-profiles.html": {
+    "title": "METS - Metadata Encoding and Transmission Standard",
+    "identifier": "msc:m1010",
+    "subject_areas": [
+      "Multidisciplinary"
     ]
   },
   "http://mibbi.sourceforge.net/foundry.shtml": {
@@ -2145,6 +2378,22 @@
     ]
   },
   "http://www.loc.gov/standards/mods/": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/mods/v3": {
+    "title": "MODS (Metadata Object Description Schema)",
+    "identifier": "msc:m97",
+    "subject_areas": [
+      "Bibliographic standards",
+      "Information/library standards"
+    ]
+  },
+  "http://www.loc.gov/mods/": {
     "title": "MODS (Metadata Object Description Schema)",
     "identifier": "msc:m97",
     "subject_areas": [
@@ -2296,6 +2545,22 @@
       "metabolic-biochemistry",
       "biomaterials",
       "bioengineering"
+    ]
+  },
+  "http://www.language-archives.org/OLAC/1.1/": {
+    "title": "OLAC metadata",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ]
+  },
+  "http://www.language-archives.org/OLAC/1.1/olac.xsd": {
+    "title": "OLAC metadata",
+    "identifier": null,
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
     ]
   },
   "http://www.openmicroscopy.org/site/support/file-formats/ome-tiff": {
@@ -2650,6 +2915,14 @@
     ]
   },
   "https://www.tei-c.org/release/doc/tei-p5-doc/en/html/index.html": {
+    "title": "TEI (Text Encoding Initiative) Guidelines",
+    "identifier": "msc:m99",
+    "subject_areas": [
+      "History",
+      "Languages"
+    ]
+  },
+  "http://www.tei-c.org/ns/1.0": {
     "title": "TEI (Text Encoding Initiative) Guidelines",
     "identifier": "msc:m99",
     "subject_areas": [
