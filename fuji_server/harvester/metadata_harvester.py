@@ -49,6 +49,7 @@ class MetadataHarvester():
         self.landing_content_type = None
         self.origin_url = None
         self.pid_url = None
+        self.redirect_url = None #usually the landing page url
         self.repeat_pid_check = False
         self.related_resources = []
         self.metadata_merged = {}
@@ -535,13 +536,13 @@ class MetadataHarvester():
                                      ', therefore skipping Embedded metadata (microdata, RDFa) tests')
                 else:
                     self.is_html_page = True
-                if requestHelper.redirect_url:
+                if requestHelper.redirect_url and requestHelper.response_status == 200:
                     self.isLandingPageAccessible = True
                     self.landing_url = requestHelper.redirect_url
                     if self.pid_url in self.pid_collector:
                         self.pid_collector[self.pid_url]['verified'] = True
                         self.pid_collector[self.pid_url]['resolved_url'] = self.landing_url
-
+                self.redirect_url = requestHelper.redirect_url
                 response_status = requestHelper.response_status
                 self.landing_page_status = response_status
                 #if requestHelper.response_content:
@@ -575,6 +576,11 @@ class MetadataHarvester():
                 self.logger.warning(
                     'FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}'.format(code=self.fuji.landing_url))
                 self.landing_url = None
+        try:
+            if requestHelper.redirect_list:
+                self.landing_redirect_list = requestHelper.redirect_list
+        except:
+            pass
         #we have to test landin_url again, because above it may have been set to None again.. (invalid DOI)
         if self.landing_url and self.is_html_page:
             self.set_html_typed_links()
