@@ -347,7 +347,43 @@ class MetaDataCollectorXML(MetaDataCollector):
                             res['related_resources'].append({'related_resource': relres, 'resource_type': reltype})
                         ri += 1
         #object_content_identifiers
+        '''
+        # The code below would theoretically also consider information which does not include a content identifier but only sie or type of content
+        res['object_content_identifier'] = []
+        if res.get('object_content_identifier_url'):
+        #if not isinstance(res.get('object_content_identifier_url'), list):
+        #    res['object_content_identifier_url'] = [res.get('object_content_identifier_url')]
+        if not isinstance(res.get('object_content_identifier_size'), list):
+            res['object_content_identifier_size'] = [res.get('object_content_identifier_size')]
+        if not isinstance(res.get('object_content_identifier_type'), list):
+            res['object_content_identifier_type'] = [res.get('object_content_identifier_type')]
 
+        object_content_count = max(len(res.get('object_content_identifier_url') or []),
+                                      len(res.get('object_content_identifier_type') or []),
+                                      len(res.get('object_content_identifier_size') or []))
+
+        for content_index in range(object_content_count):
+            try:
+                content_url = res['object_content_identifier_url'][content_index]
+            except:
+                content_url = None
+            try:
+                content_size = res['object_content_identifier_size'][content_index]
+            except:
+                content_size = None
+            try:
+                content_type = res['object_content_identifier_type'][content_index]
+            except:
+                content_type = None
+            res['object_content_identifier'].append({
+                'url': content_url,
+                'size': content_size,
+                'type': content_type
+            })
+        res.pop('object_content_identifier_type', None)
+        res.pop('object_content_identifier_size', None)
+        res.pop('object_content_identifier_url', None)
+        '''
         if res.get('object_content_identifier_url'):
             res['object_content_identifier'] = []
             if not isinstance(res['object_content_identifier_url'], list):
