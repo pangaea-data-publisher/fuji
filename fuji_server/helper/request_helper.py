@@ -46,9 +46,12 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
     redirect_list = []
-    def http_error_302(self, req, fp, code, msg, headers):
-        self.redirect_list.append(headers["location"])
-        return super().http_error_302(req, fp, code, msg, headers)
+    redirect_status_list = []
+    def redirect_request(self, req, fp, code, msg, hdrs, newurl):
+        self.redirect_url = newurl
+        self.redirect_list.append(newurl)
+        self.redirect_status_list.append((newurl,code))
+        return super().redirect_request(req, fp, code, msg, hdrs, newurl)
 
 class AcceptTypes(Enum):
     #TODO: this seems to be quite error prone..
@@ -85,6 +88,7 @@ class RequestHelper:
             self.logger = Preprocessor.logger  #logging.getLogger(__name__)
         self.request_url = url
         self.redirect_url = None
+        self.resolved_url = None
         self.redirect_list = []
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
@@ -165,8 +169,14 @@ class RequestHelper:
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
                     self.redirect_list = redirect_handler.redirect_list
+                    self.redirect_url = redirect_handler.redirect_url
                 except urllib.error.HTTPError as e:
                     self.response_status = int(e.code)
+                    try:
+                        self.redirect_url = redirect_handler.redirect_url
+                        self.redirect_list = redirect_handler.redirect_list
+                    except:
+                        pass
                     if e.code == 308:
                         self.logger.error(
                             '%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed'
