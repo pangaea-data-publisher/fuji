@@ -46,6 +46,7 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
     redirect_list = []
+    redirect_url = None
     redirect_status_list = []
     def redirect_request(self, req, fp, code, msg, hdrs, newurl):
         self.redirect_url = newurl
@@ -211,11 +212,19 @@ class RequestHelper:
                 except urllib.error.URLError as e:
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - URLError: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
-
                 except Exception as e:
                     print('Request ERROR: ', e)
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - Error: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
+                    # some internal status messages for optional analysis
+                    if 'NewConnectionError' in str(e):
+                        self.response_status = 601
+                    elif 'RemoteDisconnected' in str(e):
+                        self.response_status = 602
+                    elif 'Read timed out' in str(e):
+                        self.response_status = 603
+                    elif 'ConnectionResetError' in str(e):
+                        self.response_status = 604
                 # redirect logger messages to metadata collection metric
                 if metric_id == 'FsF-F1-02D':
                     #self.logger.info('FsF-F2-01M : Trying to identify some EMBEDDED metadata in content retrieved during PID verification process (FsF-F1-02D)')
