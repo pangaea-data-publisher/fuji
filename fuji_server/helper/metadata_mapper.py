@@ -117,9 +117,11 @@ class Mapper(Enum):
         'object_type': [('citation_inbook_title','Book'),
                         ('citation_conference_title','ScholarlyArticle'),
                         ('citation_dissertation_institution', 'Thesis'),
+                        ('citation_dissertation_name', 'Thesis')
                         ('citation_journal_abbrev','ScholarlyArticle'),
                         ('citation_technical_report_institution','TechArticle'),
-                        ('citation_technical_report_number','TechArticle')],
+                        ('citation_technical_report_number','TechArticle'),
+                        ('citation_patent_country','Patent')],
         'language': 'citation_language'
     }
 
