@@ -88,8 +88,17 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
                 else:
                     elem_name = None
                 if elem_name in flipped_hw:
+                    value = None
                     elem = flipped_hw.get(elem_name)
-                    value = meta_tag.get('content')
+                    if isinstance(elem, tuple):
+                        try:
+                            value = elem[1]
+                            elem = elem[0]
+                        except:
+                            elem = elem[0]
+                            pass
+                    if not value:
+                        value = meta_tag.get('content')
                     if elem == 'related_resources':
                         value = {'related_resource': value, 'relation_type': 'isRelatedTo'}
                     if not hw_core_metadata.get(elem):

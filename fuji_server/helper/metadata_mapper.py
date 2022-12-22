@@ -31,7 +31,13 @@ class Mapper(Enum):
             for dkey, dvalue in dict_to_flip.items():
                 if isinstance(dvalue, list):
                     for dval in dvalue:
-                        flipped_dict[dval] = dkey
+                        if isinstance(dval, tuple):
+                            try:
+                                flipped_dict[dval[0]] = (dkey,dval[1])
+                            except:
+                                pass
+                        else:
+                            flipped_dict[dval] = dkey
                 else:
                     flipped_dict[dvalue] = dkey
         return flipped_dict
@@ -108,6 +114,12 @@ class Mapper(Enum):
         'related_resources': [
             'citation_reference', 'citation_collection_id'
         ],
+        'object_type': [('citation_inbook_title','Book'),
+                        ('citation_conference_title','ScholarlyArticle'),
+                        ('citation_dissertation_institution', 'Thesis'),
+                        ('citation_journal_abbrev','ScholarlyArticle'),
+                        ('citation_technical_report_institution','TechArticle'),
+                        ('citation_technical_report_number','TechArticle')],
         'language': 'citation_language'
     }
 
