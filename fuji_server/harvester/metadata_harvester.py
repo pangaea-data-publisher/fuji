@@ -45,7 +45,8 @@ class MetadataHarvester():
         self.landing_html = None
         self.landing_url = None
         self.landing_page_status = None
-        self.landing_redirect_list =[]
+        self.landing_redirect_list =[] #urlsvisited during redirects
+        self.landing_redirect_status_list = []# list with stati
         self.landing_content_type = None
         self.origin_url = None
         self.pid_url = None
@@ -498,6 +499,7 @@ class MetadataHarvester():
                                     ('FsF-F2-01M', self.landing_url + ' ' + str(e)))
             if isinstance(extracted, dict):
                 extracted = dict([(k, v) for k, v in extracted.items() if len(v) > 0])
+
                 if len(extracted) == 0:
                     extracted = {}
         else:
@@ -562,6 +564,7 @@ class MetadataHarvester():
                     self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
+                    self.landing_redirect_status_list = requestHelper.redirect_status_list
                 elif response_status in [401, 402, 403]:
                     self.isLandingPageAccessible = False
                     self.logger.warning(
@@ -579,6 +582,7 @@ class MetadataHarvester():
         try:
             if requestHelper.redirect_list:
                 self.landing_redirect_list = requestHelper.redirect_list
+                self.landing_redirect_status_list = requestHelper.redirect_status_list
         except:
             pass
         #we have to test landin_url again, because above it may have been set to None again.. (invalid DOI)
