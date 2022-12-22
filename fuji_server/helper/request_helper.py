@@ -45,9 +45,11 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 
 class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
-    redirect_list = []
-    redirect_url = None
-    redirect_status_list = []
+    def __init__(self):
+        super().__init__()
+        self.redirect_list = []
+        self.redirect_url = None
+        self.redirect_status_list = []
     def redirect_request(self, req, fp, code, msg, hdrs, newurl):
         self.redirect_url = newurl
         self.redirect_list.append(newurl)
@@ -91,6 +93,7 @@ class RequestHelper:
         self.redirect_url = None
         self.resolved_url = None
         self.redirect_list = []
+        self.redirect_status_list = []
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
@@ -170,12 +173,14 @@ class RequestHelper:
                 try:
                     tp_response = opener.open(tp_request,timeout = 10)
                     self.redirect_list = redirect_handler.redirect_list
+                    self.redirect_status_list = redirect_handler.redirect_status_list
                     self.redirect_url = redirect_handler.redirect_url
                 except urllib.error.HTTPError as e:
                     self.response_status = int(e.code)
                     try:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
+                        self.redirect_status_list = redirect_handler.redirect_status_list
                     except:
                         pass
                     if e.code == 308:
@@ -212,11 +217,32 @@ class RequestHelper:
                 except urllib.error.URLError as e:
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - URLError: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
+                    self.response_status = 900
+                    try:
+                        urlerrmatch = re.search(r'\[Errno\s+(\-?[0-9]+)', str(e))
+                        if urlerrmatch:
+                            print(urlerrmatch[1])
+                            self.response_status = int(urlerrmatch[1])
+                    except:
+                        pass
+
+                    try:
+                        self.redirect_url = redirect_handler.redirect_url
+                        self.redirect_list = redirect_handler.redirect_list
+                        self.redirect_status_list = redirect_handler.redirect_status_list
+                    except:
+                        pass
                 except Exception as e:
                     print('Request ERROR: ', e)
                     self.logger.warning('{0} : Request failed, reason -: {1}, {2} - Error: {3}'.format(
                         metric_id, self.request_url, self.accept_type, str(e)))
                     # some internal status messages for optional analysis
+                    try:
+                        self.redirect_url = redirect_handler.redirect_url
+                        self.redirect_list = redirect_handler.redirect_list
+                        self.redirect_status_list = redirect_handler.redirect_status_list
+                    except:
+                        pass
                     if 'NewConnectionError' in str(e):
                         self.response_status = 601
                     elif 'RemoteDisconnected' in str(e):
@@ -225,6 +251,8 @@ class RequestHelper:
                         self.response_status = 603
                     elif 'ConnectionResetError' in str(e):
                         self.response_status = 604
+                    else:
+                        self.response_status = 1000
                 # redirect logger messages to metadata collection metric
                 if metric_id == 'FsF-F1-02D':
                     #self.logger.info('FsF-F2-01M : Trying to identify some EMBEDDED metadata in content retrieved during PID verification process (FsF-F1-02D)')
