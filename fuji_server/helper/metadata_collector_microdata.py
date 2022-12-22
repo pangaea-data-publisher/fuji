@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.preprocessor import Preprocessor
 
 
 class MetaDataCollectorMicroData(MetaDataCollector):
@@ -20,7 +21,7 @@ class MetaDataCollectorMicroData(MetaDataCollector):
         Method to parse the Microdata metadata from the data.
     """
     source_name = None
-
+    SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
     def __init__(self, sourcemetadata, mapping, loggerinst):
         """
         Parameters
@@ -50,8 +51,17 @@ class MetaDataCollectorMicroData(MetaDataCollector):
         ext_meta = None
         self.content_type = 'text/html'
         if self.source_metadata:
+            #print(self.source_metadata)
+            if len(self.source_metadata)>1:
+                try:
+                    for sm in self.source_metadata:
+                        if str(sm.get('type').split('/')[-1]).lower() in self.SCHEMA_ORG_CREATIVEWORKS:
+                            ext_meta = sm
+                except:
+                    pass
             self.source_name = self.getEnumSourceNames().MICRODATA.value
-            ext_meta = self.source_metadata[0]
+            if not ext_meta:
+                ext_meta = self.source_metadata[0]
 
         if ext_meta is not None:
             self.logger.info('FsF-F2-01M : Trying to extract Microdata metadata from -: {}'.format(self.source_name))
