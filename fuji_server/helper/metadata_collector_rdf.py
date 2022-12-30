@@ -408,12 +408,19 @@ class MetaDataCollectorRdf(MetaDataCollector):
             if has_xhtml:
                 self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML or OpenGraph properties which are excluded')
             if len(goodtriples) > 1:
-                meta['object_type'] = 'Other'
+                if not meta['object_type']:
+                    meta['object_type'] = 'Other'
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
                     + str(len(goodtriples)) + ' triples in the given graph')
         else:
-            self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: ' +
+            #Ignore non CreativeWork schema.org types
+            if 'schema.org' in meta['object_type']:
+                if meta['object_type'].split('/')[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                    self.logger.info('FsF-F2-01M : Ignoring SPARQLed metadata seems to be non CreativeWork schema.org type: '+str(meta['object_type']))
+                    meta = dict()
+            if meta:
+                self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: ' +
                              str(meta.keys()))
         return meta
 
@@ -690,7 +697,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         if not trusted:
             jsnld_metadata = {}
-
         return jsnld_metadata
 
     def get_schemaorg_metadata_from_graph(self, graph):

@@ -257,6 +257,7 @@ class Mapper(Enum):
             PREFIX dct: <http://purl.org/dc/terms/>
             PREFIX dc: <http://purl.org/dc/elements/1.1/>
             PREFIX sdo: <http://schema.org/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             SELECT  ?object_identifier ?title ?summary ?publisher ?publication_date ?creator ?object_type ?license ?access_level ?keywords ?references ?source ?isVersionOf ?isReferencedBy ?isPartOf ?hasVersion ?replaces ?hasPart ?isReplacedBy ?requires ?isRequiredBy ?language
             WHERE {
             OPTIONAL {?dataset  dct:title|dc:title|sdo:name ?title}
@@ -265,7 +266,7 @@ class Mapper(Enum):
             OPTIONAL {?dataset  dct:publisher|dc:publisher|sdo:publisher ?publisher}
             OPTIONAL {?dataset  dct:created|dct:issued|dct:date|dc:created|dc:issued|dc:date|sdo:dateCreated|sdo:datePublished ?publication_date}
             OPTIONAL {?dataset  dct:creator|dc:creator|sdo:author ?creator}
-            OPTIONAL {?dataset  dct:type|dc:type ?object_type}
+            OPTIONAL {?dataset  dct:type|dc:type|rdf:type ?object_type}
             OPTIONAL {?dataset  dct:license|dc:license|sdo:license ?license}
             OPTIONAL {?dataset  dct:accessRights|dct:rights|dc:rights ?access_level}
             OPTIONAL {?dataset  dct:subject|dc:subject|sdo:keywords ?keywords}
