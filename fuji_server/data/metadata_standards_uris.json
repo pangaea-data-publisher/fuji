@@ -12,16 +12,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "http://wiki.tdwg.org/ABCD": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -36,16 +36,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "https://abcd.tdwg.org/xml/ABCD_3.0.xsd": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -60,16 +60,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "http://www.tdwg.org/schemas/abcd/3.0": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -84,16 +84,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "https://abcd.tdwg.org/xml/ABCD_2.1.xsd": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -108,16 +108,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "http://www.tdwg.org/schemas/abcd/2.1": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -132,16 +132,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "https://abcd.tdwg.org/xml/ABCD_2.06.xsd": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -156,16 +156,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "http://www.tdwg.org/schemas/abcd/2.06": {
     "title": "ABCD (Access to Biological Collection Data)",
@@ -180,16 +180,16 @@
       "Zoology"
     ],
     "field_of_science": [
+      "earth and related environmental sciences",
       "zoology",
       "botany",
-      "geology",
       "palaeontology",
-      "natural sciences",
       "genetics",
       "biological sciences",
-      "earth and related environmental sciences"
+      "geology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCD"
   },
   "http://www.tdwg.org/standards/640/": {
     "title": "ABCDDNA",
@@ -198,10 +198,10 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDDNA"
   },
   "http://www.dnabank-network.org/schemas/ABCDDNA/ABCDDNA.xsd": {
     "title": "ABCDDNA",
@@ -210,10 +210,10 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDDNA"
   },
   "http://www.dnabank-network.org/schemas/ABCDDNA": {
     "title": "ABCDDNA",
@@ -222,10 +222,10 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDDNA"
   },
   "http://www.geocase.eu/efg": {
     "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
@@ -236,12 +236,12 @@
       "Palaeontology"
     ],
     "field_of_science": [
-      "mineralogy",
-      "natural sciences",
+      "palaeontology",
       "earth and related environmental sciences",
-      "palaeontology"
+      "mineralogy",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDEFG"
   },
   "http://www.geocase.eu/sites/geocase.biodiv.naturkundemuseum-berlin.de/documentation/abcdefg.xsd": {
     "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
@@ -252,12 +252,12 @@
       "Palaeontology"
     ],
     "field_of_science": [
-      "mineralogy",
-      "natural sciences",
+      "palaeontology",
       "earth and related environmental sciences",
-      "palaeontology"
+      "mineralogy",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDEFG"
   },
   "http://www.synthesys.info/ABCDEFG/1.0": {
     "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
@@ -268,12 +268,12 @@
       "Palaeontology"
     ],
     "field_of_science": [
-      "mineralogy",
-      "natural sciences",
+      "palaeontology",
       "earth and related environmental sciences",
-      "palaeontology"
+      "mineralogy",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ABCDEFG"
   },
   "http://www.agls.gov.au": {
     "title": "AGLS Metadata Profile",
@@ -284,7 +284,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "AGLS"
   },
   "http://www.agls.gov.au/agls/terms/": {
     "title": "AGLS Metadata Profile",
@@ -295,7 +295,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "AGLS"
   },
   "http://aims.fao.org/es/standards/agmes/namespace-specification": {
     "title": "AgMES (Agricultural Metadata Element Set)",
@@ -307,12 +307,12 @@
       "Livestock"
     ],
     "field_of_science": [
-      "fisheries",
       "animal and dairy science",
+      "agricultural sciences",
       "agriculture",
-      "agricultural sciences"
+      "fisheries"
     ],
-    "acronym": null
+    "acronym": "AgMES"
   },
   "http://aims.fao.org/standards/agmes": {
     "title": "AgMES (Agricultural Metadata Element Set)",
@@ -324,12 +324,12 @@
       "Livestock"
     ],
     "field_of_science": [
-      "fisheries",
       "animal and dairy science",
+      "agricultural sciences",
       "agriculture",
-      "agricultural sciences"
+      "fisheries"
     ],
-    "acronym": null
+    "acronym": "AgMES"
   },
   "http://purl.org/agmes/1.1/": {
     "title": "AgMES (Agricultural Metadata Element Set)",
@@ -341,12 +341,12 @@
       "Livestock"
     ],
     "field_of_science": [
-      "fisheries",
       "animal and dairy science",
+      "agricultural sciences",
       "agriculture",
-      "agricultural sciences"
+      "fisheries"
     ],
-    "acronym": null
+    "acronym": "AgMES"
   },
   "http://www.fao.org/docrep/008/ae909e/ae909e00.htm": {
     "title": "AGRIS Application Profile",
@@ -358,12 +358,12 @@
       "Livestock"
     ],
     "field_of_science": [
-      "fisheries",
       "animal and dairy science",
+      "agricultural sciences",
       "agriculture",
-      "agricultural sciences"
+      "fisheries"
     ],
-    "acronym": null
+    "acronym": "AGRIS"
   },
   "http://www.fao.org/agris": {
     "title": "AGRIS Application Profile",
@@ -375,12 +375,12 @@
       "Livestock"
     ],
     "field_of_science": [
-      "fisheries",
       "animal and dairy science",
+      "agricultural sciences",
       "agriculture",
-      "agricultural sciences"
+      "fisheries"
     ],
-    "acronym": null
+    "acronym": "AGRIS"
   },
   "http://openlib.org/home/krichel/ebisu.html": {
     "title": "Academic Metadata Format",
@@ -422,7 +422,7 @@
       "cartography",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "ANZLIC"
   },
   "http://code.google.com/p/applecore/wiki/Introduction": {
     "title": "Apple Core",
@@ -431,10 +431,10 @@
       "Botany"
     ],
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "aDwC"
   },
   "http://ariadne-registry.dcu.gr/schema_definition/6.7/acdm.xsd": {
     "title": "ARIADNE Dataset Catalogue Model (ACDM)",
@@ -554,7 +554,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "ADMS"
   },
   "http://www.w3.org/ns/adms#": {
     "title": "Asset Description Metadata Schema (ADMS)",
@@ -566,7 +566,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "ADMS"
   },
   "https://www.w3.org/2005/Atom": {
     "title": "The Atom Syndication Format",
@@ -596,7 +596,7 @@
       "astronomy",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "AVM"
   },
   "http://www.virtualastronomy.org/avm_metadata.php": {
     "title": "AVM (Astronomy Visualization Metadata)",
@@ -608,7 +608,7 @@
       "astronomy",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "AVM"
   },
   "http://www.communicatingastronomy.org/avm/1.0/": {
     "title": "AVM (Astronomy Visualization Metadata)",
@@ -620,7 +620,43 @@
       "astronomy",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "AVM"
+  },
+  "http://www.bibtex.org/": {
+    "title": "BibTeX",
+    "identifier": "msc:m1034",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "BibTeX"
+  },
+  "http://clarin-pl.eu/ns/experimental/bibtex": {
+    "title": "BibTeX",
+    "identifier": "msc:m1034",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "BibTeX"
+  },
+  "http://lindat.mff.cuni.cz/ns/experimental/bibtex": {
+    "title": "BibTeX",
+    "identifier": "msc:m1034",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "BibTeX"
+  },
+  "http://repository.clarin.dk/ns/experimental/bibtex": {
+    "title": "BibTeX",
+    "identifier": "msc:m1034",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "BibTeX"
   },
   "https://pro.carare.eu/doku.php?id=support:metadata-schema": {
     "title": "CARARE metadata schema",
@@ -635,8 +671,8 @@
     "field_of_science": [
       "archaeology",
       "architectural design",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "CARARE"
   },
@@ -653,8 +689,8 @@
     "field_of_science": [
       "archaeology",
       "architectural design",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "CARARE"
   },
@@ -671,8 +707,8 @@
     "field_of_science": [
       "archaeology",
       "architectural design",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "CARARE"
   },
@@ -687,18 +723,18 @@
       "Medical information systems"
     ],
     "field_of_science": [
-      "public administration",
-      "agriculture",
-      "agricultural sciences",
-      "clinical medicine",
       "medical and health sciences",
-      "medical engineering",
-      "natural sciences",
-      "social sciences",
+      "earth and related environmental sciences",
+      "clinical medicine",
       "engineering and technology",
-      "earth and related environmental sciences"
+      "medical engineering",
+      "agriculture",
+      "social sciences",
+      "agricultural sciences",
+      "public administration",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CEDAR"
   },
   "https://more.metadatacenter.org/sites/default/files/artifact/CEDAR%20Template%20Model%20v1.5.0_0.pdf": {
     "title": "CEDAR Template Model",
@@ -711,18 +747,18 @@
       "Medical information systems"
     ],
     "field_of_science": [
-      "public administration",
-      "agriculture",
-      "agricultural sciences",
-      "clinical medicine",
       "medical and health sciences",
-      "medical engineering",
-      "natural sciences",
-      "social sciences",
+      "earth and related environmental sciences",
+      "clinical medicine",
       "engineering and technology",
-      "earth and related environmental sciences"
+      "medical engineering",
+      "agriculture",
+      "social sciences",
+      "agricultural sciences",
+      "public administration",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CEDAR"
   },
   "http://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/documentation/MInfo.html": {
     "title": "CERIF (Common European Research Information Format)",
@@ -844,11 +880,11 @@
       "Sociology"
     ],
     "field_of_science": [
-      "social sciences",
-      "social geography",
+      "sociology",
       "economics",
       "demography",
-      "sociology"
+      "social sciences",
+      "social geography"
     ],
     "acronym": null
   },
@@ -861,12 +897,12 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "climatology",
       "meteorology",
-      "natural sciences",
-      "oceanography"
+      "climatology",
+      "oceanography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CF"
   },
   "http://cfconventions.org/": {
     "title": "CF (Climate and Forecast) Metadata Conventions",
@@ -877,12 +913,30 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "climatology",
       "meteorology",
-      "natural sciences",
-      "oceanography"
+      "climatology",
+      "oceanography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CF"
+  },
+  "https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html": {
+    "title": "CharDM, Data Model for Astronomical DataSet Characterisation",
+    "identifier": "msc:m1029",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "CharDM"
+  },
+  "http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd": {
+    "title": "CharDM, Data Model for Astronomical DataSet Characterisation",
+    "identifier": "msc:m1029",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": "CharDM"
   },
   "http://www.iucr.org/resources/cif/spec": {
     "title": "CIF (Crystallographic Information Framework)",
@@ -895,11 +949,11 @@
     "field_of_science": [
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CIF"
   },
   "http://www.iucr.org/resources/cif": {
     "title": "CIF (Crystallographic Information Framework)",
@@ -912,11 +966,11 @@
     "field_of_science": [
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CIF"
   },
   "https://earthsystemcog.org/projects/es-doc-models/cim_versions": {
     "title": "CIM (Common Information Model)",
@@ -928,7 +982,7 @@
       "climatology",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CIM"
   },
   "https://earthsystemcog.org/projects/es-doc-models/cim": {
     "title": "CIM (Common Information Model)",
@@ -940,7 +994,7 @@
       "climatology",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CIM"
   },
   "https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd": {
     "title": "CIM (Common Information Model)",
@@ -952,7 +1006,7 @@
       "climatology",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CIM"
   },
   "http://www.clarin.eu/cmd/1": {
     "title": "CLARIN Component Metadata",
@@ -975,9 +1029,9 @@
       "Languages"
     ],
     "field_of_science": [
+      "languages and literature",
       "linguistics",
-      "humanities",
-      "languages and literature"
+      "humanities"
     ],
     "acronym": "CMD"
   },
@@ -1054,9 +1108,9 @@
       "Languages"
     ],
     "field_of_science": [
+      "languages and literature",
       "linguistics",
-      "humanities",
-      "languages and literature"
+      "humanities"
     ],
     "acronym": "CMD"
   },
@@ -1068,9 +1122,9 @@
       "Languages"
     ],
     "field_of_science": [
+      "languages and literature",
       "linguistics",
-      "humanities",
-      "languages and literature"
+      "humanities"
     ],
     "acronym": "CMD"
   },
@@ -1082,9 +1136,9 @@
       "Languages"
     ],
     "field_of_science": [
+      "languages and literature",
       "linguistics",
-      "humanities",
-      "languages and literature"
+      "humanities"
     ],
     "acronym": "CMD"
   },
@@ -1097,10 +1151,10 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "climatology",
       "meteorology",
-      "natural sciences",
-      "oceanography"
+      "climatology",
+      "oceanography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -1116,15 +1170,15 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSR"
   },
   "http://www.seadatanet.org": {
     "title": "Cruise Summary Reports",
@@ -1138,15 +1192,15 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSR"
   },
   "http://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CSR_ISO19139_5.2.0.xsd": {
     "title": "Cruise Summary Reports",
@@ -1160,15 +1214,15 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSR"
   },
   " http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd": {
     "title": "Cruise Summary Reports",
@@ -1182,15 +1236,15 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSR"
   },
   "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf": {
     "title": "CSDGM Extensions for Remote Sensing Metadata",
@@ -1203,12 +1257,12 @@
     ],
     "field_of_science": [
       "meteorology",
+      "oceanography",
       "hydrology",
       "climatology",
-      "natural sciences",
-      "oceanography"
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSDGM"
   },
   "http://icatproject-contrib.github.io/CSMD/": {
     "title": "CSMD (Core Scientific Metadata Model)",
@@ -1223,11 +1277,11 @@
       "biochemistry",
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSMD"
   },
   "http://www.purl.org/net/CSMD/4.0#": {
     "title": "CSMD (Core Scientific Metadata Model)",
@@ -1242,11 +1296,11 @@
       "biochemistry",
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "CSMD"
   },
   "http://www.escience.clrc.ac.uk/schemas/scientific": {
     "title": "CSMD (Core Scientific Metadata Model)",
@@ -1261,9 +1315,27 @@
       "biochemistry",
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
+    ],
+    "acronym": "CSMD"
+  },
+  "http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd": {
+    "title": null,
+    "identifier": "msc:m1032",
+    "subject_areas": null,
+    "field_of_science": [
+
+    ],
+    "acronym": null
+  },
+  "http://www.opengis.net/cat/csw/2.0.2": {
+    "title": null,
+    "identifier": "msc:m1032",
+    "subject_areas": null,
+    "field_of_science": [
+
     ],
     "acronym": null
   },
@@ -1279,7 +1351,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "da|ra"
   },
   "http://da-ra.de/dara/schemadefinitions/dara.xsd": {
     "title": "da|ra Metadata Schema",
@@ -1293,7 +1365,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "da|ra"
   },
   "dara_v2.2.1_de_en_19112012.xsd": {
     "title": "da|ra Metadata Schema",
@@ -1307,7 +1379,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "da|ra"
   },
   "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd": {
     "title": "da|ra Metadata Schema",
@@ -1321,7 +1393,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "da|ra"
   },
   "https://www.da-ra.de/downloads#version-3-0": {
     "title": "da|ra Metadata Schema",
@@ -1335,7 +1407,7 @@
       "political sciences",
       "social sciences"
     ],
-    "acronym": null
+    "acronym": "da|ra"
   },
   "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension": {
     "title": "Darwin Core Geospatial Extension",
@@ -1351,7 +1423,7 @@
       "cartography",
       "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC-S"
   },
   "http://www.tdwg.org/standards/450": {
     "title": "Darwin Core",
@@ -1371,19 +1443,19 @@
       "Zoology"
     ],
     "field_of_science": [
-      "marine biology",
+      "earth and related environmental sciences",
       "zoology",
+      "marine biology",
       "botany",
-      "palaeontology",
-      "physical geography",
-      "natural sciences",
       "ecology",
-      "biological sciences",
       "cartography",
+      "palaeontology",
       "oceanography",
-      "earth and related environmental sciences"
+      "physical geography",
+      "biological sciences",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC"
   },
   "http://rs.tdwg.org/dwc/index.htm": {
     "title": "Darwin Core",
@@ -1403,19 +1475,19 @@
       "Zoology"
     ],
     "field_of_science": [
-      "marine biology",
+      "earth and related environmental sciences",
       "zoology",
+      "marine biology",
       "botany",
-      "palaeontology",
-      "physical geography",
-      "natural sciences",
       "ecology",
-      "biological sciences",
       "cartography",
+      "palaeontology",
       "oceanography",
-      "earth and related environmental sciences"
+      "physical geography",
+      "biological sciences",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC"
   },
   "http://rs.tdwg.org/dwc/terms/": {
     "title": "Darwin Core",
@@ -1435,19 +1507,19 @@
       "Zoology"
     ],
     "field_of_science": [
-      "marine biology",
+      "earth and related environmental sciences",
       "zoology",
+      "marine biology",
       "botany",
-      "palaeontology",
-      "physical geography",
-      "natural sciences",
       "ecology",
-      "biological sciences",
       "cartography",
+      "palaeontology",
       "oceanography",
-      "earth and related environmental sciences"
+      "physical geography",
+      "biological sciences",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC"
   },
   "http://rs.tdwg.org/dwc/iri/": {
     "title": "Darwin Core",
@@ -1467,19 +1539,19 @@
       "Zoology"
     ],
     "field_of_science": [
-      "marine biology",
+      "earth and related environmental sciences",
       "zoology",
+      "marine biology",
       "botany",
-      "palaeontology",
-      "physical geography",
-      "natural sciences",
       "ecology",
-      "biological sciences",
       "cartography",
+      "palaeontology",
       "oceanography",
-      "earth and related environmental sciences"
+      "physical geography",
+      "biological sciences",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC"
   },
   "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd": {
     "title": "Darwin Core",
@@ -1499,19 +1571,19 @@
       "Zoology"
     ],
     "field_of_science": [
-      "marine biology",
+      "earth and related environmental sciences",
       "zoology",
+      "marine biology",
       "botany",
-      "palaeontology",
-      "physical geography",
-      "natural sciences",
       "ecology",
-      "biological sciences",
       "cartography",
+      "palaeontology",
       "oceanography",
-      "earth and related environmental sciences"
+      "physical geography",
+      "biological sciences",
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "DwC"
   },
   "https://frictionlessdata.io/specs/data-package/": {
     "title": "Data Package",
@@ -1805,19 +1877,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -1838,19 +1910,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -1871,19 +1943,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -1904,19 +1976,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -1937,19 +2009,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -1970,19 +2042,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2003,19 +2075,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2036,19 +2108,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2069,19 +2141,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2102,19 +2174,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2135,19 +2207,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2168,19 +2240,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2201,19 +2273,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2234,19 +2306,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2267,19 +2339,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2300,19 +2372,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2333,19 +2405,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2366,19 +2438,19 @@
       "Statistics"
     ],
     "field_of_science": [
-      "humanities",
-      "political sciences",
-      "law",
-      "statistics and probability",
-      "social geography",
       "medical and health sciences",
-      "history",
       "economics",
-      "public health",
+      "sociology",
       "demography",
-      "natural sciences",
+      "law",
+      "public health",
+      "history",
+      "political sciences",
       "social sciences",
-      "sociology"
+      "humanities",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": "DDI"
   },
@@ -2419,17 +2491,17 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
-      "glaciology",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2448,17 +2520,17 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
-      "glaciology",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2477,17 +2549,17 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
-      "glaciology",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2506,17 +2578,17 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
-      "glaciology",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2535,17 +2607,17 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
-      "glaciology",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2564,17 +2636,46 @@
       "Oceanography"
     ],
     "field_of_science": [
+      "glaciology",
       "meteorology",
       "marine biology",
-      "agriculture",
-      "agricultural sciences",
+      "ecology",
       "biochemistry",
-      "hydrology",
+      "agriculture",
       "oceanography",
+      "hydrology",
+      "agricultural sciences",
       "climatology",
-      "natural sciences",
+      "natural sciences"
+    ],
+    "acronym": "DIF"
+  },
+  "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif": {
+    "title": "DIF (Directory Interchange Format)",
+    "identifier": "msc:m14",
+    "subject_areas": [
+      "Agriculture",
+      "Biochemistry",
+      "Climatology",
+      "Ecology",
+      "Glaciology",
+      "Hydrology",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography"
+    ],
+    "field_of_science": [
       "glaciology",
-      "ecology"
+      "meteorology",
+      "marine biology",
+      "ecology",
+      "biochemistry",
+      "agriculture",
+      "oceanography",
+      "hydrology",
+      "agricultural sciences",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "DIF"
   },
@@ -2743,7 +2844,40 @@
     ],
     "acronym": "QDC"
   },
+  "http://oai.base-search.net/base_dc": {
+    "title": "Qualified Dublin Core",
+    "identifier": "msc:m1022",
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "field_of_science": [
+      "sciences"
+    ],
+    "acronym": "QDC"
+  },
   "http://oai.base-search.net/base_dc/base_dc.xsd": {
+    "title": "Qualified Dublin Core",
+    "identifier": "msc:m1022",
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "field_of_science": [
+      "sciences"
+    ],
+    "acronym": "QDC"
+  },
+  "https://d-nb.info/standards/schema/xmetadissplus.xsd": {
+    "title": "Qualified Dublin Core",
+    "identifier": "msc:m1022",
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "field_of_science": [
+      "sciences"
+    ],
+    "acronym": "QDC"
+  },
+  "http://www.d-nb.de/standards/xmetadissplus/": {
     "title": "Qualified Dublin Core",
     "identifier": "msc:m1022",
     "subject_areas": [
@@ -2915,8 +3049,8 @@
       "Botany"
     ],
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -2927,8 +3061,8 @@
       "Botany"
     ],
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -2939,8 +3073,8 @@
       "Botany"
     ],
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -2951,8 +3085,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -2963,8 +3097,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -2975,8 +3109,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -2987,8 +3121,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -2999,8 +3133,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3011,8 +3145,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3023,8 +3157,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3035,8 +3169,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3047,8 +3181,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3059,8 +3193,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3071,8 +3205,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3083,8 +3217,8 @@
       "History"
     ],
     "field_of_science": [
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "ead"
   },
@@ -3095,8 +3229,8 @@
       "Crystallography"
     ],
     "field_of_science": [
-      "natural sciences",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3107,8 +3241,8 @@
       "Crystallography"
     ],
     "field_of_science": [
-      "natural sciences",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3119,10 +3253,58 @@
       "Crystallography"
     ],
     "field_of_science": [
-      "natural sciences",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
+  },
+  "https://pro.europeana.eu/page/edm-documentation": {
+    "title": "Europeana Data Model (EDM)",
+    "identifier": "msc:m1033",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "EDM"
+  },
+  "http://www.europeana.eu/schemas/edm/": {
+    "title": "Europeana Data Model (EDM)",
+    "identifier": "msc:m1033",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "EDM"
+  },
+  "http://www.europeana.eu/schemas/edm": {
+    "title": "Europeana Data Model (EDM)",
+    "identifier": "msc:m1033",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "EDM"
+  },
+  "http://www.europeana.eu/schemas/ese/": {
+    "title": "Europeana Data Model (EDM)",
+    "identifier": "msc:m1033",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "EDM"
   },
   "https://www.bodc.ac.uk/data/information_and_inventories/edmed/": {
     "title": "EDMED Metadata Profile",
@@ -3139,16 +3321,16 @@
       "Soil sciences"
     ],
     "field_of_science": [
-      "meteorology",
-      "environmental sciences",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "natural sciences",
-      "soil sciences",
       "glaciology",
-      "ecology"
+      "meteorology",
+      "hydrogeology",
+      "ecology",
+      "environmental sciences",
+      "oceanography",
+      "hydrology",
+      "soil sciences",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3167,16 +3349,16 @@
       "Soil sciences"
     ],
     "field_of_science": [
-      "meteorology",
-      "environmental sciences",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "natural sciences",
-      "soil sciences",
       "glaciology",
-      "ecology"
+      "meteorology",
+      "hydrogeology",
+      "ecology",
+      "environmental sciences",
+      "oceanography",
+      "hydrology",
+      "soil sciences",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3225,9 +3407,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3243,9 +3425,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3261,9 +3443,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3279,9 +3461,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3297,9 +3479,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3315,9 +3497,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3333,9 +3515,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3351,9 +3533,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3369,9 +3551,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3387,9 +3569,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": "EML"
   },
@@ -3514,9 +3696,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3528,9 +3710,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3542,9 +3724,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3579,16 +3761,16 @@
       "meteorology",
       "marine biology",
       "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
       "hydrology",
+      "physical geography",
       "social geography",
       "climatology",
-      "physical geography",
-      "natural sciences",
-      "social sciences",
-      "cartography",
-      "oceanography"
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "fgdc"
   },
   "http://www.fgdc.gov/metadata/geospatial-metadata-standards/": {
     "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
@@ -3609,16 +3791,16 @@
       "meteorology",
       "marine biology",
       "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
       "hydrology",
+      "physical geography",
       "social geography",
       "climatology",
-      "physical geography",
-      "natural sciences",
-      "social sciences",
-      "cartography",
-      "oceanography"
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "fgdc"
   },
   "https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.xsd": {
     "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
@@ -3639,16 +3821,16 @@
       "meteorology",
       "marine biology",
       "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
       "hydrology",
+      "physical geography",
       "social geography",
       "climatology",
-      "physical geography",
-      "natural sciences",
-      "social sciences",
-      "cartography",
-      "oceanography"
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "fgdc"
   },
   "https://www.fgdc.gov/schemas/metadata/fgdc-std-001.2-2001.xsd": {
     "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
@@ -3669,16 +3851,76 @@
       "meteorology",
       "marine biology",
       "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
       "hydrology",
+      "physical geography",
       "social geography",
       "climatology",
-      "physical geography",
-      "natural sciences",
-      "social sciences",
-      "cartography",
-      "oceanography"
+      "natural sciences"
     ],
-    "acronym": null
+    "acronym": "fgdc"
+  },
+  "https://www.fgdc.gov/schemas/metadata/": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ],
+    "field_of_science": [
+      "meteorology",
+      "marine biology",
+      "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
+      "hydrology",
+      "physical geography",
+      "social geography",
+      "climatology",
+      "natural sciences"
+    ],
+    "acronym": "fgdc"
+  },
+  "http://www.fgdc.gov/metadata/csdgm/index_html": {
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
+    "identifier": "msc:m17",
+    "subject_areas": [
+      "Biochemistry",
+      "Cartography",
+      "Climatology",
+      "Geography",
+      "Hydrology",
+      "Land use",
+      "Marine biology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ],
+    "field_of_science": [
+      "meteorology",
+      "marine biology",
+      "biochemistry",
+      "cartography",
+      "oceanography",
+      "social sciences",
+      "hydrology",
+      "physical geography",
+      "social geography",
+      "climatology",
+      "natural sciences"
+    ],
+    "acronym": "fgdc"
   },
   "http://fits.gsfc.nasa.gov/fits_standard.html": {
     "title": "FITS (Flexible Image Transport System)",
@@ -3690,8 +3932,8 @@
     ],
     "field_of_science": [
       "astronomy",
-      "natural sciences",
-      "astrophysics"
+      "astrophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3705,8 +3947,8 @@
     ],
     "field_of_science": [
       "astronomy",
-      "natural sciences",
-      "astrophysics"
+      "astrophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3723,9 +3965,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3742,9 +3984,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3761,9 +4003,9 @@
     "field_of_science": [
       "zoology",
       "botany",
-      "natural sciences",
+      "ecology",
       "biological sciences",
-      "ecology"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3774,8 +4016,8 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3786,8 +4028,8 @@
       "Earth sciences"
     ],
     "field_of_science": [
-      "natural sciences",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3798,8 +4040,8 @@
       "Earth sciences"
     ],
     "field_of_science": [
-      "natural sciences",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3810,8 +4052,8 @@
       "Earth sciences"
     ],
     "field_of_science": [
-      "natural sciences",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3824,11 +4066,11 @@
       "Statistics"
     ],
     "field_of_science": [
-      "political sciences",
-      "statistics and probability",
       "economics",
-      "natural sciences",
-      "social sciences"
+      "political sciences",
+      "social sciences",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3851,8 +4093,8 @@
       "Botany"
     ],
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3925,16 +4167,16 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3954,16 +4196,16 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -3983,16 +4225,16 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4028,10 +4270,10 @@
       "Biotechnology"
     ],
     "field_of_science": [
+      "biochemistry",
       "biological sciences",
       "engineering and technology",
-      "natural sciences",
-      "biochemistry"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4049,15 +4291,15 @@
       "Molecular biology"
     ],
     "field_of_science": [
-      "biophysics",
-      "molecular biology",
       "biochemistry",
-      "cell biology",
-      "natural sciences",
-      "genetics",
-      "biological sciences",
+      "biophysics",
       "engineering and technology",
-      "cell metabolism"
+      "genetics",
+      "cell metabolism",
+      "molecular biology",
+      "biological sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4075,15 +4317,15 @@
       "Molecular biology"
     ],
     "field_of_science": [
-      "biophysics",
-      "molecular biology",
       "biochemistry",
-      "cell biology",
-      "natural sciences",
-      "genetics",
-      "biological sciences",
+      "biophysics",
       "engineering and technology",
-      "cell metabolism"
+      "genetics",
+      "cell metabolism",
+      "molecular biology",
+      "biological sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4095,10 +4337,10 @@
       "Toxicology"
     ],
     "field_of_science": [
-      "natural sciences",
       "medical and health sciences",
       "genetics",
-      "toxicology"
+      "toxicology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4118,17 +4360,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "social geography",
-      "oceanography",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "social sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "cartography",
+      "oceanography",
+      "social sciences",
+      "hydrology",
+      "physical geography",
+      "social geography",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4164,17 +4406,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4195,17 +4437,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4226,17 +4468,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4257,17 +4499,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4288,17 +4530,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4319,17 +4561,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "ISO19115"
   },
@@ -4350,17 +4592,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4381,17 +4623,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4412,17 +4654,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4443,17 +4685,17 @@
       "Topography"
     ],
     "field_of_science": [
-      "meteorology",
-      "geology",
-      "hydrology",
-      "oceanography",
-      "hydrogeology",
-      "climatology",
-      "physical geography",
-      "natural sciences",
-      "cartography",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "hydrogeology",
+      "cartography",
+      "oceanography",
+      "hydrology",
+      "physical geography",
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4461,7 +4703,8 @@
     "title": "LIDO, Lightweight Information Describing Objects",
     "identifier": "msc:m1018",
     "subject_areas": [
-      "Humanities"
+      "Humanities",
+      "Cultural heritage"
     ],
     "field_of_science": [
       "humanities"
@@ -4472,7 +4715,32 @@
     "title": "LIDO, Lightweight Information Describing Objects",
     "identifier": "msc:m1018",
     "subject_areas": [
-      "Humanities"
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "LIDO"
+  },
+  "http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1018",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "LIDO"
+  },
+  "http://lido-schema.org/schema/v1.1/lido-v1.1.xsd": {
+    "title": "LIDO, Lightweight Information Describing Objects",
+    "identifier": "msc:m1018",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
     ],
     "field_of_science": [
       "humanities"
@@ -4483,7 +4751,8 @@
     "title": "LIDO, Lightweight Information Describing Objects",
     "identifier": "msc:m1018",
     "subject_areas": [
-      "Humanities"
+      "Humanities",
+      "Cultural heritage"
     ],
     "field_of_science": [
       "humanities"
@@ -4494,7 +4763,8 @@
     "title": "LIDO, Lightweight Information Describing Objects",
     "identifier": "msc:m1018",
     "subject_areas": [
-      "Humanities"
+      "Humanities",
+      "Cultural heritage"
     ],
     "field_of_science": [
       "humanities"
@@ -4618,13 +4888,13 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "AODN"
   },
@@ -4640,13 +4910,13 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "AODN"
   },
@@ -4662,13 +4932,13 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "AODN"
   },
@@ -4684,13 +4954,13 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "AODN"
   },
@@ -4706,13 +4976,13 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "meteorology",
-      "hydrology",
-      "oceanography",
-      "climatology",
-      "natural sciences",
       "glaciology",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "meteorology",
+      "oceanography",
+      "hydrology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": "AODN"
   },
@@ -4812,16 +5082,16 @@
       "Proteins"
     ],
     "field_of_science": [
-      "proteins",
-      "biochemistry",
       "environmental sciences",
-      "cell biology",
-      "natural sciences",
-      "genetics",
+      "biochemistry",
       "computer and information sciences",
-      "biological sciences",
+      "proteins",
       "engineering and technology",
-      "cell metabolism"
+      "genetics",
+      "cell metabolism",
+      "biological sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4832,8 +5102,8 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -4850,10 +5120,28 @@
     "field_of_science": [
       "archaeology",
       "architectural design",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
-    "acronym": null
+    "acronym": "MIDAS"
+  },
+  "https://historicengland.org.uk/images-books/publications/midas-heritage/": {
+    "title": "MIDAS-Heritage",
+    "identifier": "msc:m24",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ],
+    "field_of_science": [
+      "archaeology",
+      "architectural design",
+      "history",
+      "humanities"
+    ],
+    "acronym": "MIDAS"
   },
   "http://www.english-heritage.org.uk/publications/midas-heritage/": {
     "title": "MIDAS-Heritage",
@@ -4868,10 +5156,28 @@
     "field_of_science": [
       "archaeology",
       "architectural design",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
-    "acronym": null
+    "acronym": "MIDAS"
+  },
+  "http://www.heritage-standards.org/midas/schema/1.0": {
+    "title": "MIDAS-Heritage",
+    "identifier": "msc:m24",
+    "subject_areas": [
+      "Archaeology",
+      "Architecture",
+      "Cultural heritage",
+      "Cultural property preservation",
+      "History"
+    ],
+    "field_of_science": [
+      "archaeology",
+      "architectural design",
+      "history",
+      "humanities"
+    ],
+    "acronym": "MIDAS"
   },
   "http://www.loc.gov/standards/mods/": {
     "title": "MODS (Metadata Object Description Schema)",
@@ -5029,6 +5335,18 @@
     ],
     "acronym": "MODS"
   },
+  "http://museum.zib.de/museumdat/museumdat-v1.0.xsd": {
+    "title": "museumdat",
+    "identifier": "msc:m1031",
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "field_of_science": [
+      "humanities"
+    ],
+    "acronym": "museumdat"
+  },
   "http://download.nexusformat.org/doc/html/ref_doc.html": {
     "title": "NeXus",
     "identifier": "msc:m25",
@@ -5040,9 +5358,9 @@
     "field_of_science": [
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5057,9 +5375,9 @@
     "field_of_science": [
       "materials engineering",
       "chemical sciences",
-      "natural sciences",
       "engineering and technology",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5072,13 +5390,13 @@
       "Multidisciplinary"
     ],
     "field_of_science": [
+      "sciences",
+      "history",
       "social sciences",
       "humanities",
-      "history",
-      "anthropology",
-      "sciences"
+      "anthropology"
     ],
-    "acronym": null
+    "acronym": "OAI-ORE"
   },
   "http://www.openarchives.org/ore/toc": {
     "title": "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)",
@@ -5089,13 +5407,13 @@
       "Multidisciplinary"
     ],
     "field_of_science": [
+      "sciences",
+      "history",
       "social sciences",
       "humanities",
-      "history",
-      "anthropology",
-      "sciences"
+      "anthropology"
     ],
-    "acronym": null
+    "acronym": "OAI-ORE"
   },
   "http://www.molgenis.org/wiki/ObservStart": {
     "title": "Observ-OM",
@@ -5120,11 +5438,11 @@
     ],
     "field_of_science": [
       "meteorology",
-      "geology",
       "chemical sciences",
+      "engineering and technology",
       "remote sensing",
-      "natural sciences",
-      "engineering and technology"
+      "geology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5139,11 +5457,11 @@
     ],
     "field_of_science": [
       "meteorology",
-      "geology",
       "chemical sciences",
+      "engineering and technology",
       "remote sensing",
-      "natural sciences",
-      "engineering and technology"
+      "geology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5200,15 +5518,15 @@
       "Zoology"
     ],
     "field_of_science": [
-      "zoology",
-      "agricultural sciences",
-      "physiology",
-      "botany",
       "medical and health sciences",
+      "zoology",
+      "botany",
       "veterinary sciences",
       "plant protection",
-      "natural sciences",
-      "cell biology"
+      "physiology",
+      "agricultural sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5224,15 +5542,15 @@
       "Zoology"
     ],
     "field_of_science": [
-      "zoology",
-      "agricultural sciences",
-      "physiology",
-      "botany",
       "medical and health sciences",
+      "zoology",
+      "botany",
       "veterinary sciences",
       "plant protection",
-      "natural sciences",
-      "cell biology"
+      "physiology",
+      "agricultural sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5248,15 +5566,15 @@
       "Zoology"
     ],
     "field_of_science": [
-      "zoology",
-      "agricultural sciences",
-      "physiology",
-      "botany",
       "medical and health sciences",
+      "zoology",
+      "botany",
       "veterinary sciences",
       "plant protection",
-      "natural sciences",
-      "cell biology"
+      "physiology",
+      "agricultural sciences",
+      "cell biology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5366,7 +5684,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "CTX"
   },
   "info:ofi/fmt:kev:mtx:ctx": {
     "title": "The XML ContextObject Format",
@@ -5377,7 +5695,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "CTX"
   },
   "https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf": {
     "title": "The XML ContextObject Format",
@@ -5388,7 +5706,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "CTX"
   },
   "http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Index/": {
     "title": "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)",
@@ -5402,13 +5720,13 @@
       "Physics"
     ],
     "field_of_science": [
-      "molecular biology",
-      "chemical sciences",
-      "natural sciences",
       "computer and information sciences",
+      "chemical sciences",
+      "molecular biology",
+      "crystallography",
       "biological sciences",
       "physical sciences",
-      "crystallography"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5424,13 +5742,13 @@
       "Physics"
     ],
     "field_of_science": [
-      "molecular biology",
-      "chemical sciences",
-      "natural sciences",
       "computer and information sciences",
+      "chemical sciences",
+      "molecular biology",
+      "crystallography",
       "biological sciences",
       "physical sciences",
-      "crystallography"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5443,7 +5761,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "premis"
   },
   "http://www.loc.gov/standards/premis/": {
     "title": "PREMIS",
@@ -5454,7 +5772,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "premis"
   },
   "http://www.loc.gov/standards/premis": {
     "title": "PREMIS",
@@ -5465,7 +5783,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "premis"
   },
   "https://www.w3.org/Submission/prism": {
     "title": "PRISM Publishing Requirements for Industry Standard Metadata",
@@ -5582,8 +5900,8 @@
       "Clinical medicine"
     ],
     "field_of_science": [
-      "clinical medicine",
-      "medical and health sciences"
+      "medical and health sciences",
+      "clinical medicine"
     ],
     "acronym": null
   },
@@ -5594,8 +5912,8 @@
       "Clinical medicine"
     ],
     "field_of_science": [
-      "clinical medicine",
-      "medical and health sciences"
+      "medical and health sciences",
+      "clinical medicine"
     ],
     "acronym": null
   },
@@ -5629,9 +5947,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5643,9 +5961,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5657,9 +5975,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5671,9 +5989,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5685,9 +6003,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5699,9 +6017,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5713,9 +6031,9 @@
       "Geophysics"
     ],
     "field_of_science": [
-      "natural sciences",
       "earth and related environmental sciences",
-      "geophysics"
+      "geophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5807,7 +6125,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "rioxx"
   },
   "https://www.rioxx.net/": {
     "title": "RIOXX Metadata Application Profile",
@@ -5818,7 +6136,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "rioxx"
   },
   "https://www.rioxx.net/schema/v2.0/rioxxterms/": {
     "title": "RIOXX Metadata Application Profile",
@@ -5829,7 +6147,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "rioxx"
   },
   "http://docs.rioxx.net/schema/v1.0/": {
     "title": "RIOXX Metadata Application Profile",
@@ -5840,7 +6158,7 @@
     "field_of_science": [
       "sciences"
     ],
-    "acronym": null
+    "acronym": "rioxx"
   },
   "http://www.scholix.org/schema": {
     "title": null,
@@ -5849,7 +6167,7 @@
     "field_of_science": [
 
     ],
-    "acronym": null
+    "acronym": "scholix"
   },
   "http://www.scholix.org": {
     "title": null,
@@ -5858,7 +6176,7 @@
     "field_of_science": [
 
     ],
-    "acronym": null
+    "acronym": "scholix"
   },
   "https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd": {
     "title": null,
@@ -5867,7 +6185,7 @@
     "field_of_science": [
 
     ],
-    "acronym": null
+    "acronym": "scholix"
   },
   "https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd": {
     "title": null,
@@ -5876,7 +6194,7 @@
     "field_of_science": [
 
     ],
-    "acronym": null
+    "acronym": "scholix"
   },
   "http://cds.u-strasbg.fr/doc/catstd.pdf": {
     "title": "SDAC (Standard for Documentation of Astronomical Catalogues)",
@@ -5887,8 +6205,8 @@
     ],
     "field_of_science": [
       "astronomy",
-      "natural sciences",
-      "astrophysics"
+      "astrophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5901,8 +6219,8 @@
     ],
     "field_of_science": [
       "astronomy",
-      "natural sciences",
-      "astrophysics"
+      "astrophysics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5917,13 +6235,13 @@
       "Statistics"
     ],
     "field_of_science": [
-      "political sciences",
-      "statistics and probability",
-      "social geography",
       "economics",
       "demography",
-      "natural sciences",
-      "social sciences"
+      "political sciences",
+      "social sciences",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5938,13 +6256,13 @@
       "Statistics"
     ],
     "field_of_science": [
-      "political sciences",
-      "statistics and probability",
-      "social geography",
       "economics",
       "demography",
-      "natural sciences",
-      "social sciences"
+      "political sciences",
+      "social sciences",
+      "social geography",
+      "statistics and probability",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5956,9 +6274,9 @@
       "Oceanography"
     ],
     "field_of_science": [
-      "natural sciences",
+      "hydrology",
       "oceanography",
-      "hydrology"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -5970,9 +6288,9 @@
       "Cell biology"
     ],
     "field_of_science": [
+      "biochemistry",
       "cell biology",
-      "natural sciences",
-      "biochemistry"
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6136,8 +6454,8 @@
     ],
     "field_of_science": [
       "languages and literature",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "TEI"
   },
@@ -6150,8 +6468,8 @@
     ],
     "field_of_science": [
       "languages and literature",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "TEI"
   },
@@ -6164,8 +6482,8 @@
     ],
     "field_of_science": [
       "languages and literature",
-      "humanities",
-      "history"
+      "history",
+      "humanities"
     ],
     "acronym": "TEI"
   },
@@ -6176,8 +6494,8 @@
       "Crystallography"
     ],
     "field_of_science": [
-      "natural sciences",
-      "crystallography"
+      "crystallography",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6227,15 +6545,15 @@
     ],
     "field_of_science": [
       "meteorology",
-      "geology",
+      "ecology",
+      "soil sciences",
+      "engineering and technology",
       "hydrology",
       "remote sensing",
-      "climatology",
-      "natural sciences",
-      "soil sciences",
       "biological sciences",
-      "engineering and technology",
-      "ecology"
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6255,15 +6573,15 @@
     ],
     "field_of_science": [
       "meteorology",
-      "geology",
+      "ecology",
+      "soil sciences",
+      "engineering and technology",
       "hydrology",
       "remote sensing",
-      "climatology",
-      "natural sciences",
-      "soil sciences",
       "biological sciences",
-      "engineering and technology",
-      "ecology"
+      "geology",
+      "climatology",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6274,8 +6592,8 @@
       "Earth sciences"
     ],
     "field_of_science": [
-      "natural sciences",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6286,8 +6604,8 @@
       "Earth sciences"
     ],
     "field_of_science": [
-      "natural sciences",
-      "earth and related environmental sciences"
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6298,8 +6616,8 @@
       "Genetics"
     ],
     "field_of_science": [
-      "natural sciences",
-      "genetics"
+      "genetics",
+      "natural sciences"
     ],
     "acronym": null
   },
@@ -6310,8 +6628,8 @@
       "Hydrology"
     ],
     "field_of_science": [
-      "natural sciences",
-      "hydrology"
+      "hydrology",
+      "natural sciences"
     ],
     "acronym": null
   },
