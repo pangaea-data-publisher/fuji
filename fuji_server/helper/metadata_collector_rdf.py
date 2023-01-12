@@ -646,26 +646,30 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     if jsnld_metadata.get('license'):
                         self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) -: {}'.format(
                             jsnld_metadata.get('license')))
-
-                        if isinstance(jsnld_metadata.get('license'), list):
-                            jsnld_metadata['license'] = jsnld_metadata['license'][0]
-                        if isinstance(jsnld_metadata.get('license'), dict):
-                            ls_type = jsnld_metadata.get('license').get('@type')
-                            if ls_type == 'CreativeWork':
-                                ls = jsnld_metadata.get('license').get('url')
-                                if not ls:
-                                    ls = jsnld_metadata.get('license').get('name')
-                                if ls:
-                                    jsnld_metadata['license'] = ls
+                        if not isinstance(jsnld_metadata.get('license'), list):
+                            jsnld_metadata['license'] = [jsnld_metadata['license']]
+                        lk = 0
+                        for licence in jsnld_metadata.get('license'):
+                            if isinstance(licence, dict):
+                                ls_type = licence.get('@type')
+                                #license can be of type URL or CreativeWork
+                                if ls_type == 'CreativeWork':
+                                    ls = licence.get('url')
+                                    if not ls:
+                                        ls = licence.get('name')
+                                    if ls:
+                                        jsnld_metadata['license'][lk] = ls
+                                    else:
+                                        invalid_license = True
                                 else:
                                     invalid_license = True
-                            else:
-                                invalid_license = True
-                    if invalid_license:
-                        self.logger.warning(
-                            'FsF-R1.1-01M : Looks like schema.org representation of license is incorrect, skipping the test.'
-                        )
-                        jsnld_metadata['license'] = None
+                                if invalid_license:
+                                    self.logger.warning(
+                                        'FsF-R1.1-01M : Looks like schema.org representation of license is incorrect.'
+                                    )
+                                    jsnld_metadata['license'][lk] = None
+                            lk+=1
+
 
                     # filter out None values of related_resources
 
