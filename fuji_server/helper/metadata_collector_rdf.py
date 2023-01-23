@@ -413,7 +413,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
                     + str(len(goodtriples)) + ' triples in the given graph')
-        else:
+        elif meta.get('object_type'):
             #Ignore non CreativeWork schema.org types
             if 'schema.org' in meta['object_type']:
                 if meta['object_type'].split('/')[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
