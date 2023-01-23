@@ -15,7 +15,7 @@ class linked_vocab_helper:
         self.ignore_prefixes = ['orcid','doi','isni','ror','wikipedia']
 
     def set_linked_vocab_dict(self):
-        print('Settig up the vocab dict.........................')
+        print('Setting up the vocab dict.........................')
         # a new implementation based on bioportal etc..
         bioregistry_path = os.path.join(self.fuji_server_dir, 'data', 'linked_vocabs', 'bioregistry.json')
         with open(bioregistry_path, encoding='utf-8') as bioregistry_file:
