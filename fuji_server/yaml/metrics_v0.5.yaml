@@ -3,6 +3,7 @@ metrics:
   ## ---------------- FINDABILITY ---------------- ##
 - metric_identifier: FsF-F1-01D
   metric_number: 1
+  metric_short_name: Unique Identifier
   metric_name: Data is assigned a globally unique identifier.
   description: A data object may be assigned with a globally unique identifier such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers of data are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your data or metadata when you publish and make it available through their services.
   fair_principle: F1
