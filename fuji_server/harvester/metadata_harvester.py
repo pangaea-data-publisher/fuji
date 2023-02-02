@@ -672,7 +672,7 @@ class MetadataHarvester():
                     self.metadata_sources.append((source_micro, 'embedded'))
                     self.namespace_uri.extend(microdata_collector.getNamespaces())
                     micro_dict = self.exclude_null(micro_dict)
-                    self.merge_metadata(micro_dict, self.landing_url, source_micro, 'text/html', ' http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
+                    self.merge_metadata(micro_dict, self.landing_url, source_micro, 'text/html', 'http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
                     self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found microdata metadata -: ' + str(micro_dict.keys()))
 
@@ -1069,3 +1069,4 @@ class MetadataHarvester():
             else:
                 other_links.append(link)
         return preferred_links + other_links
+    
