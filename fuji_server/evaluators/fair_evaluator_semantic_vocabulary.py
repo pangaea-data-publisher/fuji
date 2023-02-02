@@ -53,8 +53,6 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         if self.fuji.namespace_uri:
             self.fuji.namespace_uri = list(set(self.fuji.namespace_uri))
             self.fuji.namespace_uri = [x.strip().rstrip('/#') for x in self.fuji.namespace_uri]
-        self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
-            self.metric_identifier, len(self.fuji.namespace_uri)))
 
         self.logger.info('{0} : Number of vocabulary namespaces extracted from all RDF-based metadata -: {1}'.format(
             self.metric_identifier, len(self.fuji.namespace_uri)))
