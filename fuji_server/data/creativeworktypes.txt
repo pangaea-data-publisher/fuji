@@ -126,3 +126,4 @@ EmployerReview
 MediaReview
 Recommendation
 UserReview
+DefinedTermSet
