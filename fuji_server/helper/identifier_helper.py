@@ -113,7 +113,7 @@ class IdentifierHelper:
                         found_suffix = idmatch[2]
                         if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
                             if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
-                                self.identifier_schemes = ['identifiers_org',found_prefix]
+                                self.identifier_schemes = ['identifiers.org',found_prefix]
                                 self.preferred_schema = found_prefix
                                 self.identifier_url = str(
                                     self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace(
