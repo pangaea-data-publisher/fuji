@@ -235,7 +235,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     #if data_object.get('header_content_type') == data_object.get('type'):
                     # TODO: variation of mime type (text/tsv vs text/tab-separated-values)
                     self.fuji.tika_content_types_list = self.fuji.extend_mime_type_list(self.fuji.tika_content_types_list)
-
                     if d == 'type':
                         if data_object.get('type'):
                             if data_object.get('type') in self.fuji.tika_content_types_list:
@@ -255,7 +254,14 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         else:
                             try:
                                 if data_object.get('size'):
-                                    object_size = int(float(data_object.get('size')))
+                                    data_size = data_object.get('size')
+                                    try:
+                                        dsm =  re.match(r"(\d+(?:\.\d+)?)\s*[A-Za-z]*", str(data_size))
+                                        if dsm[1]:
+                                            data_size = dsm[1]
+                                    except:
+                                        pass
+                                    object_size = int(float(data_size))
                                     if object_size == int(float(tika_content_size)):
                                         matches_content = True
                                         matches_size = True
@@ -266,6 +272,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                                     str(tika_content_size)))
 
                             except Exception as e:
+                                print(e)
                                 self.logger.warning(
                                     '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
                                     .format(self.metric_identifier, str(data_object.get('size')),
