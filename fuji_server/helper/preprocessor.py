@@ -43,8 +43,8 @@ class Preprocessor(object):
     total_licenses = 0
     METRIC_YML_PATH = None
     SPDX_URL = None
-    DATACITE_API_REPO = None
-    RE3DATA_API = None
+    DATACITE_API_REPO = 'https://api.datacite.org/repositories'
+    RE3DATA_API = 'https://re3data.org/api/beta/repositories'
     LOV_API = None
     LOD_CLOUDNET = None
     BIOPORTAL_API = None
@@ -226,13 +226,13 @@ class Preprocessor(object):
         # retrieve all client id and re3data doi from datacite
         cls.DATACITE_API_REPO = datacite_endpoint
         cls.RE3DATA_API = re3_endpoint
-        #isDebugMode=False
+        isDebugMode=False
         re3dict_path = os.path.join(cls.fuji_server_dir, 'data', 'repodois.json')
         if isDebugMode:
             with open(re3dict_path) as f:
                 cls.re3repositories = json.load(f)
         else:
-            #print('updating re3data dois')
+            print('updating re3data dois')
             p = {'query': 're3data_id:*'}
             try:
                 req = requests.get(datacite_endpoint, params=p, headers=cls.header)
@@ -249,6 +249,7 @@ class Preprocessor(object):
                 with open(re3dict_path, 'w') as f2:
                     json.dump(cls.re3repositories, f2)
             except requests.exceptions.RequestException as e:
+                print('Preprocessor Error: '+ str(e))
                 cls.logger.error(e)
 
     @classmethod
