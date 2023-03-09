@@ -310,9 +310,19 @@ class MetaDataCollectorRdf(MetaDataCollector):
             else:
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
-                parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
+                format_dict = {'text/ttl':'turtle',
+                               'application/xhtml+xml':'rdfa',
+                               'application/n-triples':'nt',
+                               'application/n-quads':'nquads'
+                               }
+                if self.content_type in format_dict:
+                    parseformat = (None, format_dict[self.content_type])
+                else:
+                    parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
                 if parseformat:
                     parse_format = parseformat[1]
+                    if parse_format not in ['xml', 'n3','turtle', 'nt', 'pretty-xml','trix','trig','nquads', 'json-ld','hext']:
+                        parse_format = 'turtle'
                     if 'html' not in str(parse_format) and 'zip' not in str(parse_format) :
                         RDFparsed = False
                         self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parse_format))
@@ -408,7 +418,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             if has_xhtml:
                 self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML or OpenGraph properties which are excluded')
             if len(goodtriples) > 1:
-                if not meta['object_type']:
+                if not meta.get('object_type'):
                     meta['object_type'] = 'Other'
                 self.logger.info(
                     'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
