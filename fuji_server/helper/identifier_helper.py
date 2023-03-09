@@ -40,6 +40,7 @@ class IdentifierHelper:
     method = 'idutils'
     resolver = None
     is_persistent = False
+    NON_IDENTIFIERS_ORG_KEYS = ['doi']
     URN_RESOLVER = {'urn:doi:': 'dx.doi.org/',
                     'urn:lex:br':'www.lexml.gov.br/',
                     'urn:nbn:de':'nbn-resolving.org/',
@@ -111,7 +112,7 @@ class IdentifierHelper:
                     if idmatch:
                         found_prefix = idmatch[1]
                         found_suffix = idmatch[2]
-                        if found_prefix in self.IDENTIFIERS_ORG_DATA.keys():
+                        if found_prefix in self.IDENTIFIERS_ORG_DATA.keys() and found_prefix not in self.NON_IDENTIFIERS_ORG_KEYS:
                             if (re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]['pattern'], found_suffix)):
                                 self.identifier_schemes = ['identifiers.org',found_prefix]
                                 self.preferred_schema = found_prefix
