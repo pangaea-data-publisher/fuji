@@ -50,7 +50,7 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
         ext_meta = None
         if self.source_metadata:
             #self.logger.info('FsF-F2-01M : Trying to extract OpenGraph metadata from html page')
-            self.source_name = self.getEnumSourceNames().OPENGRAPH.value
+            self.source_name = self.getEnumSourceNames().OPENGRAPH_EMBEDDED.value
             ext_meta = dict(self.source_metadata[0].get('properties'))
         if ext_meta is not None:
             for map_key, map_value in self.metadata_mapping.value.items():

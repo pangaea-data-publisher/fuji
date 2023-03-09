@@ -94,14 +94,14 @@ class FAIREvaluatorSearchable(FAIREvaluator):
 
         search_mechanisms = []
         sources_registry = [
-            MetaDataCollector.Sources.DATACITE_JSON.value, MetaDataCatalogue.Sources.DATACITE.value,
+            MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
             MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
         ]
         all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
         self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction -: {}'.format(all))
         search_engines_support = [
-            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value, MetaDataCollector.Sources.SCHEMAORG_EMBED.value,
-            MetaDataCollector.Sources.DUBLINCORE.value, MetaDataCollector.Sources.RDFA.value
+            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value,
+            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.value, MetaDataCollector.Sources.RDFA_EMBEDDED.value
         ]
         # Check search mechanisms based on sources of metadata extracted.
         search_engine_support_match: List[Any] = list(

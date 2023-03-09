@@ -106,7 +106,8 @@ class FAIRCheck:
                  metadata_service_url=None,
                  metadata_service_type=None,
                  use_datacite=True,
-                 oaipmh_endpoint=None):
+                 oaipmh_endpoint=None,
+                 allowed_harvesting_methods = None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
@@ -188,7 +189,7 @@ class FAIRCheck:
         self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
         self.auth_token = None
         self.auth_token_type = 'Basic'
-        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite)
+        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite,allowed_harvesting_methods=allowed_harvesting_methods)
         self.pid_collector = {}
 
     @classmethod

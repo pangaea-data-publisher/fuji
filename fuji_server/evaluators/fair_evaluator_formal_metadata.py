@@ -57,7 +57,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         embedded_RDF_exists = False
         self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(
             self.metric_identifier))
-        if MetaDataCollector.Sources.SCHEMAORG_EMBED.value in dict(self.fuji.metadata_sources):
+        if MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value in dict(self.fuji.metadata_sources):
             outputs.append(
                 FormalMetadataOutputInner(serialization_format='JSON-LD',
                                           source='structured_data',
@@ -65,7 +65,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             self.logger.info('{0} : JSON-LD (schema.org) serialization found in the data page - {1}'.format(
                 self.metric_identifier, 'JSON-LD'))
             embedded_RDF_exists = True
-        if MetaDataCollector.Sources.RDFA.value in dict(self.fuji.metadata_sources):
+        if MetaDataCollector.Sources.RDFA_EMBEDDED.value in dict(self.fuji.metadata_sources):
             outputs.append(
                 FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data',
                                           is_metadata_found=True))
@@ -107,7 +107,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             self.metric_identifier))
         #for rdf_data_sources in [MetaDataCollector.Sources.LINKED_DATA.value, MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE,MetaDataCollector.Sources.]
 
-        if MetaDataCollector.Sources.SCHEMAORG_NEGOTIATE.value in dict(self.fuji.metadata_sources):
+        if MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value in dict(self.fuji.metadata_sources):
             self.logger.info('{0} : JSON-LD graph retrieved through content negotiation, content type - {1}'.format(
                 self.metric_identifier, 'JSON-LD'))
             outputs.append(
@@ -117,7 +117,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             negotiated_RDF_exists = True
             formalExists = True
 
-        if MetaDataCollector.Sources.LINKED_DATA.value in dict(self.fuji.metadata_sources):
+        if MetaDataCollector.Sources.RDF_NEGOTIATED.value in dict(self.fuji.metadata_sources):
             self.logger.info('{0} : RDF graph retrieved through content negotiation, content type - {1}'.format(
                 self.metric_identifier, 'RDF'))
             outputs.append(

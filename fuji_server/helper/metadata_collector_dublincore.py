@@ -101,7 +101,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
-                    source = self.getEnumSourceNames().DUBLINCORE.value
+                    source = self.getEnumSourceNames().DUBLINCORE_EMBEDDED.value
                     dcterms = []
                     for dcitems in self.metadata_mapping.value.values():
                         if isinstance(dcitems, list):

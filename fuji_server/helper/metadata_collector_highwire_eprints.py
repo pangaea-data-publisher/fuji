@@ -66,7 +66,7 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
             a dictionary of Highwire or eprints metadata
         """
         hw_core_metadata = {}
-        source = self.getEnumSourceNames().HIGHWIRE_EPRINTS.value
+        source = self.getEnumSourceNames().HIGHWIRE_EPRINTS_EMBEDDED.value
         if self.source_metadata is not None:
             meta_hw_matches = []
             self.content_type = 'text/html'

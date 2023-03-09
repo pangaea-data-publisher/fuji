@@ -52,7 +52,7 @@ class MetaDataCollectorXML(MetaDataCollector):
     """
     target_url = None
 
-    def __init__(self, loggerinst, target_url, link_type='embedded', pref_mime_type=None):
+    def __init__(self, loggerinst, target_url, link_type='linked', pref_mime_type=None):
         """
         Parameters
         ----------
@@ -61,7 +61,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         loggerinst : logging.Logger
             Logger instance
         link_type : str, optional
-            Link Type, default is 'embedded'
+            Link Type, default is 'linked'
         pref_mime_type : str, optional
             Preferred mime type, e.g. specific XML format
         """
@@ -112,15 +112,15 @@ class MetaDataCollectorXML(MetaDataCollector):
 
         XSI = 'http://www.w3.org/2001/XMLSchema-instance'
         if self.link_type == 'linked':
-            source_name = self.getEnumSourceNames().TYPED_LINK.value
-        if self.link_type == 'embedded':
-            source_name = self.getEnumSourceNames().LINKED_DATA.value
+            source_name = self.getEnumSourceNames().XML_TYPED_LINKS.value
+            '''elif self.link_type == 'embedded':
+            source_name = self.getEnumSourceNames().RDF_NEGOTIATED.value'''
         elif self.link_type == 'guessed':
-            source_name = self.getEnumSourceNames().GUESSED_XML.value
+            source_name = self.getEnumSourceNames().XML_GUESSED.value
         elif self.link_type == 'negotiated':
             source_name = self.getEnumSourceNames().XML_NEGOTIATED.value
         else:
-            source_name = self.getEnumSourceNames().TYPED_LINK.value
+            source_name = self.getEnumSourceNames().XML_TYPED_LINKS.value
         dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)

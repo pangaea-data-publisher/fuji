@@ -232,9 +232,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     jsonld_source_url = 'landing page'
                 if self.json_ld_content:
-                    self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBED.value
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBEDDED.value
                 else:
-                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATE.value
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATED.value
                 self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
                 if isinstance(rdf_response, dict) or isinstance(rdf_response, list):
                     self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (jsonld_source_url))

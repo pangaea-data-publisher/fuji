@@ -90,7 +90,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                     if dcite_metadata:
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append('http://datacite.org/schema/')
-                        source_name = self.getEnumSourceNames().DATACITE_JSON.value
+                        source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED.value
                         if dcite_metadata['creator'] is None:
                             first = dcite_metadata['creator_first']
                             last = dcite_metadata['creator_last']

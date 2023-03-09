@@ -81,22 +81,26 @@ class MetaDataCollector(object):
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
         """"Enum class to enumerate metadata sources."""
-        HIGHWIRE_EPRINTS ='Embedded Highwire or Eprints'
-        DUBLINCORE = 'Embedded DublinCore'
-        OPENGRAPH = 'Embedded OpenGraph'
-        SCHEMAORG_EMBED = 'Schema.org JSON-LD (Embedded)'
-        SCHEMAORG_NEGOTIATE = 'Schema.org JSON-LD (Negotiated)'
-        DATACITE_JSON = 'Datacite Search'
-        TYPED_LINK = 'Typed Links'
-        SIGN_POSTING = 'Signposting Typed Links'
+        HIGHWIRE_EPRINTS_EMBEDDED = 'Embedded Highwire or Eprints'
+        DUBLINCORE_EMBEDDED = 'Embedded DublinCore'
+        OPENGRAPH_EMBEDDED = 'Embedded OpenGraph'
+        SCHEMAORG_EMBEDDED = 'Schema.org JSON-LD (Embedded)'
+        RDFA_EMBEDDED = 'Embedded RDFa'
+        MICRODATA_EMBEDDED = 'Embedded Microdata'
+
+        SCHEMAORG_NEGOTIATED = 'Schema.org JSON-LD (Negotiated)'
+        DATACITE_JSON_NEGOTIATED = 'Datacite Search'
+        RDF_NEGOTIATED = 'Linked Data (RDF)'
+        XML_NEGOTIATED = 'Generic XML (Negotiated)'
+
         XML_TYPED_LINKS = 'Generic XML, Typed Links'
         RDF_TYPED_LINKS = 'Linked Data (RDF), Typed Links'  #Links in header which lead to a RDF resource
-        LINKED_DATA = 'Linked Data (RDF)'
-        B2FIND = 'B2FIND Metadata Aggregator'
-        GUESSED_XML = 'Guessed XML Link'
-        XML_NEGOTIATED = 'Generic XML (Negotiated)'
-        RDFA = 'Embedded RDFa'
-        MICRODATA = 'Embedded Microdata'
+        #TYPED_LINK = 'Typed Links'
+
+        SIGN_POSTING = 'Signposting Typed Links'
+        #B2FIND = 'B2FIND Metadata Aggregator'
+        XML_GUESSED = 'Guessed XML Link'
+
         OAI_ORE = 'OAI-ORE'
 
     def __init__(self,
