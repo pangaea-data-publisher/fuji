@@ -22,3 +22,4 @@ http://schema.org/
 https://schema.org/
 http://ogp.me/ns#
 http://www.w3.org/1999/xhtml/vocab
+http://www.w3.org/2007/05/powder-s#
