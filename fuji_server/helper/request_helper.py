@@ -376,18 +376,19 @@ class RequestHelper:
 
 
                                 self.content_type = self.content_type.split(';', 1)[0]
-
-
+                                #init to avoid empty responses
+                                self.parse_response = self.response_content
                                 while (True):
                                     for at in AcceptTypes:  #e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                         if at.name =='xml' and str(self.content_type).endswith('+xml'):
                                             self.content_type = 'text/xml'
+
                                         if self.content_type in at.value:
                                             if at.name == 'html':
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
                                                 if ignore_html == False:
                                                     self.logger.info('%s : Found HTML page!' % metric_id)
-                                                    self.parse_response = self.response_content
+                                                    #self.parse_response = self.response_content
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
@@ -407,12 +408,12 @@ class RequestHelper:
                                                                         metric_id)
                                                 if re.match(r'(\{.+\})?RDF', root_element):
                                                     self.logger.info('%s : Expected XML but found RDF document by root tag!' % metric_id)
-                                                    self.parse_response = self.response_content
+                                                    #self.parse_response = self.response_content
                                                     #self.content_type ='application/xml+rdf'
                                                     source = 'rdf'
                                                 else:
                                                     self.logger.info('%s : Found XML document!' % metric_id)
-                                                    self.parse_response = self.response_content
+                                                    #self.parse_response = self.response_content
                                                     source = 'xml'
                                                 break
                                             if at.name in ['json', 'jsonld', 'datacite_json', 'schemaorg'] or str(self.content_type).endswith('+json'):
@@ -427,11 +428,11 @@ class RequestHelper:
                                                             metric_id))
 
                                             if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle','ttl','n3']:
-                                                self.parse_response = self.response_content
+                                                #self.parse_response = self.response_content
                                                 source = 'rdf'
                                                 break
                                             if at.name in ['linkset']:
-                                                self.parse_response = self.response_content
+                                                #self.parse_response = self.response_content
                                                 source = 'txt'
                                                 break
                                     break

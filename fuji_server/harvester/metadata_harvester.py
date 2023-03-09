@@ -680,6 +680,7 @@ class MetadataHarvester():
                 self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
                 rdfasource = MetaDataCollector.Sources.RDFA.value
                 try:
+                    rdfa_dict = {}
                     rdflib_logger = logging.getLogger('rdflib')
                     rdflib_logger.setLevel(logging.ERROR)
                     try:
@@ -696,7 +697,10 @@ class MetadataHarvester():
 
                     rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                           target_url=self.landing_url, source=rdfasource)
-                    rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
+                    try:
+                        rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
+                    except Exception as e:
+                        print('RDFa Graph error: ',e)
                     if (len(rdfa_dict) > 0):
                         self.metadata_sources.append((rdfasource, 'embedded'))
                         self.namespace_uri.extend(rdfa_collector.getNamespaces())
