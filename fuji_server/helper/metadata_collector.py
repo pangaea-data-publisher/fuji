@@ -97,7 +97,7 @@ class MetaDataCollector(object):
         RDF_TYPED_LINKS = 'Linked Data (RDF), Typed Links'  #Links in header which lead to a RDF resource
         #TYPED_LINK = 'Typed Links'
 
-        SIGN_POSTING = 'Signposting Typed Links'
+        SIGN_POSTING_LINKS = 'Signposting Typed Links'
         #B2FIND = 'B2FIND Metadata Aggregator'
         XML_GUESSED = 'Guessed XML Link'
 
