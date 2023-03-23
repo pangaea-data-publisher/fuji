@@ -61,7 +61,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         verified_pids = []
         verified_pid_schemes = []
         for pid, pid_info in self.fuji.pid_collector.items():
-            if pid_info.get('verified'):
+            if pid_info.get('verified') or not self.fuji.verify_pids:
                 verified_pids.append(pid)
                 verified_pid_schemes.append(pid_info.get('scheme'))
                 if pid_info.get('resolved_url'):

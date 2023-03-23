@@ -106,6 +106,7 @@ class FAIRCheck:
                  metadata_service_url=None,
                  metadata_service_type=None,
                  use_datacite=True,
+                 verify_pids=True,
                  oaipmh_endpoint=None,
                  allowed_harvesting_methods = None):
         uid_bytes = uid.encode('utf-8')
@@ -180,7 +181,9 @@ class FAIRCheck:
                 self.weblogger = logging.handlers.HTTPHandler(Preprocessor.remote_log_host, Preprocessor.remote_log_path + '?testid=' + str(self.test_id),
                                                       method='POST')
                 self.webformatter = logging.Formatter('%(levelname)s - %(message)s \r\n')
-
+        self.verify_pids = verify_pids
+        if not self.verify_pids:
+            self.logger.warning('FsF-F1-02 : Verification of PIDs is disabled in the config file, the evaluation result may be misleading')
         self.count = 0
         FAIRCheck.load_predata()
         #self.extruct = None

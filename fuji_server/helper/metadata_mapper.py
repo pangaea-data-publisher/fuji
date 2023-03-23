@@ -219,7 +219,8 @@ class Mapper(Enum):
                         'data_size:sizes[0], data_file_format: formats, ' \
                         'license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
-                        'related_resources: ( relatedIdentifiers[*].{related_resource: relatedIdentifier, relation_type:relationType, scheme_uri: schemeUri}), datacite_client: clientId, ' \
+                        'related_resources: ( relatedIdentifiers[*].{related_resource: relatedIdentifier, relation_type:relationType, scheme_uri: schemeUri}), ' \
+                        'datacite_client: clientId, ' \
                         'modified_date: dates[?dateType == \'Updated\'].date,' \
                         'created_date: dates[?dateType == \'Created\'].date,' \
                         'accepted_date: dates[?dateType == \'Accepted\'].date,' \

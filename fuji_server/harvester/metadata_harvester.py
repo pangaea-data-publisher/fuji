@@ -637,7 +637,7 @@ class MetadataHarvester():
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: '+str(MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value))
                     # ========= retrieve highwire and eprints embedded in html page =========
                     if self.reference_elements:
-                        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.HIGHWIRE_EPRINTS_EMBEDDED):
+                        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.HIGHWIRE_EPRINTS_EMBEDDED.name):
                             self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
                             hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
                                                                        sourcemetadata=self.landing_html)
@@ -860,7 +860,6 @@ class MetadataHarvester():
 
     def retrieve_metadata_external_schemaorg_negotiated(self,target_url_list=[]):
         if self.is_harvesting_method_allowed(MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.name):
-            print('######################################')
             for target_url in target_url_list:
                 # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
                 self.logger.info(
@@ -958,7 +957,7 @@ class MetadataHarvester():
                                         'http://www.openarchives.org/ore/terms')
 
     def retrieve_metadata_external_datacite(self):
-        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.name):
             #if self.pid_scheme:
             # ================= datacite by content negotiation ===========
             # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
