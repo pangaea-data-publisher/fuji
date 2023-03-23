@@ -59,7 +59,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 std_ns_temp = self.fuji.lookup_metadatastandard_by_uri(std_ns)
                 # if std_ns_temp in FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS:
                 if std_ns_temp:
-                    subject = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('subject_areas')
+                    subject = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('field_of_science')
                     std_name = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(std_ns_temp).get('title')
                     if subject:
                         if all(elem == 'Multidisciplinary' for elem in subject):
@@ -89,55 +89,48 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1', 1, 'pass')
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
-        re3_detected = False
+        #re3_detected = False
         if len(self.fuji.community_standards) > 0:
             #if len(community_standards_detected) == 0:
             if self.fuji.use_datacite:
                 self.logger.info('FsF-R1.3-01M : Using re3data to detect metadata standard(s)')
                 for s in self.fuji.community_standards:
-                    re3_listed = False
-                    standard_found = self.fuji.lookup_metadatastandard_by_name(s)
+                    standard_found = self.fuji.lookup_metadatastandard_by_uri(s)
                     if standard_found:
-                        subject = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('subject_areas')
+                        subject = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(s).get('field_of_science')
+                        std_name = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(s).get('title')
                         if subject:
-                            #print(subject, standard_found)
-                            re3_listed = True
-                            if all(elem == 'Multidisciplinary' for elem in subject):
+                            if subject == ['sciences']:
                                 self.logger.info(
                                     'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) found through re3data -: {}'
-                                    .format(standard_found))
+                                    .format(std_name))
                                 self.setEvaluationCriteriumScore('FsF-R1.3-01M-3', 0, 'pass')
                                 if self.maturity <= 1:
                                     self.maturity = 1
-                                multidiscipliary_standards_detected.append(standard_found)
-                                #self.logger.info('FsF-R1.3-01M : Skipped non-disciplinary standard -: {}'.format(s))
-                            elif standard_found == 'Repository-Developed Metadata Schemas':
-                                re3_listed = False
-                                self.logger.info('FsF-R1.3-01M : Skipped proprietary standard -: {}'.format(s))
+                                multidiscipliary_standards_detected.append(std_name)
                             else:
                                 if self.maturity < 2:
                                     self.maturity = 2
                                 re3_detected = True
                                 self.logger.log(
                                     self.fuji.LOG_SUCCESS,
-                                    'FsF-R1.3-01M : Found disciplinary standard through re3data -: {}'.format(s))
-                            if re3_listed:
-                                rdaurls = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get('urls')
-                                if isinstance(rdaurls, list):
-                                    rdaurls = [rdaurls[0]]
-                                out = CommunityEndorsedStandardOutputInner()
-                                out.metadata_standard = s
-                                out.subject_areas = self.fuji.COMMUNITY_STANDARDS.get(standard_found).get(
-                                    'subject_areas')
-                                out.urls = rdaurls
-                                community_standards_detected.append(out)
+                                    'FsF-R1.3-01M : Found disciplinary standard through re3data -: {}'.format(std_name))
+                            out = CommunityEndorsedStandardOutputInner()
+                            out.metadata_standard = std_name  # use here original standard uri detected
+                            out.subject_areas = subject
+                            out.urls = [standard_found]
+                            community_standards_detected.append(out)
+
             elif self.fuji.use_datacite:
                 self.logger.info(
                     'FsF-R1.3-01M : Metadata standard(s) that are listed in re3data are excluded from the assessment output.'
                 )
 
+
+
         elif self.fuji.use_datacite:
             self.logger.warning('FsF-R1.3-01M : NO metadata standard(s) of the repository specified in re3data')
+
         if community_standards_detected:
             if re3_detected:
                 if self.maturity < 3:
