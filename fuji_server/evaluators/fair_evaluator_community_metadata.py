@@ -89,7 +89,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.setEvaluationCriteriumScore('FsF-R1.3-01M-1', 1, 'pass')
 
         # ============== use standards listed in the re3data record if no metadata is detected from oai-pmh
-        #re3_detected = False
+        re3_detected = False
         if len(self.fuji.community_standards) > 0:
             #if len(community_standards_detected) == 0:
             if self.fuji.use_datacite:
