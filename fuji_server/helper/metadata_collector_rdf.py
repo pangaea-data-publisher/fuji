@@ -236,6 +236,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 elif self.source_name != self.getEnumSourceNames().RDF_TYPED_LINKS.value:
                     self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATED.value
                 self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
+                if isinstance(rdf_response, bytes):
+                    try:
+                        rdf_response = rdf_response.decode("utf-8")
+                    except:
+                        pass
                 if isinstance(rdf_response, dict) or isinstance(rdf_response, list):
                     self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (jsonld_source_url))
                     # in case two or more JSON-LD strings are embedded
@@ -296,6 +301,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     try:
                         rdf_response = str(rdf_response).encode('utf-8')
                     except:
+                        self.logger.info('FsF-F2-01M : UTF-8 string conversion of JSON-LD failed')
                         pass
                     self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (jsonld_source_url))
                     try:
