@@ -731,6 +731,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
         creative_work_type = 'Dataset'
         try:
+            cand_creative_work = {}
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
                 if 'schema.org' in str(root):
@@ -739,9 +740,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         creative_works = list(graph[:RDF.type:root])
                         # Finding the schema.org root
                         if len(list(graph.subjects(object=creative_works[0]))) == 0:
-                            creative_work = creative_works[0]
-                            creative_work_type = root_name
-                            break
+                            cand_creative_work[root_name] =creative_works[0]
+            # prioritize Dataset type
+            if cand_creative_work:
+                if 'Dataset' in creative_work:
+                    creative_work = cand_creative_work['Dataset']
+                else:
+                    creative_work = cand_creative_work[cand_creative_work.keys(0)]
+                    creative_work_type = cand_creative_work.keys(0)
         except Exception as e:
             self.logger.info('FsF-F2-01M : Schema.org RDF graph parsing failed -: '+str(e))
         if creative_work:
