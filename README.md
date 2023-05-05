@@ -109,6 +109,8 @@ To avoid tika startup warning message, set environment variable TIKA_LOG_PATH. F
 If you receive the exception 'urllib2.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] on MacOS, run the install command shipped with Python :
 ./Install\ Certificates.command
 
+F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication), so username and password have to be provided for each REST call which can be configured in fuji_server/config/users.py
+
 
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
