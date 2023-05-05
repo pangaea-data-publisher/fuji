@@ -64,7 +64,8 @@ class AcceptTypes(Enum):
     html = 'text/html, application/xhtml+xml'
     html_xml = 'text/html, application/xhtml+xml, application/xml;q=0.5, text/xml;q=0.5, application/rdf+xml;q=0.5'
     xml = 'application/xml, text/xml;q=0.5'
-    linkset = 'application/linkset+json, application/json, application/linkset'
+    #linkset = 'application/linkset+json, application/json, application/linkset'  <-- causes bug #329
+    linkset = 'application/linkset+json, application/linkset'
     json = 'application/json, text/json;q=0.5'
     jsonld = 'application/ld+json'
     atom = 'application/atom+xml'
@@ -322,7 +323,7 @@ class RequestHelper:
                             #Now content should be utf-8 encoded
                             if content_truncated == True:
                                 try:
-                                    self.response_content =  self.response_content.rsplit(b'\n',1)[0]
+                                    self.response_content = self.response_content.rsplit(b'\n',1)[0]
                                 except Exception as e:
                                     print('Error: '+str(e))
                             if self.content_type is None:
