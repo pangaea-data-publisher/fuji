@@ -720,7 +720,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return jsnld_metadata
 
     def get_schemaorg_metadata_from_graph(self, graph):
-        print('######################## GRAPH')
         #TODO: this is only some basic RDF/RDFa schema.org parsing... complete..
         #we will only test creative works and subtypes
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
