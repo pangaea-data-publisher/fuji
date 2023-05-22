@@ -720,6 +720,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return jsnld_metadata
 
     def get_schemaorg_metadata_from_graph(self, graph):
+        print('######################## GRAPH')
         #TODO: this is only some basic RDF/RDFa schema.org parsing... complete..
         #we will only test creative works and subtypes
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
@@ -743,7 +744,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             cand_creative_work[root_name] =creative_works[0]
             # prioritize Dataset type
             if cand_creative_work:
-                if 'Dataset' in creative_work:
+                if 'Dataset' in cand_creative_work:
                     creative_work = cand_creative_work['Dataset']
                 else:
                     creative_work = cand_creative_work[cand_creative_work.keys(0)]
