@@ -62,21 +62,26 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         # 1. check resource type #TODO: resource type collection might be classified as 'dataset'
         # http://doi.org/10.1007/s10531-013-0468-6
         #
-        resource_type = self.fuji.metadata_merged.get('object_type')
-        if resource_type:
-            resource_type = str(resource_type).lower()
-            if str(resource_type).startswith('http'):
-                resource_type = '/'.join(str(resource_type).split('/')[-2:])
-            if resource_type in self.fuji.VALID_RESOURCE_TYPES or resource_type in self.fuji.SCHEMA_ORG_CONTEXT:
-                self.logger.log(self.fuji.LOG_SUCCESS,
-                                'FsF-R1-01MD : Resource type specified -: {}'.format(resource_type))
-                self.output.object_type = resource_type
-                self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
-                self.setEvaluationCriteriumScore('FsF-R1-01MD-1a', 0, 'pass')
-                self.maturity = 1
-                score += 1
-            else:
-                self.logger.warning('FsF-R1-01MD : No valid resource type specified -: ' + str(resource_type))
+        resource_types = self.fuji.metadata_merged.get('object_type')
+        if resource_types:
+            print(resource_types)
+            if not isinstance(resource_types, list):
+                resource_types = [resource_types]
+            for resource_type in resource_types:
+                resource_type = str(resource_type).lower()
+                if str(resource_type).startswith('http'):
+                    #http://schema.org/Dataset
+                    resource_type = str(resource_type).split('/')[-1]
+                if str(resource_type).lower() in self.fuji.VALID_RESOURCE_TYPES or resource_type in self.fuji.SCHEMA_ORG_CONTEXT:
+                    self.logger.log(self.fuji.LOG_SUCCESS,
+                                    'FsF-R1-01MD : Resource type specified -: {}'.format(resource_type))
+                    self.output.object_type = resource_type
+                    self.setEvaluationCriteriumScore('FsF-R1-01MD-1', 1, 'pass')
+                    self.setEvaluationCriteriumScore('FsF-R1-01MD-1a', 0, 'pass')
+                    self.maturity = 1
+                    score += 1
+                else:
+                    self.logger.warning('FsF-R1-01MD : No valid resource type specified -: ' + str(resource_type))
         else:
             self.logger.warning('FsF-R1-01MD : NO resource type specified ')
 

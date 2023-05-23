@@ -46,8 +46,8 @@ from tldextract import extract
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
-from fuji_server.evaluators.fair_evaluator_persistent_identifier import FAIREvaluatorPersistentIdentifier
-from fuji_server.evaluators.fair_evaluator_unique_identifier import FAIREvaluatorUniqueIdentifier
+from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import FAIREvaluatorPersistentIdentifier
+from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifier
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
 from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
 from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
@@ -98,7 +98,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '2.2.6'
+    FUJI_VERSION = '2.2.7'
 
     def __init__(self,
                  uid,

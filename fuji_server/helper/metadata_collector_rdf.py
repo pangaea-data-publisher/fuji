@@ -624,19 +624,19 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
                         #ext_meta = self.compact_jsonld(ext_meta)
 
-                    if isinstance(json_dict.get('@type'), list):
-                        json_dict['@type'] = json_dict.get('@type')[0]
-
+                    #if isinstance(json_dict.get('@type'), list):
+                    #    json_dict['@type'] = json_dict.get('@type')[0]
                     if not json_dict.get('@type'):
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type')
-
-                    elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
+                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT  for tt in json_dict.get('@type')):
+                    #elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
                         trusted = False
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:'
                             + str(json_dict.get('@type')))
-                    elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                    elif not any(tt.lower() in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get('@type')):
+                    #elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
                         trusted = False
                         self.logger.info(
                             'FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:'+str(json_dict.get('@type')))
@@ -720,7 +720,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return jsnld_metadata
 
     def get_schemaorg_metadata_from_graph(self, graph):
-        #TODO: this is only some basic RDF/RDFa schema.org parsing... complete..
         #we will only test creative works and subtypes
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
         creative_work = None
@@ -732,26 +731,37 @@ class MetaDataCollectorRdf(MetaDataCollector):
         creative_work_type = 'Dataset'
         try:
             cand_creative_work = {}
+            object_types_dict ={}
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
                 if 'schema.org' in str(root):
                     root_name = str(root).rsplit('/')[-1].strip()
                     if root_name.lower() in creative_work_types:
                         creative_works = list(graph[:RDF.type:root])
+
                         # Finding the schema.org root
+
                         if len(list(graph.subjects(object=creative_works[0]))) == 0:
                             cand_creative_work[root_name] =creative_works[0]
-            # prioritize Dataset type
+                            if object_types_dict.get(str(creative_works[0])):
+                                object_types_dict[str(creative_works[0])].append(root_name)
+                            else:
+                                object_types_dict[str(creative_works[0])]=[root_name]
+                            # prioritize Dataset type
             if cand_creative_work:
                 if 'Dataset' in cand_creative_work:
                     creative_work = cand_creative_work['Dataset']
                 else:
-                    creative_work = cand_creative_work[cand_creative_work.keys(0)]
-                    creative_work_type = cand_creative_work.keys(0)
+                    creative_work = cand_creative_work[list(cand_creative_work)[0]]
+                    creative_work_type = list(cand_creative_work)[0]
+
         except Exception as e:
             self.logger.info('FsF-F2-01M : Schema.org RDF graph parsing failed -: '+str(e))
         if creative_work:
             schema_metadata = self.get_metadata(graph, creative_work, type = creative_work_type)
+            #object type (in case there are more than one
+            if isinstance(object_types_dict.get(str(creative_work)),list):
+                schema_metadata['object_type'] = object_types_dict.get(str(creative_work))
             # creator
             creator_node = None
             if graph.value(creative_work, SMA.creator):
