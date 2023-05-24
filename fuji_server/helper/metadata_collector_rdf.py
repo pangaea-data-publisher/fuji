@@ -624,12 +624,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
                         #ext_meta = self.compact_jsonld(ext_meta)
 
-                    #if isinstance(json_dict.get('@type'), list):
-                    #    json_dict['@type'] = json_dict.get('@type')[0]
+                    if not isinstance(json_dict.get('@type'), list):
+                        json_dict['@type'] = [json_dict.get('@type')]
+
                     if not json_dict.get('@type'):
                         self.logger.info(
                             'FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type')
-                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT  for tt in json_dict.get('@type')):
+                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get('@type')):
                     #elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
                         trusted = False
                         self.logger.info(
