@@ -336,7 +336,7 @@ class RequestHelper:
                                                  re.IGNORECASE) is not None:
                                         self.content_type = 'text/html'
                                 except Exception as e:
-                                    print(e)
+                                    print(e,'Request helper')
                             if self.content_type is None:
                                 parsedFile = parser.from_buffer(self.response_content)
                                 self.content_type = parsedFile.get('metadata').get('Content-Type')
@@ -347,7 +347,7 @@ class RequestHelper:
                                                  re.IGNORECASE) is None:
                                         self.content_type = 'text/xml'
                                 except Exception as e:
-                                    print(e)
+                                    print(e,'Request helper')
 
 
                             if self.content_type is not None:
@@ -460,6 +460,6 @@ class RequestHelper:
             except urllib.error.URLError as e:
                 self.logger.warning('{} : RequestException -: {} : {}'.format(metric_id, e.reason, self.request_url))
             except Exception as e:
-                print(e)
+                print(e, 'Request helper')
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
         return source, self.parse_response
