@@ -64,7 +64,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         #
         resource_types = self.fuji.metadata_merged.get('object_type')
         if resource_types:
-            print(resource_types)
             if not isinstance(resource_types, list):
                 resource_types = [resource_types]
             for resource_type in resource_types:
@@ -277,7 +276,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                                     str(tika_content_size)))
 
                             except Exception as e:
-                                print(e)
+                                print(e,' ... Data content')
                                 self.logger.warning(
                                     '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
                                     .format(self.metric_identifier, str(data_object.get('size')),
