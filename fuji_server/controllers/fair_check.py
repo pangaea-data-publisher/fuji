@@ -25,6 +25,7 @@ import io
 import json
 import logging, logging.handlers
 import mimetypes
+import os
 import re
 #import urllib
 import urllib.request as urllib
@@ -36,6 +37,7 @@ import extruct
 import pandas as pd
 import lxml
 import rdflib
+import yaml
 from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz
@@ -47,7 +49,7 @@ from tldextract import extract
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import FAIREvaluatorPersistentIdentifier
-from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifier
+from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
 from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
 from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
@@ -68,6 +70,7 @@ from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvider
+from fuji_server.helper.metric_helper import MetricHelper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -76,6 +79,7 @@ from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 class FAIRCheck:
     METRICS = None
+    METRIC_VERSION = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
     COMMUNITY_STANDARDS_NAMES = None
@@ -108,7 +112,8 @@ class FAIRCheck:
                  use_datacite=True,
                  verify_pids=True,
                  oaipmh_endpoint=None,
-                 allowed_harvesting_methods = None):
+                 allowed_harvesting_methods = None,
+                 metric_version = None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
@@ -195,12 +200,18 @@ class FAIRCheck:
         self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite,allowed_harvesting_methods=allowed_harvesting_methods)
         self.pid_collector = {}
 
+        self.metric_helper = MetricHelper(metric_version)
+        self.METRICS = self.metric_helper.get_custom_metrics(
+                ['metric_name', 'total_score', 'metric_tests', 'metric_number'])
+        self.METRIC_VERSION = metric_version
+
     @classmethod
     def load_predata(cls):
         cls.FILES_LIMIT = Preprocessor.data_files_limit
-        if not cls.METRICS:
+        #cls.METRIC_VERSION = os.path.basename(Preprocessor.METRIC_YML_PATH)
+        '''if not cls.METRICS:
             cls.METRICS = Preprocessor.get_custom_metrics(
-                ['metric_name', 'total_score', 'metric_tests', 'metric_number'])
+                ['metric_name', 'total_score', 'metric_tests', 'metric_number'])'''
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
@@ -234,6 +245,8 @@ class FAIRCheck:
         #not needed locally ... but init class variable
         #Preprocessor.get_google_data_dois()
         #Preprocessor.get_google_data_urls()
+
+
 
     @staticmethod
     def uri_validator(u):  # TODO integrate into request_helper.py
@@ -509,13 +522,13 @@ class FAIRCheck:
         return found
 
     def check_unique_identifier(self):
-        unique_identifier_check = FAIREvaluatorUniqueIdentifier(self)
-        unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
+        unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
+        #unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
         return unique_identifier_check.getResult()
 
     def check_persistent_identifier(self):
         persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
-        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=FAIRCheck.METRICS)
+        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=self.METRICS)
         return persistent_identifier_check.getResult()
 
     def check_unique_persistent(self):
@@ -524,77 +537,77 @@ class FAIRCheck:
 
     def check_minimal_metatadata(self, include_embedded=True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
-        core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
+        #core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
         return core_metadata_check.getResult()
 
     def check_content_identifier_included(self):
         content_included_check = FAIREvaluatorContentIncluded(self)
-        content_included_check.set_metric('FsF-F3-01M', metrics=FAIRCheck.METRICS)
+        content_included_check.set_metric('FsF-F3-01M', metrics=self.METRICS)
         return content_included_check.getResult()
 
     def check_data_access_level(self):
         data_access_level_check = FAIREvaluatorDataAccessLevel(self)
-        data_access_level_check.set_metric('FsF-A1-01M', metrics=FAIRCheck.METRICS)
+        data_access_level_check.set_metric('FsF-A1-01M', metrics=self.METRICS)
         return data_access_level_check.getResult()
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
-        license_check.set_metric('FsF-R1.1-01M', metrics=FAIRCheck.METRICS)
+        license_check.set_metric('FsF-R1.1-01M', metrics=self.METRICS)
         return license_check.getResult()
 
     def check_relatedresources(self):
         related_check = FAIREvaluatorRelatedResources(self)
-        related_check.set_metric('FsF-I3-01M', metrics=FAIRCheck.METRICS)
+        related_check.set_metric('FsF-I3-01M', metrics=self.METRICS)
         return related_check.getResult()
 
     def check_searchable(self):
         searchable_check = FAIREvaluatorSearchable(self)
-        searchable_check.set_metric('FsF-F4-01M', metrics=FAIRCheck.METRICS)
+        searchable_check.set_metric('FsF-F4-01M', metrics=self.METRICS)
         return searchable_check.getResult()
 
     def check_data_file_format(self):
         data_file_check = FAIREvaluatorFileFormat(self)
-        data_file_check.set_metric('FsF-R1.3-02D', metrics=FAIRCheck.METRICS)
+        data_file_check.set_metric('FsF-R1.3-02D', metrics=self.METRICS)
         return data_file_check.getResult()
 
     def check_community_metadatastandards(self):
         community_metadata_check = FAIREvaluatorCommunityMetadata(self)
-        community_metadata_check.set_metric('FsF-R1.3-01M', metrics=FAIRCheck.METRICS)
+        community_metadata_check.set_metric('FsF-R1.3-01M', metrics=self.METRICS)
         return community_metadata_check.getResult()
 
     def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
-        data_prov_check.set_metric('FsF-R1.2-01M', metrics=FAIRCheck.METRICS)
+        data_prov_check.set_metric('FsF-R1.2-01M', metrics=self.METRICS)
         return data_prov_check.getResult()
 
     def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
-        data_content_metadata_check.set_metric('FsF-R1-01MD', metrics=FAIRCheck.METRICS)
+        data_content_metadata_check.set_metric('FsF-R1-01MD', metrics=self.METRICS)
         return data_content_metadata_check.getResult()
 
     def check_formal_metadata(self):
         formal_metadata_check = FAIREvaluatorFormalMetadata(self)
-        formal_metadata_check.set_metric('FsF-I1-01M', metrics=FAIRCheck.METRICS)
+        formal_metadata_check.set_metric('FsF-I1-01M', metrics=self.METRICS)
         return formal_metadata_check.getResult()
 
     def check_semantic_vocabulary(self):
         semantic_vocabulary_check = FAIREvaluatorSemanticVocabulary(self)
-        semantic_vocabulary_check.set_metric('FsF-I2-01M', metrics=FAIRCheck.METRICS)
+        semantic_vocabulary_check.set_metric('FsF-I2-01M', metrics=self.METRICS)
         return semantic_vocabulary_check.getResult()
 
     def check_metadata_preservation(self):
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
-        metadata_preserved_check.set_metric('FsF-A2-01M', metrics=FAIRCheck.METRICS)
+        metadata_preserved_check.set_metric('FsF-A2-01M', metrics=self.METRICS)
         return metadata_preserved_check.getResult()
 
     def check_standardised_protocol_data(self):
         standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
-        standardised_protocol_check.set_metric('FsF-A1-03D', metrics=FAIRCheck.METRICS)
+        standardised_protocol_check.set_metric('FsF-A1-03D', metrics=self.METRICS)
         return standardised_protocol_check.getResult()
 
     def check_standardised_protocol_metadata(self):
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
-        standardised_protocol_metadata_check.set_metric('FsF-A1-02M', metrics=FAIRCheck.METRICS)
+        standardised_protocol_metadata_check.set_metric('FsF-A1-02M', metrics=self.METRICS)
         return standardised_protocol_metadata_check.getResult()
 
     def raise_warning_if_javascript_page(self, response_content):
@@ -644,24 +657,25 @@ class FAIRCheck:
             'status': []
         }
         for res_k, res_v in enumerate(results):
-            metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-', res_v['metric_identifier'])
-            if metric_match.group(2) is not None:
-                fair_principle = metric_match[1]
-                fair_category = metric_match[2]
-                earned_maturity = res_v['maturity']
-                #earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
-                summary_dict['fair_category'].append(fair_category)
-                summary_dict['fair_principle'].append(fair_principle)
-                #An easter egg for Mustapha
-                if self.input_id in ['https://www.rd-alliance.org/users/mustapha-mokrane','https://www.rd-alliance.org/users/ilona-von-stein']:
-                    summary_dict['score_earned'].append(res_v['score']['total'])
-                    summary_dict['maturity'].append(3)
-                    summary_dict['status'].append(1)
-                else:
-                    summary_dict['score_earned'].append(res_v['score']['earned'])
-                    summary_dict['maturity'].append(earned_maturity)
-                    summary_dict['status'].append(status_dict.get(res_v['test_status']))
-                summary_dict['score_total'].append(res_v['score']['total'])
+            if res_v.get('metric_identifier'):
+                metric_match = re.search(r'^FsF-(([FAIR])[0-9](\.[0-9])?)-', str(res_v.get('metric_identifier')))
+                if metric_match.group(2) is not None:
+                    fair_principle = metric_match[1]
+                    fair_category = metric_match[2]
+                    earned_maturity = res_v['maturity']
+                    #earned_maturity = [k for k, v in maturity_dict.items() if v == res_v['maturity']][0]
+                    summary_dict['fair_category'].append(fair_category)
+                    summary_dict['fair_principle'].append(fair_principle)
+                    #An easter egg for Mustapha
+                    if self.input_id in ['https://www.rd-alliance.org/users/mustapha-mokrane','https://www.rd-alliance.org/users/ilona-von-stein']:
+                        summary_dict['score_earned'].append(res_v['score']['total'])
+                        summary_dict['maturity'].append(3)
+                        summary_dict['status'].append(1)
+                    else:
+                        summary_dict['score_earned'].append(res_v['score']['earned'])
+                        summary_dict['maturity'].append(earned_maturity)
+                        summary_dict['status'].append(status_dict.get(res_v['test_status']))
+                    summary_dict['score_total'].append(res_v['score']['total'])
 
         sf = pd.DataFrame(summary_dict)
         summary = {'score_earned': {}, 'score_total': {}, 'score_percent': {}, 'status_total': {}, 'status_passed': {}}
