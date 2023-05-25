@@ -41,87 +41,107 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         through appropriate metadata fields.
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-F2-01M', metrics=fuji_instance.METRICS)
+        self.metadata_found = {}
+        # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
+        self.partial_elements = ['creator', 'title', 'object_identifier', 'publication_date', 'publisher', 'object_type']
+
+    def testMetadataCommonMethodsAvailable(self):
+        #implements FsF-F2-01M-1
+        if self.isTestDefined('FsF-F2-01M-1'):
+            test_score = self.metric_tests.get('FsF-F2-01M-1').metric_test_score_config
+            if len(self.metadata_found) >= 1:
+                self.logger.info('FsF-F2-01M : Found some descriptive metadata elements -: ' +
+                                 str(self.metadata_found.keys()))
+                self.setEvaluationCriteriumScore('FsF-F2-01M-1', test_score, 'pass')
+                source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
+                for source_mechanism in source_mechanisms:
+                    if source_mechanism == 'embedded':
+                        self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0, 'pass')
+                    if source_mechanism == 'negotiated':
+                        self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0, 'pass')
+                    if source_mechanism == 'linked':
+                        self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0, 'pass')
+                    if source_mechanism == 'signposting':
+                        self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0, 'pass')
+                self.maturity = self.metric_tests.get('FsF-F2-01M-1').metric_test_maturity_config
+                self.score.earned = test_score
+                partial_missing = list(set(self.partial_elements) - set(self.metadata_found))
+                if partial_missing:
+                    self.logger.warning(self.metric_identifier+' : Not all required citation metadata elements exist, missing -: ' +
+                                        str(partial_missing))
+
+            return True
+        else:
+            return False
+
+    def testCoreDescriptiveMetadataAvailable(self):
+        if self.isTestDefined('FsF-F2-01M-3'):
+            test_score = self.metric_tests.get('FsF-F2-01M-3').metric_test_score_config
+            test_status = False
+            if set(self.metadata_found) == set(Mapper.REQUIRED_CORE_METADATA.value):
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier+' : Found required core descriptive metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
+                self.maturity = self.metric_tests.get('FsF-F2-01M-3').metric_test_maturity_config
+                self.score.earned = self.total_score
+                self.setEvaluationCriteriumScore('FsF-F2-01M-3', test_score, 'pass')
+                test_status = True
+            else:
+                core_missing = list(set(Mapper.REQUIRED_CORE_METADATA.value) - set(self.metadata_found))
+                self.logger.warning(
+                    self.metric_identifier+' : Not all required core descriptive metadata elements exist, missing -: {}'.format(
+                        str(core_missing)))
+        return test_status
+
+
+    def testCoreCitationMetadataAvailable(self):
+        if self.isTestDefined('FsF-F2-01M-2'):
+            test_score = self.metric_tests.get('FsF-F2-01M-2').metric_test_score_config
+            test_status = False
+            if set(self.partial_elements).issubset(self.metadata_found):
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier+' : Found required core citation metadata elements -: {}'.format(self.partial_elements))
+                self.maturity = self.metric_tests.get('FsF-F2-01M-2').metric_test_maturity_config
+                self.setEvaluationCriteriumScore('FsF-F2-01M-2', test_score, 'pass')
+                self.score.earned = self.score.earned + test_score
+                test_status = True
+        return test_status
+
     def evaluate(self):
         if self.fuji.landing_url is None:
             self.logger.warning(
-                'FsF-F2-01M : Metadata checks probably unreliable: landing page URL could not be determined')
-        #self.fuji.retrieve_metadata_all(self.fuji.extruct_result)
+                self.metric_identifier+' : Metadata checks probably unreliable: landing page URL could not be determined')
         self.result = CoreMetadata(id=self.metric_number,
                                    metric_identifier=self.metric_identifier,
                                    metric_name=self.metric_name)
 
-        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
-        metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
-
-        # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
-        partial_elements = ['creator', 'title', 'object_identifier', 'publication_date', 'publisher', 'object_type']
-        # TODO: check the number of metadata elements which metadata_found has in common with metadata_required
-        # set(a) & set(b)
+        test_status = 'fail'
+        metadata_status = 'insufficient metadata'
+        self.metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in Mapper.REQUIRED_CORE_METADATA.value}
         self.logger.info(
-            'FsF-F2-01M : Testing for required core descriptive metadata elements -: {}'.format(metadata_required))
-
-        if set(metadata_found) == set(metadata_required):
-            self.logger.log(
-                self.fuji.LOG_SUCCESS,
-                'FsF-F2-01M : Found required core descriptive metadata elements -: {}'.format(metadata_required))
-            metadata_status = 'all metadata'
-            self.maturity = 3
-            self.score.earned = self.total_score
-            self.setEvaluationCriteriumScore('FsF-F2-01M-3', 1, 'pass')
-            self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
+            self.metric_identifier+' : Testing if any metadata has been made available via common web standards')
+        if self.testMetadataCommonMethodsAvailable():
             test_status = 'pass'
-        else:
-            core_missing = list(set(metadata_required) - set(metadata_found))
-            self.logger.warning(
-                'FsF-F2-01M : Not all required core descriptive metadata elements exist, missing -: {}'.format(
-                    str(core_missing)))
-            self.logger.info(
-                'FsF-F2-01M : Testing for required core citation metadata elements -: {}'.format(partial_elements))
-            if set(partial_elements).issubset(metadata_found):
-                self.logger.log(
-                    self.fuji.LOG_SUCCESS,
-                    'FsF-F2-01M : Found required core citation metadata elements -: {}'.format(partial_elements))
-                metadata_status = 'partial metadata'
-                self.maturity = 2
-                self.setEvaluationCriteriumScore('FsF-F2-01M-2', 0.5, 'pass')
-                self.score.earned = self.total_score - 1
-                test_status = 'pass'
-            else:
-                if len(metadata_found) >= 1:
-                    self.logger.info('FsF-F2-01M : Found some descriptive metadata elements -: ' +
-                                     str(metadata_found.keys()))
-                    metadata_status = 'some metadata'
-                    self.maturity = 1
-                    self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
-                    self.score.earned = 0.5
-                    test_status = 'pass'
-                else:
-                    metadata_status = 'insufficient metadata'  # status should follow enumeration in yaml
-                    self.score.earned = 0
-                    test_status = 'fail'
-                partial_missing = list(set(partial_elements) - set(metadata_found))
-                self.logger.warning('FsF-F2-01M : Not all required citation metadata elements exist, missing -: ' +
-                                    str(partial_missing))
-
+            metadata_status = 'some metadata'
+        self.logger.info(
+            self.metric_identifier+' : Testing for required core citation metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
+        if self.testCoreCitationMetadataAvailable():
+            test_status = 'pass'
+            metadata_status = 'partial metadata'
+        self.logger.info(
+            self.metric_identifier+' : Testing for required core descriptive metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
+        if self.testCoreDescriptiveMetadataAvailable():
+            test_status = 'pass'
+            metadata_status = 'all metadata'
+        print('METRIC ', self.metric_identifier)
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
                                          core_metadata_source=list(set(self.fuji.metadata_sources)))
-        #meta_output: CoreMetadataOutput = CoreMetadataOutput(core_metadata_status=metadata_status,
-        #                                                     core_metadata_source=self.metadata_sources)
-        self.output.core_metadata_found = metadata_found
-        source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
-        for source_mechanism in source_mechanisms:
-            if source_mechanism == 'embedded':
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0, 'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
-            if source_mechanism == 'negotiated':
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0, 'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
-            if source_mechanism == 'linked':
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0, 'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
-            if source_mechanism == 'signposting':
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0, 'pass')
-                self.setEvaluationCriteriumScore('FsF-F2-01M-1', 0.5, 'pass')
+
+        self.output.core_metadata_found = self.metadata_found
         self.result.test_status = test_status
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
