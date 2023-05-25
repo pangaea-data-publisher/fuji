@@ -86,7 +86,7 @@ class FAIREvaluator:
         """
         self.metrics = metrics
         self.metric_identifier = metric_identifier
-        if self.metric_identifier is not None:
+        if self.metric_identifier is not None and self.metric_identifier in self.metrics:
             self.total_score = int(self.metrics.get(metric_identifier).get('total_score'))
             self.score = FAIRResultCommonScore(total=self.total_score)
             self.metric_name = self.metrics.get(metric_identifier).get('metric_name')
@@ -101,7 +101,19 @@ class FAIREvaluator:
     def getResult(self):
         """Get result of evaluation and pack it into dictionary."""
         self.evaluate()
-        return self.result.to_dict()
+        if self.result:
+            return self.result.to_dict()
+        else:
+            return {}
+
+
+    def isTestDefined(self, testid):
+        if testid  in self.metric_tests:
+            return True
+        else:
+            self.logger.warning(
+                self.metric_identifier+' : This test is not defined in the metric YAML -: '+ str(testid))
+            return False
 
     def initializeEvaluationCriteria(self):
         """Initialize the evaluation criteria."""
@@ -113,9 +125,10 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_status = 'fail'
                 evaluation_criterium.metric_test_name = metric_test.get('metric_test_name')
                 evaluation_criterium.metric_test_score = 0
-                evaluation_criterium.metric_test_score_max = metric_test.get('metric_test_score')
+                evaluation_criterium.metric_test_score_config = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_maturity = None
-                evaluation_criterium.metric_test_maturity_max = metric_test.get('metric_test_maturity')
+                evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
+                evaluation_criterium.metric_test_config = metric_test.get('metric_test_config')
                 self.metric_tests[metric_test.get('metric_test_identifier')] = evaluation_criterium
 
     def setEvaluationCriteriumScore(self,
@@ -137,12 +150,12 @@ class FAIREvaluator:
         """
         evaluation_criterium = self.metric_tests.get(criterium_id)
         if evaluation_criterium is not None:
-            if metric_test_score != evaluation_criterium.metric_test_score_max:
+            if metric_test_score != evaluation_criterium.metric_test_score_config:
                 evaluation_criterium.metric_test_score = metric_test_score
             else:
                 if metric_test_status == 'pass':
-                    evaluation_criterium.metric_test_score = evaluation_criterium.metric_test_score_max
+                    evaluation_criterium.metric_test_score = evaluation_criterium.metric_test_score_config
             evaluation_criterium.metric_test_status = metric_test_status
             if metric_test_status == 'pass':
-                evaluation_criterium.metric_test_maturity = evaluation_criterium.metric_test_maturity_max
+                evaluation_criterium.metric_test_maturity = evaluation_criterium.metric_test_maturity_config
             self.metric_tests[criterium_id] = evaluation_criterium
