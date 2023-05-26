@@ -108,7 +108,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             Mapper.VALID_PIDS.value))
 
         self.result.test_status = 'fail'
-        if self.testCompliesWithPIDScheme() and self.testCompliesWithPIDScheme():
+        if self.testCompliesWithPIDScheme() and self.testIfLandingPageResolves():
             self.result.test_status = 'pass'
         else:
             self.score.earned = 0
