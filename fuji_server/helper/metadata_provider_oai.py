@@ -85,7 +85,7 @@ class OAIMetadataProvider(MetadataProvider):
                     self.namespaces.append(metadata_schema)
                     # TODO there can be more than one OAI-PMH endpoint, https://www.re3data.org/repository/r3d100011221
                     if not any(s in metadata_schema for s in filter):
-                        schemas[metadata_prefix] = [metadata_schema]
+                        schemas[metadata_prefix] = metadata_schema
                     else:
                         self.logger.info(
                             '{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {1}'.format(
