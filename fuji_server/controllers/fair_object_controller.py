@@ -146,7 +146,7 @@ def assess_by_id(body):  # noqa: E501
         #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         timestmp = datetime.datetime.now().replace(
             microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
-        metric_spec = Preprocessor.metric_specification
+        #metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()
@@ -158,7 +158,7 @@ def assess_by_id(body):  # noqa: E501
                                      software_version=ft.FUJI_VERSION,
                                      test_id=ft.test_id,
                                      metric_version=metric_version,
-                                     metric_specification=metric_spec,
+                                     metric_specification=ft.metric_spec,
                                      total_metrics=totalmetrics,
                                      results=results,
                                      summary=summary)

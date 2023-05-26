@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import re
 
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
@@ -54,7 +55,6 @@ class FAIREvaluator:
 
     #according to the CMMI model
     maturity_levels = Mapper.MATURITY_LEVELS.value
-
     #{0: 'incomplete', 1: 'initial', 2: 'managed', 3: 'defined', 4: 'quantitatively managed',5: 'optimizing'}
     def __init__(self, fuji_instance):
         """
@@ -73,6 +73,7 @@ class FAIREvaluator:
         self.isDebug = self.fuji.isDebug
         self.fuji.count = self.fuji.count + 1
         self.logger = self.fuji.logger
+        self.metric_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?'
 
     def set_metric(self, metric_identifier, metrics):
         """Set the metric for evaluation process.
@@ -108,7 +109,10 @@ class FAIREvaluator:
 
 
     def isTestDefined(self, testid):
-        if testid  in self.metric_tests:
+        tm = re.search(self.metric_regex, testid)
+        if tm:
+            agnostic_test_id = tm[0]
+        if agnostic_test_id  in self.metric_tests:
             return True
         else:
             self.logger.warning(
@@ -159,3 +163,14 @@ class FAIREvaluator:
             if metric_test_status == 'pass':
                 evaluation_criterium.metric_test_maturity = evaluation_criterium.metric_test_maturity_config
             self.metric_tests[criterium_id] = evaluation_criterium
+
+    def getTestConfigScore(self, criterium_id):
+        #get the configured score from YAML
+        tm =  re.search(self.metric_regex, criterium_id)
+        if tm:
+            agnostic_criterium_id = tm[0]
+        if agnostic_criterium_id in self.metric_tests:
+            return self.metric_tests[agnostic_criterium_id].metric_test_score_config
+        else:
+            return False
+

@@ -58,7 +58,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
     def testCompliesWithPIDScheme(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
-            test_score = self.metric_tests.get(self.metric_identifier + '-1').metric_test_score_config
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             print('TEST SCORE  ',test_score)
             verified_pids = []
             verified_pid_schemes = []
@@ -86,7 +86,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
     def testIfLandingPageResolves(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
-            test_score = self.metric_tests.get(self.metric_identifier + '-2').metric_test_score_config
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             if self.fuji.isLandingPageAccessible:
                 test_status = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')

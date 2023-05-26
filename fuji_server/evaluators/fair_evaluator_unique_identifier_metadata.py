@@ -78,7 +78,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
     def testCompliesWithUUIDorHASH(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
-            test_score = self.metric_tests.get(self.metric_identifier + '-2').metric_test_score_config
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             if self.verify_uuid(self.fuji.id):
                 self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Unique identifier (UUID) scheme found')
                 self.output.guid_scheme = 'uuid'

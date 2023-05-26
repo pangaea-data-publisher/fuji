@@ -206,7 +206,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 format('FsF-R1.3-01M'))
 
     def testMultidisciplinarybutCommunityEndorsedMetadataDetected(self):
-        test_score = self.metric_tests.get(self.metric_identifier + '-3').metric_test_score_config
+        test_score = self.getTestConfigScore(self.metric_identifier + '-3')
         generic_found = False
         for found_standard in self.found_metadata_standards:
 
@@ -223,7 +223,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             return True
 
     def testCommunitySpecificMetadataDetectedviaRe3Data(self):
-        test_score = self.metric_tests.get(self.metric_identifier + '-2').metric_test_score_config
+        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
         specific_found = False
         for found_standard in self.found_metadata_standards:
 
@@ -240,7 +240,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             return True
 
     def testCommunitySpecificMetadataDetectedviaNamespaces(self):
-        test_score = self.metric_tests.get(self.metric_identifier + '-1').metric_test_score_config
+        test_score = self.getTestConfigScore(self.metric_identifier + '-1')
         specific_found = False
         for found_standard in self.found_metadata_standards:
 

@@ -79,7 +79,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
     def testCoreDescriptiveMetadataAvailable(self):
         if self.isTestDefined('FsF-F2-01M-3'):
-            test_score = self.metric_tests.get('FsF-F2-01M-3').metric_test_score_config
+            test_score = self.getTestConfigScore(self.metric_identifier + '-3')
             test_status = False
             if set(self.metadata_found) == set(Mapper.REQUIRED_CORE_METADATA.value):
                 self.logger.log(
@@ -99,7 +99,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
     def testCoreCitationMetadataAvailable(self):
         if self.isTestDefined('FsF-F2-01M-2'):
-            test_score = self.metric_tests.get('FsF-F2-01M-2').metric_test_score_config
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             test_status = False
             if set(self.partial_elements).issubset(self.metadata_found):
                 self.logger.log(
