@@ -45,6 +45,45 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         a data identifier that matches the identifier as part of the assessment request.
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-F3-01M', metrics=fuji_instance.METRICS)
+        self.content_list = []
+
+    def testDataSizeTypeNameAvailable(self, datainfolist):
+        test_result = False
+        test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+        if datainfolist:
+            for datainfo in datainfolist:
+                if isinstance(datainfo, dict):
+                    if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
+                        test_result = True
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                        self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+                        did_output_content = IdentifierIncludedOutputInner()
+                        did_output_content.content_identifier_included = datainfo
+                        self.content_list.append(did_output_content)
+                        self.fuji.content_identifier.append(datainfo)
+        if test_result:
+            self.score.earned += test_score
+        return test_result
+
+    def testDataUrlOrPIDAvailable(self, datainfolist):
+        test_result = False
+        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+        if datainfolist:
+            for datainfo in datainfolist:
+                if isinstance(datainfo, dict):
+                    if datainfo.get('url'):
+                        test_result = True
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                        self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+                    else:
+                        self.logger.warning(self.metric_identifier +' : Object (content) url is empty -: {}'.format(datainfo))
+        if test_result:
+            self.score.earned += test_score
+        return test_result
+
     def evaluate(self):
         socket.setdefaulttimeout(1)
 
@@ -70,42 +109,26 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             #contents = list({cv['url']:cv for cv in contents}.values())
             #print(contents)
             number_of_contents = len(contents)
-
-            self.logger.log(self.fuji.LOG_SUCCESS,
-                            'FsF-F3-01M : Number of object content identifier found -: {}'.format(number_of_contents))
-            self.maturity = 1
-            score = 0.5
-            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
             if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
-                    'FsF-F3-01M : The total number of object (content) identifiers specified is above threshold, will use the first -: {} content identifiers for the tests'
+                    self.metric_identifier +' : The total number of object (content) identifiers specified is above threshold, will use the first -: {} content identifiers for the tests'
                     .format(self.fuji.FILES_LIMIT))
                 contents = contents[:self.fuji.FILES_LIMIT]
+            self.result.test_status = 'fail'
+            if self.testDataSizeTypeNameAvailable(contents):
+                self.result.test_status = 'pass'
+            if self.testDataUrlOrPIDAvailable(contents):
+                self.result.test_status = 'pass'
 
-            for content_link in contents:
-                # self.logger.info('FsF-F3-01M : Object content identifier included {}'.format(content_link.get('url')))
-                did_output_content = IdentifierIncludedOutputInner()
-                did_output_content.content_identifier_included = content_link
+            if self.result.test_status == 'pass':
+                self.logger.log(self.fuji.LOG_SUCCESS,
+                                self.metric_identifier +' : Number of object content identifier found -: {}'.format(
+                                    number_of_contents))
+            else:
+                self.logger.warning(self.metric_identifier +' : Valid data (content) identifier missing.')
 
-                if content_link.get('url'):
-                    content_list.append(did_output_content)
-                    self.fuji.content_identifier.append(content_link)
-                else:
-                    self.logger.warning('FsF-F3-01M : Object (content) url is empty -: {}'.format(content_link))
-
-        else:
-            self.logger.warning('FsF-F3-01M : Data (content) identifier is missing.')
-
-        if content_list:
-            self.maturity = 3
-            score = 1
-            self.setEvaluationCriteriumScore('FsF-F3-01M-1', 0.5, 'pass')
-            self.setEvaluationCriteriumScore('FsF-F3-01M-2', 0.5, 'pass')
-        self.score.earned = score
-        if score > 0.5:
-            self.result.test_status = 'pass'
         self.result.metric_tests = self.metric_tests
-        self.output.object_content_identifier_included = content_list
+        self.output.object_content_identifier_included = self.content_list
         self.result.output = self.output
         self.result.maturity = self.maturity
         self.result.score = self.score

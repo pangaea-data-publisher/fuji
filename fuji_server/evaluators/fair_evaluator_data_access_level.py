@@ -42,6 +42,105 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         This method will evaluate the metadata that includes the level of data access, e.g., public, embargoed, restricted, whether
         using a appropriate metadata field or using a machine-readable and verified against controlled vocabularies.
     """
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-A1-01M', metrics=fuji_instance.METRICS)
+        self.access_details = {}
+        self.access_level = None
+
+
+    def excludeLicences(self, access_rights):
+        licence_evaluator = FAIREvaluatorLicense(self.fuji)
+        real_access_rights = []
+        for access_right in access_rights:
+            access_right = re.sub(r'[\r\n]+', ' ', access_right)
+            if not licence_evaluator.isLicense(
+                    value=access_right,
+                    metric_id=self.metric_identifier):  # exclude license-based text from access_rights
+                real_access_rights.append(access_right)
+            else:
+                self.logger.warning(
+                    'FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.
+                        format(access_right))
+                if self.fuji.metadata_merged.get('license'):
+                    if isinstance(self.fuji.metadata_merged.get('license'), list):
+                        self.fuji.metadata_merged['license'].append(access_right)
+                    else:
+                        self.fuji.metadata_merged['license'] = [access_right]
+                self.logger.info(
+                    'FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'
+                        .format(access_right))
+        return real_access_rights
+
+    def testAccessRightsMetadataAvailable(self, access_rights):
+        test_result = False
+        test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+        if access_rights:
+            test_result = True
+            self.logger.info(self.metric_identifier +' : Found access rights information in dedicated metadata element')
+            self.setEvaluationCriteriumScore(self.metric_identifier + '-1',test_score, 'pass')
+            self.score.earned = test_score
+            self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+        else:
+            self.logger.warning(self.metric_identifier +' : NO access information is available in metadata')
+        return test_result
+
+    def testAccessRightsStandardTerms(self,access_rights):
+        test_result = False
+        test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+        lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
+        for access_right in access_rights:
+            if access_right.lower() in lower_case_access_dict:
+                self.logger.info(
+                    self.metric_identifier + ' : Non-actionable (term only) standard access level recognized as -:' +
+                    str(lower_case_access_dict.get(access_right.lower())))
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
+                self.access_level = lower_case_access_dict.get(access_right.lower())
+                self.access_details['access_condition'] = access_right
+                self.score.earned = test_score
+                break
+        return test_result
+
+    def testAccessRightsMachineReadable(self,access_rights):
+        test_result = False
+        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+        for access_right in access_rights:
+            self.logger.info(self.metric_identifier + ' : Access right information specified -: {}'.format(
+                access_right))
+            rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
+            if rights_match is not None:
+                last_group = len(rights_match.groups())
+                filtered_rights = rights_match[last_group]
+                for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
+                    if re.search(right_code, filtered_rights, re.IGNORECASE):
+                        test_result = True
+                        self.access_level = right_status
+                        self.access_details['access_condition'] = rights_match[1]  # overwrite existing condition
+                        self.logger.info(self.metric_identifier + ' : Standardized actionable access level recognized as -:' +
+                                         str(right_status))
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                        self.score.earned = test_score
+                        self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+                        break
+                break
+        if self.access_level is None:
+            # fall back - use binary access
+            access_free = self.fuji.metadata_merged.get('access_free')
+            if access_free is not None:
+                self.logger.info(
+                    'FsF-A1-01M : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
+                )
+                if access_free:  # schema.org: isAccessibleForFree || free
+                    self.access_level = 'public'
+                else:
+                    self.access_level = 'restricted'
+                self.access_details['accessible_free'] = access_free
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.score.earned = test_score
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+        return test_result
 
     def evaluate(self):
         #Focus on machine readable rights -> URIs only
@@ -53,135 +152,47 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                                       metric_identifier=self.metric_identifier,
                                       metric_name=self.metric_name)
         self.output = DataAccessOutput()
-        licence_evaluator = FAIREvaluatorLicense(self.fuji)
-        #rights_regex = r'((\/licenses|purl.org\/coar\/access_right|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
-        rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
 
-        access_level = None
-        access_details = {}
-        score = 0
         test_status = 'fail'
-        exclude = []
         access_rights = self.fuji.metadata_merged.get('access_level')
 
         #access_rights can be None or []
-        if access_rights:
+        if self.testAccessRightsMetadataAvailable(access_rights):
             #self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
             #self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
             #self.maturity = 1
             if isinstance(access_rights, str):
                 access_rights = [access_rights]
-            for access_right in access_rights:
-                #TODO: remove new lines also from other logger messages or handle this elsewhere
-                access_right = re.sub(r'[\r\n]+', ' ', access_right)
-                self.logger.info('FsF-A1-01M : Access information specified -: {}'.format(
-                    access_right.replace('\n', ' ')))
-                if not licence_evaluator.isLicense(
-                        value=access_right,
-                        metric_id=self.metric_identifier):  # exclude license-based text from access_rights
-                    rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
-                    if rights_match is not None:
-                        last_group = len(rights_match.groups())
-                        filtered_rights = rights_match[last_group]
-                        for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
-                            if re.search(right_code, filtered_rights, re.IGNORECASE):
-                                access_level = right_status
-                                access_details['access_condition'] = rights_match[1]  #overwrite existing condition
-                                self.logger.info('FsF-A1-01M : Standardized actionable access level recognized as -:' +
-                                                 str(right_status))
-                                self.setEvaluationCriteriumScore('FsF-A1-01M-2', 0.5, 'pass')
-                                self.maturity = 3
-                                break
-                        break
-                    #else:
-                    #    self.logger.info('FsF-A1-01M : Non-actionable, non-standardized, access level found')
-                else:
-                    self.logger.warning(
-                        'FsF-A1-01M : Access condition looks like license, therefore the following is ignored -: {}'.
-                        format(access_right))
-                    if self.fuji.metadata_merged.get('license'):
-                        if isinstance(self.fuji.metadata_merged.get('license'), list):
-                            self.fuji.metadata_merged['license'].append(access_right)
-                        else:
-                            self.fuji.metadata_merged['license'] = [access_right]
-                    self.logger.info(
-                        'FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'
-                        .format(access_right))
-                    exclude.append(access_right)
+            access_rights = self.excludeLicences(access_rights)
 
-            if not access_level:
-                lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
-                for access_right in access_rights:
-                    if access_right.lower() in lower_case_access_dict:
-                        self.logger.info(
-                            'FsF-A1-01M : Non-actionable (term only) standard access level recognized as -:' +
-                            str(lower_case_access_dict.get(access_right.lower())))
-                        if self.maturity <= 2:
-                            self.maturity = 2
-                        self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
-                        access_level = lower_case_access_dict.get(access_right.lower())
-                        access_details['access_condition'] = access_right
-                        break
+            self.testAccessRightsStandardTerms(access_rights)
+            self.testAccessRightsMachineReadable(access_rights)
 
-            if not access_details and access_rights:
-                access_rights = set(access_rights) - set(exclude)
+            if not self.access_details and self.access_rights:
                 if access_rights:
-                    access_details['access_condition'] = ', '.join(access_rights)
+                    self.access_details['access_condition'] = ', '.join(access_rights)
 
-        if access_rights:
-            self.logger.info('FsF-A1-01M : Found access rights information in dedicated metadata element')
-            self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
-            if self.maturity <= 1:
-                self.maturity = 1
-        else:
-            self.logger.warning('FsF-A1-01M : NO access information is available in metadata')
-            score = 0
-
-        if access_level is None:
-            # fall back - use binary access
-            access_free = self.fuji.metadata_merged.get('access_free')
-            if access_free is not None:
-                self.logger.info(
-                    'FsF-A1-01M : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
-                )
-                if access_free:  # schema.org: isAccessibleForFree || free
-                    access_level = 'public'
-                else:
-                    access_level = 'restricted'
-                access_details['accessible_free'] = access_free
-                if self.maturity <= 2:
-                    self.maturity = 2
-                self.setEvaluationCriteriumScore('FsF-A1-01M-1', 0.5, 'pass')
-                self.setEvaluationCriteriumScore('FsF-A1-01M-3', 0.5, 'pass')
-            #TODO assume access_level = restricted if access_rights provided?
-
-        #if embargoed, publication date must be specified (for now score is not deducted, just outputs warning message)
-        if access_level == 'embargoed':
+       #if embargoed, publication date must be specified (for now score is not deducted, just outputs warning message)
+        if self.access_level == 'embargoed':
             available_date = self.fuji.metadata_merged.get('publication_date')
             if available_date:
                 self.logger.info('FsF-A1-01M : Embargoed access, available date -: {}'.format(available_date))
-                access_details['available_date'] = available_date
+                self.access_details['available_date'] = available_date
             else:
                 self.logger.warning('FsF-A1-01M : Embargoed access, available date NOT found')
 
-        if access_level or access_details:
-            if access_level:
-                score = 1
-            else:
-                score = 0.5
+        if self.access_level or self.access_details:
             test_status = 'pass'
-
-        self.score.earned = score
         self.result.score = self.score
         self.result.test_status = test_status
 
-        if access_level:  #must be one of ['public', 'embargoed', 'restricted', 'closed','metadataonly']
-            self.output.access_level = access_level
+        if self.access_level:  #must be one of ['public', 'embargoed', 'restricted', 'closed','metadataonly']
+            self.output.access_level = self.access_level
             self.logger.log(self.fuji.LOG_SUCCESS,
-                            'FsF-A1-01M : Access level to data could successfully be determined -: ' + access_level)
+                            'FsF-A1-01M : Access level to data could successfully be determined -: ' + self.access_level)
         else:
             self.logger.warning('FsF-A1-01M : Unable to determine the access level')
-        self.output.access_details = access_details
+        self.output.access_details = self.access_details
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.output
