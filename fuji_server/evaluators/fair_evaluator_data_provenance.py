@@ -44,82 +44,96 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         a machine-readabe version such PROV-O or PAV
     """
 
-    def evaluate(self):
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-R1.2-01M')
 
+
+    def testProvenanceMetadataAvailable(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            provenance_metadata_output = DataProvenanceOutputInner()
+            provenance_metadata_output.provenance_metadata = []
+            provenance_metadata_output.is_available = False
+            self.logger.info(self.metric_identifier + ' : Check if provenance information is available in descriptive metadata')
+            for md in self.fuji.metadata_merged:
+                if md in Mapper.PROVENANCE_MAPPING.value:
+                    provenance_metadata_output.is_available = True
+                    provenance_metadata_output.provenance_metadata.append({
+                        'prov_o_mapping':
+                        Mapper.PROVENANCE_MAPPING.value.get(md),
+                        'metadata_element':
+                        md,
+                        'metadata_value':
+                        self.fuji.metadata_merged.get(md)
+                    })
+
+            relateds = self.fuji.metadata_merged.get('related_resources')
+            self.logger.info(
+                self.metric_identifier + ' : Check if provenance information is available in metadata about related resources')
+            if isinstance(relateds, list):
+                for rm in relateds:
+                    if rm.get('relation_type') in Mapper.PROVENANCE_MAPPING.value:
+                        provenance_metadata_output.provenance_metadata.append({
+                            'prov_o_mapping':
+                            Mapper.PROVENANCE_MAPPING.value.get(rm.get('relation_type')),
+                            'metadata_element':
+                            'related.' + str(rm.get('relation_type')),
+                            'metadata_value':
+                            rm.get('related_resource')
+                        })
+            else:
+                self.logger.warning(self.metric_identifier + ' : No provenance information found in metadata about related resources')
+
+            if provenance_metadata_output.is_available:
+                test_status = True
+                self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Found data creation-related provenance information')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                self.score.earned = test_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+            self.output.provenance_metadata_included = provenance_metadata_output
+        return test_status
+
+    def testProvenanceStandardsUsed(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            provenance_namespaces = ['http://www.w3.org/ns/prov#', 'http://purl.org/pav/']
+            # structured provenance metadata available
+            structured_metadata_output = DataProvenanceOutputInner()
+            structured_metadata_output.provenance_metadata = []
+            structured_metadata_output.is_available = False
+            self.logger.info(self.metric_identifier + ' : Check if provenance specific namespaces are listed in metadata')
+
+            used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.fuji.namespace_uri)))
+            if used_provenance_namespace:
+                test_status = True
+                self.score.earned += test_score
+                structured_metadata_output.is_available = True
+                for used_prov_ns in used_provenance_namespace:
+                    structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Found use of dedicated provenance ontologies')
+            else:
+                self.logger.warning(self.metric_identifier + ' : Formal provenance metadata is unavailable')
+            self.output.structured_provenance_available = structured_metadata_output
+        return test_status
+
+    def evaluate(self):
         self.result = DataProvenance(id=self.metric_number,
                                      metric_identifier=self.metric_identifier,
                                      metric_name=self.metric_name)
         self.output = DataProvenanceOutput()
-        score = 0
-        has_creation_provenance = False
-        provenance_elements = []
-        provenance_namespaces = ['http://www.w3.org/ns/prov#', 'http://purl.org/pav/']
+
         provenance_status = 'fail'
-
-        provenance_metadata_output = DataProvenanceOutputInner()
-        provenance_metadata_output.provenance_metadata = []
-        provenance_metadata_output.is_available = False
-        self.logger.info('FsF-R1.2-01M : Check if provenance information is available in descriptive metadata')
-        for md in self.fuji.metadata_merged:
-            if md in Mapper.PROVENANCE_MAPPING.value:
-                provenance_metadata_output.is_available = True
-                provenance_metadata_output.provenance_metadata.append({
-                    'prov_o_mapping':
-                    Mapper.PROVENANCE_MAPPING.value.get(md),
-                    'metadata_element':
-                    md,
-                    'metadata_value':
-                    self.fuji.metadata_merged.get(md)
-                })
-
-        relateds = self.fuji.metadata_merged.get('related_resources')
-        self.logger.info(
-            'FsF-R1.2-01M : Check if provenance information is available in metadata about related resources')
-        if isinstance(relateds, list):
-            for rm in relateds:
-                if rm.get('relation_type') in Mapper.PROVENANCE_MAPPING.value:
-                    provenance_metadata_output.provenance_metadata.append({
-                        'prov_o_mapping':
-                        Mapper.PROVENANCE_MAPPING.value.get(rm.get('relation_type')),
-                        'metadata_element':
-                        'related.' + str(rm.get('relation_type')),
-                        'metadata_value':
-                        rm.get('related_resource')
-                    })
-        else:
-            self.logger.warning('FsF-R1.2-01M : No provenance information found in metadata about related resources')
-
-        if provenance_metadata_output.is_available:
-            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.2-01M : Found data creation-related provenance information')
+        if self.testProvenanceMetadataAvailable():
             provenance_status = 'pass'
-            self.maturity = 2
-            score = score + 1
-            self.setEvaluationCriteriumScore('FsF-R1.2-01M-1', 1, 'pass')
-        self.output.provenance_metadata_included = provenance_metadata_output
-
-        # structured provenance metadata available
-        structured_metadata_output = DataProvenanceOutputInner()
-        structured_metadata_output.provenance_metadata = []
-        structured_metadata_output.is_available = False
-        self.logger.info('FsF-R1.2-01M : Check if provenance specific namespaces are listed in metadata')
-
-        used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.fuji.namespace_uri)))
-        if used_provenance_namespace:
-            score = score + 1
-            structured_metadata_output.is_available = True
-            for used_prov_ns in used_provenance_namespace:
-                structured_metadata_output.provenance_metadata.append({'namespace': used_prov_ns})
-            self.setEvaluationCriteriumScore('FsF-R1.2-01M-2', 1, 'pass')
-            self.maturity = 3
-            self.logger.log(self.fuji.LOG_SUCCESS, 'FsF-R1.2-01M : Found use of dedicated provenance ontologies')
-        else:
-            self.logger.warning('FsF-R1.2-01M : Formal provenance metadata is unavailable')
-        self.output.structured_provenance_available = structured_metadata_output
-
-        if score >= 1:
+        if self.testProvenanceStandardsUsed():
             provenance_status = 'pass'
+            
         self.result.test_status = provenance_status
-        self.score.earned = score
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.output
