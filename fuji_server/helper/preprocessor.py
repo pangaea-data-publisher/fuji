@@ -199,10 +199,18 @@ class Preprocessor(object):
         return cls.schema_org_context
 
     @classmethod
-    def retrieve_metrics_yaml(cls, yaml_metric_path, limit, specification_uri):
-        cls.METRIC_YML_PATH = yaml_metric_path
+    def set_data_files_limit(cls, limit):
         cls.data_files_limit = limit
-        cls.metric_specification = specification_uri
+
+    @classmethod
+    def set_metric_yaml_path(cls,yaml_metric_path):
+        cls.METRIC_YML_PATH = yaml_metric_path
+
+    @classmethod
+    def retrieve_metrics_yaml(cls, yaml_metric_path):
+        cls.METRIC_YML_PATH = yaml_metric_path
+        #cls.data_files_limit = limit
+        #cls.metric_specification = specification_uri
         stream = open(cls.METRIC_YML_PATH, 'r', encoding='utf8')
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
@@ -557,13 +565,13 @@ class Preprocessor(object):
             cls.retrieve_default_namespaces()
         return cls.default_namespaces
 
-    @classmethod
+    '''@classmethod
     def get_metrics(cls):
         return cls.formatted_specification
 
     @classmethod
     def get_total_metrics(cls):
-        return cls.total_metrics
+        return cls.total_metrics'''
 
     @classmethod
     def get_total_licenses(cls):
