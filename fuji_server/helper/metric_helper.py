@@ -14,7 +14,8 @@ class MetricHelper:
         self.metric_version = None
         self.total_metrics = 0
         self.all_metrics_list = None
-
+        self.metric_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+'
+        self.metric_test_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)'
         if logger:
             self.logger = logger
         else:
@@ -35,7 +36,7 @@ class MetricHelper:
 
             self.all_metrics_list = specification['metrics']
             self.total_metrics = len(self.all_metrics_list)
-            print('LOADED METRICS  ', self.total_metrics)
+            print('NUMBER OF LOADED METRICS  ', self.total_metrics)
             # expected output format of http://localhost:1071/uji/api/v1/metrics
             # unwanted_keys = ['question_type']
             self.formatted_specification['total'] = self.total_metrics
@@ -49,7 +50,23 @@ class MetricHelper:
         if not self.all_metrics_list:
             self.retrieve_metrics_yaml(self.METRIC_YML_PATH)
         for dictm in self.all_metrics_list:
-            new_dict[dictm['metric_identifier']] = {k: v for k, v in dictm.items() if k in wanted_fields}
+            tm = re.search(self.metric_regex, str(dictm.get('metric_identifier')))
+            if tm:
+                agnostic_identifier = tm[0]
+                new_dict[agnostic_identifier] = {k: v for k, v in dictm.items() if k in wanted_fields}
+                new_dict[agnostic_identifier]['agnostic_identifier'] = agnostic_identifier
+                new_dict[agnostic_identifier]['metric_identifier'] = dictm.get('metric_identifier')
+
+                if isinstance(dictm.get('metric_tests'), list):
+                    for dictt in dictm.get('metric_tests'):
+                        ttm = re.search(self.metric_test_regex, str(dictt.get('metric_test_identifier')))
+                        if ttm:
+                            agnostic_test_identifier = ttm[0]
+                            dictt['agnostic_test_identifier'] = agnostic_test_identifier
+                        else:
+                            self.logger.error('Invalid YAML defined Metric Test: ' + str(dictt.get('metric_test_identifier')))
+            else:
+                self.logger.error('Invalid YAML defined Metric: '+str(dictm.get('metric_identifier')))
         return new_dict
 
     def get_metric_version(self):
