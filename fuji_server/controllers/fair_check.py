@@ -63,6 +63,7 @@ from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREval
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAIREvaluatorStandardisedProtocolData
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import FAIREvaluatorStandardisedProtocolMetadata
+from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
 
 from fuji_server.helper.metadata_mapper import Mapper
@@ -342,6 +343,10 @@ class FAIRCheck:
         if self.namespace_uri:
             self.namespace_uri = list(set(self.namespace_uri))
 
+    def harvest_all_data(self):
+        data_harvester = DataHarvester(self.metadata_merged.get('object_content_identifier'), self.logger, metrics = self.METRICS.keys())
+        data_harvester.retrieve_all_data()
+        self.content_identifier = data_harvester.data
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()
@@ -582,14 +587,3 @@ class FAIRCheck:
         summary['status_passed'].update(sf.groupby(by='fair_category')['status'].sum().to_dict())
         summary['status_passed']['FAIR'] = int(sf['status'].sum())
         return summary
-
-    #in case experimental mime types are detected add mime types without x. or x. prefix
-    def extend_mime_type_list(self, mime_list):
-        if isinstance(mime_list, str):
-            mime_list = [mime_list]
-        for mime in mime_list:
-            xm = re.split(r'/(?:[xX][-\.])?', mime)
-            if len(xm) == 2:
-                if str(xm[0] + '/' + xm[1]) not in mime_list:
-                    mime_list.append(str(xm[0] + '/' + xm[1]))
-        return mime_list
