@@ -75,7 +75,8 @@ class FAIREvaluator:
         self.logger = self.fuji.logger
         self.metric_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?'
 
-    def set_metric(self, metric_identifier, metrics):
+
+    def set_metric(self, metric_identifier):
         """Set the metric for evaluation process.
 
         Parameters
@@ -85,8 +86,10 @@ class FAIREvaluator:
         metrics: str
             FUJI metrics
         """
-        self.metrics = metrics
+        self.metrics = self.fuji.METRICS
         self.metric_identifier = metric_identifier
+        self.agnostic_identifier = self.metrics.get(metric_identifier).get('agnostic_identifier')
+        self.community_identifier = self.metrics.get(metric_identifier).get('metric_identifier')
         if self.metric_identifier is not None and self.metric_identifier in self.metrics:
             self.total_score = int(self.metrics.get(metric_identifier).get('total_score'))
             self.score = FAIRResultCommonScore(total=self.total_score)
@@ -103,16 +106,14 @@ class FAIREvaluator:
         """Get result of evaluation and pack it into dictionary."""
         self.evaluate()
         if self.result:
+            self.result.metric_identifier = self.metrics.get(self.result.metric_identifier).get('metric_identifier')
             return self.result.to_dict()
         else:
             return {}
 
 
     def isTestDefined(self, testid):
-        tm = re.search(self.metric_regex, testid)
-        if tm:
-            agnostic_test_id = tm[0]
-        if agnostic_test_id  in self.metric_tests:
+        if testid  in self.metric_tests:
             return True
         else:
             self.logger.warning(
@@ -133,7 +134,8 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_maturity = None
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
                 evaluation_criterium.metric_test_config = metric_test.get('metric_test_config')
-                self.metric_tests[metric_test.get('metric_test_identifier')] = evaluation_criterium
+                if metric_test.get('agnostic_test_identifier'):
+                    self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
     def setEvaluationCriteriumScore(self,
                                     criterium_id,
@@ -165,12 +167,15 @@ class FAIREvaluator:
             self.metric_tests[criterium_id] = evaluation_criterium
 
     def getTestConfigScore(self, criterium_id):
-        #get the configured score from YAML
-        tm =  re.search(self.metric_regex, criterium_id)
-        if tm:
-            agnostic_criterium_id = tm[0]
-        if agnostic_criterium_id in self.metric_tests:
-            return self.metric_tests[agnostic_criterium_id].metric_test_score_config
+        if self.metric_tests.get(criterium_id):
+             return self.metric_tests[criterium_id].metric_test_score_config
+        else:
+            return False
+
+    def getTestConfigMaturity(self, criterium_id):
+        #get the configured maturity from YAML
+        if self.metric_tests.get(criterium_id):
+            return self.metric_tests[criterium_id].metric_test_maturity_config
         else:
             return False
 
