@@ -48,7 +48,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
     def __init__(self, fuji_instance):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-R1.3-01M', metrics=fuji_instance.METRICS)
+        self.set_metric('FsF-R1.3-01M')
         self.multidiscipliary_standards_detected = []
         self.community_standards_detected = []
         self.community_standards_uri = {}

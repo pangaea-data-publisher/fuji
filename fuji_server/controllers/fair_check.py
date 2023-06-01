@@ -400,7 +400,7 @@ class FAIRCheck:
 
     def check_persistent_identifier(self):
         persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
-        persistent_identifier_check.set_metric('FsF-F1-02D', metrics=self.METRICS)
+        #persistent_identifier_check.set_metric('FsF-F1-02D')
         return persistent_identifier_check.getResult()
 
     def check_unique_persistent(self):
@@ -414,72 +414,72 @@ class FAIRCheck:
 
     def check_content_identifier_included(self):
         content_included_check = FAIREvaluatorContentIncluded(self)
-        content_included_check.set_metric('FsF-F3-01M', metrics=self.METRICS)
+        #content_included_check.set_metric('FsF-F3-01M', metrics=self.METRICS)
         return content_included_check.getResult()
 
     def check_data_access_level(self):
         data_access_level_check = FAIREvaluatorDataAccessLevel(self)
-        data_access_level_check.set_metric('FsF-A1-01M', metrics=self.METRICS)
+        data_access_level_check.set_metric('FsF-A1-01M')
         return data_access_level_check.getResult()
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
-        license_check.set_metric('FsF-R1.1-01M', metrics=self.METRICS)
+        license_check.set_metric('FsF-R1.1-01M')
         return license_check.getResult()
 
     def check_relatedresources(self):
         related_check = FAIREvaluatorRelatedResources(self)
-        related_check.set_metric('FsF-I3-01M', metrics=self.METRICS)
+        related_check.set_metric('FsF-I3-01M')
         return related_check.getResult()
 
     def check_searchable(self):
         searchable_check = FAIREvaluatorSearchable(self)
-        searchable_check.set_metric('FsF-F4-01M', metrics=self.METRICS)
+        searchable_check.set_metric('FsF-F4-01M')
         return searchable_check.getResult()
 
     def check_data_file_format(self):
         data_file_check = FAIREvaluatorFileFormat(self)
-        data_file_check.set_metric('FsF-R1.3-02D', metrics=self.METRICS)
+        data_file_check.set_metric('FsF-R1.3-02D')
         return data_file_check.getResult()
 
     def check_community_metadatastandards(self):
         community_metadata_check = FAIREvaluatorCommunityMetadata(self)
-        community_metadata_check.set_metric('FsF-R1.3-01M', metrics=self.METRICS)
+        community_metadata_check.set_metric('FsF-R1.3-01M')
         return community_metadata_check.getResult()
 
     def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
-        data_prov_check.set_metric('FsF-R1.2-01M', metrics=self.METRICS)
+        data_prov_check.set_metric('FsF-R1.2-01M')
         return data_prov_check.getResult()
 
     def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
-        data_content_metadata_check.set_metric('FsF-R1-01MD', metrics=self.METRICS)
+        data_content_metadata_check.set_metric('FsF-R1-01MD')
         return data_content_metadata_check.getResult()
 
     def check_formal_metadata(self):
         formal_metadata_check = FAIREvaluatorFormalMetadata(self)
-        formal_metadata_check.set_metric('FsF-I1-01M', metrics=self.METRICS)
+        formal_metadata_check.set_metric('FsF-I1-01M')
         return formal_metadata_check.getResult()
 
     def check_semantic_vocabulary(self):
         semantic_vocabulary_check = FAIREvaluatorSemanticVocabulary(self)
-        semantic_vocabulary_check.set_metric('FsF-I2-01M', metrics=self.METRICS)
+        semantic_vocabulary_check.set_metric('FsF-I2-01M')
         return semantic_vocabulary_check.getResult()
 
     def check_metadata_preservation(self):
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
-        metadata_preserved_check.set_metric('FsF-A2-01M', metrics=self.METRICS)
+        metadata_preserved_check.set_metric('FsF-A2-01M')
         return metadata_preserved_check.getResult()
 
     def check_standardised_protocol_data(self):
         standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
-        standardised_protocol_check.set_metric('FsF-A1-03D', metrics=self.METRICS)
+        standardised_protocol_check.set_metric('FsF-A1-03D')
         return standardised_protocol_check.getResult()
 
     def check_standardised_protocol_metadata(self):
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
-        standardised_protocol_metadata_check.set_metric('FsF-A1-02M', metrics=self.METRICS)
+        standardised_protocol_metadata_check.set_metric('FsF-A1-02M')
         return standardised_protocol_metadata_check.getResult()
 
     def raise_warning_if_javascript_page(self, response_content):

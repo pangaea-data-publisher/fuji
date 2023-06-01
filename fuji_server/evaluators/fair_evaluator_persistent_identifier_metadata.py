@@ -53,7 +53,7 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
             metric = 'FsF-F1-02D'
         else:
             metric = 'FsF-F1-02M'
-        self.set_metric(metric, metrics=fuji_instance.METRICS)
+        self.set_metric(metric)
 
     def testCompliesWithPIDScheme(self):
         test_status = False

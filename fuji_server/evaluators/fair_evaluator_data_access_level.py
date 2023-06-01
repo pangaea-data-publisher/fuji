@@ -44,7 +44,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
     """
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-A1-01M', metrics=fuji_instance.METRICS)
+        self.set_metric('FsF-A1-01M')
         self.access_details = {}
         self.access_level = None
 

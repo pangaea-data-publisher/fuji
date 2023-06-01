@@ -64,13 +64,13 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
         mime_url_pair = {}
         if len(self.fuji.content_identifier) > 0:
-            content_urls = [item.get('url') for item in self.fuji.content_identifier]
+            content_urls = [item.get('url') for item in self.fuji.content_identifier.values()]
             self.logger.info('FsF-R1.3-02D : Data content identifier provided -: {}'.format(content_urls))
             #self.maturity = 1
 
             preferred_detected = False
-            for file_index, data_file in enumerate(self.fuji.content_identifier):
-                mime_type = data_file.get('type')
+            for file_index, data_file in enumerate(self.fuji.content_identifier.values()):
+                mime_type = data_file.get('claimed_type')
                 if data_file.get('url') is not None:
                     if mime_type is None or mime_type in ['application/octet-stream', 'binary/octet-stream']:
                         self.logger.info(

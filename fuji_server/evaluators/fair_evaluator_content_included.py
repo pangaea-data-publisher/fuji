@@ -47,7 +47,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-F3-01M', metrics=fuji_instance.METRICS)
+        self.set_metric('FsF-F3-01M')
         self.content_list = []
 
     def testDataSizeTypeNameAvailable(self, datainfolist):
@@ -63,7 +63,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                         did_output_content = IdentifierIncludedOutputInner()
                         did_output_content.content_identifier_included = datainfo
                         self.content_list.append(did_output_content)
-                        self.fuji.content_identifier.append(datainfo)
+                        #self.fuji.content_identifier.append(datainfo)
         if test_result:
             self.score.earned += test_score
         return test_result

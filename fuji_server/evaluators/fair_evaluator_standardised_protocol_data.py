@@ -56,13 +56,12 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         if len(self.fuji.content_identifier) > 0:
 
             # here we only test the first content identifier
-            data_url = self.fuji.content_identifier[0].get('url')
+            data_url = list(self.fuji.content_identifier.values())[0].get('url')
             data_parsed_url = urlparse(data_url)
             data_url_scheme = data_parsed_url.scheme
-
             if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
                 self.logger.log(self.fuji.LOG_SUCCESS,
-                                'FsF-A1-03D : Standard protocol for access to data object found: ' + data_url_scheme)
+                                'FsF-A1-03D : Standard protocol for access to data object found -: ' + data_url_scheme)
                 data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
                 self.setEvaluationCriteriumScore('FsF-A1-03D-1', 1, 'pass')
                 self.maturity = 3

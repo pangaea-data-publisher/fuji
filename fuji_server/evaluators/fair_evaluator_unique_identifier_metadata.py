@@ -50,7 +50,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
         else:
             metric = 'FsF-F1-01M'
             #after 0.5 seperate metrics for metadata and data
-        self.set_metric(metric, metrics=fuji_instance.METRICS)
+        self.set_metric(metric)
 
     def testCompliesWithIdutilsScheme(self, validschemes = []):
         test_status = False
