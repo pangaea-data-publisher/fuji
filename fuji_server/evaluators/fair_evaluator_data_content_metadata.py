@@ -85,16 +85,17 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
     def testMinimalInformationAboutDataContentAvailable(self):
         test_result = False
-        test_score =  self.getTestConfigScore(self.metric_identifier + '-1')
-        if self.subtestResourceTypeGiven():
-            test_result = True
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-        if self.subtestDataContentInfoGiven():
-            test_result = True
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-        if test_result:
-            self.score.earned += test_score
-            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1') #self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score =  self.getTestConfigScore(self.metric_identifier + '-1')
+            if self.subtestResourceTypeGiven():
+                test_result = True
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+            if self.subtestDataContentInfoGiven():
+                test_result = True
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+            if test_result:
+                self.score.earned += test_score
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1') #self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
         return test_result
 
     def subtestDataTypeAndSizeGiven(self, test_data_content_url):
@@ -127,111 +128,111 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
 
     def testVerifiableDataDescriptorsAvailable(self,test_data_content_url):
         test_result = False
-        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-        if test_data_content_url:
-            if self.subtestDataTypeAndSizeGiven(test_data_content_url):
-                test_result = True
-            if self.subtestMeasuredVariablesGiven():
-                test_result = True
-        if test_result:
-            self.score.earned += test_score
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-            self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            if test_data_content_url:
+                if self.subtestDataTypeAndSizeGiven(test_data_content_url):
+                    test_result = True
+                if self.subtestMeasuredVariablesGiven():
+                    test_result = True
+            if test_result:
+                self.score.earned += test_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
         return test_result
 
     def testSizeAndTypeMatchesMetadata(self,test_data_content_url):
         test_result = False
         size_matches = False
         type_matches = False
-        test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-        data_object = self.fuji.content_identifier.get(test_data_content_url)
-        if data_object.get('claimed_type') and data_object.get('claimed_size'):
-            if not isinstance(data_object.get('tika_content_type'), list):
-                data_object['tika_content_type'] = [data_object.get('tika_content_type')]
-            if data_object.get('content_size') and data_object.get('claimed_size'):
-                try:
-                    if data_object.get('claimed_size'):
-                        data_size = data_object.get('claimed_size')
-                        try:
-                            dsm = re.match(r"(\d+(?:\.\d+)?)\s*[A-Za-z]*", str(data_size))
-                            if dsm[1]:
-                                data_size = dsm[1]
-                        except:
-                            pass
-                        object_size = int(float(data_size))
-                        if object_size == int(float(data_object.get('content_size'))):
-                            size_matches = True
-                        else:
-                            self.logger.warning(
-                                '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
-                                    .format(self.metric_identifier, str(data_object.get('claimed_size')),
-                                            str(data_object.get('content_size'))))
-                        data_content_filesize_inner = DataContentMetadataOutputInner()
-                        data_content_filesize_inner.descriptor = 'file size'
-                        data_content_filesize_inner.descriptor_value = data_object.get('claimed_size')
-                        data_content_filesize_inner.matches_content = size_matches
-                        self.data_content_descriptors.append(data_content_filesize_inner)
-                except Exception as e:
+        if self.isTestDefined(self.metric_identifier + '-3'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+            data_object = self.fuji.content_identifier.get(test_data_content_url)
+            if data_object.get('claimed_type') and data_object.get('claimed_size'):
+                if not isinstance(data_object.get('tika_content_type'), list):
+                    data_object['tika_content_type'] = [data_object.get('tika_content_type')]
+                if data_object.get('content_size') and data_object.get('claimed_size'):
+                    try:
+                        if data_object.get('claimed_size'):
+                            data_size = data_object.get('claimed_size')
+                            try:
+                                dsm = re.match(r"(\d+(?:\.\d+)?)\s*[A-Za-z]*", str(data_size))
+                                if dsm[1]:
+                                    data_size = dsm[1]
+                            except:
+                                pass
+                            object_size = int(float(data_size))
+                            if object_size == int(float(data_object.get('content_size'))):
+                                size_matches = True
+                            else:
+                                self.logger.warning(
+                                    '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
+                                        .format(self.metric_identifier, str(data_object.get('claimed_size')),
+                                                str(data_object.get('content_size'))))
+                            data_content_filesize_inner = DataContentMetadataOutputInner()
+                            data_content_filesize_inner.descriptor = 'file size'
+                            data_content_filesize_inner.descriptor_value = data_object.get('claimed_size')
+                            data_content_filesize_inner.matches_content = size_matches
+                            self.data_content_descriptors.append(data_content_filesize_inner)
+                    except Exception as e:
+                        self.logger.warning(
+                            '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
+                                .format(self.metric_identifier, str(data_object.get('claimed_size')),
+                                        str(data_object.get('content_size'))))
+
+                if data_object.get('header_content_type') == data_object.get('claimed_type') \
+                         or data_object.get('claimed_type') in data_object.get('tika_content_type'):
+                    type_matches = True
+                else:
                     self.logger.warning(
-                        '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
-                            .format(self.metric_identifier, str(data_object.get('claimed_size')),
-                                    str(data_object.get('content_size'))))
+                        '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
+                            .format(self.metric_identifier, data_object.get('claimed_type'),
+                                    str(data_object.get('tika_content_type'))))
+                data_content_filetype_inner = DataContentMetadataOutputInner()
+                data_content_filetype_inner.descriptor = 'file type'
+                data_content_filetype_inner.descriptor_value = data_object.get('claimed_type')
+                data_content_filetype_inner.matches_content = type_matches
+                self.data_content_descriptors.append(data_content_filetype_inner)
 
-            if data_object.get('header_content_type') == data_object.get('claimed_type') \
-                     or data_object.get('claimed_type') in data_object.get('tika_content_type'):
-                type_matches = True
-            else:
-                self.logger.warning(
-                    '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
-                        .format(self.metric_identifier, data_object.get('claimed_type'),
-                                str(data_object.get('tika_content_type'))))
-            data_content_filetype_inner = DataContentMetadataOutputInner()
-            data_content_filetype_inner.descriptor = 'file type'
-            data_content_filetype_inner.descriptor_value = data_object.get('claimed_type')
-            data_content_filetype_inner.matches_content = type_matches
-            self.data_content_descriptors.append(data_content_filetype_inner)
-
-        if size_matches and type_matches:
-            self.score.earned += test_score
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
-            self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
-            test_result = True
+            if size_matches and type_matches:
+                self.score.earned += test_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
+                test_result = True
         return test_result
 
     def testVariablesMatchMetadata(self, test_data_content_url):
         test_result = True
-
-        test_score = self.getTestConfigScore(self.metric_identifier + '-4')
-        test_data_object = self.fuji.content_identifier.get(test_data_content_url)
-        if test_data_object:
-            if self.fuji.metadata_merged.get('measured_variable'):
-                if not test_data_object.get('test_data_content_text'):
+        if self.isTestDefined(self.metric_identifier + '-4'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-4')
+            test_data_object = self.fuji.content_identifier.get(test_data_content_url)
+            if test_data_object:
+                if self.fuji.metadata_merged.get('measured_variable'):
+                    if not test_data_object.get('test_data_content_text'):
+                        self.logger.warning(
+                            self.metric_identifier+' : Could not verify measured variables found in data object content, content parsing failed'
+                        )
+                    for variable in self.fuji.metadata_merged['measured_variable']:
+                        variable_match = False
+                        variable_metadata_inner = DataContentMetadataOutputInner()
+                        variable_metadata_inner.descriptor = 'measured_variable'
+                        variable_metadata_inner.descriptor_value = variable
+                        if test_data_object.get('test_data_content_text'):
+                            if variable in test_data_object.get('test_data_content_text'):
+                                test_result = True
+                                variable_match = True
+                                self.logger.log(self.fuji.LOG_SUCCESS,
+                                                self.metric_identifier+' : Found specified measured variable in data object content -: '+str(variable))
+                        variable_metadata_inner.matches_content = variable_match
+                        self.data_content_descriptors.append(variable_metadata_inner)
+                else:
                     self.logger.warning(
-                        self.metric_identifier+' : Could not verify measured variables found in data object content, content parsing failed'
-                    )
-                for variable in self.fuji.metadata_merged['measured_variable']:
-                    variable_match = False
-                    variable_metadata_inner = DataContentMetadataOutputInner()
-                    variable_metadata_inner.descriptor = 'measured_variable'
-                    variable_metadata_inner.descriptor_value = variable
-                    if test_data_object.get('test_data_content_text'):
-                        if variable in test_data_object.get('test_data_content_text'):
-                            test_result = True
-                            variable_match = True
-                            self.logger.log(self.fuji.LOG_SUCCESS,
-                                            self.metric_identifier+' : Found specified measured variable in data object content -: '+str(variable))
-                    variable_metadata_inner.matches_content = variable_match
-                    self.data_content_descriptors.append(variable_metadata_inner)
-            else:
-                self.logger.warning(
-                    'FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
-            if test_result:
-                self.score.earned += test_score
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-4', test_score, 'pass')
-                self.maturity = self.metric_tests.get(
-                    self.metric_identifier + '-4').metric_test_maturity_config
-
-
+                        'FsF-R1-01MD : NO measured variables found in metadata, skip \'measured_variable\' test.')
+                if test_result:
+                    self.score.earned += test_score
+                    self.setEvaluationCriteriumScore(self.metric_identifier + '-4', test_score, 'pass')
+                    self.maturity = self.metric_tests.get(
+                        self.metric_identifier + '-4').metric_test_maturity_config
         return test_result
 
     def evaluate(self):
