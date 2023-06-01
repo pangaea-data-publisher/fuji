@@ -206,55 +206,64 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 format('FsF-R1.3-01M'))
 
     def testMultidisciplinarybutCommunityEndorsedMetadataDetected(self):
-        test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-        generic_found = False
-        for found_standard in self.found_metadata_standards:
+        if self.isTestDefined(self.metric_identifier + '-3'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+            generic_found = False
+            for found_standard in self.found_metadata_standards:
 
-            if found_standard.get('type')=='generic':
-                self.logger.log(
-                    self.fuji.LOG_SUCCESS,
-                'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) using namespaces or schemas found in re3data record or via provided metadata or metadata services outputs -: {}'
-                .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
-                generic_found = True
-        if generic_found:
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
-            self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
-            self.score.earned = test_score
-            return True
+                if found_standard.get('type')=='generic':
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                    'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) using namespaces or schemas found in re3data record or via provided metadata or metadata services outputs -: {}'
+                    .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
+                    generic_found = True
+            if generic_found:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
+                self.score.earned = test_score
+                return True
+        else:
+            return False
 
     def testCommunitySpecificMetadataDetectedviaRe3Data(self):
-        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-        specific_found = False
-        for found_standard in self.found_metadata_standards:
+        if self.isTestDefined(self.metric_identifier + '-3'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            specific_found = False
+            for found_standard in self.found_metadata_standards:
 
-            if found_standard.get('type') == 'disciplinary':
-                self.logger.log(
-                    self.fuji.LOG_SUCCESS,
-                    'FsF-R1.3-01M : Found disciplinary standard listed in the re3data record of the responsible repository -: {}'
-                        .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
-                specific_found = True
-        if specific_found:
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-            self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
-            self.score.earned = test_score
-            return True
+                if found_standard.get('type') == 'disciplinary':
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        'FsF-R1.3-01M : Found disciplinary standard listed in the re3data record of the responsible repository -: {}'
+                            .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
+                    specific_found = True
+            if specific_found:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+                self.score.earned = test_score
+                return True
+        else:
+            return False
 
     def testCommunitySpecificMetadataDetectedviaNamespaces(self):
-        test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-        specific_found = False
-        for found_standard in self.found_metadata_standards:
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            specific_found = False
+            for found_standard in self.found_metadata_standards:
 
-            if found_standard.get('type') == 'disciplinary':
-                self.logger.log(
-                    self.fuji.LOG_SUCCESS,
-                    'FsF-R1.3-01M : Found disciplinary standard using namespaces or schemas found in provided metadata or metadata services outputs -: {}'
-                        .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
-                specific_found = True
-        if specific_found:
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-            self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
-            self.score.earned = test_score
-            return True
+                if found_standard.get('type') == 'disciplinary':
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        'FsF-R1.3-01M : Found disciplinary standard using namespaces or schemas found in provided metadata or metadata services outputs -: {}'
+                            .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
+                    specific_found = True
+            if specific_found:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+                self.score.earned = test_score
+                return True
+        else:
+            return False
 
     def get_metadata_standards_info(self, uri, source):
         standard_found = self.fuji.lookup_metadatastandard_by_uri(uri)
