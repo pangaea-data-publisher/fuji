@@ -168,7 +168,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             self.testAccessRightsStandardTerms(access_rights)
             self.testAccessRightsMachineReadable(access_rights)
 
-            if not self.access_details and self.access_rights:
+            if not self.access_details and access_rights:
                 if access_rights:
                     self.access_details['access_condition'] = ', '.join(access_rights)
 

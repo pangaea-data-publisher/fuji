@@ -31,16 +31,17 @@ class DataHarvester():
         return mime_list
 
     def retrieve_all_data(self, range = None):
-        for datafile in self.data_links:
-            if datafile.get('url'):
-                fileinfo, buffer = self.get(datafile.get('url'))
-                if fileinfo:
-                    fileinfo.update(self.tika(buffer, datafile.get('url')))
-                fileinfo['claimed_size'] = datafile.get('size')
-                fileinfo['claimed_type'] = datafile.get('type')
-                fileinfo['url'] = datafile.get('url')
-                fileinfo['tika_content_type'] = []
-                self.data[datafile.get('url')]=fileinfo
+        if self.data_links:
+            for datafile in self.data_links:
+                if datafile.get('url'):
+                    fileinfo, buffer = self.get(datafile.get('url'))
+                    if fileinfo:
+                        fileinfo.update(self.tika(buffer, datafile.get('url')))
+                    fileinfo['claimed_size'] = datafile.get('size')
+                    fileinfo['claimed_type'] = datafile.get('type')
+                    fileinfo['url'] = datafile.get('url')
+                    fileinfo['tika_content_type'] = []
+                    self.data[datafile.get('url')]=fileinfo
         return True
                 
     def get(self,url):
@@ -82,19 +83,18 @@ class DataHarvester():
                             content_size = downloaded_size
                         fileinfo['content_size'] = content_size
                 response.close()
-                return fileinfo, file_buffer_object
-    
+
             except urllib.error.HTTPError as e:
                 print('ERROR1: ',e)
                 self.logger.warning(
                     'FsF-F3-01M : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
-                        self.url, e.code))
+                        url, e.code))
                 self.logger.warning(
                     'FsF-R1-01MD : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
-                        self.url, e.code))
+                        url, e.code))
                 self.logger.warning(
                     'FsF-R1.3-02D : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
-                        self.url, e.code))
+                        url, e.code))
             except urllib.error.URLError as e:
                 print('ERROR2: ', e)
                 self.logger.exception(e.reason)
@@ -109,6 +109,7 @@ class DataHarvester():
                 self.logger.warning('FsF-F3-01M : Content identifier inaccessible -:' +url +' '+ str(e))
                 self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -:' + url +' '+ str(e))
                 self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -:' +url +' '+ str(e))
+        return fileinfo, file_buffer_object
 
     def tika(self, file_buffer_object, url):
         parsed_content = ''
