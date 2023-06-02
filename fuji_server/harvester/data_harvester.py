@@ -30,18 +30,21 @@ class DataHarvester():
                     mime_list.append(str(xm[0] + '/' + xm[1]))
         return mime_list
 
-    def retrieve_all_data(self, range = None):
+    def retrieve_all_data(self, howmany = 1):
         if self.data_links:
-            for datafile in self.data_links:
-                if datafile.get('url'):
-                    fileinfo, buffer = self.get(datafile.get('url'))
-                    if fileinfo:
-                        fileinfo.update(self.tika(buffer, datafile.get('url')))
-                    fileinfo['claimed_size'] = datafile.get('size')
-                    fileinfo['claimed_type'] = datafile.get('type')
-                    fileinfo['url'] = datafile.get('url')
-                    fileinfo['tika_content_type'] = []
-                    self.data[datafile.get('url')]=fileinfo
+            if isinstance(self.data_links, list):
+                if len(self.data_links) > howmany:
+                    self.logger.warning('FsF-R1-01MD : Will not use all given data links, will use '+str(howmany)+' data files from '+(str(len(self.data_links))))
+                for datafile in self.data_links[slice(howmany)]:
+                    if datafile.get('url'):
+                        fileinfo, buffer = self.get(datafile.get('url'))
+                        if fileinfo:
+                            fileinfo.update(self.tika(buffer, datafile.get('url')))
+                        fileinfo['claimed_size'] = datafile.get('size')
+                        fileinfo['claimed_type'] = datafile.get('type')
+                        fileinfo['url'] = datafile.get('url')
+                        fileinfo['tika_content_type'] = []
+                        self.data[datafile.get('url')]=fileinfo
         return True
                 
     def get(self,url):
@@ -75,7 +78,7 @@ class DataHarvester():
                         if time.time() > (start + self.timeout) or downloaded_size >= self.max_download_size:
                             self.logger.warning('FsF-R1-01MD : File too large.., skipped download after -:' +
                                                 str(self.timeout) + ' sec or receiving > ' + str(self.max_download_size) +
-                                                '- {}'.format(self.url))
+                                                '- {}'.format(url))
                             content_size = 0
                             content_size = str(response.headers.get('content-length')).split(';')[0]
                             break
