@@ -4,12 +4,15 @@ import logging
 import re
 import time
 import urllib
+
+import idutils
+import os
 from tika import parser
 
 class DataHarvester():
     LOG_SUCCESS = 25
     LOG_FAILURE = 35
-    def __init__(self, data_links, logger, auth_token=None, auth_token_type='Basic', metrics = None):
+    def __init__(self, data_links, logger, landing_page = None, auth_token=None, auth_token_type='Basic', metrics = None):
         self.logger = logger
         self.data_links = data_links
         self.auth_token = auth_token
@@ -18,6 +21,19 @@ class DataHarvester():
         self.timeout = 10
         self.max_download_size = 1000000
         self.data = {}
+        self.landing_page = landing_page
+
+    def expand_url(self, url):
+        #replace local urls with full path from landing_page URI
+        self.logger.info('FsF-R1-01MD : Trying to complete local file name with full path info using landing page URI')
+        if self.landing_page:
+            if idutils.is_url(self.landing_page):
+                try:
+                    path  = os.path.dirname(self.landing_page)
+                    url = path+'/'+url
+                except:
+                    pass
+        return url
 
     # in case experimental mime types are detected add mime types without x. or x. prefix
     def extend_mime_type_list(self, mime_list):
@@ -59,6 +75,8 @@ class DataHarvester():
         file_buffer_object = io.BytesIO()
         content_size = 0
         if url:
+            if not idutils.is_url(url):
+                url = self.expand_url(url)
             try:
                 request_headers = {
                     'Accept': '*/*',
@@ -123,6 +141,7 @@ class DataHarvester():
         parsed_content = ''
         tika_content_types = ''
         fileinfo={'tika_content_type':[]}
+        status = None
         try:
             if len(file_buffer_object.getvalue()) > 0:
                 parsedFile = parser.from_buffer(file_buffer_object.getvalue())
