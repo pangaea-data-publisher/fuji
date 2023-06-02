@@ -47,7 +47,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-R1.3-02D')
         self.data_file_list=[]
-
     def setFileFormatDict(self):
         if not self.fuji.content_identifier:  # self.content_identifier only includes uris that are accessible
             contents = self.fuji.metadata_merged.get('object_content_identifier')
@@ -79,20 +78,25 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                             0]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
 
                     if mime_type:
+                        valid_type = True
+                        if data_file.get('tika_content_type'):
+                            if mime_type not in data_file.get('tika_content_type'):
+                                valid_type = False
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
                             self.logger.info(
                                 'FsF-R1.3-02D : Archiving/compression format specified -: {}'.format(mime_type))
-                            if 'unverified' not in self.fuji.tika_content_types_list:
+                            if valid_type and data_file.get('tika_content_type'):
                                 # exclude archive format
                                 if file_index == len(self.fuji.content_identifier) - 1:
-                                    self.fuji.tika_content_types_list = [
-                                        n for n in self.fuji.tika_content_types_list
+                                    data_file['tika_content_type'] = [
+                                        n for n in data_file.get('tika_content_type')
                                         if n not in self.fuji.ARCHIVE_MIMETYPES
                                     ]
+                                    print('TIKA 2', data_file.get('tika_content_type'))
                                     self.logger.info(
                                         'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'
-                                        .format(self.fuji.tika_content_types_list))
-                                    for t in self.fuji.tika_content_types_list:
+                                        .format(data_file.get('tika_content_type')))
+                                    for t in data_file.get('tika_content_type'):
                                         mime_url_pair[t] = data_file.get('url')
                             else:
                                 self.logger.warning(
@@ -100,11 +104,12 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                     .format(mime_type))
                         else:
                             mime_url_pair[mime_type] = data_file.get('url')
-                            if self.fuji.tika_content_types_list:
+                            if data_file.get('tika_content_type'):
                                 #add tika detected mimes
-                                for tika_mime in self.fuji.tika_content_types_list:
-                                    if tika_mime != 'unverified' and tika_mime not in mime_url_pair:
+                                for tika_mime in data_file.get('tika_content_type'):
+                                    if valid_type and tika_mime not in mime_url_pair:
                                         mime_url_pair[tika_mime] = data_file.get('url')
+        print(mime_url_pair)
         return mime_url_pair
 
 

@@ -35,16 +35,21 @@ class DataHarvester():
             if isinstance(self.data_links, list):
                 if len(self.data_links) > howmany:
                     self.logger.warning('FsF-R1-01MD : Will not use all given data links, will use '+str(howmany)+' data files from '+(str(len(self.data_links))))
-                for datafile in self.data_links[slice(howmany)]:
-                    if datafile.get('url'):
+                for idx,datafile in enumerate(self.data_links):
+                    fileinfo = {}
+                    if datafile.get('url') and idx < howmany:
+                        fileinfo['verified'] = True
                         fileinfo, buffer = self.get(datafile.get('url'))
+                        fileinfo['tika_content_type'] = []
                         if fileinfo:
                             fileinfo.update(self.tika(buffer, datafile.get('url')))
-                        fileinfo['claimed_size'] = datafile.get('size')
-                        fileinfo['claimed_type'] = datafile.get('type')
-                        fileinfo['url'] = datafile.get('url')
-                        fileinfo['tika_content_type'] = []
-                        self.data[datafile.get('url')]=fileinfo
+                    else:
+                        fileinfo['verified'] = False
+                    fileinfo['claimed_size'] = datafile.get('size')
+                    fileinfo['claimed_type'] = datafile.get('type')
+                    fileinfo['url'] = datafile.get('url')
+
+                    self.data[datafile.get('url')]=fileinfo
         return True
                 
     def get(self,url):
