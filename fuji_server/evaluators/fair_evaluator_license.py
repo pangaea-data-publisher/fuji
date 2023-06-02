@@ -129,10 +129,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             if self.specified_licenses is not None and self.specified_licenses != []:
+                test_status = True
                 self.logger.log(self.fuji.LOG_SUCCESS,
                                 '{0} : Found licence information in metadata'.format(self.metric_identifier))
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
-                self.score.earned = test_score
+                self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
             else:
                 self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
@@ -144,7 +145,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             for l in self.specified_licenses:
                 license_output = LicenseOutputInner()
-                #license can be dict or
                 license_output.license = l
                 if isinstance(l, str):
                     isurl = idutils.is_url(l)
@@ -164,7 +164,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                         '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
                             self.metric_identifier))
                     self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-                    self.score.earned = test_score
+                    self.score.earned += test_score
                     self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
