@@ -45,6 +45,14 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-R1.1-01M')
+        self.specified_licenses = self.fuji.metadata_merged.get('license')
+        if isinstance(self.specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
+            self.specified_licenses = [self.specified_licenses]
+        self.output=[]
+
     def isCreativeCommonsLicense(self,license_url, metric_id):
         iscc = False
         genericcc = None
@@ -116,20 +124,25 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 isOsiApproved = found['isOsiApproved']
         return html_url, isOsiApproved
 
-    def evaluate(self):
-        self.result = License(id=self.metric_number,
-                              metric_identifier=self.metric_identifier,
-                              metric_name=self.metric_name)
-        licenses_list = []
-        specified_licenses = self.fuji.metadata_merged.get('license')
-        self.score.earned = 0
-        spdx_found = False
-        if specified_licenses is not None and specified_licenses != []:
-            self.logger.log(self.fuji.LOG_SUCCESS,
-                            '{0} : Found licence information in metadata'.format(self.metric_identifier))
-            if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
-                specified_licenses = [specified_licenses]
-            for l in specified_licenses:
+    def testLicenseMetadataElementAvailable(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            if self.specified_licenses is not None and self.specified_licenses != []:
+                self.logger.log(self.fuji.LOG_SUCCESS,
+                                '{0} : Found licence information in metadata'.format(self.metric_identifier))
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                self.score.earned = test_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+            else:
+                self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
+        return test_status
+
+    def testLicenseIsValidAndSPDXRegistered(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            for l in self.specified_licenses:
                 license_output = LicenseOutputInner()
                 #license can be dict or
                 license_output.license = l
@@ -150,22 +163,26 @@ class FAIREvaluatorLicense(FAIREvaluator):
                         self.fuji.LOG_SUCCESS,
                         '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
                             self.metric_identifier))
-                    spdx_found = True
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                    self.score.earned = test_score
+                    self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 license_output.details_url = spdx_html
                 license_output.osi_approved = spdx_osi
-                licenses_list.append(license_output)
-            self.result.test_status = 'pass'
-            self.setEvaluationCriteriumScore('FsF-R1.1-01M-1', 1, 'pass')
-            self.score.earned = 1
-            self.maturity = 1
-            if spdx_found:
-                self.setEvaluationCriteriumScore('FsF-R1.1-01M-2', 1, 'pass')
-                self.score.earned = 2
-                self.maturity = 3
-        else:
-            self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
+                self.output.append(license_output)
+        return test_status
 
-        self.result.output = licenses_list
+    def evaluate(self):
+        self.result = License(id=self.metric_number,
+                              metric_identifier=self.metric_identifier,
+                              metric_name=self.metric_name)
+
+        license_status = 'fail'
+        if self.testLicenseMetadataElementAvailable():
+            license_status = 'pass'
+            self.testLicenseIsValidAndSPDXRegistered()
+
+        self.result.test_status = license_status
+        self.result.output = self.output
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.maturity = self.maturity
