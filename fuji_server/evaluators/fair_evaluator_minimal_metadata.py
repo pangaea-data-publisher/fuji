@@ -78,16 +78,16 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             return False
 
     def testCoreDescriptiveMetadataAvailable(self):
-        if self.isTestDefined('FsF-F2-01M-3'):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-3'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-            test_status = False
             if set(self.metadata_found) == set(Mapper.REQUIRED_CORE_METADATA.value):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     self.metric_identifier+' : Found required core descriptive metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
-                self.maturity = self.metric_tests.get('FsF-F2-01M-3').metric_test_maturity_config
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
                 self.score.earned = self.total_score
-                self.setEvaluationCriteriumScore('FsF-F2-01M-3', test_score, 'pass')
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
                 test_status = True
             else:
                 core_missing = list(set(Mapper.REQUIRED_CORE_METADATA.value) - set(self.metadata_found))
@@ -98,15 +98,15 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
 
     def testCoreCitationMetadataAvailable(self):
-        if self.isTestDefined('FsF-F2-01M-2'):
+        if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             test_status = False
             if set(self.partial_elements).issubset(self.metadata_found):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     self.metric_identifier+' : Found required core citation metadata elements -: {}'.format(self.partial_elements))
-                self.maturity = self.metric_tests.get('FsF-F2-01M-2').metric_test_maturity_config
-                self.setEvaluationCriteriumScore('FsF-F2-01M-2', test_score, 'pass')
+                self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 self.score.earned = self.score.earned + test_score
                 test_status = True
         return test_status
@@ -137,7 +137,6 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.testCoreDescriptiveMetadataAvailable():
             test_status = 'pass'
             metadata_status = 'all metadata'
-        print('METRIC ', self.metric_identifier)
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
                                          core_metadata_source=list(set(self.fuji.metadata_sources)))
 
