@@ -40,6 +40,37 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
         This method will evaluate the links between metadata whether they relate explicitly in metadata and
         they relate by machine-readable links/identifier.
     """
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-I3-01M')
+        self.pid_used = False
+
+    def testRelatedResourcesAvailable(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+        for relation in self.fuji.related_resources:
+            if isinstance(relation.get('related_resource'), list):
+                relation['related_resource'] = relation.get('related_resource')[0]
+            relation_identifier = IdentifierHelper(relation.get('related_resource'))
+            if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
+                self.pid_used = True
+        self.output = self.fuji.related_resources
+        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+        self.score.earned = self.total_score
+        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+        return test_status
+
+    def testRelatedResourcesMachineReadable(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            if self.pid_used:
+                test_status = True
+                self.score.earned = self.total_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+        return test_status
 
     def evaluate(self):
         self.result = RelatedResource(id=self.metric_number,
@@ -51,40 +82,12 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
             self.metric_identifier, len(self.fuji.related_resources)))
 
         # if self.metadata_merged.get('related_resources'):
-        pid_used = False
-        if self.fuji.related_resources:
-            #print(self.fuji.related_resources)
-            # QC check: exclude potential incorrect relation
-            self.fuji.related_resources = [
-                item for item in self.fuji.related_resources if item.get('related_resource') != self.fuji.pid_url
-            ]
-            #uniquify
-            try:
-                self.fuji.related_resources = [dict(ry) for ry in set(tuple(rx.items()) for rx in self.fuji.related_resources)]
-            except:
-                pass
-
-            self.logger.log(
-                self.fuji.LOG_SUCCESS,
-                '{0} : Number of related resources after QC step -: {1}'.format(self.metric_identifier,
-                                                                                len(self.fuji.related_resources)))
-
-        if self.fuji.related_resources:  # TODO include source of relation
-            for relation in self.fuji.related_resources:
-                if isinstance(relation.get('related_resource'), list):
-                    relation['related_resource'] = relation.get('related_resource')[0]
-                relation_identifier = IdentifierHelper(relation.get('related_resource'))
-                if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
-                    pid_used = True
-            self.output = self.fuji.related_resources
-            self.result.test_status = 'pass'
-            self.setEvaluationCriteriumScore('FsF-I3-01M-1', 1, 'pass')
-            self.score.earned = self.total_score
-            self.maturity = 2
-            if pid_used:
-                self.setEvaluationCriteriumScore('FsF-I3-01M-2', 1, 'pass')
-                self.maturity = 3
+        related_status = 'fail'
+        if self.testRelatedResourcesAvailable():
+            related_status = 'pass'
+            self.testRelatedResourcesMachineReadable()
         self.result.metric_tests = self.metric_tests
+        self.result.test_status = related_status
         self.result.maturity = self.maturity
         self.result.score = self.score
         self.result.output = self.output
