@@ -164,7 +164,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         preferance_reason = []
 
                     if preferance_reason:
-                        preferred_detected = True
                         preferred_mimetype = mimetype
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
@@ -186,8 +185,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                      metric_identifier=self.metric_identifier,
                                      metric_name=self.metric_name)
         self.output = DataFileFormatOutput()
-
-
         mime_url_dict = self.setFileFormatDict()
         if self.testCommunityFileFormatUsed(mime_url_dict):
             self.result.test_status = 'pass'
