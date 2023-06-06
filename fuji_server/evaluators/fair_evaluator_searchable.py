@@ -48,7 +48,42 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         the metadata is given in a way major search engines can ingest it, e.g., JSON-LD, Dublin Core, RDFa.
     """
 
-    def check_registry_support(self):
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-F4-01M')
+        self.search_mechanisms = []
+        self.search_engines_support = [
+            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value,
+            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.value, MetaDataCollector.Sources.RDFA_EMBEDDED.value
+        ]
+        self.sources_registry = [
+            MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
+            MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
+        ]
+
+    def testSearchEngineMetadataAvailable(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+
+        # Check search mechanisms based on sources of metadata extracted.
+        search_engine_support_match: List[Any] = list(
+            set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
+        if search_engine_support_match:
+            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+            self.score.earned += test_score
+            self.search_mechanisms.append(
+                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+            self.logger.info(self.metric_identifier + ' : Metadata found through - structured data')
+        else:
+            self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
+        return test_status
+
+    def testListedinSearchEngines(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
         # check if record is listed in major catalogs -> searchable
         # DataCite registry, Google Dataset search, Mendeley data etc..
         #Using the DataCite API in case content negotiation does not work
@@ -68,8 +103,9 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 if google_registry_helper.islisted:
                     registries_supported.append(google_registry_helper.source)
             else:
+                print('REGISTRIES: ',registries_supported)
                 self.logger.info(
-                    'FsF-F4-01M : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
+                    self.metric_identifier + ' : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
                 )
 
             if not registries_supported:
@@ -79,12 +115,23 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     registries_supported.append(mendeley_registry_helper.source)
             else:
                 self.logger.info(
-                    'FsF-F4-01M : Dataset already found in registry therefore skipping Mendeley Data query')
+                    self.metric_identifier + ' : Dataset already found in registry therefore skipping Mendeley Data query')
         else:
             self.logger.warning(
-                'FsF-F4-01M : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
+                self.metric_identifier + ' : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
             )
-        return registries_supported
+        if registries_supported:
+            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+            self.score.earned += test_score
+            self.search_mechanisms.append(
+                OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registries_supported))
+            self.logger.info(self.metric_identifier + ' : Metadata found through - metadata registry')
+        else:
+            self.logger.warning(
+                self.metric_identifier + ' : Metadata is NOT found through registries considered by the assessment service  -: {}'.
+                format(self.sources_registry))
+        return test_status
 
     def evaluate(self):
         self.result = Searchable(id=self.metric_number,
@@ -92,54 +139,16 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                                  metric_name=self.metric_name)
         self.output = SearchableOutput()
 
-        search_mechanisms = []
-        sources_registry = [
-            MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
-            MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
-        ]
-        all = str([e.value for e in MetaDataCollector.Sources]).strip('[]')
-        self.logger.info('FsF-F4-01M : Supported tests of metadata retrieval/extraction -: {}'.format(all))
-        search_engines_support = [
-            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value,
-            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.value, MetaDataCollector.Sources.RDFA_EMBEDDED.value
-        ]
-        # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match: List[Any] = list(
-            set(dict(self.fuji.metadata_sources).keys()).intersection(search_engines_support))
-        if search_engine_support_match:
-            self.setEvaluationCriteriumScore('FsF-F4-01M-1', 1, 'pass')
-            self.maturity = 3
-            search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-            self.logger.info('FsF-F4-01M : Metadata found through - structured data')
-        else:
-            self.logger.warning('FsF-F4-01M : Metadata is NOT found through -: {}'.format(search_engines_support))
-
-        registries_listed = self.check_registry_support()
-        registry_support_match = registries_listed
-        if registry_support_match:
-            self.setEvaluationCriteriumScore('FsF-F4-01M-2', 1, 'pass')
-            if self.maturity < 3:
-                self.maturity = 2
-            search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registry_support_match))
-            self.logger.info('FsF-F4-01M : Metadata found through - metadata registry')
-        else:
-            self.logger.warning(
-                'FsF-F4-01M : Metadata is NOT found through registries considered by the assessment service  -: {}'.
-                format(sources_registry))
-        length = len(search_mechanisms)
-        if length > 0:
-            self.result.test_status = 'pass'
-            if length == 2:
-                self.score.earned = self.total_score
-            if length == 1:
-                self.score.earned = self.total_score - 1
+        searchable_status = 'fail'
+        if self.testSearchEngineMetadataAvailable():
+            searchable_status = 'pass'
+        if self.testListedinSearchEngines():
+            searchable_status = 'pass'
         else:
             self.logger.warning('NO search mechanism supported')
-
+        self.result.test_status = searchable_status
         self.result.score = self.score
-        self.output.search_mechanisms = search_mechanisms
+        self.output.search_mechanisms = self.search_mechanisms
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.output

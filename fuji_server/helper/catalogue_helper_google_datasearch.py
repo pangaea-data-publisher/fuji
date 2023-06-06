@@ -2,6 +2,9 @@
 import logging
 import re
 import sqlite3 as sl
+from random import randint
+from time import sleep
+
 import pandas as pd
 import os
 
@@ -80,6 +83,12 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 if found_at_google:
                     self.islisted = True
                     break
+        else:
+            for url_to_test in pidlist:
+                found_at_google = self.query_google_webindex(url_to_test, pidlist)
+                if found_at_google:
+                    self.islisted = True
+                    break
 
         if self.islisted:
             self.logger.info('FsF-F4-01M : Found identifier in Google Dataset Search cache -:' +
@@ -113,24 +122,50 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         return True
         ##test
 
+    def query_google_webindex(self,url_to_test, pidlist):
+        url_to_test = str(url_to_test).strip()
+        google = "https://www.google.com/search?q=site:" + url_to_test + "&hl=en"
+        headers = {
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3538.102 Safari/537.36 Edge/18.19582"
+        }
+        found_url_in_google = False
+        try:
+            response = requests.get(google, headers=headers, cookies={"CONSENT": "YES+1"})
+            soup = BeautifulSoup(response.content, "html.parser")
+            not_indexed = re.compile("did not match any documents")
+            if soup(text=not_indexed):
+                found_url_in_google = False
+            else:
+                found_url_in_google = True
+                for url_to_save in pidlist:
+                    self.add_google_search_record(url_to_save)
+                    sleep(randint(5, 20))
+        except Exception as e:
+            self.logger.warning('FsF-F4-01M : Google Index Query Error: -:' + str(e))
+        return found_url_in_google
+
     def query_google_custom_search(self, url_to_test, pidlist):
         url_to_test = str(url_to_test).strip()
         if str(self.object_type).strip().lower() == 'dataset':
             found_url_in_google = False
             if self.google_custom_search_id and self.google_custom_search_api_key:
-                google_url = 'https://customsearch.googleapis.com/customsearch/v1?cx=' + self.google_custom_search_id + '&q=url:' + url_to_test + '&key=' + self.google_custom_search_api_key
-                res = requests.get(google_url)
-                if res:
-                    try:
-                        google_json = res.json()
-                        if google_json.get('items'):
-                            for google_item in google_json.get('items'):
-                                if google_item.get('link') == url_to_test:
-                                    for url_to_save in pidlist:
-                                        self.add_google_search_record(url_to_save)
-                                    found_url_in_google = True
-                    except Exception as e:
-                        print(e)
+                try:
+                    google_url = 'https://customsearch.googleapis.com/customsearch/v1?cx=' + self.google_custom_search_id + '&q=url:' + url_to_test + '&key=' + self.google_custom_search_api_key
+                    res = requests.get(google_url)
+                    if res:
+                        try:
+                            google_json = res.json()
+                            if google_json.get('items'):
+                                for google_item in google_json.get('items'):
+                                    if google_item.get('link') == url_to_test:
+                                        for url_to_save in pidlist:
+                                            self.add_google_search_record(url_to_save)
+                                        found_url_in_google = True
+                        except Exception as e:
+                            print(e)
+                except Exception as e:
+                    self.logger.warning('FsF-F4-01M : Google Custom Search Query Error: -:' + str(e))
             return found_url_in_google
 
     def init_google_custom_search(self, custom_search_id, api_key):

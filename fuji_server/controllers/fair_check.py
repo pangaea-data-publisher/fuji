@@ -194,7 +194,6 @@ class FAIRCheck:
         FAIRCheck.load_predata()
         #self.extruct = None
         self.extruct_result = {}
-        self.tika_content_types_list = []
         self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
         self.auth_token = None
         self.auth_token_type = 'Basic'
@@ -344,7 +343,7 @@ class FAIRCheck:
             self.namespace_uri = list(set(self.namespace_uri))
 
     def harvest_all_data(self):
-        data_harvester = DataHarvester(self.metadata_merged.get('object_content_identifier'), self.logger, metrics = self.METRICS.keys())
+        data_harvester = DataHarvester(self.metadata_merged.get('object_content_identifier'), self.logger, self.landing_url, metrics = self.METRICS.keys())
         data_harvester.retrieve_all_data()
         self.content_identifier = data_harvester.data
 
