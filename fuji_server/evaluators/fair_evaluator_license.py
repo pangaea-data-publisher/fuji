@@ -143,32 +143,35 @@ class FAIREvaluatorLicense(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            for l in self.specified_licenses:
-                license_output = LicenseOutputInner()
-                license_output.license = l
-                if isinstance(l, str):
-                    isurl = idutils.is_url(l)
-                if isurl:
-                    iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
-                    if iscc:
-                        l = generic_cc
-                    spdx_html, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
-                else:  # maybe licence name
-                    spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
-                if not spdx_html:
-                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
-                        self.metric_identifier))
-                else:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+            if self.specified_licenses is not None and self.specified_licenses != []:
+                for l in self.specified_licenses:
+                    license_output = LicenseOutputInner()
+                    license_output.license = l
+                    if isinstance(l, str):
+                        isurl = idutils.is_url(l)
+                    if isurl:
+                        iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
+                        if iscc:
+                            l = generic_cc
+                        spdx_html, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
+                    else:  # maybe licence name
+                        spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
+                    if not spdx_html:
+                        self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
                             self.metric_identifier))
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-                    self.score.earned += test_score
-                    self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                license_output.details_url = spdx_html
-                license_output.osi_approved = spdx_osi
-                self.output.append(license_output)
+                    else:
+                        self.logger.log(
+                            self.fuji.LOG_SUCCESS,
+                            '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+                                self.metric_identifier))
+                        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                        self.score.earned += test_score
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                    license_output.details_url = spdx_html
+                    license_output.osi_approved = spdx_osi
+                    self.output.append(license_output)
+            else:
+                self.logger.warning('{0} : Skipping SPDX verification since license information unavailable in metadata'.format(self.metric_identifier))
         return test_status
 
     def evaluate(self):
@@ -179,7 +182,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
         license_status = 'fail'
         if self.testLicenseMetadataElementAvailable():
             license_status = 'pass'
-            self.testLicenseIsValidAndSPDXRegistered()
+        if self.testLicenseIsValidAndSPDXRegistered():
+            license_status = 'pass'
 
         self.result.test_status = license_status
         self.result.output = self.output

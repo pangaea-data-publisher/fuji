@@ -88,35 +88,35 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                 lov_entry = lov_helper.get_linked_vocab_by_iri(ns_uri, isnamespaceIRI=True)
                 if lov_entry and ns_uri not in self.knownnamespaceuris:
                     self.knownnamespaceuris.append(ns_uri)
-        if self.fuji.linked_namespace_uri:
-            self.logger.info(
-                '{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
-                    self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
-            for linked_ns, linked_ns_data in self.fuji.linked_namespace_uri.items():
-                linked_ns = linked_ns.strip().rstrip('/#')
-                if linked_ns not in self.knownnamespaceuris:
-                    linked_exclude = False
-                    for i in self.fuji.DEFAULT_NAMESPACES:
-                        if linked_ns.startswith(i):
-                            linked_exclude = True
-                            break
-                    if not linked_exclude:
-                        self.knownnamespaceuris.append(linked_ns)
-        if self.knownnamespaceuris:
-            self.score.earned += test_score
-            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-            self.logger.log(self.fuji.LOG_SUCCESS,
-                            '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, self.knownnamespaceuris))
-            for e in self.knownnamespaceuris:
-                self.outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
-            not_exists = [x for x in self.fuji.namespace_uri if x not in self.knownnamespaceuris]
-            if not_exists:
-                self.logger.warning(
-                    '{0} : Vocabulary namespace(s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
-                        format(self.metric_identifier, not_exists[:10]))
-        else:
-            self.logger.warning('{0} : NO known vocabulary namespace URI is found'.format(self.metric_identifier))
+            if self.fuji.linked_namespace_uri:
+                self.logger.info(
+                    '{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
+                        self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
+                for linked_ns, linked_ns_data in self.fuji.linked_namespace_uri.items():
+                    linked_ns = linked_ns.strip().rstrip('/#')
+                    if linked_ns not in self.knownnamespaceuris:
+                        linked_exclude = False
+                        for i in self.fuji.DEFAULT_NAMESPACES:
+                            if linked_ns.startswith(i):
+                                linked_exclude = True
+                                break
+                        if not linked_exclude:
+                            self.knownnamespaceuris.append(linked_ns)
+            if self.knownnamespaceuris:
+                self.score.earned += test_score
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.logger.log(self.fuji.LOG_SUCCESS,
+                                '{0} : Namespace matches found -: {1}'.format(self.metric_identifier, self.knownnamespaceuris))
+                for e in self.knownnamespaceuris:
+                    self.outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
+                not_exists = [x for x in self.fuji.namespace_uri if x not in self.knownnamespaceuris]
+                if not_exists:
+                    self.logger.warning(
+                        '{0} : Vocabulary namespace(s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
+                            format(self.metric_identifier, not_exists[:10]))
+            else:
+                self.logger.warning('{0} : NO known vocabulary namespace URI is found'.format(self.metric_identifier))
 
         return test_status
 

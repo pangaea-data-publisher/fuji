@@ -52,36 +52,38 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
 
     def testDataSizeTypeNameAvailable(self, datainfolist):
         test_result = False
-        test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-        if datainfolist:
-            for datainfo in datainfolist:
-                if isinstance(datainfo, dict):
-                    if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
-                        test_result = True
-                        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-                        self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
-                        did_output_content = IdentifierIncludedOutputInner()
-                        did_output_content.content_identifier_included = datainfo
-                        self.content_list.append(did_output_content)
-                        #self.fuji.content_identifier.append(datainfo)
-        if test_result:
-            self.score.earned += test_score
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            if datainfolist:
+                for datainfo in datainfolist:
+                    if isinstance(datainfo, dict):
+                        if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
+                            test_result = True
+                            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                            self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+                            did_output_content = IdentifierIncludedOutputInner()
+                            did_output_content.content_identifier_included = datainfo
+                            self.content_list.append(did_output_content)
+                            #self.fuji.content_identifier.append(datainfo)
+            if test_result:
+                self.score.earned += test_score
         return test_result
 
     def testDataUrlOrPIDAvailable(self, datainfolist):
         test_result = False
-        test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-        if datainfolist:
-            for datainfo in datainfolist:
-                if isinstance(datainfo, dict):
-                    if datainfo.get('url'):
-                        test_result = True
-                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                        self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
-                    else:
-                        self.logger.warning(self.metric_identifier +' : Object (content) url is empty -: {}'.format(datainfo))
-        if test_result:
-            self.score.earned += test_score
+        if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            if datainfolist:
+                for datainfo in datainfolist:
+                    if isinstance(datainfo, dict):
+                        if datainfo.get('url'):
+                            test_result = True
+                            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                            self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
+                        else:
+                            self.logger.warning(self.metric_identifier +' : Object (content) url is empty -: {}'.format(datainfo))
+            if test_result:
+                self.score.earned += test_score
         return test_result
 
     def evaluate(self):

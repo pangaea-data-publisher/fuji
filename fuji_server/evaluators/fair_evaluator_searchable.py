@@ -65,71 +65,70 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-
-        # Check search mechanisms based on sources of metadata extracted.
-        search_engine_support_match: List[Any] = list(
-            set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
-        if search_engine_support_match:
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
-            self.score.earned += test_score
-            self.search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-            self.logger.info(self.metric_identifier + ' : Metadata found through - structured data')
-        else:
-            self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
+            # Check search mechanisms based on sources of metadata extracted.
+            search_engine_support_match: List[Any] = list(
+                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
+            if search_engine_support_match:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                self.score.earned += test_score
+                self.search_mechanisms.append(
+                    OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
+                self.logger.info(self.metric_identifier + ' : Metadata found through - structured data')
+            else:
+                self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
         return test_status
 
     def testListedinSearchEngines(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-        # check if record is listed in major catalogs -> searchable
-        # DataCite registry, Google Dataset search, Mendeley data etc..
-        #Using the DataCite API in case content negotiation does not work
-        registries_supported = []
-        if self.fuji.pid_url or self.fuji.landing_url:
-            #DataCite only for DOIs
-            pidhelper = IdentifierHelper(self.fuji.pid_url)
-            if self.fuji.pid_scheme:
-                if 'doi' in self.fuji.pid_scheme:
-                    datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
-                    datacite_registry_helper.query(pidhelper.normalized_id)
-                    if datacite_registry_helper.islisted:
-                        registries_supported.append(datacite_registry_helper.source)
-            if not registries_supported:
-                google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger, self.fuji.metadata_merged.get('object_type'))
-                google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-                if google_registry_helper.islisted:
-                    registries_supported.append(google_registry_helper.source)
-            else:
-                self.logger.info(
-                    self.metric_identifier + ' : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
-                )
+            # check if record is listed in major catalogs -> searchable
+            # DataCite registry, Google Dataset search, Mendeley data etc..
+            #Using the DataCite API in case content negotiation does not work
+            registries_supported = []
+            if self.fuji.pid_url or self.fuji.landing_url:
+                #DataCite only for DOIs
+                pidhelper = IdentifierHelper(self.fuji.pid_url)
+                if self.fuji.pid_scheme:
+                    if 'doi' in self.fuji.pid_scheme:
+                        datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
+                        datacite_registry_helper.query(pidhelper.normalized_id)
+                        if datacite_registry_helper.islisted:
+                            registries_supported.append(datacite_registry_helper.source)
+                if not registries_supported:
+                    google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger, self.fuji.metadata_merged.get('object_type'))
+                    google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+                    if google_registry_helper.islisted:
+                        registries_supported.append(google_registry_helper.source)
+                else:
+                    self.logger.info(
+                        self.metric_identifier + ' : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
+                    )
 
-            if not registries_supported:
-                mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
-                mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
-                if mendeley_registry_helper.islisted:
-                    registries_supported.append(mendeley_registry_helper.source)
+                if not registries_supported:
+                    mendeley_registry_helper = MetaDataCatalogueMendeleyData(self.fuji.logger)
+                    mendeley_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
+                    if mendeley_registry_helper.islisted:
+                        registries_supported.append(mendeley_registry_helper.source)
+                else:
+                    self.logger.info(
+                        self.metric_identifier + ' : Dataset already found in registry therefore skipping Mendeley Data query')
             else:
-                self.logger.info(
-                    self.metric_identifier + ' : Dataset already found in registry therefore skipping Mendeley Data query')
-        else:
-            self.logger.warning(
-                self.metric_identifier + ' : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
-            )
-        if registries_supported:
-            self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-            self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-            self.score.earned += test_score
-            self.search_mechanisms.append(
-                OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registries_supported))
-            self.logger.info(self.metric_identifier + ' : Metadata found through - metadata registry')
-        else:
-            self.logger.warning(
-                self.metric_identifier + ' : Metadata is NOT found through registries considered by the assessment service  -: {}'.
-                format(self.sources_registry))
+                self.logger.warning(
+                    self.metric_identifier + ' : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
+                )
+            if registries_supported:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                self.score.earned += test_score
+                self.search_mechanisms.append(
+                    OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registries_supported))
+                self.logger.info(self.metric_identifier + ' : Metadata found through - metadata registry')
+            else:
+                self.logger.warning(
+                    self.metric_identifier + ' : Metadata is NOT found through registries considered by the assessment service  -: {}'.
+                    format(self.sources_registry))
         return test_status
 
     def evaluate(self):
