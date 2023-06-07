@@ -43,45 +43,56 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
 
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-A1-02M')
+        self.metadata_output = {}
+
+    def testStandardProtocolMetadataUsed(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            if self.fuji.landing_url is not None:
+                metadata_required = Mapper.REQUIRED_CORE_METADATA.value
+                metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
+                # parse the URL and return the protocol which has to be one of Internet RFC on
+                # Relative Uniform Resource Locators
+                metadata_parsed_url = urlparse(self.fuji.landing_url)
+                metadata_url_scheme = metadata_parsed_url.scheme
+                if len(self.fuji.metadata_merged) == 0:
+                    self.logger.warning(
+                        self.metric_identifier + ' : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M'
+                    )
+                else:
+                    if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
+                        self.logger.log(
+                            self.fuji.LOG_SUCCESS,
+                            'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
+
+                        self.metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
+                        test_status = True
+                        self.score.earned = test_score
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                    # TODO: check why this is tested - delete if not required
+                    if set(metadata_found) != set(metadata_required):
+                        self.logger.info('FsF-A1-02M : NOT all required metadata given, see: FsF-F2-01M')
+                        # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
+            else:
+                self.logger.warning('FsF-A1-02M : Metadata Identifier is not actionable or protocol errors occurred')
+        return test_status
+
     def evaluate(self):
         self.result = StandardisedProtocolMetadata(id=self.metric_number,
                                                    metric_identifier=self.metric_identifier,
                                                    metric_name=self.metric_name)
-        metadata_output = data_output = None
-        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
-        metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
         test_status = 'fail'
         score = 0
-        if self.fuji.landing_url is not None:
-            # parse the URL and return the protocol which has to be one of Internet RFC on
-            # Relative Uniform Resource Locators
-            metadata_parsed_url = urlparse(self.fuji.landing_url)
-            metadata_url_scheme = metadata_parsed_url.scheme
-            if len(self.fuji.metadata_merged) == 0:
-                self.logger.warning(
-                    'FsF-A1-02M : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M'
-                )
-            else:
-                if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
 
-                    metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
-                    test_status = 'pass'
-                    score += 1
-                    self.setEvaluationCriteriumScore('FsF-A1-02M-1', 1, 'pass')
-                    self.maturity = 3
-                # TODO: check why this is tested - delete if not required
-                if set(metadata_found) != set(metadata_required):
-                    self.logger.info('FsF-A1-02M : NOT all required metadata given, see: FsF-F2-01M')
-                    # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
-        else:
-            self.logger.warning('FsF-A1-02M : Metadata Identifier is not actionable or protocol errors occurred')
-
-        self.score.earned = score
+        if self.testStandardProtocolMetadataUsed():
+            test_status ='pass'
         self.result.score = self.score
-        self.result.output = StandardisedProtocolMetadataOutput(standard_metadata_protocol=metadata_output)
+        self.result.output = StandardisedProtocolMetadataOutput(standard_metadata_protocol=self.metadata_output)
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status

@@ -103,7 +103,6 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 if google_registry_helper.islisted:
                     registries_supported.append(google_registry_helper.source)
             else:
-                print('REGISTRIES: ',registries_supported)
                 self.logger.info(
                     self.metric_identifier + ' : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
                 )

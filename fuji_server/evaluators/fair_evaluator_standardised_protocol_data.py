@@ -42,37 +42,43 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         a shared application protocol.
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric('FsF-A1-03D')
+        self.data_output = {}
+
+    def testStandardProtocolDataUsed(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + '-1'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            if len(self.fuji.content_identifier) > 0:
+                # here we only test the first content identifier
+                data_url = list(self.fuji.content_identifier.values())[0].get('url')
+                data_parsed_url = urlparse(data_url)
+                data_url_scheme = data_parsed_url.scheme
+                if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
+                    self.logger.log(self.fuji.LOG_SUCCESS,
+                                    self.metric_identifier + ' : Standard protocol for access to data object found -: ' + data_url_scheme)
+                    self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
+                    self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                    test_status = True
+                    self.score.earned = test_score
+            else:
+                self.logger.warning(self.metric_identifier + ' : Skipping protocol test for data since NO content (data) identifier is given in metadata')
+        return test_status
+
     def evaluate(self):
 
         self.result = StandardisedProtocolData(id=self.metric_number,
                                                metric_identifier=self.metric_identifier,
                                                metric_name=self.metric_name)
-        metadata_output = data_output = None
-        metadata_required = Mapper.REQUIRED_CORE_METADATA.value
-        metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
+
         test_status = 'fail'
-        score = 0
-
-        if len(self.fuji.content_identifier) > 0:
-
-            # here we only test the first content identifier
-            data_url = list(self.fuji.content_identifier.values())[0].get('url')
-            data_parsed_url = urlparse(data_url)
-            data_url_scheme = data_parsed_url.scheme
-            if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                self.logger.log(self.fuji.LOG_SUCCESS,
-                                'FsF-A1-03D : Standard protocol for access to data object found -: ' + data_url_scheme)
-                data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
-                self.setEvaluationCriteriumScore('FsF-A1-03D-1', 1, 'pass')
-                self.maturity = 3
-                test_status = 'pass'
-                score += 1
-        else:
-            self.logger.warning('FsF-A1-03D : NO content (data) identifier is given in metadata')
-
-        self.score.earned = score
+        if self.testStandardProtocolDataUsed():
+            test_status = 'pass'
         self.result.score = self.score
-        self.result.output = StandardisedProtocolDataOutput(standard_data_protocol=data_output)
+        self.result.output = StandardisedProtocolDataOutput(standard_data_protocol=self.data_output)
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
