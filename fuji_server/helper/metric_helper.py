@@ -20,6 +20,8 @@ class MetricHelper:
             self.logger = logger
         else:
             self.logger = logging.getLogger()
+        if not str(metric_file_name).endswith('.yaml'):
+            metric_file_name = str(metric_file_name)+'.yaml'
         ym = re.match('metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?\.yaml', metric_file_name)
         if ym:
             self.metric_version = float(ym[1])

@@ -114,7 +114,7 @@ class FAIRCheck:
                  verify_pids=True,
                  oaipmh_endpoint=None,
                  allowed_harvesting_methods = None,
-                 metric_version = None):
+                 metric_version = None): # e.g. metrics_v0.5 regex: metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         #str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
