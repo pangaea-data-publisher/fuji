@@ -64,13 +64,36 @@ class Mapper(Enum):
     #['creator','license','related_resources'] --> list type
     # datacite_client --> retrieve re3data records
     # TODO include data types of all reference elements
-    REFERENCE_METADATA_LIST = [
-        'object_identifier', 'creator', 'title', 'publisher', 'publication_date', 'summary', 'keywords',
-        'object_content_identifier', 'access_level', 'access_free', 'policy', 'related_resources', 'provenance_general',
-        'measured_variable', 'method', 'creation_date', 'contributor', 'version', 'license', 'data_file_format',
-        'file_format_only', 'object_type', 'data_size', 'datacite_client', 'modified_date', 'created_date',
-        'right_holder', 'object_size', 'language'
-    ]
+    REFERENCE_METADATA_LIST = {
+        'object_identifier':{'label':'Object Identifier','sameAs':'http://purl.org/dc/terms/identifier'},
+        'creator':{'label':'Creator','sameAs':'http://purl.org/dc/terms/creator'},
+        'title':{'label':'Title','sameAs':'http://purl.org/dc/terms/title'},
+        'publisher':{'label':'Publisher','sameAs':'http://purl.org/dc/terms/publisher'},
+        'publication_date':{'label':'Publication Date','sameAs':'http://purl.org/dc/terms/date'},
+        'summary':{'label':'Summary','sameAs':'http://purl.org/dc/terms/abstract'},
+        'keywords':{'label':'Keywords','sameAs':'http://purl.org/dc/terms/subject'},
+        'object_content_identifier':{'label':'Keywords','sameAs':None},
+        'access_level':{'label':'Access Level','sameAs':'http://purl.org/dc/terms/accessRights'},
+        'access_free':{'label':'Free Access','sameAs':'https://schema.org/isAccessibleForFree'},
+        #'policy':{'label':'Policy','sameAs':None},
+        'related_resources':{'label':'Related resources','sameAs':'http://purl.org/dc/terms/related'},
+        'provenance_general':{'label':'Provenance','sameAs':'http://purl.org/dc/terms/provenance'},
+        'measured_variable':{'label':'Measured Variable','sameAs':'https://schema.org/variableMeasured'},
+        #'method':{'label':'Related resources','sameAs':'},
+        #'creation_date':{'label':'Date Created','sameAs':'http://purl.org/dc/terms/created'},
+        'contributor':{'label':'Contributor','sameAs':'http://purl.org/dc/terms/contributor'},
+        #'version':{'label':'Version','sameAs':'http://purl.org/dc/terms/version'},
+        'license':{'label':'License','sameAs':'http://purl.org/dc/terms/license'},
+        #'data_file_format':{'label':'License','sameAs':None},
+        'file_format_only':{'label':'File Format','sameAs':'http://purl.org/dc/terms/format'},
+        'object_type':{'label':'Object Type','sameAs':'http://purl.org/dc/terms/type'},
+        'datacite_client':{'label':'DataCite Client ID','sameAs':None},
+        'modified_date':{'label':'Date Modified','sameAs':'http://purl.org/dc/terms/modified'},
+        'created_date':{'label':'Date Created','sameAs':'http://purl.org/dc/terms/created'},
+        'right_holder':{'label':'License','sameAs':'http://purl.org/dc/terms/rightsHolder'},
+        'object_size':{'label':'Object Size','sameAs':'http://purl.org/dc/terms/extent'},
+        'language':{'label':'Language','sameAs':'http://purl.org/dc/terms/language'}
+    }
 
     # core metadata elements (FsF-F2-01M)
     REQUIRED_CORE_METADATA = [
@@ -149,11 +172,13 @@ class Mapper(Enum):
         'summary' : ['abstract', 'description'],
         'keywords' : 'subject',
         'object_type' : 'type',
+        'object_size' :'exent',
         'modified_date' : 'modified',
         'created_date' : 'created',
         'license' : 'license',
         'file_format_only' : 'format',
         'access_level': ['rights', 'accessRights'],
+        'right_holder' : 'rightsHolder',
         'date_available' : 'available',
         'provenance_general' : 'provenance',
         'related_resources': [
@@ -216,7 +241,6 @@ class Mapper(Enum):
                         'contributor: contributors[*].name || contributors[*].familyName, '\
                         'right_holder: contributors[?contributorType == \'RightsHolder\'], '\
                         'title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType ==\'Available\'].date || publicationYear,' \
-                        'data_size:sizes[0], data_file_format: formats, ' \
                         'license: rightsList[*].rightsUri || rightsList[*].rights ,' \
                         'summary: descriptions[?descriptionType == \'Abstract\'].description || descriptions[0].description, ' \
                         'related_resources: ( relatedIdentifiers[*].{related_resource: relatedIdentifier, relation_type:relationType, scheme_uri: schemeUri}), ' \

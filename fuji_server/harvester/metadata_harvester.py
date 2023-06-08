@@ -92,7 +92,8 @@ class MetadataHarvester():
             for r in metadict.keys():
                 if r in self.reference_elements:
                     self.metadata_merged[r] = metadict[r]
-                    self.reference_elements.remove(r)
+                    self.reference_elements.pop(r)
+                    #self.reference_elements.remove(r)
             if metadict.get('object_identifier'):
                 if not isinstance(metadict.get('object_identifier'), list):
                     metadict['object_identifier'] = [metadict.get('object_identifier')]
