@@ -112,15 +112,15 @@ class MetaDataCollectorXML(MetaDataCollector):
 
         XSI = 'http://www.w3.org/2001/XMLSchema-instance'
         if self.link_type == 'linked':
-            source_name = self.getEnumSourceNames().XML_TYPED_LINKS.value
+            source_name = self.getEnumSourceNames().XML_TYPED_LINKS
             '''elif self.link_type == 'embedded':
             source_name = self.getEnumSourceNames().RDF_NEGOTIATED.value'''
         elif self.link_type == 'guessed':
-            source_name = self.getEnumSourceNames().XML_GUESSED.value
+            source_name = self.getEnumSourceNames().XML_GUESSED
         elif self.link_type == 'negotiated':
-            source_name = self.getEnumSourceNames().XML_NEGOTIATED.value
+            source_name = self.getEnumSourceNames().XML_NEGOTIATED
         else:
-            source_name = self.getEnumSourceNames().XML_TYPED_LINKS.value
+            source_name = self.getEnumSourceNames().XML_TYPED_LINKS
         dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)

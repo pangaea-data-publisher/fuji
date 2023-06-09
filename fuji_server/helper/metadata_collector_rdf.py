@@ -37,7 +37,6 @@ from rdflib.namespace import FOAF
 from rdflib.namespace import SDO #schema.org
 
 from fuji_server.helper.metadata_collector import MetaDataCollector
-from fuji_server.helper.metadata_collector_schemaorg import MetaDataCollectorSchemaOrg
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
@@ -232,9 +231,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     jsonld_source_url = 'landing page'
                 if self.json_ld_content:
-                    self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBEDDED.value
-                elif self.source_name != self.getEnumSourceNames().RDF_TYPED_LINKS.value:
-                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATED.value
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_EMBEDDED
+                elif self.source_name != self.getEnumSourceNames().RDF_TYPED_LINKS:
+                    self.source_name = self.getEnumSourceNames().SCHEMAORG_NEGOTIATED
                 self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
                 if isinstance(rdf_response, bytes):
                     try:

@@ -53,8 +53,8 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         self.set_metric('FsF-F4-01M')
         self.search_mechanisms = []
         self.search_engines_support = [
-            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value,
-            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.value, MetaDataCollector.Sources.RDFA_EMBEDDED.value
+            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.name, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.name,
+            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.name, MetaDataCollector.Sources.RDFA_EMBEDDED.name
         ]
         self.sources_registry = [
             MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
@@ -66,6 +66,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             # Check search mechanisms based on sources of metadata extracted.
+            print('SOURCES', self.fuji.metadata_sources)
             search_engine_support_match: List[Any] = list(
                 set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
             if search_engine_support_match:

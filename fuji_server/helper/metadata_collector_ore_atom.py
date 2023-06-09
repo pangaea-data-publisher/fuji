@@ -71,7 +71,7 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
         self.content_type = 'application/atom+xml'
         ore_metadata = {}
         if self.target_url:
-            self.source_name = self.getEnumSourceNames().OAI_ORE.value
+            self.source_name = self.getEnumSourceNames().OAI_ORE
             try:
                 feed = feedparser.parse(self.target_url)
                 if feed:

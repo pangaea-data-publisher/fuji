@@ -24,6 +24,7 @@
 from typing import List
 import jmespath
 from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
@@ -90,7 +91,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                     if dcite_metadata:
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append('http://datacite.org/schema/')
-                        source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED.value
+                        source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED
                         if dcite_metadata['creator'] is None:
                             first = dcite_metadata['creator_first']
                             last = dcite_metadata['creator_last']

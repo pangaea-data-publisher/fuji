@@ -81,27 +81,23 @@ class MetaDataCollector(object):
     # Using enum class create enumerations of metadata sources
     class Sources(enum.Enum):
         """"Enum class to enumerate metadata sources."""
-        HIGHWIRE_EPRINTS_EMBEDDED = 'Embedded Highwire or Eprints'
-        DUBLINCORE_EMBEDDED = 'Embedded DublinCore'
-        OPENGRAPH_EMBEDDED = 'Embedded OpenGraph'
-        SCHEMAORG_EMBEDDED = 'Schema.org JSON-LD (Embedded)'
-        RDFA_EMBEDDED = 'Embedded RDFa'
-        MICRODATA_EMBEDDED = 'Embedded Microdata'
-
-        SCHEMAORG_NEGOTIATED = 'Schema.org JSON-LD (Negotiated)'
-        DATACITE_JSON_NEGOTIATED = 'Datacite Search'
-        RDF_NEGOTIATED = 'Linked Data (RDF)'
-        XML_NEGOTIATED = 'Generic XML (Negotiated)'
-
-        XML_TYPED_LINKS = 'Generic XML, Typed Links'
-        RDF_TYPED_LINKS = 'Linked Data (RDF), Typed Links'  #Links in header which lead to a RDF resource
+        HIGHWIRE_EPRINTS_EMBEDDED = {'method':'html embedding','label':'Embedded Highwire or Eprints','acronym':'eprints-html'}
+        DUBLINCORE_EMBEDDED = {'method':'html embedding','label':'Embedded DublinCore','acronym':'dc-html'}
+        OPENGRAPH_EMBEDDED = {'method':'html embedding','label':'Embedded OpenGraph','acronym':'og-html'}
+        SCHEMAORG_EMBEDDED = {'method':'html embedding','label':'Schema.org JSON-LD (Embedded)','acronym':'schema-html'}
+        RDFA_EMBEDDED = {'method':'microdata','label':'Embedded RDFa','acronym':'rdfa-html'}
+        MICRODATA_EMBEDDED = {'method':'microdata','label':'Embedded Microdata','acronym':'microdata-html'}
+        SCHEMAORG_NEGOTIATED = {'method':'content negotiation','label':'Schema.org JSON-LD (Negotiated)','acronym':'schema-negotiated'}
+        DATACITE_JSON_NEGOTIATED = {'method':'content negotiation','label':'Datacite Search','acronym':'datacite-negotiated'}
+        RDF_NEGOTIATED = {'method':'content negotiation','label':'Linked Data (RDF)','acronym':'rdf-negotiated'}
+        XML_NEGOTIATED = {'method':'content negotiation','label':'Generic XML (Negotiated)','acronym':'xml-negotiated'}
+        XML_TYPED_LINKS = {'method':'typed links','label':'Generic XML, Typed Links','acronym':'xml-linked'}
+        RDF_TYPED_LINKS = {'method':'typed links','label':'Linked Data (RDF), Typed Links','acronym':'rdf-linked'}  #Links in header which lead to a RDF resource
         #TYPED_LINK = 'Typed Links'
-
-        SIGN_POSTING_LINKS = 'Signposting Typed Links'
+        SIGN_POSTING_LINKS = {'method':'typed links','label':'Signposting Typed Links','acronym':'signposting'}
         #B2FIND = 'B2FIND Metadata Aggregator'
-        XML_GUESSED = 'Guessed XML Link'
-
-        OAI_ORE = 'OAI-ORE'
+        XML_GUESSED = {'method':None,'label':'Guessed XML Link'}
+        OAI_ORE = {'method':'typed links','label':'OAI-ORE'}
 
     def __init__(self,
                  sourcemetadata: dict = None,

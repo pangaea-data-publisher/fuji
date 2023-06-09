@@ -361,6 +361,7 @@ class FAIRCheck:
         self.pid_url =  self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
+        print('SOURCES EMBEDDED: ',self.metadata_sources)
 
     def retrieve_metadata_external(self, target_url = None, repeat_mode = False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode = repeat_mode)
@@ -372,6 +373,7 @@ class FAIRCheck:
         self.linked_namespace_uri.update( self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend( self.metadata_harvester.related_resources)
         self.pid_collector.update(self.metadata_harvester.pid_collector)
+        print('SOURCES EXTERNAL: ',self.metadata_sources)
 
     def lookup_metadatastandard_by_name(self, value):
         found = None

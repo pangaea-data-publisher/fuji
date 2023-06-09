@@ -59,7 +59,7 @@ class MetaDataCollectorMicroData(MetaDataCollector):
                             ext_meta = sm
                 except:
                     pass
-            self.source_name = self.getEnumSourceNames().MICRODATA_EMBEDDED.value
+            self.source_name = self.getEnumSourceNames().MICRODATA_EMBEDDED
             if not ext_meta:
                 ext_meta = self.source_metadata[0]
 
