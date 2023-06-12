@@ -73,6 +73,21 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         else:
             return False
 
+    def retrieve_metadata_standards_from_namespaces(self):
+        nsstandards = []
+        if self.fuji.namespace_uri:
+            self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata -: {}'.format(self.fuji.namespace_uri))
+            for nsuri in self.fuji.namespace_uri:
+                sinfo = self.get_metadata_standards_info(nsuri , 'ns')
+            if sinfo:
+                self.found_metadata_standards.append(sinfo)
+                nsstandards.append(sinfo.get('name'))
+        if nsstandards:
+            self.logger.log(
+                self.fuji.LOG_SUCCESS,
+                '{} : Found disciplinary standards that are given as namespaces -: {}'.format(
+                    'FsF-R1.3-01M', str(set(nsstandards))))
+
     def retrieve_metadata_standards_from_sparql(self):
         if self.fuji.sparql_endpoint:
             self.logger.info('{} : Use SPARQL endpoint to retrieve standards used by the repository -: {}'.format(
@@ -294,6 +309,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
 
 
     def evaluate(self):
+        self.retrieve_metadata_standards_from_namespaces()
         self.retrieve_apis_standards()
 
         self.result = CommunityEndorsedStandard(id=self.metric_number,
