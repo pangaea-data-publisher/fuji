@@ -92,7 +92,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                         n for n in data_file.get('tika_content_type')
                                         if n not in self.fuji.ARCHIVE_MIMETYPES
                                     ]
-                                    print('TIKA 2', data_file.get('tika_content_type'))
                                     self.logger.info(
                                         'FsF-R1.3-02D : Extracted file formats for selected data object (see FsF-R1-01MD) -: {}'
                                         .format(data_file.get('tika_content_type')))
@@ -109,7 +108,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                 for tika_mime in data_file.get('tika_content_type'):
                                     if valid_type and tika_mime not in mime_url_pair:
                                         mime_url_pair[tika_mime] = data_file.get('url')
-        print(mime_url_pair)
         return mime_url_pair
 
 
