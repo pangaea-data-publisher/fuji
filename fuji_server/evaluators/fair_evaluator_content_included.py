@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import enum
 import socket
 
 import requests
@@ -57,6 +58,9 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             if datainfolist:
                 for datainfo in datainfolist:
                     if isinstance(datainfo, dict):
+                        if datainfo.get('source'):
+                            if isinstance(datainfo['source'], enum.Enum):
+                                datainfo['source'] = datainfo['source'].acronym()
                         if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
                             test_result = True
                             self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
