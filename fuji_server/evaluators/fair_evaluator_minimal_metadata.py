@@ -26,6 +26,7 @@ from fuji_server.models.core_metadata_output import CoreMetadataOutput
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 
 
 class FAIREvaluatorCoreMetadata(FAIREvaluator):
@@ -57,14 +58,15 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                                  str(self.metadata_found.keys()))
                 self.setEvaluationCriteriumScore('FsF-F2-01M-1', test_score, 'pass')
                 source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
+
                 for source_mechanism in source_mechanisms:
-                    if source_mechanism == 'embedded':
+                    if source_mechanism in [MetadataOfferingMethods.MICRODATA, MetadataOfferingMethods.HTML_EMBEDDING]:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0, 'pass')
-                    if source_mechanism == 'negotiated':
+                    if source_mechanism == MetadataOfferingMethods.CONTENT_NEGOTIATION:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0, 'pass')
-                    if source_mechanism == 'linked':
+                    if source_mechanism == MetadataOfferingMethods.TYPED_LINKS:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1c', 0, 'pass')
-                    if source_mechanism == 'signposting':
+                    if source_mechanism == MetadataOfferingMethods.SIGNPOSTING:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1d', 0, 'pass')
                 self.maturity = self.metric_tests.get('FsF-F2-01M-1').metric_test_maturity_config
                 self.score.earned = test_score
@@ -137,8 +139,11 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.testCoreDescriptiveMetadataAvailable():
             test_status = 'pass'
             metadata_status = 'all metadata'
+        output_sources = []
+        for oi, os in list(set(self.fuji.metadata_sources)):
+            output_sources.append((oi, os.acronym()))
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
-                                         core_metadata_source=list(set(self.fuji.metadata_sources)))
+                                         core_metadata_source=output_sources)
 
         self.output.core_metadata_found = self.metadata_found
         self.result.test_status = test_status

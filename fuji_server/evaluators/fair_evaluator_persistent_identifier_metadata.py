@@ -59,7 +59,6 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-            print('TEST SCORE  ',test_score)
             verified_pids = []
             verified_pid_schemes = []
             for pid, pid_info in self.fuji.pid_collector.items():

@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.models.formal_metadata import FormalMetadata
 from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner
@@ -53,14 +53,14 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             self.logger.info('{0} : Check of structured data (RDF serialization) embedded in the data page'.format(
                 self.metric_identifier))
-            if MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.SCHEMAORG_EMBEDDED.name in dict(self.fuji.metadata_sources):
                 self.outputs.append(
                     FormalMetadataOutputInner(serialization_format='JSON-LD',
                                               source='structured_data',
                                               is_metadata_found=True))
                 self.logger.info('{0} : JSON-LD (schema.org) serialization found in the data page - {1}'.format(
                     self.metric_identifier, 'JSON-LD'))
-            if MetaDataCollector.Sources.RDFA_EMBEDDED.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.RDFA_EMBEDDED.name in dict(self.fuji.metadata_sources):
                 self.outputs.append(
                     FormalMetadataOutputInner(serialization_format='RDFa', source='structured_data',
                                               is_metadata_found=True))
@@ -87,7 +87,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             self.logger.info('{0} : Check if RDF-based typed link included'.format(self.metric_identifier))
-            if MetaDataCollector.Sources.RDF_TYPED_LINKS.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.RDF_TYPED_LINKS.name in dict(self.fuji.metadata_sources):
                 self.logger.info('{0} : RDF graph retrieved via typed link, content type - {1}'.format(
                     self.metric_identifier, 'RDF'))
                 self.outputs.append(
@@ -100,7 +100,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
             self.logger.info('{0} : Check if RDF metadata available through content negotiation'.format(
                 self.metric_identifier))
 
-            if MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.SCHEMAORG_NEGOTIATED.name in dict(self.fuji.metadata_sources):
                 self.logger.info('{0} : JSON-LD graph retrieved through content negotiation, content type - {1}'.format(
                     self.metric_identifier, 'JSON-LD'))
                 self.outputs.append(
@@ -109,7 +109,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                                               is_metadata_found=True))
                 test_status = True
 
-            if MetaDataCollector.Sources.RDF_NEGOTIATED.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.RDF_NEGOTIATED.name in dict(self.fuji.metadata_sources):
                 self.logger.info('{0} : RDF graph retrieved through content negotiation, content type - {1}'.format(
                     self.metric_identifier, 'RDF'))
                 self.outputs.append(
