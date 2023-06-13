@@ -30,7 +30,7 @@ from fuji_server.helper.catalogue_helper_mendeley_data import MetaDataCatalogueM
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from typing import List, Any
 
@@ -53,20 +53,42 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         self.set_metric('FsF-F4-01M')
         self.search_mechanisms = []
         self.search_engines_support = [
-            MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.name, MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.name,
-            MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.name, MetaDataCollector.Sources.RDFA_EMBEDDED.name
+            MetadataSources.SCHEMAORG_NEGOTIATED.name, MetadataSources.SCHEMAORG_EMBEDDED.name,
+            MetadataSources.DUBLINCORE_EMBEDDED.name, MetadataSources.RDFA_EMBEDDED.name
         ]
         self.sources_registry = [
-            MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
+            MetadataSources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
             MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
         ]
 
-    def testSearchEngineMetadataAvailable(self):
+    def testMetadataExchangeStandardsAvailable(self):
+        #test for oai, csw, sparql
+        test_status = False
+        standards_supported =[]
+        if self.isTestDefined(self.metric_identifier + '-3'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+            if self.fuji.oaipmh_endpoint:
+                standards_supported.append('OAI-PMH')
+            if self.fuji.csw_endpoint:
+                standards_supported.append('OGC-CSW')
+            if self.fuji.sparql_endpoint:
+                standards_supported.append('SPARQL')
+            if standards_supported:
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-3')
+                self.score.earned += test_score
+                standards_supported.append(self.fuji.self.metadata_service_type)
+                self.search_mechanisms.append(
+                    OutputSearchMechanisms(mechanism='exchange standard', mechanism_info=standards_supported))
+                self.logger.info(self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+        return test_status
+
+
+    def testSearchEngineCompatibleMetadataAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             # Check search mechanisms based on sources of metadata extracted.
-            print('SOURCES', self.fuji.metadata_sources)
             search_engine_support_match: List[Any] = list(
                 set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
             if search_engine_support_match:
@@ -139,9 +161,11 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         self.output = SearchableOutput()
 
         searchable_status = 'fail'
-        if self.testSearchEngineMetadataAvailable():
+        if self.testSearchEngineCompatibleMetadataAvailable():
             searchable_status = 'pass'
         if self.testListedinSearchEngines():
+            searchable_status = 'pass'
+        if self.testMetadataExchangeStandardsAvailable():
             searchable_status = 'pass'
         else:
             self.logger.warning('NO search mechanism supported')
