@@ -22,7 +22,7 @@
 # SOFTWARE.
 import idutils
 
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataOfferingMethods
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
 import lxml
@@ -61,7 +61,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         loggerinst : logging.Logger
             Logger instance
         link_type : str, optional
-            Link Type, default is 'linked'
+            Link Type, from MetadataOfferigMethods enum
         pref_mime_type : str, optional
             Preferred mime type, e.g. specific XML format
         """
@@ -111,13 +111,14 @@ class MetaDataCollectorXML(MetaDataCollector):
         self.content_type = 'application/xml'
 
         XSI = 'http://www.w3.org/2001/XMLSchema-instance'
-        if self.link_type == 'linked':
+
+        if self.link_type == MetadataOfferingMethods.TYPED_LINKS:
             source_name = self.getEnumSourceNames().XML_TYPED_LINKS
             '''elif self.link_type == 'embedded':
             source_name = self.getEnumSourceNames().RDF_NEGOTIATED.value'''
-        elif self.link_type == 'guessed':
-            source_name = self.getEnumSourceNames().XML_GUESSED
-        elif self.link_type == 'negotiated':
+        #elif self.link_type == 'guessed':
+        #    source_name = self.getEnumSourceNames().XML_GUESSED
+        elif self.link_type == MetadataOfferingMethods.CONTENT_NEGOTIATION:
             source_name = self.getEnumSourceNames().XML_NEGOTIATED
         else:
             source_name = self.getEnumSourceNames().XML_TYPED_LINKS

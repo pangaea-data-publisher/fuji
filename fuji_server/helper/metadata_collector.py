@@ -32,6 +32,68 @@ from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
+class MetadataOfferingMethods(enum.Enum):
+    HTML_EMBEDDING = {'label': 'HTML Embedding', 'acronym': 'html_embedding'}
+    MICRODATA = {'label': 'Microdata', 'acronym': 'microdata'}
+    TYPED_LINKS = {'label': 'Typed Links', 'acronym': 'typed_links'}
+    SIGNPOSTING = {'label': 'Signposting Links', 'acronym': 'signposting'}
+    CONTENT_NEGOTIATION = {'label': 'Content Negotiation', 'acronym': 'content_negotiation'}
+
+    def acronym(self):
+        return self.value.get('acronym')
+
+
+# Using enum class create enumerations of metadata sources
+class MetadataSources(enum.Enum):
+    """"Enum class to enumerate metadata sources."""
+
+    @classmethod
+    def getSourcesbyMethod(cls, methods):
+        found_sources = []
+        if not isinstance(methods, list):
+            methods = [methods]
+        for method in methods:
+            if isinstance(method, str):
+                method = MetadataOfferingMethods[method]
+            for ms in MetadataSources:
+                if ms.value.get('method') == method:
+                    found_sources.append(ms)
+        return found_sources
+
+    HIGHWIRE_EPRINTS_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded Highwire or Eprints',
+                                 'acronym': 'highwire-eprints-html'}
+    DUBLINCORE_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded DublinCore',
+                           'acronym': 'dublincore-html'}
+    OPENGRAPH_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded OpenGraph',
+                          'acronym': 'opengraph-html'}
+    SCHEMAORG_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Schema.org JSON-LD (Embedded)',
+                          'acronym': 'schemaorg-html'}
+    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html'}
+    MICRODATA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA, 'label': 'Embedded Microdata',
+                          'acronym': 'microdata-html'}
+    SCHEMAORG_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Schema.org JSON-LD (Negotiated)',
+                            'acronym': 'schemaorg-negotiated'}
+    DATACITE_JSON_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Datacite Search',
+                                'acronym': 'datacite-negotiated'}
+    RDF_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Linked Data (RDF)',
+                      'acronym': 'rdf-negotiated'}
+    XML_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Generic XML (Negotiated)',
+                      'acronym': 'xml-negotiated'}
+    XML_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Generic XML, Typed Links',
+                       'acronym': 'xml-type-linked'}
+    RDF_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Linked Data (RDF), Typed Links',
+                       'acronym': 'rdf-type-linked'}  # Links in header which lead to a RDF resource
+    # TYPED_LINK = 'Typed Links'
+    SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Signposting Typed Links',
+                          'acronym': 'signposting-linked'}
+    RDF_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Linked Data (RDF), Signposting Links',
+                          'acronym': 'rdf-signposting-linked'}
+    XML_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Generic XML, Signposting Links',
+                          'acronym': 'xml-signposting-linked'}
+    # B2FIND = 'B2FIND Metadata Aggregator'
+    XML_GUESSED = {'method': None, 'label': 'Guessed XML Link','acronym':'xml-guessed'}
+    OAI_ORE = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'OAI-ORE'}
+
 class MetaDataCollector(object):
     """
     A class to collect a metadata from different metadata sources.
@@ -78,26 +140,7 @@ class MetaDataCollector(object):
 
     metadata_mapping: Optional[Mapper]
 
-    # Using enum class create enumerations of metadata sources
-    class Sources(enum.Enum):
-        """"Enum class to enumerate metadata sources."""
-        HIGHWIRE_EPRINTS_EMBEDDED = {'method':'html embedding','label':'Embedded Highwire or Eprints','acronym':'eprints-html'}
-        DUBLINCORE_EMBEDDED = {'method':'html embedding','label':'Embedded DublinCore','acronym':'dc-html'}
-        OPENGRAPH_EMBEDDED = {'method':'html embedding','label':'Embedded OpenGraph','acronym':'og-html'}
-        SCHEMAORG_EMBEDDED = {'method':'html embedding','label':'Schema.org JSON-LD (Embedded)','acronym':'schema-html'}
-        RDFA_EMBEDDED = {'method':'microdata','label':'Embedded RDFa','acronym':'rdfa-html'}
-        MICRODATA_EMBEDDED = {'method':'microdata','label':'Embedded Microdata','acronym':'microdata-html'}
-        SCHEMAORG_NEGOTIATED = {'method':'content negotiation','label':'Schema.org JSON-LD (Negotiated)','acronym':'schema-negotiated'}
-        DATACITE_JSON_NEGOTIATED = {'method':'content negotiation','label':'Datacite Search','acronym':'datacite-negotiated'}
-        RDF_NEGOTIATED = {'method':'content negotiation','label':'Linked Data (RDF)','acronym':'rdf-negotiated'}
-        XML_NEGOTIATED = {'method':'content negotiation','label':'Generic XML (Negotiated)','acronym':'xml-negotiated'}
-        XML_TYPED_LINKS = {'method':'typed links','label':'Generic XML, Typed Links','acronym':'xml-linked'}
-        RDF_TYPED_LINKS = {'method':'typed links','label':'Linked Data (RDF), Typed Links','acronym':'rdf-linked'}  #Links in header which lead to a RDF resource
-        #TYPED_LINK = 'Typed Links'
-        SIGN_POSTING_LINKS = {'method':'typed links','label':'Signposting Typed Links','acronym':'signposting'}
-        #B2FIND = 'B2FIND Metadata Aggregator'
-        XML_GUESSED = {'method':None,'label':'Guessed XML Link'}
-        OAI_ORE = {'method':'typed links','label':'OAI-ORE'}
+
 
     def __init__(self,
                  sourcemetadata: dict = None,
@@ -128,8 +171,12 @@ class MetaDataCollector(object):
         self.accept_type = None
 
     @classmethod
-    def getEnumSourceNames(cls) -> Sources:
-        return cls.Sources
+    def getEnumSourceNames(cls) -> MetadataSources:
+        return MetadataSources
+
+    @classmethod
+    def getEnumMethodNames(cls) -> MetadataOfferingMethods:
+        return MetadataOfferingMethods
 
     def setAcceptType(self, type):
         self.accept_type = type

@@ -1,3 +1,4 @@
+import enum
 import hashlib
 import io
 import json
@@ -13,7 +14,7 @@ from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 
 from fuji_server.helper.identifier_helper import IdentifierHelper
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataOfferingMethods
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
 from fuji_server.helper.metadata_collector_dublincore import MetaDataCollectorDublinCore
 from fuji_server.helper.metadata_collector_highwire_eprints import MetaDataCollectorHighwireEprints
@@ -70,24 +71,33 @@ class MetadataHarvester():
         self.pid_collector = {}
         logging.addLevelName(self.LOG_SUCCESS, 'SUCCESS')
         logging.addLevelName(self.LOG_FAILURE, 'FAILURE')
-        if isinstance(allowed_harvesting_methods,list):
-            if set(allowed_harvesting_methods).issubset(set([i.name for i in MetaDataCollector.getEnumSourceNames()])):
+        #set allowed methods for metadata harvesting
+        self.allowed_harvesting_methods = [i for i in MetaDataCollector.getEnumMethodNames()]
+        if allowed_harvesting_methods:
+            if all(isinstance(x, enum.Enum) for x in allowed_harvesting_methods):
                 self.allowed_harvesting_methods = allowed_harvesting_methods
+        if isinstance(self.allowed_harvesting_methods,list):
+            self.allowed_harvesting_sources = MetadataSources.getSourcesbyMethod(self.allowed_harvesting_methods)
         else:
-            self.allowed_harvesting_methods = [i.name for i in MetaDataCollector.getEnumSourceNames()]
-        print('allowed methods: ',self.allowed_harvesting_methods)
+            self.allowed_harvesting_sources = [i for i in MetaDataCollector.getEnumSourceNames()]
+        #print('allowed sources: ', self.allowed_harvesting_sources)
+        #print('allowed methods: ', self.allowed_harvesting_methods)
+
+
+    def is_harvesting_source_allowed(self, method):
+        #test full or part string in one of the allowed source method keys
+        if method in self.allowed_harvesting_sources:
+            return True
+        else:
+            return False
 
     def is_harvesting_method_allowed(self, method):
-        print(type(method))
-        print('METHOD ',str(method))
-        #test full or part string in one of the allowed source method keys
-        if any(str(method) in am for am in self.allowed_harvesting_methods):
+        if method in self.allowed_harvesting_methods:
             return True
         else:
             return False
 
     def add_metadata_source(self,source):
-        print('ADDED:' , source)
         self.metadata_sources.append((source.name, source.value.get('method')))
 
     def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
@@ -210,7 +220,7 @@ class MetadataHarvester():
                     else:
                         self.pid_scheme, self.pid_url = next(iter(found_pids.items()))
 
-    def get_html_xml_links(self):
+    '''def get_html_xml_links(self):
         xmllinks=[]
         if self.landing_html:
             try:
@@ -255,7 +265,7 @@ class MetadataHarvester():
                     response.close()
                 except:
                     self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: ' + guessed_link)
-        return datalink
+        return datalink'''
 
     def set_html_typed_links(self):
         try:
@@ -283,15 +293,14 @@ class MetadataHarvester():
                         #signposting links
                         #https://www.w3.org/2001/sw/RDFCore/20031212-rdfinhtml/ recommends: link rel="meta" as well as "alternate meta"
                         if rel in ['meta','alternate meta','metadata','collection','author','describes','item','type','search','alternate','describedby','cite-as','linkset','license']:
-                            source = 'typed'
                             if rel in self.signposting_relation_types:
-                                source = 'signposting'
+                                source = MetadataOfferingMethods.SIGNPOSTING
                             self.typed_links.append({
                                 'url': href,
                                 'type': type,
                                 'rel': rel,
                                 'profile': profile,
-                                'source' : source
+                                'source' : MetadataOfferingMethods.TYPED_LINKS
                             })
                 except:
                     self.logger.info('FsF-F2-01M : Typed links identification failed -:')
@@ -341,7 +350,7 @@ class MetadataHarvester():
                                                 'type': link.get('type'),
                                                 'rel': linktype,
                                                 'profile': link.get('profile'),
-                                                'source' : 'signposting'
+                                                'source' : MetadataOfferingMethods.SIGNPOSTING
                                             })
                             self.logger.info('FsF-F2-01M : Found valid Signposting Linkset in provided JSON file')
                         else:
@@ -455,7 +464,7 @@ class MetadataHarvester():
                 'type': str(found_type).strip(),
                 'rel': str(found_rel).strip(),
                 'profile': found_formats,
-                'source': 'signposting'
+                'source': MetadataOfferingMethods.SIGNPOSTING
             }
             if anchor_match:
                 signposting_link_dict['anchor'] = anchor_match[1]
@@ -612,7 +621,7 @@ class MetadataHarvester():
             self.set_html_typed_links()
             self.set_signposting_header_links(requestHelper.response_content, requestHelper.getResponseHeader())
             self.set_signposting_linkset_links()
-            if self.is_harvesting_method_allowed('EMBEDDED'):
+            if self.is_harvesting_method_allowed(MetadataOfferingMethods.HTML_EMBEDDING) or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA):
                 self.logger.info('FsF-F2-01M : Starting to analyse EMBEDDED metadata at -: ' + str(self.landing_url))
                 #test if content is html otherwise skip embedded tests
                 #print(self.landing_content_type)
@@ -620,15 +629,13 @@ class MetadataHarvester():
                     # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
                     extruct_metadata = self.retrieve_metadata_embedded_extruct()
                     #if extruct_metadata:
-                    print('METHOD :::',MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.name)
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.name):
-                        print('##########################################')
+                    if self.is_harvesting_source_allowed(MetadataSources.SCHEMAORG_EMBEDDED):
                         ext_meta = extruct_metadata.get('json-ld')
                         self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
                         schemaorg_collector_embedded = MetaDataCollectorRdf(loggerinst=self.logger,
                                                                             json_ld_content=ext_meta,
-                                                                            source = MetaDataCollector.Sources.SCHEMAORG_EMBEDDED)
+                                                                            source = MetadataSources.SCHEMAORG_EMBEDDED)
                         source_schemaorg, schemaorg_dict = schemaorg_collector_embedded.parse_metadata()
                         schemaorg_dict = self.exclude_null(schemaorg_dict)
                         if schemaorg_dict:
@@ -647,10 +654,10 @@ class MetadataHarvester():
                         else:
                             self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
                     else:
-                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: '+str(MetaDataCollector.Sources.SCHEMAORG_EMBEDDED.value.get('label')))
+                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(MetadataSources.SCHEMAORG_EMBEDDED.value.get('label')))
                     # ========= retrieve highwire and eprints embedded in html page =========
                     if self.reference_elements:
-                        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.HIGHWIRE_EPRINTS_EMBEDDED.name):
+                        if self.is_harvesting_source_allowed(MetadataSources.HIGHWIRE_EPRINTS_EMBEDDED):
                             self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
                             hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
                                                                        sourcemetadata=self.landing_html)
@@ -671,11 +678,11 @@ class MetadataHarvester():
                                 self.logger.info('FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE')
                         else:
                             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                                MetaDataCollector.Sources.HIGHWIRE_EPRINTS_EMBEDDED.value.get('label')))
+                                MetadataSources.HIGHWIRE_EPRINTS_EMBEDDED.value.get('label')))
 
                     # ========= retrieve dublin core embedded in html page =========
                     if self.reference_elements:
-                        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.name):
+                        if self.is_harvesting_source_allowed(MetadataSources.DUBLINCORE_EMBEDDED):
                             self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
                             dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger,
                                                                        sourcemetadata=self.landing_html,
@@ -697,10 +704,10 @@ class MetadataHarvester():
                                 self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
                         else:
                             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                                MetaDataCollector.Sources.DUBLINCORE_EMBEDDED.value.get('label')))
+                                MetadataSources.DUBLINCORE_EMBEDDED.value.get('label')))
                     # ========= retrieve embedded rdfa and microdata metadata ========
 
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.MICRODATA_EMBEDDED.name):
+                    if self.is_harvesting_source_allowed(MetadataSources.MICRODATA_EMBEDDED):
                         self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
 
                         micro_meta = extruct_metadata.get('microdata')
@@ -718,12 +725,12 @@ class MetadataHarvester():
                                             'FsF-F2-01M : Found microdata metadata -: ' + str(micro_dict.keys()))
                     else:
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetaDataCollector.Sources.MICRODATA_EMBEDDED.value.get('label')))
+                            MetadataSources.MICRODATA_EMBEDDED.value.get('label')))
 
                     #================== RDFa
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.RDFA_EMBEDDED.name):
+                    if self.is_harvesting_source_allowed(MetadataSources.RDFA_EMBEDDED):
                         self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
-                        rdfasource = MetaDataCollector.Sources.RDFA_EMBEDDED.value.get('label')
+                        rdfasource = MetadataSources.RDFA_EMBEDDED
                         try:
                             rdfa_dict = {}
                             rdflib_logger = logging.getLogger('rdflib')
@@ -763,10 +770,10 @@ class MetadataHarvester():
                                 'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
                     else:
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetaDataCollector.Sources.RDFA_EMBEDDED.value.get('label')))
+                            MetadataSources.RDFA_EMBEDDED.value.get('label')))
 
                     # ======== retrieve OpenGraph metadata
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.OPENGRAPH_EMBEDDED.name):
+                    if self.is_harvesting_source_allowed(MetadataSources.OPENGRAPH_EMBEDDED):
 
                         self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
 
@@ -788,7 +795,7 @@ class MetadataHarvester():
                             self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
                     else:
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetaDataCollector.Sources.OPENGRAPH_EMBEDDED.value.get('label')))
+                            MetadataSources.OPENGRAPH_EMBEDDED.value.get('label')))
                 else:
                     self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' +
                                         str(self.landing_url) + ' expected html content but received: ' +
@@ -796,12 +803,12 @@ class MetadataHarvester():
             else:
                 self.logger.warning(
                     'FsF-F2-01M :Skipping Embedded tests, since no EMBEDDED method in allowed harvesting methods: ' + (
-                        str(self.allowed_harvesting_methods)))
+                        str(self.allowed_harvesting_sources)))
 
                 ############## end of embedded metadata content harvesting
 
 
-            if self.is_harvesting_method_allowed('LINKS'):
+            if self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS) or self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING):
                 # ========= retrieve signposting data links
                 self.logger.info('FsF-F2-01M : Trying to identify Typed Links to data items in html page')
 
@@ -839,8 +846,8 @@ class MetadataHarvester():
 
     def retrieve_metadata_external_rdf_negotiated(self,target_url_list=[]):
         # ========= retrieve rdf metadata namespaces by content negotiation ========
-        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.RDF_NEGOTIATED.name):
-            source = MetaDataCollector.Sources.RDF_NEGOTIATED.value.get('label')
+        if self.is_harvesting_source_allowed(MetadataSources.RDF_NEGOTIATED):
+            source = MetadataSources.RDF_NEGOTIATED
             #if self.pid_scheme == 'purl':
             #    targeturl = self.pid_url
             #else:
@@ -875,10 +882,10 @@ class MetadataHarvester():
                         self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
         else:
             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                MetaDataCollector.Sources.RDF_NEGOTIATED.value.get('label')))
+                MetadataSources.RDF_NEGOTIATED.value.get('label')))
 
     def retrieve_metadata_external_schemaorg_negotiated(self,target_url_list=[]):
-        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.name):
+        if self.is_harvesting_source_allowed(MetadataSources.SCHEMAORG_NEGOTIATED):
             for target_url in target_url_list:
                 # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
                 self.logger.info(
@@ -886,7 +893,7 @@ class MetadataHarvester():
                         target_url))
                 schemaorg_collector_negotiated = MetaDataCollectorRdf(loggerinst=self.logger,
                                                                       target_url=target_url,
-                                                                      source = MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value.get('label'))
+                                                                      source = MetadataSources.SCHEMAORG_NEGOTIATED)
                 schemaorg_collector_negotiated.setAcceptType(AcceptTypes.jsonld)
                 source_schemaorg, schemaorg_dict = schemaorg_collector_negotiated.parse_metadata()
                 schemaorg_dict = self.exclude_null(schemaorg_dict)
@@ -906,16 +913,16 @@ class MetadataHarvester():
                     self.logger.info('FsF-F2-01M : Schema.org metadata through content negotiation UNAVAILABLE')
         else:
             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                MetaDataCollector.Sources.SCHEMAORG_NEGOTIATED.value.get('label')))
+                MetadataSources.SCHEMAORG_NEGOTIATED.value.get('label')))
 
     def retrieve_metadata_external_xml_negotiated(self,target_url_list=[]):
-        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.XML_NEGOTIATED.name):
+        if self.is_harvesting_source_allowed(MetadataSources.XML_NEGOTIATED):
             for target_url in target_url_list:
                 self.logger.info(
                     'FsF-F2-01M : Trying to retrieve XML metadata through content negotiation from URL -: ' + str(target_url))
                 negotiated_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
                                                                 target_url=self.landing_url,
-                                                                link_type='negotiated')
+                                                                link_type=MetadataOfferingMethods.CONTENT_NEGOTIATION)
                 negotiated_xml_collector.set_auth_token(self.auth_token,self.auth_token_type)
                 source_neg_xml, metadata_neg_dict = negotiated_xml_collector.parse_metadata()
                 # print('### ',metadata_neg_dict)
@@ -942,7 +949,7 @@ class MetadataHarvester():
                                         neg_namespace)
         else:
             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                MetaDataCollector.Sources.XML_NEGOTIATED.value.get('label')))
+                MetadataSources.XML_NEGOTIATED.value.get('label')))
     '''
     def retrieve_metadata_external_georss(self):
         # ========= retrieve atom, GeoRSS links
@@ -971,14 +978,13 @@ class MetadataHarvester():
                 if ore_dict:
                     self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found OAI ORE metadata -: {}'.format(str(ore_dict.keys())))
-                    #self.metadata_sources.append((source_ore, 'linked'))
                     self.add_metadata_source(source_ore)
                     self.merge_metadata(ore_dict, oai_link['url'], source_ore, ore_atom_collector.getContentType(),
                                         'http://www.openarchives.org/ore/terms',
                                         'http://www.openarchives.org/ore/terms')
 
     def retrieve_metadata_external_datacite(self):
-        if self.is_harvesting_method_allowed(MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.name):
+        if self.is_harvesting_source_allowed(MetadataSources.DATACITE_JSON_NEGOTIATED):
             #if self.pid_scheme:
             # ================= datacite by content negotiation ===========
             # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
@@ -1007,45 +1013,44 @@ class MetadataHarvester():
                 self.logger.info('FsF-F2-01M : No target URL (PID or landing page) given, therefore Datacite metadata (json) not requested.')
         else:
             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                MetaDataCollector.Sources.DATACITE_JSON_NEGOTIATED.value.get('label')))
+                MetadataSources.DATACITE_JSON_NEGOTIATED.value.get('label')))
 
-    def get_connected_metadata_links(self,allowedmethods = ['signposting','typed','guessed']):
+    def get_connected_metadata_links(self):
         # get all links which lead to metadata are given by signposting, typed links, guessing or in html href
-        connected_metadata_links = []
-        signposting_header_links = []
-        # signposting html links
-        signposting_html_links = self.get_html_typed_links(['describedby'])
-        # signposting header links
-        if self.get_signposting_header_links('describedby'):
-            signposting_header_links = self.get_signposting_header_links('describedby', False)
-            self.logger.info(
-                'FsF-F2-01M : Found metadata link as (describedby) signposting header links -:' + str(
-                    signposting_header_links))
-            #self.metadata_sources.append((MetaDataCollector.Sources.SIGN_POSTING_LINKS.value, 'signposting'))
-
-        if signposting_header_links:
-            connected_metadata_links.extend(signposting_header_links)
-        if signposting_html_links:
-            connected_metadata_links.extend(signposting_html_links)
-
-        #if signposting_typeset_links:
-        #    connected_metadata_links.extend(signposting_typeset_links)
-
-        html_typed_links = self.get_html_typed_links(['meta', 'alternate meta', 'metadata','alternate'], False)
-        if html_typed_links:
-            connected_metadata_links.extend(html_typed_links)
-        if 'guessed' in allowedmethods:
-            guessed_metadata_link = self.get_guessed_xml_link()
-            href_metadata_links = self.get_html_xml_links()
-            if href_metadata_links:
-                connected_metadata_links.extend(href_metadata_links)
-            if guessed_metadata_link is not None:
-                connected_metadata_links.append(guessed_metadata_link)
+        if MetadataOfferingMethods.SIGNPOSTING in self.allowed_harvesting_methods or MetadataOfferingMethods.TYPED_LINKS in self.allowed_harvesting_methods:
+            connected_metadata_links = []
+            signposting_header_links = []
+            # signposting html links
+            signposting_html_links = self.get_html_typed_links(['describedby'])
+            # signposting header links
+            if MetadataOfferingMethods.SIGNPOSTING in self.allowed_harvesting_methods:
+                if self.get_signposting_header_links('describedby'):
+                    signposting_header_links = self.get_signposting_header_links('describedby', False)
+                    self.logger.info(
+                        'FsF-F2-01M : Found metadata link as (describedby) signposting header links -:' + str(
+                            [sl.get('url') for sl in signposting_header_links]))
+                if signposting_header_links:
+                    connected_metadata_links.extend(signposting_header_links)
+            if signposting_html_links:
+                connected_metadata_links.extend(signposting_html_links)
+            #if signposting_typeset_links:
+            #    connected_metadata_links.extend(signposting_typeset_links)
+            if MetadataOfferingMethods.TYPED_LINKS in self.allowed_harvesting_methods:
+                html_typed_links = self.get_html_typed_links(['meta', 'alternate meta', 'metadata','alternate'], False)
+                if html_typed_links:
+                    connected_metadata_links.extend(html_typed_links)
+            '''if 'guessed' in allowedmethods:
+                guessed_metadata_link = self.get_guessed_xml_link()
+                href_metadata_links = self.get_html_xml_links()
+                if href_metadata_links:
+                    connected_metadata_links.extend(href_metadata_links)
+                if guessed_metadata_link is not None:
+                    connected_metadata_links.append(guessed_metadata_link)'''
         return connected_metadata_links
 
-    def retrieve_metadata_external_linked_metadata(self, allowedmethods = ['signposting', 'typed', 'guessed']):
+    def retrieve_metadata_external_linked_metadata(self):
         # follow all links identified as typed links, signposting links and get xml or rdf metadata from there
-        typed_metadata_links = self.get_connected_metadata_links(allowedmethods)
+        typed_metadata_links = self.get_connected_metadata_links()
         if typed_metadata_links:
             # unique entries for typed links
             typed_metadata_links = [dict(t) for t in {tuple(d.items()) for d in typed_metadata_links}]
@@ -1058,10 +1063,13 @@ class MetadataHarvester():
                     except Exception:
                         pass
                 if re.search(r'[\/+](rdf(\+xml)?|(?:x-)?turtle|ttl|n3|n-triples|ld\+json)+$', str(metadata_link['type'])):
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.RDF_TYPED_LINKS.name):
+                    if self.is_harvesting_source_allowed(MetadataSources.RDF_TYPED_LINKS) or self.is_harvesting_source_allowed(MetadataSources.RDF_SIGNPOSTING_LINKS):
                         self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: (' +
                                          str(metadata_link['type']) + ' ' + str(metadata_link['url']) + ')')
-                        source = MetaDataCollector.Sources.RDF_TYPED_LINKS.value.get('label')
+                        if metadata_link.get('source') == MetadataOfferingMethods.SIGNPOSTING:
+                            source = MetadataSources.RDF_SIGNPOSTING_LINKS
+                        else:
+                            source = MetadataSources.RDF_TYPED_LINKS
                         typed_rdf_collector = MetaDataCollectorRdf(loggerinst=self.logger,
                                                                    target_url=metadata_link['url'],
                                                                    source=source)
@@ -1085,10 +1093,10 @@ class MetadataHarvester():
                                 self.logger.info('FsF-F2-01M : Linked Data metadata UNAVAILABLE')
                     else:
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetaDataCollector.Sources.RDF_TYPED_LINKS.value.get('label')))
+                            MetadataSources.RDF_TYPED_LINKS.value.get('label')))
 
                 elif re.search(r'[+\/]xml$', str(metadata_link['type'])):
-                    if self.is_harvesting_method_allowed(MetaDataCollector.Sources.XML_TYPED_LINKS.name):
+                    if self.is_harvesting_source_allowed(MetadataSources.XML_TYPED_LINKS) or self.is_harvesting_source_allowed(MetadataSources.XML_SIGNPOSTING_LINKS):
                         self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' +
                                          str(metadata_link['type'] + ' ' + metadata_link['url'] + ')'))
                         linked_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
@@ -1105,7 +1113,10 @@ class MetadataHarvester():
                             self.linked_namespace_uri.update(linked_xml_collector.getLinkedNamespaces())
                             if linked_xml_dict:
                                 #self.metadata_sources.append((MetaDataCollector.Sources.XML_TYPED_LINKS.value.get('label'), metadata_link['source']))
-                                self.add_metadata_source(MetaDataCollector.Sources.XML_TYPED_LINKS)
+                                if metadata_link.get('source') == MetadataOfferingMethods.SIGNPOSTING:
+                                    self.add_metadata_source(MetadataSources.XML_SIGNPOSTING_LINKS)
+                                else:
+                                    self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
                                 self.merge_metadata(linked_xml_dict, metadata_link['url'], source_linked_xml,
                                                     linked_xml_collector.getContentType(), lkd_namespace)
 
@@ -1118,7 +1129,7 @@ class MetadataHarvester():
                                                     linked_xml_collector.getNamespaces())
                     else:
                         self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetaDataCollector.Sources.XML_TYPED_LINKS.value.get('label')))
+                            MetadataSources.XML_TYPED_LINKS.value.get('label')))
                 else:
                     self.logger.info(
                         'FsF-F2-01M : Found typed link or signposting link but will ignore (can\'t handle) mime type -:' + str(
@@ -1126,7 +1137,7 @@ class MetadataHarvester():
 
 
     def retrieve_metadata_external(self, target_url = None, repeat_mode = False):
-        if self.is_harvesting_method_allowed('NEGOTIATED') or self.is_harvesting_method_allowed('LINKS'):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION) or self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS) or self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING):
             self.logger.info(
                 'FsF-F2-01M : Starting to identify EXTERNAL metadata through content negotiation or typed (signposting) links')
             if self.landing_url or self.pid_url:
@@ -1149,7 +1160,7 @@ class MetadataHarvester():
                 self.retrieve_metadata_external_rdf_negotiated(target_url_list)
                 self.retrieve_metadata_external_datacite()
                 if not repeat_mode:
-                    self.retrieve_metadata_external_linked_metadata(['signposting', 'linked'])
+                    self.retrieve_metadata_external_linked_metadata()
                     self.retrieve_metadata_external_oai_ore()
 
 
