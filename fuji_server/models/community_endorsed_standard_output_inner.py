@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,30 +14,40 @@ class CommunityEndorsedStandardOutputInner(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 metadata_standard: str = None,
-                 urls: List[str] = None,
-                 subject_areas: List[str] = None):  # noqa: E501
+    def __init__(self, metadata_standard: str=None, url: str=None, subject_areas: List[str]=None, type: str=None, source: str=None):  # noqa: E501
         """CommunityEndorsedStandardOutputInner - a model defined in Swagger
 
         :param metadata_standard: The metadata_standard of this CommunityEndorsedStandardOutputInner.  # noqa: E501
         :type metadata_standard: str
-        :param urls: The urls of this CommunityEndorsedStandardOutputInner.  # noqa: E501
-        :type urls: List[str]
+        :param url: The url of this CommunityEndorsedStandardOutputInner.  # noqa: E501
+        :type url: str
         :param subject_areas: The subject_areas of this CommunityEndorsedStandardOutputInner.  # noqa: E501
         :type subject_areas: List[str]
+        :param type: The type of this CommunityEndorsedStandardOutputInner.  # noqa: E501
+        :type type: str
+        :param source: The source of this CommunityEndorsedStandardOutputInner.  # noqa: E501
+        :type source: str
         """
-        self.swagger_types = {'metadata_standard': str, 'urls': List[str], 'subject_areas': List[str]}
+        self.swagger_types = {
+            'metadata_standard': str,
+            'url': str,
+            'subject_areas': List[str],
+            'type': str,
+            'source': str
+        }
 
         self.attribute_map = {
             'metadata_standard': 'metadata_standard',
-            'urls': 'urls',
-            'subject_areas': 'subject_areas'
+            'url': 'url',
+            'subject_areas': 'subject_areas',
+            'type': 'type',
+            'source': 'source'
         }
         self._metadata_standard = metadata_standard
-        self._urls = urls
+        self._url = url
         self._subject_areas = subject_areas
+        self._type = type
+        self._source = source
 
     @classmethod
     def from_dict(cls, dikt) -> 'CommunityEndorsedStandardOutputInner':
@@ -72,25 +82,25 @@ class CommunityEndorsedStandardOutputInner(Model):
         self._metadata_standard = metadata_standard
 
     @property
-    def urls(self) -> List[str]:
-        """Gets the urls of this CommunityEndorsedStandardOutputInner.
+    def url(self) -> str:
+        """Gets the url of this CommunityEndorsedStandardOutputInner.
 
 
-        :return: The urls of this CommunityEndorsedStandardOutputInner.
-        :rtype: List[str]
+        :return: The url of this CommunityEndorsedStandardOutputInner.
+        :rtype: str
         """
-        return self._urls
+        return self._url
 
-    @urls.setter
-    def urls(self, urls: List[str]):
-        """Sets the urls of this CommunityEndorsedStandardOutputInner.
+    @url.setter
+    def url(self, url: str):
+        """Sets the url of this CommunityEndorsedStandardOutputInner.
 
 
-        :param urls: The urls of this CommunityEndorsedStandardOutputInner.
-        :type urls: List[str]
+        :param url: The url of this CommunityEndorsedStandardOutputInner.
+        :type url: str
         """
 
-        self._urls = urls
+        self._url = url
 
     @property
     def subject_areas(self) -> List[str]:
@@ -112,3 +122,45 @@ class CommunityEndorsedStandardOutputInner(Model):
         """
 
         self._subject_areas = subject_areas
+
+    @property
+    def type(self) -> str:
+        """Gets the type of this CommunityEndorsedStandardOutputInner.
+
+
+        :return: The type of this CommunityEndorsedStandardOutputInner.
+        :rtype: str
+        """
+        return self._type
+
+    @type.setter
+    def type(self, type: str):
+        """Sets the type of this CommunityEndorsedStandardOutputInner.
+
+
+        :param type: The type of this CommunityEndorsedStandardOutputInner.
+        :type type: str
+        """
+
+        self._type = type
+
+    @property
+    def source(self) -> str:
+        """Gets the source of this CommunityEndorsedStandardOutputInner.
+
+
+        :return: The source of this CommunityEndorsedStandardOutputInner.
+        :rtype: str
+        """
+        return self._source
+
+    @source.setter
+    def source(self, source: str):
+        """Sets the source of this CommunityEndorsedStandardOutputInner.
+
+
+        :param source: The source of this CommunityEndorsedStandardOutputInner.
+        :type source: str
+        """
+
+        self._source = source
