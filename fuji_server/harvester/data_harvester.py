@@ -111,7 +111,6 @@ class DataHarvester():
                 response.close()
 
             except urllib.error.HTTPError as e:
-                print('ERROR1: ',e)
                 self.logger.warning(
                     'FsF-F3-01M : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
                         url, e.code))
@@ -122,7 +121,6 @@ class DataHarvester():
                     'FsF-R1.3-02D : Content identifier inaccessible -: {0}, HTTPError code {1} '.format(
                         url, e.code))
             except urllib.error.URLError as e:
-                print('ERROR2: ', e)
                 self.logger.exception(e.reason)
                 self.logger.warning('FsF-F3-01M : Content identifier inaccessible -: {0}, URLError reason {1} '.format(
                     url, e.reason))
@@ -131,7 +129,6 @@ class DataHarvester():
                 self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -: {0}, URLError reason {1} '.format(
                     url, e.reason))
             except Exception as e:
-                print('ERROR3: ', e)
                 self.logger.warning('FsF-F3-01M : Content identifier inaccessible -:' +url +' '+ str(e))
                 self.logger.warning('FsF-R1-01MD : Content identifier inaccessible -:' + url +' '+ str(e))
                 self.logger.warning('FsF-R1.3-02D : Content identifier inaccessible -:' +url +' '+ str(e))
