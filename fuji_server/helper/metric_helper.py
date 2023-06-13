@@ -16,6 +16,7 @@ class MetricHelper:
         self.all_metrics_list = None
         self.metric_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+'
         self.metric_test_regex = r'FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)'
+        self.config = {}
         if logger:
             self.logger = logger
         else:
@@ -35,7 +36,7 @@ class MetricHelper:
             except yaml.YAMLError as e:
                 self.logger.error(e)
             self.metric_specification = specification.get('metric_specification')
-
+            self.config = specification.get('config')
             self.all_metrics_list = specification['metrics']
             self.total_metrics = len(self.all_metrics_list)
             print('NUMBER OF LOADED METRICS  ', self.total_metrics)
@@ -46,6 +47,12 @@ class MetricHelper:
         else:
             print('Invalid YAML File Name')
             self.logger.error('Invalid YAML File Name')
+
+    def get_metrics_config(self):
+        if self.config:
+            return self.config
+        else:
+            return {}
 
     def get_custom_metrics(self, wanted_fields):
         new_dict = {}
