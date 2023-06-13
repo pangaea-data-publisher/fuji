@@ -165,7 +165,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             if object_size == int(float(data_object.get('content_size'))):
                                 size_matches = True
                                 self.logger.info(
-                                    '{0} : Could verify content size from downloaded file -: (expected: {1}, found: {2})'
+                                    '{0} : Sucessfully verified content size from downloaded file -: (expected: {1}, found: {2})'
                                         .format(self.metric_identifier, str(data_object.get('claimed_size')),
                                                 str(data_object.get('content_size'))))
                             else:
@@ -188,7 +188,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                          or data_object.get('claimed_type') in data_object.get('tika_content_type'):
                     type_matches = True
                     self.logger.info(
-                        '{0} : Could verify content type from downloaded file -: (expected: {1}, found: {2})'
+                        '{0} : Sucessfully verified content type from downloaded file -: (expected: {1}, found: {2})'
                             .format(self.metric_identifier, data_object.get('claimed_type'),
                                     str(data_object.get('tika_content_type'))))
                 else:
