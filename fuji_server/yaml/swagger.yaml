@@ -42,6 +42,7 @@ paths:
               metadata_service_endpoint: http://ws.pangaea.de/oai/provider
               metadata_service_type: oai_pmh
               use_datacite: true
+              metric_version: metrics_v0.5
       responses:
         "200":
           description: successful operation
@@ -642,6 +643,9 @@ components:
         use_datacite:
           type: boolean
           description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata
+        metric_version:
+          type: string
+          description: The FAIRsFAIR metric version be used fo rthe assessment
         oaipmh_endpoint:
           deprecated: true
           type: string
@@ -681,14 +685,16 @@ components:
       properties:
         metadata_standard:
           type: string
-        urls:
-          type: array
-          items:
-            type: string
+        url:
+          type: string
         subject_areas:
           type: array
           items:
             type: string
+        type:
+          type: string
+        source:
+          type: string
     DataFileFormat_output_inner:
       type: object
       properties:

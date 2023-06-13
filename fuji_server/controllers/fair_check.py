@@ -65,6 +65,7 @@ from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAI
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import FAIREvaluatorStandardisedProtocolMetadata
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
+from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
@@ -113,7 +114,6 @@ class FAIRCheck:
                  use_datacite=True,
                  verify_pids=True,
                  oaipmh_endpoint=None,
-                 allowed_harvesting_methods = None,
                  metric_version = None): # e.g. metrics_v0.5 regex: metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
@@ -197,13 +197,23 @@ class FAIRCheck:
         self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
         self.auth_token = None
         self.auth_token_type = 'Basic'
-        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite,allowed_harvesting_methods=allowed_harvesting_methods)
+
         self.pid_collector = {}
 
         self.metric_helper = MetricHelper(metric_version)
         self.METRICS = self.metric_helper.get_custom_metrics(
                 ['metric_name', 'total_score', 'metric_tests', 'metric_number'])
         self.METRIC_VERSION = metric_version
+        self.metrics_config = self.metric_helper.get_metrics_config()
+        print('METRICS CONFIG: ', self.metrics_config)
+        allowed_harvesting_methods = self.metrics_config.get('metadata_offering_methods')
+        if allowed_harvesting_methods:
+            if not isinstance(allowed_harvesting_methods, list):
+                allowed_harvesting_methods = None
+            else:
+                allowed_harvesting_methods = [MetadataOfferingMethods[m] for m in allowed_harvesting_methods if m in MetadataOfferingMethods._member_names_ ]
+        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, allowed_harvesting_methods = allowed_harvesting_methods)
+
 
     @classmethod
     def load_predata(cls):
@@ -361,7 +371,6 @@ class FAIRCheck:
         self.pid_url =  self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
-        print('SOURCES EMBEDDED: ',self.metadata_sources)
 
     def retrieve_metadata_external(self, target_url = None, repeat_mode = False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode = repeat_mode)
@@ -373,7 +382,6 @@ class FAIRCheck:
         self.linked_namespace_uri.update( self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend( self.metadata_harvester.related_resources)
         self.pid_collector.update(self.metadata_harvester.pid_collector)
-        print('SOURCES EXTERNAL: ',self.metadata_sources)
 
     def lookup_metadatastandard_by_name(self, value):
         found = None
