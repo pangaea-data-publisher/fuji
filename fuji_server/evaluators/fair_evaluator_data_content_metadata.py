@@ -164,6 +164,10 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             object_size = int(float(data_size))
                             if object_size == int(float(data_object.get('content_size'))):
                                 size_matches = True
+                                self.logger.info(
+                                    '{0} : Could verify content size from downloaded file -: (expected: {1}, found: {2})'
+                                        .format(self.metric_identifier, str(data_object.get('claimed_size')),
+                                                str(data_object.get('content_size'))))
                             else:
                                 self.logger.warning(
                                     '{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})'
@@ -183,6 +187,10 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 if data_object.get('header_content_type') == data_object.get('claimed_type') \
                          or data_object.get('claimed_type') in data_object.get('tika_content_type'):
                     type_matches = True
+                    self.logger.info(
+                        '{0} : Could verify content type from downloaded file -: (expected: {1}, found: {2})'
+                            .format(self.metric_identifier, data_object.get('claimed_type'),
+                                    str(data_object.get('tika_content_type'))))
                 else:
                     self.logger.warning(
                         '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
@@ -202,7 +210,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         return test_result
 
     def testVariablesMatchMetadata(self, test_data_content_url):
-        test_result = True
+        test_result = False
         if self.isTestDefined(self.metric_identifier + '-4'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-4')
             test_data_object = self.fuji.content_identifier.get(test_data_content_url)
