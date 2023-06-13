@@ -60,6 +60,7 @@ def assess_by_id(body):  # noqa: E501
         oaipmh_endpoint = body.oaipmh_endpoint
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
+        metric_version = body.metric_version
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
@@ -70,7 +71,8 @@ def assess_by_id(body):  # noqa: E501
                        metadata_service_url=metadata_service_endpoint,
                        metadata_service_type=metadata_service_type,
                        use_datacite=usedatacite,
-                       oaipmh_endpoint=oaipmh_endpoint)
+                       oaipmh_endpoint=oaipmh_endpoint,
+                       metric_version=metric_version)
         #dataset level authentication
         if auth_token:
             ft.set_auth_token(auth_token, auth_token_type)
@@ -86,26 +88,31 @@ def assess_by_id(body):  # noqa: E501
             if ft.weblogger:
                 ft.logger.removeHandler(ft.weblogger)
 
+        print('starting harvesting ')
         ft.harvest_all_metadata()
-
         uid_result, pid_result = ft.check_unique_persistent()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
-            #ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
-            #ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
-            #ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
-            #ft.retrieve_metadata_external_datacite()
         core_metadata_result = ft.check_minimal_metatadata()
+        # print(ft.metadata_unmerged)
         content_identifier_included_result = ft.check_content_identifier_included()
+        # print('F-UJI checks: accsee level')
         access_level_result = ft.check_data_access_level()
+        # print('F-UJI checks: license')
         license_result = ft.check_license()
+        # print('F-UJI checks: related')
         related_resources_result = ft.check_relatedresources()
+        # print('F-UJI checks: searchable')
         check_searchable_result = ft.check_searchable()
+        # print('F-UJI checks: data content')
+        ft.harvest_all_data()
         data_content_result = ft.check_data_content_metadata()
         data_file_format_result = ft.check_data_file_format()
+        # print('F-UJI checks: data file format')
         community_standards_result = ft.check_community_metadatastandards()
         data_provenance_result = ft.check_data_provenance()
         formal_metadata_result = ft.check_formal_metadata()
+        # print('F-UJI checks: semantic vocab')
         semantic_vocab_result = ft.check_semantic_vocabulary()
         metadata_preserved_result = ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
@@ -146,7 +153,7 @@ def assess_by_id(body):  # noqa: E501
         #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         timestmp = datetime.datetime.now().replace(
             microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
-        #metric_spec = Preprocessor.metric_specification
+        metric_spec = Preprocessor.metric_specification
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()
@@ -158,7 +165,7 @@ def assess_by_id(body):  # noqa: E501
                                      software_version=ft.FUJI_VERSION,
                                      test_id=ft.test_id,
                                      metric_version=metric_version,
-                                     metric_specification=ft.metric_spec,
+                                     metric_specification=metric_spec,
                                      total_metrics=totalmetrics,
                                      results=results,
                                      summary=summary)

@@ -26,10 +26,11 @@ class MetricHelper:
         ym = re.match('metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?\.yaml', metric_file_name)
         if ym:
             self.metric_version = float(ym[1])
-            print('METRIC VERSION' , self.metric_version)
-            print('LOADING METRICS  ', metric_file_name)
+            metric_yml_path  = Preprocessor.METRIC_YML_PATH
 
-            metric_yml_path  = os.path.join(Preprocessor.METRIC_YML_PATH,  metric_file_name)
+            print('METRIC VERSION' , self.metric_version)
+            print('LOADING METRICS  ', metric_file_name, metric_yml_path)
+
             stream = open(metric_yml_path, 'r', encoding='utf8')
             try:
                 specification = yaml.load(stream, Loader=yaml.FullLoader)

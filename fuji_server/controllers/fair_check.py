@@ -132,7 +132,7 @@ class FAIRCheck:
             self.metadata_service_type = 'oai_pmh'
         if self.metadata_service_type == 'oai_pmh':
             self.oaipmh_endpoint = self.metadata_service_url
-        elif self.metadata_service_type == 'ogc_csw' or 'csw' in self.metadata_service_type:
+        elif str(self.metadata_service_type) == 'ogc_csw' or 'csw' in str(self.metadata_service_type):
             self.csw_endpoint = self.metadata_service_url
         elif self.metadata_service_type == 'sparql':
             self.sparql_endpoint = self.metadata_service_url
@@ -199,7 +199,10 @@ class FAIRCheck:
         self.auth_token_type = 'Basic'
 
         self.pid_collector = {}
-
+        if not metric_version:
+            metric_version = 'metrics_v0.5'
+            self.logger.warning(
+                'FsF-F1-02 : Metrics version not given, therefore loading default metrics v0.5')
         self.metric_helper = MetricHelper(metric_version)
         self.METRICS = self.metric_helper.get_custom_metrics(
                 ['metric_name', 'total_score', 'metric_tests', 'metric_number'])

@@ -14,7 +14,7 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None, metric_version: str=None, oaipmh_endpoint: str=None):  # noqa: E501
+    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None, metric_version: str=None, auth_token: str=None, auth_token_type: str=None, oaipmh_endpoint: str=None):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -29,6 +29,10 @@ class Body(Model):
         :type use_datacite: bool
         :param metric_version: The metric_version of this Body.  # noqa: E501
         :type metric_version: str
+        :param auth_token: The auth_token of this Body.  # noqa: E501
+        :type auth_token: str
+        :param auth_token_type: The auth_token_type of this Body.  # noqa: E501
+        :type auth_token_type: str
         :param oaipmh_endpoint: The oaipmh_endpoint of this Body.  # noqa: E501
         :type oaipmh_endpoint: str
         """
@@ -39,6 +43,8 @@ class Body(Model):
             'metadata_service_type': str,
             'use_datacite': bool,
             'metric_version': str,
+            'auth_token': str,
+            'auth_token_type': str,
             'oaipmh_endpoint': str
         }
 
@@ -49,6 +55,8 @@ class Body(Model):
             'metadata_service_type': 'metadata_service_type',
             'use_datacite': 'use_datacite',
             'metric_version': 'metric_version',
+            'auth_token': 'auth_token',
+            'auth_token_type': 'auth_token_type',
             'oaipmh_endpoint': 'oaipmh_endpoint'
         }
         self._object_identifier = object_identifier
@@ -57,6 +65,8 @@ class Body(Model):
         self._metadata_service_type = metadata_service_type
         self._use_datacite = use_datacite
         self._metric_version = metric_version
+        self._auth_token = auth_token
+        self._auth_token_type = auth_token_type
         self._oaipmh_endpoint = oaipmh_endpoint
 
     @classmethod
@@ -207,6 +217,52 @@ class Body(Model):
         """
 
         self._metric_version = metric_version
+
+    @property
+    def auth_token(self) -> str:
+        """Gets the auth_token of this Body.
+
+        The authentication token for HTTP authentication  # noqa: E501
+
+        :return: The auth_token of this Body.
+        :rtype: str
+        """
+        return self._auth_token
+
+    @auth_token.setter
+    def auth_token(self, auth_token: str):
+        """Sets the auth_token of this Body.
+
+        The authentication token for HTTP authentication  # noqa: E501
+
+        :param auth_token: The auth_token of this Body.
+        :type auth_token: str
+        """
+
+        self._auth_token = auth_token
+
+    @property
+    def auth_token_type(self) -> str:
+        """Gets the auth_token_type of this Body.
+
+        The authentication token type, 'Basic' or 'Bearer'  # noqa: E501
+
+        :return: The auth_token_type of this Body.
+        :rtype: str
+        """
+        return self._auth_token_type
+
+    @auth_token_type.setter
+    def auth_token_type(self, auth_token_type: str):
+        """Sets the auth_token_type of this Body.
+
+        The authentication token type, 'Basic' or 'Bearer'  # noqa: E501
+
+        :param auth_token_type: The auth_token_type of this Body.
+        :type auth_token_type: str
+        """
+
+        self._auth_token_type = auth_token_type
 
     @property
     def oaipmh_endpoint(self) -> str:

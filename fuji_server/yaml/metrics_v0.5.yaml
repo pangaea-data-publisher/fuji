@@ -1,4 +1,6 @@
 # LIST OF FARISFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
+config:
+
 metrics:
   ## ---------------- FINDABILITY ---------------- ##
 - metric_identifier: FsF-F1-01D
@@ -9,6 +11,7 @@ metrics:
   fair_principle: F1
   target: Data
   evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-F1-01D-1
       metric_test_name: Identifier is resolvable and follows a defined unique identifier syntax (IRI, URL)
@@ -32,6 +35,7 @@ metrics:
   fair_principle: F1
   target: Data
   evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-F1-02D-1
       metric_test_name: Identifier follows a defined persistent identifier syntax
@@ -59,6 +63,7 @@ metrics:
     2) offering typed links which lead to metadata within the HTML code of the metadata or signposting links.
     3) enable content negotiation and deliver e.g. RDF, JSON-LD or XML on demand.
     The metric evaluates the completeness of metadata in case metadata has been retrieved.
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-F2-01M-1
       metric_test_name: Metadata has been made available via common web methods
@@ -66,28 +71,28 @@ metrics:
       metric_test_maturity: 1
     - metric_test_identifier: FsF-F2-01M-1a
       metric_test_name: Metadata is embedded in the landing page XHTML/HTML code
-      metric_test_score: 0
+      metric_test_score: 0.5
     - metric_test_identifier: FsF-F2-01M-1b
       metric_test_name: Metadata is accessible through content negotiation
-      metric_test_score: 0
+      metric_test_score: 0.5
     - metric_test_identifier: FsF-F2-01M-1c
       metric_test_name: Metadata is accessible via typed links
-      metric_test_score: 0
+      metric_test_score: 0.5
     - metric_test_identifier: FsF-F2-01M-1d
       metric_test_name: Metadata is accessible via signposting links
-      metric_test_score: 0
+      metric_test_score: 0.5
     - metric_test_identifier: FsF-F2-01M-2
       metric_test_name: Core data citation metadata is available
       metric_test_score: 0.5
       metric_test_maturity: 2
+      metric_test_config: test
     - metric_test_identifier: FsF-F2-01M-3
       metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
       metric_test_maturity: 3
-
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-01
+  date_updated: 2022-05-30
   version: 0.5
   total_score: 2
 
@@ -99,6 +104,7 @@ metrics:
   fair_principle: F3
   target: Metadata
   evaluation_mechanism: Several metadata standards provide the possibility to include links to the actual data content. The presence of such links is evaluated here.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-F3-01M-1
       metric_test_name: Metadata contains data content related information (file name, size, type)
@@ -110,7 +116,7 @@ metrics:
       metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_updated: 2022-05-30
   version: 0.5
   total_score: 1
 
@@ -122,6 +128,7 @@ metrics:
   fair_principle: F4
   target: Metadata
   evaluation_mechanism: The metric is evaluated using the given metadata standards known to support major search engines such as JSON-LD and Dublin Core. Presence of metadata in research data registries is further evaluated.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-F4-01M-1
       metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (JSON-LD, Dublin Core, RDFa)
@@ -133,7 +140,7 @@ metrics:
       metric_test_maturity: 2
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_updated: 2022-05-30
   version: 0.5
   total_score: 2
 
@@ -145,6 +152,7 @@ metrics:
   fair_principle: A1
   target: Metadata
   evaluation_mechanism: Metric evaluation is based on the presence of access information in an appropriate metadata element/field.
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-A1-01M-1
       metric_test_name: Information about access restrictions or rights can be identified in metadata
@@ -152,13 +160,12 @@ metrics:
       metric_test_maturity: 1
     - metric_test_identifier: FsF-A1-01M-3
       metric_test_name: Data access information is indicated by (not machine readable) standard terms
-      metric_test_score: 0.5
+      metric_test_score: 1
       metric_test_maturity: 2
     - metric_test_identifier: FsF-A1-01M-2
       metric_test_name: Data access information is machine readable
-      metric_test_score: 0.5
+      metric_test_score: 1
       metric_test_maturity: 3
-
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -191,7 +198,7 @@ metrics:
   description: Given an identifier of a dataset, the metadata of the dataset should be retrievable using a standard communication protocol such as HTTP, HTTPS, FTP, TFTP, SFTP, FTAM and AtomPub. Avoid disseminating data using a proprietary protocol.
   fair_principle: A1
   target: Metadata
-  evaluation_mechanism: The URI scheme of the landing page is tested for a stanard communication protocol
+  evaluation_mechanism: The URI scheme of the landing page is tested for a standard communication protocol
   metric_tests:
     - metric_test_identifier: FsF-A1-02M-1
       metric_test_name: Landing page link is based on standardized web communication protocols.
@@ -230,6 +237,7 @@ metrics:
   fair_principle: I1
   target: Metadata
   evaluation_mechanism: Metadata has to be serialised in a common formal knowledge representation language.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-I1-01M-1
       metric_test_name: Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code
@@ -241,7 +249,7 @@ metrics:
       metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_updated: 2023-06-01
   version: 0.5
   total_score: 2
 
@@ -253,6 +261,7 @@ metrics:
   fair_principle: I2
   target: Metadata
   evaluation_mechanism: Used namespaces are identified in given graph or XML metadata and verified using a controlled list.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-I2-01M-1
       metric_test_name: Vocabulary namespace URIs can be identified in metadata
@@ -299,8 +308,9 @@ metrics:
   fair_principle: R1
   target: Metadata, Data
   evaluation_mechanism: Metric is evaluated using the resource type given in the metadata as well as data object specific properties file size and file type. Further presence of measured variables is tested.
+  test_scoring_mechanism: cumulative
   metric_tests:
-    - metric_test_identifier: FsF-R1-01MD-1
+    - metric_test_identifier: FsF-R1-01MD-1_ss
       metric_test_name: Minimal information about available data content is given in metadata
       metric_test_score: 1
       metric_test_maturity: 1
@@ -342,6 +352,7 @@ metrics:
   fair_principle: R1.1
   target: Metadata
   evaluation_mechanism: Metric evaluation is based on the presence of a machine readable license information in an appropriate metadata element/field.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-R1.1-01M-1
       metric_test_name: Licence information is given in an appropriate metadata element
@@ -353,7 +364,7 @@ metrics:
       metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_updated: 2023-06-02
   version: 0.5
   total_score: 2
 
@@ -371,6 +382,7 @@ metrics:
   fair_principle: R1.2
   target: Metadata
   evaluation_mechanism: Metrics are assessed using provenance related information contained in metadata which can either be specific elements which can be mapped e.g. to PROV-O or the use of provenance related namespaces and associated terms.
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-R1.2-01M-1
       metric_test_name: Metadata contains elements which hold provenance information and can be mapped to PROV
@@ -382,7 +394,7 @@ metrics:
       metric_test_maturity: 3
   created_by: FAIRsFAIR
   date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_updated: 2023-06-01
   version: 0.5
   total_score: 2
 
@@ -401,7 +413,7 @@ metrics:
       metric_test_maturity: 3
     - metric_test_identifier: FsF-R1.3-01M-2
       metric_test_name: Community specific metadata standard is listed in the re3data record of the responsible repository
-      metric_test_score: 0.5
+      metric_test_score: 1
       metric_test_maturity: 2
     - metric_test_identifier: FsF-R1.3-01M-3
       metric_test_name: Multidisciplinary but community endorsed metadata (RDA Metadata Standards Catalog) standard is listed in the re3data record or detected by namespace
@@ -424,6 +436,7 @@ metrics:
   fair_principle: R1.3
   target: Data
   evaluation_mechanism: Data file format given in metadata is compared to a controlled list of known scientific formats.
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-R1.3-02D-1
       metric_test_name: The format of a data file given in the metadata is listed in the long term file formats, open file formats or scientific file formats controlled list
@@ -445,3 +458,4 @@ metrics:
   date_updated: 2020-12-03
   version: 0.5
   total_score: 1
+  metric_specification: 10.5281/zenodo.6461229

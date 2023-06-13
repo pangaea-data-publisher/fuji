@@ -27,6 +27,7 @@ import argparse
 import configparser
 import logging
 import os
+from pathlib import Path
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -40,8 +41,11 @@ def main():
     logging.getLogger('connexion.operation').setLevel('INFO')
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     YAML_DIR = config['SERVICE']['yaml_directory']
+    #METRIC_YAML = config['SERVICE']['metrics_yaml']
+    #YAML_DIR = os.path.join(my_path, config['SERVICE']['yaml_directory'])
     METRIC_YAML = config['SERVICE']['metrics_yaml']
     METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR, METRIC_YAML)
+    print('YAML PATH',  ROOT_DIR,YAML_DIR,METRIC_YAML)
     SPDX_URL = config['EXTERNAL']['spdx_license_github']
     DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = config['EXTERNAL']['re3data_api']
@@ -54,8 +58,10 @@ def main():
     metric_specification = config['SERVICE']['metric_specification']
 
     preproc = Preprocessor()
-    preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit, metric_specification)
-    logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
+    #preproc.retrieve_metrics_yaml(METRIC_YML_PATH,  metric_specification)
+    preproc.set_data_files_limit(data_files_limit)
+    preproc.set_metric_yaml_path(METRIC_YML_PATH)
+    #logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
 
     isDebug = config.getboolean('SERVICE', 'debug_mode')
     preproc.retrieve_licenses(SPDX_URL, isDebug)
