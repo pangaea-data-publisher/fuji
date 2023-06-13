@@ -49,10 +49,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-R1.3-01M')
-        self.multidiscipliary_standards_detected = []
-        self.community_standards_detected = []
-        self.community_standards_uri = {}
-        self.community_standards = []
+        self.community_standards_output = []
         self.found_metadata_standards = []
 
     def validate_service_url(self):
@@ -79,9 +76,10 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.logger.info('FsF-R1.3-01M : Namespaces included in the metadata -: {}'.format(self.fuji.namespace_uri))
             for nsuri in self.fuji.namespace_uri:
                 sinfo = self.get_metadata_standards_info(nsuri , 'ns')
-            if sinfo:
-                self.found_metadata_standards.append(sinfo)
-                nsstandards.append(sinfo.get('name'))
+                if sinfo:
+                    self.found_metadata_standards.append(sinfo)
+                    if sinfo.get('type') == 'disciplinary':
+                        nsstandards.append(sinfo.get('name'))
         if nsstandards:
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
@@ -98,17 +96,19 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                                                          metric_id='FsF-R1.3-01M')
                 standards_uris = sparql_provider.getMetadataStandards()
                 self.fuji.namespace_uri.extend(sparql_provider.getNamespaces())
-                stds = None
+                stds = []
                 if standards_uris:
                     for sturi in standards_uris.values():
                         sinfo = self.get_metadata_standards_info(sturi, 'sparql')
                         if sinfo:
                             self.found_metadata_standards.append(sinfo)
-                    stds = list(self.community_standards_uri.keys())
+                            if sinfo.get('type') == 'disciplinary':
+                                stds.append(sinfo.get('name'))
+                if stds:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
                         '{} : Found disciplinary standards that are listed in SPARQL endpoint -: {}'.format(
-                            'FsF-R1.3-01M', stds))
+                            'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid SPARQL endpoint'.format('FsF-R1.3-01M'))
 
@@ -122,18 +122,19 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                                                       metric_id='FsF-R1.3-01M')
                 standards_uris = csw_provider.getMetadataStandards()
                 self.fuji.namespace_uri.extend(csw_provider.getNamespaces())
-                stds = None
+                stds = []
                 if standards_uris:
                     for sturi in standards_uris.values():
                         sinfo = self.get_metadata_standards_info(sturi, 'csw')
                         if sinfo:
                             self.found_metadata_standards.append(sinfo)
-                if standards_uris:
-                    stds = list(self.community_standards_uri.keys())
+                            if sinfo.get('type') == 'disciplinary':
+                                stds.append(sinfo.get('name'))
+                if stds:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
                         '{} : Found disciplinary standards that are listed in OGC CSW endpoint -: {}'.format(
-                            'FsF-R1.3-01M', stds))
+                            'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid OGC CSW endpoint'.format('FsF-R1.3-01M'))
 
@@ -147,17 +148,19 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                                                    metric_id='FsF-R1.3-01M')
                 standards_uris = oai_provider.getMetadataStandards()
                 self.fuji.namespace_uri.extend(oai_provider.getNamespaces())
-                stds = None
+                stds = []
                 if standards_uris:
                     for sturi in standards_uris.values():
                         sinfo = self.get_metadata_standards_info(sturi, 'oai-pmh')
                         if sinfo:
                             self.found_metadata_standards.append(sinfo)
-                    stds = list(standards_uris.keys())
+                            if sinfo.get('type') == 'disciplinary':
+                                stds.append(sinfo.get('name'))
+                if stds:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
                         '{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format(
-                            'FsF-R1.3-01M', stds))
+                            'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
         else:
@@ -176,25 +179,30 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     .format(
                         'FsF-R1.3-01M',
                     ))
-            self.logger.info(
-                'FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '
-                + str(client_id))
-            if client_id and self.fuji.pid_scheme:
-                repoHelper = RepositoryHelper(client_id, self.fuji.pid_scheme, logger=self.logger.name,
-                                              landingpage=self.fuji.landing_url)
-                repoHelper.lookup_re3data()
-                if not self.fuji.metadata_service_url:
-                    self.logger.info('{} : Inferring metadata service endpoint (OAI, SPARQL) information through re3data/datacite services'.format(
-                        'FsF-R1.3-01M'))
-                    self.fuji.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
-                    self.fuji.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
-                    for sturi in repoHelper.getRe3MetadataStandards():
-                        sinfo = self.get_metadata_standards_info(sturi, 're3data')
-                        if sinfo:
-                            self.found_metadata_standards.append(sinfo)
-                self.community_standards.extend(repoHelper.getRe3MetadataStandards())
-                self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format(
-                    'FsF-R1.3-01M', self.community_standards))
+            if client_id:
+                self.logger.info(
+                    'FsF-R1.3-01M : Trying to retrieve metadata info from re3data/datacite services using client id -: '
+                    + str(client_id))
+                if self.fuji.pid_scheme:
+                    repoHelper = RepositoryHelper(client_id, self.fuji.pid_scheme, logger=self.logger.name,
+                                                  landingpage=self.fuji.landing_url)
+                    repoHelper.lookup_re3data()
+                    if not self.fuji.metadata_service_url:
+                        self.logger.info('{} : Inferring metadata service endpoint (OAI, SPARQL) information through re3data/datacite services'.format(
+                            'FsF-R1.3-01M'))
+                        self.fuji.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get('OAI-PMH')
+                        self.fuji.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get('SPARQL')
+                        stds = []
+                        for sturi in repoHelper.getRe3MetadataStandards():
+                            sinfo = self.get_metadata_standards_info(sturi, 're3data')
+                            if sinfo:
+                                self.found_metadata_standards.append(sinfo)
+                                stds.append(sinfo.get('name'))
+                    self.logger.info('{} : Metadata standards listed in re3data record -: {}'.format(
+                        'FsF-R1.3-01M', str(stds)))
+            else:
+                self.logger.info(
+                    'FsF-R1.3-01M : No Datacite client id found, therefore skipping re3data metadata retrieval')
         else:
             self.logger.info(
                 'FsF-R1.3-01M : Skipped re3data metadata standards query since Datacite support is disabled by user'
@@ -202,7 +210,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             # verify the service url by domain matching
         self.validate_service_url()
 
-    def retrieve_apis_standards(self):
+    def retrieve_metadata_standards_from_apis(self):
         if self.fuji.landing_url is not None:
             self.logger.info('FsF-R1.3-01M : Retrieving API and Standards')
             if self.fuji.metadata_service_url not in [None, '']:
@@ -221,38 +229,34 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 format('FsF-R1.3-01M'))
 
     def testMultidisciplinarybutCommunityEndorsedMetadataDetected(self):
+        test_status = False
         if self.isTestDefined(self.metric_identifier + '-3'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
             generic_found = False
             for found_standard in self.found_metadata_standards:
-
                 if found_standard.get('type')=='generic':
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                    'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) using namespaces or schemas found in re3data record or via provided metadata or metadata services outputs -: {}'
-                    .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
                     generic_found = True
             if generic_found:
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    'FsF-R1.3-01M : Found non-disciplinary standards (but RDA listed) using namespaces or schemas found in re3data record or via provided metadata or metadata services outputs')
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
                 self.score.earned = test_score
-                return True
-        else:
-            return False
+                test_status = True
+        return test_status
 
     def testCommunitySpecificMetadataDetectedviaRe3Data(self):
-        if self.isTestDefined(self.metric_identifier + '-3'):
+        if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             specific_found = False
             for found_standard in self.found_metadata_standards:
-
-                if found_standard.get('type') == 'disciplinary':
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        'FsF-R1.3-01M : Found disciplinary standard listed in the re3data record of the responsible repository -: {}'
-                            .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
+                if found_standard.get('type') == 'disciplinary' and found_standard.get('source') == 're3data':
                     specific_found = True
             if specific_found:
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    'FsF-R1.3-01M : Found disciplinary standard listed in the re3data record of the responsible repository')
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
                 self.score.earned = test_score
@@ -261,24 +265,22 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             return False
 
     def testCommunitySpecificMetadataDetectedviaNamespaces(self):
+        test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             specific_found = False
             for found_standard in self.found_metadata_standards:
-
-                if found_standard.get('type') == 'disciplinary':
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        'FsF-R1.3-01M : Found disciplinary standard using namespaces or schemas found in provided metadata or metadata services outputs -: {}'
-                            .format(str(found_standard.get('name')) + ' (' + str(found_standard.get('uri')) + ')'))
+                if found_standard.get('type') == 'disciplinary' and found_standard.get('source') != 're3data':
                     specific_found = True
             if specific_found:
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    'FsF-R1.3-01M : Found disciplinary standard using namespaces or schemas found in provided metadata or metadata services outputs ')
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
                 self.score.earned = test_score
-                return True
-        else:
-            return False
+                test_status = True
+        return test_status
 
     def get_metadata_standards_info(self, uri, source):
         standard_found = self.fuji.lookup_metadatastandard_by_uri(uri)
@@ -288,49 +290,47 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             std_name = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(standard_found).get('title')
             if subject:
                 if subject == ['sciences'] or all(elem == 'Multidisciplinary' for elem in subject):
-                    self.multidiscipliary_standards_detected.append(std_name)
                     self.logger.info(
                         'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) -: via {}:  {}'
                             .format(str(source),std_name))
                     type = 'generic'
                 else:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        'FsF-R1.3-01M : Found disciplinary standard -: via {}:{}'.format(str(source),std_name))
+                    self.logger.info(
+                        'FsF-R1.3-01M : Found disciplinary standard -: via {} : {}'.format(str(source),std_name))
                     type = 'disciplinary'
                 out = CommunityEndorsedStandardOutputInner()
                 out.metadata_standard = std_name  # use here original standard uri detected
                 out.subject_areas = subject
-                out.urls = [standard_found]
-                self.community_standards_detected.append(out)
+                out.url = uri
+                out.type = type
+                out.source = source
+                self.community_standards_output.append(out)
             return {'subject': subject, 'name': std_name, 'type':type, 'source':source, 'uri':uri}
         else:
             return {}
 
 
     def evaluate(self):
+
+        self.community_standards_output: List[CommunityEndorsedStandardOutputInner] = []
+
         self.retrieve_metadata_standards_from_namespaces()
-        self.retrieve_apis_standards()
+        self.retrieve_metadata_standards_from_apis()
 
         self.result = CommunityEndorsedStandard(id=self.metric_number,
                                                 metric_identifier=self.metric_identifier,
                                                 metric_name=self.metric_name)
 
-        self.community_standards_detected: List[CommunityEndorsedStandardOutputInner] = []
-
         if self.testMultidisciplinarybutCommunityEndorsedMetadataDetected():
-            self.community_standards_detected = False
             self.result.test_status = 'pass'
         if self.testCommunitySpecificMetadataDetectedviaRe3Data():
-            self.community_standards_detected = True
             self.result.test_status = 'pass'
         if self.testCommunitySpecificMetadataDetectedviaNamespaces():
-            self.community_standards_detected = True
             self.result.test_status = 'pass'
 
-        if not self.community_standards_detected:
+        if not self.community_standards_output:
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.maturity = self.maturity
-        self.result.output = self.community_standards_detected
+        self.result.output = self.community_standards_output
