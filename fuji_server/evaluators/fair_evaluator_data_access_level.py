@@ -113,7 +113,9 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         test_result = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+            rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+            if not access_rights:
+                access_free = self.fuji.metadata_merged.get('access_free')
             if access_rights:
                 for access_right in access_rights:
                     self.logger.info(self.metric_identifier + ' : Access right information specified -: {}'.format(
@@ -134,21 +136,6 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                                 self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
                                 break
                         break
-                if self.access_level is None:
-                    # fall back - use binary access
-                    access_free = self.fuji.metadata_merged.get('access_free')
-                    if access_free is not None:
-                        self.logger.info(
-                            self.metric_identifier + ' : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
-                        )
-                        if access_free:  # schema.org: isAccessibleForFree || free
-                            self.access_level = 'public'
-                        else:
-                            self.access_level = 'restricted'
-                        self.access_details['accessible_free'] = access_free
-                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                        self.score.earned = test_score
-                        self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
             else:
                 self.logger.info(self.metric_identifier +' : Skipping machine readablility test since NO access information is available in metadata')
         return test_result
@@ -169,7 +156,19 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if isinstance(access_rights, str):
             access_rights = [access_rights]
         access_rights = self.excludeLicences(access_rights)
-
+        #schema.org/accessiblefroFree
+        if not access_rights:
+            access_free = self.fuji.metadata_merged.get('access_free')
+            if access_free is not None:
+                self.logger.info(
+                    self.metric_identifier + ' : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
+                )
+                if access_free:  # schema.org: isAccessibleForFree || free
+                    #access_rights = ['http://schema.org/isAccessibleForFree/public']
+                    access_rights = ['public']
+                else:
+                    #access_rights = ['http://schema.org/isAccessibleForFree/restricted']
+                    access_rights = ['restricted']
         #access_rights can be None or []
         if self.testAccessRightsMetadataAvailable(access_rights):
             test_status = 'pass'
