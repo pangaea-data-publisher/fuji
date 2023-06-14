@@ -10,7 +10,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 2.2.5
+  version: 2.3.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -646,6 +646,12 @@ components:
         metric_version:
           type: string
           description: The FAIRsFAIR metric version be used fo rthe assessment
+        auth_token:
+          type: string
+          description: The authentication token for HTTP authentication
+        auth_token_type:
+          type: string
+          description: The authentication token type, 'Basic' or 'Bearer'
         oaipmh_endpoint:
           deprecated: true
           type: string

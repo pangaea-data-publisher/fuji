@@ -406,6 +406,7 @@ metrics:
   fair_principle: R1.3
   target: Metadata
   evaluation_mechanism: Metadata encodings can be verified using community specific namespaces and schemas listed by the RDA metadata standards WG
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-R1.3-01M-1
       metric_test_name: Community specific metadata standard is detected using namespaces or schemas found in provided metadata or metadata services outputs
