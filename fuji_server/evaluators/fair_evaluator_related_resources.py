@@ -43,32 +43,38 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-I3-01M')
-        self.pid_used = False
+        self.is_actionable = False
 
     def testRelatedResourcesAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-        for relation in self.fuji.related_resources:
-            if isinstance(relation.get('related_resource'), list):
-                relation['related_resource'] = relation.get('related_resource')[0]
-            relation_identifier = IdentifierHelper(relation.get('related_resource'))
-            if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
-                self.pid_used = True
-        self.output = self.fuji.related_resources
-        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-        self.score.earned = self.total_score
-        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+            if self.fuji.related_resources:
+                self.logger.log(self.fuji.LOG_SUCCESS,
+                                self.metric_identifier + ' : Number of related resources found in metadata -: '+str(len(self.fuji.related_resources)))
+                test_status = True
+                self.output = self.fuji.related_resources
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.score.earned = self.total_score
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+            else:
+                self.logger.warning(self.metric_identifier + ' : Could not identify related resources in metadata')
         return test_status
 
     def testRelatedResourcesMachineReadable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            if self.pid_used:
-                test_status = True
+            if self.fuji.related_resources:
+                for relation in self.fuji.related_resources:
+                    if isinstance(relation.get('related_resource'), list):
+                        relation['related_resource'] = relation.get('related_resource')[0]
+                    relation_identifier = IdentifierHelper(relation.get('related_resource'))
+                    if relation_identifier.is_persistent or 'url' in relation_identifier.identifier_schemes:
+                        test_status = True
+            if test_status:
                 self.score.earned = self.total_score
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
         return test_status
 
@@ -77,9 +83,6 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                                       metric_identifier=self.metric_identifier,
                                       metric_name=self.metric_name)
         self.output = RelatedResourceOutput()
-
-        self.logger.info('{0} : Total number of related resources extracted -: {1}'.format(
-            self.metric_identifier, len(self.fuji.related_resources)))
 
         # if self.metadata_merged.get('related_resources'):
         related_status = 'fail'
