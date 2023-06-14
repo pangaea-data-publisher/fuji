@@ -89,6 +89,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                 try:
                     dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     if dcite_metadata:
+                        print('DATCITE META: ',dcite_metadata)
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append('http://datacite.org/schema/')
                         source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED
@@ -103,9 +104,8 @@ class MetaDataCollectorDatacite(MetaDataCollector):
 
                         if dcite_metadata.get('related_resources'):
                             self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
-                                len(dcite_metadata['related_resources']), source_name.acronym()))
+                                len(dcite_metadata['related_resources']), source_name))
                             temp_rels = []
-
                             for r in dcite_metadata['related_resources']:
                                 if r.get('scheme_uri'):
                                     self.namespaces.append(r.get('scheme_uri'))
@@ -121,7 +121,8 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                                 flat = ', '.join(map(str, value))
                                 dcite_metadata[key] = flat
                 except Exception as e:
-                    self.logger.exception('Failed to extract Datacite Json -: {}'.format(e))
+                    self.logger.warning('FsF-F2-01M : Failed to extract Datacite JSON -: {}'.format(e))
+                    #self.logger.exception('Failed to extract Datacite JSON -: {}'.format(e))
         else:
             self.logger.warning('FsF-F2-01M : Skipped Datacite metadata retrieval, no PID URL detected')
 

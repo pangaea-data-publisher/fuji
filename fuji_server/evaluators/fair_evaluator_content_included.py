@@ -60,7 +60,10 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
                     if isinstance(datainfo, dict):
                         if datainfo.get('source'):
                             if isinstance(datainfo['source'], enum.Enum):
-                                datainfo['source'] = datainfo['source'].acronym()
+                                try:
+                                    datainfo['source'] = datainfo['source'].acronym()
+                                except:
+                                    pass
                         if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
                             test_result = True
                             self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
