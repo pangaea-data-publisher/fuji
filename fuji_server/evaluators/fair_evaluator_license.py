@@ -160,13 +160,15 @@ class FAIREvaluatorLicense(FAIREvaluator):
                         self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
                             self.metric_identifier))
                     else:
+                        test_status = True
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
                             '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
                                 self.metric_identifier))
-                        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-                        self.score.earned += test_score
-                        self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
+                if test_status:
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                    self.score.earned += test_score
+                    self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                     license_output.details_url = spdx_html
                     license_output.osi_approved = spdx_osi
                     self.output.append(license_output)
