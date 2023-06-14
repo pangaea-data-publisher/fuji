@@ -110,7 +110,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                                         mime_url_pair[tika_mime] = data_file.get('url')
         return mime_url_pair
 
-
     def testCommunityFileFormatUsed(self, mime_url_pair):
         # FILE FORMAT CHECKS....
         # check if format is a scientific one:
