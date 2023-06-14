@@ -104,7 +104,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                         self.score.earned = test_score
                         break
             else:
-                self.logger.warning(self.metric_identifier +' : Skipping standard terms test since NO access information is available in metadata')
+                self.logger.info(self.metric_identifier +' : Skipping standard terms test since NO access information is available in metadata')
 
         return test_result
 
@@ -149,7 +149,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                         self.score.earned = test_score
                         self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
             else:
-                self.logger.warning(self.metric_identifier +' : Skipping machine readablility test since NO access information is available in metadata')
+                self.logger.info(self.metric_identifier +' : Skipping machine readablility test since NO access information is available in metadata')
         return test_result
 
     def evaluate(self):
@@ -165,14 +165,13 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
         test_status = 'fail'
         access_rights = self.fuji.metadata_merged.get('access_level')
+        if isinstance(access_rights, str):
+            access_rights = [access_rights]
+        access_rights = self.excludeLicences(access_rights)
 
         #access_rights can be None or []
         if self.testAccessRightsMetadataAvailable(access_rights):
-            if isinstance(access_rights, str):
-                access_rights = [access_rights]
-            access_rights = self.excludeLicences(access_rights)
             test_status = 'pass'
-
         if self.testAccessRightsStandardTerms(access_rights):
             test_status = 'pass'
         if self.testAccessRightsMachineReadable(access_rights):
