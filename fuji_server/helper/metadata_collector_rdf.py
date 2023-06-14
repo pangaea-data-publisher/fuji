@@ -694,7 +694,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         if relateds:
                             jsnld_metadata['related_resources'] = relateds
                             self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
-                                len(jsnld_metadata['related_resources']), self.source_name))
+                                len(jsnld_metadata['related_resources']), self.source_name.acronym()))
                         else:
                             del jsnld_metadata['related_resources']
                             self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
