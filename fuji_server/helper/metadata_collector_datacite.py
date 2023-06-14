@@ -89,7 +89,6 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                 try:
                     dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     if dcite_metadata:
-                        print('DATCITE META: ',dcite_metadata)
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append('http://datacite.org/schema/')
                         source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED
