@@ -26,7 +26,6 @@ import re
 import sys
 import urllib
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.models.data_content_metadata import DataContentMetadata
 from fuji_server.models.data_content_metadata_output import DataContentMetadataOutput
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
@@ -190,12 +189,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.logger.info(
                         '{0} : Sucessfully verified content type from downloaded file -: (expected: {1}, found: {2})'
                             .format(self.metric_identifier, data_object.get('claimed_type'),
-                                    str(data_object.get('tika_content_type'))))
+                                    str(data_object.get('tika_content_type'))+' or '+str(data_object.get('header_content_type'))))
                 else:
                     self.logger.warning(
                         '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
                             .format(self.metric_identifier, data_object.get('claimed_type'),
-                                    str(data_object.get('tika_content_type'))))
+                                    str(data_object.get('tika_content_type'))+' or '+str(data_object.get('header_content_type'))))
                 data_content_filetype_inner = DataContentMetadataOutputInner()
                 data_content_filetype_inner.descriptor = 'file type'
                 data_content_filetype_inner.descriptor_value = data_object.get('claimed_type')
@@ -256,7 +255,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             test_status = 'pass'
         if isinstance(self.fuji.content_identifier, dict):
             if len(self.fuji.content_identifier) > 0:
-                test_data_content_url = list(self.fuji.content_identifier.keys())[0]
+                verified_urls = [e for e,v in self.fuji.content_identifier.items() if v.get('verified')]
+                if verified_urls:
+                    test_data_content_url = verified_urls[0]
+                else:
+                    test_data_content_url = list(self.fuji.content_identifier.keys())[0]
                 if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
                     test_status = 'pass'
                 if self.testSizeAndTypeMatchesMetadata(test_data_content_url):

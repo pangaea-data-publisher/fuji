@@ -49,13 +49,18 @@ class DataHarvester():
     def retrieve_all_data(self, howmany = 1):
         if self.data_links:
             if isinstance(self.data_links, list):
+                self.data_links.reverse()
                 if len(self.data_links) > howmany:
-                    self.logger.warning('FsF-R1-01MD : Will not use all given data links, will use '+str(howmany)+' data files from '+(str(len(self.data_links))))
+                    self.logger.warning('FsF-R1-01MD : Will not use all given data links, will use '+str(howmany)+' accessible data files from '+(str(len(self.data_links))))
+                inx = 0 #number of files which are not accessible (status code !=200)
                 for idx,datafile in enumerate(self.data_links):
                     fileinfo = {}
-                    if datafile.get('url') and idx < howmany:
-                        fileinfo['verified'] = True
+                    if datafile.get('url') and idx < howmany+inx:
                         fileinfo, buffer = self.get(datafile.get('url'))
+                        if fileinfo.get('status_code') != 200:
+                            inx += 1
+                        else:
+                            fileinfo['verified'] = True
                         fileinfo['tika_content_type'] = []
                         if fileinfo:
                             fileinfo.update(self.tika(buffer, datafile.get('url')))
@@ -64,7 +69,6 @@ class DataHarvester():
                     fileinfo['claimed_size'] = datafile.get('size')
                     fileinfo['claimed_type'] = datafile.get('type')
                     fileinfo['url'] = datafile.get('url')
-
                     self.data[datafile.get('url')]=fileinfo
         return True
                 
@@ -85,10 +89,12 @@ class DataHarvester():
                     request_headers['Authorization'] = self.auth_token_type + ' ' + self.auth_token
                 request = urllib.request.Request(url, headers=request_headers)
                 response = urllib.request.urlopen(request, timeout=self.timeout)
-    
+                rstatus = response.getcode()
+                fileinfo['status_code'] = rstatus
                 #self.info['response_content_type'] = content_type = response.info().get_content_type()
                 self.content_type = fileinfo['header_content_type'] = response.headers.get('content-type').split(';')[0]
                 chunksize = 1024
+                content_size = 0
                 while True:
                     chunk = response.read(chunksize)
                     if not chunk:
@@ -109,6 +115,9 @@ class DataHarvester():
                             content_size = downloaded_size
                         fileinfo['content_size'] = content_size
                 response.close()
+                self.logger.warning(
+                    'FsF-R1-01MD : Content identifier accessible -: {0}, HTTPStatus code {1} '.format(
+                        url,rstatus))
 
             except urllib.error.HTTPError as e:
                 self.logger.warning(
