@@ -78,7 +78,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.setEvaluationCriteriumScore(self.metric_identifier + '-1a', test_score, 'pass')
                     test_result = True
                 else:
-                    self.logger.warning(self.metric_identifier + ' : No valid resource type specified -: ' + str(resource_type))
+                    self.logger.warning(self.metric_identifier + ' : No valid resource type (e.g. subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: ' + str(resource_type))
         else:
             self.logger.warning(self.metric_identifier + ' : NO resource type specified ')
         return test_result

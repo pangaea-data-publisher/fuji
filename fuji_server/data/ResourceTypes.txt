@@ -13,7 +13,8 @@ Sound
 Text
 Workflow
 MovingImage
-Service, Software
+Service
+Software
 StillImage
 CreativeWork
 AmpStory
