@@ -124,7 +124,7 @@ class Mapper(Enum):
     # only consider mime types registered with IANA: https://www.iana.org/assignments/media-types/media-types.xhtml
     ARCHIVE_COMPRESS_MIMETYPES = [
         'application/gzip', 'application/zstd', 'application/octet-stream', 'application/vnd.ms-cab-compressed',
-        'application/zip', 'application/x-gzip'
+        'application/zip', 'application/x-gzip','application/x-zip-compressed'
     ]
     HIGHWIRE_MAPPING = {
         'object_identifier': ['citation_arxiv_id','citation_pmid','citation_doi','citation_id'],
