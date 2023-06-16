@@ -292,6 +292,7 @@ class RequestHelper:
                         content_truncated = self.checked_content.get(checked_content_id).get('content_truncated')
                         self.logger.info('%s : Using Cached response content' % metric_id)
                     else:
+                        self.logger.info('%s : Creating Cached response content' % metric_id)
                         content_truncated = False
                         if status_code == 200:
                             try:
@@ -301,7 +302,6 @@ class RequestHelper:
                             except Exception as e:
                                 self.content_size = 0
                                 pass
-
                             if source != 'zip':
                                 if self.content_size > self.max_content_size:
                                     content_truncated = True
@@ -348,8 +348,6 @@ class RequestHelper:
                                         self.content_type = 'text/xml'
                                 except Exception as e:
                                     print(e,'Request helper')
-
-
                             if self.content_type is not None:
                                 if 'text/plain' in self.content_type:
                                     source = 'text'
@@ -389,13 +387,12 @@ class RequestHelper:
                                                 #since we already parse HTML in the landing page we ignore this and do not parse again
                                                 if ignore_html == False:
                                                     self.logger.info('%s : Found HTML page!' % metric_id)
-                                                    #self.parse_response = self.response_content
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
                                                 source = 'html'
                                                 break
-                                            if at.name == 'xml':  # TODO other types (xml)
+                                            if at.name == 'xml' or str(self.content_type).endswith('+xml'):
                                                 #in case the XML indeed is a RDF:
                                                 root_element = ''
                                                 try:
@@ -403,25 +400,21 @@ class RequestHelper:
                                                     xmltree = lxml.etree.XML(self.response_content, xmlparser)
                                                     root_element = xmltree.tag
                                                     if content_truncated:
-                                                        self.response_content = lxml.etree.tostring(xmltree)
+                                                        self.parse_response = self.response_content = lxml.etree.tostring(xmltree)
                                                 except Exception as e:
                                                     self.logger.warning('%s : Parsing XML document failed !' %
                                                                         metric_id)
                                                 if re.match(r'(\{.+\})?RDF', root_element):
                                                     self.logger.info('%s : Expected XML but found RDF document by root tag!' % metric_id)
-                                                    #self.parse_response = self.response_content
-                                                    #self.content_type ='application/xml+rdf'
                                                     source = 'rdf'
                                                 else:
                                                     self.logger.info('%s : Found XML document!' % metric_id)
-                                                    #self.parse_response = self.response_content
                                                     source = 'xml'
                                                 break
                                             if at.name in ['json', 'jsonld', 'datacite_json', 'schemaorg'] or str(self.content_type).endswith('+json'):
                                                 try:
                                                     self.parse_response = json.loads(self.response_content)
                                                     source = 'json'
-                                                    # result = json.loads(response.text)
                                                     break
                                                 except ValueError:
                                                     self.logger.info(
@@ -429,11 +422,9 @@ class RequestHelper:
                                                             metric_id))
 
                                             if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle','ttl','n3']:
-                                                #self.parse_response = self.response_content
                                                 source = 'rdf'
                                                 break
                                             if at.name in ['linkset']:
-                                                #self.parse_response = self.response_content
                                                 source = 'txt'
                                                 break
                                     break
