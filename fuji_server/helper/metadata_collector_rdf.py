@@ -220,8 +220,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         else:
             self.content_type = 'application/ld+json'
             rdf_response = self.json_ld_content
-
-
         if self.content_type is not None:
             self.content_type = self.content_type.split(';', 1)[0]
             #handle JSON-LD
@@ -312,7 +310,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         print('JSON-LD parsing error', e, rdf_response[:100])
                         self.logger.info('FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}'.format(e))
 
-            else:
+            elif self.accept_type == AcceptTypes.rdf:
+                #print('ACCEPT: ',self.accept_type)
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                 format_dict = {'text/ttl':'turtle',
