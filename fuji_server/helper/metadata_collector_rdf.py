@@ -616,7 +616,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     if json_dict.get('mainEntity'):
                         self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
                         for mainEntityprop in json_dict.get('mainEntity'):
-                            json_dict[mainEntityprop] = json_dict.get('mainEntity').get(mainEntityprop)
+                            if isinstance(json_dict.get('mainEntity'), dict):
+                                json_dict[mainEntityprop] = json_dict.get('mainEntity').get(mainEntityprop)
                     #special case #2
                     #if json_dict.get('@graph'):
                     #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
@@ -781,7 +782,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if len(creator_name) > 0:
                     schema_metadata['creator'] = creator_name
 
-            distribution = (graph.objects(creative_works[0], SMA.distribution) or graph.objects(creative_works[0], SDO.distribution))
+            distribution = (graph.objects(creative_work, SMA.distribution) or graph.objects(creative_work, SDO.distribution))
             schema_metadata['object_content_identifier'] = []
             for dist in distribution:
                 durl = (graph.value(dist, SMA.contentUrl) or graph.value(dist, SDO.contentUrl))
@@ -789,7 +790,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 dsize = (graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize))
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
-                        dtype = '/'.join(str(dtype).split('/')[-2:])
+                        if dtype:
+                            dtype = '/'.join(str(dtype).split('/')[-2:])
                     schema_metadata['object_content_identifier'].append({
                         'url': str(durl),
                         'type': dtype,
