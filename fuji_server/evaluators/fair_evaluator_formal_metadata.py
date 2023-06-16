@@ -87,7 +87,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             self.logger.info('{0} : Check if RDF-based typed link included'.format(self.metric_identifier))
-            if MetadataSources.RDF_TYPED_LINKS.name in dict(self.fuji.metadata_sources):
+            if MetadataSources.RDF_TYPED_LINKS.name in dict(self.fuji.metadata_sources) or MetadataSources.RDF_SIGNPOSTING_LINKS.name in dict(self.fuji.metadata_sources):
                 self.logger.info('{0} : RDF graph retrieved via typed link, content type - {1}'.format(
                     self.metric_identifier, 'RDF'))
                 self.outputs.append(
@@ -116,6 +116,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                     FormalMetadataOutputInner(serialization_format='RDF',
                                               source='content_negotiate',
                                               is_metadata_found=True))
+                test_status = True
             if test_status:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
