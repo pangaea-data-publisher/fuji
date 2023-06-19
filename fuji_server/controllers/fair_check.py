@@ -356,10 +356,11 @@ class FAIRCheck:
             self.namespace_uri = list(set(self.namespace_uri))
 
     def harvest_all_data(self):
-        data_links = self.metadata_merged.get('object_content_identifier')[:self.FILES_LIMIT]
-        data_harvester = DataHarvester(data_links, self.logger, self.landing_url, metrics = self.METRICS.keys())
-        data_harvester.retrieve_all_data()
-        self.content_identifier = data_harvester.data
+        if self.metadata_merged.get('object_content_identifier'):
+            data_links = self.metadata_merged.get('object_content_identifier')[:self.FILES_LIMIT]
+            data_harvester = DataHarvester(data_links, self.logger, self.landing_url, metrics = self.METRICS.keys())
+            data_harvester.retrieve_all_data()
+            self.content_identifier = data_harvester.data
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.persistence_output_inner import PersistenceOutputInner  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -14,35 +15,20 @@ class PersistenceOutput(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 pid: str = None,
-                 pid_scheme: str = None,
-                 resolvable_status: bool = False,
-                 resolved_url: str = None):  # noqa: E501
+    def __init__(self, persistent_identifiers: List[PersistenceOutputInner]=None):  # noqa: E501
         """PersistenceOutput - a model defined in Swagger
 
-        :param pid: The pid of this PersistenceOutput.  # noqa: E501
-        :type pid: str
-        :param pid_scheme: The pid_scheme of this PersistenceOutput.  # noqa: E501
-        :type pid_scheme: str
-        :param resolvable_status: The resolvable_status of this PersistenceOutput.  # noqa: E501
-        :type resolvable_status: bool
-        :param resolved_url: The resolved_url of this PersistenceOutput.  # noqa: E501
-        :type resolved_url: str
+        :param persistent_identifiers: The persistent_identifiers of this PersistenceOutput.  # noqa: E501
+        :type persistent_identifiers: List[PersistenceOutputInner]
         """
-        self.swagger_types = {'pid': str, 'pid_scheme': str, 'resolvable_status': bool, 'resolved_url': str}
+        self.swagger_types = {
+            'persistent_identifiers': List[PersistenceOutputInner]
+        }
 
         self.attribute_map = {
-            'pid': 'pid',
-            'pid_scheme': 'pid_scheme',
-            'resolvable_status': 'resolvable_status',
-            'resolved_url': 'resolved_url'
+            'persistent_identifiers': 'persistent_identifiers'
         }
-        self._pid = pid
-        self._pid_scheme = pid_scheme
-        self._resolvable_status = resolvable_status
-        self._resolved_url = resolved_url
+        self._persistent_identifiers = persistent_identifiers
 
     @classmethod
     def from_dict(cls, dikt) -> 'PersistenceOutput':
@@ -56,85 +42,22 @@ class PersistenceOutput(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def pid(self) -> str:
-        """Gets the pid of this PersistenceOutput.
+    def persistent_identifiers(self) -> List[PersistenceOutputInner]:
+        """Gets the persistent_identifiers of this PersistenceOutput.
 
 
-        :return: The pid of this PersistenceOutput.
-        :rtype: str
+        :return: The persistent_identifiers of this PersistenceOutput.
+        :rtype: List[PersistenceOutputInner]
         """
-        return self._pid
+        return self._persistent_identifiers
 
-    @pid.setter
-    def pid(self, pid: str):
-        """Sets the pid of this PersistenceOutput.
-
-
-        :param pid: The pid of this PersistenceOutput.
-        :type pid: str
-        """
-
-        self._pid = pid
-
-    @property
-    def pid_scheme(self) -> str:
-        """Gets the pid_scheme of this PersistenceOutput.
+    @persistent_identifiers.setter
+    def persistent_identifiers(self, persistent_identifiers: List[PersistenceOutputInner]):
+        """Sets the persistent_identifiers of this PersistenceOutput.
 
 
-        :return: The pid_scheme of this PersistenceOutput.
-        :rtype: str
-        """
-        return self._pid_scheme
-
-    @pid_scheme.setter
-    def pid_scheme(self, pid_scheme: str):
-        """Sets the pid_scheme of this PersistenceOutput.
-
-
-        :param pid_scheme: The pid_scheme of this PersistenceOutput.
-        :type pid_scheme: str
+        :param persistent_identifiers: The persistent_identifiers of this PersistenceOutput.
+        :type persistent_identifiers: List[PersistenceOutputInner]
         """
 
-        self._pid_scheme = pid_scheme
-
-    @property
-    def resolvable_status(self) -> bool:
-        """Gets the resolvable_status of this PersistenceOutput.
-
-
-        :return: The resolvable_status of this PersistenceOutput.
-        :rtype: bool
-        """
-        return self._resolvable_status
-
-    @resolvable_status.setter
-    def resolvable_status(self, resolvable_status: bool):
-        """Sets the resolvable_status of this PersistenceOutput.
-
-
-        :param resolvable_status: The resolvable_status of this PersistenceOutput.
-        :type resolvable_status: bool
-        """
-
-        self._resolvable_status = resolvable_status
-
-    @property
-    def resolved_url(self) -> str:
-        """Gets the resolved_url of this PersistenceOutput.
-
-
-        :return: The resolved_url of this PersistenceOutput.
-        :rtype: str
-        """
-        return self._resolved_url
-
-    @resolved_url.setter
-    def resolved_url(self, resolved_url: str):
-        """Sets the resolved_url of this PersistenceOutput.
-
-
-        :param resolved_url: The resolved_url of this PersistenceOutput.
-        :type resolved_url: str
-        """
-
-        self._resolved_url = resolved_url
+        self._persistent_identifiers = persistent_identifiers
