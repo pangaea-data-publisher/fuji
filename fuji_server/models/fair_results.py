@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -16,24 +16,15 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 test_id: str = None,
-                 request: Dict = None,
-                 timestamp: datetime = None,
-                 expiry_timestamp: datetime = None,
-                 metric_specification: str = None,
-                 metric_version: str = None,
-                 software_version: str = None,
-                 total_metrics: int = None,
-                 summary: Dict = None,
-                 results: List[AnyOfFAIRResultsResultsItems] = None):  # noqa: E501
+    def __init__(self, test_id: str=None, request: Dict=None, resolved_url: str=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, summary: Dict=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501
         :type test_id: str
         :param request: The request of this FAIRResults.  # noqa: E501
         :type request: Dict
+        :param resolved_url: The resolved_url of this FAIRResults.  # noqa: E501
+        :type resolved_url: str
         :param timestamp: The timestamp of this FAIRResults.  # noqa: E501
         :type timestamp: datetime
         :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
@@ -54,6 +45,7 @@ class FAIRResults(Model):
         self.swagger_types = {
             'test_id': str,
             'request': Dict,
+            'resolved_url': str,
             'timestamp': datetime,
             'expiry_timestamp': datetime,
             'metric_specification': str,
@@ -67,6 +59,7 @@ class FAIRResults(Model):
         self.attribute_map = {
             'test_id': 'test_id',
             'request': 'request',
+            'resolved_url': 'resolved_url',
             'timestamp': 'timestamp',
             'expiry_timestamp': 'expiry_timestamp',
             'metric_specification': 'metric_specification',
@@ -78,6 +71,7 @@ class FAIRResults(Model):
         }
         self._test_id = test_id
         self._request = request
+        self._resolved_url = resolved_url
         self._timestamp = timestamp
         self._expiry_timestamp = expiry_timestamp
         self._metric_specification = metric_specification
@@ -139,6 +133,27 @@ class FAIRResults(Model):
         """
 
         self._request = request
+
+    @property
+    def resolved_url(self) -> str:
+        """Gets the resolved_url of this FAIRResults.
+
+
+        :return: The resolved_url of this FAIRResults.
+        :rtype: str
+        """
+        return self._resolved_url
+
+    @resolved_url.setter
+    def resolved_url(self, resolved_url: str):
+        """Sets the resolved_url of this FAIRResults.
+
+
+        :param resolved_url: The resolved_url of this FAIRResults.
+        :type resolved_url: str
+        """
+
+        self._resolved_url = resolved_url
 
     @property
     def timestamp(self) -> datetime:

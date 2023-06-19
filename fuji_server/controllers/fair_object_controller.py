@@ -153,7 +153,11 @@ def assess_by_id(body):  # noqa: E501
         #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
         timestmp = datetime.datetime.now().replace(
             microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
-        metric_spec = Preprocessor.metric_specification
+        metric_spec = ft.metric_helper.metric_specification
+        resolved_url = ft.landing_url
+        if not resolved_url:
+            resolved_url = 'not defined'
+        print('RESOLVED URL',resolved_url)
         metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()
@@ -168,5 +172,6 @@ def assess_by_id(body):  # noqa: E501
                                      metric_specification=metric_spec,
                                      total_metrics=totalmetrics,
                                      results=results,
-                                     summary=summary)
+                                     summary=summary,
+                                     resolved_url=resolved_url)
     return final_response

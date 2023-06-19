@@ -164,6 +164,8 @@ components:
         request:
           type: object
           additionalProperties: true
+        resolved_url:
+          type: string
         timestamp:
           type: string
           format: date-time
