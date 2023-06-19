@@ -72,12 +72,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     resource_type = str(resource_type).split('/')[-1]
                 if str(resource_type).lower() in self.fuji.VALID_RESOURCE_TYPES or resource_type in self.fuji.SCHEMA_ORG_CONTEXT:
                     self.logger.log(self.fuji.LOG_SUCCESS,
-                                    self.metric_identifier + ' : Resource type specified -: {}'.format(resource_type))
+                                    self.metric_identifier + ' : Valid resource type (e.g. subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: {}'.format(resource_type))
                     self.output.object_type = resource_type
                     self.setEvaluationCriteriumScore(self.metric_identifier + '-1a', test_score, 'pass')
                     test_result = True
                 else:
-                    self.logger.warning(self.metric_identifier + ' : No valid resource type (e.g. subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: ' + str(resource_type))
+                    self.logger.warning(self.metric_identifier + ' : Invalid resource type (e.g. subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: ' + str(resource_type))
         else:
             self.logger.warning(self.metric_identifier + ' : NO resource type specified ')
         return test_result
@@ -151,6 +151,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 if not isinstance(data_object.get('tika_content_type'), list):
                     data_object['tika_content_type'] = [data_object.get('tika_content_type')]
                 if data_object.get('content_size') and data_object.get('claimed_size'):
+                    if data_object.get('truncated') and data_object.get('header_content_size'):
+                        self.logger.info(
+                            '{0} : Since file was truncated will rely on content size given in HTTP header -:  {1}'
+                                .format(self.metric_identifier, str(data_object.get('header_content_size'))))
+                        data_object['content_size'] = data_object.get('header_content_size')
                     try:
                         if data_object.get('claimed_size'):
                             data_size = data_object.get('claimed_size')

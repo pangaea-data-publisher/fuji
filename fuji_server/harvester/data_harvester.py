@@ -22,6 +22,7 @@ class DataHarvester():
         self.max_download_size = 1000000
         self.data = {}
         self.landing_page = landing_page
+        self.content_type = None
 
     def expand_url(self, url):
         #replace local urls with full path from landing_page URI
@@ -91,8 +92,18 @@ class DataHarvester():
                 response = urllib.request.urlopen(request, timeout=self.timeout)
                 rstatus = response.getcode()
                 fileinfo['status_code'] = rstatus
+                fileinfo['truncated'] = False
                 #self.info['response_content_type'] = content_type = response.info().get_content_type()
-                self.content_type = fileinfo['header_content_type'] = response.headers.get('content-type').split(';')[0]
+                if response.headers.get('content-type'):
+                    self.content_type = fileinfo['header_content_type'] = response.headers.get('content-type').split(';')[0]
+                elif response.headers.get('Content-Type'):
+                    self.content_type = fileinfo['header_content_type'] = response.headers.get('Content-Type').split(';')[0]
+
+                if response.headers.get('content-length'):
+                    fileinfo['header_content_size'] =  response.headers.get('content-length').split(';')[0]
+                elif response.headers.get('Content-Length'):
+                    fileinfo['header_content_size'] =  response.headers.get('Content-Length').split(';')[0]
+
                 chunksize = 1024
                 content_size = 0
                 while True:
@@ -110,6 +121,8 @@ class DataHarvester():
                                                 '- {}'.format(url))
                             content_size = 0
                             content_size = str(response.headers.get('content-length')).split(';')[0]
+                            fileinfo['truncated']=True
+
                             break
                         else:
                             content_size = downloaded_size
