@@ -8,7 +8,7 @@ from fuji_server.helper.preprocessor import Preprocessor
 
 class MetricHelper:
     def __init__(self, metric_file_name, logger=None):
-        self.metric_specification = None
+        self.metric_specification = 'https://doi.org/10.5281/zenodo.6461229'
         self.formatted_specification = {}
         self.metric_file_name = metric_file_name
         self.metric_version = None
@@ -36,7 +36,8 @@ class MetricHelper:
                 specification = yaml.load(stream, Loader=yaml.FullLoader)
             except yaml.YAMLError as e:
                 self.logger.error(e)
-            self.metric_specification = specification.get('metric_specification')
+            if specification.get('metric_specification'):
+                self.metric_specification = specification.get('metric_specification')
             self.config = specification.get('config')
             self.all_metrics_list = specification['metrics']
             self.total_metrics = len(self.all_metrics_list)

@@ -1,6 +1,6 @@
 # LIST OF FARISFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
 config:
-
+  metric_specification: https://doi.org/10.5281/zenodo.4081213
 metrics:
   ## ---------------- FINDABILITY ---------------- ##
 - metric_identifier: FsF-F1-01D
