@@ -425,6 +425,14 @@ components:
     Persistence_output:
       type: object
       properties:
+        persistent_identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persistence_output_inner'
+
+    Persistence_output_inner:
+      type: object
+      properties:
         pid:
           type: string
         pid_scheme:
@@ -434,6 +442,7 @@ components:
           default: false
         resolved_url:
           type: string
+
     output_core_metadata_found:
       required:
       - creator
