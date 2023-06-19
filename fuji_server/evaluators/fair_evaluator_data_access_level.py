@@ -47,6 +47,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         self.set_metric('FsF-A1-01M')
         self.access_details = {}
         self.access_level = None
+        self.lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
+
 
 
     def excludeLicences(self, access_rights):
@@ -79,7 +81,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             if access_rights:
                 test_result = True
-                self.logger.info(self.metric_identifier +' : Found access rights information in dedicated metadata element')
+                self.logger.info(self.metric_identifier +' : Found access rights information in dedicated metadata element -: '+str(access_rights))
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1',test_score, 'pass')
                 self.score.earned = test_score
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
@@ -91,16 +93,15 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         test_result = False
         if self.isTestDefined(self.metric_identifier + '-3'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-            lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
             if access_rights:
                 for access_right in access_rights:
-                    if access_right.lower() in lower_case_access_dict:
+                    if access_right.lower() in self.lower_case_access_dict:
                         self.logger.info(
                             self.metric_identifier + ' : Non-actionable (term only) standard access level recognized as -:' +
-                            str(lower_case_access_dict.get(access_right.lower())))
+                            str(self.lower_case_access_dict.get(access_right.lower())))
                         self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
                         self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
-                        self.access_level = lower_case_access_dict.get(access_right.lower())
+                        self.access_level = self.lower_case_access_dict.get(access_right.lower())
                         self.access_details['access_condition'] = access_right
                         self.score.earned = test_score
                         break
@@ -108,6 +109,20 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 self.logger.info(self.metric_identifier +' : Skipping standard terms test since NO access information is available in metadata')
 
         return test_result
+
+    def getIsAccessibleForFreeTerm(self):
+        access_rights = []
+        #schema.org/accessiblefroFree
+        access_free = self.fuji.metadata_merged.get('access_free')
+        if access_free is not None:
+            self.logger.info(
+                self.metric_identifier + ' : Found \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
+            )
+            if access_free:  # schema.org: isAccessibleForFree || free
+                access_rights = ['public']
+            else:
+                access_rights = ['restricted']
+        return access_rights
 
     def testAccessRightsMachineReadable(self,access_rights):
         test_result = False
@@ -156,24 +171,20 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if isinstance(access_rights, str):
             access_rights = [access_rights]
         access_rights = self.excludeLicences(access_rights)
-        #schema.org/accessiblefroFree
-        if not access_rights:
-            access_free = self.fuji.metadata_merged.get('access_free')
-            if access_free is not None:
-                self.logger.info(
-                    self.metric_identifier + ' : Used \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
-                )
-                if access_free:  # schema.org: isAccessibleForFree || free
-                    #access_rights = ['http://schema.org/isAccessibleForFree/public']
-                    access_rights = ['public']
-                else:
-                    #access_rights = ['http://schema.org/isAccessibleForFree/restricted']
-                    access_rights = ['restricted']
+
         #access_rights can be None or []
         if self.testAccessRightsMetadataAvailable(access_rights):
             test_status = 'pass'
         if self.testAccessRightsStandardTerms(access_rights):
             test_status = 'pass'
+        else:
+            try:
+                access_rights.extend(self.getIsAccessibleForFreeTerm())
+                if self.testAccessRightsStandardTerms(access_rights):
+                    test_status = 'pass'
+            except:
+                pass
+
         if self.testAccessRightsMachineReadable(access_rights):
             test_status = 'pass'
 
