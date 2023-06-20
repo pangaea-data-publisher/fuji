@@ -47,6 +47,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-R1.3-02D')
         self.data_file_list=[]
+
     def setFileFormatDict(self):
         if not self.fuji.content_identifier:  # self.content_identifier only includes uris that are accessible
             contents = self.fuji.metadata_merged.get('object_content_identifier')
@@ -67,9 +68,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             for file_index, data_file in enumerate(self.fuji.content_identifier.values()):
                 mime_type = data_file.get('claimed_type')
                 if data_file.get('url') is not None:
+                    if (mime_type is None or '/' not in mime_type) and data_file.get('header_content_type'):
+                        self.logger.info(
+                            'FsF-R1.3-02D : No mime type given in metadata, therefore the mime type given in HTTP header is used -: {}'.format(
+                                data_file.get('header_content_type')))
+                        mime_type = data_file.get('header_content_type')
                     if mime_type is None or '/' not in mime_type or mime_type in ['application/octet-stream', 'binary/octet-stream']:
                         self.logger.info(
-                            'FsF-R1.3-02D : Guessing  the type of a file based on its filename or URL -: {}'.format(
+                            'FsF-R1.3-02D : No mime type given in metadata, therefore guessing  the type of a file based on its filename or URL -: {}'.format(
                                 data_file.get('url')))
                         # if mime type not given try to guess it based on the file name
                         guessed_mime_type = mimetypes.guess_type(data_file.get('url'))
