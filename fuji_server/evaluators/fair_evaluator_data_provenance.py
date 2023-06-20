@@ -99,7 +99,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            provenance_namespaces = ['http://www.w3.org/ns/prov#', 'http://purl.org/pav/']
+            provenance_namespaces = ['http://www.w3.org/ns/prov','http://www.w3.org/ns/prov#', 'http://purl.org/pav/','http://purl.org/pav']
             # structured provenance metadata available
             structured_metadata_output = DataProvenanceOutputInner()
             structured_metadata_output.provenance_metadata = []
