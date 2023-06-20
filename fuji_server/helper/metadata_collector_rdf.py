@@ -126,7 +126,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.namespaces.append(uri)
                         else:
                             uri = str(uri).strip().rstrip('/#')
-                            namespace_candidate = uri.rsplit('/', 1)[0]
+                            if '#' in uri:
+                                namespace_candidate = uri.rsplit('#', 1)[0]
+                            else:
+                                namespace_candidate = uri.rsplit('/', 1)[0]
                             if namespace_candidate != uri:
                                 self.namespaces.append(namespace_candidate)
                             else:
