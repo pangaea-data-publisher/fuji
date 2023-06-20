@@ -73,8 +73,13 @@ class FAIREvaluatorPersistentIdentifier(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             for pid, pid_info in self.fuji.pid_collector.items():
-                if pid_info.get('is_persistent'):
-                    test_status = True
+                if pid_info.get('verified'):
+                    if pid_info.get('is_persistent') :
+                        test_status = True
+                else:
+                    self.logger.warning(
+                        self.metric_identifier + ' : Skipping PID syntax test since the PID seems to resolve to a different entity')
+
             if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                 self.score.earned = test_score
