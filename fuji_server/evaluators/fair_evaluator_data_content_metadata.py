@@ -192,14 +192,14 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                          or data_object.get('claimed_type') in data_object.get('tika_content_type'):
                     type_matches = True
                     self.logger.info(
-                        '{0} : Sucessfully verified content type from downloaded file -: (expected: {1}, found: {2})'
+                        '{0} : Sucessfully verified content type from downloaded file -: (expected: {1}, found: via tika {2})'
                             .format(self.metric_identifier, data_object.get('claimed_type'),
-                                    str(data_object.get('tika_content_type'))+' or '+str(data_object.get('header_content_type'))))
+                                    str(data_object.get('tika_content_type'))+' or via header '+str(data_object.get('header_content_type'))))
                 else:
                     self.logger.warning(
-                        '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: {2})'
+                        '{0} : Could not verify content type from downloaded file -: (expected: {1}, found: via tika {2})'
                             .format(self.metric_identifier, data_object.get('claimed_type'),
-                                    str(data_object.get('tika_content_type'))+' or '+str(data_object.get('header_content_type'))))
+                                    str(data_object.get('tika_content_type'))+' or via header '+str(data_object.get('header_content_type'))))
                 data_content_filetype_inner = DataContentMetadataOutputInner()
                 data_content_filetype_inner.descriptor = 'file type'
                 data_content_filetype_inner.descriptor_value = data_object.get('claimed_type')
