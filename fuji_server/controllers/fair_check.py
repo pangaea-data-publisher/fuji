@@ -216,7 +216,7 @@ class FAIRCheck:
             else:
                 allowed_harvesting_methods = [MetadataOfferingMethods[m] for m in allowed_harvesting_methods if m in MetadataOfferingMethods._member_names_ ]
         self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, allowed_harvesting_methods = allowed_harvesting_methods)
-
+        self.repo_helper = None
 
     @classmethod
     def load_predata(cls):
@@ -354,6 +354,22 @@ class FAIRCheck:
         # remove duplicates
         if self.namespace_uri:
             self.namespace_uri = list(set(self.namespace_uri))
+
+    def harvest_re3_data(self):
+        if self.use_datacite:
+            client_id = self.metadata_merged.get('datacite_client')
+            self.logger.info('FsF-R1.3-01M : re3data/datacite client id -: {}'.format(client_id))
+            self.repo_helper = RepositoryHelper(client_id=client_id, logger=self.logger, landingpage=self.landing_url)
+            self.repo_helper.lookup_re3data()
+        else:
+            self.client_id = None
+            self.logger.warning(
+                '{} : Datacite support disabled, therefore skipping standards identification using in re3data record'
+                    .format(
+                    'FsF-R1.3-01M',
+                ))
+
+
 
     def harvest_all_data(self):
         if self.metadata_merged.get('object_content_identifier'):

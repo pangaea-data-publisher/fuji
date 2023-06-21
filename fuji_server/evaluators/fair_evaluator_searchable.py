@@ -57,30 +57,45 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             MetadataSources.DUBLINCORE_EMBEDDED.name, MetadataSources.RDFA_EMBEDDED.name
         ]
         self.sources_registry = [
-            MetadataSources.DATACITE_JSON_NEGOTIATED.value, MetaDataCatalogue.Sources.DATACITE.value,
-            MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
+            MetaDataCatalogue.Sources.DATACITE, MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
         ]
+        print(self.sources_registry)
 
     def testMetadataExchangeStandardsAvailable(self):
         #test for oai, csw, sparql
         test_status = False
         standards_supported =[]
+        print('RE3DATA STANDARDS: ',self.fuji.repo_helper.getRe3MetadataAPIs())
         if self.isTestDefined(self.metric_identifier + '-3'):
+            self.logger.info(self.metric_identifier + ' : Trying to identify a metadata exchange standard given as input or via re3data entry')
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+            if not self.fuji.oaipmh_endpoint:
+                self.logger.info(
+                    '{} : Inferring metadata service endpoint (OAI) information through re3data/datacite services'.format(
+                        self.metric_identifier))
+                self.fuji.oaipmh_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('OAI-PMH')
             if self.fuji.oaipmh_endpoint:
                 standards_supported.append('OAI-PMH')
             if self.fuji.csw_endpoint:
                 standards_supported.append('OGC-CSW')
+            if not self.fuji.sparql_endpoint:
+                self.logger.info(
+                    '{} : Inferring metadata service endpoint (SPARQL) information through re3data/datacite services'.format(
+                        self.metric_identifier))
+                self.fuji.sparql_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('SPARQL')
             if self.fuji.sparql_endpoint:
                 standards_supported.append('SPARQL')
             if standards_supported:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-3')
                 self.score.earned += test_score
-                standards_supported.append(self.fuji.self.metadata_service_type)
+                #standards_supported.append(self.fuji.self.metadata_service_type)
                 self.search_mechanisms.append(
                     OutputSearchMechanisms(mechanism='exchange standard', mechanism_info=standards_supported))
-                self.logger.info(self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+            else:
+                self.logger.warning(self.metric_identifier + ' : No metadata exchange standard found')
+
         return test_status
 
 
@@ -95,9 +110,10 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
                 self.score.earned += test_score
+                test_status = True
                 self.search_mechanisms.append(
                     OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-                self.logger.info(self.metric_identifier + ' : Metadata found through - structured data')
+                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' :  Metadata is offered in a way major search engines can ingest it -: '+str(search_engine_support_match))
             else:
                 self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
         return test_status
@@ -147,11 +163,11 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 self.score.earned += test_score
                 self.search_mechanisms.append(
                     OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registries_supported))
-                self.logger.info(self.metric_identifier + ' : Metadata found through - metadata registry')
+                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found through - metadata registry')
             else:
                 self.logger.warning(
                     self.metric_identifier + ' : Metadata is NOT found through registries considered by the assessment service  -: {}'.
-                    format(self.sources_registry))
+                    format([s.name for s in self.sources_registry]))
         return test_status
 
     def evaluate(self):

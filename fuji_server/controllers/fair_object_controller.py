@@ -28,6 +28,7 @@ import os
 import connexion
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.models.body import Body  # noqa: E501
 from fuji_server.models.fair_results import FAIRResults  # noqa: E501
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -61,6 +62,7 @@ def assess_by_id(body):  # noqa: E501
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
         metric_version = body.metric_version
+        print('BODY METRIC', metric_version)
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
@@ -93,6 +95,7 @@ def assess_by_id(body):  # noqa: E501
         uid_result, pid_result = ft.check_unique_persistent()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
+        ft.harvest_re3_data()
         core_metadata_result = ft.check_minimal_metatadata()
         # print(ft.metadata_unmerged)
         content_identifier_included_result = ft.check_content_identifier_included()

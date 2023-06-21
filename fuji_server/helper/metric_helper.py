@@ -31,7 +31,7 @@ class MetricHelper:
             print('METRIC VERSION' , self.metric_version)
             print('LOADING METRICS  ', metric_file_name, metric_yml_path)
 
-            stream = open(metric_yml_path, 'r', encoding='utf8')
+            stream = open(os.path.join(metric_yml_path,metric_file_name), 'r', encoding='utf8')
             try:
                 specification = yaml.load(stream, Loader=yaml.FullLoader)
             except yaml.YAMLError as e:

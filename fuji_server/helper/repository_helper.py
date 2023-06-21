@@ -37,19 +37,21 @@ class RepositoryHelper:
     ns = {'r3d': 'http://www.re3data.org/schema/2-2'}
     RE3DATA_APITYPES = ['OAI-PMH', 'SOAP', 'SPARQL', 'SWORD', 'OpenDAP']
 
-    def __init__(self, client, pidscheme, logger, landingpage):
-        self.client_id = client
+    def __init__(self, client_id, logger, landingpage):
+        self.client_id = client_id
+        self.logger = logger
         self.landing_page_url = landingpage
-        self.pid_scheme = pidscheme
+        #self.pid_scheme = pidscheme
         self.re3metadata_raw = None
         self.repository_name = None
         self.repository_url = None
         self.repo_apis = {}
         self.repo_standards = []
-        self.logger = logging.getLogger(logger)
+        #self.logger = logging.getLogger(logger)
         #print(__name__)
+
     def lookup_re3data(self):
-        if self.client_id and self.pid_scheme:
+        if self.client_id: #and self.pid_scheme:
 
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
             if re3doi:
@@ -79,13 +81,13 @@ class RepositoryHelper:
                         q2.setAcceptType(AcceptTypes.xml)
                         re3_source, re3_response = q2.content_negotiate(metric_id='RE3DATA')
                         self.re3metadata_raw = re3_response
-                        self.parseRepositoryMetadata()
+                        self.parseRe3data()
                 except Exception as e:
                     self.logger.warning('FsF-R1.3-01M : Malformed re3data (DOI-based) record received: ' + str(e))
             else:
                 self.logger.warning('FsF-R1.3-01M : No DOI of client id is available from datacite api')
 
-    def parseRepositoryMetadata(self):
+    def parseRe3data(self):
         #http://schema.re3data.org/3-0/re3data-example-V3-0.xml
         root = etree.fromstring(self.re3metadata_raw)
         # ns = {k: v for k, v in root.nsmap.items() if k}
