@@ -9,6 +9,9 @@ import idutils
 import os
 from tika import parser
 
+from fuji_server.helper.identifier_helper import IdentifierHelper
+
+
 class DataHarvester():
     LOG_SUCCESS = 25
     LOG_FAILURE = 35
@@ -80,6 +83,12 @@ class DataHarvester():
         file_buffer_object = io.BytesIO()
         content_size = 0
         if url:
+            fileinfo['is_persistent'] = False
+            idhelper = IdentifierHelper(url)
+            if idhelper.preferred_schema:
+                fileinfo['schema'] =idhelper.preferred_schema
+            if idhelper.is_persistent:
+                fileinfo['is_persistent'] = True
             if not idutils.is_url(url):
                 url = self.expand_url(url)
             try:
@@ -93,6 +102,7 @@ class DataHarvester():
                 rstatus = response.getcode()
                 fileinfo['status_code'] = rstatus
                 fileinfo['truncated'] = False
+                fileinfo['resolved_url']  = response.geturl()
                 #self.info['response_content_type'] = content_type = response.info().get_content_type()
                 if response.headers.get('content-type'):
                     self.content_type = fileinfo['header_content_type'] = response.headers.get('content-type').split(';')[0]

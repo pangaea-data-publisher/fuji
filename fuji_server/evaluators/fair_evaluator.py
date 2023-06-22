@@ -88,9 +88,10 @@ class FAIREvaluator:
         """
         self.metrics = self.fuji.METRICS
         self.metric_identifier = metric_identifier
-        self.agnostic_identifier = self.metrics.get(metric_identifier).get('agnostic_identifier')
-        self.community_identifier = self.metrics.get(metric_identifier).get('metric_identifier')
+
         if self.metric_identifier is not None and self.metric_identifier in self.metrics:
+            self.agnostic_identifier = self.metrics.get(metric_identifier).get('agnostic_identifier')
+            self.community_identifier = self.metrics.get(metric_identifier).get('metric_identifier')
             self.total_score = int(self.metrics.get(metric_identifier).get('total_score'))
             self.score = FAIRResultCommonScore(total=self.total_score)
             self.metric_name = self.metrics.get(metric_identifier).get('metric_name')
