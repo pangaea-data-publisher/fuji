@@ -32,7 +32,7 @@ from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 
 
-class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
+class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
     """
     A class to evaluate the globally unique identifier of the data (F1-01D). A child class of FAIREvaluator.
     ...
@@ -43,54 +43,58 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
         This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that folows a proper syntax or
         identifier is resolvable and follows a defined unique identifier syntax (URL, IRI).
     """
+
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() <= 0.5:
-            metric = 'FsF-F1-01D'
-        else:
-            metric = 'FsF-F1-01M'
-            #after 0.5 seperate metrics for metadata and data
+        metric = 'FsF-F1-01DD'
         self.set_metric(metric)
 
-    def testMetadataIdentifierCompliesWithIdutilsScheme(self, validschemes = []):
+    def testDataIdentifierCompliesWithIdutilsScheme(self, validschemes=[]):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
-            self.logger.info(self.metric_identifier+' : Using idutils schemes to identify unique or persistent identifiers for metadata')
-            idhelper = IdentifierHelper(self.fuji.id)
-            found_ids = idhelper.identifier_schemes
-            self.logger.info(self.metric_identifier+' :Starting assessment on identifier: {}'.format(self.fuji.id))
-            if len(found_ids) > 0:
-                self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier+' : Unique identifier schemes found {}'.format(found_ids))
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', self.total_score, 'pass')
-                self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
-                self.output.guid = self.fuji.id
-                self.score.earned = self.total_score
-                found_id = idhelper.preferred_schema
-                self.fuji.id_scheme = idhelper.identifier_schemes[0]
-                if idhelper.is_persistent:
-                    self.fuji.pid_scheme = found_id
-                    self.fuji.pid_url = idhelper.identifier_url
-                self.logger.info(self.metric_identifier + ' : Finalized unique identifier scheme - {}'.format(found_id))
-                self.output.guid_scheme = found_id
-                test_status = True
+            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            self.logger.info(
+                self.metric_identifier + ' : Using idutils schemes to identify unique or persistent identifiers for data')
+            #contents = self.fuji.metadata_merged.get('object_content_identifier')
+            contents = self.fuji.content_identifier
+            for content in contents.values():
+                if content.get('url'):
+                    idhelper = IdentifierHelper(content.get('url'))
+                    found_ids = idhelper.identifier_schemes
+                    if len(found_ids) > 0:
+                        self.logger.log(self.fuji.LOG_SUCCESS,
+                                        self.metric_identifier + ' : Unique identifier schemes found for data URI -: {} as {}'.format(
+                                            str(content.get('url')),found_ids))
+                        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score , 'pass')
+                        self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
+                        self.output.guid = content.get('url')
+                        self.output.guid_scheme = idhelper.preferred_schema
+                        self.score.earned += test_score
+                        test_status = True
+                        break
         return test_status
 
-    def testMetadataIdentifierCompliesWithUUIDorHASH(self):
+    def testDataIdentifierCompliesWithUUIDorHASH(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            idhelper = IdentifierHelper(self.fuji.id)
-            if idhelper.preferred_schema =='uuid':
-                self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Unique identifier (UUID) scheme for metadata identifier found')
-                self.output.guid_scheme = 'uuid'
-                test_status = True
-            elif idhelper.preferred_schema =='hash':
-                self.output.guid_scheme = 'hash'
-                self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Unique identifier (SHA,MD5) scheme for metadata identifier found')
-                test_status = True
+            contents = self.fuji.content_identifier
+            for content in contents.values():
+                if content.get('url') and content.get('schema'):
+
+                    if content.get('schema') == 'uuid':
+                        self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Unique identifier (UUID) scheme for data identifier found')
+                        self.output.guid_scheme = 'uuid'
+                        test_status = True
+                        break
+                    elif content.get('schema') == 'hash':
+                        self.output.guid_scheme = 'hash'
+                        self.logger.log(self.fuji.LOG_SUCCESS, self.metric_identifier + ' : Unique identifier (SHA,MD5) scheme for data identifier found')
+                        test_status = True
+                        break
             if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                self.output.guid = self.fuji.id
+                self.output.guid = content.get('url')
                 self.maturity =  self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
                 self.score.earned = test_score
         return test_status
@@ -103,9 +107,9 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
                                      metric_name=self.metric_name)
             self.output = UniquenessOutput()
             self.result.test_status = 'fail'
-            if self.testMetadataIdentifierCompliesWithUUIDorHASH():
+            if self.testDataIdentifierCompliesWithIdutilsScheme():
                 self.result.test_status = 'pass'
-            if self.testMetadataIdentifierCompliesWithIdutilsScheme():
+            if self.testDataIdentifierCompliesWithUUIDorHASH():
                 self.result.test_status = 'pass'
             else:
                 self.result.test_status = 'fail'

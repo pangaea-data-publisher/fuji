@@ -48,7 +48,9 @@ from tldextract import extract
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
-from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import FAIREvaluatorPersistentIdentifier
+from fuji_server.evaluators.fair_evaluator_persistent_identifier_data import FAIREvaluatorPersistentIdentifierData
+from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import FAIREvaluatorPersistentIdentifierMetadata
+from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREvaluatorUniqueIdentifierData
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
 from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
@@ -153,7 +155,7 @@ class FAIRCheck:
         self.isLandingPageAccessible = None
         self.metadata_merged = {}
         self.metadata_unmerged = []
-        self.content_identifier = []
+        self.content_identifier = {}
         self.community_standards = []
         self.community_standards_uri = {}
         self.namespace_uri = []
@@ -423,19 +425,26 @@ class FAIRCheck:
                 found = highest[0]
         return found
 
-    def check_unique_identifier(self):
+    def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
         #unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
         return unique_identifier_check.getResult()
 
-    def check_persistent_identifier(self):
-        persistent_identifier_check = FAIREvaluatorPersistentIdentifier(self)
-        #persistent_identifier_check.set_metric('FsF-F1-02D')
+    def check_unique_content_identifier(self):
+        unique_identifier_check = FAIREvaluatorUniqueIdentifierData(self)
+        return unique_identifier_check.getResult()
+
+    def check_persistent_metadata_identifier(self):
+        persistent_identifier_check = FAIREvaluatorPersistentIdentifierMetadata(self)
         return persistent_identifier_check.getResult()
 
-    def check_unique_persistent(self):
+    def check_persistent_data_identifier(self):
+        persistent_identifier_check = FAIREvaluatorPersistentIdentifierData(self)
+        return persistent_identifier_check.getResult()
+
+    def check_unique_persistent_metadata_identifier(self):
         self.metadata_harvester.get_signposting_object_identifier()
-        return self.check_unique_identifier(), self.check_persistent_identifier()
+        return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
 
     def check_minimal_metatadata(self, include_embedded=True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)

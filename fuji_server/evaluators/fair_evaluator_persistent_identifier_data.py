@@ -34,7 +34,7 @@ from urllib.parse import urlparse
 import re
 from bs4 import BeautifulSoup
 
-class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
+class FAIREvaluatorPersistentIdentifierData(FAIREvaluator):
     """
     A class to evaluate that the data is assigned a persistent identifier (F1-02D). A child class of FAIREvaluator.
     ...
@@ -50,18 +50,14 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
     def __init__(self, fuji_instance):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() <= 0.5:
-            metric = 'FsF-F1-02D'
-        else:
-            metric = 'FsF-F1-02M'
-        self.set_metric(metric)
+        self.set_metric('FsF-F1-02DD')
 
     def setPidsOutput(self):
         self.output.persistent_identifiers = []
-        for pid, pid_info in self.fuji.pid_collector.items():
+        for pid_info in self.fuji.content_identifier.values():
             if pid_info.get('is_persistent'):
                 output_inner = PersistenceOutputInner()
-                output_inner.pid = pid_info.get('pid')
+                output_inner.pid = pid_info.get('url')
                 output_inner.pid_scheme = pid_info.get('scheme')
                 if pid_info.get('resolved_url'):
                     output_inner.resolvable_status = True
@@ -72,14 +68,10 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-            for pid, pid_info in self.fuji.pid_collector.items():
-                if pid_info.get('verified'):
-                    if pid_info.get('is_persistent') :
-                        test_status = True
-                else:
-                    self.logger.warning(
-                        self.metric_identifier + ' : Skipping PID syntax test since the PID seems to resolve to a different entity')
-
+            for pid_info in self.fuji.content_identifier.values():
+                #if pid_info.get('verified'):
+                if pid_info.get('is_persistent') :
+                    test_status = True
             if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                 self.score.earned = test_score
@@ -91,22 +83,22 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            for pid, pid_info in self.fuji.pid_collector.items():
-                if pid_info.get('verified') or not self.fuji.verify_pids:
+            for pid_info in self.fuji.content_identifier.values():
+                if pid_info.get('is_persistent'):
                     if pid_info.get('resolved_url'):
-                        self.fuji.isLandingPageAccessible = True
-                        self.logger.info(self.metric_identifier + ' : Found PID which could be verified (does resolve properly) -: ' + str(pid))
+                        test_status = True
+                        self.logger.info(self.metric_identifier + ' : Found PID which could be verified (does resolve properly) -: ' + str(pid_info.get('url')))
+                        break
                     else:
                         self.logger.info(
-                            self.metric_identifier + ' : Found PID which could not be verified (does not resolve properly) -: ' + str(
-                                pid))
-            if self.fuji.isLandingPageAccessible:
-                test_status = True
+                            self.metric_identifier + ' : Found PID pointing to data which could not be verified (does not resolve properly) -: ' + str(
+                                pid_info.get('url')))
+            if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-2').metric_test_maturity_config
                 self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
             self.logger.log(self.fuji.LOG_SUCCESS,
-                            self.metric_identifier + ' : Persistence identifier scheme -: {}'.format(self.fuji.pid_scheme))
+                            self.metric_identifier + ' : Persistence identifier scheme for data identifier -: {}'.format(self.fuji.pid_scheme))
         return test_status
 
 
@@ -116,21 +108,12 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
                                   metric_name=self.metric_name)
         self.output = PersistenceOutput()
         # ======= CHECK IDENTIFIER PERSISTENCE =======
-        self.logger.info(self.metric_identifier + ' : PID schemes-based assessment supported by the assessment service - {}'.format(
-            Mapper.VALID_PIDS.value))
-
         self.result.test_status = 'fail'
         self.setPidsOutput()
         if self.testCompliesWithPIDScheme():
             self.result.test_status = 'pass'
         if self.testIfLandingPageResolves():
             self.result.test_status = 'pass'
-
-        '''else:
-            self.score.earned = 0
-            self.logger.warning(self.metric_identifier + ' : Could not identify a valid peristent identifier based on scheme and resolution')'''
-
-
 
         self.result.score = self.score
         self.result.maturity = self.maturity
