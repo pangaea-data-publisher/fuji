@@ -33,14 +33,17 @@ class MetadataHarvester():
     LOG_SUCCESS = 25
     LOG_FAILURE = 35
     signposting_relation_types = ['describedby', 'item','license','type','collection', 'author','linkset','cite-as']
-    def __init__(self, uid, use_datacite = True, auth_token = None, auth_token_type = 'Basic', allowed_harvesting_methods = None):
+    def __init__(self, uid, use_datacite = True, logger = None, auth_token = None, auth_token_type = 'Basic', allowed_harvesting_methods = None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         # str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
         if isinstance(uid, str):
             uid = uid.strip()
         self.id = self.input_id = uid
-        self.logger = logging.getLogger(self.test_id)
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(self.test_id)
         self.auth_token = auth_token
         self.auth_token_type = auth_token_type
         self.landing_html = None
