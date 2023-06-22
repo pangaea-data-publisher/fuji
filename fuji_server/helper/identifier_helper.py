@@ -21,6 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import urllib
+import uuid
+
+import hashid
 import idutils
 import re
 
@@ -94,6 +97,15 @@ class IdentifierHelper:
                 self.identifier = self.identifier.replace('/ark://', '/ark:/')
                 generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
 
+                if self.is_uuid():
+                    self.identifier_schemes = ['uuid']
+                    self.preferred_schema = 'uuid'
+                    self.is_persistent = False
+                if self.is_hash():
+                    self.identifier_schemes = ['hash']
+                    self.preferred_schema = 'hash'
+                    self.is_persistent = False
+
                 if not self.identifier_schemes or self.identifier_schemes == ['url']:
                     # w3id check
                     if idparts.scheme == 'https' and idparts.netloc in ['w3id.org','www.w3id.org'] and idparts.path != '':
@@ -120,6 +132,7 @@ class IdentifierHelper:
                                     self.IDENTIFIERS_ORG_DATA[found_prefix]['url_pattern']).replace(
                                     '{$id}', found_suffix)
                                 self.normalized_id = found_prefix.lower() + ':' + found_suffix
+
                 # idutils check
                 if not self.identifier_schemes:
                     self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
@@ -150,6 +163,27 @@ class IdentifierHelper:
                     self.is_persistent = True
             if not self.normalized_id:
                 self.normalized_id = self.identifier
+
+    def is_uuid(self):
+        try:
+            uuid_version = uuid.UUID(self.identifier).version
+            if uuid_version is not None:
+                return True
+            else:
+                return False
+        except ValueError:
+            return False
+
+    def is_hash(self):
+        try:
+            hash = hashid.HashID()
+            validhash = False
+            for hashtype in hash.identifyHash(self.identifier):
+                if re.search(r'^(sha|md5|blake)', hashtype.name, re.IGNORECASE):
+                    validhash = True
+            return validhash
+        except Exception:
+            return False
 
     def verify_handle(self, val, includeparams=True):
         #additional checks for handles since the syntax is very generic
