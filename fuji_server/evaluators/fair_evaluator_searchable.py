@@ -59,7 +59,6 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         self.sources_registry = [
             MetaDataCatalogue.Sources.DATACITE, MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
         ]
-        print(self.sources_registry)
 
     def testMetadataExchangeStandardsAvailable(self):
         #test for oai, csw, sparql
