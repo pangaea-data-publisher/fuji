@@ -92,13 +92,13 @@ def assess_by_id(body):  # noqa: E501
 
         print('starting harvesting ')
         ft.harvest_all_metadata()
-        uid_result, pid_result = ft.check_unique_persistent()
+        uid_result, pid_result = ft.check_unique_persistent_metadata_identifier()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
         ft.harvest_re3_data()
         core_metadata_result = ft.check_minimal_metatadata()
         # print(ft.metadata_unmerged)
-        content_identifier_included_result = ft.check_content_identifier_included()
+        content_identifier_included_result = ft.check_data_identifier_included_in_metadata()
         # print('F-UJI checks: accsee level')
         access_level_result = ft.check_data_access_level()
         # print('F-UJI checks: license')
@@ -109,7 +109,10 @@ def assess_by_id(body):  # noqa: E501
         check_searchable_result = ft.check_searchable()
         # print('F-UJI checks: data content')
         ft.harvest_all_data()
-        data_content_result = ft.check_data_content_metadata()
+        uid_data_result = ft.check_unique_content_identifier()
+        pid_data_result = ft.check_persistent_data_identifier()
+        data_identifier_included_result = ft.check_data_content_metadata()
+        metadata_identifier_included_result = ft.check_metadata_identifier_included_in_metadata()
         data_file_format_result = ft.check_data_file_format()
         # print('F-UJI checks: data file format')
         community_standards_result = ft.check_community_metadatastandards()
@@ -120,23 +123,44 @@ def assess_by_id(body):  # noqa: E501
         metadata_preserved_result = ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
-
-        results.append(uid_result)
-        results.append(pid_result)
-        results.append(core_metadata_result)
-        results.append(content_identifier_included_result)
-        results.append(check_searchable_result)
-        results.append(access_level_result)
-        results.append(formal_metadata_result)
-        results.append(semantic_vocab_result)
-        results.append(related_resources_result)
-        results.append(data_content_result)
-        results.append(license_result)
-        results.append(data_provenance_result)
-        results.append(community_standards_result)
-        results.append(data_file_format_result)
-        results.append(standard_protocol_data_result)
-        results.append(standard_protocol_metadata_result)
+        if uid_result:
+            results.append(uid_result)
+        if pid_result:
+            results.append(pid_result)
+        if uid_data_result:
+            results.append(uid_data_result)
+        if pid_data_result:
+            results.append(pid_data_result)
+        if core_metadata_result:
+            results.append(core_metadata_result)
+        if content_identifier_included_result:
+            results.append(content_identifier_included_result)
+        if check_searchable_result:
+            results.append(check_searchable_result)
+        if formal_metadata_result:
+            results.append(formal_metadata_result)
+        if semantic_vocab_result:
+            results.append(semantic_vocab_result)
+        if related_resources_result:
+            results.append(related_resources_result)
+        if data_identifier_included_result:
+            results.append(data_identifier_included_result)
+        if metadata_identifier_included_result:
+            results.append(metadata_identifier_included_result)
+        if license_result:
+            results.append(license_result)
+        if access_level_result:
+            results.append(access_level_result)
+        if data_provenance_result:
+            results.append(data_provenance_result)
+        if community_standards_result:
+            results.append(community_standards_result)
+        if data_file_format_result:
+            results.append(data_file_format_result)
+        if standard_protocol_data_result:
+            results.append(standard_protocol_data_result)
+        if standard_protocol_metadata_result:
+            results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
         #ft.logger_message_stream.flush()
         summary = ft.get_assessment_summary(results)
@@ -161,7 +185,7 @@ def assess_by_id(body):  # noqa: E501
         if not resolved_url:
             resolved_url = 'not defined'
         print('RESOLVED URL',resolved_url)
-        metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
+        #metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()
         if ft.pid_url:
