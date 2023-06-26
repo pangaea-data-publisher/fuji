@@ -67,6 +67,7 @@ class FAIREvaluator:
         self.metric_identifier = None
         self.metrics = None
         self.metric_number = None
+        self.metric_name = None
         self.result = None
         self.maturity = 0
         self.metric_tests = dict()
@@ -88,7 +89,6 @@ class FAIREvaluator:
         """
         self.metrics = self.fuji.METRICS
         self.metric_identifier = metric_identifier
-
         if self.metric_identifier is not None and self.metric_identifier in self.metrics:
             self.agnostic_identifier = self.metrics.get(metric_identifier).get('agnostic_identifier')
             self.community_identifier = self.metrics.get(metric_identifier).get('metric_identifier')
@@ -105,7 +105,9 @@ class FAIREvaluator:
 
     def getResult(self):
         """Get result of evaluation and pack it into dictionary."""
-        self.evaluate()
+        if self.metric_identifier in self.metrics:
+            self.evaluate()
+
         if self.result:
             self.result.metric_identifier = self.metrics.get(self.result.metric_identifier).get('metric_identifier')
             return self.result.to_dict()
