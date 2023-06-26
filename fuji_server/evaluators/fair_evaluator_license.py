@@ -48,10 +48,45 @@ class FAIREvaluatorLicense(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-R1.1-01M')
-        self.specified_licenses = self.fuji.metadata_merged.get('license')
-        if isinstance(self.specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
-            self.specified_licenses = [self.specified_licenses]
+
         self.output=[]
+        self.license_info =[]
+
+    def setLicenseDataAndOutput(self):
+        self.license_info = []
+        specified_licenses = self.fuji.metadata_merged.get('license')
+        if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
+            specified_licenses = [specified_licenses]
+        if specified_licenses is not None and specified_licenses != []:
+            for l in specified_licenses:
+                licence_valid = False
+                license_output = LicenseOutputInner()
+                if isinstance(l, str):
+                    isurl = idutils.is_url(l)
+                if isurl:
+                    iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
+                    if iscc:
+                        l = generic_cc
+                    spdx_uri, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
+                else:  # maybe licence name
+                    spdx_uri, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
+                license_output.license = l
+                if spdx_uri:
+                    licence_valid = True
+                license_output.details_url = spdx_uri
+                license_output.osi_approved = spdx_osi
+                self.output.append((license_output))
+                self.license_info.append({'license':l, 'spdx_uri':spdx_uri , 'osi_approved':spdx_osi, 'valid':licence_valid})
+                if not spdx_uri:
+                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
+                        self.metric_identifier))
+                else:
+                    test_status = True
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+                            self.metric_identifier))
+
 
     def isCreativeCommonsLicense(self,license_url, metric_id):
         iscc = False
@@ -128,13 +163,13 @@ class FAIREvaluatorLicense(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-            if self.specified_licenses is not None and self.specified_licenses != []:
+            if self.license_info is not None and self.license_info  != []:
                 test_status = True
                 self.logger.log(self.fuji.LOG_SUCCESS,
                                 '{0} : Found licence information in metadata'.format(self.metric_identifier))
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
-                self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
+                self.score.earned += test_score
             else:
                 self.logger.warning('{0} : License information unavailable in metadata'.format(self.metric_identifier))
         return test_status
@@ -143,40 +178,22 @@ class FAIREvaluatorLicense(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            if self.specified_licenses is not None and self.specified_licenses != []:
-                for l in self.specified_licenses:
-                    license_output = LicenseOutputInner()
-                    license_output.license = l
-                    if isinstance(l, str):
-                        isurl = idutils.is_url(l)
-                    if isurl:
-                        iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
-                        if iscc:
-                            l = generic_cc
-                        spdx_html, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
-                    else:  # maybe licence name
-                        spdx_html, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
-                    if not spdx_html:
-                        self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
-                            self.metric_identifier))
-                    else:
+            if self.license_info:
+                for l in self.license_info:
+                    if l.get('valid'):
                         test_status = True
-                        self.logger.log(
-                            self.fuji.LOG_SUCCESS,
-                            '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
-                                self.metric_identifier))
-                if test_status:
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
-                    self.score.earned += test_score
-                    self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                    license_output.details_url = spdx_html
-                    license_output.osi_approved = spdx_osi
-                    self.output.append(license_output)
+            if test_status:
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                self.score.earned += test_score
+                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
             else:
                 self.logger.warning('{0} : Skipping SPDX verification since license information unavailable in metadata'.format(self.metric_identifier))
         return test_status
 
     def evaluate(self):
+
+        self.setLicenseDataAndOutput()
+
         self.result = License(id=self.metric_number,
                               metric_identifier=self.metric_identifier,
                               metric_name=self.metric_name)
