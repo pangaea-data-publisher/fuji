@@ -33,7 +33,7 @@ from fuji_server.models.identifier_included_output_inner import IdentifierInclud
 import urllib
 
 
-class FAIREvaluatorContentIncluded(FAIREvaluator):
+class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
     """
     A class to evaluate whether the metadata includes the identifier of the data is being described (F3-01M).
     A child class of FAIREvaluator.
@@ -58,12 +58,12 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
             if datainfolist:
                 for datainfo in datainfolist:
                     if isinstance(datainfo, dict):
-                        if datainfo.get('source'):
+                        '''if datainfo.get('source'):
                             if isinstance(datainfo['source'], enum.Enum):
                                 try:
                                     datainfo['source'] = datainfo['source'].acronym()
                                 except:
-                                    pass
+                                    pass'''
                         if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
                             test_result = True
                             self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
@@ -94,6 +94,7 @@ class FAIREvaluatorContentIncluded(FAIREvaluator):
         return test_result
 
     def evaluate(self):
+
         socket.setdefaulttimeout(1)
 
         self.result = IdentifierIncluded(id=self.metric_number,
