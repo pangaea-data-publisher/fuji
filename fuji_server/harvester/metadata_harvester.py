@@ -132,14 +132,18 @@ class MetadataHarvester():
                                  str(len(metadict.get('object_content_identifier'))))
             ## add: mechanism ('content negotiation', 'typed links', 'embedded')
             ## add: format namespace
-            self.metadata_unmerged.append(
-                    {'method' : method,
+            if isinstance(method, enum.Enum):
+                method = method.name
+                
+            mdict = {'method' : method,
                      'url' : url,
                      'format' : format,
                      'schema' : schema,
                      'metadata' : metadict,
                      'namespaces' : namespaces}
-            )
+
+            if mdict not in self.metadata_unmerged:
+                self.metadata_unmerged.append(mdict)
 
     def exclude_null(self, dt):
         if type(dt) is dict:
