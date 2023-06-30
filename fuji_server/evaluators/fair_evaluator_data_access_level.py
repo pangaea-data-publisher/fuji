@@ -44,10 +44,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
     """
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() <= 0.5:
-            self.set_metric('FsF-A1-01M')
-        else:
-            self.set_metric('FsF-R1.1-02M')
+        #if self.fuji.metric_helper.get_metric_version() <= 0.5:
+        self.set_metric('FsF-A1-01M')
+        #else:
+        #    self.set_metric('FsF-R1.1-02M')
         self.access_details = {}
         self.access_level = None
         self.lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
