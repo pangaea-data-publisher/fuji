@@ -7,10 +7,10 @@ import yaml
 from fuji_server.helper.preprocessor import Preprocessor
 
 class MetricHelper:
-    def __init__(self, metric_file_name, logger=None):
+    def __init__(self, metric_version, logger=None):
         self.metric_specification = 'https://doi.org/10.5281/zenodo.6461229'
         self.formatted_specification = {}
-        self.metric_file_name = metric_file_name
+        self.metric_file_name = metric_version
         self.metric_version = None
         self.total_metrics = 0
         self.all_metrics_list = None
@@ -21,31 +21,44 @@ class MetricHelper:
             self.logger = logger
         else:
             self.logger = logging.getLogger()
-        if not str(metric_file_name).endswith('.yaml'):
-            metric_file_name = str(metric_file_name)+'.yaml'
-        ym = re.match('metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?\.yaml', metric_file_name)
+        ym = re.match('(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?', metric_version)
         if ym:
-            self.metric_version = float(ym[1])
+            self.metric_version = ym[2]
+            if ym[3]:
+                self.metric_version = ym[2]+ym[3]
+
+            if not str(metric_version).endswith('.yaml'):
+                metric_file_name = str(metric_version) + '.yaml'
+            if not str(metric_file_name).startswith('metrics_v'):
+                metric_file_name = 'metrics_v'+metric_file_name
+
             metric_yml_path  = Preprocessor.METRIC_YML_PATH
 
             print('METRIC VERSION' , self.metric_version)
             print('LOADING METRICS  ', metric_file_name, metric_yml_path)
-
-            stream = open(os.path.join(metric_yml_path,metric_file_name), 'r', encoding='utf8')
+            specification = {}
             try:
+                stream = open(os.path.join(metric_yml_path,metric_file_name), 'r', encoding='utf8')
                 specification = yaml.load(stream, Loader=yaml.FullLoader)
-            except yaml.YAMLError as e:
+            except FileNotFoundError as e:
+                print('YAML LOADING ERROR -NOT FOUND')
                 self.logger.error(e)
-            if specification.get('metric_specification'):
-                self.metric_specification = specification.get('metric_specification')
-            self.config = specification.get('config')
-            self.all_metrics_list = specification['metrics']
-            self.total_metrics = len(self.all_metrics_list)
-            print('NUMBER OF LOADED METRICS  ', self.total_metrics)
-            # expected output format of http://localhost:1071/uji/api/v1/metrics
-            # unwanted_keys = ['question_type']
-            self.formatted_specification['total'] = self.total_metrics
-            self.formatted_specification['metrics'] = self.all_metrics_list
+            except yaml.YAMLError as e:
+                print('YAML LOADING ERROR - YAML ERROR')
+                self.logger.error(e)
+            if specification:
+                if specification.get('metric_specification'):
+                    self.metric_specification = specification.get('metric_specification')
+                self.config = specification.get('config')
+                self.all_metrics_list = specification['metrics']
+                self.total_metrics = len(self.all_metrics_list)
+                print('NUMBER OF LOADED METRICS  ', self.total_metrics)
+                # expected output format of http://localhost:1071/uji/api/v1/metrics
+                # unwanted_keys = ['question_type']
+                self.formatted_specification['total'] = self.total_metrics
+                self.formatted_specification['metrics'] = self.all_metrics_list
+            else:
+                print('YAML FILE DOS NOT EXIST')
         else:
             print('Invalid YAML File Name')
             self.logger.error('Invalid YAML File Name')
@@ -82,3 +95,17 @@ class MetricHelper:
 
     def get_metric_version(self):
         return self.metric_version
+
+    def get_metric(self, metric_id):
+        metric = {}
+        for listed_metric in self.all_metrics_list:
+            if listed_metric.get('metric_identifier') == metric_id:
+                metric = listed_metric
+            else:
+                for metric_test in listed_metric.get('metric_tests'):
+                    if metric_test.get('metric_test_identifier') == metric_id:
+                        metric = listed_metric
+        return metric
+
+    def get_metrics(self):
+        return self.formatted_specification
