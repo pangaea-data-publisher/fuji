@@ -54,6 +54,7 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
 
     def testMetadataUrlOrPIDAvailable(self, datainfolist):
         test_result = False
+        object_identifier = []
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             if datainfolist:
@@ -62,8 +63,8 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
                         method = datainfo.get('method')
                         if datainfo.get('metadata'):
                             object_identifier = datainfo['metadata'].get('object_identifier')
-                        if isinstance(object_identifier, str):
-                            object_identifier = [object_identifier]
+                            if isinstance(object_identifier, str):
+                                object_identifier = [object_identifier]
                         if object_identifier:
                             for oid in object_identifier:
                                 if oid and oid in [self.fuji.landing_url, self.fuji.id, self.fuji.pid_url]:
@@ -85,7 +86,7 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
                                          metric_name=self.metric_name)
         self.output = IdentifierIncludedOutput()
         contents = self.fuji.metadata_unmerged
-        print(self.fuji.metadata_unmerged)
+        #print(self.fuji.metadata_unmerged)
         self.result.test_status = 'fail'
 
         if self.testMetadataUrlOrPIDAvailable(contents):

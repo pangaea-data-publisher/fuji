@@ -66,6 +66,8 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                                     pass'''
                         if datainfo.get('type') or datainfo.get('size') or datainfo.get('url'):
                             test_result = True
+                            if isinstance(datainfo.get('source'),enum.Enum):
+                                datainfo['source'] = datainfo.get('source').name
                             self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                             self.maturity = self.metric_tests.get(self.metric_identifier + '-1').metric_test_maturity_config
                             did_output_content = IdentifierIncludedOutputInner()
