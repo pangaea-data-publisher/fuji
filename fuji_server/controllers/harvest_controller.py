@@ -66,7 +66,7 @@ def harvest_by_id(body=None):  # noqa: E501
             ft.set_auth_token(auth_token, auth_token_type)
         ft.harvest_all_metadata()
 
-        ft.check_unique_persistent()
+        ft.check_unique_persistent_metadata_identifier()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external_xml_negotiated([ft.pid_url])
             ft.retrieve_metadata_external_schemaorg_negotiated([ft.pid_url])
