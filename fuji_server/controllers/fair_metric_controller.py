@@ -26,12 +26,29 @@ FAIR Metric controller.
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 ################################################################################
-from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.metric_helper import MetricHelper
 
 
-def get_metrics():  # noqa: E501
+def get_metrics(version):  # noqa: E501
     """Return all metrics and their definitions.
     :rtype: Metrics
     """
-    response = Preprocessor.get_metrics()
-    return response, 200
+    metric_version = version
+    metric_helper = MetricHelper(metric_version)
+    response = metric_helper.get_metrics()
+    if response:
+        return response, 200
+    else:
+        return response, 404
+
+def get_metric(version, metric):  # noqa: E501
+    """Return all metrics and their definitions.
+    :rtype: Metrics
+    """
+    metric_version = version
+    metric_helper = MetricHelper(metric_version)
+    response = metric_helper.get_metric(metric)
+    if response:
+        return response, 200
+    else:
+        return response, 404

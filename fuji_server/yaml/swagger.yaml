@@ -63,10 +63,17 @@ paths:
         "404":
           description: Object not found
       x-openapi-router-controller: fuji_server.controllers.fair_object_controller
-  /metrics:
+  /metrics/{version}:
     get:
+      parameters:
+        - in: path
+          name: version
+          schema:
+            type: string
+            pattern: '^([0-9]+\.[0-9]+)(_[a-z]+)?$'
+          required: true
       tags:
-      - FAIR metric
+        - FAIR metric
       summary: Return all metrics and their definitions
       operationId: get_metrics
       responses:
@@ -76,6 +83,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Metrics'
+        "400":
+          description: Invalid request supplied
+        "401":
+          description: Authentication information is missing or invalid
+          headers:
+            WWW_Authenticate:
+              style: simple
+              explode: false
+              schema:
+                type: string
+        "404":
+          description: Object not found
+      x-openapi-router-controller: fuji_server.controllers.fair_metric_controller
+  /metrics/{version}/{metric}:
+    get:
+      parameters:
+        - in: path
+          name: version
+          schema:
+            type: string
+            pattern: '^([0-9]+\.[0-9]+)(_[a-z]+)?$'
+          required: true
+        - in: path
+          name: metric
+          schema:
+            type: string
+          required: true
+      tags:
+        - FAIR metric
+      summary: Return a single metric and it's definition
+      operationId: get_metric
+      responses:
+        "200":
+          description: Metrics are successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metric'
         "400":
           description: Invalid request supplied
         "401":
