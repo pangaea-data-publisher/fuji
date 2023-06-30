@@ -24,7 +24,7 @@
 import re
 from bs4 import BeautifulSoup
 from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
 
 
 class MetaDataCollectorDublinCore(MetaDataCollector):
@@ -101,7 +101,8 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     self.logger.exception('Parsing error, failed to extract DublinCore -: {}'.format(e))
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append('http://purl.org/dc/elements/1.1/')
-                    source = self.getEnumSourceNames().DUBLINCORE_EMBEDDED
+                    #source = self.getEnumSourceNames().DUBLINCORE_EMBEDDED
+                    source = MetadataSources.DUBLINCORE_EMBEDDED
                     dcterms = []
                     for dcitems in self.metadata_mapping.value.values():
                         if isinstance(dcitems, list):
@@ -169,7 +170,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                         count = len([d for d in dc_core_metadata.get('related_resources') if d.get('related_resource')])
                         self.logger.info(
                             'FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}'.
-                            format(count, source))
+                            format(count, source.name))
                     else:
                         self.logger.info('FsF-I3-01M : No related resource(s) found in DublinCore metadata')
                     # process string-based file format

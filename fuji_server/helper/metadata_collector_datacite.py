@@ -23,7 +23,7 @@
 
 from typing import List
 import jmespath
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
@@ -91,7 +91,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                     if dcite_metadata:
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append('http://datacite.org/schema/')
-                        source_name = self.getEnumSourceNames().DATACITE_JSON_NEGOTIATED
+                        source_name = MetadataSources.DATACITE_JSON_NEGOTIATED
                         if dcite_metadata['creator'] is None:
                             first = dcite_metadata['creator_first']
                             last = dcite_metadata['creator_last']
@@ -103,7 +103,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
 
                         if dcite_metadata.get('related_resources'):
                             self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
-                                len(dcite_metadata['related_resources']), source_name))
+                                len(dcite_metadata['related_resources']), source_name.name))
                             temp_rels = []
                             for r in dcite_metadata['related_resources']:
                                 if r.get('scheme_uri'):
