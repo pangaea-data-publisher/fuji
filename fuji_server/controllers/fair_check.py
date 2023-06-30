@@ -48,12 +48,13 @@ from tldextract import extract
 
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
+from fuji_server.evaluators.fair_evaluator_metadata_identifier_included import FAIREvaluatorMetadataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_persistent_identifier_data import FAIREvaluatorPersistentIdentifierData
 from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import FAIREvaluatorPersistentIdentifierMetadata
 from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREvaluatorUniqueIdentifierData
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
-from fuji_server.evaluators.fair_evaluator_content_included import FAIREvaluatorContentIncluded
+from fuji_server.evaluators.fair_evaluator_data_identifier_included import FAIREvaluatorDataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
 from fuji_server.evaluators.fair_evaluator_searchable import FAIREvaluatorSearchable
 from fuji_server.evaluators.fair_evaluator_file_format import FAIREvaluatorFileFormat
@@ -217,7 +218,7 @@ class FAIRCheck:
                 allowed_harvesting_methods = None
             else:
                 allowed_harvesting_methods = [MetadataOfferingMethods[m] for m in allowed_harvesting_methods if m in MetadataOfferingMethods._member_names_ ]
-        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, allowed_harvesting_methods = allowed_harvesting_methods)
+        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, logger = self.logger, allowed_harvesting_methods = allowed_harvesting_methods)
         self.repo_helper = None
 
     @classmethod
@@ -285,7 +286,7 @@ class FAIRCheck:
 
 
 
-    def merge_metadata(self, metadict, sourceurl, method_source, format, schema='', namespaces = []):
+    '''def merge_metadata(self, metadict, sourceurl, method_source, format, schema='', namespaces = []):
         if not isinstance(namespaces, list):
             namespaces = [namespaces]
         if isinstance(metadict,dict):
@@ -310,7 +311,7 @@ class FAIRCheck:
                      'schema' : schema,
                      'metadata' : metadict,
                      'namespaces' : namespaces}
-            )
+            )'''
 
     def clean_metadata(self):
         data_objects = self.metadata_merged.get('object_content_identifier')
@@ -427,7 +428,6 @@ class FAIRCheck:
 
     def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
-        #unique_identifier_check.set_metric('FsF-F1-01D', metrics=FAIRCheck.METRICS)
         return unique_identifier_check.getResult()
 
     def check_unique_content_identifier(self):
@@ -448,62 +448,54 @@ class FAIRCheck:
 
     def check_minimal_metatadata(self, include_embedded=True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
-        #core_metadata_check.set_metric('FsF-F2-01M', metrics=FAIRCheck.METRICS)
         return core_metadata_check.getResult()
 
-    def check_content_identifier_included(self):
-        content_included_check = FAIREvaluatorContentIncluded(self)
-        #content_included_check.set_metric('FsF-F3-01M', metrics=self.METRICS)
-        return content_included_check.getResult()
+    def check_data_identifier_included_in_metadata(self):
+        data_identifier_included_check = FAIREvaluatorDataIdentifierIncluded(self)
+        return data_identifier_included_check.getResult()
+
+    def check_metadata_identifier_included_in_metadata(self):
+        metadata_identifier_included_check = FAIREvaluatorMetadataIdentifierIncluded(self)
+        return metadata_identifier_included_check.getResult()
 
     def check_data_access_level(self):
         data_access_level_check = FAIREvaluatorDataAccessLevel(self)
-        data_access_level_check.set_metric('FsF-A1-01M')
         return data_access_level_check.getResult()
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
-        license_check.set_metric('FsF-R1.1-01M')
         return license_check.getResult()
 
     def check_relatedresources(self):
         related_check = FAIREvaluatorRelatedResources(self)
-        related_check.set_metric('FsF-I3-01M')
         return related_check.getResult()
 
     def check_searchable(self):
         searchable_check = FAIREvaluatorSearchable(self)
-        searchable_check.set_metric('FsF-F4-01M')
         return searchable_check.getResult()
 
     def check_data_file_format(self):
         data_file_check = FAIREvaluatorFileFormat(self)
-        data_file_check.set_metric('FsF-R1.3-02D')
         return data_file_check.getResult()
 
     def check_community_metadatastandards(self):
         community_metadata_check = FAIREvaluatorCommunityMetadata(self)
-        community_metadata_check.set_metric('FsF-R1.3-01M')
         return community_metadata_check.getResult()
 
     def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
-        data_prov_check.set_metric('FsF-R1.2-01M')
         return data_prov_check.getResult()
 
     def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
-        data_content_metadata_check.set_metric('FsF-R1-01MD')
         return data_content_metadata_check.getResult()
 
     def check_formal_metadata(self):
         formal_metadata_check = FAIREvaluatorFormalMetadata(self)
-        formal_metadata_check.set_metric('FsF-I1-01M')
         return formal_metadata_check.getResult()
 
     def check_semantic_vocabulary(self):
         semantic_vocabulary_check = FAIREvaluatorSemanticVocabulary(self)
-        semantic_vocabulary_check.set_metric('FsF-I2-01M')
         return semantic_vocabulary_check.getResult()
 
     def check_metadata_preservation(self):
@@ -513,12 +505,10 @@ class FAIRCheck:
 
     def check_standardised_protocol_data(self):
         standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
-        standardised_protocol_check.set_metric('FsF-A1-03D')
         return standardised_protocol_check.getResult()
 
     def check_standardised_protocol_metadata(self):
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
-        standardised_protocol_metadata_check.set_metric('FsF-A1-02M')
         return standardised_protocol_metadata_check.getResult()
 
     def raise_warning_if_javascript_page(self, response_content):
