@@ -83,6 +83,8 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         mime_type = guessed_mime_type[0]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
 
                     if mime_type:
+                        self.logger.info(
+                            'FsF-R1.3-02D : Found mime type in metadata -: ' + str(mime_type))
                         valid_type = True
                         if data_file.get('tika_content_type'):
                             if mime_type not in data_file.get('tika_content_type'):
