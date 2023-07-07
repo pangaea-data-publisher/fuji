@@ -1,6 +1,7 @@
 # LIST OF FARISFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
 config:
   metric_specification: https://doi.org/10.5281/zenodo.4081213
+  metric_status: valid
 metrics:
   ## ---------------- FINDABILITY ---------------- ##
 - metric_identifier: FsF-F1-01D
@@ -63,7 +64,7 @@ metrics:
     2) offering typed links which lead to metadata within the HTML code of the metadata or signposting links.
     3) enable content negotiation and deliver e.g. RDF, JSON-LD or XML on demand.
     The metric evaluates the completeness of metadata in case metadata has been retrieved.
-  test_scoring_mechanism: alternative
+  test_scoring_mechanism: cumulative
   metric_tests:
     - metric_test_identifier: FsF-F2-01M-1
       metric_test_name: Metadata has been made available via common web methods
@@ -85,7 +86,6 @@ metrics:
       metric_test_name: Core data citation metadata is available
       metric_test_score: 0.5
       metric_test_maturity: 2
-      metric_test_config: test
     - metric_test_identifier: FsF-F2-01M-3
       metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
