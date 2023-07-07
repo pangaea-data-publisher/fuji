@@ -7,10 +7,10 @@ import yaml
 from fuji_server.helper.preprocessor import Preprocessor
 
 class MetricHelper:
-    def __init__(self, metric_version, logger=None):
+    def __init__(self, metric_input_file_name, logger=None):
         self.metric_specification = 'https://doi.org/10.5281/zenodo.6461229'
         self.formatted_specification = {}
-        self.metric_file_name = metric_version
+        self.metric_file_name = metric_input_file_name
         self.metric_version = None
         self.total_metrics = 0
         self.all_metrics_list = None
@@ -21,16 +21,20 @@ class MetricHelper:
             self.logger = logger
         else:
             self.logger = logging.getLogger()
-        ym = re.match('(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?', metric_version)
+        ym = re.match('(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?', metric_input_file_name)
         if ym:
+            print(ym.groups())
+            metric_file_name = ''
             self.metric_version = ym[2]
             if ym[3]:
                 self.metric_version = ym[2]+ym[3]
 
-            if not str(metric_version).endswith('.yaml'):
-                metric_file_name = str(metric_version) + '.yaml'
-            if not str(metric_file_name).startswith('metrics_v'):
-                metric_file_name = 'metrics_v'+metric_file_name
+            if not str(metric_input_file_name).endswith('.yaml'):
+                metric_input_file_name = str(metric_input_file_name) + '.yaml'
+            if not str(metric_input_file_name).startswith('metrics_v'):
+                metric_input_file_name = 'metrics_v' + metric_input_file_name
+            if metric_input_file_name:
+                metric_file_name = metric_input_file_name
 
             metric_yml_path  = Preprocessor.METRIC_YML_PATH
 
@@ -71,26 +75,27 @@ class MetricHelper:
 
     def get_custom_metrics(self, wanted_fields):
         new_dict = {}
-        if not self.all_metrics_list:
-            self.retrieve_metrics_yaml(self.METRIC_YML_PATH)
-        for dictm in self.all_metrics_list:
-            tm = re.search(self.metric_regex, str(dictm.get('metric_identifier')))
-            if tm:
-                agnostic_identifier = tm[0]
-                new_dict[agnostic_identifier] = {k: v for k, v in dictm.items() if k in wanted_fields}
-                new_dict[agnostic_identifier]['agnostic_identifier'] = agnostic_identifier
-                new_dict[agnostic_identifier]['metric_identifier'] = dictm.get('metric_identifier')
+        if self.all_metrics_list:
+            for dictm in self.all_metrics_list:
+                tm = re.search(self.metric_regex, str(dictm.get('metric_identifier')))
+                if tm:
+                    agnostic_identifier = tm[0]
+                    new_dict[agnostic_identifier] = {k: v for k, v in dictm.items() if k in wanted_fields}
+                    new_dict[agnostic_identifier]['agnostic_identifier'] = agnostic_identifier
+                    new_dict[agnostic_identifier]['metric_identifier'] = dictm.get('metric_identifier')
 
-                if isinstance(dictm.get('metric_tests'), list):
-                    for dictt in dictm.get('metric_tests'):
-                        ttm = re.search(self.metric_test_regex, str(dictt.get('metric_test_identifier')))
-                        if ttm:
-                            agnostic_test_identifier = ttm[0]
-                            dictt['agnostic_test_identifier'] = agnostic_test_identifier
-                        else:
-                            self.logger.error('Invalid YAML defined Metric Test: ' + str(dictt.get('metric_test_identifier')))
-            else:
-                self.logger.error('Invalid YAML defined Metric: '+str(dictm.get('metric_identifier')))
+                    if isinstance(dictm.get('metric_tests'), list):
+                        for dictt in dictm.get('metric_tests'):
+                            ttm = re.search(self.metric_test_regex, str(dictt.get('metric_test_identifier')))
+                            if ttm:
+                                agnostic_test_identifier = ttm[0]
+                                dictt['agnostic_test_identifier'] = agnostic_test_identifier
+                            else:
+                                self.logger.error('Invalid YAML defined Metric Test: ' + str(dictt.get('metric_test_identifier')))
+                else:
+                    self.logger.error('Invalid YAML defined Metric: '+str(dictm.get('metric_identifier')))
+        else:
+            self.logger.error('No YAML defined Metric seems to exist: ')
         return new_dict
 
     def get_metric_version(self):

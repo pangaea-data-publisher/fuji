@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -15,8 +15,7 @@ class Metrics(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self, total: int = None, metrics: List[Metric] = None):  # noqa: E501
+    def __init__(self, total: int=None, metrics: List[Metric]=None):  # noqa: E501
         """Metrics - a model defined in Swagger
 
         :param total: The total of this Metrics.  # noqa: E501
@@ -24,9 +23,15 @@ class Metrics(Model):
         :param metrics: The metrics of this Metrics.  # noqa: E501
         :type metrics: List[Metric]
         """
-        self.swagger_types = {'total': int, 'metrics': List[Metric]}
+        self.swagger_types = {
+            'total': int,
+            'metrics': List[Metric]
+        }
 
-        self.attribute_map = {'total': 'total', 'metrics': 'metrics'}
+        self.attribute_map = {
+            'total': 'total',
+            'metrics': 'metrics'
+        }
         self._total = total
         self._metrics = metrics
 
