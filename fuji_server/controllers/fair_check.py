@@ -214,6 +214,7 @@ class FAIRCheck:
         print('METRICS CONFIG: ', self.metrics_config)
         allowed_harvesting_methods = self.metrics_config.get('metadata_offering_methods')
         if allowed_harvesting_methods:
+            print('ALLOWED METADATA OFFERING METHODS: ',allowed_harvesting_methods)
             if not isinstance(allowed_harvesting_methods, list):
                 allowed_harvesting_methods = None
             else:
@@ -604,7 +605,8 @@ class FAIRCheck:
                 lambda x: 1 if x.mean() < 1 and x.mean() > 0 else round(x.mean())).to_dict())
         total_maturity = 0
         for fair_index in ['F', 'A', 'I', 'R']:
-            total_maturity += summary['maturity'][fair_index]
+            if summary['maturity'].get(fair_index):
+                total_maturity += summary['maturity'][fair_index]
         summary['maturity']['FAIR'] = round(
             float(1 if total_maturity / 4 < 1 and total_maturity / 4 > 0 else total_maturity / 4), 2)
 
