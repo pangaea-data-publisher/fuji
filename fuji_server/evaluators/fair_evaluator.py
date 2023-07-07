@@ -129,14 +129,16 @@ class FAIREvaluator:
         if all_metric_tests is not None:
             for metric_test in all_metric_tests:
                 evaluation_criterium = FAIRResultEvaluationCriterium()
+                evaluation_criterium.metric_test_score = FAIRResultCommonScore()
                 #evaluation_criterium.metric_test_identifier = metric_test.get('metric_test_identifier')
                 evaluation_criterium.metric_test_status = 'fail'
                 evaluation_criterium.metric_test_name = metric_test.get('metric_test_name')
-                evaluation_criterium.metric_test_score = 0
+                evaluation_criterium.metric_test_score.earned = 0
+                evaluation_criterium.metric_test_score.total = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_score_config = metric_test.get('metric_test_score')
-                evaluation_criterium.metric_test_maturity = None
+                evaluation_criterium.metric_test_maturity = 0
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
-                evaluation_criterium.metric_test_config = metric_test.get('metric_test_config')
+                #evaluation_criterium.metric_test_config = metric_test.get('metric_test_config')
                 if metric_test.get('agnostic_test_identifier'):
                     self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
@@ -159,11 +161,9 @@ class FAIREvaluator:
         """
         evaluation_criterium = self.metric_tests.get(criterium_id)
         if evaluation_criterium is not None:
-            if metric_test_score != evaluation_criterium.metric_test_score_config:
-                evaluation_criterium.metric_test_score = metric_test_score
-            else:
-                if metric_test_status == 'pass':
-                    evaluation_criterium.metric_test_score = evaluation_criterium.metric_test_score_config
+            evaluation_criterium.metric_test_score.earned = metric_test_score
+            if metric_test_status == 'pass':
+                evaluation_criterium.metric_test_score.earned = evaluation_criterium.metric_test_score.total
             evaluation_criterium.metric_test_status = metric_test_status
             if metric_test_status == 'pass':
                 evaluation_criterium.metric_test_maturity = evaluation_criterium.metric_test_maturity_config
@@ -171,7 +171,7 @@ class FAIREvaluator:
 
     def getTestConfigScore(self, criterium_id):
         if self.metric_tests.get(criterium_id):
-             return self.metric_tests[criterium_id].metric_test_score_config
+             return self.metric_tests[criterium_id].metric_test_score.total
         else:
             return False
 
