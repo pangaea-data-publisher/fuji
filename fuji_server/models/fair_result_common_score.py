@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,18 +14,23 @@ class FAIRResultCommonScore(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self, earned: float = 0, total: int = 0):  # noqa: E501
+    def __init__(self, earned: float=0, total: int=0):  # noqa: E501
         """FAIRResultCommonScore - a model defined in Swagger
 
         :param earned: The earned of this FAIRResultCommonScore.  # noqa: E501
-        :type earned: int
+        :type earned: float
         :param total: The total of this FAIRResultCommonScore.  # noqa: E501
         :type total: int
         """
-        self.swagger_types = {'earned': float, 'total': int}
+        self.swagger_types = {
+            'earned': float,
+            'total': int
+        }
 
-        self.attribute_map = {'earned': 'earned', 'total': 'total'}
+        self.attribute_map = {
+            'earned': 'earned',
+            'total': 'total'
+        }
         self._earned = earned
         self._total = total
 

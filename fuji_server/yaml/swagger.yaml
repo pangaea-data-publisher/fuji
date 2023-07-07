@@ -211,7 +211,10 @@ components:
           additionalProperties: true
         resolved_url:
           type: string
-        timestamp:
+        start_timestamp:
+          type: string
+          format: date-time
+        end_timestamp:
           type: string
           format: date-time
         expiry_timestamp:
@@ -441,8 +444,7 @@ components:
         metric_test_name:
           type: string
         metric_test_score:
-          type: number
-          nullable: true
+          $ref: '#/components/schemas/FAIRResultCommon_score'
         metric_test_maturity:
           type: integer
           nullable: true
@@ -459,8 +461,7 @@ components:
           type: number
           default: 0
         total:
-          type: integer
-          format: int32
+          type: number
           default: 0
     Uniqueness_output:
       type: object

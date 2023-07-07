@@ -7,7 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.base_model_ import Model
-#from fuji_server.models.object import Object  # noqa: F401,E501
+#from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -16,7 +16,7 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, test_id: str=None, request: Dict=None, resolved_url: str=None, timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, summary: Dict=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+    def __init__(self, test_id: str=None, request: Dict=None, resolved_url: str=None, start_timestamp: datetime=None, end_timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, summary: Dict=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501
@@ -25,8 +25,10 @@ class FAIRResults(Model):
         :type request: Dict
         :param resolved_url: The resolved_url of this FAIRResults.  # noqa: E501
         :type resolved_url: str
-        :param timestamp: The timestamp of this FAIRResults.  # noqa: E501
-        :type timestamp: datetime
+        :param start_timestamp: The start_timestamp of this FAIRResults.  # noqa: E501
+        :type start_timestamp: datetime
+        :param end_timestamp: The end_timestamp of this FAIRResults.  # noqa: E501
+        :type end_timestamp: datetime
         :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
         :type expiry_timestamp: datetime
         :param metric_specification: The metric_specification of this FAIRResults.  # noqa: E501
@@ -46,7 +48,8 @@ class FAIRResults(Model):
             'test_id': str,
             'request': Dict,
             'resolved_url': str,
-            'timestamp': datetime,
+            'start_timestamp': datetime,
+            'end_timestamp': datetime,
             'expiry_timestamp': datetime,
             'metric_specification': str,
             'metric_version': str,
@@ -60,7 +63,8 @@ class FAIRResults(Model):
             'test_id': 'test_id',
             'request': 'request',
             'resolved_url': 'resolved_url',
-            'timestamp': 'timestamp',
+            'start_timestamp': 'start_timestamp',
+            'end_timestamp': 'end_timestamp',
             'expiry_timestamp': 'expiry_timestamp',
             'metric_specification': 'metric_specification',
             'metric_version': 'metric_version',
@@ -72,7 +76,8 @@ class FAIRResults(Model):
         self._test_id = test_id
         self._request = request
         self._resolved_url = resolved_url
-        self._timestamp = timestamp
+        self._start_timestamp = start_timestamp
+        self._end_timestamp = end_timestamp
         self._expiry_timestamp = expiry_timestamp
         self._metric_specification = metric_specification
         self._metric_version = metric_version
@@ -156,25 +161,46 @@ class FAIRResults(Model):
         self._resolved_url = resolved_url
 
     @property
-    def timestamp(self) -> datetime:
-        """Gets the timestamp of this FAIRResults.
+    def start_timestamp(self) -> datetime:
+        """Gets the start_timestamp of this FAIRResults.
 
 
-        :return: The timestamp of this FAIRResults.
+        :return: The start_timestamp of this FAIRResults.
         :rtype: datetime
         """
-        return self._timestamp
+        return self._start_timestamp
 
-    @timestamp.setter
-    def timestamp(self, timestamp: datetime):
-        """Sets the timestamp of this FAIRResults.
+    @start_timestamp.setter
+    def start_timestamp(self, start_timestamp: datetime):
+        """Sets the start_timestamp of this FAIRResults.
 
 
-        :param timestamp: The timestamp of this FAIRResults.
-        :type timestamp: datetime
+        :param start_timestamp: The start_timestamp of this FAIRResults.
+        :type start_timestamp: datetime
         """
 
-        self._timestamp = timestamp
+        self._start_timestamp = start_timestamp
+
+    @property
+    def end_timestamp(self) -> datetime:
+        """Gets the end_timestamp of this FAIRResults.
+
+
+        :return: The end_timestamp of this FAIRResults.
+        :rtype: datetime
+        """
+        return self._end_timestamp
+
+    @end_timestamp.setter
+    def end_timestamp(self, end_timestamp: datetime):
+        """Sets the end_timestamp of this FAIRResults.
+
+
+        :param end_timestamp: The end_timestamp of this FAIRResults.
+        :type end_timestamp: datetime
+        """
+
+        self._end_timestamp = end_timestamp
 
     @property
     def expiry_timestamp(self) -> datetime:

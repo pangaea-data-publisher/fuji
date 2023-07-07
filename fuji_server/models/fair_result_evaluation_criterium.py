@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -14,18 +15,13 @@ class FAIRResultEvaluationCriterium(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 metric_test_name: str = None,
-                 metric_test_score: float = None,
-                 metric_test_maturity: int = None,
-                 metric_test_status: str = 'fail'):  # noqa: E501
+    def __init__(self, metric_test_name: str=None, metric_test_score: FAIRResultCommonScore=None, metric_test_maturity: int=None, metric_test_status: str='fail'):  # noqa: E501
         """FAIRResultEvaluationCriterium - a model defined in Swagger
 
         :param metric_test_name: The metric_test_name of this FAIRResultEvaluationCriterium.  # noqa: E501
         :type metric_test_name: str
         :param metric_test_score: The metric_test_score of this FAIRResultEvaluationCriterium.  # noqa: E501
-        :type metric_test_score: float
+        :type metric_test_score: FAIRResultCommonScore
         :param metric_test_maturity: The metric_test_maturity of this FAIRResultEvaluationCriterium.  # noqa: E501
         :type metric_test_maturity: int
         :param metric_test_status: The metric_test_status of this FAIRResultEvaluationCriterium.  # noqa: E501
@@ -33,7 +29,7 @@ class FAIRResultEvaluationCriterium(Model):
         """
         self.swagger_types = {
             'metric_test_name': str,
-            'metric_test_score': float,
+            'metric_test_score': FAIRResultCommonScore,
             'metric_test_maturity': int,
             'metric_test_status': str
         }
@@ -82,22 +78,22 @@ class FAIRResultEvaluationCriterium(Model):
         self._metric_test_name = metric_test_name
 
     @property
-    def metric_test_score(self) -> float:
+    def metric_test_score(self) -> FAIRResultCommonScore:
         """Gets the metric_test_score of this FAIRResultEvaluationCriterium.
 
 
         :return: The metric_test_score of this FAIRResultEvaluationCriterium.
-        :rtype: float
+        :rtype: FAIRResultCommonScore
         """
         return self._metric_test_score
 
     @metric_test_score.setter
-    def metric_test_score(self, metric_test_score: float):
+    def metric_test_score(self, metric_test_score: FAIRResultCommonScore):
         """Sets the metric_test_score of this FAIRResultEvaluationCriterium.
 
 
         :param metric_test_score: The metric_test_score of this FAIRResultEvaluationCriterium.
-        :type metric_test_score: float
+        :type metric_test_score: FAIRResultCommonScore
         """
 
         self._metric_test_score = metric_test_score
@@ -141,9 +137,11 @@ class FAIRResultEvaluationCriterium(Model):
         :param metric_test_status: The metric_test_status of this FAIRResultEvaluationCriterium.
         :type metric_test_status: str
         """
-        allowed_values = ['pass', 'fail']  # noqa: E501
+        allowed_values = ["pass", "fail"]  # noqa: E501
         if metric_test_status not in allowed_values:
-            raise ValueError('Invalid value for `metric_test_status` ({0}), must be one of {1}'.format(
-                metric_test_status, allowed_values))
+            raise ValueError(
+                "Invalid value for `metric_test_status` ({0}), must be one of {1}"
+                .format(metric_test_status, allowed_values)
+            )
 
         self._metric_test_status = metric_test_status

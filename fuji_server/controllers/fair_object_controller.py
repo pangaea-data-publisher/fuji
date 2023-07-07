@@ -68,6 +68,8 @@ def assess_by_id(body):  # noqa: E501
         logger = Preprocessor.logger
         logger.info('Assessment target: ' + identifier)
         print('Assessment target: ', identifier, flush=True)
+        starttimestmp = datetime.datetime.now().replace(
+            microsecond=0).isoformat() + 'Z'
         ft = FAIRCheck(uid=identifier,
                        test_debug=debug,
                        metadata_service_url=metadata_service_endpoint,
@@ -177,8 +179,8 @@ def assess_by_id(body):  # noqa: E501
                 debug_messages = {}
         if len(ft.logger.handlers) > 1:
             ft.logger.handlers = [ft.logger.handlers[-1]]
-        #timestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
-        timestmp = datetime.datetime.now().replace(
+        #endtimestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
+        endtimestmp = datetime.datetime.now().replace(
             microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
         metric_spec = ft.metric_helper.metric_specification
         resolved_url = ft.landing_url
@@ -192,7 +194,8 @@ def assess_by_id(body):  # noqa: E501
             idhelper = IdentifierHelper(ft.pid_url)
             request['normalized_object_identifier'] = idhelper.get_normalized_id()
         final_response = FAIRResults(request=request,
-                                     timestamp=timestmp,
+                                     start_timestamp= starttimestmp,
+                                     end_timestamp=endtimestmp,
                                      software_version=ft.FUJI_VERSION,
                                      test_id=ft.test_id,
                                      metric_version=metric_version,
