@@ -100,9 +100,9 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
 
     def testCoreCitationMetadataAvailable(self):
+        test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            test_status = False
             if set(self.partial_elements).issubset(self.metadata_found):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
