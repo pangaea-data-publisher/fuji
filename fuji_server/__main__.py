@@ -43,9 +43,8 @@ def main():
     YAML_DIR = config['SERVICE']['yaml_directory']
     #METRIC_YAML = config['SERVICE']['metrics_yaml']
     #YAML_DIR = os.path.join(my_path, config['SERVICE']['yaml_directory'])
-    METRIC_YAML = config['SERVICE']['metrics_yaml']
-    METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR, METRIC_YAML)
-    print('YAML PATH',  ROOT_DIR,YAML_DIR,METRIC_YAML)
+    METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR)
+    print('YAML PATH',  METRIC_YML_PATH)
     SPDX_URL = config['EXTERNAL']['spdx_license_github']
     DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = config['EXTERNAL']['re3data_api']
@@ -55,7 +54,6 @@ def main():
     #BIOPORTAL_REST = config['EXTERNAL']['bioportal_rest']
     #BIOPORTAL_APIKEY = config['EXTERNAL']['bioportal_apikey']
     data_files_limit = int(config['SERVICE']['data_files_limit'])
-    metric_specification = config['SERVICE']['metric_specification']
 
     preproc = Preprocessor()
     #preproc.retrieve_metrics_yaml(METRIC_YML_PATH,  metric_specification)
