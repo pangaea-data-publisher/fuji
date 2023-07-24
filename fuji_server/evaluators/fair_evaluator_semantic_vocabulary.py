@@ -66,8 +66,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         lov_helper = linked_vocab_helper(self.fuji.LINKED_VOCAB_INDEX)
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
+            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             if self.fuji.namespace_uri:
-                test_score = self.getTestConfigScore(self.metric_identifier + '-2')
                 self.logger.info('{0} : Check if the remaining namespace(s) exist(s) in a LOD registry -: {1}'.format(
                     self.metric_identifier, self.fuji.namespace_uri))
                 lod_namespaces = [d['namespace'].strip().rstrip('/#') for d in self.fuji.VOCAB_NAMESPACES if
@@ -77,20 +77,20 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     lov_entry = lov_helper.get_linked_vocab_by_iri(ns_uri, isnamespaceIRI=True)
                     if lov_entry and ns_uri not in self.knownnamespaceuris:
                         self.knownnamespaceuris.append(ns_uri)
-                if self.fuji.linked_namespace_uri:
-                    self.logger.info(
-                        '{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
-                            self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
-                    for linked_ns, linked_ns_data in self.fuji.linked_namespace_uri.items():
-                        linked_ns = linked_ns.strip().rstrip('/#')
-                        if linked_ns not in self.knownnamespaceuris:
-                            linked_exclude = False
-                            for i in self.fuji.DEFAULT_NAMESPACES:
-                                if linked_ns.startswith(i):
-                                    linked_exclude = True
-                                    break
-                            if not linked_exclude:
-                                self.knownnamespaceuris.append(linked_ns)
+            if self.fuji.linked_namespace_uri:
+                self.logger.info(
+                    '{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
+                        self.metric_identifier, self.fuji.linked_namespace_uri.keys()))
+                for linked_ns, linked_ns_data in self.fuji.linked_namespace_uri.items():
+                    linked_ns = linked_ns.strip().rstrip('/#')
+                    if linked_ns not in self.knownnamespaceuris:
+                        linked_exclude = False
+                        for i in self.fuji.DEFAULT_NAMESPACES:
+                            if linked_ns.startswith(i):
+                                linked_exclude = True
+                                break
+                        if not linked_exclude:
+                            self.knownnamespaceuris.append(linked_ns)
             else:
                 self.logger.info(
                     '{0} : Skipping namespace lookup in LOD registry list since no namespaces available'.format(
