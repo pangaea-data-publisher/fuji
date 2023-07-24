@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import mimetypes
+import time
 
 import yaml
 import json
@@ -232,8 +233,15 @@ class Preprocessor(object):
     @classmethod
     def retrieve_datacite_re3repos(cls):
         # retrieve all client id and re3data doi from datacite
-        isDebugMode=False
+        isDebugMode=True
         re3dict_path = os.path.join(cls.fuji_server_dir, 'data', 'repodois.json')
+        repolistdate = os.path.getmtime(re3dict_path)
+        try:
+            #update once a day
+            if time.time() - repolistdate >= 86400:
+                isDebugMode = False
+        except:
+            pass
         if isDebugMode:
             with open(re3dict_path) as f:
                 cls.re3repositories = json.load(f)
