@@ -45,10 +45,11 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
     """
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
+        print(self.fuji.metric_helper.get_metric_version())
         if self.fuji.metric_helper.get_metric_version()  != '0.5':
-            metric = 'FsF-F1-01D'
-        else:
             metric = 'FsF-F1-01M'
+        else:
+            metric = 'FsF-F1-01D'
             #after 0.5 seperate metrics for metadata and data
         self.set_metric(metric)
 
