@@ -96,7 +96,7 @@ class FAIREvaluator:
             self.score = FAIRResultCommonScore(total=self.total_score)
             self.metric_name = self.metrics.get(metric_identifier).get('metric_name')
             self.metric_number = self.metrics.get(metric_identifier).get('metric_number')
-            self.initializeEvaluationCriteria()
+            self.initializeMetricTests()
 
     def evaluate(self):
         """To be implemented (override) in the child class"""
@@ -109,8 +109,10 @@ class FAIREvaluator:
             self.evaluate()
 
         if self.result:
-            self.result.metric_identifier = self.metrics.get(self.result.metric_identifier).get('metric_identifier')
-            return self.result.to_dict()
+            #self.result.metric_identifier = self.metrics.get(self.result.metric_identifier).get('metric_identifier')
+            res_dict = self.result.to_dict()
+            #res_dict['agnostic_metric_identifier'] = self.agnostic_identifier
+            return res_dict
         else:
             return {}
 
@@ -119,12 +121,13 @@ class FAIREvaluator:
         if testid  in self.metric_tests:
             return True
         else:
-            self.logger.warning(
-                self.metric_identifier+' : This test is not defined in the metric YAML -: '+ str(testid))
+            self.logger.info(
+                self.metric_identifier+' : This test is not defined in the metric YAML and therefore not performed -: '+ str(testid))
             return False
 
-    def initializeEvaluationCriteria(self):
-        """Initialize the evaluation criteria."""
+
+    def initializeMetricTests(self):
+        """Initialize the evaluation criteria. aka metric tests"""
         all_metric_tests = self.metrics.get(self.metric_identifier).get('metric_tests')
         if all_metric_tests is not None:
             for metric_test in all_metric_tests:
@@ -138,7 +141,8 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_score_config = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_maturity = 0
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
-                #evaluation_criterium.metric_test_config = metric_test.get('metric_test_config')
+                evaluation_criterium.community_requirements = metric_test.get('community_requirements')
+                print('REQ: ',evaluation_criterium.community_requirements)
                 if metric_test.get('agnostic_test_identifier'):
                     self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
