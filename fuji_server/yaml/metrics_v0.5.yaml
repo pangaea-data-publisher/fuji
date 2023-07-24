@@ -180,6 +180,7 @@ metrics:
   fair_principle: A1
   target: Data
   evaluation_mechanism: The data link which is given in the metadata is tested for an standard communication protocol
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-A1-03D-1
       metric_test_name: Metadata includes a resolvable link to data based on standardized web communication protocols.
@@ -199,6 +200,7 @@ metrics:
   fair_principle: A1
   target: Metadata
   evaluation_mechanism: The URI scheme of the landing page is tested for a standard communication protocol
+  test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-A1-02M-1
       metric_test_name: Landing page link is based on standardized web communication protocols.
