@@ -42,7 +42,7 @@ class Preprocessor(object):
     total_metrics = 0
     total_licenses = 0
     METRIC_YML_PATH = None
-    SPDX_URL = None
+    SPDX_URL = 'https://raw.github.com/spdx/license-list-data/master/json/licenses.json'
     DATACITE_API_REPO = 'https://api.datacite.org/repositories'
     RE3DATA_API = 'https://re3data.org/api/beta/repositories'
     LOV_API = None
@@ -230,10 +230,8 @@ class Preprocessor(object):
         cls.formatted_specification['metrics'] = cls.all_metrics_list
 
     @classmethod
-    def retrieve_datacite_re3repos(cls, re3_endpoint, datacite_endpoint, isDebugMode):
+    def retrieve_datacite_re3repos(cls):
         # retrieve all client id and re3data doi from datacite
-        cls.DATACITE_API_REPO = datacite_endpoint
-        cls.RE3DATA_API = re3_endpoint
         isDebugMode=False
         re3dict_path = os.path.join(cls.fuji_server_dir, 'data', 'repodois.json')
         if isDebugMode:
@@ -243,7 +241,7 @@ class Preprocessor(object):
             print('updating re3data dois')
             p = {'query': 're3data_id:*'}
             try:
-                req = requests.get(datacite_endpoint, params=p, headers=cls.header)
+                req = requests.get(cls.DATACITE_API_REPO, params=p, headers=cls.header)
                 raw = req.json()
                 for r in raw['data']:
                     cls.re3repositories[r['id']] = r['attributes']['re3data']
@@ -261,7 +259,7 @@ class Preprocessor(object):
                 cls.logger.error(e)
 
     @classmethod
-    def retrieve_licenses(cls, license_path, isDebugMode):
+    def retrieve_licenses(cls, isDebugMode):
         data = None
         jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'licenses.json')
         # The repository can be found at https://github.com/spdx/license-list-data
@@ -270,7 +268,7 @@ class Preprocessor(object):
             with open(jsn_path) as f:
                 data = json.load(f)
         else:
-            cls.SPDX_URL = license_path
+            #cls.SPDX_URL = license_path
             try:
                 r = requests.get(cls.SPDX_URL)
                 try:
@@ -306,7 +304,7 @@ class Preprocessor(object):
             # seeAlso = [s['seeAlso'] for s in data if 'seeAlso' in s]
             # cls.license_urls = dict(zip(referenceNumber, seeAlso))
     @classmethod
-    def retrieve_metadata_standards_uris(cls, isDebugMode):
+    def retrieve_metadata_standards_uris(cls):
         data = {}
         std_uri_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards_uris.json')
         with open(std_uri_path) as f:
@@ -315,16 +313,17 @@ class Preprocessor(object):
             cls.metadata_standards_uris = data
 
     @classmethod
-    def retrieve_metadata_standards(cls, catalog_url, isDebugMode):
-        cls.retrieve_metadata_standards_uris(isDebugMode)
+    def retrieve_metadata_standards(cls):
+        cls.retrieve_metadata_standards_uris()
         data = {}
         std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
         # The repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
         # or at https://github.com/rd-alliance/metadata-catalog-dev
+        isDebugMode = False
         if isDebugMode:  # use local file instead of downloading the file online
             with open(std_path) as f:
                 data = json.load(f)
-        else:
+        '''else:
             try:
                 r = requests.get(catalog_url)
                 try:
@@ -354,7 +353,7 @@ class Preprocessor(object):
                 except json.decoder.JSONDecodeError as e1:
                     cls.logger.error(e1)
             except requests.exceptions.RequestException as e2:
-                cls.logger.error(e2)
+                cls.logger.error(e2)'''
         if data:
             cls.metadata_standards = data
 
@@ -549,7 +548,7 @@ class Preprocessor(object):
     @classmethod
     def getRE3repositories(cls):
         if not cls.re3repositories:
-            cls.retrieve_datacite_re3repos(cls.RE3DATA_API, cls.DATACITE_API_REPO, True)
+            cls.retrieve_datacite_re3repos()
         return cls.re3repositories
 
     @classmethod

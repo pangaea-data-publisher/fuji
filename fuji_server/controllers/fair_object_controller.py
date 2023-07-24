@@ -66,6 +66,9 @@ def assess_by_id(body):  # noqa: E501
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
+        #updating re3data
+        Preprocessor.retrieve_datacite_re3repos()
+
         logger.info('Assessment target: ' + identifier)
         print('Assessment target: ', identifier, flush=True)
         starttimestmp = datetime.datetime.now().replace(

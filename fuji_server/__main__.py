@@ -45,10 +45,10 @@ def main():
     #YAML_DIR = os.path.join(my_path, config['SERVICE']['yaml_directory'])
     METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR)
     print('YAML PATH',  METRIC_YML_PATH)
-    SPDX_URL = config['EXTERNAL']['spdx_license_github']
+    '''SPDX_URL = config['EXTERNAL']['spdx_license_github']
     DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = config['EXTERNAL']['re3data_api']
-    METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']
+    METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']'''
     LOV_API = config['EXTERNAL']['lov_api']
     LOD_CLOUDNET = config['EXTERNAL']['lod_cloudnet']
     #BIOPORTAL_REST = config['EXTERNAL']['bioportal_rest']
@@ -62,9 +62,9 @@ def main():
     #logger.info('Total metrics defined: {}'.format(preproc.get_total_metrics()))
 
     isDebug = config.getboolean('SERVICE', 'debug_mode')
-    preproc.retrieve_licenses(SPDX_URL, isDebug)
-    preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
-    preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
+    preproc.retrieve_licenses(isDebug)
+    preproc.retrieve_datacite_re3repos()
+    preproc.retrieve_metadata_standards()
     #preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
     preproc.set_remote_log_info(config['SERVICE'].get('remote_log_host'), config['SERVICE'].get('remote_log_path'))
