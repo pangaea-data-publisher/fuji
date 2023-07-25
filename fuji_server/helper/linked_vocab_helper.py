@@ -39,7 +39,6 @@ class linked_vocab_helper:
     def split_iri(self, iri):
         ret = {}
         domainparts = extract(iri)
-        urlparts = urlparse(iri)
         if domainparts.suffix:
             ret['domain'] = domainparts.domain + '.' + domainparts.suffix
             if domainparts.domain:
@@ -118,31 +117,35 @@ class linked_vocab_helper:
         if self.linked_vocab_index.get(iri_domain):
             if self.linked_vocab_index[iri_domain].get(iri_parts.get('subdomain')):
                 for reg_res in self.linked_vocab_index[iri_domain][iri_parts.get('subdomain')]:
-                    # print(reg_res.get('pattern').replace('$1',''), iri_parts.get('path'))
-                    if reg_res.get('pattern'):
-                        pattern_check = False
-                        if isnamespaceIRI:
-                            #print(reg_res.get('pattern').split('$1')[0].rstrip('/#') , iri_parts.get('path').rstrip('/#'))
-                            if reg_res.get('pattern').split('$1')[0].rstrip('/#') in iri_parts.get('path').rstrip('/#'):
-                                pattern_check = True
-                        else:
-                            if reg_res.get('pattern').split('$1')[0] in iri_parts.get('path'):
-                                pattern_check = True
-                        if pattern_check:
-                            if reg_res.get('regex'):
-                                comb_regex = reg_res.get('regex').lstrip('^').rstrip('$')
+                    # full match
+                    if reg_res.get('namespace') == IRI:
+                        onto_match.append({'score': len(iri_parts.get('path')), 'match': reg_res})
+                    else:
+                        # print(reg_res.get('pattern').replace('$1',''), iri_parts.get('path'))
+                        if reg_res.get('pattern'):
+                            pattern_check = False
+                            if isnamespaceIRI:
+                                #print(reg_res.get('pattern').split('$1')[0].rstrip('/#') , iri_parts.get('path').rstrip('/#'))
+                                if reg_res.get('pattern').split('$1')[0].rstrip('/#') in iri_parts.get('path').rstrip('/#'):
+                                    pattern_check = True
                             else:
-                                comb_regex = reg_res.get('pattern').split('$1')[0].rstrip('/#')
-                            if comb_regex not in tested_patterns:
-                                tested_patterns.append(comb_regex)
-                                comb_match = re.search(comb_regex, iri_parts.get('path'))
-                                score = self.get_overlap(iri_parts.get('path'), reg_res.get('pattern').split('$1')[0])
-                            if comb_match:
-                                #if len(comb_match.groups()) > 0:
-                                #    if comb_match[1]:
-                                #        print('++++++',comb_match[1],reg_res.get('namespace'))
-                                #        reg_res['namespace'] = IRI.split(comb_match[1])[0] + comb_match[1]
-                                onto_match.append({'score': score, 'match': reg_res})
+                                if reg_res.get('pattern').split('$1')[0] in iri_parts.get('path'):
+                                    pattern_check = True
+                            if pattern_check:
+                                if reg_res.get('regex'):
+                                    comb_regex = reg_res.get('regex').lstrip('^').rstrip('$')
+                                else:
+                                    comb_regex = reg_res.get('pattern').split('$1')[0].rstrip('/#')
+                                if comb_regex not in tested_patterns:
+                                    tested_patterns.append(comb_regex)
+                                    comb_match = re.search(comb_regex, iri_parts.get('path'))
+                                    score = self.get_overlap(iri_parts.get('path'), reg_res.get('pattern').split('$1')[0])
+                                if comb_match:
+                                    #if len(comb_match.groups()) > 0:
+                                    #    if comb_match[1]:
+                                    #        print('++++++',comb_match[1],reg_res.get('namespace'))
+                                    #        reg_res['namespace'] = IRI.split(comb_match[1])[0] + comb_match[1]
+                                    onto_match.append({'score': score, 'match': reg_res})
             maxscore = 0
             if onto_match:
                 for ont_m in onto_match:
