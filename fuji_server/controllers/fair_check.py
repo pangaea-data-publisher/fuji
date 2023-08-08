@@ -87,10 +87,10 @@ class FAIRCheck:
     METRIC_VERSION = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
-    COMMUNITY_STANDARDS_NAMES = None
+    COMMUNITY_METADATA_STANDARDS_NAMES = None
     COMMUNITY_METADATA_STANDARDS_URIS = None
     COMMUNITY_METADATA_STANDARDS_URIS_LIST = None
-    COMMUNITY_STANDARDS = None
+    COMMUNITY_METADATA_STANDARDS = None
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
@@ -107,7 +107,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '2.3.0'
+    FUJI_VERSION = '3.0.0'
 
     def __init__(self,
                  uid,
@@ -232,12 +232,13 @@ class FAIRCheck:
         if not cls.SPDX_LICENSES:
             # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
-        if not cls.COMMUNITY_METADATA_STANDARDS_URIS:
+        '''if not cls.COMMUNITY_METADATA_STANDARDS_URIS:
             cls.COMMUNITY_METADATA_STANDARDS_URIS = Preprocessor.get_metadata_standards_uris()
-            cls.COMMUNITY_METADATA_STANDARDS_URIS_LIST = list(cls.COMMUNITY_METADATA_STANDARDS_URIS.keys())
-        if not cls.COMMUNITY_STANDARDS:
-            cls.COMMUNITY_STANDARDS = Preprocessor.get_metadata_standards()
-            cls.COMMUNITY_STANDARDS_NAMES = list(cls.COMMUNITY_STANDARDS.keys())
+            cls.COMMUNITY_METADATA_STANDARDS_URIS_LIST = list(cls.COMMUNITY_METADATA_STANDARDS_URIS.keys())'''
+        if not cls.COMMUNITY_METADATA_STANDARDS:
+            cls.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
+            cls.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in cls.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
+            cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}
         if not cls.SCIENCE_FILE_FORMATS:
             cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         if not cls.LONG_TERM_FILE_FORMATS:
@@ -411,20 +412,30 @@ class FAIRCheck:
     def lookup_metadatastandard_by_name(self, value):
         found = None
         # get standard name with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
+        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
         if highest[1] > 80:
-            found = highest[0]
+            found = highest[2]
         return found
 
     def lookup_metadatastandard_by_uri(self, value):
         found = None
-        # get standard uri with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value,
-                                     FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS_LIST,
-                                     scorer=fuzz.token_sort_ratio)
-        if highest:
-            if highest[1] > 90:
-                found = highest[0]
+        if value:
+            value = str(value).strip().strip('#/')
+            # try to find it as direct match using http or https as prefix
+            if value.startswith('http') or value.startswith('ftp'):
+                value = value.replace('s://', '://')
+                found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value)
+                if not found:
+                    found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value.replace('://', 's://'))
+            if not found:
+                #fuzzy as fall back
+                try:
+                    match = process.extractOne(value,
+                                               FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.keys())
+                    if match[1] > 90:
+                        found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
+                except Exception as e:
+                    pass
         return found
 
     def check_unique_metadata_identifier(self):
@@ -578,7 +589,6 @@ class FAIRCheck:
                         summary_dict['maturity'].append(earned_maturity)
                         summary_dict['status'].append(status_dict.get(res_v['test_status']))
                     summary_dict['score_total'].append(res_v['score']['total'])
-
         sf = pd.DataFrame(summary_dict)
         summary = {'score_earned': {}, 'score_total': {}, 'score_percent': {}, 'status_total': {}, 'status_passed': {}}
 
