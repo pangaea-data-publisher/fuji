@@ -51,6 +51,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         self.set_metric('FsF-R1.3-01M')
         self.community_standards_output = []
         self.found_metadata_standards = []
+        self.valid_metadata_standards = []
 
     def validate_service_url(self):
         # checks if service url and landing page url have same domain in order to avoid manipulations
@@ -82,9 +83,8 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                         if sinfo.get('name') not in nsstandards:
                             nsstandards.append(sinfo.get('name'))
         if nsstandards:
-            self.logger.log(
-                self.fuji.LOG_SUCCESS,
-                '{} : Found disciplinary standards that are given as namespaces -: {}'.format(
+            self.logger.info(
+                '{} : Found metadata standards that are given as namespaces -: {}'.format(
                     'FsF-R1.3-01M', str(set(nsstandards))))
 
     def retrieve_metadata_standards_from_sparql(self):
@@ -108,7 +108,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 if stds:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
-                        '{} : Found disciplinary standards that are listed in SPARQL endpoint -: {}'.format(
+                        '{} : Found metadata standards that are listed in SPARQL endpoint -: {}'.format(
                             'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid SPARQL endpoint'.format('FsF-R1.3-01M'))
@@ -132,9 +132,8 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             if sinfo.get('type') == 'disciplinary':
                                 stds.append(sinfo.get('name'))
                 if stds:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        '{} : Found disciplinary standards that are listed in OGC CSW endpoint -: {}'.format(
+                    self.logger.info(
+                        '{} : Found metadata standards that are listed in OGC CSW endpoint -: {}'.format(
                             'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid OGC CSW endpoint'.format('FsF-R1.3-01M'))
@@ -158,9 +157,8 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             if sinfo.get('type') == 'disciplinary':
                                 stds.append(sinfo.get('name'))
                 if stds:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        '{} : Found disciplinary standards that are listed in OAI-PMH endpoint -: {}'.format(
+                    self.logger.info(
+                        '{} : Found metadata standards that are listed in OAI-PMH endpoint -: {}'.format(
                             'FsF-R1.3-01M', str(stds)))
             else:
                 self.logger.info('{} : Invalid endpoint'.format('FsF-R1.3-01M'))
@@ -183,6 +181,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     stds = []
                     for sturi in repoHelper.getRe3MetadataStandards():
                         sinfo = self.get_metadata_standards_info(sturi, 're3data')
+                        print('OAI URI ', sturi, sinfo)
                         if sinfo:
                             self.found_metadata_standards.append(sinfo)
                             if sinfo.get('name') not in stds:
@@ -213,14 +212,37 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 '{} : Skipped external ressources (e.g. OAI, re3data) checks since landing page could not be resolved'.
                 format('FsF-R1.3-01M'))
 
+    def filter_community_metadata_standards(self, testid, found_metadata_standards):
+        community_requirements = self.metric_tests[self.metric_identifier + str(testid)].community_requirements
+        if community_requirements:
+            community_standards = []
+            if community_requirements.get('required'):
+                self.logger.info(
+                    '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
+                        self.metric_identifier, str(testid), community_requirements.get('required')))
+                for rq_mstandard_id in list(community_requirements.get('required')):
+                    for kn_mstandard in self.found_metadata_standards:
+                        #check if internal or external identifiers (RDA, fairsharing) are listed
+                        if rq_mstandard_id in  kn_mstandard.get('external_ids') or rq_mstandard_id == kn_mstandard.get('id'):
+                            community_standards.append(kn_mstandard.get('id'))
+                if len(community_standards) > 0:
+                    self.logger.info(
+                        '{0} : Identifiers of community specific metadata standards found -: {1}'.format(
+                            self.metric_identifier, community_standards))
+                found_metadata_standards = [x for x in found_metadata_standards if x.get('id') in community_standards]
+        return found_metadata_standards
+
     def testMultidisciplinarybutCommunityEndorsedMetadataDetected(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-3'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
             generic_found = False
-            for found_standard in self.found_metadata_standards:
+            found_metadata_standards = self.filter_community_metadata_standards('-3', self.found_metadata_standards)
+            for found_standard in found_metadata_standards:
                 if found_standard.get('type')=='generic':
                     generic_found = True
+                    if found_standard not in self.valid_metadata_standards:
+                        self.valid_metadata_standards.append(found_standard)
             if generic_found:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
@@ -235,9 +257,12 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             specific_found = False
-            for found_standard in self.found_metadata_standards:
+            found_metadata_standards = self.filter_community_metadata_standards('-2', self.found_metadata_standards)
+            for found_standard in found_metadata_standards:
                 if found_standard.get('type') == 'disciplinary' and found_standard.get('source') == 're3data':
                     specific_found = True
+                    if found_standard not in self.valid_metadata_standards:
+                        self.valid_metadata_standards.append(found_standard)
             if specific_found:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
@@ -254,9 +279,12 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-1'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             specific_found = False
-            for found_standard in self.found_metadata_standards:
+            found_metadata_standards = self.filter_community_metadata_standards('-1', self.found_metadata_standards)
+            for found_standard in found_metadata_standards:
                 if found_standard.get('type') == 'disciplinary' and found_standard.get('source') != 're3data':
                     specific_found = True
+                    if found_standard not in self.valid_metadata_standards:
+                        self.valid_metadata_standards.append(found_standard)
             if specific_found:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
@@ -271,8 +299,12 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         standard_found = self.fuji.lookup_metadatastandard_by_uri(uri)
         type = None
         if standard_found:
-            subject = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(standard_found).get('field_of_science')
-            std_name = self.fuji.COMMUNITY_METADATA_STANDARDS_URIS.get(standard_found).get('title')
+            subject = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('field_of_science')
+            std_name = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('title')
+            std_acronym = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('acronym')
+            std_id = standard_found
+            #external ids
+            std_ids = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('identifier')
             if subject:
                 if subject == ['sciences'] or all(elem == 'Multidisciplinary' for elem in subject):
                     self.logger.info(
@@ -283,7 +315,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     self.logger.info(
                         'FsF-R1.3-01M : Found disciplinary standard -: via {} : {} - {}'.format(str(source),std_name, uri))
                     type = 'disciplinary'
-            return {'subject': subject, 'name': std_name, 'type':type, 'source':source, 'uri':uri}
+            return {'id':std_id,'subject': subject, 'name': std_name, 'acronym':std_acronym,'external_ids': std_ids, 'type':type, 'source':source, 'uri':uri}
         else:
             return {}
 
@@ -305,7 +337,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.result.test_status = 'pass'
         if self.testCommunitySpecificMetadataDetectedviaNamespaces():
             self.result.test_status = 'pass'
-        for found_standard in self.found_metadata_standards:
+        for found_standard in self.valid_metadata_standards:
             out = CommunityEndorsedStandardOutputInner()
             out.metadata_standard = found_standard.get('name')  # use here original standard uri detected
             out.subject_areas = found_standard.get('subject')

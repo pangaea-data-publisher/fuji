@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import fnmatch
 import re
 import urllib.parse
 
@@ -67,16 +68,16 @@ class FAIREvaluatorLicense(FAIREvaluator):
                     iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
                     if iscc:
                         l = generic_cc
-                    spdx_uri, spdx_osi = self.lookup_license_by_url(l, self.metric_identifier)
+                    spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(l, self.metric_identifier)
                 else:  # maybe licence name
-                    spdx_uri, spdx_osi = self.lookup_license_by_name(l, self.metric_identifier)
+                    spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(l, self.metric_identifier)
                 license_output.license = l
                 if spdx_uri:
                     licence_valid = True
                 license_output.details_url = spdx_uri
                 license_output.osi_approved = spdx_osi
                 self.output.append((license_output))
-                self.license_info.append({'license':l, 'spdx_uri':spdx_uri , 'osi_approved':spdx_osi, 'valid':licence_valid})
+                self.license_info.append({'license':l, 'id': spdx_id, 'is_url': isurl, 'spdx_uri':spdx_uri , 'osi_approved':spdx_osi, 'valid':licence_valid})
                 if not spdx_uri:
                     self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
                         self.metric_identifier))
@@ -114,9 +115,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
             iscc, generic_cc = self.isCreativeCommonsLicense(value, metric_id)
             if iscc:
                 l = generic_cc
-            spdx_html, spdx_osi = self.lookup_license_by_url(value, metric_id)
+            spdx_html, spdx_osi, spdx_id = self.lookup_license_by_url(value, metric_id)
         else:
-            spdx_html, spdx_osi = self.lookup_license_by_name(value, metric_id)
+            spdx_html, spdx_osi, spdx_id = self.lookup_license_by_name(value, metric_id)
         if spdx_html or spdx_osi:
             islicense = True
         return islicense
@@ -125,6 +126,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.logger.info('{0} : Verify URL through SPDX registry -: {1}'.format(metric_id, u))
         html_url = None
         isOsiApproved = False
+        id = None
         ul = None
         if 'spdx.org/licenses' in u:
             ul = u.split('/')[-1]
@@ -138,13 +140,15 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
                 html_url = item['detailsUrl'].replace('.json', '.html')
                 isOsiApproved = item['isOsiApproved']
+                id = item['licenseId']
                 break
-        return html_url, isOsiApproved
+        return html_url, isOsiApproved, id
 
     def lookup_license_by_name(self, lvalue, metric_id):
         # TODO - find simpler way to run fuzzy-based search over dict/json (e.g., regex)
         html_url = None
         isOsiApproved = False
+        id = None
         self.logger.info('{0} : Verify name through SPDX registry -: {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         if lvalue:
@@ -157,7 +161,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
                 html_url = found['detailsUrl'].replace('.json', '.html')
                 isOsiApproved = found['isOsiApproved']
-        return html_url, isOsiApproved
+                id = found['licenseId']
+        return html_url, isOsiApproved, id
 
     def testLicenseMetadataElementAvailable(self):
         test_status = False
@@ -177,17 +182,35 @@ class FAIREvaluatorLicense(FAIREvaluator):
     def testLicenseIsValidAndSPDXRegistered(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-2'):
+            community_requirements = self.metric_tests[self.metric_identifier + '-2'].community_requirements
+            if not community_requirements:
+                community_requirements = {}
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            if community_requirements.get('required'):
+                self.logger.info(
+                    '{0} : Will exclusively consider community specific licenses for {0}{1} which are specified in metrics -: {2}'.format(
+                        self.metric_identifier, '-2', community_requirements.get('required')))
+            else:
+                self.logger.info(
+                    '{0} : Will consider all SPDX licenses as community specific licenses for {0}{1} '.format(
+                        self.metric_identifier, '-2', community_requirements.get('required')))
             if self.license_info:
                 for l in self.license_info:
-                    if l.get('valid'):
-                        test_status = True
+                    if community_requirements.get('required'):
+                        for rq_license_id in list(community_requirements.get('required')):
+                            if fnmatch.fnmatch(l.get('id'), rq_license_id):
+                                test_status = True
+                    else:
+                        if l.get('valid'):
+                            test_status = True
+            else:
+                self.logger.warning('{0} : Skipping SPDX and community license verification since license information unavailable in metadata'.format(self.metric_identifier))
+
             if test_status:
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-            else:
-                self.logger.warning('{0} : Skipping SPDX verification since license information unavailable in metadata'.format(self.metric_identifier))
+
         return test_status
 
     def evaluate(self):

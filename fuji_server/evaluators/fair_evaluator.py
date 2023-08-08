@@ -142,7 +142,6 @@ class FAIREvaluator:
                 evaluation_criterium.metric_test_maturity = 0
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
                 evaluation_criterium.community_requirements = metric_test.get('community_requirements')
-                print('REQ: ',evaluation_criterium.community_requirements)
                 if metric_test.get('agnostic_test_identifier'):
                     self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
