@@ -322,15 +322,13 @@ class Preprocessor(object):
 
     @classmethod
     def retrieve_metadata_standards(cls):
-        cls.retrieve_metadata_standards_uris()
+        #cls.retrieve_metadata_standards_uris()
         data = {}
         std_path = os.path.join(cls.fuji_server_dir, 'data', 'metadata_standards.json')
-        # The repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
+        # The original repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
         # or at https://github.com/rd-alliance/metadata-catalog-dev
-        isDebugMode = False
-        if isDebugMode:  # use local file instead of downloading the file online
-            with open(std_path) as f:
-                data = json.load(f)
+        with open(std_path) as f:
+            data = json.load(f)
         '''else:
             try:
                 r = requests.get(catalog_url)
