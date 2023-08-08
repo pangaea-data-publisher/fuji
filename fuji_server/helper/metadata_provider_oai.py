@@ -61,7 +61,8 @@ class OAIMetadataProvider(MetadataProvider):
         dict
             A dictionary of schemas in OAI
         """
-        filter = ['datacite.org', 'openarchives.org', 'purl.org/dc/']  # TODO expand filters
+        filter = []
+        #filter = ['datacite.org', 'openarchives.org', 'purl.org/dc/']  # TODO expand filters
         #http://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
         oai_endpoint = self.endpoint.split('?')[0]
         #oai_endpoint = oai_endpoint.rstrip('/')
