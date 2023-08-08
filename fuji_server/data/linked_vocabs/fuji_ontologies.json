@@ -1,49 +1,57 @@
 {
-  "mtlo": {
-     "id": "http://www.ics.forth.gr/isl/ontology/MarineTLO/",
-     "uri_format": "http://www.ics.forth.gr/isl/ontology/MarineTLO/$1",
-     "download.owl": "http://www.ics.forth.gr/isl/ontology/content-MTLO/marinetlo.owl",
-     "prefix": "fuji.mtlo",
-     "name": "MarineTLO Ontology",
-     "description": "MarineTLO is a top-level ontology for the marine domain (also applicable to the terrestrial domain)",
-     "subjects": [
-       "earth and related environmental sciences"
-     ]
+  "fuji.mtlo": {
+    "id": "fuji.mtlo",
+    "homepage": "http://www.ics.forth.gr/isl/ontology/MarineTLO/",
+    "uri_format": "http://www.ics.forth.gr/isl/ontology/MarineTLO/$1",
+    "download.owl": "http://www.ics.forth.gr/isl/ontology/content-MTLO/marinetlo.owl",
+    "prefix": "mtlo",
+    "name": "MarineTLO Ontology",
+    "description": "MarineTLO is a top-level ontology for the marine domain (also applicable to the terrestrial domain)",
+    "subjects": [
+     "earth and related environmental sciences"
+    ]
   },
-  "qudt": {
-     "prefix": "fuji.qudt",
+  "fuji.qudt": {
+    "id": "fuji.qudt",
+    "homepage": "http://qudt.org",
+    "prefix": "qudt",
     "uri_format": "http://qudt.org/$1",
     "pattern":"([\\d\\.]+\\/vocab\\/quantity#)"
   },
-  "igsn": {
-    "prefix": "fuji.igsn",
+  "fuji.igsn": {
+    "id": "fuji.igsn",
+    "prefix": "igsn",
     "uri_format": "http://pid.geoscience.gov.au/def/ont/ga/igsn#$1",
     "name": "The IGSN Ontology",
     "subjects": [
        "earth and related environmental sciences"
      ]
   },
-  "icos": {
-    "prefix": "fuji.icos",
+  "fuji.icos": {
+    "id": "fuji.icos",
+    "prefix": "icos",
     "uri_format": "http://meta.icos-cp.eu/ontologies/$1",
     "name": "The Integrated Carbon Observation System (ICOS) ontology",
     "subjects": [
        "earth and related environmental sciences"
      ]
   },
-  "i-adopt": {
-    "prefix" : "fuji.i-adopt",
+  "fuji.i-adopt": {
+    "id" : "fuji.i-adopt",
+    "prefix" : "i-adopt",
     "name": "I-ADOPT Framework ontology",
     "uri_format": "https://w3id.org/iadopt/ont/$1"
   },
-  "euroscivoc": {
-    "prefix": "fuji.euroscivoc",
+  "fuji.euroscivoc": {
+    "id": "fuji.euroscivoc",
+    "prefix": "euroscivoc",
     "name": "European Science Vocabulary (EuroSciVoc)",
     "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1",
     "subjects": ["science and technology studies"]
   },
-  "meta-share" : {
-    "prefix": "fuji.meta-share",
+  "fuji.meta-share" : {
+    "id": "fuji.meta-share",
+    "prefix": "meta-share",
     "name": "META-SHARE ontology",
     "uri_format": "http://w3id.org/meta-share/meta-share/$1",
     "subjects" : ["humanities", "languages and literature"]
