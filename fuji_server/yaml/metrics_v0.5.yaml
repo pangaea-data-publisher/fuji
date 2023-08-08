@@ -361,7 +361,7 @@ metrics:
       metric_test_score: 1
       metric_test_maturity: 1
     - metric_test_identifier: FsF-R1.1-01M-2
-      metric_test_name: Recognized licence is valid and registered at SPDX
+      metric_test_name: Recognized licence is valid (community specific or registered at SPDX)
       metric_test_score: 1
       metric_test_maturity: 3
   created_by: FAIRsFAIR
@@ -407,7 +407,7 @@ metrics:
   description: In addition to core metadata required to support data discovery (covered under metric FsF-F2-01M), metadata to support data reusability should be made available following community-endorsed metadata standards. Some communities have well-established metadata standards (e.g., geospatial [ISO19115], biodiversity [DarwinCore, ABCD, EML], social science [DDI], astronomy [International Virtual Observatory Alliance Technical Specifications]) while others have limited standards or standards that are under development (e.g., engineering and linguistics). The use of community-endorsed metadata standards is usually encouraged and supported by domain and discipline-specific repositories.
   fair_principle: R1.3
   target: Metadata
-  evaluation_mechanism: Metadata encodings can be verified using community specific namespaces and schemas listed by the RDA metadata standards WG
+  evaluation_mechanism: Metadata encodings can be verified using community specific namespaces and schemas listed by the RDA metadata standards WG or fairsharing.org
   test_scoring_mechanism: alternative
   metric_tests:
     - metric_test_identifier: FsF-R1.3-01M-1
@@ -419,8 +419,8 @@ metrics:
       metric_test_score: 1
       metric_test_maturity: 2
     - metric_test_identifier: FsF-R1.3-01M-3
-      metric_test_name: Multidisciplinary but community endorsed metadata (RDA Metadata Standards Catalog) standard is listed in the re3data record or detected by namespace
-      metric_test_score: 0
+      metric_test_name: Multidisciplinary but community endorsed metadata (RDA Metadata Standards Catalog, fairsharing) standard is listed in the re3data record or detected by namespace
+      metric_test_score: 1
       metric_test_maturity: 1
   created_by: FAIRsFAIR
   date_created: 2020-07-08
