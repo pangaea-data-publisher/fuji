@@ -13,24 +13,14 @@ class linked_vocab_helper:
         self.linked_vocab_index = linked_vocab_index
         self.linked_vocab_dict = {}
         self.ignore_prefixes = ['orcid','doi','isni','ror','wikipedia']
+        self.ignore_domain = ['orcid.org', 'doi.org','wikidata.org', 'ror.org']
 
     def set_linked_vocab_dict(self):
         print('Setting up the vocab dict.........................')
         # a new implementation based on bioportal etc..
-        bioregistry_path = os.path.join(self.fuji_server_dir, 'data', 'linked_vocabs', 'bioregistry.json')
-        with open(bioregistry_path, encoding='utf-8') as bioregistry_file:
-            self.linked_vocab_dict = json.load(bioregistry_file)
-        fuji_ontology_path = os.path.join(self.fuji_server_dir, 'data', 'linked_vocabs', 'fuji_ontologies.json')
-        with open(fuji_ontology_path, encoding='utf-8') as fuji_file:
-            fuji_ontologies = json.load(fuji_file)
-            for fuji_prefix, fuji_ont in fuji_ontologies.items():
-                if self.linked_vocab_dict.get(fuji_prefix):
-                    self.linked_vocab_dict.get(fuji_prefix)['f-uji'] = fuji_ont
-                else:
-                    self.linked_vocab_dict[fuji_prefix] = {'f-uji': fuji_ont}
 
         for ont_reg_file in os.listdir(os.path.join(self.fuji_server_dir, 'data', 'linked_vocabs')):
-            if ont_reg_file.endswith('.json') and ont_reg_file not in ['fuji_ontologies.json', 'bioregistry.json']:
+            if ont_reg_file.endswith('.json'): #and ont_reg_file not in ['fuji_ontologies.json', 'bioregistry.json']:
                 with open(os.path.join(self.fuji_server_dir, 'data', 'linked_vocabs', ont_reg_file),
                           encoding='utf-8') as reg_file:
                     reg_ontologies = json.load(reg_file)
@@ -64,22 +54,23 @@ class linked_vocab_helper:
         subjects = reg_entry.get('subjects')
         title = reg_entry.get('name')
         uriparts = self.split_iri(uri_format)
-        if not self.linked_vocab_index.get(uriparts.get('domain')):
-            self.linked_vocab_index[uriparts.get('domain')] = {}
-        if not self.linked_vocab_index[uriparts.get('domain')].get(uriparts.get('subdomain')):
-            self.linked_vocab_index[uriparts.get('domain')][uriparts.get('subdomain')] = [
-                {'prefix': prefix, 'pattern': uriparts.get('path'), 'regex': uri_regex, 'subjects': subjects,
-                 'name': title,'namespace':namespace}]
-        else:
-            self.linked_vocab_index[uriparts.get('domain')][uriparts.get('subdomain')].append(
-                {'prefix': prefix, 'pattern': uriparts.get('path'), 'regex': uri_regex, 'subjects': subjects,
-                 'name': title,'namespace':namespace})
+        if uriparts.get('domain') not in self.ignore_domain:
+            if not self.linked_vocab_index.get(uriparts.get('domain')):
+                self.linked_vocab_index[uriparts.get('domain')] = {}
+            if not self.linked_vocab_index[uriparts.get('domain')].get(uriparts.get('subdomain')):
+                self.linked_vocab_index[uriparts.get('domain')][uriparts.get('subdomain')] = [
+                    {'prefix': prefix, 'pattern': uriparts.get('path'), 'regex': uri_regex, 'subjects': subjects,
+                     'name': title,'namespace':namespace}]
+            else:
+                self.linked_vocab_index[uriparts.get('domain')][uriparts.get('subdomain')].append(
+                    {'prefix': prefix, 'pattern': uriparts.get('path'), 'regex': uri_regex, 'subjects': subjects,
+                     'name': title,'namespace':namespace})
 
     def set_linked_vocab_index(self):
         if not self.linked_vocab_dict:
             self.set_linked_vocab_dict()
         for rk, rd in self.linked_vocab_dict.items():
-            if rk not in self.ignore_prefixes:
+            if str(rd.get('prefix')).lower() not in self.ignore_prefixes:
                 if isinstance(rd, dict):
                     if rd.get('uri_format'):
                         self.add_linked_vocab_index_entry(rk, rd)
@@ -135,7 +126,10 @@ class linked_vocab_helper:
                                 if reg_res.get('regex'):
                                     comb_regex = reg_res.get('regex').lstrip('^').rstrip('$')
                                 else:
+                                    if '?' in reg_res.get('pattern'):
+                                        reg_res['pattern']=reg_res.get('pattern').replace('?','\?')
                                     comb_regex = reg_res.get('pattern').split('$1')[0].rstrip('/#')
+
                                 if comb_regex not in tested_patterns:
                                     tested_patterns.append(comb_regex)
                                     comb_match = re.search(comb_regex, iri_parts.get('path'))

@@ -50,10 +50,12 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.knownnamespaceuris = []
 
     def setCommunityRequirements(self):
+        reqsdefined = False
         community_requirements = self.metric_tests[self.metric_identifier + '-2'].community_requirements
         if community_requirements:
             community_vocabs =[]
             if community_requirements.get('required'):
+                reqsdefined = True
                 self.logger.info(
                     '{0} : Will exclusively consider community specific vocabularies which are specified in metrics -: {1}'.format(
                         self.metric_identifier, community_requirements.get('required')))
@@ -66,9 +68,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                         '{0} : Namespaces of community specific vocabularies found -: {1}'.format(
                             self.metric_identifier, community_vocabs))
                 self.knownnamespaceuris = [x for x in self.knownnamespaceuris if x in community_vocabs]
-
-            print(self.knownnamespaceuris,community_vocabs)
-
+        return reqsdefined
 
     def testSemanticNamespaceURIsAvailable(self):
         test_status = False
@@ -87,6 +87,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
     def testKnownSemanticResourcesUsed(self):
         lov_helper = linked_vocab_helper(self.fuji.LINKED_VOCAB_INDEX)
         test_status = False
+        communityspecsdefined = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             if not self.fuji.namespace_uri and not self.fuji.linked_namespace_uri:
@@ -111,9 +112,8 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     if lov_entry and ns_uri not in self.knownnamespaceuris:
                         self.knownnamespaceuris.append(ns_uri)
 
-            self.setCommunityRequirements()
+            communityspecsdefined = self.setCommunityRequirements()
             if self.knownnamespaceuris:
-
                 self.score.earned += test_score
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
@@ -127,7 +127,11 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                         '{0} : Vocabulary namespace(s) or URIs specified but no match is found in LOD reference list (examples) -: {1}'.
                             format(self.metric_identifier, not_exists[:10]))
             else:
-                self.logger.warning('{0} : NO known vocabulary namespace URI is found in LOD registry list'.format(self.metric_identifier))
+                if communityspecsdefined:
+                    self.logger.warning('{0} : NO community specific vocabulary namespace URI is found which is listed in the LOD registry'.format(self.metric_identifier))
+                else:
+                    self.logger.warning('{0} : NO known vocabulary namespace URI is found which is listed in  the LOD registry'.format(self.metric_identifier))
+
 
         return test_status
 
