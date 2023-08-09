@@ -64,36 +64,39 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         #test for oai, csw, sparql
         test_status = False
         standards_supported =[]
-        print('RE3DATA STANDARDS: ',self.fuji.repo_helper.getRe3MetadataAPIs())
+
         if self.isTestDefined(self.metric_identifier + '-3'):
-            self.logger.info(self.metric_identifier + ' : Trying to identify a metadata exchange standard given as input or via re3data entry')
-            test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-            if not self.fuji.oaipmh_endpoint:
-                self.logger.info(
-                    '{} : Inferring metadata service endpoint (OAI) information through re3data/datacite services'.format(
-                        self.metric_identifier))
-                self.fuji.oaipmh_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('OAI-PMH')
-            if self.fuji.oaipmh_endpoint:
-                standards_supported.append('OAI-PMH')
-            if self.fuji.csw_endpoint:
-                standards_supported.append('OGC-CSW')
-            if not self.fuji.sparql_endpoint:
-                self.logger.info(
-                    '{} : Inferring metadata service endpoint (SPARQL) information through re3data/datacite services'.format(
-                        self.metric_identifier))
-                self.fuji.sparql_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('SPARQL')
-            if self.fuji.sparql_endpoint:
-                standards_supported.append('SPARQL')
-            if standards_supported:
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-3')
-                self.score.earned += test_score
-                #standards_supported.append(self.fuji.self.metadata_service_type)
-                self.search_mechanisms.append(
-                    OutputSearchMechanisms(mechanism='exchange standard', mechanism_info=standards_supported))
-                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+            if self.fuji.use_datacite:
+                self.logger.info(self.metric_identifier + ' : Trying to identify a metadata exchange standard given as input or via re3data entry')
+                test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+                if not self.fuji.oaipmh_endpoint:
+                    self.logger.info(
+                        '{} : Inferring metadata service endpoint (OAI) information through re3data/datacite services'.format(
+                            self.metric_identifier))
+                    self.fuji.oaipmh_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('OAI-PMH')
+                if self.fuji.oaipmh_endpoint:
+                    standards_supported.append('OAI-PMH')
+                if self.fuji.csw_endpoint:
+                    standards_supported.append('OGC-CSW')
+                if not self.fuji.sparql_endpoint:
+                    self.logger.info(
+                        '{} : Inferring metadata service endpoint (SPARQL) information through re3data/datacite services'.format(
+                            self.metric_identifier))
+                    self.fuji.sparql_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('SPARQL')
+                if self.fuji.sparql_endpoint:
+                    standards_supported.append('SPARQL')
+                if standards_supported:
+                    self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-3')
+                    self.score.earned += test_score
+                    #standards_supported.append(self.fuji.self.metadata_service_type)
+                    self.search_mechanisms.append(
+                        OutputSearchMechanisms(mechanism='exchange standard', mechanism_info=standards_supported))
+                    self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+                else:
+                    self.logger.warning(self.metric_identifier + ' : No metadata exchange standard found')
             else:
-                self.logger.warning(self.metric_identifier + ' : No metadata exchange standard found')
+                self.logger.warning(self.metric_identifier + ' : Datacite support disabled, therefore skipping re3data metadata exchange standard check')
 
         return test_status
 
