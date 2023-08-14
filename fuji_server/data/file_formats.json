@@ -1,0 +1,2296 @@
+{
+    "3d_studio_format": {
+        "name": "3D Studio format",
+        "mime": [
+            "image/x-3ds",
+            "application/x-3ds"
+        ],
+        "ext": [
+            "*.3ds"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "aac_advanced_audio_coding_file_format": {
+        "name": "AAC (Advanced Audio Coding) File Format",
+        "mime": [
+            "audio/x-aac",
+            "audio/aac"
+        ],
+        "ext": [
+            "*.aac"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "aiff_audio_interchange_file_format_": {
+        "name": "AIFF (Audio Interchange File Format)",
+        "mime": [
+            "audio/x-midi",
+            "sound/aiff",
+            "audio/aiff",
+            "audio/x-rmf",
+            "audio/x-pn-aiff",
+            "audio/x-gsm",
+            "audio/x-aiff",
+            "audio/rmf",
+            "audio/vnd.qcelp"
+        ],
+        "ext": [
+            "*.aiff",
+            "*.aff",
+            "*.aifc",
+            "*.aif",
+            "*.ief"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "av1_image_file_format_avif_": {
+        "name": "AV1 Image File Format\u00a0(AVIF)",
+        "mime": [
+            "image/avif-sequence",
+            "image/avif"
+        ],
+        "ext": [
+            "*.avifs",
+            "*.avif"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "avi_audio_video_interleaved_file_format": {
+        "name": "AVI (Audio Video Interleaved) File Format",
+        "mime": [
+            "application/x-troff-msvideo",
+            "audio/avi",
+            "video/x-msvideo",
+            "video/msvideo",
+            "video/vnd.avi",
+            "video/avi"
+        ],
+        "ext": [
+            "*.avi"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "avi_audio_video_interleaved_video_file_format": {
+        "name": "AVI (Audio Video Interleaved) Video File Format",
+        "mime": [
+            "video/avi"
+        ],
+        "ext": [
+            "*.gvi"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "adobe_digital_negative_dng_": {
+        "name": "Adobe Digital Negative (DNG)",
+        "mime": [
+            "image/x-adobe-dng"
+        ],
+        "ext": [
+            "*.dng"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "apple_lossless_audio_codec_alac_": {
+        "name": "Apple Lossless Audio Codec (ALAC)",
+        "mime": [
+            "audio/mp4"
+        ],
+        "ext": [
+            "*.m4a"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "apple_numbers": {
+        "name": "Apple Numbers",
+        "mime": [
+            "application/vnd.apple.numbers"
+        ],
+        "ext": [
+            "*.numbers",
+            "*.numbers.zip"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "bed_browser_extensible_data_": {
+        "name": "BED (Browser Extensible Data)",
+        "mime": [
+            "text/x-bed"
+        ],
+        "ext": [
+            "*.bed"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "beilstein_crossfire_file": {
+        "name": "Beilstein Crossfire file",
+        "mime": [
+            "chemical/x-crossfire"
+        ],
+        "ext": [
+            "*.bsd"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "c_source_code_file": {
+        "name": "C Source Code File",
+        "mime": [
+            "text/x-c"
+        ],
+        "ext": [
+            "*.c"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "cactvs_format": {
+        "name": "CACTVS format",
+        "mime": [
+            "chemical/x-cactus",
+            "chemical/x-cactus-ascii"
+        ],
+        "ext": [
+            "*.cascii",
+            "*.ctx"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "ccdc_isostar_library": {
+        "name": "CCDC IsoStar Library",
+        "mime": [
+            "chemical/x-isostar"
+        ],
+        "ext": [
+            "*.istr"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "ccp4_file_format": {
+        "name": "CCP4 file format",
+        "mime": [
+            "application/CCP4-mtz-phases",
+            "application/CCP4-mtz-freerflag",
+            "application/CCP4-mtz-observed",
+            "application/CCP4-unmerged-experimental",
+            "application/CCP4-mtz-map"
+        ],
+        "ext": [
+            "*.ccp4"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "cd_audio_cd_audio_track_shortcut": {
+        "name": "CD Audio CD Audio track shortcut",
+        "mime": [
+            "audio/audiocd"
+        ],
+        "ext": [
+            "*.cda"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "cfd_general_notation_system": {
+        "name": "CFD General Notation System",
+        "mime": [
+            "application/cgns"
+        ],
+        "ext": [
+            "*.cgns"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "collada_digital_asset_exchange_format": {
+        "name": "COLLADA digital asset exchange format",
+        "mime": [
+            "model/vnd.collada+xml"
+        ],
+        "ext": [
+            "*.dae"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "chem3d_format": {
+        "name": "Chem3D Format",
+        "mime": [
+            "chemical/x-chem3d"
+        ],
+        "ext": [
+            "*.c3d"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "chemdraw_exchange_file": {
+        "name": "ChemDraw eXchange file",
+        "mime": [
+            "chemical/x-cdxml",
+            "chemical/x-cdx"
+        ],
+        "ext": [
+            "*.cdx"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "chemical_markup_language": {
+        "name": "Chemical Markup Language",
+        "mime": [
+            "chemical/x-cml"
+        ],
+        "ext": [
+            "*.cml"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "computer_graphics_metafile": {
+        "name": "Computer Graphics Metafile",
+        "mime": [
+            "image/cgm"
+        ],
+        "ext": [
+            "*.cgm"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "crystallographic_information_file": {
+        "name": "Crystallographic Information File",
+        "mime": [
+            "chemical/x-cif"
+        ],
+        "ext": [
+            "*.mif",
+            "*.cif"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "crystalmaker_file": {
+        "name": "Crystalmaker File",
+        "mime": [
+            "chemical/x-cmdf"
+        ],
+        "ext": [
+            "*.cmdf"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "dicom": {
+        "name": "DICOM",
+        "mime": [
+            "application/dicom",
+            "image/dicom-rle"
+        ],
+        "ext": [
+            "*.dic",
+            "*.dcm"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "daylight_smiles_string": {
+        "name": "Daylight SMILES string",
+        "mime": [
+            "chemical/x-daylight-smiles"
+        ],
+        "ext": [
+            "*.smi"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "device_independent_bitmap_dib_": {
+        "name": "Device-Independent bitmap (DIB)",
+        "mime": [
+            "image/dib"
+        ],
+        "ext": [
+            "*.dib"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "dolby_heaac": {
+        "name": "Dolby HEAAC",
+        "mime": [
+            "audio/vnd.dolby.heaac.1"
+        ],
+        "ext": [
+            "*.wav"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "embl_nucleotide_sequence_format": {
+        "name": "EMBL nucleotide sequence format",
+        "mime": [
+            "chemical/x-embl-dl-nucleotide"
+        ],
+        "ext": [
+            "*.emb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "esri_shapefile": {
+        "name": "ESRI Shapefile",
+        "mime": [
+            "application/prj",
+            "application/zipped-shapefile",
+            "application/x-esri-shape",
+            "application/shx",
+            "application/shp"
+        ],
+        "ext": [
+            "*.prj",
+            "*.shx",
+            "*.shp"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "esri_spatial_index": {
+        "name": "ESRI Spatial Index",
+        "mime": [
+            "application/sbx",
+            "application/sbn"
+        ],
+        "ext": [
+            "*.sbn",
+            "*.sbx"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "extensible_3d_x3d_file_format_family": {
+        "name": "Extensible 3D (X3D) File Format Family",
+        "mime": [
+            "model/x3d+xml",
+            "model/x3d+binary",
+            "model/x3d+fastinfoset",
+            "model/x3d+vrml",
+            "model/x3d-vrml"
+        ],
+        "ext": [
+            "*.x3db",
+            "*.x3dbz",
+            "*.x3dz",
+            "*.x3dv",
+            "*.x3d",
+            "*.x3dvz"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "fasta": {
+        "name": "FASTA",
+        "mime": [
+            "chemical/seq-aa-fasta",
+            "chemical/seq-na-fasta",
+            "text/x-fasta"
+        ],
+        "ext": [
+            "*.fasta",
+            "*.frn",
+            "*.faa",
+            "*.fna"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "fastq": {
+        "name": "FASTQ",
+        "mime": [
+            "chemical/seq-na-fastq"
+        ],
+        "ext": [
+            "*.fq",
+            "*.fastq",
+            "*.fa"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "flexible_image_transport_system_fits_": {
+        "name": "Flexible Image Transport System (FITS)",
+        "mime": [
+            "application/fits",
+            "image/fits"
+        ],
+        "ext": [
+            "*.fits",
+            "*.fts",
+            "*.fit"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "free_lossless_image_format_flif_": {
+        "name": "Free Lossless Image Format (FLIF)",
+        "mime": [
+            "image/flif"
+        ],
+        "ext": [
+            "*.flif"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "gamess_us_ab_initio_input_file": {
+        "name": "GAMESS(US) Ab initio Input File",
+        "mime": [
+            "chemical/x-gamess-input"
+        ],
+        "ext": [
+            "*.inp"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "grib": {
+        "name": "GRIB",
+        "mime": [
+            "application/x-grib",
+            "application/wmo-grib2"
+        ],
+        "ext": [
+            "*.grb1",
+            "*.grb2",
+            "*.grb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "gaussian_checkpoint_file": {
+        "name": "Gaussian Checkpoint file",
+        "mime": [
+            "chemical/x-gaussian-checkpoint"
+        ],
+        "ext": [
+            "*.fch",
+            "*.fchk"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "gaussian_cube_file": {
+        "name": "Gaussian Cube file",
+        "mime": [
+            "chemical/x-cube",
+            "chemical/x-gaussian-cube"
+        ],
+        "ext": [
+            "*.cub"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "gaussian_log_file": {
+        "name": "Gaussian log file",
+        "mime": [
+            "chemical/x-gaussian-log"
+        ],
+        "ext": [
+            "*.gal"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "genbank_molecular_biology_format": {
+        "name": "GenBank molecular biology format",
+        "mime": [
+            "chemical/seq-na-genbank"
+        ],
+        "ext": [
+            "*.gbk",
+            "*.gb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "general_feature_format": {
+        "name": "General feature format",
+        "mime": [
+            "text/x-gff3"
+        ],
+        "ext": [
+            "*.gff"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "geojson_a_geographic_data_format_based_on_json": {
+        "name": "GeoJSON a geographic data format based on JSON",
+        "mime": [
+            "application/geo+json"
+        ],
+        "ext": [
+            "*.geojson"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "geographic_tagged_image_file_format_geotiff_": {
+        "name": "Geographic Tagged Image File Format (GeoTIFF)",
+        "mime": [
+            "image/geotiff"
+        ],
+        "ext": [
+            "*.tif"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "gerber_format": {
+        "name": "Gerber format",
+        "mime": [
+            "application/vnd.gerber"
+        ],
+        "ext": [
+            "*.gpt",
+            "*.gbo",
+            "*.gtl",
+            "*.gbp",
+            "*.gtp",
+            "*.gbs",
+            "*.gpb",
+            "*.gml",
+            "*.gbr",
+            "*.gto",
+            "*.gbl",
+            "*.gts",
+            "*.gko"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "gnumeric_spreadsheet": {
+        "name": "Gnumeric spreadsheet",
+        "mime": [
+            "application/x-gnumeric"
+        ],
+        "ext": [
+            "*.gnm",
+            "*.gnumeric"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "graphics_interchange_format": {
+        "name": "Graphics Interchange Format",
+        "mime": [
+            "image/gif"
+        ],
+        "ext": [
+            "*.gif"
+        ],
+        "reason": [
+            "long term format",
+            "open format"
+        ],
+        "source": [
+            "ISO/TR 22299",
+            "various"
+        ]
+    },
+    "hdf": {
+        "name": "HDF",
+        "mime": [
+            "application/x-hdf5",
+            "application/x-hdf"
+        ],
+        "ext": [
+            "*.hdf",
+            "*.hdf5",
+            "*.h5"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "hyperchen_hin_data_format": {
+        "name": "HyperChen HIN data format",
+        "mime": [
+            "chemical/x-hin"
+        ],
+        "ext": [
+            "*.hin"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "iso14976_spectroscopic_format": {
+        "name": "ISO14976 Spectroscopic format",
+        "mime": [
+            "chemical/x-vamas-iso14976"
+        ],
+        "ext": [
+            "*.vms"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "jcamp_dx_a_chemical_spectroscopy_format": {
+        "name": "JCAMP-DX a chemical spectroscopy format",
+        "mime": [
+            "chemical/x-jcamp-dx"
+        ],
+        "ext": [
+            "*.jdx"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "jpeg_2000_file_format": {
+        "name": "JPEG 2000 File Format",
+        "mime": [
+            "image/jpx",
+            "image/jpeg2000",
+            "image/x-jpeg2000-image",
+            "image/jp2",
+            "image/jpm",
+            "image/jpeg2000-image"
+        ],
+        "ext": [
+            "*.jpf",
+            "*.jpx",
+            "*.jpg",
+            "*.jp2",
+            "*.mj2",
+            "*.jpm"
+        ],
+        "reason": [
+            "long term format",
+            "open format"
+        ],
+        "source": [
+            "ISO/TR 22299",
+            "various"
+        ]
+    },
+    "jpg_joint_photographic_experts_group_file_format": {
+        "name": "JPG (Joint Photographic Experts Group) File Format",
+        "mime": [
+            "image/jpeg",
+            "application/jpg",
+            "image/jpm",
+            "image/jpg"
+        ],
+        "ext": [
+            "*.jpf",
+            "*.jfif",
+            "*.jls",
+            "*.jif",
+            "*.jmh",
+            "*.jpg",
+            "*.jp2",
+            "*.jpeg",
+            "*.jpe",
+            "*.j",
+            "*.jfi",
+            "*.spf"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "jt_3d_visualization_format": {
+        "name": "JT 3D visualization format",
+        "mime": [
+            "model/jt"
+        ],
+        "ext": [
+            "*.jt"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "jupyter_notebook_file": {
+        "name": "Jupyter Notebook File",
+        "mime": [
+            "application/x-ipynb+json"
+        ],
+        "ext": [
+            "*.ipynb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "kinetic_protein_structure_images": {
+        "name": "Kinetic (Protein Structure) Images",
+        "mime": [
+            "chemical/x-kinemage"
+        ],
+        "ext": [
+            "*.kin"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "lotus_1_2_3_format": {
+        "name": "Lotus 1-2-3 Format",
+        "mime": [
+            "application/vnd.lotus-1-2-3"
+        ],
+        "ext": [
+            "*.wk3",
+            "*.wk4",
+            "*.wk1",
+            "*.wks",
+            "*.wk2",
+            "*.wk*"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mdl_mol_molecular_models_and_drawings_format": {
+        "name": "MDL MOL molecular models and drawings format",
+        "mime": [
+            "chemical/x-mdl-molfile"
+        ],
+        "ext": [
+            "*.mol"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mdl_reaction_format": {
+        "name": "MDL Reaction format",
+        "mime": [
+            "chemical/x-mdl-rxnfile"
+        ],
+        "ext": [
+            "*.rxn"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mdl_reaction_data_file": {
+        "name": "MDL Reaction-data file",
+        "mime": [
+            "chemical/x-mdl-rdfile"
+        ],
+        "ext": [
+            "*.rd"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mdl_structure_data_file": {
+        "name": "MDL Structure-data file",
+        "mime": [
+            "chemical/x-mdl-sdfile"
+        ],
+        "ext": [
+            "*.sd"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mdl_transportable_graphics_file": {
+        "name": "MDL Transportable Graphics file",
+        "mime": [
+            "chemical/x-mdl-tgf"
+        ],
+        "ext": [
+            "*.rd"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mmcif_3d_molecular_model_format": {
+        "name": "MMCIF 3D molecular model format",
+        "mime": [
+            "chemical/x-mmcif"
+        ],
+        "ext": [
+            "*.mmcif"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mp3_file_format": {
+        "name": "MP3 File Format",
+        "mime": [
+            "audio/x-mpegaudio",
+            "audio/x-mpg",
+            "audio/mp3",
+            "audio/mpeg",
+            "audio/mpg",
+            "audio/mpeg3",
+            "audio/x-mpeg3",
+            "audio/x-mp3"
+        ],
+        "ext": [
+            "*.mp3"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "mpeg_file_format": {
+        "name": "MPEG File Format",
+        "mime": [
+            "video/mpeg",
+            "video/x-mpeg",
+            "video/mpg",
+            "video/x-mpg",
+            "video/mpv",
+            "video/mp1s",
+            "audio/mpeg",
+            "application/x-pn-mpg"
+        ],
+        "ext": [
+            "*.mp3",
+            "*.mpg",
+            "*.mpeg",
+            "*.mpa",
+            "*.m1v",
+            "*.m1a",
+            "*.mpv"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "mpeg_2_file_format": {
+        "name": "MPEG-2 File Format",
+        "mime": [
+            "video/mpeg",
+            "video/mp2p",
+            "video/x-mpeg2a",
+            "video/mpeg2",
+            "video/mp2t",
+            "application/x-pn-mpg"
+        ],
+        "ext": [
+            "*.m2v",
+            "*.mpeg",
+            "*.m2a",
+            "*.ts",
+            "*.mpg",
+            "*.m2ts"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "mpeg_4_file_format": {
+        "name": "MPEG-4 File Format",
+        "mime": [
+            "application/mp4",
+            "video/mp4v-es",
+            "application/mpeg4-iod-xmt",
+            "video/mpeg4-generic",
+            "audio/mp4",
+            "application/mpeg4-iod",
+            "video/mp4",
+            "application/mpeg4-generic"
+        ],
+        "ext": [
+            "*.m4a",
+            "*.mpg",
+            "*.m4v",
+            "*.mp4"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "mpeg_4_media_file": {
+        "name": "MPEG-4 Media File",
+        "mime": [
+            "application/mp4",
+            "video/mp4"
+        ],
+        "ext": [
+            "*.f4v"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "ms_works_file": {
+        "name": "MS Works File",
+        "mime": [
+            "application/vnd.ms-works",
+            "application/x-tika-msworks-spreadsheet"
+        ],
+        "ext": [
+            "*.wdb",
+            "*.wps",
+            "*.xlr",
+            "*.wks",
+            "*.wcm"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "msi_alchemy_format": {
+        "name": "MSI Alchemy format",
+        "mime": [
+            "hemical/x-alchemy"
+        ],
+        "ext": [
+            "*.alc"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "msi_cerius2_datafile": {
+        "name": "MSI Cerius2 Datafile",
+        "mime": [
+            "chemical/x-cerius"
+        ],
+        "ext": [
+            "*.c3d"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "macmolecule_file_format": {
+        "name": "MacMolecule File Format",
+        "mime": [
+            "chemical/x-macmolecule"
+        ],
+        "ext": [
+            "*.mcm"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "macromodel_molecular_mechanics": {
+        "name": "MacroModel Molecular Mechanics",
+        "mime": [
+            "chemical/x-macromodel-input"
+        ],
+        "ext": [
+            "*.mmod",
+            "*.mmd"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "material_exchange_format_mxf_": {
+        "name": "Material Exchange Format (MXF)",
+        "mime": [
+            "application/mxf"
+        ],
+        "ext": [
+            "*.mxf"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "mathml_math_content_format": {
+        "name": "MathML math content format",
+        "mime": [
+            "text/mathml",
+            "application/mathml+xml"
+        ],
+        "ext": [
+            "*.mml"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "mathematica_format": {
+        "name": "Mathematica Format",
+        "mime": [
+            "application/vnd.wolfram.mathematica",
+            "application/mathematica",
+            "application/vnd.wolfram.mathematica.package",
+            "text/x-mathematica"
+        ],
+        "ext": [
+            "*.wl",
+            "*.m",
+            "*.ma",
+            "*.nb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "matlab_format": {
+        "name": "Matlab Format",
+        "mime": [
+            "application/matlab-mat",
+            "text/x-matlab",
+            "application/x-matlab-figure",
+            "application/x-matlab-workspace",
+            "application/x-matlab-data"
+        ],
+        "ext": [
+            "*.m",
+            "*.mat"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "microsoft_excel_file": {
+        "name": "Microsoft Excel File",
+        "mime": [
+            "application/vnd.ms-excel.addin.macroenabled.12",
+            "application/vnd.ms-excel.template.macroenabled.12",
+            "application/vnd.ms-excel.sheet.binary.macroenabled.12",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+            "application/vnd.ms-excel.sheet.4",
+            "application/msexcel",
+            "application/vnd.ms-excel.workspace.3",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/x-tika-old-excel",
+            "application/vnd.ms-excel.sheet.3",
+            "application/vnd.ms-excel.sheet.2",
+            "application/vnd.ms-excel.workspace.4",
+            "application/vnd.ms-excel",
+            "application/vnd.ms-excel.sheet.macroenabled.12"
+        ],
+        "ext": [
+            "*.xlc",
+            "*.xld",
+            "*.xlt",
+            "*.xlsm",
+            "*.xls",
+            "*.xlsb",
+            "*.xlw",
+            "*.xll",
+            "*.xlm",
+            "*.xla"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "molconn_z_format": {
+        "name": "Molconn-Z Format",
+        "mime": [
+            "chemical/x-molconn-Z"
+        ],
+        "ext": [
+            "*.b"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "motion_jpeg_2000_file_format": {
+        "name": "Motion JPEG 2000 File Format",
+        "mime": [
+            "video/jpm",
+            "video/mj2",
+            "video/mpeg"
+        ],
+        "ext": [
+            "*.jpf",
+            "*.jpgm",
+            "*.jpx",
+            "*.mjp2",
+            "*.mp1",
+            "*.jp2",
+            "*.mj2",
+            "*.mp2",
+            "*.jpm"
+        ],
+        "reason": [
+            "long term format",
+            "open format"
+        ],
+        "source": [
+            "ISO/TR 22299",
+            "various"
+        ]
+    },
+    "multiple_image_network_graphics": {
+        "name": "Multiple-Image Network Graphics",
+        "mime": [
+            "video/x-mng"
+        ],
+        "ext": [
+            "*.mng"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "nasa_common_data_format_cdf_": {
+        "name": "NASA common data format (.cdf)",
+        "mime": [
+            "application/x-cdf"
+        ],
+        "ext": [
+            "*.cdf"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "nsdstat_format": {
+        "name": "NSDstat Format",
+        "mime": [
+            "application/x-nsdstat"
+        ],
+        "ext": [
+            "*.nsdstat"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "netcdf": {
+        "name": "NetCDF",
+        "mime": [
+            "application/x-netcdf",
+            "application/netcdf"
+        ],
+        "ext": [
+            "*.nc",
+            "*.cdf",
+            "*.cf"
+        ],
+        "reason": [
+            "scientific format",
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "newick_format": {
+        "name": "Newick format",
+        "mime": [
+            "text/x-nh"
+        ],
+        "ext": [
+            "*.tree"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "nucleotide_sequence_format": {
+        "name": "Nucleotide Sequence Format",
+        "mime": [
+            "chemical/x-gcg8-sequence"
+        ],
+        "ext": [
+            "*.gcg"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "ogg_multimedia_container_format": {
+        "name": "Ogg Multimedia Container Format",
+        "mime": [
+            "video/daala",
+            "video/x-oggrgb",
+            "audio/x-ogg-flac",
+            "audio/ogg",
+            "audio/x-ogg-pcm",
+            "video/x-ogm",
+            "video/theora",
+            "application/x-ogg",
+            "video/x-theora",
+            "video/x-ogg-uvs",
+            "application/ogg",
+            "video/x-ogg-yuv",
+            "video/x-ogguvs",
+            "video/x-daala",
+            "video/ogg",
+            "audio/opus",
+            "audio/speex",
+            "video/x-oggyuv",
+            "video/x-ogg-rgb",
+            "audio/x-ogg"
+        ],
+        "ext": [
+            "*.ogm",
+            "*.ogx",
+            "*.ogg",
+            "*.oga",
+            "*.opus",
+            "*.ogv"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "ogg_packaged_dirac_video": {
+        "name": "Ogg Packaged Dirac Video",
+        "mime": [
+            "video/x-dirac"
+        ],
+        "ext": [
+            "*.drc"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "ogg_speex_codec_multimedia_file": {
+        "name": "Ogg Speex Codec Multimedia File",
+        "mime": [
+            "application/x-speex",
+            "audio/x-speex",
+            "audio/speex"
+        ],
+        "ext": [
+            "*.spx"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "opendocument_spreadsheet": {
+        "name": "OpenDocument Spreadsheet",
+        "mime": [
+            "application/vnd.oasis.opendocument.spreadsheet-template",
+            "application/vnd.oasis.opendocument.spreadsheet"
+        ],
+        "ext": [
+            "*.fods",
+            "*.ots",
+            "*.ods"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "openexr_file_format": {
+        "name": "OpenEXR File Format",
+        "mime": [
+            "image/x-exr"
+        ],
+        "ext": [
+            "*.exr"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "openoffice_org_xml": {
+        "name": "OpenOffice.org XML",
+        "mime": [
+            "application/vnd.sun.xml.calc",
+            "application/vnd.sun.xml.calc.template"
+        ],
+        "ext": [
+            "*.sxg",
+            "*.sxc",
+            "*.sxd",
+            "*.stc",
+            "*.std",
+            "*.sxm"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "openraster_image_format": {
+        "name": "OpenRaster Image Format",
+        "mime": [
+            "image/openraster"
+        ],
+        "ext": [
+            "*.ora"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "pcma": {
+        "name": "PCMA",
+        "mime": [
+            "audio/pcma-wb",
+            "audio/pcma"
+        ],
+        "ext": [
+            "*.wav"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "pcmu": {
+        "name": "PCMU",
+        "mime": [
+            "audio/pcmu-wb",
+            "audio/pcmu"
+        ],
+        "ext": [
+            "*.wav"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "portable_document_format": {
+        "name": "Portable Document Format",
+        "mime": [
+            "application/vnd.adobe.pdfxml",
+            "text/x-pdf",
+            "application/x-pdf",
+            "text/pdf",
+            "application/pdf",
+            "application/vnd.adobe.x-mars",
+            "application/vnd.pdf"
+        ],
+        "ext": [
+            "*.pdfxml",
+            "*.pdf",
+            "*.mars"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "portable_network_graphics": {
+        "name": "Portable Network Graphics",
+        "mime": [
+            "image/png",
+            "image/vnd.mozilla.apng"
+        ],
+        "ext": [
+            "*.png",
+            "*.apng"
+        ],
+        "reason": [
+            "long term format",
+            "open format"
+        ],
+        "source": [
+            "ISO/TR 22299",
+            "various"
+        ]
+    },
+    "protein_data_bank_format": {
+        "name": "Protein Data Bank format",
+        "mime": [
+            "chemical/x-pdb"
+        ],
+        "ext": [
+            "*.pdb"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "python_file": {
+        "name": "Python File",
+        "mime": [
+            "text/x-python",
+            "text/x-python-script"
+        ],
+        "ext": [
+            "*.py"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "quattro_pro_format": {
+        "name": "Quattro Pro Format",
+        "mime": [
+            "application/x-quattro-pro"
+        ],
+        "ext": [
+            "*.qpw",
+            "*.wq2",
+            "*.wq1",
+            "*.wb3",
+            "*.wb2",
+            "*.wb1"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "r_file_format": {
+        "name": "R File Format",
+        "mime": [
+            "application/x-rlang-transport",
+            "text/x-r-source",
+            "type/x-r-syntax",
+            "application/x-R-2"
+        ],
+        "ext": [
+            "*.r",
+            "*.R"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "root": {
+        "name": "ROOT",
+        "mime": [
+            "application/x-root"
+        ],
+        "ext": [
+            "*.root"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "sas_file_format": {
+        "name": "SAS File Format",
+        "mime": [
+            "application/x-sas-log",
+            "application/x-sas-data",
+            "application/x-sas-catalog",
+            "application/x-sas-system",
+            "application/x-sas-output",
+            "text/x-sas-syntax",
+            "application/x-sas-transport",
+            "application/x-sas",
+            "application/x-sas-syntax"
+        ],
+        "ext": [
+            "*.sas"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "sff_molecular_biology_format": {
+        "name": "SFF molecular biology format",
+        "mime": [
+            "chemical/seq-na-sff"
+        ],
+        "ext": [
+            "*.sff"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "smiles_chemical_format": {
+        "name": "SMILES chemical format",
+        "mime": [
+            "chemical/x-daylight-smiles"
+        ],
+        "ext": [
+            "*.smi"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "spc_format_for_spectral_and_chromatographic_data_b_": {
+        "name": "SPC format for spectral and chromatographic data (B)",
+        "mime": [
+            "chemical/x-galactic-spc"
+        ],
+        "ext": [
+            "*.spc"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "spss_file_format": {
+        "name": "SPSS File Format",
+        "mime": [
+            "application/x-dvn-csvspss-zip",
+            "text/x-spss-syntax",
+            "application/x-spss-syntax",
+            "application/x-spss-portable",
+            "application/x-spss-sav",
+            "application/x-spss-por",
+            "application/x-spss-sps"
+        ],
+        "ext": [
+            "*.zip",
+            "*.sav",
+            "*.sps",
+            "*.por"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "step_file_iso_10303_21": {
+        "name": "STEP-file, ISO 10303-21",
+        "mime": [
+            "model/step",
+            "model/step+xml",
+            "model/step+zip",
+            "model/step-xml+zip"
+        ],
+        "ext": [
+            "*.21",
+            "*.p21",
+            "*.step",
+            "*.stpnc",
+            "*.stp"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "stl_stereolithography_format": {
+        "name": "STL Stereolithography format",
+        "mime": [
+            "application/sla"
+        ],
+        "ext": [
+            "*.sla"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "scalable_vector_graphics": {
+        "name": "Scalable Vector Graphics",
+        "mime": [
+            "image/svg+xml",
+            "image/svg-xml"
+        ],
+        "ext": [
+            "*.svgz",
+            "*.svg"
+        ],
+        "reason": [
+            "long term format",
+            "open format"
+        ],
+        "source": [
+            "ISO/TR 22299",
+            "various"
+        ]
+    },
+    "silo_3d_model": {
+        "name": "Silo 3D model",
+        "mime": [
+            "model/mesh"
+        ],
+        "ext": [
+            "*.sia",
+            "*.silo",
+            "*.sib"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "staroffice_calc_format": {
+        "name": "StarOffice Calc Format",
+        "mime": [
+            "application/x-starcalc",
+            "application/vnd.stardivision.calc",
+            "application/vnd.sun.xml.calc.template"
+        ],
+        "ext": [
+            "*stc",
+            "*.sdc"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "stata_data_file_format": {
+        "name": "Stata Data File Format",
+        "mime": [
+            "application/x-stata",
+            "application/x-stata-6",
+            "application/x-stata-dta",
+            "application/x-stata-smcl",
+            "application/x-stata-syntax",
+            "application/x-stata-ado",
+            "application/x-stata-do",
+            "application/x-stata-14",
+            "application/x-stata-13",
+            "application/x-stata-15"
+        ],
+        "ext": [
+            "*.do",
+            "*.dta"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "stockholm_format": {
+        "name": "Stockholm format",
+        "mime": [
+            "text/x-stockholm-alignment"
+        ],
+        "ext": [
+            "*.sto"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "swissprot_sequence_format": {
+        "name": "SwissProt sequence format",
+        "mime": [
+            "chemical/x-swissprot"
+        ],
+        "ext": [
+            "*.sw"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "systems_biology_markup_language_sbml_": {
+        "name": "Systems Biology Markup Language (SBML)",
+        "mime": [
+            "application/sbml+xml"
+        ],
+        "ext": [
+            "*.sbml"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "tab_ddi_format": {
+        "name": "TAB DDI Format",
+        "mime": [
+            "application/x-dvn-tabddi-zip"
+        ],
+        "ext": [
+            "*.zip"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "tagged_image_file_format": {
+        "name": "Tagged Image File Format",
+        "mime": [
+            "image/tiff"
+        ],
+        "ext": [
+            "*.tif",
+            "*.tfx",
+            "*.tfw",
+            "*.tiff"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "tripos_molecule_structure_format_": {
+        "name": "Tripos molecule structure format ",
+        "mime": [
+            "chemical/x-mol2"
+        ],
+        "ext": [
+            "*.mol2"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "video_object_file_vob_": {
+        "name": "Video Object File (VOB)",
+        "mime": [
+            "video/x-ms-vob"
+        ],
+        "ext": [
+            "*.vob"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "vorbis_encoded_audio": {
+        "name": "Vorbis encoded audio",
+        "mime": [
+            "audio/vorbis-config",
+            "audio/vorbis"
+        ],
+        "ext": [
+            "*.wav"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "wave_audio_file_format": {
+        "name": "WAVE Audio File Format",
+        "mime": [
+            "audio/x-wav",
+            "audio/vnd.wave",
+            "audio/wave",
+            "audio/x-pn-wav",
+            "audio/wav"
+        ],
+        "ext": [
+            "*.wave",
+            "*.wav"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "webp_format": {
+        "name": "WebP Format",
+        "mime": [
+            "image/webp"
+        ],
+        "ext": [
+            "*.webp"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "windows_bitmap_image_file_bmp_": {
+        "name": "Windows Bitmap Image File (BMP)",
+        "mime": [
+            "image/x-ms-bmp",
+            "image/bmp"
+        ],
+        "ext": [
+            "*.bmp"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "windows_media_video": {
+        "name": "Windows Media Video",
+        "mime": [
+            "video/x-ms-asf",
+            "video/x-ms-wmv"
+        ],
+        "ext": [
+            "*.asf",
+            "*.wmv"
+        ],
+        "reason": [
+            "long term format"
+        ],
+        "source": [
+            "ISO/TR 22299"
+        ]
+    },
+    "wolfram_computable_document_format_cdf_": {
+        "name": "Wolfram Computable Document Format (CDF)",
+        "mime": [
+            "application/vnd.wolfram.cdf.text",
+            "application/vnd.wolfram.cdf"
+        ],
+        "ext": [
+            "*.cdf"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "x_pixmap_xpm_": {
+        "name": "X PixMap\u00a0(XPM)",
+        "mime": [
+            "image/x-xpixmap"
+        ],
+        "ext": [
+            "*.xpm",
+            "*.pm"
+        ],
+        "reason": [
+            "open format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "xtelplot_file_format": {
+        "name": "Xtelplot file format",
+        "mime": [
+            "chemical/x-xtel"
+        ],
+        "ext": [
+            "*.xtel"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "dbase_table_for_esri_shapefile": {
+        "name": "dBASE Table for ESRI Shapefile",
+        "mime": [
+            "application/dbase",
+            "application/dbf"
+        ],
+        "ext": [
+            "*.dbf",
+            "*.dbase"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    },
+    "miniseed_format": {
+        "name": "miniSEED Format",
+        "mime": [
+            "application/vnd.fdsn.mseed"
+        ],
+        "ext": [
+            "*.mseed"
+        ],
+        "reason": [
+            "scientific format"
+        ],
+        "source": [
+            "various"
+        ]
+    }
+}

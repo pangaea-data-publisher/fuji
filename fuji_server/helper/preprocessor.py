@@ -57,6 +57,7 @@ class Preprocessor(object):
     license_names = []
     metadata_standards = {}  # key=subject,value =[standards name]
     metadata_standards_uris = {}  #some additional namespace uris and all uris from above as key
+    all_file_formats = {}
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
@@ -364,29 +365,66 @@ class Preprocessor(object):
             cls.metadata_standards = data
 
     @classmethod
-    def retrieve_science_file_formats(cls, isDebugMode):
-        data = {}
-        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'science_formats.json')
+    def retrieve_all_file_formats(cls):
+        data={}
+        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'file_formats.json')
         with open(sci_file_path) as f:
             data = json.load(f)
+        if data:
+            cls.all_file_formats = data
+
+
+    @classmethod
+    def retrieve_science_file_formats(cls, isDebugMode):
+        data = {}
+        if not cls.all_file_formats:
+            cls.retrieve_all_file_formats()
+        for file in cls.all_file_formats.values():
+            if 'scientific format' in file.get('reason'):
+                domain = None
+                if file.get('domain'):
+                    domain = file.get('domain')[0]
+                for mime in file.get('mime'):
+                    data[mime] = domain
+        '''sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'science_formats.json')
+        with open(sci_file_path) as f:
+            data = json.load(f)'''
         if data:
             cls.science_file_formats = data
 
     @classmethod
     def retrieve_long_term_file_formats(cls, isDebugMode):
         data = {}
-        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'longterm_formats.json')
+        if not cls.all_file_formats:
+            cls.retrieve_all_file_formats()
+        for file in cls.all_file_formats.values():
+            if 'long term format' in file.get('reason'):
+                domain = None
+                if file.get('domain'):
+                    domain = file.get('domain')[0]
+                for mime in file.get('mime'):
+                    data[mime] = domain
+        '''sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'longterm_formats.json')
         with open(sci_file_path) as f:
-            data = json.load(f)
+            data = json.load(f)'''
         if data:
             cls.long_term_file_formats = data
 
     @classmethod
     def retrieve_open_file_formats(cls, isDebugMode):
         data = {}
-        sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'open_formats.json')
+        if not cls.all_file_formats:
+            cls.retrieve_all_file_formats()
+        for file in cls.all_file_formats.values():
+            if 'open format' in file.get('reason'):
+                domain = None
+                if file.get('domain'):
+                    domain = file.get('domain')[0]
+                for mime in file.get('mime'):
+                    data[mime] = domain
+        '''sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'open_formats.json')
         with open(sci_file_path) as f:
-            data = json.load(f)
+            data = json.load(f)'''
         if data:
             cls.open_file_formats = data
 
