@@ -36,10 +36,27 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 class IdentifierHelper:
     # List of PIDS e.g. those listed in datacite schema
-    VALID_PIDS = [
-        'ark', 'arxiv', 'bioproject', 'biosample', 'doi', 'ensembl', 'genome', 'gnd', 'handle', 'lsid', 'pmid', 'pmcid',
-        'purl', 'refseq', 'sra', 'uniprot', 'urn','identifiers.org','w3id'
-    ]
+    VALID_PIDS = {
+        'ark':{'label':'Archival Resource Key (ARK)','source':'datacite.org'},
+        'arxiv':{'label':'arXiv Submission ID','source':'datacite.org'},
+        'bioproject':{'label':'BioProject ID','source':'identifiers.org'},
+        'biosample':{'label':'BioSample ID','source':'identifiers.org'},
+        'doi':{'label':'Digital Object Identifier (DOI)','source':'datacite.org'},
+        'ensembl':{'label':'Ensembl ID','source':'identifiers.org'},
+        'genome':{'label':'GenBank or RefSeq genome','source':'identifiers.org'},
+        'gnd':{'label':'Gemeinsame Normdatei (GND) ID','source':'f-uji.net'},
+        'handle':{'label':'Handle System ID','source':'datacite.org'},
+        'lsid':{'label':'Life Science Identifier','source':'datacite.org'},
+        'pmid':{'label':'PubMed ID','source':'datacite.org'},
+        'pmcid':{'label':'PubMed Central ID','source':'identifiers.org'},
+        'purl':{'label':'Persistent Uniform Resource Locator (PURL)','source':'datacite.org'},
+        'refseq':{'label':'RefSeq ID','source':'identifiers.org'},
+        'sra':{'label':'Sequence Read Archive (SRA) ID','source':'identifiers.org'},
+        'uniprot':{'label':'UniProt ID','source':'identifiers.org'},
+        'urn':{'label':'Uniform Resource Name (URN)','source':'datacite.org'},
+        'identifiers.org':{'label':'Identifiers.org Identifier','source':'identifiers.org'},
+        'w3id':{'label':'Permanent Identifier for the Web (W3ID)','source':'identifiers.org'}
+    }
     #identifiers.org pattern
     #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS = r'https://identifiers.org/[provider_code/]namespace:accession'
