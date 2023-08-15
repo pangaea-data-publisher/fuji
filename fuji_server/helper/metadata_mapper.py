@@ -47,15 +47,7 @@ class Mapper(Enum):
     and metadata sources, e.g., Dublin Core, Open Graph, Microdata, Datacite, ORE Atom, Schema.org, etc.
     """
     ## ============================ CONFIGURATIONS ============================ ##
-    # List of PIDS e.g. those listed in datacite schema
-    VALID_PIDS = [
-        'ark', 'arxiv', 'bioproject', 'biosample', 'doi', 'ensembl', 'genome', 'gnd', 'handle', 'lsid', 'pmid', 'pmcid',
-        'purl', 'refseq', 'sra', 'uniprot', 'urn','identifiers.org','w3id'
-    ]
 
-    #identifiers.org pattern
-    #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
-    IDENTIFIERS_PIDS = r'https://identifiers.org/[provider_code/]namespace:accession'
 
     #CMMI capability maturity levels
     MATURITY_LEVELS = {0: 'incomplete', 1: 'initial', 2: 'moderate', 3: 'advanced'}

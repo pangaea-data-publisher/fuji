@@ -35,6 +35,15 @@ from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 
 
 class IdentifierHelper:
+    # List of PIDS e.g. those listed in datacite schema
+    VALID_PIDS = [
+        'ark', 'arxiv', 'bioproject', 'biosample', 'doi', 'ensembl', 'genome', 'gnd', 'handle', 'lsid', 'pmid', 'pmcid',
+        'purl', 'refseq', 'sra', 'uniprot', 'urn','identifiers.org','w3id'
+    ]
+    #identifiers.org pattern
+    #TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
+    IDENTIFIERS_PIDS = r'https://identifiers.org/[provider_code/]namespace:accession'
+
     IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
     identifier_schemes = []
     preferred_schema = None  # the preferred schema
@@ -158,7 +167,7 @@ class IdentifierHelper:
                             if not self.identifier_url:
                                 self.identifier_url = self.to_url(self.identifier, self.preferred_schema)
                             #print('IDURL ',self.identifier_url, self.preferred_schema)
-                if self.preferred_schema in Mapper.VALID_PIDS.value or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
+                if self.preferred_schema in self.VALID_PIDS or self.preferred_schema in self.IDENTIFIERS_ORG_DATA.keys(
                 ):
                     self.is_persistent = True
             if not self.normalized_id:

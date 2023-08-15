@@ -61,7 +61,7 @@ class MetadataHarvester():
         self.typed_links =[]
         self.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()
-        self.valid_pid_types = Mapper.VALID_PIDS.value
+        self.valid_pid_types = IdentifierHelper.VALID_PIDS
         self.namespace_uri = []
         self.metadata_sources = []
         self.metadata_unmerged = []
