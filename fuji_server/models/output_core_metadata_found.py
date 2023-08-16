@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -14,58 +14,15 @@ class OutputCoreMetadataFound(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 creator: List[str] = None,
-                 title: str = None,
-                 publisher: str = None,
-                 publication_date: date = None,
-                 summary: str = None,
-                 keywords: str = None,
-                 object_identifier: str = None):  # noqa: E501
+    def __init__(self):  # noqa: E501
         """OutputCoreMetadataFound - a model defined in Swagger
 
-        :param creator: The creator of this OutputCoreMetadataFound.  # noqa: E501
-        :type creator: List[str]
-        :param title: The title of this OutputCoreMetadataFound.  # noqa: E501
-        :type title: str
-        :param publisher: The publisher of this OutputCoreMetadataFound.  # noqa: E501
-        :type publisher: str
-        :param publication_date: The publication_date of this OutputCoreMetadataFound.  # noqa: E501
-        :type publication_date: date
-        :param summary: The summary of this OutputCoreMetadataFound.  # noqa: E501
-        :type summary: str
-        :param keywords: The keywords of this OutputCoreMetadataFound.  # noqa: E501
-        :type keywords: str
-        :param object_identifier: The object_identifier of this OutputCoreMetadataFound.  # noqa: E501
-        :type object_identifier: str
         """
         self.swagger_types = {
-            'creator': List[str],
-            'title': str,
-            'publisher': str,
-            'publication_date': date,
-            'summary': str,
-            'keywords': str,
-            'object_identifier': str
         }
 
         self.attribute_map = {
-            'creator': 'creator',
-            'title': 'title',
-            'publisher': 'publisher',
-            'publication_date': 'publication_date',
-            'summary': 'summary',
-            'keywords': 'keywords',
-            'object_identifier': 'object_identifier'
         }
-        self._creator = creator
-        self._title = title
-        self._publisher = publisher
-        self._publication_date = publication_date
-        self._summary = summary
-        self._keywords = keywords
-        self._object_identifier = object_identifier
 
     @classmethod
     def from_dict(cls, dikt) -> 'OutputCoreMetadataFound':
@@ -77,164 +34,3 @@ class OutputCoreMetadataFound(Model):
         :rtype: OutputCoreMetadataFound
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def creator(self) -> List[str]:
-        """Gets the creator of this OutputCoreMetadataFound.
-
-
-        :return: The creator of this OutputCoreMetadataFound.
-        :rtype: List[str]
-        """
-        return self._creator
-
-    @creator.setter
-    def creator(self, creator: List[str]):
-        """Sets the creator of this OutputCoreMetadataFound.
-
-
-        :param creator: The creator of this OutputCoreMetadataFound.
-        :type creator: List[str]
-        """
-        if creator is None:
-            raise ValueError('Invalid value for `creator`, must not be `None`')  # noqa: E501
-
-        self._creator = creator
-
-    @property
-    def title(self) -> str:
-        """Gets the title of this OutputCoreMetadataFound.
-
-
-        :return: The title of this OutputCoreMetadataFound.
-        :rtype: str
-        """
-        return self._title
-
-    @title.setter
-    def title(self, title: str):
-        """Sets the title of this OutputCoreMetadataFound.
-
-
-        :param title: The title of this OutputCoreMetadataFound.
-        :type title: str
-        """
-        if title is None:
-            raise ValueError('Invalid value for `title`, must not be `None`')  # noqa: E501
-
-        self._title = title
-
-    @property
-    def publisher(self) -> str:
-        """Gets the publisher of this OutputCoreMetadataFound.
-
-
-        :return: The publisher of this OutputCoreMetadataFound.
-        :rtype: str
-        """
-        return self._publisher
-
-    @publisher.setter
-    def publisher(self, publisher: str):
-        """Sets the publisher of this OutputCoreMetadataFound.
-
-
-        :param publisher: The publisher of this OutputCoreMetadataFound.
-        :type publisher: str
-        """
-        if publisher is None:
-            raise ValueError('Invalid value for `publisher`, must not be `None`')  # noqa: E501
-
-        self._publisher = publisher
-
-    @property
-    def publication_date(self) -> date:
-        """Gets the publication_date of this OutputCoreMetadataFound.
-
-
-        :return: The publication_date of this OutputCoreMetadataFound.
-        :rtype: date
-        """
-        return self._publication_date
-
-    @publication_date.setter
-    def publication_date(self, publication_date: date):
-        """Sets the publication_date of this OutputCoreMetadataFound.
-
-
-        :param publication_date: The publication_date of this OutputCoreMetadataFound.
-        :type publication_date: date
-        """
-        if publication_date is None:
-            raise ValueError('Invalid value for `publication_date`, must not be `None`')  # noqa: E501
-
-        self._publication_date = publication_date
-
-    @property
-    def summary(self) -> str:
-        """Gets the summary of this OutputCoreMetadataFound.
-
-
-        :return: The summary of this OutputCoreMetadataFound.
-        :rtype: str
-        """
-        return self._summary
-
-    @summary.setter
-    def summary(self, summary: str):
-        """Sets the summary of this OutputCoreMetadataFound.
-
-
-        :param summary: The summary of this OutputCoreMetadataFound.
-        :type summary: str
-        """
-        if summary is None:
-            raise ValueError('Invalid value for `summary`, must not be `None`')  # noqa: E501
-
-        self._summary = summary
-
-    @property
-    def keywords(self) -> str:
-        """Gets the keywords of this OutputCoreMetadataFound.
-
-
-        :return: The keywords of this OutputCoreMetadataFound.
-        :rtype: str
-        """
-        return self._keywords
-
-    @keywords.setter
-    def keywords(self, keywords: str):
-        """Sets the keywords of this OutputCoreMetadataFound.
-
-
-        :param keywords: The keywords of this OutputCoreMetadataFound.
-        :type keywords: str
-        """
-        if keywords is None:
-            raise ValueError('Invalid value for `keywords`, must not be `None`')  # noqa: E501
-
-        self._keywords = keywords
-
-    @property
-    def object_identifier(self) -> str:
-        """Gets the object_identifier of this OutputCoreMetadataFound.
-
-
-        :return: The object_identifier of this OutputCoreMetadataFound.
-        :rtype: str
-        """
-        return self._object_identifier
-
-    @object_identifier.setter
-    def object_identifier(self, object_identifier: str):
-        """Sets the object_identifier of this OutputCoreMetadataFound.
-
-
-        :param object_identifier: The object_identifier of this OutputCoreMetadataFound.
-        :type object_identifier: str
-        """
-        if object_identifier is None:
-            raise ValueError('Invalid value for `object_identifier`, must not be `None`')  # noqa: E501
-
-        self._object_identifier = object_identifier

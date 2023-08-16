@@ -48,6 +48,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         self.metadata_found = {}
         # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
         self.partial_elements = ['creator', 'title', 'object_identifier', 'publication_date', 'publisher', 'object_type']
+        self.required_metadata_properties = Mapper.REQUIRED_CORE_METADATA.value
 
     def testMetadataCommonMethodsAvailable(self):
         #implements FsF-F2-01M-1
@@ -82,17 +83,28 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
     def testCoreDescriptiveMetadataAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-3'):
+            community_requirements = self.metric_tests[self.metric_identifier + '-3'].community_requirements
+            if community_requirements:
+                if community_requirements.get('required'):
+                    self.logger.info(
+                        '{0} : Will exclusively consider community specific metadata properties which are specified in metrics -: {1}'.format(
+                            self.metric_identifier, community_requirements.get('required')))
+                    self.required_metadata_properties =[]
+                    for rq_prop in list(community_requirements.get('required')):
+                        if rq_prop in Mapper.REFERENCE_METADATA_LIST.value:
+                            self.required_metadata_properties.append(rq_prop)
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-            if set(self.metadata_found) == set(Mapper.REQUIRED_CORE_METADATA.value):
+            print('METADATA: ',set(self.metadata_found), set(self.required_metadata_properties))
+            if set(self.metadata_found) & set(self.required_metadata_properties) == set(self.required_metadata_properties):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
-                    self.metric_identifier+' : Found required core descriptive metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
+                    self.metric_identifier+' : Found required core descriptive metadata elements -: {}'.format(self.required_metadata_properties))
                 self.maturity = self.metric_tests.get(self.metric_identifier + '-3').metric_test_maturity_config
                 self.score.earned = self.total_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
                 test_status = True
             else:
-                core_missing = list(set(Mapper.REQUIRED_CORE_METADATA.value) - set(self.metadata_found))
+                core_missing = list(set(self.required_metadata_properties) - set(self.metadata_found))
                 self.logger.warning(
                     self.metric_identifier+' : Not all required core descriptive metadata elements exist, missing -: {}'.format(
                         str(core_missing)))
@@ -123,19 +135,15 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
         test_status = 'fail'
         metadata_status = 'insufficient metadata'
-        self.metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in Mapper.REQUIRED_CORE_METADATA.value}
+        self.metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in Mapper.REFERENCE_METADATA_LIST.value}
         self.logger.info(
             self.metric_identifier+' : Testing if any metadata has been made available via common web standards')
         if self.testMetadataCommonMethodsAvailable():
             test_status = 'pass'
             metadata_status = 'some metadata'
-        self.logger.info(
-            self.metric_identifier+' : Testing for required core citation metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
         if self.testCoreCitationMetadataAvailable():
             test_status = 'pass'
             metadata_status = 'partial metadata'
-        self.logger.info(
-            self.metric_identifier+' : Testing for required core descriptive metadata elements -: {}'.format(Mapper.REQUIRED_CORE_METADATA.value))
         if self.testCoreDescriptiveMetadataAvailable():
             test_status = 'pass'
             metadata_status = 'all metadata'
@@ -145,7 +153,8 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         self.output = CoreMetadataOutput(core_metadata_status=metadata_status,
                                          core_metadata_source=output_sources)
 
-        self.output.core_metadata_found = self.metadata_found
+        self.output.core_metadata_found = {k: v for k, v in self.metadata_found.items() if k in self.required_metadata_properties}
+
         self.result.test_status = test_status
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score

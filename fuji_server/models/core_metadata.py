@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
@@ -19,17 +19,7 @@ class CoreMetadata(Model):
 
     Do not edit the class manually.
     """
-
-    def __init__(self,
-                 id: int = None,
-                 metric_identifier: str = None,
-                 metric_name: str = None,
-                 metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
-                 test_status: str = 'fail',
-                 score: FAIRResultCommonScore = None,
-                 maturity: str = 'incomplete',
-                 output: CoreMetadataOutput = None,
-                 test_debug: Debug = None):  # noqa: E501
+    def __init__(self, id: int=None, metric_identifier: str=None, metric_name: str=None, metric_tests: Dict[str, FAIRResultEvaluationCriterium]=None, test_status: str='fail', score: FAIRResultCommonScore=None, maturity: int=0, output: CoreMetadataOutput=None, test_debug: Debug=None):  # noqa: E501
         """CoreMetadata - a model defined in Swagger
 
         :param id: The id of this CoreMetadata.  # noqa: E501
@@ -45,7 +35,7 @@ class CoreMetadata(Model):
         :param score: The score of this CoreMetadata.  # noqa: E501
         :type score: FAIRResultCommonScore
         :param maturity: The maturity of this CoreMetadata.  # noqa: E501
-        :type maturity: str
+        :type maturity: int
         :param output: The output of this CoreMetadata.  # noqa: E501
         :type output: CoreMetadataOutput
         :param test_debug: The test_debug of this CoreMetadata.  # noqa: E501
@@ -58,7 +48,7 @@ class CoreMetadata(Model):
             'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
             'test_status': str,
             'score': FAIRResultCommonScore,
-            'maturity': str,
+            'maturity': int,
             'output': CoreMetadataOutput,
             'test_debug': Debug
         }
@@ -114,7 +104,7 @@ class CoreMetadata(Model):
         :type id: int
         """
         if id is None:
-            raise ValueError('Invalid value for `id`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
 
@@ -137,7 +127,7 @@ class CoreMetadata(Model):
         :type metric_identifier: str
         """
         if metric_identifier is None:
-            raise ValueError('Invalid value for `metric_identifier`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_identifier`, must not be `None`")  # noqa: E501
 
         self._metric_identifier = metric_identifier
 
@@ -160,7 +150,7 @@ class CoreMetadata(Model):
         :type metric_name: str
         """
         if metric_name is None:
-            raise ValueError('Invalid value for `metric_name`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_name`, must not be `None`")  # noqa: E501
 
         self._metric_name = metric_name
 
@@ -203,10 +193,12 @@ class CoreMetadata(Model):
         :param test_status: The test_status of this CoreMetadata.
         :type test_status: str
         """
-        allowed_values = ['pass', 'fail', 'indeterminate']  # noqa: E501
+        allowed_values = ["pass", "fail", "indeterminate"]  # noqa: E501
         if test_status not in allowed_values:
-            raise ValueError('Invalid value for `test_status` ({0}), must be one of {1}'.format(
-                test_status, allowed_values))
+            raise ValueError(
+                "Invalid value for `test_status` ({0}), must be one of {1}"
+                .format(test_status, allowed_values)
+            )
 
         self._test_status = test_status
 
@@ -229,26 +221,26 @@ class CoreMetadata(Model):
         :type score: FAIRResultCommonScore
         """
         if score is None:
-            raise ValueError('Invalid value for `score`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
 
     @property
-    def maturity(self) -> str:
+    def maturity(self) -> int:
         """Gets the maturity of this CoreMetadata.
 
 
         :return: The maturity of this CoreMetadata.
-        :rtype: str
+        :rtype: int
         """
         return self._maturity
 
     @maturity.setter
     def maturity(self, maturity: int):
-        """Sets the maturity of this Uniqueness.
+        """Sets the maturity of this CoreMetadata.
 
 
-        :param maturity: The maturity of this Uniqueness.
+        :param maturity: The maturity of this CoreMetadata.
         :type maturity: int
         """
 
