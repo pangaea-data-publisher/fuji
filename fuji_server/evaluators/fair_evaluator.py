@@ -26,6 +26,7 @@ import re
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
 from fuji_server.helper.metadata_mapper import Mapper
+from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
 
 
 class FAIREvaluator:
@@ -133,15 +134,20 @@ class FAIREvaluator:
             for metric_test in all_metric_tests:
                 evaluation_criterium = FAIRResultEvaluationCriterium()
                 evaluation_criterium.metric_test_score = FAIRResultCommonScore()
+                evaluation_criterium.metric_test_requirements = FAIRResultEvaluationCriteriumRequirements()
                 #evaluation_criterium.metric_test_identifier = metric_test.get('metric_test_identifier')
                 evaluation_criterium.metric_test_status = 'fail'
                 evaluation_criterium.metric_test_name = metric_test.get('metric_test_name')
+                evaluation_criterium.metric_test_target = metric_test.get('metric_test_target')
+                if metric_test.get('metric_test_requirements'):
+                    evaluation_criterium.metric_test_requirements.modality = metric_test.get('metric_test_requirements').get('modality')
+                    evaluation_criterium.metric_test_requirements.required = metric_test.get('metric_test_requirements').get('required')
                 evaluation_criterium.metric_test_score.earned = 0
                 evaluation_criterium.metric_test_score.total = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_score_config = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_maturity = 0
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
-                evaluation_criterium.community_requirements = metric_test.get('community_requirements')
+                evaluation_criterium.community_requirements = metric_test.get('metric_test_requirements')
                 if metric_test.get('agnostic_test_identifier'):
                     self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
