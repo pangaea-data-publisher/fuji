@@ -117,7 +117,7 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
         self.output = PersistenceOutput()
         # ======= CHECK IDENTIFIER PERSISTENCE =======
         self.logger.info(self.metric_identifier + ' : PID schemes-based assessment supported by the assessment service - {}'.format(
-            IdentifierHelper.VALID_PIDS))
+            IdentifierHelper.VALID_PIDS.keys()))
 
         self.result.test_status = 'fail'
         self.setPidsOutput()
