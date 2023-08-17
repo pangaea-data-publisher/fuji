@@ -21,18 +21,13 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-docs-${{ hashFiles('**/setup.json') }}
+        key: pip-docs-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
           pip-docs-
 
     - name: Install python dependencies
       run: |
         pip install .[docs]
-
-    - name: Install Latex compiler
-      run: |
-        sudo apt-get update
-        # sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
 
     - name: Build documentation
       env:
@@ -66,7 +61,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-pre-commit-${{ hashFiles('**/setup.json') }}
+        key: pip-pre-commit-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
         restore-keys: |
           pip-pre-commit-
 
@@ -77,7 +72,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install .[dev]
+        pip install .[testing]
         pip freeze
 
     - name: Run pre-commit
@@ -102,7 +97,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('**/setup.json') }}
+        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
           pip-${{ matrix.python-version }}-tests
 
@@ -114,8 +109,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
-        pip install .[dev]
-        # pip install -r requirements.txt
+        pip install .[testing]
         pip freeze
 
     - name: Run pytest
