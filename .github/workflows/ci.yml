@@ -1,6 +1,20 @@
-name: fuji-server-main
+name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUNBUFFERED: 1
+  FORCE_COLOR: 1 # colored output by pytest etc.
+
+permissions:
+  contents: read
 
 jobs:
 
