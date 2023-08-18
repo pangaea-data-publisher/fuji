@@ -15,7 +15,7 @@
 #import fuji_server
 import sys
 import os
-
+from fuji_server import __version__
 
 PROJECTNAME = u'Fuji' #u'F-uji Server'
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -66,11 +66,8 @@ copyright = u'2020-today PANGAEA'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-#
-
-version = '1.4.3' #'.'.join(fuji_server.__version__.split('.')[:2])
-# The full version, including alpha/beta/rc tags.
-release = version #fuji_server.__version__
+version = __version__
+release = __version__
 author = 'The F-uji authors'
 
 
