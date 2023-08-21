@@ -18,19 +18,23 @@ metrics:
       metric_test_name: Identifier is resolvable and follows a defined unique identifier syntax (IRI, URL)
       metric_test_score: 1
       metric_test_maturity: 3
-      metric_test_target: https://f-uji.net/vocab/identifier
       metric_test_requirements:
-        modality: any
+        - target: https://f-uji.net/vocab/identifier
+          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+          modality: any
+          comment: identifier can be given as user input
     - metric_test_identifier: FsF-F1-01D-2
       metric_test_name: Identifier is not resolvable but follows an UUID or HASH type syntax
       metric_test_score: 0.5
       metric_test_maturity: 1
-      metric_test_target: https://f-uji.net/vocab/identifier/unique
       metric_test_requirements:
-        modality: any
-        required:
-          - uuid
-          - hash
+        - target: https://f-uji.net/vocab/identifier/unique
+          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+          modality: any
+          required:
+            - uuid
+            - hash
+          comment: identifier can be given as user input
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-11-25
@@ -51,8 +55,17 @@ metrics:
       metric_test_name: Identifier follows a defined persistent identifier syntax
       metric_test_score: 0.5
       metric_test_maturity: 1
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/identifier/persistent
+          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+          modality: any
+          comment: identifier can be given as user input
     - metric_test_identifier: FsF-F1-02D-2
       metric_test_name: Persistent identifier is resolvable
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/identifier/persistent
+          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+          comment: identifier has to resolve to a valid URI
       metric_test_score: 1
       metric_test_maturity: 3
   created_by: FAIRsFAIR
@@ -79,26 +92,41 @@ metrics:
       metric_test_name: Metadata has been made available via common web methods
       metric_test_score: 0.5
       metric_test_maturity: 1
-    - metric_test_identifier: FsF-F2-01M-1a
-      metric_test_name: Metadata is embedded in the landing page XHTML/HTML code
-      metric_test_score: 0.5
-    - metric_test_identifier: FsF-F2-01M-1b
-      metric_test_name: Metadata is accessible through content negotiation
-      metric_test_score: 0.5
-    - metric_test_identifier: FsF-F2-01M-1c
-      metric_test_name: Metadata is accessible via typed links
-      metric_test_score: 0.5
-    - metric_test_identifier: FsF-F2-01M-1d
-      metric_test_name: Metadata is accessible via signposting links
-      metric_test_score: 0.5
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/metadata/offering_method
+          modality: any
     - metric_test_identifier: FsF-F2-01M-2
       metric_test_name: Core data citation metadata is available
       metric_test_score: 0.5
       metric_test_maturity: 2
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/metadata/property
+          modality: all
+          tested_on: https://f-uji.net/vocab/metadata/property
+          required:
+            - creator
+            - title
+            - object_identifier
+            - publication_date
+            - publisher
+            - object_type
     - metric_test_identifier: FsF-F2-01M-3
       metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/metadata/property
+          modality: all
+          tested_on: https://f-uji.net/vocab/metadata/property
+          required:
+            - creator
+            - title
+            - object_identifier
+            - publication_date
+            - publisher
+            - object_type
+            - summary
+            - keywords
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2022-05-30
@@ -119,10 +147,19 @@ metrics:
       metric_test_name: Metadata contains data content related information (file name, size, type)
       metric_test_score: 0.5
       metric_test_maturity: 1
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/data/property
+          tested_on: https://f-uji.net/vocab/metadata/property/object_content_identifier
+          modality: all
+          required:
+            - type
+            - size
     - metric_test_identifier: FsF-F3-01M-2
       metric_test_name: Metadata contains a PID or URL which indicates the location of the downloadable data content
       metric_test_score: 0.5
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: https://f-uji.net/vocab/data/property/url
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2022-05-30
@@ -143,6 +180,18 @@ metrics:
       metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (JSON-LD, Dublin Core, RDFa)
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/metadata/sources
+          modality: any
+          required:
+            - dublin-core
+            - schemaorg
+            - dcat-data-catalog-vocabulary
+        - target: http://f-uji.net/vocab/metadata/offering_method
+          modality: any
+          required:
+            - html_embedding
+            - microdata
     - metric_test_identifier: FsF-F4-01M-2
       metric_test_name: Metadata is registered in major research data registries (DataCite)
       metric_test_score: 1
