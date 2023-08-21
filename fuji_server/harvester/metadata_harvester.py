@@ -104,6 +104,7 @@ class MetadataHarvester():
         self.metadata_sources.append((source.name, source.value.get('method')))
 
     def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
+        offering_method = None
         if not isinstance(namespaces, list):
             namespaces = [namespaces]
         if isinstance(metadict,dict):
@@ -133,9 +134,13 @@ class MetadataHarvester():
             ## add: mechanism ('content negotiation', 'typed links', 'embedded')
             ## add: format namespace
             if isinstance(method, enum.Enum):
+                if isinstance(method.value, dict):
+                    offering_method = method.value.get('method').acronym()
                 method = method.name
+
                 
             mdict = {'method' : method,
+                     'offering_method':offering_method,
                      'url' : url,
                      'format' : format,
                      'schema' : schema,
@@ -628,7 +633,7 @@ class MetadataHarvester():
             self.set_html_typed_links()
             self.set_signposting_header_links(requestHelper.response_content, requestHelper.getResponseHeader())
             self.set_signposting_linkset_links()
-            if self.is_harvesting_method_allowed(MetadataOfferingMethods.HTML_EMBEDDING) or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA):
+            if self.is_harvesting_method_allowed(MetadataOfferingMethods.HTML_EMBEDDING) or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA_RDFA):
                 self.logger.info('FsF-F2-01M : Starting to analyse EMBEDDED metadata at -: ' + str(self.landing_url))
                 #test if content is html otherwise skip embedded tests
                 #print(self.landing_content_type)
