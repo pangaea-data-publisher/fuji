@@ -50,16 +50,18 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.knownnamespaceuris = []
 
     def setCommunityRequirements(self):
+        test_requirements =[]
         reqsdefined = False
-        community_requirements = self.metric_tests[self.metric_identifier + '-2'].community_requirements
-        if community_requirements:
+        if self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements:
+            test_requirements = self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements[0]
+        if test_requirements:
             community_vocabs =[]
-            if community_requirements.get('required'):
+            if test_requirements.get('required'):
                 reqsdefined = True
                 self.logger.info(
                     '{0} : Will exclusively consider community specific vocabularies which are specified in metrics -: {1}'.format(
-                        self.metric_identifier, community_requirements.get('required')))
-                for rq_vocab in list(community_requirements.get('required')):
+                        self.metric_identifier, test_requirements.get('required')))
+                for rq_vocab in list(test_requirements.get('required')):
                     for kn_vocab in self.knownnamespaceuris:
                         if fnmatch.fnmatch(kn_vocab, rq_vocab):
                             community_vocabs.append(kn_vocab)
@@ -155,7 +157,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                                          metric_identifier=self.metric_identifier,
                                          metric_name=self.metric_name)
 
-        outputs = []
+        #outputs = []
         test_status = 'fail'
         # remove duplicates and default namespaces
         if len(self.fuji.namespace_uri) >0:
@@ -178,4 +180,4 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.result.score = self.score
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
-        self.result.output = outputs
+        self.result.output = self.outputs

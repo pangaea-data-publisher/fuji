@@ -7,7 +7,6 @@ from typing import List, Dict  # noqa: F401
 
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
-from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements  # noqa: F401,E501
 from fuji_server import util
 
 
@@ -16,15 +15,13 @@ class FAIRResultEvaluationCriterium(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metric_test_name: str=None, metric_test_target: str=None, metric_test_requirements: FAIRResultEvaluationCriteriumRequirements=None, metric_test_score: FAIRResultCommonScore=None, metric_test_maturity: int=None, metric_test_status: str='fail'):  # noqa: E501
+    def __init__(self, metric_test_name: str=None, metric_test_requirements: List[Dict]=None, metric_test_score: FAIRResultCommonScore=None, metric_test_maturity: int=None, metric_test_status: str='fail'):  # noqa: E501
         """FAIRResultEvaluationCriterium - a model defined in Swagger
 
         :param metric_test_name: The metric_test_name of this FAIRResultEvaluationCriterium.  # noqa: E501
         :type metric_test_name: str
-        :param metric_test_target: The metric_test_target of this FAIRResultEvaluationCriterium.  # noqa: E501
-        :type metric_test_target: str
         :param metric_test_requirements: The metric_test_requirements of this FAIRResultEvaluationCriterium.  # noqa: E501
-        :type metric_test_requirements: FAIRResultEvaluationCriteriumRequirements
+        :type metric_test_requirements: List[Dict]
         :param metric_test_score: The metric_test_score of this FAIRResultEvaluationCriterium.  # noqa: E501
         :type metric_test_score: FAIRResultCommonScore
         :param metric_test_maturity: The metric_test_maturity of this FAIRResultEvaluationCriterium.  # noqa: E501
@@ -34,8 +31,7 @@ class FAIRResultEvaluationCriterium(Model):
         """
         self.swagger_types = {
             'metric_test_name': str,
-            'metric_test_target': str,
-            'metric_test_requirements': FAIRResultEvaluationCriteriumRequirements,
+            'metric_test_requirements': List[Dict],
             'metric_test_score': FAIRResultCommonScore,
             'metric_test_maturity': int,
             'metric_test_status': str
@@ -43,14 +39,12 @@ class FAIRResultEvaluationCriterium(Model):
 
         self.attribute_map = {
             'metric_test_name': 'metric_test_name',
-            'metric_test_target': 'metric_test_target',
             'metric_test_requirements': 'metric_test_requirements',
             'metric_test_score': 'metric_test_score',
             'metric_test_maturity': 'metric_test_maturity',
             'metric_test_status': 'metric_test_status'
         }
         self._metric_test_name = metric_test_name
-        self._metric_test_target = metric_test_target
         self._metric_test_requirements = metric_test_requirements
         self._metric_test_score = metric_test_score
         self._metric_test_maturity = metric_test_maturity
@@ -89,43 +83,22 @@ class FAIRResultEvaluationCriterium(Model):
         self._metric_test_name = metric_test_name
 
     @property
-    def metric_test_target(self) -> str:
-        """Gets the metric_test_target of this FAIRResultEvaluationCriterium.
-
-
-        :return: The metric_test_target of this FAIRResultEvaluationCriterium.
-        :rtype: str
-        """
-        return self._metric_test_target
-
-    @metric_test_target.setter
-    def metric_test_target(self, metric_test_target: str):
-        """Sets the metric_test_target of this FAIRResultEvaluationCriterium.
-
-
-        :param metric_test_target: The metric_test_target of this FAIRResultEvaluationCriterium.
-        :type metric_test_target: str
-        """
-
-        self._metric_test_target = metric_test_target
-
-    @property
-    def metric_test_requirements(self) -> FAIRResultEvaluationCriteriumRequirements:
+    def metric_test_requirements(self) -> List[Dict]:
         """Gets the metric_test_requirements of this FAIRResultEvaluationCriterium.
 
 
         :return: The metric_test_requirements of this FAIRResultEvaluationCriterium.
-        :rtype: FAIRResultEvaluationCriteriumRequirements
+        :rtype: List[Dict]
         """
         return self._metric_test_requirements
 
     @metric_test_requirements.setter
-    def metric_test_requirements(self, metric_test_requirements: FAIRResultEvaluationCriteriumRequirements):
+    def metric_test_requirements(self, metric_test_requirements: List[Dict]):
         """Sets the metric_test_requirements of this FAIRResultEvaluationCriterium.
 
 
         :param metric_test_requirements: The metric_test_requirements of this FAIRResultEvaluationCriterium.
-        :type metric_test_requirements: FAIRResultEvaluationCriteriumRequirements
+        :type metric_test_requirements: List[Dict]
         """
 
         self._metric_test_requirements = metric_test_requirements

@@ -61,7 +61,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
 
                 for source_mechanism in source_mechanisms:
-                    if source_mechanism in [MetadataOfferingMethods.MICRODATA, MetadataOfferingMethods.HTML_EMBEDDING]:
+                    if source_mechanism in [MetadataOfferingMethods.MICRODATA_RDFA, MetadataOfferingMethods.HTML_EMBEDDING]:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1a', 0, 'pass')
                     if source_mechanism == MetadataOfferingMethods.CONTENT_NEGOTIATION:
                         self.setEvaluationCriteriumScore('FsF-F2-01M-1b', 0, 'pass')
@@ -83,18 +83,17 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
     def testCoreDescriptiveMetadataAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-3'):
-            community_requirements = self.metric_tests[self.metric_identifier + '-3'].community_requirements
-            if community_requirements:
-                if community_requirements.get('required'):
+            test_requirements = self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements[0]
+            if test_requirements:
+                if test_requirements.get('required'):
                     self.logger.info(
                         '{0} : Will exclusively consider community specific metadata properties which are specified in metrics -: {1}'.format(
-                            self.metric_identifier, community_requirements.get('required')))
+                            self.metric_identifier, test_requirements.get('required')))
                     self.required_metadata_properties =[]
-                    for rq_prop in list(community_requirements.get('required')):
+                    for rq_prop in list(test_requirements.get('required')):
                         if rq_prop in Mapper.REFERENCE_METADATA_LIST.value:
                             self.required_metadata_properties.append(rq_prop)
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
-            print('METADATA: ',set(self.metadata_found), set(self.required_metadata_properties))
             if set(self.metadata_found) & set(self.required_metadata_properties) == set(self.required_metadata_properties):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,

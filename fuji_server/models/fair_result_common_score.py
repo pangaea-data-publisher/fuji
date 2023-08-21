@@ -14,17 +14,17 @@ class FAIRResultCommonScore(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, earned: float=0, total: int=0):  # noqa: E501
+    def __init__(self, earned: float=0, total: float=0):  # noqa: E501
         """FAIRResultCommonScore - a model defined in Swagger
 
         :param earned: The earned of this FAIRResultCommonScore.  # noqa: E501
         :type earned: float
         :param total: The total of this FAIRResultCommonScore.  # noqa: E501
-        :type total: int
+        :type total: float
         """
         self.swagger_types = {
             'earned': float,
-            'total': int
+            'total': float
         }
 
         self.attribute_map = {
@@ -67,22 +67,22 @@ class FAIRResultCommonScore(Model):
         self._earned = earned
 
     @property
-    def total(self) -> int:
+    def total(self) -> float:
         """Gets the total of this FAIRResultCommonScore.
 
 
         :return: The total of this FAIRResultCommonScore.
-        :rtype: int
+        :rtype: float
         """
         return self._total
 
     @total.setter
-    def total(self, total: int):
+    def total(self, total: float):
         """Sets the total of this FAIRResultCommonScore.
 
 
         :param total: The total of this FAIRResultCommonScore.
-        :type total: int
+        :type total: float
         """
 
         self._total = total

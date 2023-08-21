@@ -27,6 +27,7 @@ import urllib.parse
 
 import Levenshtein
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
 from fuji_server.models.license import License
 from fuji_server.models.license_output_inner import LicenseOutputInner
 import idutils
@@ -181,23 +182,23 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def testLicenseIsValidAndSPDXRegistered(self):
         test_status = False
+        test_requirements = {}
         if self.isTestDefined(self.metric_identifier + '-2'):
-            community_requirements = self.metric_tests[self.metric_identifier + '-2'].community_requirements
-            if not community_requirements:
-                community_requirements = {}
+            if self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements:
+                test_requirements = self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements[0]
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            if community_requirements.get('required'):
+            if test_requirements.get('required'):
                 self.logger.info(
                     '{0} : Will exclusively consider community specific licenses for {0}{1} which are specified in metrics -: {2}'.format(
-                        self.metric_identifier, '-2', community_requirements.get('required')))
+                        self.metric_identifier, '-2', test_requirements.get('required')))
             else:
                 self.logger.info(
-                    '{0} : Will consider all SPDX licenses as community specific licenses for {0}{1} '.format(
-                        self.metric_identifier, '-2', community_requirements.get('required')))
+                    '{0} : Will consider all SPDX licenses as community specific licenses for {0} '.format(
+                        self.metric_identifier, '-2'))
             if self.license_info:
                 for l in self.license_info:
-                    if community_requirements.get('required'):
-                        for rq_license_id in list(community_requirements.get('required')):
+                    if test_requirements.get('required'):
+                        for rq_license_id in list(test_requirements.get('required')):
                             if fnmatch.fnmatch(l.get('id'), rq_license_id):
                                 test_status = True
                     else:

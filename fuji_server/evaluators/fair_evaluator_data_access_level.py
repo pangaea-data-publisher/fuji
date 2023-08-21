@@ -59,23 +59,24 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         real_access_rights = []
         if access_rights:
             for access_right in access_rights:
-                access_right = re.sub(r'[\r\n]+', ' ', access_right)
-                if not licence_evaluator.isLicense(
-                        value=access_right,
-                        metric_id=self.metric_identifier):  # exclude license-based text from access_rights
-                    real_access_rights.append(access_right)
-                else:
-                    self.logger.warning(
-                        self.metric_identifier + ' : Access condition looks like license, therefore the following is ignored -: {}'.
-                            format(access_right))
-                    if self.fuji.metadata_merged.get('license'):
-                        if isinstance(self.fuji.metadata_merged.get('license'), list):
-                            self.fuji.metadata_merged['license'].append(access_right)
-                        else:
-                            self.fuji.metadata_merged['license'] = [access_right]
-                    self.logger.info(
-                        'FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'
-                            .format(access_right))
+                if isinstance(access_right, str):
+                    access_right = re.sub(r'[\r\n]+', ' ', access_right)
+                    if not licence_evaluator.isLicense(
+                            value=access_right,
+                            metric_id=self.metric_identifier):  # exclude license-based text from access_rights
+                        real_access_rights.append(access_right)
+                    else:
+                        self.logger.warning(
+                            self.metric_identifier + ' : Access condition looks like license, therefore the following is ignored -: {}'.
+                                format(access_right))
+                        if self.fuji.metadata_merged.get('license'):
+                            if isinstance(self.fuji.metadata_merged.get('license'), list):
+                                self.fuji.metadata_merged['license'].append(access_right)
+                            else:
+                                self.fuji.metadata_merged['license'] = [access_right]
+                        self.logger.info(
+                            'FsF-R1.1-01M : License expressed as access condition (rights), therefore moved from FsF-A1-01M -: {}'
+                                .format(access_right))
         return real_access_rights
 
     def testAccessRightsMetadataAvailable(self, access_rights):
