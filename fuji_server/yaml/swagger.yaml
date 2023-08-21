@@ -443,6 +443,11 @@ components:
       properties:
         metric_test_name:
           type: string
+        metric_test_requirements:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
         metric_test_score:
           $ref: '#/components/schemas/FAIRResultCommon_score'
         metric_test_maturity:
@@ -492,33 +497,9 @@ components:
           type: string
 
     output_core_metadata_found:
-      required:
-      - creator
-      - keywords
-      - object_identifier
-      - publication_date
-      - publisher
-      - summary
-      - title
       type: object
-      properties:
-        creator:
-          type: array
-          items:
-            type: string
-        title:
-          type: string
-        publisher:
-          type: string
-        publication_date:
-          type: string
-          format: date
-        summary:
-          type: string
-        keywords:
-          type: string
-        object_identifier:
-          type: string
+      additionalProperties:
+        type: string
     CoreMetadata_output:
       type: object
       properties:
