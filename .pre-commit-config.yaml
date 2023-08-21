@@ -31,18 +31,3 @@ repos:
   #   hooks:
   #   - id: pylint
   #     exclude: '^(docs/)|(examples/)|(fuji_server/models/)'
-
-  - repo: local
-    hooks:
-      - id: version-number
-        name: Check version numbers
-        entry: python ./utils/validate_version_consistency.py
-        language: system
-        files: >-
-          (?x)^(
-            setup.py|
-            utils/validate_version_consistency.py|
-            masci_tools/__init__.py|
-            .bumpversion.cfg
-          )$
-        pass_filenames: false

@@ -31,4 +31,6 @@ from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
 
-__version__ = '2.2.5'
+from importlib.metadata import version
+
+__version__ = version("fuji")
