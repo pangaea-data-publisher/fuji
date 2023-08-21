@@ -64,7 +64,7 @@ class Mapper(Enum):
         'publication_date':{'label':'Publication Date','sameAs':'http://purl.org/dc/terms/date'},
         'summary':{'label':'Summary','sameAs':'http://purl.org/dc/terms/abstract'},
         'keywords':{'label':'Keywords','sameAs':'http://purl.org/dc/terms/subject'},
-        'object_content_identifier':{'label':'Keywords','sameAs':None},
+        'object_content_identifier':{'label':'Content (Data) Identifier','sameAs':'https://schema.org/contentUrl'},
         'access_level':{'label':'Access Level','sameAs':'http://purl.org/dc/terms/accessRights'},
         'access_free':{'label':'Free Access','sameAs':'https://schema.org/isAccessibleForFree'},
         'related_resources':{'label':'Related resources','sameAs':'http://purl.org/dc/terms/related'},
