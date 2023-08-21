@@ -26,7 +26,7 @@ import re
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
 from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
+#from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
 
 
 class FAIREvaluator:
@@ -134,20 +134,26 @@ class FAIREvaluator:
             for metric_test in all_metric_tests:
                 evaluation_criterium = FAIRResultEvaluationCriterium()
                 evaluation_criterium.metric_test_score = FAIRResultCommonScore()
-                evaluation_criterium.metric_test_requirements = FAIRResultEvaluationCriteriumRequirements()
+                evaluation_criterium.metric_test_requirements = []
                 #evaluation_criterium.metric_test_identifier = metric_test.get('metric_test_identifier')
                 evaluation_criterium.metric_test_status = 'fail'
                 evaluation_criterium.metric_test_name = metric_test.get('metric_test_name')
                 evaluation_criterium.metric_test_target = metric_test.get('metric_test_target')
                 if metric_test.get('metric_test_requirements'):
-                    evaluation_criterium.metric_test_requirements.modality = metric_test.get('metric_test_requirements').get('modality')
-                    evaluation_criterium.metric_test_requirements.required = metric_test.get('metric_test_requirements').get('required')
+                    for test_requirements in metric_test.get('metric_test_requirements'):
+                        #test_req = FAIRResultEvaluationCriteriumRequirements()
+                        test_req = {}
+                        test_req['modality'] = test_requirements.get('modality')
+                        test_req['required'] = test_requirements.get('required')
+                        test_req['tested_on'] = test_requirements.get('tested_on')
+                        test_req['comment'] = test_requirements.get('comment')
+                        test_req['target'] = test_requirements.get('target')
+                        evaluation_criterium.metric_test_requirements.append(test_req)
                 evaluation_criterium.metric_test_score.earned = 0
                 evaluation_criterium.metric_test_score.total = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_score_config = metric_test.get('metric_test_score')
                 evaluation_criterium.metric_test_maturity = 0
                 evaluation_criterium.metric_test_maturity_config = metric_test.get('metric_test_maturity')
-                evaluation_criterium.community_requirements = metric_test.get('metric_test_requirements')
                 if metric_test.get('agnostic_test_identifier'):
                     self.metric_tests[metric_test.get('agnostic_test_identifier')] = evaluation_criterium
 
