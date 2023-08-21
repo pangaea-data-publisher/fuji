@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fuji"
-version = "2.2.7"
+version = "3.0.0"
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 authors = [
     "Robert Huber <rhuber@marum.de>",
@@ -99,5 +99,5 @@ dev = ["yapf", "pytest", "pre-commit", "pytest-cov", "pylint", "sphinx-rtd-theme
 
 
 [build-system]
-requires = ["poetry>=1.2.0a2"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.5.0"]
+build-backend = "poetry.core.masonry.api"

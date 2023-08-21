@@ -1,6 +1,20 @@
-name: fuji-server-main
+name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUNBUFFERED: 1
+  FORCE_COLOR: 1 # colored output by pytest etc.
+
+permissions:
+  contents: read
 
 jobs:
 
@@ -9,30 +23,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
     - name: Cache python dependencies
       id: cache-pip
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-docs-${{ hashFiles('**/setup.json') }}
+        key: pip-docs-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
           pip-docs-
 
     - name: Install python dependencies
       run: |
         pip install .[docs]
-
-    - name: Install Latex compiler
-      run: |
-        sudo apt-get update
-        # sudo apt-get install -y latexmk dvipng texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+        pip show fuji
 
     - name: Build documentation
       env:
@@ -59,26 +69,27 @@ jobs:
     continue-on-error: ${{ matrix.strict }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Cache python dependencies
       id: cache-pip
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-pre-commit-${{ hashFiles('**/setup.json') }}
+        key: pip-pre-commit-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
         restore-keys: |
           pip-pre-commit-
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
     - name: Install python dependencies
       run: |
-        pip install .[dev]
+        pip install .[testing]
         pip freeze
+        pip show fuji
 
     - name: Run pre-commit
       run: |
@@ -95,27 +106,26 @@ jobs:
         python-version: ['3.9', '3.8', '3.7']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Cache python dependencies
       id: cache-pip
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('**/setup.json') }}
+        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
           pip-${{ matrix.python-version }}-tests
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
 
     - name: Install python dependencies
       run: |
-        pip install .[dev]
-        # pip install -r requirements.txt
+        pip install .[testing]
         pip freeze
 
     - name: Run pytest

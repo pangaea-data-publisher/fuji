@@ -81,6 +81,7 @@ from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
+from fuji_server import __version__
 
 class FAIRCheck:
     METRICS = None
@@ -107,7 +108,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
-    FUJI_VERSION = '3.0.0'
+    FUJI_VERSION = __version__
 
     def __init__(self,
                  uid,
