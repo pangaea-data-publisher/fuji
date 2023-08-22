@@ -82,7 +82,7 @@ class Preprocessor(object):
     google_custom_search_api_key = None
 
     def __new__(cls):
-        """Define what happens on object creation to ensure preprocessor is a singledton"""
+        """Define what happens on object creation to ensure preprocessor is a singleton"""
         if cls._instance is None:
             #print('Creating the Preprocessor')
             cls._instance = super(Preprocessor, cls).__new__(cls)
