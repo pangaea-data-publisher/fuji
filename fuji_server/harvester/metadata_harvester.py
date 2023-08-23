@@ -418,6 +418,8 @@ class MetadataHarvester():
                     if signidhelper.identifier_url not in self.pid_collector and signidhelper.is_persistent and signidhelper.preferred_schema in self.valid_pid_types:
                         signpid_record = signidhelper.get_identifier_info(self.pid_collector)
                         self.pid_collector[signidhelper.identifier_url] = signpid_record
+                        resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(signidhelper.identifier_url)
+                        self.pid_collector[signidhelper.identifier_url]['verified'] = resolves_to_landing_domain
 
 
     def get_html_typed_links(self, rel='item', allkeys=True):

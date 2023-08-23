@@ -408,6 +408,7 @@ class FAIRCheck:
         self.metadata_sources.extend( self.metadata_harvester.metadata_sources)
         self.linked_namespace_uri.update( self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend( self.metadata_harvester.related_resources)
+        self.metadata_harvester.get_signposting_object_identifier()
         self.pid_collector.update(self.metadata_harvester.pid_collector)
 
     def lookup_metadatastandard_by_name(self, value):
@@ -456,7 +457,7 @@ class FAIRCheck:
         return persistent_identifier_check.getResult()
 
     def check_unique_persistent_metadata_identifier(self):
-        self.metadata_harvester.get_signposting_object_identifier()
+        #self.metadata_harvester.get_signposting_object_identifier()
         return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
 
     def check_minimal_metatadata(self, include_embedded=True):
