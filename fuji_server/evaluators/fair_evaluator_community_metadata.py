@@ -181,7 +181,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     stds = []
                     for sturi in repoHelper.getRe3MetadataStandards():
                         sinfo = self.get_metadata_standards_info(sturi, 're3data')
-                        print('OAI URI ', sturi, sinfo)
+                        #print('OAI URI ', sturi, sinfo)
                         if sinfo:
                             self.found_metadata_standards.append(sinfo)
                             if sinfo.get('name') not in stds:
@@ -213,14 +213,16 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 format('FsF-R1.3-01M'))
 
     def filter_community_metadata_standards(self, testid, found_metadata_standards):
-        community_requirements = self.metric_tests[self.metric_identifier + str(testid)].community_requirements
-        if community_requirements:
+        test_requirements = []
+        if self.metric_tests[self.metric_identifier + str(testid)].metric_test_requirements:
+            test_requirements = self.metric_tests[self.metric_identifier + str(testid)].metric_test_requirements[0]
+        if test_requirements:
             community_standards = []
-            if community_requirements.get('required'):
+            if test_requirements.get('required'):
                 self.logger.info(
                     '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
-                        self.metric_identifier, str(testid), community_requirements.get('required')))
-                for rq_mstandard_id in list(community_requirements.get('required')):
+                        self.metric_identifier, str(testid), test_requirements.get('required')))
+                for rq_mstandard_id in list(test_requirements.get('required')):
                     for kn_mstandard in self.found_metadata_standards:
                         #check if internal or external identifiers (RDA, fairsharing) are listed
                         if rq_mstandard_id in  kn_mstandard.get('external_ids') or rq_mstandard_id == kn_mstandard.get('id'):
