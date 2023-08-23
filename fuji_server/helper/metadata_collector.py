@@ -34,7 +34,7 @@ from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 class MetadataOfferingMethods(enum.Enum):
     HTML_EMBEDDING = {'label': 'HTML Embedding', 'acronym': 'html_embedding'}
-    MICRODATA = {'label': 'Microdata', 'acronym': 'microdata'}
+    MICRODATA_RDFA = {'label': 'Microdata and RDFa', 'acronym': 'microdata_rdfa'}
     TYPED_LINKS = {'label': 'Typed Links', 'acronym': 'typed_links'}
     SIGNPOSTING = {'label': 'Signposting Links', 'acronym': 'signposting'}
     CONTENT_NEGOTIATION = {'label': 'Content Negotiation', 'acronym': 'content_negotiation'}
@@ -68,8 +68,8 @@ class MetadataSources(enum.Enum):
                           'acronym': 'opengraph-html'}
     SCHEMAORG_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Schema.org JSON-LD (Embedded)',
                           'acronym': 'schemaorg-html'}
-    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html'}
-    MICRODATA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA, 'label': 'Embedded Microdata',
+    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html'}
+    MICRODATA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded Microdata',
                           'acronym': 'microdata-html'}
     SCHEMAORG_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Schema.org JSON-LD (Negotiated)',
                             'acronym': 'schemaorg-negotiated'}
