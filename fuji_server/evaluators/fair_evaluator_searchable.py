@@ -24,13 +24,14 @@
 
 from fuji_server import OutputSearchMechanisms
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
 from fuji_server.helper.catalogue_helper_datacite import MetaDataCatalogueDataCite
 from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
 from fuji_server.helper.catalogue_helper_mendeley_data import MetaDataCatalogueMendeleyData
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataOfferingMethods
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from typing import List, Any
 
@@ -52,6 +53,8 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-F4-01M')
         self.search_mechanisms = []
+        self.search_engines_support_offering =  ['html_embedding', 'rdfa_microdata']
+        self.search_engines_support_standards = ['schemaorg','dublin-core','dcat-data-catalog-vocabulary']# from f-uji.net/vocab/metadata/standards
         self.search_engines_support = [
             MetadataSources.SCHEMAORG_NEGOTIATED.name, MetadataSources.SCHEMAORG_EMBEDDED.name,
             MetadataSources.DUBLINCORE_EMBEDDED.name, MetadataSources.RDFA_EMBEDDED.name
@@ -104,10 +107,21 @@ class FAIREvaluatorSearchable(FAIREvaluator):
     def testSearchEngineCompatibleMetadataAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
+            search_engine_support_match = []
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+            #NEW Way
+            for found_metadata in self.fuji.metadata_unmerged:
+                if found_metadata.get('metadata'):
+                    if found_metadata.get('metadata') !={'object_type': 'Other'}:
+                        if found_metadata.get('offering_method') in self.search_engines_support_offering:
+                            standard_found = self.fuji.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
+                            if standard_found in self.search_engines_support_standards:
+                                search_engine_support_match.append(standard_found+' via: '+found_metadata.get('offering_method'))
+            search_engine_support_match = list(set(search_engine_support_match))
+            #OLD WAY
             # Check search mechanisms based on sources of metadata extracted.
-            search_engine_support_match: List[Any] = list(
-                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))
+            '''search_engine_support_match: List[Any] = list(
+                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))'''
             if search_engine_support_match:
                 self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
