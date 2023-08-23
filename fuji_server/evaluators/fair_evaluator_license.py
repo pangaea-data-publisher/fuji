@@ -61,6 +61,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             specified_licenses = [specified_licenses]
         if specified_licenses is not None and specified_licenses != []:
             for l in specified_licenses:
+                isurl = False
                 licence_valid = False
                 license_output = LicenseOutputInner()
                 if isinstance(l, str):
