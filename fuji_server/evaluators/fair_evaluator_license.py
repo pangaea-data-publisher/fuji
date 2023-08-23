@@ -199,8 +199,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 for l in self.license_info:
                     if test_requirements.get('required'):
                         for rq_license_id in list(test_requirements.get('required')):
-                            if fnmatch.fnmatch(l.get('id'), rq_license_id):
-                                test_status = True
+                            if l.get('id'):
+                                if fnmatch.fnmatch(l.get('id'), rq_license_id):
+                                    test_status = True
+                            else:
+                                print('ID LICEBSE MISSING:', l)
                     else:
                         if l.get('valid'):
                             test_status = True
