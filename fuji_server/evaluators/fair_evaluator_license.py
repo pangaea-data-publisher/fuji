@@ -66,29 +66,29 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 license_output = LicenseOutputInner()
                 if isinstance(l, str):
                     isurl = idutils.is_url(l)
-                if isurl:
-                    iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
-                    if iscc:
-                        l = generic_cc
-                    spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(l, self.metric_identifier)
-                else:  # maybe licence name
-                    spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(l, self.metric_identifier)
-                license_output.license = l
-                if spdx_uri:
-                    licence_valid = True
-                license_output.details_url = spdx_uri
-                license_output.osi_approved = spdx_osi
-                self.output.append((license_output))
-                self.license_info.append({'license':l, 'id': spdx_id, 'is_url': isurl, 'spdx_uri':spdx_uri , 'osi_approved':spdx_osi, 'valid':licence_valid})
-                if not spdx_uri:
-                    self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
-                        self.metric_identifier))
-                else:
-                    test_status = True
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+                    if isurl:
+                        iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
+                        if iscc:
+                            l = generic_cc
+                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(l, self.metric_identifier)
+                    else:  # maybe licence name
+                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(l, self.metric_identifier)
+                    license_output.license = l
+                    if spdx_uri:
+                        licence_valid = True
+                    license_output.details_url = spdx_uri
+                    license_output.osi_approved = spdx_osi
+                    self.output.append((license_output))
+                    self.license_info.append({'license':l, 'id': spdx_id, 'is_url': isurl, 'spdx_uri':spdx_uri , 'osi_approved':spdx_osi, 'valid':licence_valid})
+                    if not spdx_uri:
+                        self.logger.warning('{0} : NO SPDX license representation (spdx url, osi_approved) found'.format(
                             self.metric_identifier))
+                    else:
+                        test_status = True
+                        self.logger.log(
+                            self.fuji.LOG_SUCCESS,
+                            '{0} : Found SPDX license representation (spdx url, osi_approved)'.format(
+                                self.metric_identifier))
 
 
     def isCreativeCommonsLicense(self,license_url, metric_id):
