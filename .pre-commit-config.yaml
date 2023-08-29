@@ -2,32 +2,11 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-      - id: double-quote-string-fixer
-        types: [python]
       - id: end-of-file-fixer
-      - id: fix-encoding-pragma
+        exclude_types: [json]
       - id: mixed-line-ending
         types: [python]
       - id: trailing-whitespace
-        types: [python]
+        types_or: [markdown, json, python, yaml]
       - id: check-yaml
       - id: check-json
-
-  - repo: https://github.com/google/yapf
-    rev: v0.40.1
-    hooks:
-      - id: yapf
-        name: yapf
-        types: [python]
-        exclude: &exclude_files >
-          (?x)^(
-              docs/.*|
-          )$
-        args: ["-i"]
-
-  # TODO: reenable and work through the massive list of errors and warnings
-  # - repo: https://github.com/pycqa/pylint
-  #   rev: pylint-2.8.0
-  #   hooks:
-  #   - id: pylint
-  #     exclude: '^(docs/)|(examples/)|(fuji_server/models/)'

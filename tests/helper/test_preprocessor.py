@@ -3,7 +3,7 @@
 Here we test the Preprocessor class which provides the reference data for a server
 
 Comments to this:
-Preprocessor is a singledton, therefore we need to proper tear it up and down.
+Preprocessor is a singleton, therefore we need to proper tear it up and down.
 
 isDebug=True read the files in fuji_server/data
 isDebug=False, run harvesting code

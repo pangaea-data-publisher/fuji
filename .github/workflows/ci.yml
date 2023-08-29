@@ -51,50 +51,26 @@ jobs:
         # TODO: add W flag back after fixing warnings
         SPHINXOPTS='-n' make -C docs html
 
-  pre-commit:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    strategy:
-      matrix:
-        include:
-          - name: pre-commit-errors
-            skip-hooks: pylint-warnings
-            strict: false
-          - name: pre-commit-warnings
-            skip-hooks: pylint-errors
-            strict: true
-
-    name: ${{ matrix.name }}
-    continue-on-error: ${{ matrix.strict }}
-
+  lint:
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
-
     - name: Cache python dependencies
-      id: cache-pip
       uses: actions/cache@v3
       with:
-        path: ~/.cache/pip
+        path: |
+          ~/.cache/pip
+          ~/.cache/pre-commit
         key: pip-pre-commit-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
         restore-keys: |
           pip-pre-commit-
-
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
         python-version: 3.8
-
-    - name: Install python dependencies
-      run: |
-        pip install .[testing]
-        pip freeze
-        pip show fuji
-
+    - run: pip install pre-commit
     - name: Run pre-commit
-      run: |
-        SKIP=${{ matrix.skip-hooks }} pre-commit run --all-files || (git status --short; git diff ; exit 1)
-
+      run: pre-commit run --all-files --color=always
 
   tests:
 
@@ -103,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.9', '3.8', '3.7']
+        python-version: ['3.9', '3.8']
 
     steps:
     - uses: actions/checkout@v3
@@ -132,8 +108,3 @@ jobs:
       run: |
         cd tests/ && python3 print_install.py
         ./run_all_cov.sh
-
-    - name: Upload code coverage report
-      run: |
-        pip install codecov
-        codecov

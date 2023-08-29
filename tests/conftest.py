@@ -83,7 +83,7 @@ def test_config():
 
 @pytest.fixture(scope='function')
 def temp_preprocessor():
-    """Fixture which resets the Preprocessor (singledton) for a test and restores its prior state afterwards"""
+    """Fixture which resets the Preprocessor (singleton) for a test and restores its prior state afterwards"""
     preproc = Preprocessor
 
     # save current state

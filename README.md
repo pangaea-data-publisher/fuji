@@ -35,7 +35,7 @@ The service is **in development** and its assessment depends on several factors.
 ![alt text](https://github.com/pangaea-data-publisher/fuji/blob/master/fuji_server/static/main.png?raw=true)
 
 ## Requirements
-Python 3.7+
+Python 3.8+
 
 ### 308 redirects
 In order to deal with 308 redirects, the following patch has to be applied on urrlib:
