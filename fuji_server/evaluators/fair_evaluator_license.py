@@ -95,15 +95,21 @@ class FAIREvaluatorLicense(FAIREvaluator):
         iscc = False
         genericcc = None
         try:
-            #https://wiki.creativecommons.org/wiki/License_Properties
-            ccregex= r'https?://creativecommons\.org/licenses/(by(-nc)?(-nd)?(-sa)?)/(1\.0|2\.0|2\.5|3\.0|4\.0)'
-            ccmatch = re.match(ccregex, license_url)
-            if ccmatch:
-                self.logger.info('{0} : Found CreativeCommons license -: {1}'.format(metric_id, license_url))
-                genericcc = ccmatch[0]
+
+            if 'creativecommons.org/publicdomain/mark/' in license_url:
                 iscc = True
+                self.logger.info('{0} : Found CreativeCommons Public Domain Mark  -: {1}'.format(metric_id, license_url))
+                genericcc = 'CC0-1.0'
             else:
-                iscc =  False
+                #https://wiki.creativecommons.org/wiki/License_Properties
+                ccregex= r'https?://creativecommons\.org/licenses/(by(-nc)?(-nd)?(-sa)?)/(1\.0|2\.0|2\.5|3\.0|4\.0)'
+                ccmatch = re.match(ccregex, license_url)
+                if ccmatch:
+                    self.logger.info('{0} : Found CreativeCommons license -: {1}'.format(metric_id, license_url))
+                    genericcc = ccmatch[0]
+                    iscc = True
+                else:
+                    iscc =  False
         except Exception as e:
             iscc =  False
         return iscc, genericcc
@@ -116,8 +122,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
         if isurl:
             iscc, generic_cc = self.isCreativeCommonsLicense(value, metric_id)
             if iscc:
-                l = generic_cc
-            spdx_html, spdx_osi, spdx_id = self.lookup_license_by_url(value, metric_id)
+                islicense = True
+            else:
+                spdx_html, spdx_osi, spdx_id = self.lookup_license_by_url(value, metric_id)
         else:
             spdx_html, spdx_osi, spdx_id = self.lookup_license_by_name(value, metric_id)
         if spdx_html or spdx_osi:

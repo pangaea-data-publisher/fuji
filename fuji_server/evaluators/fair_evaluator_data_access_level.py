@@ -116,6 +116,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def getIsAccessibleForFreeTerm(self):
         access_rights = []
+        afree_uri = None
         #schema.org/accessiblefroFree
         access_free = self.fuji.metadata_merged.get('access_free')
         if access_free is not None:
@@ -123,16 +124,19 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 self.metric_identifier + ' : Found \'schema.org/isAccessibleForFree\' to determine the access level (either public or restricted)'
             )
             if access_free:  # schema.org: isAccessibleForFree || free
-                access_rights = ['public']
+                access_rights = 'public'
             else:
-                access_rights = ['restricted']
-        return access_rights
+                access_rights = 'restricted'
+            afree_uri = 'https://schema.org/isAccessibleForFree#' + str(access_rights)
+
+        return access_rights,afree_uri
 
     def testAccessRightsMachineReadable(self,access_rights):
         test_result = False
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
-            rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)\/{1}(\S*))'
+            #Hier stimmt was nicht!!!
+            rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))'
             if not access_rights:
                 access_free = self.fuji.metadata_merged.get('access_free')
             if access_rights:
@@ -175,7 +179,6 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if isinstance(access_rights, str):
             access_rights = [access_rights]
         access_rights = self.excludeLicences(access_rights)
-
         #access_rights can be None or []
         if self.testAccessRightsMetadataAvailable(access_rights):
             test_status = 'pass'
@@ -183,7 +186,10 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             test_status = 'pass'
         else:
             try:
-                access_rights.extend(self.getIsAccessibleForFreeTerm())
+                afreeterm, afreeuri = self.getIsAccessibleForFreeTerm()
+                if afreeuri:
+                    access_rights.extend([afreeuri])
+                    self.access_level = afreeterm
                 if self.testAccessRightsStandardTerms(access_rights):
                     test_status = 'pass'
             except:
