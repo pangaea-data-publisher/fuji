@@ -307,6 +307,13 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             std_id = standard_found
             #external ids
             std_ids = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('identifier')
+            metadatacatalogids=[]
+            for stid in std_ids:
+                if stid.get('type') == 'local':
+                    caturi = stid.get('value')
+                    if caturi.startswith('msc:'):
+                        caturi= 'https://rdamsc.bath.ac.uk/msc/'+caturi.split(':')[-1]
+                    metadatacatalogids.append(caturi)
             if subject:
                 if subject == ['sciences'] or all(elem == 'Multidisciplinary' for elem in subject):
                     self.logger.info(
@@ -317,7 +324,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                     self.logger.info(
                         'FsF-R1.3-01M : Found disciplinary standard -: via {} : {} - {}'.format(str(source),std_name, uri))
                     type = 'disciplinary'
-            return {'id':std_id,'subject': subject, 'name': std_name, 'acronym':std_acronym,'external_ids': std_ids, 'type':type, 'source':source, 'uri':uri}
+            return {'id':std_id,'subject': subject, 'name': std_name, 'acronym':std_acronym,'external_ids': std_ids, 'type':type, 'source':source, 'catalogue': metadatacatalogids,'uri':uri}
         else:
             return {}
 
@@ -345,7 +352,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             out.subject_areas = found_standard.get('subject')
             out.url = found_standard.get('uri')
             out.type = found_standard.get('type')
-            out.source = found_standard.get('source')
+            out.source = found_standard.get('catalogue')
             self.community_standards_output.append(out)
         if not self.community_standards_output:
             self.logger.warning('FsF-R1.3-01M : Unable to determine community standard(s)')
