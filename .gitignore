@@ -3,6 +3,7 @@
 ## not to be published
 /test-requirements.txt
 /.dockerignore
+/fuji_server/client/
 /fuji_server/tests/
 /fuji_server/cuba/
 /fuji_server/logs/
