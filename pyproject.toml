@@ -1,99 +1,108 @@
-[tool.poetry]
-name = "fuji"
-version = "3.0.0"
-description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
 authors = [
-    "Robert Huber <rhuber@marum.de>",
-    "Anusuriya Devaraju <anusuriya.devaraju@googlemail.com>",
+  {name = "Robert Huber", email = "rhuber@marum.de"},
+  {name = "Anusuriya Devaraju", email = "anusuriya.devaraju@googlemail.com"}
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Scientific/Engineering :: Information Analysis"
+]
+dependencies = [
+  "autosemver~=0.5.5",
+  "beautifulsoup4~=4.8.2",
+  "configparser~=5.0.2",
+  "connexion[swagger-ui]~=2.9.0",
+  "extruct~=0.13.0",
+  "feedparser~=6.0.8",
+  "flask~=1.1.4",
+  "flask-cors~=3.0.10",
+  "flask-limiter<=2.0.0",
+  "hashid~=3.1.4",
+  "idutils~=1.1.5",
+  "jmespath~=0.10.0",
+  "levenshtein~=0.12.0",
+  "lxml~=4.7.1",
+  "markupsafe~=2.0.1",
+  "pandas~=1.3.5",
+  "pyRdfa3~=3.5.3",
+  "pyld~=2.0.3",
+  "pyyaml!=6.0.0,!=5.4.0,!=5.4.1"
+  "rapidfuzz~=3.1.2",
+  "rdflib~=6.1.1",
+  "requests~=2.24.0",
+  "six~=1.16.0",
+  "sparqlwrapper~=1.8.5",
+  "tika~=1.24",
+  "tldextract~=3.1.2",
+  "urlextract~=1.2.0",
+  "waitress~=2.1.1",
+  "werkzeug~=1.0"
+]
+description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
+# TODO: figure out why the README causes failure of building the docker container
+# readme = "README.md"
+keywords = [
+  "PANGAEA",
+  "FAIRsFAIR",
+  "FAIR Principles",
+  "Data Object Assessment",
+  "Swagger",
+  "FAIR",
+  "Research Data",
+  "FAIR data",
+  "Metadata harvesting"
 ]
 license = "MIT"
-#TODO: figure out why the README causes failure of building the docker container
-#readme = "README.md"
-homepage = "https://www.f-uji.net"
-repository = "https://github.com/pangaea-data-publisher/fuji"
-keywords=[
-    "PANGAEA",
-    "FAIRsFAIR",
-    "FAIR Principles",
-    "Data Object Assessment",
-    "Swagger",
-    "FAIR",
-    "Research Data",
-    "FAIR data",
-    "Metadata harvesting",
+name = "fuji"
+requires-python = ">=3.8"
+version = "3.0.0"
+
+[project.optional-dependencies]
+dev = [
+  "fuji[testing]",
+  "pre-commit"
 ]
-classifiers=[
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Topic :: Scientific/Engineering :: Information Analysis",
+docs = [
+  "docutils>=0.14,<0.18",
+  "myst-parser~=0.16",
+  "sphinx~=4.2",
+  "sphinx-rtd-theme~=1.0"
 ]
-packages = [
-    { include = "fuji_server" }
+report = [
+  "bokeh~=2.4",
+  "jupyter~=1.0"
 ]
+testing = [
+  "pytest~=7.4",
+  "pytest-cov~=4.1",
+  "pytest-randomly~=3.1",
+  "pytest-recording~=0.13",
+  "pytest-xdist~=3.3"
+]
+
+[project.urls]
+Homepage = "https://www.f-uji.net"
+Issues = "https://github.com/pangaea-data-publisher/fuji/issues"
+Source = "https://github.com/pangaea-data-publisher/fuji"
+
+[tool.hatch.build]
 include = [
-    "docs/**",
-    "fuji_server/data/*",
-    "fuji_server/static/*",
-    "fuji_server/yaml/*",
-    "fuji_server/config/*",
-    "AUTHORS.txt",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md"
+  "docs/**",
+  "fuji_server/*",
+  "AUTHORS.txt",
+  "CHANGELOG.md",
+  "LICENSE",
+  "README.md"
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8.17"
-pyRdfa3 = "~3.5.3"
-requests = "~2.24.0"
-pyyaml = "!=6.0.0,!=5.4.0,!=5.4.1"
-extruct = "~0.13.0"
-rdflib = "~6.1.1"
-idutils = "~1.1.5"
-lxml = "^4.7.1"
-Levenshtein = "~0.12.0"
-sparqlwrapper = "~1.8.5"
-jmespath = "~0.10.0"
-six = "~1.16.0"
-connexion = {version = "~2.9.0", extras = ["swagger-ui"]}
-tika = "~1.24"
-configparser = "~5.0.2"
-flask = "~1.1.4"
-werkzeug = "<2.0, >1.0.0"
-flask-cors = "~3.0.10"
-rapidfuzz = "~3.1.2"
-setuptools = ">=45.2.0"
-urlextract = "~1.2.0"
-feedparser = "~6.0.8"
-beautifulsoup4 = "~4.8.2"
-hashid = "~3.1.4"
-pandas = "~1.3.5"
-tldextract = "~3.1.2"
-bokeh = {version = "^2.4.1", optional = true}
-jupyter = {version = "^1.0.0", optional = true}
-pre-commit = {version = "^2.6.0", optional = true}
-pytest = {version = "^4.3.1", optional = true}
-pytest-cov = {version = "^3.0.0", optional = true}
-sphinx = {version = "^4.2.0", optional = true}
-docutils = {version =">=0.14,<0.18", optional = true}
-sphinx-rtd-theme = {version = "^1.0.0", optional = true}
-myst-parser = {version= "^0.16.1", optional = true}
-waitress ="~2.1.1"
-flask-limiter ="<=2.0.0"
-pyld = "~2.0.3"
-markupsafe = "~2.0.1"
-autosemver = "~0.5.5"
-
-[tool.poetry.extras]
-report = ["bokeh", "jupyter"]
-testing = ["pytest", "pre-commit", "pytest-cov"]
-docs = ["sphinx-rtd-theme", "sphinx", "docutils", "myst-parser"]
-dev = ["pytest", "pre-commit", "pytest-cov", "sphinx-rtd-theme", "sphinx", "docutils"]
-
-[build-system]
-requires = ["poetry-core>=1.5.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.hatch.build.targets.wheel]
+packages = ["fuji_server"]
