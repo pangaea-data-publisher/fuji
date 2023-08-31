@@ -103,6 +103,15 @@ include = [
   "README.md"
 ]
 
+[tool.hatch.envs.default]
+features = ["dev"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+cov = "pytest --cov"
+cov-xml = "pytest --cov --cov-report=xml"
+cov-html = "pytest --cov --cov-report=html"
+
 [tool.hatch.build.targets.wheel]
 packages = ["fuji_server"]
 
