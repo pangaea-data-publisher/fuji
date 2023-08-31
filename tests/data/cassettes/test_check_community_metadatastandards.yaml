@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/xml, text/xml;q=0.5
+      Connection:
+      - close
+      Host:
+      - ws.pangaea.de
+      User-Agent:
+      - F-UJI
+    method: GET
+    uri: http://ws.pangaea.de/oai/?verb=ListMetadataFormats
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - must-revalidate, no-cache, no-store
+      Connection:
+      - close
+      Content-Length:
+      - '0'
+      Date:
+      - Thu, 31 Aug 2023 15:25:08 GMT
+      Location:
+      - https://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
+      Server:
+      - nginx/1.25.2
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-UA-Compatible:
+      - IE=Edge
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/xml, text/xml;q=0.5
+      Connection:
+      - close
+      Host:
+      - ws.pangaea.de
+      User-Agent:
+      - F-UJI
+    method: GET
+    uri: https://ws.pangaea.de/oai/provider?verb=ListMetadataFormats
+  response:
+    body:
+      string: <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl"
+        href="oai2.xsl"?><OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
+        http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><responseDate>2023-08-31T15:25:08Z</responseDate><request
+        verb="ListMetadataFormats">https://ws.pangaea.de/oai/provider</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>pan_md</metadataPrefix><schema>http://ws.pangaea.de/schemas/pangaea/MetaData.xsd</schema><metadataNamespace>http://www.pangaea.de/MetaData</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>dif</metadataPrefix><schema>http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd</schema><metadataNamespace>http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>iso19139</metadataPrefix><schema>http://www.isotc211.org/2005/gmd/gmd.xsd</schema><metadataNamespace>http://www.isotc211.org/2005/gmd</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>iso19139.iodp</metadataPrefix><schema>http://www.isotc211.org/2005/gmd/gmd.xsd</schema><metadataNamespace>http://www.isotc211.org/2005/gmd</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>datacite3</metadataPrefix><schema>http://schema.datacite.org/meta/kernel-3/metadata.xsd</schema><metadataNamespace>http://datacite.org/schema/kernel-3</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>datacite4</metadataPrefix><schema>http://schema.datacite.org/meta/kernel-4.3/metadata.xsd</schema><metadataNamespace>http://datacite.org/schema/kernel-4</metadataNamespace></metadataFormat><metadataFormat><metadataPrefix>dara4</metadataPrefix><schema>https://www.da-ra.de/dara/schemadefinitions/dara.xsd</schema><metadataNamespace>http://da-ra.de/schema/kernel-4</metadataNamespace></metadataFormat></ListMetadataFormats></OAI-PMH>
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000
+      Connection:
+      - close
+      Content-Length:
+      - '2188'
+      Content-Type:
+      - text/xml;charset=utf-8
+      Date:
+      - Thu, 31 Aug 2023 15:25:08 GMT
+      Server:
+      - nginx/1.25.2
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-UA-Compatible:
+      - IE=Edge
+    status:
+      code: 200
+      message: OK
+version: 1

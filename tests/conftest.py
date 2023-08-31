@@ -1,119 +1,98 @@
-# -*- coding: utf-8 -*-
 """
 Configurations and fixtures for fuji_server tests
 """
-import os
-import pytest
 import configparser
-import pickle
-from pprint import pprint
-#from fuji_server import main
+from mimetypes import types_map
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+import pytest
+
 from fuji_server.app.fuji_app import create_fuji_app
 from fuji_server.helper.preprocessor import Preprocessor
 
-pytest_plugins = ()
+if TYPE_CHECKING:
+    from flask.app import Flask
+    from flask.testing import FlaskClient
 
-THIS_PATH = Path(__file__).parent
-TEST_CONFIG_FILE_PATH = os.path.join(THIS_PATH, 'test_server.ini')
-config_fuji = configparser.ConfigParser()
-config_fuji.read(TEST_CONFIG_FILE_PATH)
-flask_app = create_fuji_app(config_fuji)
-flask_app.testing = True
-
-
-@pytest.fixture(scope='session')
-def fujiclient():
-    """Fixture providing a fuji flask test_client, for real requests to"""
-    initialize_preprocessor(config_fuji)
-    with flask_app.app.test_client() as test_client:
-        #login(test_client, "username", "password")
-        yield test_client
+ROOT_DIR = Path(__file__).parent.parent
+SRC_DIR = ROOT_DIR.joinpath("fuji_server")
+DATA_DIR = SRC_DIR.joinpath("data")
+TESTS_DIR = ROOT_DIR.joinpath("tests")
+TEST_CONFIG_FILE_PATH = TESTS_DIR.joinpath("config", "test_server.ini")
 
 
-def initialize_preprocessor(test_config):
-    """Function which populates the preprocessor from __main__"""
-
-    ROOT_DIR = os.path.join(Path(__file__).parent.parent, 'fuji_server')
-    YAML_DIR = test_config['SERVICE']['yaml_directory']
-    METRIC_YAML = test_config['SERVICE']['metrics_yaml']
-    METRIC_YML_PATH = os.path.join(ROOT_DIR, YAML_DIR, METRIC_YAML)
-    SPDX_URL = test_config['EXTERNAL']['spdx_license_github']
-    DATACITE_API_REPO = test_config['EXTERNAL']['datacite_api_repo']
-    RE3DATA_API = test_config['EXTERNAL']['re3data_api']
-    METADATACATALOG_API = test_config['EXTERNAL']['metadata_catalog']
-    LOV_API = test_config['EXTERNAL']['lov_api']
-    LOD_CLOUDNET = test_config['EXTERNAL']['lod_cloudnet']
-    data_files_limit = int(test_config['SERVICE']['data_files_limit'])
-    metric_specification = test_config['SERVICE']['metric_specification']
-
-    preproc = Preprocessor()
-    preproc.retrieve_metrics_yaml(METRIC_YML_PATH, data_files_limit, metric_specification)
-    isDebug = True
-    preproc.retrieve_licenses(SPDX_URL, isDebug)
-    preproc.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
-    preproc.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
-    preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
-    preproc.retrieve_default_namespaces()
-    preproc.set_remote_log_info(test_config['SERVICE']['remote_log_host'], test_config['SERVICE']['remote_log_path'])
+def save_preprocessor_state():
+    return {k: v for k, v in vars(Preprocessor).items() if not (k.startswith(("_", "get", "set", "retrieve")))}
 
 
-@pytest.fixture(scope='function')
+def restore_preprocessor_state(state):
+    for k, v in state.items():
+        setattr(Preprocessor, k, v)
+
+
+INITITAL_PREPROCESSOR_STATE = save_preprocessor_state()
+NUM_KNOWN_TYPES = len(types_map)
+
+
+@pytest.fixture(scope="session")
+def num_known_types() -> int:
+    return NUM_KNOWN_TYPES
+
+
+@pytest.fixture(scope="session")
+def vcr_cassette_dir(request):
+    return str(TESTS_DIR.joinpath("data", "cassettes"))
+
+
+@pytest.fixture(scope="session")
 def test_config():
     """Fixture returning the read config object by configparser"""
+    config = configparser.ConfigParser()
+    config.read(TEST_CONFIG_FILE_PATH)
+    return config
 
-    return config_fuji
+
+@pytest.fixture(scope="session", autouse=True)
+def preprocessor(test_config) -> Preprocessor:
+    YAML_DIR = test_config["SERVICE"]["yaml_directory"]
+    METRIC_YML_PATH = SRC_DIR.joinpath(YAML_DIR)
+    LOV_API = test_config["EXTERNAL"]["lov_api"]
+    LOD_CLOUDNET = test_config["EXTERNAL"]["lod_cloudnet"]
+
+    preprocessor = Preprocessor()
+    preprocessor.set_metric_yaml_path(METRIC_YML_PATH)
+    isDebug = True
+    preprocessor.retrieve_licenses(isDebug)
+    preprocessor.retrieve_datacite_re3repos()
+    preprocessor.retrieve_metadata_standards()
+    preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    preprocessor.retrieve_default_namespaces()
+    preprocessor.set_remote_log_info(
+        test_config["SERVICE"]["remote_log_host"],
+        test_config["SERVICE"]["remote_log_path"],
+    )
+    return preprocessor
 
 
-@pytest.fixture(scope='function')
-def temp_preprocessor():
+@pytest.fixture
+def temporary_preprocessor() -> Preprocessor:
     """Fixture which resets the Preprocessor (singleton) for a test and restores its prior state afterwards"""
-    preproc = Preprocessor
 
-    # save current state
-    with open('temp_proprocessor_dump.pkl', 'bw') as fileo:
-        pickle.dump(preproc, fileo)
+    current_state = save_preprocessor_state()
+    restore_preprocessor_state(INITITAL_PREPROCESSOR_STATE)
+    yield Preprocessor
+    restore_preprocessor_state(current_state)
 
-    # reseting the preprocessor (everything from class header)
-    preproc.all_metrics_list = []
-    preproc.formatted_specification = {}
-    preproc.total_metrics = 0
-    preproc.total_licenses = 0
-    preproc.METRIC_YML_PATH = None
-    preproc.SPDX_URL = None
-    preproc.DATACITE_API_REPO = None
-    preproc.RE3DATA_API = None
-    preproc.LOV_API = None
-    preproc.LOD_CLOUDNET = None
-    preproc.BIOPORTAL_API = None
-    preproc.BIOPORTAL_KEY = None
-    preproc.schema_org_context = []
-    preproc.all_licenses = []
-    preproc.license_names = []
-    preproc.metadata_standards = {}  # key=subject,value =[standards name]
-    preproc.metadata_standards_uris = {}  #some additional namespace uris and all uris from above as key
-    preproc.science_file_formats = {}
-    preproc.long_term_file_formats = {}
-    preproc.open_file_formats = {}
-    preproc.re3repositories: Dict[Any, Any] = {}
-    preproc.linked_vocabs = {}
-    preproc.default_namespaces = []
-    preproc.standard_protocols = {}
-    preproc.resource_types = []
-    preproc.identifiers_org_data = {}
-    preproc.google_data_dois = []
-    preproc.google_data_urls = []
-    #preproc.fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
-    preproc.header = {'Accept': 'application/json'}
-    #preproc.logger = logging.getLogger(__name__)
-    preproc.data_files_limit = 3
-    preproc.metric_specification = None
-    preproc.remote_log_host = None
-    preproc.remote_log_path = None
 
-    yield preproc  # test is running
+@pytest.fixture(scope="session")
+def app(test_config) -> "Flask":
+    _app = create_fuji_app(test_config)
+    _app.testing = True
+    return _app.app
 
-    # tear down code, restore the state
-    with open('temp_proprocessor_dump.pkl', 'br') as fileo:
-        preproc = pickle.load(fileo)
-    os.remove('temp_proprocessor_dump.pkl')
+
+@pytest.fixture(scope="session")
+def client(app: "Flask") -> "FlaskClient":
+    with app.test_client() as test_client:
+        yield test_client
