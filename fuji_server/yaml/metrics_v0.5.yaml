@@ -1,4 +1,4 @@
-# LIST OF FARISFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
+# LIST OF FAIRSFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
 config:
   metric_specification: https://doi.org/10.5281/zenodo.4081213
   metric_status: valid
