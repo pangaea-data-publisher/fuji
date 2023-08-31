@@ -96,10 +96,9 @@ Source = "https://github.com/pangaea-data-publisher/fuji"
 
 [tool.hatch.build]
 include = [
-  "docs/**",
-  "fuji_server/*",
-  "AUTHORS.txt",
-  "CHANGELOG.md",
+  "docs",
+  "fuji_server",
+  "AUTHORS",
   "LICENSE",
   "README.md"
 ]
