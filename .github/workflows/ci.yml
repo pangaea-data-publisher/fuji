@@ -61,9 +61,9 @@ jobs:
         path: |
           ~/.cache/pip
           ~/.cache/pre-commit
-        key: pip-pre-commit-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
+        key: pip-lint-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
         restore-keys: |
-          pip-pre-commit-
+          pip-lint-
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
@@ -89,9 +89,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('pyproject.toml') }}
+        key: pip-tests-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
-          pip-${{ matrix.python-version }}-tests
+          pip-tests-${{ matrix.python-version }}-
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
