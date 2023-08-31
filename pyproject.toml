@@ -108,6 +108,12 @@ packages = ["fuji_server"]
 
 [tool.pytest.ini_options]
 testpaths = "tests"
+markers = [
+  "manual", # tests which should be triggered manual only
+  "noci", # tests which should not run on the CI
+  "regression", # tests which run a fuji as a whole
+  "smoke", # tests which run very fast
+]
 
 [tool.coverage.run]
 source_pkgs = ["fuji_server"]

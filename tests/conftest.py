@@ -21,22 +21,6 @@ config_fuji.read(TEST_CONFIG_FILE_PATH)
 flask_app = create_fuji_app(config_fuji)
 flask_app.testing = True
 
-##### Add some markers to pytest to group tests
-# control skipping test on command line options, for test collection
-# https://docs.pytest.org/en/stable/example/simple.html?highlight=pytest_configure
-
-
-def pytest_configure(config):
-    """
-    Here you can add things by a pytest config, could be also part of a separate file
-    So far we add some markers here to be able to execute a certain group of tests
-    We make them all lowercaps as convention
-    """
-    config.addinivalue_line('markers', 'manual: tests which should be trickered manual only')
-    config.addinivalue_line('markers', 'noci: tests which should not run on the CI')
-    config.addinivalue_line('markers', 'regression: tests which run a fuji as a whole')
-    config.addinivalue_line('markers', 'smoke: tests which run very fast')
-
 
 @pytest.fixture(scope='session')
 def fujiclient():
