@@ -73,19 +73,15 @@ jobs:
       run: pre-commit run --all-files --color=always
 
   tests:
-
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-version: ['3.9', '3.8']
-
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+      fail-fast: false
     steps:
     - uses: actions/checkout@v3
 
     - name: Cache python dependencies
-      id: cache-pip
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
@@ -100,6 +96,7 @@ jobs:
 
     - name: Install python dependencies
       run: |
+        pip install --upgrade pip
         pip install .[testing]
         pip freeze
         pip show fuji
