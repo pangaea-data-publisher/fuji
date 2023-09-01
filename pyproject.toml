@@ -48,8 +48,7 @@ dependencies = [
   "werkzeug~=1.0"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
-# TODO: figure out why the README causes failure of building the docker container
-# readme = "README.md"
+readme = "README.md"
 keywords = [
   "PANGAEA",
   "FAIRsFAIR",
