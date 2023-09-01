@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 
-import six
 import typing
 
 
@@ -16,7 +15,7 @@ def _deserialize(data, klass):
     if data is None:
         return None
 
-    if klass in six.integer_types or klass in (float, str, bool):
+    if klass in (int, float, str, bool):
         return _deserialize_primitive(data, klass)
     elif klass == object:
         return _deserialize_object(data)
@@ -50,7 +49,7 @@ def _deserialize_primitive(data, klass):
     try:
         value = klass(data)
     except UnicodeEncodeError:
-        value = six.u(data)
+        value = data
     except TypeError:
         value = data
     return value
@@ -109,7 +108,7 @@ def deserialize_model(data, klass):
     if not instance.swagger_types:
         return data
 
-    for attr, attr_type in six.iteritems(instance.swagger_types):
+    for attr, attr_type in instance.swagger_types.items():
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (list, dict)):
@@ -142,4 +141,4 @@ def _deserialize_dict(data, boxed_type):
     :return: deserialized dict.
     :rtype: dict
     """
-    return {k: _deserialize(v, boxed_type) for k, v in six.iteritems(data)}
+    return {k: _deserialize(v, boxed_type) for k, v in data.items()}
