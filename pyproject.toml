@@ -68,14 +68,17 @@ version = "3.0.0"
 
 [project.optional-dependencies]
 dev = [
-  "fuji[testing]",
-  "pre-commit"
+  "fuji[lint]",
+  "fuji[testing]"
 ]
 docs = [
   "docutils>=0.14,<0.18",
   "myst-parser~=0.16",
   "sphinx~=4.2",
   "sphinx-rtd-theme~=1.0"
+]
+lint = [
+  "pre-commit~=3.3"
 ]
 report = [
   "bokeh~=2.4",
@@ -102,6 +105,20 @@ include = [
   "LICENSE",
   "README.md"
 ]
+
+[tool.hatch.envs.default]
+dev-mode = true
+features = [
+  "lint",
+  "testing"
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args}"
+cov = "pytest --cov {args}"
+cov-xml = "pytest --cov --cov-report=xml {args}"
+cov-html = "pytest --cov --cov-report=html {args}"
+lint = "pre-commit run --all-files --color=always {args}"
 
 [tool.hatch.build.targets.wheel]
 packages = ["fuji_server"]

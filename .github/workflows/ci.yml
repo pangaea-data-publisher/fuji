@@ -12,6 +12,7 @@ concurrency:
 env:
   PYTHONUNBUFFERED: 1
   FORCE_COLOR: 1 # colored output by pytest etc.
+  CLICOLOR_FORCE: 1 # colored output by ruff
 
 permissions:
   contents: read
@@ -68,9 +69,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.8
-    - run: pip install pre-commit
-    - name: Run pre-commit
-      run: pre-commit run --all-files --color=always
+    - run: pip install --upgrade pip
+    - run: pip install hatch
+    - run: hatch run lint
 
   tests:
 
