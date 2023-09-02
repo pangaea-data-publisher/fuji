@@ -94,6 +94,10 @@ Homepage = "https://www.f-uji.net"
 Issues = "https://github.com/pangaea-data-publisher/fuji/issues"
 Source = "https://github.com/pangaea-data-publisher/fuji"
 
+[tool.black]
+line-length = 120
+target_version = ["py38", "py39", "py310", "py311"]
+
 [tool.hatch.build]
 include = [
   "docs",
@@ -105,3 +109,7 @@ include = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["fuji_server"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"

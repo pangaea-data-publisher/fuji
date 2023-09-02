@@ -1,12 +1,32 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-      - id: end-of-file-fixer
-        exclude_types: [json]
-      - id: mixed-line-ending
-        types: [python]
-      - id: trailing-whitespace
-        types_or: [markdown, json, python, yaml]
-      - id: check-yaml
-      - id: check-json
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: end-of-file-fixer
+    exclude_types: [json, text]
+  - id: mixed-line-ending
+    types: [python]
+  - id: trailing-whitespace
+    types_or: [markdown, json, python, yaml]
+  - id: check-yaml
+  - id: check-json
+  - id: pretty-format-json
+    args: [--autofix]
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.10.0
+  hooks:
+  - id: pretty-format-ini
+    args: [--autofix]
+  - id: pretty-format-toml
+    args: [--autofix, --indent, '2']
+  - id: pretty-format-yaml
+    args: [--autofix, --indent, '2']
+- repo: https://github.com/psf/black
+  rev: 23.7.0
+  hooks:
+  - id: black
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: v0.0.287
+  hooks:
+  - id: ruff
+    args: [--fix, --exit-non-zero-on-fix]
