@@ -99,13 +99,11 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-
     - name: Install python dependencies
       run: |
         pip install .[testing]
         pip freeze
+        pip show fuji
 
     - name: Run pytest
-      run: |
-        cd tests/ && python3 print_install.py
-        ./run_all_cov.sh
+      run: pytest --cov
