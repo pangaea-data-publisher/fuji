@@ -14,15 +14,20 @@ on:
       - created
 
 env:
+  DOCKER_BUILDKIT: 1
   IMAGE_NAME: fuji
 
 jobs:
-  
+
   build-and-publish:
     # Build and push image to GitHub Container Registry https://docs.docker.com/docker-hub/builds/
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
+
+      - run: docker --version
+      - run: docker buildx version
+
       - uses: actions/checkout@v3
 
       - name: Build image

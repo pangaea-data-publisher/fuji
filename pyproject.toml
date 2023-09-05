@@ -29,9 +29,9 @@ dependencies = [
   "idutils~=1.1.5",
   "jmespath~=0.10.0",
   "levenshtein~=0.12.0",
-  "lxml~=4.7.1",
+  "lxml~=4.7",
   "markupsafe~=2.0.1",
-  "pandas~=1.3.5",
+  "pandas~=1.3",
   "pyRdfa3~=3.5.3",
   "pyld~=2.0.3",
   "pyyaml!=6.0.0,!=5.4.0,!=5.4.1",
@@ -46,8 +46,7 @@ dependencies = [
   "werkzeug~=1.0"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
-# TODO: figure out why the README causes failure of building the docker container
-# readme = "README.md"
+readme = "README.md"
 keywords = [
   "PANGAEA",
   "FAIRsFAIR",
