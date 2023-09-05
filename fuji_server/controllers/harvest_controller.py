@@ -1,6 +1,3 @@
-import connexion
-import six
-
 # -*- coding: utf-8 -*-
 ################################################################################
 # MIT License
@@ -43,7 +40,7 @@ def harvest_by_id(body=None):  # noqa: E501
 
     Harvest metadata of a data object based on its identifier # noqa: E501
 
-    :param body: 
+    :param body:
     :type body: dict | bytes
 
     :rtype: HarvestResults
