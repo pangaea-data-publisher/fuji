@@ -19,38 +19,33 @@ permissions:
 
 jobs:
 
-  docs:
+  # TODO: disable docs build until decision is made
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Cache python dependencies
-      id: cache-pip
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: pip-docs-${{ hashFiles('pyproject.toml') }}
-        restore-keys: |
-          pip-docs-
-
-    - name: Install python dependencies
-      run: |
-        pip install .[docs]
-        pip show fuji
-
-    - name: Build documentation
-      env:
-        READTHEDOCS: 'True'
-      run: |
-        # TODO: add W flag back after fixing warnings
-        SPHINXOPTS='-n' make -C docs html
+  # docs:
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Set up Python 3.11
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: '3.11'
+  #   - name: Cache python dependencies
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: ~/.cache/pip
+  #       key: pip-docs-${{ hashFiles('pyproject.toml') }}
+  #       restore-keys: |
+  #         pip-docs-
+  #   - name: Install python dependencies
+  #     run: |
+  #       python -m pip install .[docs]
+  #       python -m pip show fuji
+  #   - name: Build documentation
+  #     env:
+  #       READTHEDOCS: 'True'
+  #     run: |
+  #       # TODO: add W flag back after fixing warnings
+  #       SPHINXOPTS='-n' make -C docs html
 
   lint:
     runs-on: ubuntu-22.04
@@ -62,48 +57,39 @@ jobs:
         path: |
           ~/.cache/pip
           ~/.cache/pre-commit
-        key: pip-pre-commit-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
+        key: pip-lint-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
         restore-keys: |
-          pip-pre-commit-
-    - name: Set up Python 3.8
+          pip-lint-
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
-    - run: pip install --upgrade pip
-    - run: pip install hatch
+        python-version: '3.11'
+    - run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install hatch
     - run: hatch run lint
 
   tests:
-
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-version: ['3.9', '3.8']
-
+        python-version: ['3.11', '3.8']
     steps:
     - uses: actions/checkout@v3
-
     - name: Cache python dependencies
-      id: cache-pip
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: pip-${{ matrix.python-version }}-tests-${{ hashFiles('pyproject.toml') }}
+        key: pip-tests-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
-          pip-${{ matrix.python-version }}-tests
-
+          pip-tests-${{ matrix.python-version }}-
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
     - name: Install python dependencies
       run: |
-        pip install .[testing]
-        pip freeze
-        pip show fuji
-
-    - name: Run pytest
-      run: pytest --cov
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install hatch
+    - name: Run test suite with coverage
+      run: hatch run cov
