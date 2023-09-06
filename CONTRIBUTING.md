@@ -19,13 +19,11 @@ If you are reporting a bug, please include:
 
 ### Fix Bugs
 
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
+Look through the GitHub issues for bugs. Anything tagged with [bug][bug-issues] and [help wanted][help-wanted-issues] is open to whoever wants to implement it.
 
 ### Implement Features
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+Look through the GitHub issues for features. Anything tagged with [enhancement][feature-issues] and [help wanted][help-wanted-issues] is open to whoever wants to implement it.
 
 ### Write Documentation
 
@@ -119,3 +117,8 @@ $ hatch run test -m smoke
 ---
 
 *This contributor guide is adapted from [cookiecutter-pypackage (BSD 3-Clause License)](https://github.com/audreyfeldroy/cookiecutter-pypackage/blob/master/%7B%7Bcookiecutter.project_slug%7D%7D/CONTRIBUTING.rst).*
+
+<!-- Markdown links -->
+[bug-issues]: https://github.com/pangaea-data-publisher/fuji/issues?q=is%3Aopen+is%3Aissue+label%3Abug
+[feature-issues]: https://github.com/pangaea-data-publisher/fuji/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement
+[help-wanted-issues]: https://github.com/pangaea-data-publisher/fuji/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22
