@@ -90,8 +90,6 @@ class Mapper(Enum):
     ## ============================ METADATA MAPPINGS ============================ ##
     #https://www.dublincore.org/webinars/2015/openaire_guidelines_promoting_repositories_interoperability_and_supporting_open_access_funder_mandates/slides.pdf
     ACCESS_RIGHT_CODES = {
-        'creativecommons': 'public',
-        'creative commons': 'public',
         'c_abf2': 'public',
         'c_f1cf': 'embargoed',
         'c_16ec': 'restricted',
