@@ -27,7 +27,6 @@ import urllib.parse
 
 import Levenshtein
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
 from fuji_server.models.license import License
 from fuji_server.models.license_output_inner import LicenseOutputInner
 import idutils
