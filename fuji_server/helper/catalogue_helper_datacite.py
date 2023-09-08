@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-import requests as re
+import requests
 
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 
@@ -46,7 +46,7 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
         """
         response = None
         try:
-            res = apiresponse = re.get(self.apiURI + '/' + pid, timeout=5)
+            res = requests.get(self.apiURI + '/' + pid, timeout=5)
             self.logger.info('FsF-F4-01M : Querying DataCite API for -:' + str(pid))
             if res.status_code == 200:
                 self.islisted = True
