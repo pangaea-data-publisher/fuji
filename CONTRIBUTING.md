@@ -69,7 +69,6 @@ Here's how to set up F-UJI for local development.
     ```console
     $ cd fuji
     $ hatch shell
-    $ pip install ".[dev]"
     $ pre-commit install
     ```
 4. Create a branch for local development:
