@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Here we test the Preprocessor class which provides the reference data for a server
 
@@ -16,69 +15,163 @@ markers. These tests can be run prior to a release manually.
 They mock the fuji_server/data path to not override the files under fuji server
 
 """
+import json
+from typing import Any, Dict, List
+
+import pytest
+
+from fuji_server.helper.preprocessor import Preprocessor
+from tests.conftest import DATA_DIR
+
 isDebug = True
-fuji_server_dir = './data_test/'
 
 
-def test_preprocessor_licences(test_config, temp_preprocessor):
-    """Test preprocessor if retrieve_licences works"""
-
-    SPDX_URL = test_config['EXTERNAL']['spdx_license_github']
-    assert temp_preprocessor.total_licenses == 0
-
-    temp_preprocessor.retrieve_licenses(SPDX_URL, isDebug)
-    assert temp_preprocessor.total_licenses > 0
-    assert len(temp_preprocessor.all_licenses) == temp_preprocessor.total_licenses
+def load_json_from_data_directory(filename: str):
+    path = DATA_DIR.joinpath(filename)
+    return json.loads(path.read_text())
 
 
-def test_preprocessor_re3repos(test_config, temp_preprocessor):
-    """Test preprocessor if retrieve_re3repos works"""
-
-    DATACITE_API_REPO = test_config['EXTERNAL']['datacite_api_repo']
-    RE3DATA_API = test_config['EXTERNAL']['re3data_api']
-
-    assert len(temp_preprocessor.re3repositories.keys()) == 0  # this is initialized why?
-
-    temp_preprocessor.retrieve_datacite_re3repos(RE3DATA_API, DATACITE_API_REPO, isDebug)
-
-    assert temp_preprocessor.re3repositories
-    assert len(temp_preprocessor.re3repositories.keys()) > 10
-    #print(len(temp_preprocessor.re3repositories.keys()))
+def load_txt_from_data_directory(filename: str):
+    path = DATA_DIR.joinpath(filename)
+    return path.read_text()
 
 
-def test_preprocessor_metadata_standards(test_config, temp_preprocessor):
-    """Test preprocessor if retrieve_metadata_standards works"""
-
-    METADATACATALOG_API = test_config['EXTERNAL']['metadata_catalog']
-
-    assert not temp_preprocessor.metadata_standards
-
-    temp_preprocessor.retrieve_metadata_standards(METADATACATALOG_API, isDebug)
-
-    assert temp_preprocessor.metadata_standards
-    print(temp_preprocessor.metadata_standards)
-    assert len(temp_preprocessor.metadata_standards.keys()) > 10
+@pytest.fixture(scope="session")
+def licenses():
+    return load_json_from_data_directory("licenses.json")
 
 
-def test_preprocessor_retrieve_linkedvocabs(test_config, temp_preprocessor):
-    """Test preprocessor if retrieve_linkedvocabs works"""
-
-    LOV_API = test_config['EXTERNAL']['lov_api']
-    LOD_CLOUDNET = test_config['EXTERNAL']['lod_cloudnet']
-    assert not temp_preprocessor.linked_vocabs
-
-    temp_preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
-
-    assert temp_preprocessor.linked_vocabs
-    assert len(temp_preprocessor.linked_vocabs) > 10
+@pytest.fixture(scope="session")
+def metadata_standards():
+    return load_json_from_data_directory("metadata_standards.json")
 
 
-def test_preprocessor_rest(test_config, temp_preprocessor):
-    """Test preprocessor if others works"""
+@pytest.fixture(scope="session")
+def repodois():
+    return load_json_from_data_directory("repodois.json")
 
-    METADATACATALOG_API = test_config['EXTERNAL']['metadata_catalog']
 
-    assert not temp_preprocessor.default_namespaces
+@pytest.fixture(scope="session")
+def metadata_standards_uris():
+    return load_json_from_data_directory("metadata_standards_uris.json")
 
-    temp_preprocessor.retrieve_default_namespaces()
-    assert len(temp_preprocessor.default_namespaces) > 10
+
+@pytest.fixture(scope="session")
+def science_formats():
+    return load_json_from_data_directory("science_formats.json")
+
+
+@pytest.fixture(scope="session")
+def linked_vocab():
+    return load_json_from_data_directory("linked_vocab.json")
+
+
+@pytest.fixture(scope="session")
+def identifiers_org_resolver_data():
+    return load_json_from_data_directory("identifiers_org_resolver_data.json")
+
+
+@pytest.fixture(scope="session")
+def jsonldcontext():
+    return load_json_from_data_directory("jsonldcontext.json")
+
+
+@pytest.fixture(scope="session")
+def longterm_formats():
+    return load_json_from_data_directory("longterm_formats.json")
+
+
+@pytest.fixture(scope="session")
+def open_formats():
+    return load_json_from_data_directory("open_formats.json")
+
+
+@pytest.fixture(scope="session")
+def standard_uri_protocols():
+    return load_json_from_data_directory("standard_uri_protocols.json")
+
+
+@pytest.fixture(scope="session")
+def default_namespaces():
+    txt = load_txt_from_data_directory("default_namespaces.txt").rstrip()
+    return [line.rstrip() for line in txt.split("\n")]
+
+
+@pytest.fixture(scope="session")
+def resource_types():
+    txt = load_txt_from_data_directory("ResourceTypes.txt").rstrip()
+    return [line.rstrip() for line in txt.split("\n")]
+
+
+@pytest.fixture(scope="session")
+def creativeworktypes():
+    txt = load_txt_from_data_directory("creativeworktypes.txt").rstrip()
+    return [line.rstrip() for line in txt.split("\n")]
+
+
+@pytest.fixture(scope="session")
+def bioschemastypes():
+    txt = load_txt_from_data_directory("bioschemastypes.txt").rstrip()
+    return [line.rstrip() for line in txt.split("\n")]
+
+
+@pytest.mark.vcr
+def test_set_mime_types(temporary_preprocessor: Preprocessor, initial_mime_types_count) -> None:
+    num_types_before = initial_mime_types_count
+
+    temporary_preprocessor.set_mime_types()
+
+    from mimetypes import types_map
+
+    num_types_after = len(types_map)
+    assert num_types_after > num_types_before
+
+
+def test_retrieve_licenses(temporary_preprocessor: Preprocessor, licenses: List[Dict[str, Any]]) -> None:
+    assert temporary_preprocessor.total_licenses == 0
+    temporary_preprocessor.retrieve_licenses(isDebug)
+    expected = len(licenses)
+    assert temporary_preprocessor.total_licenses == expected
+    assert len(temporary_preprocessor.all_licenses) == temporary_preprocessor.total_licenses
+    expected = licenses[0].get("licenseId")
+    actual = temporary_preprocessor.all_licenses[0].get("licenseId")
+    assert actual == expected
+
+
+def test_get_licenses(temporary_preprocessor: Preprocessor, licenses: List[Dict[str, Any]]) -> None:
+    all_licenses, license_names = temporary_preprocessor.get_licenses()
+    expected = len(licenses)
+    assert len(all_licenses) == expected
+    assert "bsd zero clause license" in license_names
+
+
+def test_retrieve_datacite_re3repos(temporary_preprocessor: Preprocessor, repodois: Dict[str, str]) -> None:
+    assert not temporary_preprocessor.re3repositories
+    temporary_preprocessor.retrieve_datacite_re3repos()
+    expected = len(repodois)
+    assert len(temporary_preprocessor.re3repositories) == expected
+
+
+def test_retrieve_metadata_standards(temporary_preprocessor: Preprocessor, metadata_standards) -> None:
+    assert not temporary_preprocessor.metadata_standards
+    temporary_preprocessor.retrieve_metadata_standards()
+    expected = len(metadata_standards)
+    assert len(temporary_preprocessor.metadata_standards) == expected
+
+
+def test_retrieve_linkedvocabs(
+    temporary_preprocessor: Preprocessor, test_config: Dict, linked_vocab: List[Dict[str, str]]
+) -> None:
+    LOV_API = test_config["EXTERNAL"]["lov_api"]
+    LOD_CLOUDNET = test_config["EXTERNAL"]["lod_cloudnet"]
+    assert not temporary_preprocessor.linked_vocabs
+    temporary_preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    expected = len(linked_vocab)
+    assert len(temporary_preprocessor.linked_vocabs) == expected
+
+
+def test_retrieve_default_namespaces(temporary_preprocessor: Preprocessor, default_namespaces) -> None:
+    assert not temporary_preprocessor.default_namespaces
+    temporary_preprocessor.retrieve_default_namespaces()
+    expected = len(default_namespaces)
+    assert len(temporary_preprocessor.default_namespaces) == expected
