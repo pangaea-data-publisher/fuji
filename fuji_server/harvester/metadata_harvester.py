@@ -290,6 +290,7 @@ class MetadataHarvester():
                     dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
                     links = dom.xpath('/*/head/link')
                     for l in links:
+                        source = MetadataOfferingMethods.TYPED_LINKS
                         href = l.attrib.get('href')
                         rel = l.attrib.get('rel')
                         type = l.attrib.get('type')
@@ -312,7 +313,7 @@ class MetadataHarvester():
                                 'type': type,
                                 'rel': rel,
                                 'profile': profile,
-                                'source' : MetadataOfferingMethods.TYPED_LINKS
+                                'source' : source
                             })
                 except:
                     self.logger.info('FsF-F2-01M : Typed links identification failed -:')
@@ -379,7 +380,7 @@ class MetadataHarvester():
                                     validlinkset = True
                             if not validlinkset:
                                 self.logger.warning(
-                                    'FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing oage or PID')
+                                    'FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing page or PID')
                     except Exception as e:
                         self.logger.warning('FsF-F2-01M : Found Signposting Linkset but could not correctly parse the file')
                         print(e)
