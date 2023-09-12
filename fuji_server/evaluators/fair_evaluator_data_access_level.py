@@ -50,9 +50,11 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         #    self.set_metric('FsF-R1.1-02M')
         self.access_details = {}
         self.access_level = None
-        self.lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
-
-
+        #self.access_rights_dict = self.fuji.ACCESS_RIGHTS
+        self.lower_case_access_dict = {k.get('id').lower():k.get('access_condition') for ak, av in self.fuji.ACCESS_RIGHTS.items() for k in av.get('members')}
+        self.ACCESS_RIGHT_CODES = {k.get('id'):k.get('access_condition') for ak,av in self.fuji.ACCESS_RIGHTS.items() for k in av.get('members')}
+        self.ACCESS_RIGHT_CODES.update({k.get('label').lower():k.get('access_condition') for ak,av in self.fuji.ACCESS_RIGHTS.items() for k in av.get('members')})
+        #self.lower_case_access_dict = dict((k.lower(), v) for k, v in Mapper.ACCESS_RIGHT_CODES.value.items())
 
     def excludeLicences(self, access_rights):
         licence_evaluator = FAIREvaluatorLicense(self.fuji)
@@ -65,6 +67,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                             value=access_right,
                             metric_id=self.metric_identifier):  # exclude license-based text from access_rights
                         real_access_rights.append(access_right)
+                        self.logger.info(
+                            self.metric_identifier + ' : Access condition does not look like license, therefore continuing -: {}'.format(access_right))
                     else:
                         self.logger.warning(
                             self.metric_identifier + ' : Access condition looks like license, therefore the following is ignored -: {}'.
@@ -136,7 +140,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-2'):
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
             #Hier stimmt was nicht!!!
-            rights_regex = r'((\/creativecommons\.org|info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))'
+            rights_regex = r'((\/info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))'
             if not access_rights:
                 access_free = self.fuji.metadata_merged.get('access_free')
             if access_rights:
@@ -147,7 +151,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                     if rights_match is not None:
                         last_group = len(rights_match.groups())
                         filtered_rights = rights_match[last_group]
-                        for right_code, right_status in Mapper.ACCESS_RIGHT_CODES.value.items():
+                        for right_code, right_status in self.ACCESS_RIGHT_CODES.items():
                             if re.search(right_code, filtered_rights, re.IGNORECASE):
                                 test_result = True
                                 self.access_level = right_status
