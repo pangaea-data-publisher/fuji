@@ -61,6 +61,7 @@ class Preprocessor(object):
     science_file_formats = {}
     long_term_file_formats = {}
     open_file_formats = {}
+    access_rights = {}
     re3repositories: Dict[Any, Any] = {}
     linked_vocabs = {}
     linked_vocab_index = {}
@@ -266,6 +267,14 @@ class Preprocessor(object):
             except requests.exceptions.RequestException as e:
                 print('Preprocessor Error: '+ str(e))
                 cls.logger.error(e)
+
+    @classmethod
+    def get_access_rights(cls):
+        data = None
+        jsn_path = os.path.join(cls.fuji_server_dir, 'data', 'access_rights.json')
+        with open(jsn_path) as f:
+            data = json.load(f)
+        return data
 
     @classmethod
     def retrieve_licenses(cls, isDebugMode):
