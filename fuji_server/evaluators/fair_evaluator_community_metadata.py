@@ -219,19 +219,27 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         if test_requirements:
             community_standards = []
             if test_requirements.get('required'):
-                self.logger.info(
-                    '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
-                        self.metric_identifier, str(testid), test_requirements.get('required')))
-                for rq_mstandard_id in list(test_requirements.get('required')):
-                    for kn_mstandard in self.found_metadata_standards:
-                        #check if internal or external identifiers (RDA, fairsharing) are listed
-                        if rq_mstandard_id in  kn_mstandard.get('external_ids') or rq_mstandard_id == kn_mstandard.get('id'):
-                            community_standards.append(kn_mstandard.get('id'))
-                if len(community_standards) > 0:
+                test_required=[]
+                if isinstance(test_requirements.get('required'), list):
+                    test_required = test_requirements.get('required')
+                elif test_requirements.get('required').get('name'):
+                    test_required = test_requirements.get('required').get('name')
+                if not isinstance(test_required, list):
+                    test_required = [test_required]
+                if test_required:
                     self.logger.info(
-                        '{0} : Identifiers of community specific metadata standards found -: {1}'.format(
-                            self.metric_identifier, community_standards))
-                found_metadata_standards = [x for x in found_metadata_standards if x.get('id') in community_standards]
+                        '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
+                            self.metric_identifier, str(testid), test_required))
+                    for rq_mstandard_id in list(test_required):
+                        for kn_mstandard in found_metadata_standards:
+                            #check if internal or external identifiers (RDA, fairsharing) are listed
+                            if rq_mstandard_id in  kn_mstandard.get('external_ids') or rq_mstandard_id == kn_mstandard.get('id'):
+                                community_standards.append(kn_mstandard.get('id'))
+                    if len(community_standards) > 0:
+                        self.logger.info(
+                            '{0} : Identifiers of community specific metadata standards found -: {1}'.format(
+                                self.metric_identifier, community_standards))
+                    found_metadata_standards = [x for x in found_metadata_standards if x.get('id') in community_standards]
         return found_metadata_standards
 
     def testMultidisciplinarybutCommunityEndorsedMetadataDetected(self):
