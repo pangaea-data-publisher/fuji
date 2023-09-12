@@ -1,0 +1,171 @@
+{
+  "EU_access_rights": {
+    "identifier": {
+      "value": "http://publications.europa.eu/resource/authority/access-right/",
+      "type": "namespace"
+    },
+    "label": "EU publications office access-right authority table",
+    "id": "EU_access_rights",
+    "source": "publications.europa.eu",
+    "members": [
+      {
+        "id": "NON_PUBLIC",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC",
+        "label": "non-public",
+        "source": "publications.europa.eu",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "OP_DATPRO",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/OP_DATPRO",
+        "label": "Provisional data",
+        "source": "publications.europa.eu",
+        "access_condition": "embargoed"
+      },
+      {
+        "id": "PUBLIC",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "label": "public",
+        "source": "publications.europa.eu",
+        "access_condition": "public"
+      },
+      {
+        "id": "RESTRICTED",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/RESTRICTED",
+        "label": "restricted",
+        "source": "publications.europa.eu",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "SENSITIVE",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/SENSITIVE",
+        "label": "sensitive",
+        "source": "publications.europa.eu",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "CONFIDENTIAL",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/CONFIDENTIAL",
+        "label": "confidential",
+        "source": "publications.europa.eu",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "NORMAL",
+        "uri": "http://publications.europa.eu/resource/authority/access-right/NORMAL",
+        "label": "normal",
+        "source": "publications.europa.eu",
+        "access_condition": "public"
+      }
+    ]
+  },
+  "COAR_access_right": {
+    "identifier": {
+      "value": "https://vocabularies.coar-repositories.org/access_rights",
+      "type": "namespace"
+    },
+    "label": "COAR access rights",
+    "id": "COAR_access_rights",
+    "source": "coar-repositories.org",
+    "members": [
+      {
+        "id": "c_f1cf",
+        "uri": "http://purl.org/coar/access_right/c_f1cf",
+        "label": "embargoed access",
+        "source": "coar-repositories.org",
+        "access_condition": "embargoed"
+      },
+      {
+        "id": "c_14cb",
+        "uri": "http://purl.org/coar/access_right/c_14cb",
+        "label": "metadata only access",
+        "source": "coar-repositories.org",
+        "access_condition": "metadataonly"
+      },
+      {
+        "id": "c_16ec",
+        "uri": "http://purl.org/coar/access_right/c_16ec",
+        "label": "restricted access",
+        "source": "coar-repositories.org",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "c_abf2",
+        "uri": "http://purl.org/coar/access_right/c_abf2",
+        "label": "open access",
+        "source": "coar-repositories.org",
+        "access_condition": "public"
+      }
+    ]
+  },
+  "OPENAIRE_access_rights": {
+    "identifier": {
+      "value": "info:eu-repo/semantics/"
+    },
+    "label": "OpenAire access rights list",
+    "id": "OPENAIRE_access_rights",
+    "source": "openaire.eu",
+    "members": [
+      {
+        "id": "closedAccess",
+        "uri": "info:eu-repo/semantics/closedAccess",
+        "label": "closed Access",
+        "source": "openaire.eu",
+        "access_condition": "closed"
+      },
+      {
+        "id": "embargoedAccess",
+        "uri": "info:eu-repo/semantics/embargoedAccess",
+        "label": "embargoed Access",
+        "source": "openaire.eu",
+        "access_condition": "embargoed"
+      },
+      {
+        "id": "restrictedAccess",
+        "uri": "info:eu-repo/semantics/restrictedAccess",
+        "label": "restricted Access",
+        "source": "openaire.eu",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "openAccess",
+        "uri": "info:eu-repo/semantics/openAccess",
+        "label": "open Access",
+        "source": "openaire.eu",
+        "access_condition": "public"
+      }
+    ]
+  },
+  "EPRINTS_access_rights": {
+    "identifier": {
+      "value": "http://purl.org/eprint/accessRights/",
+      "type": "namespace"
+    },
+    "label": "ePrints access rights vocabulary",
+    "id": "EPRINTS_access_rights",
+    "source": "ukoln.ac.uk",
+    "members": [
+      {
+        "id": "OpenAccess",
+        "uri": "http://purl.org/eprint/accessRights/OpenAccess",
+        "label": "Open Access",
+        "source": "ukoln.ac.uk",
+        "access_condition": "public"
+      },
+      {
+        "id": "RestrictedAccess",
+        "uri": "http://purl.org/eprint/accessRights/RestrictedAccess",
+        "label": "Restricted Access",
+        "source": "ukoln.ac.uk",
+        "access_condition": "restricted"
+      },
+      {
+        "id": "ClosedAccess",
+        "uri": "http://purl.org/eprint/accessRights/ClosedAccess",
+        "label": "Closed Access",
+        "source": "ukoln.ac.uk",
+        "access_condition": "closed"
+      }
+    ]
+  }
+}
