@@ -57,11 +57,18 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         if test_requirements:
             community_vocabs =[]
             if test_requirements.get('required'):
+                test_required=[]
+                if isinstance(test_requirements.get('required'), list):
+                    test_required = test_requirements.get('required')
+                elif test_requirements.get('required').get('identifier'):
+                    test_required = test_requirements.get('required').get('identifier')
+                if not isinstance(test_required, list):
+                    test_required = [test_required]
                 reqsdefined = True
                 self.logger.info(
                     '{0} : Will exclusively consider community specific vocabularies which are specified in metrics -: {1}'.format(
                         self.metric_identifier, test_requirements.get('required')))
-                for rq_vocab in list(test_requirements.get('required')):
+                for rq_vocab in test_required:
                     for kn_vocab in self.knownnamespaceuris:
                         if fnmatch.fnmatch(kn_vocab, rq_vocab):
                             community_vocabs.append(kn_vocab)
