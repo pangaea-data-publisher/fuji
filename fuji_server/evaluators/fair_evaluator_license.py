@@ -157,7 +157,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         html_url = None
         isOsiApproved = False
         id = None
-        self.logger.info('{0} : Verify name through SPDX registry -: {1}'.format(metric_id, lvalue))
+        self.logger.info('{0} : License verification name through SPDX registry -: {1}'.format(metric_id, lvalue))
         # Levenshtein distance similarity ratio between two license name
         if lvalue:
             sim = [Levenshtein.ratio(lvalue.lower(), i) for i in self.fuji.SPDX_LICENSE_NAMES]
@@ -194,7 +194,16 @@ class FAIREvaluatorLicense(FAIREvaluator):
             if self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements:
                 test_requirements = self.metric_tests[self.metric_identifier + '-2'].metric_test_requirements[0]
             test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+            test_required = []
             if test_requirements.get('required'):
+
+                if isinstance(test_requirements.get('required'), list):
+                    test_required = test_requirements.get('required')
+                elif test_requirements.get('required').get('name'):
+                    test_required = test_requirements.get('required').get('name')
+                if not isinstance(test_required, list):
+                    test_required = [test_required]
+
                 self.logger.info(
                     '{0} : Will exclusively consider community specific licenses for {0}{1} which are specified in metrics -: {2}'.format(
                         self.metric_identifier, '-2', test_requirements.get('required')))
@@ -204,8 +213,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
                         self.metric_identifier, '-2'))
             if self.license_info:
                 for l in self.license_info:
-                    if test_requirements.get('required'):
-                        for rq_license_id in list(test_requirements.get('required')):
+                    if test_required:
+                        for rq_license_id in test_required:
                             if l.get('id'):
                                 if fnmatch.fnmatch(l.get('id'), rq_license_id):
                                     test_status = True
