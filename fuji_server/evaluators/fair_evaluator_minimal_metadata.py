@@ -85,12 +85,19 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + '-3'):
             test_requirements = self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements[0]
             if test_requirements:
+                test_required=[]
                 if test_requirements.get('required'):
+                    if isinstance(test_requirements.get('required'), list):
+                        test_required = test_requirements.get('required')
+                    elif test_requirements.get('required').get('name'):
+                        test_required = test_requirements.get('required').get('name')
+                    if not isinstance(test_required, list):
+                        test_required = [test_required]
                     self.logger.info(
                         '{0} : Will exclusively consider community specific metadata properties which are specified in metrics -: {1}'.format(
                             self.metric_identifier, test_requirements.get('required')))
                     self.required_metadata_properties =[]
-                    for rq_prop in list(test_requirements.get('required')):
+                    for rq_prop in test_required:
                         if rq_prop in Mapper.REFERENCE_METADATA_LIST.value:
                             self.required_metadata_properties.append(rq_prop)
             test_score = self.getTestConfigScore(self.metric_identifier + '-3')
