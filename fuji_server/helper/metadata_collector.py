@@ -32,6 +32,20 @@ from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
+class MetadataFormats(enum.Enum):
+    HTML = {'label':'HTML', 'acronym':'html'}
+    XHTML= {'label':'XHTML', 'acronym':'xhtml'}
+    XML= {'label':'XML', 'acronym':'xml'}
+    RDF= {'label':'RDF', 'acronym':'rdf'}
+    RDFA ={'label':'RDFa', 'acronym':'rdfa'}
+    JSON= {'label':'JSON', 'acronym':'json'}
+    JSONLD= {'label':'JSON-LD', 'acronym':'json-ld'}
+    MICRODATA ={'label':'MICRODATA','acronym':'microdata'}
+    TEXT ={'label':'Text', 'acronym':'text'}
+
+    def acronym(self):
+        return self.value.get('acronym')
+
 class MetadataOfferingMethods(enum.Enum):
     HTML_EMBEDDING = {'label': 'HTML Embedding', 'acronym': 'html_embedding'}
     MICRODATA_RDFA = {'label': 'Microdata and RDFa', 'acronym': 'microdata_rdfa'}
@@ -61,38 +75,44 @@ class MetadataSources(enum.Enum):
         return found_sources
 
     HIGHWIRE_EPRINTS_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded Highwire or Eprints',
-                                 'acronym': 'highwire-eprints-html'}
+                                 'acronym': 'highwire-eprints-html', 'format':MetadataFormats.HTML}
     DUBLINCORE_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded DublinCore',
-                           'acronym': 'dublincore-html'}
+                           'acronym': 'dublincore-html', 'format':MetadataFormats.XHTML}
     OPENGRAPH_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded OpenGraph',
-                          'acronym': 'opengraph-html'}
+                          'acronym': 'opengraph-html', 'format':MetadataFormats.RDFA}#OpenGraph is based on RDFa
     SCHEMAORG_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Schema.org JSON-LD (Embedded)',
-                          'acronym': 'schemaorg-html'}
-    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html'}
+                          'acronym': 'schemaorg-html','format':MetadataFormats.JSONLD}
+    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html', 'format':MetadataFormats.RDFA}
     MICRODATA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded Microdata',
-                          'acronym': 'microdata-html'}
+                          'acronym': 'microdata-html', 'format':MetadataFormats.MICRODATA}
     SCHEMAORG_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Schema.org JSON-LD (Negotiated)',
-                            'acronym': 'schemaorg-negotiated'}
+                            'acronym': 'schemaorg-negotiated','format':MetadataFormats.JSONLD}
     DATACITE_JSON_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Datacite Search',
-                                'acronym': 'datacite-negotiated'}
+                                'acronym': 'datacite-negotiated','format':'JSON'}
     RDF_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Linked Data (RDF)',
-                      'acronym': 'rdf-negotiated'}
+                      'acronym': 'rdf-negotiated', 'format':MetadataFormats.RDF}
     XML_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Generic XML (Negotiated)',
-                      'acronym': 'xml-negotiated'}
+                      'acronym': 'xml-negotiated', 'format':MetadataFormats.XML}
     XML_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Generic XML, Typed Links',
-                       'acronym': 'xml-type-linked'}
+                       'acronym': 'xml-type-linked', 'format':MetadataFormats.XML}
     RDF_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Linked Data (RDF), Typed Links',
-                       'acronym': 'rdf-type-linked'}  # Links in header which lead to a RDF resource
+                       'acronym': 'rdf-type-linked','format':MetadataFormats.RDF}  # Links in header which lead to a RDF resource
+    SCHEMAORG_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Schema.org JSON-LD, Typed Links',
+                       'acronym': 'schemaorg-type-linked', 'format': MetadataFormats.JSONLD}
     # TYPED_LINK = 'Typed Links'
     SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Signposting Typed Links',
                           'acronym': 'signposting-linked'}
     RDF_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Linked Data (RDF), Signposting Links',
-                          'acronym': 'rdf-signposting-linked'}
+                          'acronym': 'rdf-signposting-linked','format':MetadataFormats.RDF}
     XML_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Generic XML, Signposting Links',
-                          'acronym': 'xml-signposting-linked'}
+                          'acronym': 'xml-signposting-linked','format':MetadataFormats.XML}
     # B2FIND = 'B2FIND Metadata Aggregator'
-    XML_GUESSED = {'method': None, 'label': 'Guessed XML Link','acronym':'xml-guessed'}
-    OAI_ORE = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'OAI-ORE'}
+    XML_GUESSED = {'method': None, 'label': 'Guessed XML Link','acronym':'xml-guessed', 'format':MetadataFormats.XML}
+    OAI_ORE = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'OAI-ORE','format':MetadataFormats.XML}
+    def acronym(self):
+        return self.value.get('acronym')
+    def format(self):
+        return self.value.get('format')
 
 class MetaDataCollector(object):
     """
@@ -158,6 +178,7 @@ class MetaDataCollector(object):
         """
         self.source_metadata = sourcemetadata
         self.metadata_mapping = mapping
+        self.metadata_format = None
         self.logger = logger
         self.target_metadata = {}
         #namespaces used in the declaration parts
