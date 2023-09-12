@@ -24,7 +24,7 @@
 import re
 from bs4 import BeautifulSoup
 from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataFormats
 
 
 class MetaDataCollectorDublinCore(MetaDataCollector):
@@ -71,6 +71,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
         source = None
         if self.source_metadata is not None:
             try:
+                self.metadata_format = MetadataFormats.XHTML
                 #self.logger.info('FsF-F2-01M : Trying to extract DublinCore metadata from html page')
                 # get core metadat from dublin core meta tags:
                 # < meta name = "DCTERMS.element" content = "Value" / >
@@ -79,7 +80,6 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                 meta_dc_matches = []
                 self.content_type = 'text/html'
                 try:
-
                     metasoup = BeautifulSoup(self.source_metadata, 'lxml')
                     meta_dc_soupresult = metasoup.findAll(
                         'meta', attrs={'name': re.compile(r'(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)')})

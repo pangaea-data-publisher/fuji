@@ -24,7 +24,7 @@
 import re
 from bs4 import BeautifulSoup
 from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 
 
 class MetaDataCollectorHighwireEprints(MetaDataCollector):
@@ -68,6 +68,7 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
         hw_core_metadata = {}
         source = self.getEnumSourceNames().HIGHWIRE_EPRINTS_EMBEDDED
         if self.source_metadata is not None:
+            self.metadata_format = MetadataFormats.HTML
             meta_hw_matches = []
             self.content_type = 'text/html'
             metasoup = BeautifulSoup(self.source_metadata, 'lxml')

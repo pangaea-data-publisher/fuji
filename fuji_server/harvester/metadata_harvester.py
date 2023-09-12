@@ -101,54 +101,61 @@ class MetadataHarvester():
             return False
 
     def add_metadata_source(self,source):
-        self.metadata_sources.append((source.name, source.value.get('method')))
+        #print(source.value)
+        try:
+            self.metadata_sources.append((source.name, source.value.get('method')))
+        except Exception as e:
+            print('Add Metadata Source Error: ', str(e))
 
-    def merge_metadata(self, metadict, url, method, format, schema='', namespaces = []):
-        offering_method = None
-        if not isinstance(namespaces, list):
-            namespaces = [namespaces]
-        if isinstance(metadict,dict):
-            #self.metadata_sources.append((method_source, 'negotiated'))
-            for r in metadict.keys():
-                if r in self.reference_elements:
-                    self.metadata_merged[r] = metadict[r]
-                    self.reference_elements.pop(r)
-                    #self.reference_elements.remove(r)
-            if metadict.get('object_identifier'):
-                if not isinstance(metadict.get('object_identifier'), list):
-                    metadict['object_identifier'] = [metadict.get('object_identifier')]
-                for object_identifier in metadict.get('object_identifier'):
-                    resolves_to_landing_domain = False
-                    pid_helper = IdentifierHelper(object_identifier, self.logger)
-                    if pid_helper.identifier_url not in self.pid_collector and pid_helper.is_persistent and pid_helper.preferred_schema in self.valid_pid_types:
-                        pid_record = pid_helper.get_identifier_info(self.pid_collector)
-                        self.pid_collector[pid_helper.identifier_url] = pid_record
-                        resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(pid_helper.identifier_url)
-                        self.pid_collector[pid_helper.identifier_url]['verified'] = resolves_to_landing_domain
+    def merge_metadata(self, metadict, url, method, format, mimetype, schema='', namespaces = []):
+        try:
+            offering_method = None
+            if not isinstance(namespaces, list):
+                namespaces = [namespaces]
+            if isinstance(metadict,dict):
+                #self.metadata_sources.append((method_source, 'negotiated'))
+                for r in metadict.keys():
+                    if r in self.reference_elements:
+                        self.metadata_merged[r] = metadict[r]
+                        self.reference_elements.pop(r)
+                        #self.reference_elements.remove(r)
+                if metadict.get('object_identifier'):
+                    if not isinstance(metadict.get('object_identifier'), list):
+                        metadict['object_identifier'] = [metadict.get('object_identifier')]
+                    for object_identifier in metadict.get('object_identifier'):
+                        resolves_to_landing_domain = False
+                        pid_helper = IdentifierHelper(object_identifier, self.logger)
+                        if pid_helper.identifier_url not in self.pid_collector and pid_helper.is_persistent and pid_helper.preferred_schema in self.valid_pid_types:
+                            pid_record = pid_helper.get_identifier_info(self.pid_collector)
+                            self.pid_collector[pid_helper.identifier_url] = pid_record
+                            resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(pid_helper.identifier_url)
+                            self.pid_collector[pid_helper.identifier_url]['verified'] = resolves_to_landing_domain
 
-            if metadict.get('related_resources'):
-                self.related_resources.extend(metadict.get('related_resources'))
-            if metadict.get('object_content_identifier'):
-                self.logger.info('FsF-F3-01M : Found data links in '+str(format)+' metadata -: ' +
-                                 str(len(metadict.get('object_content_identifier'))))
-            ## add: mechanism ('content negotiation', 'typed links', 'embedded')
-            ## add: format namespace
-            if isinstance(method, enum.Enum):
-                if isinstance(method.value, dict):
-                    offering_method = method.value.get('method').acronym()
-                method = method.name
+                if metadict.get('related_resources'):
+                    self.related_resources.extend(metadict.get('related_resources'))
+                if metadict.get('object_content_identifier'):
+                    self.logger.info('FsF-F3-01M : Found data links in '+str(format)+' metadata -: ' +
+                                     str(len(metadict.get('object_content_identifier'))))
+                ## add: mechanism ('content negotiation', 'typed links', 'embedded')
+                ## add: format namespace
+                if isinstance(method, enum.Enum):
+                    if isinstance(method.value, dict):
+                        offering_method = method.value.get('method').acronym()
+                    method = method.name
 
-                
-            mdict = {'method' : method,
-                     'offering_method':offering_method,
-                     'url' : url,
-                     'format' : format,
-                     'schema' : schema,
-                     'metadata' : metadict,
-                     'namespaces' : namespaces}
+                mdict = {'method' : method,
+                         'offering_method':offering_method,
+                         'url' : url,
+                         'format' : format.acronym(),
+                         'mime' : mimetype,
+                         'schema' : schema,
+                         'metadata' : metadict,
+                         'namespaces' : namespaces}
 
-            if mdict not in self.metadata_unmerged:
-                self.metadata_unmerged.append(mdict)
+                if mdict not in self.metadata_unmerged:
+                    self.metadata_unmerged.append(mdict)
+        except Exception as e:
+            print('Metadata Merge Error: '+str(e))
 
     def exclude_null(self, dt):
         if type(dt) is dict:
@@ -594,11 +601,10 @@ class MetadataHarvester():
                     #self.landing_url = requestHelper.redirect_url
             else:
                 self.logger.warning('FsF-F2-01M :Skipping Embedded tests, no scheme/protocol detected to be able to resolve '+(str(self.id)))
-
-
         except Exception as e:
             self.logger.error('FsF-F2-01M : Resource inaccessible -: ' +str(e))
             pass
+
         if self.landing_url and self.is_html_page:
             if self.landing_url not in ['https://datacite.org/invalid.html']:
                 if response_status == 200:
@@ -652,6 +658,7 @@ class MetadataHarvester():
                                                                             json_ld_content=ext_meta,
                                                                             source = MetadataSources.SCHEMAORG_EMBEDDED)
                         source_schemaorg, schemaorg_dict = schemaorg_collector_embedded.parse_metadata()
+                        metaformat = schemaorg_collector_embedded.metadata_format
                         schemaorg_dict = self.exclude_null(schemaorg_dict)
                         if schemaorg_dict:
                             self.namespace_uri.extend(schemaorg_collector_embedded.namespaces)
@@ -662,7 +669,7 @@ class MetadataHarvester():
                                 self.related_resources.extend(schemaorg_dict.get('related_resources'))
 
                             # add object type for future reference
-                            self.merge_metadata(schemaorg_dict, self.landing_url, source_schemaorg, 'application/ld+json','http://schema.org', schemaorg_collector_embedded.namespaces)
+                            self.merge_metadata(schemaorg_dict, self.landing_url, source_schemaorg, metaformat,'application/ld+json','http://schema.org', schemaorg_collector_embedded.namespaces)
                             self.logger.log(
                                 self.LOG_SUCCESS,
                                 'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: ' + str(schemaorg_dict.keys()))
@@ -677,6 +684,7 @@ class MetadataHarvester():
                             hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
                                                                        sourcemetadata=self.landing_html)
                             source_hw, hw_dict = hw_collector.parse_metadata()
+                            hw_metaformat = hw_collector.metadata_format
                             hw_dict = self.exclude_null(hw_dict)
                             if hw_dict:
                                 self.namespace_uri.extend(hw_collector.namespaces)
@@ -685,7 +693,7 @@ class MetadataHarvester():
                                 #self.metadata_sources.append((source_hw, 'embedded'))
                                 if hw_dict.get('related_resources'):
                                     self.related_resources.extend(hw_dict.get('related_resources'))
-                                self.merge_metadata(hw_dict, self.landing_url, source_hw,'text/html','highwire_eprints', hw_collector.namespaces)
+                                self.merge_metadata(hw_dict, self.landing_url, source_hw, hw_metaformat, 'text/html','highwire_eprints', hw_collector.namespaces)
 
                                 self.logger.log(self.LOG_SUCCESS,
                                                 'FsF-F2-01M : Found Highwire or eprints metadata -: ' + str(hw_dict.keys()))
@@ -711,7 +719,7 @@ class MetadataHarvester():
                                 self.add_metadata_source(source_dc)
                                 if dc_dict.get('related_resources'):
                                     self.related_resources.extend(dc_dict.get('related_resources'))
-                                self.merge_metadata(dc_dict, self.landing_url, source_dc,'text/html','http://purl.org/dc/elements/1.1/', dc_collector.namespaces)
+                                self.merge_metadata(dc_dict, self.landing_url, source_dc,dc_collector.metadata_format, 'text/html','http://purl.org/dc/elements/1.1/', dc_collector.namespaces)
 
                                 self.logger.log(self.LOG_SUCCESS,
                                                 'FsF-F2-01M : Found DublinCore metadata -: ' + str(dc_dict.keys()))
@@ -735,7 +743,7 @@ class MetadataHarvester():
                             self.add_metadata_source(source_micro)
                             self.namespace_uri.extend(microdata_collector.getNamespaces())
                             micro_dict = self.exclude_null(micro_dict)
-                            self.merge_metadata(micro_dict, self.landing_url, source_micro, 'text/html', 'http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
+                            self.merge_metadata(micro_dict, self.landing_url, source_micro, microdata_collector.metadata_format, 'text/html', 'http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
                             self.logger.log(self.LOG_SUCCESS,
                                             'FsF-F2-01M : Found microdata metadata -: ' + str(micro_dict.keys()))
                     else:
@@ -775,7 +783,9 @@ class MetadataHarvester():
                                 self.namespace_uri.extend(rdfa_collector.getNamespaces())
                                 #rdfa_dict['object_identifier']=self.pid_url
                                 rdfa_dict = self.exclude_null(rdfa_dict)
-                                self.merge_metadata(rdfa_dict, self.landing_url, rdfasource,'application/xhtml+xml', 'http://www.w3.org/ns/rdfa#',rdfa_collector.getNamespaces())
+                                #print(method, url, offering_method, format, mimetype, schema)
+
+                                self.merge_metadata(rdfa_dict, self.landing_url, rdfasource,rdfa_collector.metadata_format, 'application/xhtml+xml', 'http://www.w3.org/ns/rdfa#',rdfa_collector.getNamespaces())
 
                                 self.logger.log(self.LOG_SUCCESS,
                                                 'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
@@ -802,7 +812,7 @@ class MetadataHarvester():
                             self.namespace_uri.extend(opengraph_collector.namespaces)
                             #self.metadata_sources.append((source_opengraph, 'embedded'))
                             self.add_metadata_source(source_opengraph)
-                            self.merge_metadata(opengraph_dict, self.landing_url, source_opengraph,'text/html', 'https://ogp.me/', opengraph_collector.namespaces)
+                            self.merge_metadata(opengraph_dict, self.landing_url, source_opengraph,opengraph_collector.metadata_format, 'text/html', 'https://ogp.me/', opengraph_collector.namespaces)
 
                             self.logger.log(self.LOG_SUCCESS,
                                             'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
@@ -890,7 +900,7 @@ class MetadataHarvester():
                                         'FsF-F2-01M : Found Linked Data metadata -: {}'.format(str(rdf_dict.keys())))
                         #self.metadata_sources.append((source_rdf, 'negotiated'))
                         self.add_metadata_source(source_rdf)
-                        self.merge_metadata(rdf_dict, targeturl, source_rdf, neg_rdf_collector.getContentType(),
+                        self.merge_metadata(rdf_dict, targeturl, source_rdf, neg_rdf_collector.metadata_format, neg_rdf_collector.getContentType(),
                                             'http://www.w3.org/1999/02/22-rdf-syntax-ns', neg_rdf_collector.getNamespaces())
 
                     else:
@@ -918,7 +928,7 @@ class MetadataHarvester():
                     self.add_metadata_source(source_schemaorg)
 
                     # add object type for future reference
-                    self.merge_metadata(schemaorg_dict, target_url, source_schemaorg, 'application/ld+json',
+                    self.merge_metadata(schemaorg_dict, target_url, source_schemaorg, schemaorg_collector_negotiated.metadata_format, 'application/ld+json',
                                         'http://www.schema.org', schemaorg_collector_negotiated.namespaces)
 
                     self.logger.log(
@@ -951,7 +961,7 @@ class MetadataHarvester():
                 if metadata_neg_dict:
                     #self.metadata_sources.append((source_neg_xml, 'negotiated'))
                     self.add_metadata_source(source_neg_xml)
-                    self.merge_metadata(metadata_neg_dict, self.landing_url, source_neg_xml,
+                    self.merge_metadata(metadata_neg_dict, self.landing_url, source_neg_xml,negotiated_xml_collector.metadata_format,
                                         negotiated_xml_collector.getContentType(), neg_namespace)
                     ####
                     self.logger.log(
@@ -960,7 +970,7 @@ class MetadataHarvester():
                     self.namespace_uri.extend(negotiated_xml_collector.getNamespaces())
                 # also add found xml namespaces without recognized data
                 elif len(negotiated_xml_collector.getNamespaces()) > 0:
-                    self.merge_metadata({}, self.landing_url, source_neg_xml, negotiated_xml_collector.getContentType(),
+                    self.merge_metadata({}, self.landing_url, source_neg_xml,negotiated_xml_collector.metadata_format, negotiated_xml_collector.getContentType(),
                                         neg_namespace)
         else:
             self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
@@ -1021,7 +1031,7 @@ class MetadataHarvester():
 
                     self.namespace_uri.extend(dcite_collector.getNamespaces())
 
-                    self.merge_metadata(dcitejsn_dict,datacite_target_url,source_dcitejsn,dcite_collector.getContentType(), 'http://datacite.org/schema',dcite_collector.getNamespaces())
+                    self.merge_metadata(dcitejsn_dict,datacite_target_url,source_dcitejsn,dcite_collector.metadata_format, dcite_collector.getContentType(), 'http://datacite.org/schema',dcite_collector.getNamespaces())
                 else:
                     self.logger.info('FsF-F2-01M : Datacite metadata UNAVAILABLE')
             else:
@@ -1099,7 +1109,7 @@ class MetadataHarvester():
                                                     str(rdf_dict.keys())))
                                 #self.metadata_sources.append((source_rdf, metadata_link['source']))
                                 self.add_metadata_source(source_rdf)
-                                self.merge_metadata(rdf_dict, metadata_link['url'], source_rdf,
+                                self.merge_metadata(rdf_dict, metadata_link['url'], source_rdf,typed_rdf_collector.metadata_format,
                                                     typed_rdf_collector.getContentType(),
                                                     'http://www.w3.org/1999/02/22-rdf-syntax-ns',
                                                     typed_rdf_collector.getNamespaces())
@@ -1133,13 +1143,13 @@ class MetadataHarvester():
                                 else:
                                     self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
                                 self.merge_metadata(linked_xml_dict, metadata_link['url'], source_linked_xml,
-                                                    linked_xml_collector.getContentType(), lkd_namespace)
+                                                    linked_xml_collector.getContentType(), linked_xml_collector.metadata_format, lkd_namespace)
 
                                 self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found XML metadata through typed links-: ' + str(linked_xml_dict.keys()))
                             # also add found xml namespaces without recognized data
                             elif len(linked_xml_collector.getNamespaces()) > 0:
-                                self.merge_metadata(dict(), metadata_link['url'], source_linked_xml,
+                                self.merge_metadata(dict(), metadata_link['url'], source_linked_xml,linked_xml_collector.metadata_format,
                                                     linked_xml_collector.getContentType(), lkd_namespace,
                                                     linked_xml_collector.getNamespaces())
                     else:

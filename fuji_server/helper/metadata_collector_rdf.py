@@ -36,7 +36,7 @@ from rdflib.namespace import DC
 from rdflib.namespace import FOAF
 from rdflib.namespace import SDO #schema.org
 
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataFormats
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
@@ -92,13 +92,17 @@ class MetaDataCollectorRdf(MetaDataCollector):
         rdf_graph : rdflib.ConjunctiveGraph, optional
             RDF graph, default=None
         """
+        super().__init__(logger=loggerinst)
+
         self.target_url = target_url
         self.content_type = None
         self.source_name = source
+        self.metadata_format = MetadataFormats.RDF
+        if self.source_name == MetadataSources.RDFA_EMBEDDED:
+            self.metadata_format = MetadataFormats.RDFA
         self.json_ld_content = json_ld_content
         #self.rdf_graph = rdf_graph
         self.accept_type = AcceptTypes.rdf
-        super().__init__(logger=loggerinst)
 
 
     def getAllURIS(self, graph):
@@ -205,7 +209,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata = dict()
         rdf_response_graph = None
-
         #if self.rdf_graph is None:
         if not self.json_ld_content and self.target_url:
             if not self.accept_type:
@@ -213,7 +216,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
             requestHelper.setAcceptType(self.accept_type)
             requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
-            neg_source, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_format, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            self.metadata_format = neg_format
             if requestHelper.checked_content_hash:
                 if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
                     requestHelper.response_content = None
@@ -233,8 +237,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     jsonld_source_url = 'landing page'
                 if self.json_ld_content:
                     self.source_name = MetadataSources.SCHEMAORG_EMBEDDED
+                    self.metadata_format = MetadataFormats.JSONLD
                 elif self.source_name != MetadataSources.RDF_TYPED_LINKS and self.source_name != MetadataSources.RDF_SIGNPOSTING_LINKS:
                     self.source_name = MetadataSources.SCHEMAORG_NEGOTIATED
+                    self.metadata_format = MetadataFormats.JSONLD
                 self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
                 if isinstance(rdf_response, bytes):
                     try:
@@ -328,6 +334,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
                 if parseformat:
                     parse_format = parseformat[1]
+                    if parse_format =='rdfa':
+                        self.metadata_format = MetadataFormats.RDFA
                     if parse_format not in ['xml', 'n3','turtle', 'nt', 'pretty-xml','trix','trig','nquads', 'json-ld','hext']:
                         parse_format = 'turtle'
                     if 'html' not in str(parse_format) and 'zip' not in str(parse_format) :
@@ -370,10 +378,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     self.logger.info('FsF-F2-01M : Could not determine RDF serialisation format for -: {}'.format(self.target_url))
 
-        #else:
-        #    neg_source, rdf_response = 'html', self.rdf_graph
         if not rdf_metadata:
             rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
+
         return self.source_name, rdf_metadata
 
     def get_sparqled_metadata(self, g):

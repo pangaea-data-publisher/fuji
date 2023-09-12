@@ -22,7 +22,7 @@
 # SOFTWARE.
 import idutils
 
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataOfferingMethods
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataOfferingMethods, MetadataFormats
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
 from fuji_server.helper.metadata_mapper import Mapper
 import lxml
@@ -114,8 +114,6 @@ class MetaDataCollectorXML(MetaDataCollector):
 
         if self.link_type == MetadataOfferingMethods.TYPED_LINKS:
             source_name = self.getEnumSourceNames().XML_TYPED_LINKS
-            '''elif self.link_type == 'embedded':
-            source_name = self.getEnumSourceNames().RDF_NEGOTIATED.value'''
         #elif self.link_type == 'guessed':
         #    source_name = self.getEnumSourceNames().XML_GUESSED
         elif self.link_type == MetadataOfferingMethods.CONTENT_NEGOTIATION:
@@ -129,13 +127,15 @@ class MetaDataCollectorXML(MetaDataCollector):
         if self.pref_mime_type:
             requestHelper.addAcceptType(self.pref_mime_type)
         #self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
-        neg_source, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
+        neg_format, xml_response = requestHelper.content_negotiate('FsF-F2-01M')
+        self.metadata_format = neg_format
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
             self.logger.info('FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}'.format(self.target_url))
             #dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
-            if neg_source != 'xml':
-                self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_source))
+            if neg_format != MetadataFormats.XML:
+            #if neg_source != 'xml':
+                self.logger.info('FsF-F2-01M : Expected XML but content negotiation responded -: ' + str(neg_format))
             else:
                 try:
                     parser = lxml.etree.XMLParser(strip_cdata=False,recover=True)

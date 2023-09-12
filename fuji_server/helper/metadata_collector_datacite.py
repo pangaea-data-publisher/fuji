@@ -83,7 +83,8 @@ class MetaDataCollectorDatacite(MetaDataCollector):
             self.logger.info('FsF-F2-01M : Trying to retrieve datacite metadata')
             requestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(self.accept_type)
-            neg_source, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_format, ext_meta = requestHelper.content_negotiate('FsF-F2-01M')
+            self.metadata_format = neg_format
             self.content_type = requestHelper.content_type
             if ext_meta:
                 try:

@@ -42,6 +42,7 @@ import ssl
 from tika import parser
 
 from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.metadata_collector import MetadataFormats
 
 
 class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -90,6 +91,7 @@ class RequestHelper:
             self.logger = logInst
         else:
             self.logger = Preprocessor.logger  #logging.getLogger(__name__)
+        self.format = None #Guessed Metadata Format
         self.request_url = url
         self.redirect_url = None
         self.resolved_url = None
@@ -149,7 +151,7 @@ class RequestHelper:
 
     def content_negotiate(self, metric_id='', ignore_html=True):
         self.metric_id = metric_id
-        source = 'html'
+        format = MetadataFormats.HTML
         status_code = None
         tp_response = None
         if self.request_url is not None:
@@ -221,8 +223,9 @@ class RequestHelper:
                     self.response_status = 900
                     try:
                         urlerrmatch = re.search(r'\[Errno\s+(\-?[0-9]+)', str(e))
+                        # eg urlopen error [Errno 11001] getaddrinfo failed => DNS failed
                         if urlerrmatch:
-                            print(urlerrmatch[1])
+                            print('Request URL Error: ', urlerrmatch[1])
                             self.response_status = int(urlerrmatch[1])
                     except:
                         pass
@@ -267,7 +270,8 @@ class RequestHelper:
                     if tp_response.info().get('Content-Type') == 'application/zip':
                         self.logger.warning('FsF-F2-01M : Received zipped content which contains several files, therefore skipping tests')
                         self.response_content = None
-                        source = 'zip'
+                        format = None
+                        #source = 'zip'
                     if tp_response.info().get_content_charset():
                         self.response_charset = tp_response.info().get_content_charset()
                     self.response_header = tp_response.getheaders()
@@ -284,7 +288,7 @@ class RequestHelper:
 
                     if checked_content_id in self.checked_content:
                         self.checked_content_hash = checked_content_id
-                        source = self.checked_content.get(checked_content_id).get('source')
+                        format = self.checked_content.get(checked_content_id).get('format')
                         self.parse_response = self.checked_content.get(checked_content_id).get('parse_response')
                         self.response_content = self.checked_content.get(checked_content_id).get('response_content')
                         self.content_type = self.checked_content.get(checked_content_id).get('content_type')
@@ -302,12 +306,11 @@ class RequestHelper:
                             except Exception as e:
                                 self.content_size = 0
                                 pass
-                            if source != 'zip':
-                                if self.content_size > self.max_content_size:
-                                    content_truncated = True
-                                if sys.getsizeof(self.response_content) >= self.max_content_size or content_truncated:
-                                    self.logger.warning('%s : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: %s' % (metric_id, str(self.max_content_size)))
-                                self.response_content = tp_response.read(self.max_content_size)
+                            if self.content_size > self.max_content_size:
+                                content_truncated = True
+                            if sys.getsizeof(self.response_content) >= self.max_content_size or content_truncated:
+                                self.logger.warning('%s : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: %s' % (metric_id, str(self.max_content_size)))
+                            self.response_content = tp_response.read(self.max_content_size)
                             if self.content_size == 0:
                                 self.content_size = sys.getsizeof(self.response_content)
                             #try to find out if content type is byte then fix
@@ -350,7 +353,7 @@ class RequestHelper:
                                     print(e,'Request helper')
                             if self.content_type is not None:
                                 if 'text/plain' in self.content_type:
-                                    source = 'text'
+                                    format = MetadataFormats.TEXT
                                     self.logger.info('%s : Plain text has been responded as content type! Trying to verify' % metric_id)
                                     #try to find type by url
                                     guessed_format = rdflib.util.guess_format(self.request_url)
@@ -361,13 +364,13 @@ class RequestHelper:
                                                               }
                                     if guessed_format is not None:
                                         if guessed_format in ['xml']:
-                                            source ='xml'
+                                            format = MetadataFormats.XML
                                             self.content_type = 'application/xml'
                                         elif guessed_format in guess_format_type_dict:
-                                            source = 'rdf'
+                                            format = MetadataFormats.RDF
                                             self.content_type = guess_format_type_dict.get(guessed_format)
                                         else:
-                                            source ='rdf'
+                                            format =MetadataFormats.RDF
                                             #not really the true mime types...
                                             self.content_type = 'application/rdf+'+str(guessed_format)
                                         self.logger.info(
@@ -390,7 +393,7 @@ class RequestHelper:
                                                 else:
                                                     self.logger.info('%s : Ignoring HTML response' % metric_id)
                                                     self.parse_response = None
-                                                source = 'html'
+                                                format = MetadataFormats.HTML
                                                 break
                                             if at.name == 'xml' or str(self.content_type).endswith('+xml'):
                                                 #in case the XML indeed is a RDF:
@@ -406,15 +409,15 @@ class RequestHelper:
                                                                         metric_id)
                                                 if re.match(r'(\{.+\})?RDF', root_element):
                                                     self.logger.info('%s : Expected XML but found RDF document by root tag!' % metric_id)
-                                                    source = 'rdf'
+                                                    format = MetadataFormats.RDF
                                                 else:
                                                     self.logger.info('%s : Found XML document!' % metric_id)
-                                                    source = 'xml'
+                                                    format = MetadataFormats.XML
                                                 break
                                             if at.name in ['json', 'jsonld', 'datacite_json', 'schemaorg'] or str(self.content_type).endswith('+json'):
                                                 try:
                                                     self.parse_response = json.loads(self.response_content)
-                                                    source = 'json'
+                                                    format = MetadataFormats.JSON
                                                     break
                                                 except ValueError:
                                                     self.logger.info(
@@ -422,14 +425,14 @@ class RequestHelper:
                                                             metric_id))
 
                                             if at.name in ['nt', 'rdf', 'rdfjson', 'ntriples', 'rdfxml', 'turtle','ttl','n3']:
-                                                source = 'rdf'
+                                                format = MetadataFormats.RDF
                                                 break
                                             if at.name in ['linkset']:
-                                                source = 'txt'
+                                                format = MetadataFormats.JSON
                                                 break
                                     break
                                 # cache downloaded content
-                                self.checked_content[checked_content_id] = {'source':source,
+                                self.checked_content[checked_content_id] = {'format':format,
                                                                             'parse_response':self.parse_response,
                                                                             'response_content':self.response_content,
                                                                             'content_type':self.content_type,
@@ -453,4 +456,4 @@ class RequestHelper:
             except Exception as e:
                 print(e, 'Request helper')
                 self.logger.warning('{} : Request Failed -: {} : {}'.format(metric_id, str(e), self.request_url))
-        return source, self.parse_response
+        return format, self.parse_response

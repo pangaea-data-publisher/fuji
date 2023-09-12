@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 
 
 class MetaDataCollectorOpenGraph(MetaDataCollector):
@@ -49,6 +49,7 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
         og_metadata = {}
         ext_meta = None
         if self.source_metadata:
+            self.metadata_format = MetadataFormats.RDFA
             #self.logger.info('FsF-F2-01M : Trying to extract OpenGraph metadata from html page')
             self.source_name = self.getEnumSourceNames().OPENGRAPH_EMBEDDED
             ext_meta = dict(self.source_metadata[0].get('properties'))

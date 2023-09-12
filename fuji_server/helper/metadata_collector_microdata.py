@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import jmespath
-from fuji_server.helper.metadata_collector import MetaDataCollector
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 from fuji_server.helper.preprocessor import Preprocessor
 
 
@@ -50,6 +50,7 @@ class MetaDataCollectorMicroData(MetaDataCollector):
         micro_metadata = {}
         ext_meta = None
         self.content_type = 'text/html'
+        self.metadata_format = MetadataFormats.MICRODATA
         if self.source_metadata:
             #print(self.source_metadata)
             if len(self.source_metadata)>1:
