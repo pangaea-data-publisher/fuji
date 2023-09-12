@@ -108,6 +108,7 @@ class FAIRCheck:
     GOOGLE_DATA_DOI_CACHE = []
     GOOGLE_DATA_URL_CACHE = []
     LINKED_VOCAB_INDEX = {}
+    ACCESS_RIGHTS = {}
     FUJI_VERSION = __version__
 
     def __init__(self,
@@ -260,6 +261,8 @@ class FAIRCheck:
             cls.IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
         if not cls.LINKED_VOCAB_INDEX:
             cls.LINKED_VOCAB_INDEX = Preprocessor.get_linked_vocab_index()
+        if not cls.ACCESS_RIGHTS:
+            cls.ACCESS_RIGHTS = Preprocessor.get_access_rights()
         Preprocessor.set_mime_types()
         #not needed locally ... but init class variable
         #Preprocessor.get_google_data_dois()
@@ -434,8 +437,9 @@ class FAIRCheck:
                 try:
                     match = process.extractOne(value,
                                                FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.keys())
-                    if match[1] > 90:
-                        found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
+                    if extract(str(value)).domain == extract(str(match[1]).domain):
+                        if match[1] > 90:
+                            found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
                 except Exception as e:
                     pass
         return found

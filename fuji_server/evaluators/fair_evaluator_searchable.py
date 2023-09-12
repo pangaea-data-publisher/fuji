@@ -53,7 +53,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric('FsF-F4-01M')
         self.search_mechanisms = []
-        self.search_engines_support_offering =  ['html_embedding', 'rdfa_microdata']
+        self.search_engines_support_offering =  ['html_embedding', 'microdata_rdfa']
         self.search_engines_support_standards = ['schemaorg','dublin-core','dcat-data-catalog-vocabulary']# from f-uji.net/vocab/metadata/standards
         self.search_engines_support = [
             MetadataSources.SCHEMAORG_NEGOTIATED.name, MetadataSources.SCHEMAORG_EMBEDDED.name,
@@ -115,6 +115,11 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     if found_metadata.get('metadata') !={'object_type': 'Other'}:
                         if found_metadata.get('offering_method') in self.search_engines_support_offering:
                             standard_found = self.fuji.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
+                            if found_metadata.get('namespaces') and not standard_found:
+                                for namesp in found_metadata.get('namespaces'):
+                                    standard_found = self.fuji.lookup_metadatastandard_by_uri(namesp)
+                                    if standard_found:
+                                        break
                             if standard_found in self.search_engines_support_standards:
                                 search_engine_support_match.append(standard_found+' via: '+found_metadata.get('offering_method'))
             search_engine_support_match = list(set(search_engine_support_match))
