@@ -45,10 +45,10 @@ class MetricHelper:
                 stream = open(os.path.join(metric_yml_path,metric_file_name), 'r', encoding='utf8')
                 specification = yaml.load(stream, Loader=yaml.FullLoader)
             except FileNotFoundError as e:
-                print('YAML LOADING ERROR -NOT FOUND')
+                print('ERROR: YAML LOADING ERROR -NOT FOUND')
                 self.logger.error(e)
             except yaml.YAMLError as e:
-                print('YAML LOADING ERROR - YAML ERROR')
+                print('ERROR: YAML LOADING ERROR - YAML ERROR')
                 self.logger.error(e)
             if specification:
                 if specification.get('metric_specification'):
@@ -62,9 +62,9 @@ class MetricHelper:
                 self.formatted_specification['total'] = self.total_metrics
                 self.formatted_specification['metrics'] = self.all_metrics_list
             else:
-                print('YAML FILE DOS NOT EXIST')
+                print('ERROR: YAML FILE DOES NOT EXIST')
         else:
-            print('Invalid YAML File Name')
+            print('ERROR: Invalid YAML File Name')
             self.logger.error('Invalid YAML File Name')
 
     def get_metrics_config(self):
