@@ -114,12 +114,13 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 if found_metadata.get('metadata'):
                     if found_metadata.get('metadata') !={'object_type': 'Other'}:
                         if found_metadata.get('offering_method') in self.search_engines_support_offering:
-                            standard_found = self.fuji.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
-                            if found_metadata.get('namespaces') and not standard_found:
+                            standard_found = found_metadata.get('metadata_standard')
+                            #standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
+                            '''if found_metadata.get('namespaces') and not standard_found:
                                 for namesp in found_metadata.get('namespaces'):
-                                    standard_found = self.fuji.lookup_metadatastandard_by_uri(namesp)
+                                    standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(namesp)
                                     if standard_found:
-                                        break
+                                        break'''
                             if standard_found in self.search_engines_support_standards:
                                 search_engine_support_match.append(standard_found+' via: '+found_metadata.get('offering_method'))
             search_engine_support_match = list(set(search_engine_support_match))

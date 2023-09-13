@@ -306,33 +306,19 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         return test_status
 
     def get_metadata_standards_info(self, uri, source):
-        standard_found = self.fuji.lookup_metadatastandard_by_uri(uri)
-        type = None
+        standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(uri)
         if standard_found:
-            subject = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('field_of_science')
-            std_name = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('title')
-            std_acronym = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('acronym')
-            std_id = standard_found
-            #external ids
-            std_ids = self.fuji.COMMUNITY_METADATA_STANDARDS.get(standard_found).get('identifier')
-            metadatacatalogids=[]
-            for stid in std_ids:
-                if stid.get('type') == 'local':
-                    caturi = stid.get('value')
-                    if caturi.startswith('msc:'):
-                        caturi= 'https://rdamsc.bath.ac.uk/msc/'+caturi.split(':')[-1]
-                    metadatacatalogids.append(caturi)
-            if subject:
-                if subject == ['sciences'] or all(elem == 'Multidisciplinary' for elem in subject):
-                    self.logger.info(
-                        'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) -: via {}:  {} - {}'
-                            .format(str(source),std_name, uri))
-                    type = 'generic'
-                else:
-                    self.logger.info(
-                        'FsF-R1.3-01M : Found disciplinary standard -: via {} : {} - {}'.format(str(source),std_name, uri))
-                    type = 'disciplinary'
-            return {'id':std_id,'subject': subject, 'name': std_name, 'acronym':std_acronym,'external_ids': std_ids, 'type':type, 'source':source, 'catalogue': metadatacatalogids,'uri':uri}
+            metadata_info = self.fuji.metadata_harvester.get_metadata_standard_info(standard_found)
+            if metadata_info.get('type')=='generic':
+                self.logger.info(
+                    'FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) -: via {}:  {} - {}'
+                        .format(str(source),metadata_info.get('name'), uri))
+            else:
+                self.logger.info(
+                    'FsF-R1.3-01M : Found disciplinary standard -: via {} : {} - {}'.format(str(source),metadata_info.get('name'), uri))
+            metadata_info['uri'] = uri
+            metadata_info['source'] = source
+            return metadata_info
         else:
             return {}
 

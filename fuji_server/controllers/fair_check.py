@@ -35,11 +35,7 @@ from urllib.parse import urlparse, urljoin
 import extruct
 #import idutils
 import pandas as pd
-import lxml
-import rdflib
-import yaml
 from bs4 import BeautifulSoup
-from pyRdfa import pyRdfa
 from rapidfuzz import fuzz
 from rapidfuzz import process
 import hashlib
@@ -88,10 +84,9 @@ class FAIRCheck:
     METRIC_VERSION = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
-    COMMUNITY_METADATA_STANDARDS_NAMES = None
+    '''COMMUNITY_METADATA_STANDARDS_NAMES = None
     COMMUNITY_METADATA_STANDARDS_URIS = None
-    COMMUNITY_METADATA_STANDARDS_URIS_LIST = None
-    COMMUNITY_METADATA_STANDARDS = None
+    COMMUNITY_METADATA_STANDARDS = None'''
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
@@ -227,20 +222,12 @@ class FAIRCheck:
     @classmethod
     def load_predata(cls):
         cls.FILES_LIMIT = Preprocessor.data_files_limit
-        #cls.METRIC_VERSION = os.path.basename(Preprocessor.METRIC_YML_PATH)
-        '''if not cls.METRICS:
-            cls.METRICS = Preprocessor.get_custom_metrics(
-                ['metric_name', 'total_score', 'metric_tests', 'metric_number'])'''
         if not cls.SPDX_LICENSES:
-            # cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES, cls.SPDX_LICENSE_URLS = Preprocessor.get_licenses()
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
-        '''if not cls.COMMUNITY_METADATA_STANDARDS_URIS:
-            cls.COMMUNITY_METADATA_STANDARDS_URIS = Preprocessor.get_metadata_standards_uris()
-            cls.COMMUNITY_METADATA_STANDARDS_URIS_LIST = list(cls.COMMUNITY_METADATA_STANDARDS_URIS.keys())'''
-        if not cls.COMMUNITY_METADATA_STANDARDS:
+        '''if not cls.COMMUNITY_METADATA_STANDARDS:
             cls.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in cls.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
-            cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}
+            cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}'''
         if not cls.SCIENCE_FILE_FORMATS:
             cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         if not cls.LONG_TERM_FILE_FORMATS:
@@ -414,7 +401,7 @@ class FAIRCheck:
         self.metadata_harvester.get_signposting_object_identifier()
         self.pid_collector.update(self.metadata_harvester.pid_collector)
 
-    def lookup_metadatastandard_by_name(self, value):
+    '''def lookup_metadatastandard_by_name(self, value):
         found = None
         # get standard name with the highest matching percentage using fuzzywuzzy
         highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
@@ -442,7 +429,7 @@ class FAIRCheck:
                             found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
                 except Exception as e:
                     pass
-        return found
+        return found'''
 
     def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)

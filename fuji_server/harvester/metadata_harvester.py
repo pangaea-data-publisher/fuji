@@ -7,12 +7,15 @@ import mimetypes
 import re
 import urllib
 from urllib.parse import urlparse, urljoin
+
+from rapidfuzz import process, fuzz
 from tldextract import extract
 import extruct
 import lxml
 from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 
+#from fuji_server.controllers.fair_check import ME
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataOfferingMethods
 from fuji_server.helper.metadata_collector_datacite import MetaDataCollectorDatacite
@@ -27,7 +30,6 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvider
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
-
 
 class MetadataHarvester():
     LOG_SUCCESS = 25
@@ -85,6 +87,9 @@ class MetadataHarvester():
             self.allowed_harvesting_sources = [i for i in MetaDataCollector.getEnumSourceNames()]
         #print('allowed sources: ', self.allowed_harvesting_sources)
         #print('allowed methods: ', self.allowed_harvesting_methods)
+        self.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
+        self.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in self.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
+        self.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in self.COMMUNITY_METADATA_STANDARDS.items()}
 
 
     def is_harvesting_source_allowed(self, method):
@@ -142,11 +147,14 @@ class MetadataHarvester():
                     if isinstance(method.value, dict):
                         offering_method = method.value.get('method').acronym()
                     method = method.name
-
+                test_uris = namespaces
+                test_uris.append(schema)
+                metadata_standard = self.get_metadata_standard_by_uris(test_uris)
                 mdict = {'method' : method,
                          'offering_method':offering_method,
                          'url' : url,
                          'format' : format.acronym(),
+                         'metadata_standard': metadata_standard,
                          'mime' : mimetype,
                          'schema' : schema,
                          'metadata' : metadict,
@@ -155,7 +163,7 @@ class MetadataHarvester():
                 if mdict not in self.metadata_unmerged:
                     self.metadata_unmerged.append(mdict)
         except Exception as e:
-            print('Metadata Merge Error: '+str(e))
+            print('Metadata Merge Error: '+str(e), format, mimetype, schema)
 
     def exclude_null(self, dt):
         if type(dt) is dict:
@@ -627,7 +635,7 @@ class MetadataHarvester():
                             code=response_status))
             else:
                 self.logger.warning(
-                    'FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}'.format(code=self.fuji.landing_url))
+                    'FsF-F1-02D : Invalid DOI, identifier resolved to -: {code}'.format(code=self.landing_url))
                 self.landing_url = None
         try:
             if requestHelper.redirect_list:
@@ -1143,7 +1151,7 @@ class MetadataHarvester():
                                 else:
                                     self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
                                 self.merge_metadata(linked_xml_dict, metadata_link['url'], source_linked_xml,
-                                                    linked_xml_collector.getContentType(), linked_xml_collector.metadata_format, lkd_namespace)
+                                                    linked_xml_collector.metadata_format, linked_xml_collector.getContentType(), lkd_namespace)
 
                                 self.logger.log(self.LOG_SUCCESS,
                                     'FsF-F2-01M : Found XML metadata through typed links-: ' + str(linked_xml_dict.keys()))
@@ -1211,4 +1219,76 @@ class MetadataHarvester():
             else:
                 other_links.append(link)
         return preferred_links + other_links
+
+
+    def lookup_metadatastandard_by_name(self, value):
+        found = None
+        # get standard name with the highest matching percentage using fuzzywuzzy
+        highest = process.extractOne(value, self.COMMUNITY_METADATA_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
+        if highest[1] > 80:
+            found = highest[2]
+        return found
+
+    def lookup_metadatastandard_by_uri(self, value):
+        metadata_standard_id = None
+        if value:
+            value = str(value).strip().strip('#/')
+            # try to find it as direct match using http or https as prefix
+            if value.startswith('http') or value.startswith('ftp'):
+                value = value.replace('s://', '://')
+                metadata_standard_id = self.COMMUNITY_METADATA_STANDARDS_URIS.get(value)
+                if not metadata_standard_id:
+                    metadata_standard_id = self.COMMUNITY_METADATA_STANDARDS_URIS.get(value.replace('://', 's://'))
+            if not metadata_standard_id:
+                #fuzzy as fall back
+                try:
+                    match = process.extractOne(value,
+                                               self.COMMUNITY_METADATA_STANDARDS_URIS.keys())
+                    if extract(str(value)).domain == extract(str(match[0])).domain:
+                        if match[1] > 90:
+                            metadata_standard_id = list(self.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
+                except Exception as e:
+                    print('METADATA STANDARD LOOKUP ERROR: ', str(e))
+                    pass
+        return metadata_standard_id
+
+
+    def get_metadata_standard_by_uris(self, test_uris):
+        metadata_standard_id = None
+        if isinstance(test_uris, list):
+            for uri in test_uris:
+                metadata_standard_id = self.lookup_metadatastandard_by_uri(uri)
+                if metadata_standard_id:
+                    break
+        return metadata_standard_id
+
+    def get_metadata_standard_info(self, metadata_standard_id):
+        metadata_standard_info = {}
+        if metadata_standard_id:
+            mstandard = self.COMMUNITY_METADATA_STANDARDS.get(metadata_standard_id)
+            type = None
+            subject = mstandard.get('field_of_science')
+            std_ids = mstandard.get('identifier')
+            metadatacatalogids = []
+            for stid in std_ids:
+                if stid.get('type') == 'local':
+                    caturi = stid.get('value')
+                    if caturi.startswith('msc:'):
+                        caturi = 'https://rdamsc.bath.ac.uk/msc/' + caturi.split(':')[-1]
+                    metadatacatalogids.append(caturi)
+            if subject:
+                if subject == ['sciences'] or all(elem == 'Multidisciplinary' for elem in subject):
+                    type = 'generic'
+                else:
+                    type = 'disciplinary'
+            metadata_standard_info = {'id': metadata_standard_id,
+                                      'subject': subject,
+                                      'name': mstandard.get('title'),
+                                      'acronym': mstandard['acronym'],
+                                      'external_ids': std_ids,
+                                      'type': type,
+                                      'catalogue': metadatacatalogids}
+        return metadata_standard_info
+
+
     
