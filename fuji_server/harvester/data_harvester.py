@@ -174,6 +174,11 @@ class DataHarvester():
         try:
             if len(file_buffer_object.getvalue()) > 0:
                 parsedFile = parser.from_buffer(file_buffer_object.getvalue())
+                #print('TIKA: ',url, parsedFile)
+                #if not parsedFile.get('content'):
+                #    print('NO CONTENT')
+                #else:
+                #    print('HAS CONTENT')
                 fileinfo['tika_status'] = status = parsedFile.get('status')
                 tika_content_types = parsedFile.get('metadata').get('Content-Type')
                 parsed_content = parsedFile.get('content')
