@@ -73,7 +73,7 @@ def harvest_by_id(body=None):  # noqa: E501
         harvest_result =[]
         for metadata in ft.metadata_unmerged:
             harvest_result.append(HarvestResultsMetadata(
-                metadata.get('method'),
+                metadata.get('offering_method'),
                 metadata.get('url'),
                 metadata.get('format'),
                 metadata.get('schema'),
