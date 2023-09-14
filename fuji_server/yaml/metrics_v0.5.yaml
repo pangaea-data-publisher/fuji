@@ -32,8 +32,9 @@ metrics:
           tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
           modality: any
           required:
-            - uuid
-            - hash
+            name:
+              - uuid
+              - hash
           comment: identifier can be given as user input
   created_by: FAIRsFAIR
   date_created: 2020-07-08
@@ -104,12 +105,13 @@ metrics:
           modality: all
           tested_on: https://f-uji.net/vocab/metadata/property
           required:
-            - creator
-            - title
-            - object_identifier
-            - publication_date
-            - publisher
-            - object_type
+            name:
+              - creator
+              - title
+              - object_identifier
+              - publication_date
+              - publisher
+              - object_type
     - metric_test_identifier: FsF-F2-01M-3
       metric_test_name: Core descriptive metadata is available
       metric_test_score: 1
@@ -119,14 +121,15 @@ metrics:
           modality: all
           tested_on: https://f-uji.net/vocab/metadata/property
           required:
-            - creator
-            - title
-            - object_identifier
-            - publication_date
-            - publisher
-            - object_type
-            - summary
-            - keywords
+            name:
+              - creator
+              - title
+              - object_identifier
+              - publication_date
+              - publisher
+              - object_type
+              - summary
+              - keywords
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2022-05-30
@@ -160,6 +163,8 @@ metrics:
       metric_test_maturity: 3
       metric_test_requirements:
         - target: https://f-uji.net/vocab/data/property/url
+          tested_on: https://f-uji.net/vocab/metadata/property/object_content_identifier
+          modality: any
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2022-05-30
@@ -184,14 +189,16 @@ metrics:
         - target: http://f-uji.net/vocab/metadata/sources
           modality: any
           required:
-            - dublin-core
-            - schemaorg
-            - dcat-data-catalog-vocabulary
+            name:
+              - dublin-core
+              - schemaorg
+              - dcat-data-catalog-vocabulary
         - target: http://f-uji.net/vocab/metadata/offering_method
           modality: any
           required:
-            - html_embedding
-            - microdata
+            name:
+              - html_embedding
+              - microdata_rdfa
     - metric_test_identifier: FsF-F4-01M-2
       metric_test_name: Metadata is registered in major research data registries (DataCite)
       metric_test_score: 1
@@ -216,14 +223,27 @@ metrics:
       metric_test_name: Information about access restrictions or rights can be identified in metadata
       metric_test_score: 0.5
       metric_test_maturity: 1
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/metadata/property/access_level
+          modality: any
     - metric_test_identifier: FsF-A1-01M-3
       metric_test_name: Data access information is indicated by (not machine readable) standard terms
       metric_test_score: 1
       metric_test_maturity: 2
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/access_condition
+          modality: any
+          tested_on: http://f-uji.net/vocab/metadata/property/access_level
+          comment: label and id
     - metric_test_identifier: FsF-A1-01M-2
       metric_test_name: Data access information is machine readable
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/access_condition
+          modality: any
+          tested_on: http://f-uji.net/vocab/metadata/property/access_level
+          comment: identifier (namespace)
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -303,10 +323,42 @@ metrics:
       metric_test_name: Parsable, structured metadata (JSON-LD, RDFa) is embedded in the landing page XHTML/HTML code
       metric_test_score: 1
       metric_test_maturity: 2
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/metadata/format
+          modality: any
+          required:
+            name:
+              - RDF
+              - JSON-LD
+              - RDFa
+        - target: http://f-uji.net/vocab/metadata/offering_method
+          modality: any
+          required:
+            name:
+              - html_embedding
+              - microdata_rdfa
     - metric_test_identifier: FsF-I1-01M-2
       metric_test_name: Parsable, graph data (RDF, JSON-LD) is accessible through content negotiation, typed links or sparql endpoint
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/metadata/format
+          modality: any
+          required:
+            name:
+              - RDF
+              - JSON-LD
+              - RDFa
+        - target: http://f-uji.net/vocab/metadata/offering_method
+          modality: any
+          required:
+            name:
+              - content_negotiation
+        - target: http://f-uji.net/vocab/metadata/exchange_service
+          modality: any
+          required:
+            name:
+              - sparql
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2023-06-01
@@ -327,10 +379,15 @@ metrics:
       metric_test_name: Vocabulary namespace URIs can be identified in metadata
       metric_test_score: 0
       metric_test_maturity: 1
+      metric_test_requirements:
+        - comment: The sheer existence of namespaces declared in XML or RDF files is checked here. This test is not scored
     - metric_test_identifier: FsF-I2-01M-2
       metric_test_name: Namespaces of known semantic resources can be identified in metadata
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/semantic_resource
+          modality: any
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
@@ -350,8 +407,15 @@ metrics:
       metric_test_name: Related resources are explicitly mentioned in metadata
       metric_test_score: 1
       metric_test_maturity: 2
+      metric_test_requirements:
+        - target: http://f-uji.net/vocab/relation_type
+          modality: any
+          tested_on: http://f-uji.net/vocab/metadata/property/related_resources
+          comment: The presence of a (typed, default = related) related resource is checked, can be a string or URI
     - metric_test_identifier: FsF-I3-01M-2
       metric_test_name: Related resources are indicated by machine readable links or identifiers
+      metric_test_requirements:
+        - comment: same as above but relations have to be machine readable/actionable
       metric_test_score: 1
       metric_test_maturity: 3
   created_by: FAIRsFAIR
@@ -472,14 +536,40 @@ metrics:
       metric_test_name: Community specific metadata standard is detected using namespaces or schemas found in provided metadata or metadata services outputs
       metric_test_score: 1
       metric_test_maturity: 3
+      metric_test_requirements:
+        - modality: any except
+          target: https://f-uji.net/vocab/metadata/standards
+          required:
+            field_of_science:
+              - science
+              - generic
+          comment: test performed on namespaces or schemas found in exposed metadata
     - metric_test_identifier: FsF-R1.3-01M-2
       metric_test_name: Community specific metadata standard is listed in the re3data record of the responsible repository
       metric_test_score: 1
       metric_test_maturity: 2
+      metric_test_requirements:
+        - modality: any except
+          target: https://f-uji.net/vocab/metadata/standards
+          required:
+            field_of_science:
+              - science
+              - generic
+          comment: test is performed using information collected from re3data
     - metric_test_identifier: FsF-R1.3-01M-3
       metric_test_name: Multidisciplinary but community endorsed metadata (RDA Metadata Standards Catalog, fairsharing) standard is listed in the re3data record or detected by namespace
       metric_test_score: 1
       metric_test_maturity: 1
+      metric_test_requirements:
+        - modality: any
+          target: https://f-uji.net/vocab/metadata/standards
+          required:
+            field_of_science:
+              - science
+              - generic
+            source:
+              - rd-alliance.org
+              - fairsharing.org
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
