@@ -94,10 +94,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
         iscc = False
         genericcc = None
         try:
-
-            if 'creativecommons.org/publicdomain/mark/' in license_url:
+            if 'creativecommons.org/publicdomain/' in license_url:
                 iscc = True
-                self.logger.info('{0} : Found CreativeCommons Public Domain Mark  -: {1}'.format(metric_id, license_url))
+                self.logger.info('{0} : Found CreativeCommons Public Domain Mark or License -: {1}'.format(metric_id, license_url))
                 genericcc = 'CC0-1.0'
             else:
                 #https://wiki.creativecommons.org/wiki/License_Properties

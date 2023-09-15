@@ -55,5 +55,11 @@
     "name": "META-SHARE ontology",
     "uri_format": "http://w3id.org/meta-share/meta-share/$1",
     "subjects" : ["humanities", "languages and literature"]
+  },
+  "fuji.wikidata": {
+    "id": "fuji.wikidata",
+    "prefix": "wikidata",
+    "name": "Wikidata",
+    "uri_format": "https://www.wikidata.org/wiki/$1"
   }
 }
