@@ -189,7 +189,6 @@ def assess_by_id(body):  # noqa: E501
         resolved_url = ft.landing_url
         if not resolved_url:
             resolved_url = 'not defined'
-        print('RESOLVED URL',resolved_url)
         #metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()

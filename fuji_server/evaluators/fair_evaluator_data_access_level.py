@@ -146,10 +146,8 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 for access_right in access_rights:
                     self.logger.info(self.metric_identifier + ' : Access right information specified -: {}'.format(
                         access_right))
-                    print(rights_regex, access_right)
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
-                        print('########################################')
                         last_group = len(rights_match.groups())
                         filtered_rights = rights_match[last_group]
                         for right_code, right_status in self.ACCESS_RIGHT_CODES.items():

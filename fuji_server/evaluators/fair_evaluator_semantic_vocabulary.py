@@ -116,7 +116,6 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     '{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}'.format(
                         self.metric_identifier, self.fuji.linked_namespace_uri))
                 for ns_uri in self.fuji.linked_namespace_uri:
-                    print(ns_uri)
                     lov_entry = lov_helper.get_linked_vocab_by_iri(ns_uri, isnamespaceIRI=True)
                     if lov_entry and ns_uri not in self.knownnamespaceuris:
                         self.knownnamespaceuris.append(ns_uri)

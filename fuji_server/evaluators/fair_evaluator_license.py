@@ -218,8 +218,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
                             if l.get('id'):
                                 if fnmatch.fnmatch(l.get('id'), rq_license_id):
                                     test_status = True
-                            else:
-                                print('ID LICEBSE MISSING:', l)
                     else:
                         if l.get('valid'):
                             test_status = True
