@@ -85,8 +85,9 @@ class AcceptTypes(Enum):
 
 
 class RequestHelper:
-    checked_content = {}
+
     def __init__(self, url, logInst: object = None):
+        self.checked_content = {}
         if logInst:
             self.logger = logInst
         else:
