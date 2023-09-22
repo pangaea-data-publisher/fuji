@@ -476,13 +476,13 @@ class MetadataHarvester():
             for link_prop in parsed_link[1:]:
                 link_prop = str(link_prop).strip()
                 if link_prop.startswith('anchor'):
-                    anchor_match = re.search('anchor\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                    anchor_match = re.search(r'anchor\s*=\s*\"?([^,;"]+)\"?', link_prop)
                 if link_prop.startswith('rel'):
-                    rel_match = re.search('rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                    rel_match = re.search(r'rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
                 elif link_prop.startswith('type'):
-                    type_match = re.search('type\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                    type_match = re.search(r'type\s*=\s*\"?([^,;"]+)\"?', link_prop)
                 elif link_prop.startswith('formats'):
-                    formats_match = re.search('formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                    formats_match = re.search(r'formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
             if type_match:
                 found_type = type_match[1]
             if rel_match:
