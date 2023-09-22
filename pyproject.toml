@@ -46,7 +46,6 @@ dependencies = [
   "werkzeug~=1.0"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
-readme = "README.md"
 keywords = [
   "PANGAEA",
   "FAIRsFAIR",
@@ -60,6 +59,7 @@ keywords = [
 ]
 license = "MIT"
 name = "fuji"
+readme = "README.md"
 requires-python = ">=3.8"
 version = "3.0.0"
 
@@ -98,6 +98,14 @@ Source = "https://github.com/pangaea-data-publisher/fuji"
 line-length = 120
 target_version = ["py38", "py39", "py310", "py311"]
 
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["fuji_server"]
+
 [tool.hatch.build]
 include = [
   "docs",
@@ -107,6 +115,9 @@ include = [
   "README.md"
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["fuji_server"]
+
 [tool.hatch.envs.default]
 dev-mode = true
 features = [
@@ -115,15 +126,27 @@ features = [
 ]
 
 [tool.hatch.envs.default.scripts]
-test = "pytest {args}"
 cov = "pytest --cov {args}"
-cov-xml = "pytest --cov --cov-report=xml {args}"
 cov-html = "pytest --cov --cov-report=html {args}"
+cov-xml = "pytest --cov --cov-report=xml {args}"
 lint = "pre-commit run --all-files --color=always {args}"
+test = "pytest {args}"
 
-[tool.hatch.build.targets.wheel]
-packages = ["fuji_server"]
+[tool.pytest.ini_options]
+markers = [
+  "manual",  # tests which should be triggered manual only
+  "noci",  # tests which should not run on the CI
+  "regression",  # tests which run a fuji as a whole
+  "smoke"  # tests which run very fast
+]
+testpaths = "tests"
 
 [tool.ruff]
 line-length = 120
+select = [
+  "I"  # isort
+]
 target-version = "py38"
+
+[tool.ruff.isort]
+known-first-party = ["fuji_server", "tests"]

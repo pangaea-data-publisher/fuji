@@ -84,11 +84,8 @@ class Preprocessor(object):
     google_custom_search_api_key = None
 
     def __new__(cls):
-        """Define what happens on object creation to ensure preprocessor is a singleton"""
         if cls._instance is None:
-            #print('Creating the Preprocessor')
             cls._instance = super(Preprocessor, cls).__new__(cls)
-            # Put any initialization here.
         return cls._instance
 
     @classmethod
@@ -595,7 +592,6 @@ class Preprocessor(object):
     def get_licenses(cls):
         if not cls.all_licenses:
             cls.retrieve_licenses(True)
-        # return cls.all_licenses, cls.license_names, cls.license_urls
         return cls.all_licenses, cls.license_names
 
     @classmethod
