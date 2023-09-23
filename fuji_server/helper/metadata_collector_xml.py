@@ -314,7 +314,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         res[prop] = propcontent[0].get('tree').text
                     else:
                         res[prop] = lxml.etree.tostring(propcontent[0].get('tree'), method='text', encoding='unicode')
-                        res[prop] = re.sub('\s+', ' ', res[prop])
+                        res[prop] = re.sub(r'\s+', ' ', res[prop])
                         res[prop] = res[prop].strip()
                 else:
                     for propelem in propcontent:
@@ -324,7 +324,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                             res[prop].append(propelem.get('tree').text)
                         else:
                             resprop = lxml.etree.tostring(propelem.get('tree'), method='text', encoding='unicode')
-                            resprop = re.sub('\s+', ' ', resprop)
+                            resprop = re.sub(r'\s+', ' ', resprop)
                             resprop = resprop.strip()
                             res[prop].append(resprop)
 

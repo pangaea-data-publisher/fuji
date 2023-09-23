@@ -121,7 +121,7 @@ class IdentifierHelper:
                 #workaround to identify arks properly:
                 self.identifier = self.identifier.replace('/ark:' , '/ark:/' )
                 self.identifier = self.identifier.replace('/ark://', '/ark:/')
-                generic_identifiers_org_pattern = '^([a-z0-9\._]+):(.+)'
+                generic_identifiers_org_pattern = r'^([a-z0-9\._]+):(.+)'
 
                 if self.is_uuid():
                     self.identifier_schemes = ['uuid']
