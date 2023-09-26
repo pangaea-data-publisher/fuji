@@ -13,7 +13,8 @@ UID = "https://doi.org/10.5281/zenodo.8347772"
 HTTP_200_OK = 200
 
 
-@pytest.mark.vcr
+# TODO: Re-enable the vcr canning
+# @pytest.mark.vcr
 def test_evaluation(client: FlaskClient) -> None:
     """Functional test of the /evaluate endpoint.
 
