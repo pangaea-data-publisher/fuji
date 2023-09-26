@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.24.0
+      - python-requests/2.31.0
     method: GET
     uri: https://raw.githubusercontent.com/jshttp/mime-db/master/db.json
   response:
@@ -430,13 +430,13 @@ interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       Date:
-      - Thu, 21 Sep 2023 16:02:25 GMT
+      - Mon, 25 Sep 2023 18:07:29 GMT
       ETag:
       - W/"96f0b8a97b963debd2b8196710f6fb55a22c1b719160c77161bc768dee120c17"
       Expires:
-      - Thu, 21 Sep 2023 16:07:25 GMT
+      - Mon, 25 Sep 2023 18:12:29 GMT
       Source-Age:
-      - '262'
+      - '41'
       Strict-Transport-Security:
       - max-age=31536000
       Vary:
@@ -450,15 +450,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - 7a4c3c5b7178aeafc165bdeb8bf8678e5d474938
+      - b8cdb072c5d83461fe5450e6872cd4f9e3022cf1
       X-Frame-Options:
       - deny
       X-GitHub-Request-Id:
-      - 9A86:1151B:C30A85:CA6A0B:650C605D
+      - DEAC:5405:253AA4D:26E6CD0:651112C5
       X-Served-By:
-      - cache-fra-eddf8230126-FRA
+      - cache-fra-eddf8230078-FRA
       X-Timer:
-      - S1695312145.003301,VS0,VE2
+      - S1695665249.046498,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
     status:
