@@ -11,9 +11,8 @@ classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
 dependencies = [
@@ -58,7 +57,7 @@ keywords = [
 license = "MIT"
 name = "fuji"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 version = "3.0.0"
 
 [project.optional-dependencies]
@@ -94,7 +93,7 @@ Source = "https://github.com/pangaea-data-publisher/fuji"
 
 [tool.black]
 line-length = 120
-target_version = ["py38", "py39", "py310", "py311"]
+target_version = ["py311"]
 
 [tool.coverage.report]
 skip_empty = true
@@ -144,7 +143,7 @@ line-length = 120
 select = [
   "I"  # isort
 ]
-target-version = "py38"
+target-version = "py311"
 
 [tool.ruff.isort]
 known-first-party = ["fuji_server", "tests"]
