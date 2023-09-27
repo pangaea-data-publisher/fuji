@@ -96,6 +96,8 @@ line-length = 120
 target_version = ["py311"]
 
 [tool.coverage.report]
+show_missing = true
+skip_covered = true
 skip_empty = true
 
 [tool.coverage.run]
@@ -124,6 +126,7 @@ features = [
 
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov {args}"
+cov-ci = "pytest --cov --junitxml=junit.xml | tee pytest-coverage.txt"
 cov-html = "pytest --cov --cov-report=html {args}"
 cov-xml = "pytest --cov --cov-report=xml {args}"
 lint = "pre-commit run --all-files --color=always {args}"
