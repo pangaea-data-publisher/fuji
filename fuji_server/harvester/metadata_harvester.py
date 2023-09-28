@@ -35,7 +35,7 @@ class MetadataHarvester():
     LOG_SUCCESS = 25
     LOG_FAILURE = 35
     signposting_relation_types = ['describedby', 'item','license','type','collection', 'author','linkset','cite-as']
-    def __init__(self, uid, use_datacite = True, logger = None, auth_token = None, auth_token_type = 'Basic', allowed_harvesting_methods = None):
+    def __init__(self, uid, use_datacite = True, logger = None, auth_token = None, auth_token_type = 'Basic', allowed_harvesting_methods = None, allowed_metadata_standards = None):
         uid_bytes = uid.encode('utf-8')
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
         # str(base64.urlsafe_b64encode(uid_bytes), "utf-8") # an id we can use for caching etc
@@ -81,7 +81,10 @@ class MetadataHarvester():
         if allowed_harvesting_methods:
             if all(isinstance(x, enum.Enum) for x in allowed_harvesting_methods):
                 self.allowed_harvesting_methods = allowed_harvesting_methods
-        print('allowed methods: ', self.allowed_harvesting_methods)
+        self.allowed_metadata_standards = None
+        if allowed_metadata_standards:
+            if isinstance(allowed_metadata_standards, list):
+                self.allowed_metadata_standards = allowed_metadata_standards
         self.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
         self.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in self.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
         self.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in self.COMMUNITY_METADATA_STANDARDS.items()}
@@ -100,21 +103,25 @@ class MetadataHarvester():
         except Exception as e:
             print('Add Metadata Source Error: ', str(e))
 
-
-    '''def filter_metadata(self, allowed_standards=['schemaorg'], allowed_methods=[]):
-        self.metadata_merged = []
-        if allowed_standards or allowed_methods:
-            for unmerged in self.metadata_unmerged:
-                if unmerged.get('metadata_standard') in allowed_standards:
-    '''
-
-
     def merge_metadata(self, metadict, url, method, format, mimetype, schema='', namespaces = []):
         try:
             offering_method = None
             if not isinstance(namespaces, list):
                 namespaces = [namespaces]
-            if isinstance(metadict,dict):
+            test_uris = namespaces
+            if schema!='':
+                test_uris.append(schema)
+            metadata_standard = self.get_metadata_standard_by_uris(test_uris)
+            allow_merge = True
+            if self.allowed_metadata_standards:
+                if metadata_standard in self.allowed_metadata_standards:
+                    allow_merge = True
+                else:
+                    allow_merge = False
+                    self.logger.warning(
+                        'FsF-F2-01M : Harvesting of this metadata is explicitely disabled in the metric configuration-:'+str(metadata_standard)
+                    )
+            if isinstance(metadict,dict) and allow_merge == True:
                 #self.metadata_sources.append((method_source, 'negotiated'))
                 for r in metadict.keys():
                     if r in self.reference_elements:
@@ -132,7 +139,6 @@ class MetadataHarvester():
                             self.pid_collector[pid_helper.identifier_url] = pid_record
                             resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(pid_helper.identifier_url)
                             self.pid_collector[pid_helper.identifier_url]['verified'] = resolves_to_landing_domain
-
                 if metadict.get('related_resources'):
                     self.related_resources.extend(metadict.get('related_resources'))
                 if metadict.get('object_content_identifier'):
@@ -144,9 +150,7 @@ class MetadataHarvester():
                     if isinstance(method.value, dict):
                         offering_method = method.value.get('method').acronym()
                     method = method.name
-                test_uris = namespaces
-                test_uris.append(schema)
-                metadata_standard = self.get_metadata_standard_by_uris(test_uris)
+
                 mdict = {'method' : method,
                          'offering_method':offering_method,
                          'url' : url,
@@ -157,7 +161,7 @@ class MetadataHarvester():
                          'metadata' : metadict,
                          'namespaces' : namespaces}
 
-                if mdict not in self.metadata_unmerged:
+                if mdict not in self.metadata_unmerged and allow_merge == True:
                     self.metadata_unmerged.append(mdict)
         except Exception as e:
             print('Metadata Merge Error: '+str(e), format, mimetype, schema)
