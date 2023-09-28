@@ -103,24 +103,49 @@ class FAIREvaluatorSearchable(FAIREvaluator):
 
         return test_status
 
+    def filter_requirements(self, testid):
+        test_requirements = []
+        if self.metric_tests[self.metric_identifier + str(testid)].metric_test_requirements:
+            test_requirements = self.metric_tests[self.metric_identifier + str(testid)].metric_test_requirements
+        if test_requirements:
+            for test_requirement in test_requirements:
+                if test_requirement.get('required'):
+                    test_required = []
+                    if isinstance(test_requirement.get('required'), list):
+                        test_required = test_requirement.get('required')
+                    elif test_requirement.get('required').get('name'):
+                        test_required = test_requirement.get('required').get('name')
+                    if not isinstance(test_required, list):
+                        test_required = [test_required]
+
+                if 'metadata/standard' in test_requirement.get('target'):
+                    if test_required:
+                        self.logger.info(
+                            '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
+                                self.metric_identifier, str(testid), test_required))
+                        self.search_engines_support_standards = test_required
+                if 'metadata/offering_method' in test_requirement.get('target'):
+                    if test_required:
+                        self.logger.info(
+                            '{0} : Will exclusively consider community specific metadata offering methods for {0}{1} which are specified in metrics -: {2}'.format(
+                                self.metric_identifier, str(testid), test_required))
+                        self.search_engines_support_offering = test_required
+
 
     def testSearchEngineCompatibleMetadataAvailable(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + '-1'):
+            self.filter_requirements('-1')
             search_engine_support_match = []
             test_score = self.getTestConfigScore(self.metric_identifier + '-1')
             #NEW Way
             for found_metadata in self.fuji.metadata_unmerged:
                 if found_metadata.get('metadata'):
+                    print(found_metadata)
                     if found_metadata.get('metadata') !={'object_type': 'Other'}:
+                        print('MTHODS:::   ',found_metadata.get('offering_method') , self.search_engines_support_offering)
                         if found_metadata.get('offering_method') in self.search_engines_support_offering:
                             standard_found = found_metadata.get('metadata_standard')
-                            #standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
-                            '''if found_metadata.get('namespaces') and not standard_found:
-                                for namesp in found_metadata.get('namespaces'):
-                                    standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(namesp)
-                                    if standard_found:
-                                        break'''
                             if standard_found in self.search_engines_support_standards:
                                 search_engine_support_match.append(standard_found+' via: '+found_metadata.get('offering_method'))
             search_engine_support_match = list(set(search_engine_support_match))
@@ -137,7 +162,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
                 self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' :  Metadata is offered in a way major search engines can ingest it -: '+str(search_engine_support_match))
             else:
-                self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
+                self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support_offering ))
         return test_status
 
     def testListedinSearchEngines(self):

@@ -82,8 +82,10 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
     def testCoreDescriptiveMetadataAvailable(self):
         test_status = False
+        test_requirements = None
         if self.isTestDefined(self.metric_identifier + '-3'):
-            test_requirements = self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements[0]
+            if self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements:
+                test_requirements = self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements[0]
             if test_requirements:
                 test_required=[]
                 if test_requirements.get('required'):
