@@ -34,7 +34,7 @@ from flask_limiter.util import get_remote_address
 from waitress import serve
 
 import fuji_server.controllers.authorization_controller as authen
-from fuji_server.app.fuji_app import create_fuji_app
+from fuji_server.app import create_app
 from fuji_server.helper.preprocessor import Preprocessor
 
 
