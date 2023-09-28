@@ -186,3 +186,6 @@ Temporary Items
 *.el
 # # Jetbrains PyCharm Project folder:
 .idea/
+
+# Ruff
+.ruff_cache
