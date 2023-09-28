@@ -15,7 +15,7 @@ metrics:
 
 - metric_identifier: FsF-F1-02D
   metric_short_name: Persistent Identifier
-  metric_name : Data is assigned a persistent identifier.
+  metric_name: Data is assigned a persistent identifier.
   description: We make a distinction between the uniqueness and persistence of an identifier. An HTTP URL (the address of a given unique resource on the web) is globally unique, but may not be persistent as the URL of data may be not accessible (link rot problem) or the data available under the original URL may be changed (content drift problem). Identifiers based on the Handle System, DOI, ARK are both globally unique and persistent. They are maintained and governed such that they remain stable and resolvable for the long term. The persistent identifier (PID) of a data object may be resolved (point) to a landing page with metadata containing further information on how to access the data content, in some cases a downloadable artefact, or none if the data or repository is no longer maintained. Therefore, ensuring persistence is a shared responsibility between a PID service provider (e.g., datacite) and its clients (e.g., data repositories). For example, the DOI system guarantees the persistence of its identifiers through its social (e.g., policy) and technical infrastructures, whereas a data provider ensures the availability of the resource (e.g., landing page, downloadable artefact) associated with the identifier.
   fair_principle: F1
   evaluation_mechanism: to-do
@@ -137,7 +137,8 @@ metrics:
 - metric_identifier: FsF-R1.2-01M
   metric_short_name: Data Provenance
   metric_name: Metadata includes provenance information about data collection or generation.
-  description: Data provenance (also known as lineage) represents a dataset’s history, including the people, entities, and processes involved in its creation, management and longer-term curation. It is essential to provide provenance information about your data to provide valuable context and to enable informed use and reuse. The levels of provenance information needed can vary depending on the data type (e.g., measurement, observation, derived data, or data product) and research domains. For that reason, it is difficult to define a set of finite provenance properties that will be adequate for all domains. Based on existing work, we suggest that the following provenance properties of data generation or collection are included in the metadata record as a minimum.
+  description: >-
+    Data provenance (also known as lineage) represents a dataset’s history, including the people, entities, and processes involved in its creation, management and longer-term curation. It is essential to provide provenance information about your data to provide valuable context and to enable informed use and reuse. The levels of provenance information needed can vary depending on the data type (e.g., measurement, observation, derived data, or data product) and research domains. For that reason, it is difficult to define a set of finite provenance properties that will be adequate for all domains. Based on existing work, we suggest that the following provenance properties of data generation or collection are included in the metadata record as a minimum.
     (a) Sources of data, e.g., datasets the data is derived from and instruments
     (b) Data creation or collection date
     (c) Contributors involved in data creation and their roles

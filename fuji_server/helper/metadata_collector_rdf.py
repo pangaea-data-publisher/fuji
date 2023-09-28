@@ -29,18 +29,21 @@ import idutils
 import jmespath
 import rdflib
 import requests
-from rdflib import Namespace, Graph, URIRef, plugin
-from rdflib.namespace import RDF
-from rdflib.namespace import DCTERMS
-from rdflib.namespace import DC
-from rdflib.namespace import FOAF
-from rdflib.namespace import SDO #schema.org
+from pyld import jsonld
+from rdflib import Graph, Namespace, URIRef, plugin
+from rdflib.namespace import (
+    DC,
+    DCTERMS,
+    FOAF,
+    RDF,
+    SDO,  # schema.org
+)
 
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataFormats
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats, MetadataSources
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
-from pyld import jsonld
+from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
+
 
 class MetaDataCollectorRdf(MetaDataCollector):
     """
@@ -76,10 +79,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
     get_metadata_from_graph(g)
         Method to get all metadata from a graph object
     """
+
     target_url = None
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
     SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
-    def __init__(self, loggerinst, target_url=None, source=None, json_ld_content = None):
+
+    def __init__(self, loggerinst, target_url=None, source=None, json_ld_content=None):
         """
         Parameters
         ----------
@@ -101,9 +106,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if self.source_name == MetadataSources.RDFA_EMBEDDED:
             self.metadata_format = MetadataFormats.RDFA
         self.json_ld_content = json_ld_content
-        #self.rdf_graph = rdf_graph
+        # self.rdf_graph = rdf_graph
         self.accept_type = AcceptTypes.rdf
-
 
     def getAllURIS(self, graph):
         founduris = []
@@ -112,35 +116,37 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 founduris.append(str(link))
         return founduris
 
-    def set_namespaces(self,graph):
+    def set_namespaces(self, graph):
         namespaces = {}
-        known_namespace_regex = [r'https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/',
-                                 r'https?:\/\/purl\.obolibrary\.org\/obo\/[a-z]+(\.owl|#)']
+        known_namespace_regex = [
+            r"https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/",
+            r"https?:\/\/purl\.obolibrary\.org\/obo\/[a-z]+(\.owl|#)",
+        ]
         try:
             nm = graph.namespace_manager
             possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
             alluris = set(graph.objects()).union(set(graph.subjects()))
-            #namespaces from mentioned objects and subjects uris (best try)
+            # namespaces from mentioned objects and subjects uris (best try)
             for uri in alluris:
                 if idutils.is_url(uri):
                     for known_pattern in known_namespace_regex:
                         kpm = re.match(known_pattern, uri)
-                        if kpm :
+                        if kpm:
                             uri = kpm[0]
                             self.namespaces.append(uri)
                         else:
-                            uri = str(uri).strip().rstrip('/#')
-                            if '#' in uri:
-                                namespace_candidate = uri.rsplit('#', 1)[0]
+                            uri = str(uri).strip().rstrip("/#")
+                            if "#" in uri:
+                                namespace_candidate = uri.rsplit("#", 1)[0]
                             else:
-                                namespace_candidate = uri.rsplit('/', 1)[0]
+                                namespace_candidate = uri.rsplit("/", 1)[0]
                             if namespace_candidate != uri:
                                 self.namespaces.append(namespace_candidate)
                             else:
-                                namespace_candidate = uri.rsplit('#', 1)[0]
+                                namespace_candidate = uri.rsplit("#", 1)[0]
                                 if namespace_candidate != uri:
                                     self.namespaces.append(namespace_candidate)
-            #defined namespaces
+            # defined namespaces
             for predicate in possible:
                 prefix, namespace, local = nm.compute_qname(predicate)
                 namespaces[prefix] = namespace
@@ -148,51 +154,53 @@ class MetaDataCollectorRdf(MetaDataCollector):
             self.namespaces = list(set(self.namespaces))
 
         except Exception as e:
-            self.logger.info('FsF-F2-01M : RDF Namespace detection error -: {}'.format(e))
+            self.logger.info("FsF-F2-01M : RDF Namespace detection error -: {}".format(e))
         return namespaces
 
     def get_metadata_from_graph(self, rdf_response_graph):
-        rdf_metadata ={}
+        rdf_metadata = {}
         if rdf_response_graph:
             ontology_indicator = [
-                rdflib.term.URIRef('http://www.w3.org/2004/02/skos/core#'),
-                rdflib.term.URIRef('http://www.w3.org/2002/07/owl#')
+                rdflib.term.URIRef("http://www.w3.org/2004/02/skos/core#"),
+                rdflib.term.URIRef("http://www.w3.org/2002/07/owl#"),
             ]
             if isinstance(rdf_response_graph, rdflib.graph.Graph) or isinstance(rdflib.graph.ConjunctiveGraph):
-                self.logger.info('FsF-F2-01M : Found RDF Graph which was sucessfully parsed')
-                self.logger.info('FsF-F2-01M : Trying to identify namespaces in RDF Graph')
+                self.logger.info("FsF-F2-01M : Found RDF Graph which was sucessfully parsed")
+                self.logger.info("FsF-F2-01M : Trying to identify namespaces in RDF Graph")
                 graph_namespaces = self.set_namespaces(rdf_response_graph)
-                #self.getNamespacesfromIRIs(graph_text)
+                # self.getNamespacesfromIRIs(graph_text)
                 # TODO: set credit score for being valid RDF
                 # TODO: since its valid RDF aka semantic representation, make sure FsF-I1-01M is passed and scored
-                if rdflib.term.URIRef('http://www.w3.org/ns/dcat#') in graph_namespaces.values():
-                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements')
+                if rdflib.term.URIRef("http://www.w3.org/ns/dcat#") in graph_namespaces.values():
+                    self.logger.info("FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements")
                     rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
-                elif rdflib.term.URIRef('http://schema.org/') in graph_namespaces.values():
-                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements')
+                elif rdflib.term.URIRef("http://schema.org/") in graph_namespaces.values():
+                    self.logger.info("FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements")
                     rdf_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_graph)
                 elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
-                    self.logger.info('FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements')
+                    self.logger.info("FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements")
                     rdf_metadata = self.get_ontology_metadata(rdf_response_graph)
-                #else:
+                # else:
                 if not rdf_metadata:
-                    self.logger.info('FsF-F2-01M : Could not find DCAT, schema.org or SKOS/OWL metadata, continuing with generic SPARQL')
-                    #try to find root node
-                    '''
+                    self.logger.info(
+                        "FsF-F2-01M : Could not find DCAT, schema.org or SKOS/OWL metadata, continuing with generic SPARQL"
+                    )
+                    # try to find root node
+                    """
                     typed_objects = list(rdf_response_graph.objects(predicate=RDF.type))
                     if typed_objects:
                         typed_nodes = list(rdf_response_graph[:RDF.type:typed_objects[0]])
                         if typed_nodes:
                             rdf_metadata = self.get_metadata(rdf_response_graph, typed_nodes[0], str(typed_objects[0]))
-                    '''
-                    #if not rdf_metadata or len(list(rdf_metadata)) <= 1:
+                    """
+                    # if not rdf_metadata or len(list(rdf_metadata)) <= 1:
                     rdf_metadata = self.get_sparqled_metadata(rdf_response_graph)
 
-                #add found namespaces URIs to namespace
-                #for ns in graph_namespaces.values():
+                # add found namespaces URIs to namespace
+                # for ns in graph_namespaces.values():
                 #    self.namespaces.append(ns)
             else:
-                self.logger.info('FsF-F2-01M : Expected RDF Graph but received -: {0}'.format(self.content_type))
+                self.logger.info("FsF-F2-01M : Expected RDF Graph but received -: {0}".format(self.content_type))
         return rdf_metadata
 
     def parse_metadata(self):
@@ -205,59 +213,69 @@ class MetaDataCollectorRdf(MetaDataCollector):
         dict
             a dictionary of metadata in RDF graph
         """
-        #self.source_name = self.getEnumSourceNames().LINKED_DATA.value
-        #self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
+        # self.source_name = self.getEnumSourceNames().LINKED_DATA.value
+        # self.logger.info('FsF-F2-01M : Trying to request RDF metadata from -: {}'.format(self.source_name))
         rdf_metadata = dict()
         rdf_response_graph = None
-        #if self.rdf_graph is None:
+        # if self.rdf_graph is None:
         if not self.json_ld_content and self.target_url:
             if not self.accept_type:
                 self.accept_type = AcceptTypes.rdf
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
             requestHelper.setAcceptType(self.accept_type)
-            requestHelper.setAuthToken(self.auth_token,self.auth_token_type)
-            neg_format, rdf_response = requestHelper.content_negotiate('FsF-F2-01M')
+            requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
+            neg_format, rdf_response = requestHelper.content_negotiate("FsF-F2-01M")
             self.metadata_format = neg_format
             if requestHelper.checked_content_hash:
-                if requestHelper.checked_content.get(requestHelper.checked_content_hash).get('checked') and 'xml' in requestHelper.content_type:
+                if (
+                    requestHelper.checked_content.get(requestHelper.checked_content_hash).get("checked")
+                    and "xml" in requestHelper.content_type
+                ):
                     requestHelper.response_content = None
-                    self.logger.info('FsF-F2-01M : Ignoring RDF since content already has been parsed as XML')
+                    self.logger.info("FsF-F2-01M : Ignoring RDF since content already has been parsed as XML")
             if requestHelper.response_content is not None:
                 self.content_type = requestHelper.content_type
         else:
-            self.content_type = 'application/ld+json'
+            self.content_type = "application/ld+json"
             rdf_response = self.json_ld_content
         if self.content_type is not None:
-            self.content_type = self.content_type.split(';', 1)[0]
-            #handle JSON-LD
-            if self.content_type in ['application/ld+json','application/json','application/vnd.schemaorg.ld+json']:
+            self.content_type = self.content_type.split(";", 1)[0]
+            # handle JSON-LD
+            if self.content_type in ["application/ld+json", "application/json", "application/vnd.schemaorg.ld+json"]:
                 if self.target_url:
                     jsonld_source_url = self.target_url
                 else:
-                    jsonld_source_url = 'landing page'
+                    jsonld_source_url = "landing page"
                 if self.json_ld_content:
                     self.source_name = MetadataSources.SCHEMAORG_EMBEDDED
                     self.metadata_format = MetadataFormats.JSONLD
-                elif self.source_name != MetadataSources.RDF_TYPED_LINKS and self.source_name != MetadataSources.RDF_SIGNPOSTING_LINKS:
+                elif (
+                    self.source_name != MetadataSources.RDF_TYPED_LINKS
+                    and self.source_name != MetadataSources.RDF_SIGNPOSTING_LINKS
+                ):
                     self.source_name = MetadataSources.SCHEMAORG_NEGOTIATED
                     self.metadata_format = MetadataFormats.JSONLD
-                self.logger.info('FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s' % (jsonld_source_url))
+                self.logger.info("FsF-F2-01M : Try to parse RDF (JSON-LD) from -: %s" % (jsonld_source_url))
                 if isinstance(rdf_response, bytes):
                     try:
                         rdf_response = rdf_response.decode("utf-8")
                     except:
                         pass
                 if isinstance(rdf_response, dict) or isinstance(rdf_response, list):
-                    self.logger.info('FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s' % (jsonld_source_url))
+                    self.logger.info(
+                        "FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s"
+                        % (jsonld_source_url)
+                    )
                     # in case two or more JSON-LD strings are embedded
                     if isinstance(rdf_response, list):
                         json_dict = None
                         if len(rdf_response) > 1:
                             self.logger.info(
-                                'FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type')
+                                "FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type"
+                            )
                             for meta_rec in rdf_response:
-                                meta_rec_type = str(meta_rec.get('@type')).lower().lstrip('schema:')
-                                if meta_rec_type in ['dataset']:
+                                meta_rec_type = str(meta_rec.get("@type")).lower().lstrip("schema:")
+                                if meta_rec_type in ["dataset"]:
                                     json_dict = meta_rec
                                     break
                                 if meta_rec_type in self.SCHEMA_ORG_CREATIVEWORKS:
@@ -271,112 +289,143 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         if rdf_metadata:
                             self.setLinkedNamespaces(str(rdf_response))
                         else:
-                            self.logger.info('FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing')
+                            self.logger.info(
+                                "FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing"
+                            )
                             # quick fix for https://github.com/RDFLib/rdflib/issues/1484
                             # needs to be done before dict is converted to string
-                            #print(rdf_response)
-                            if rdf_response.get('@context'):
-                                if rdf_response.get('@graph'):
+                            # print(rdf_response)
+                            if rdf_response.get("@context"):
+                                if rdf_response.get("@graph"):
                                     try:
-                                        #drop duplicate context in graph
-                                        if isinstance(rdf_response.get('@graph'), list):
-                                            for grph in rdf_response.get('@graph'):
-                                                if grph.get('@context'):
-                                                    del grph['@context']
+                                        # drop duplicate context in graph
+                                        if isinstance(rdf_response.get("@graph"), list):
+                                            for grph in rdf_response.get("@graph"):
+                                                if grph.get("@context"):
+                                                    del grph["@context"]
                                         else:
-                                            if rdf_response.get('@graph').get('@context'):
-                                                del rdf_response['@graph']['@context']
+                                            if rdf_response.get("@graph").get("@context"):
+                                                del rdf_response["@graph"]["@context"]
                                     except Exception as e:
-                                        print('Failed drop duplicate JSON-LD context in graph')
+                                        print("Failed drop duplicate JSON-LD context in graph")
                                         pass
-                                #Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
-                                if isinstance(rdf_response.get('@context'), list):
-                                    for ctxi, ctxt in enumerate(rdf_response.get('@context')):
-                                        if 'schema.org' in ctxt:
-                                            rdf_response['@context'][ctxi] = 'https://schema.org/docs/jsonldcontext.json'
-                                if isinstance(rdf_response.get('@context'), str):
-                                    if 'schema.org' in rdf_response.get('@context'):
-                                        rdf_response['@context'] = 'https://schema.org/docs/jsonldcontext.json'
+                                # Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
+                                if isinstance(rdf_response.get("@context"), list):
+                                    for ctxi, ctxt in enumerate(rdf_response.get("@context")):
+                                        if "schema.org" in ctxt:
+                                            rdf_response["@context"][
+                                                ctxi
+                                            ] = "https://schema.org/docs/jsonldcontext.json"
+                                if isinstance(rdf_response.get("@context"), str):
+                                    if "schema.org" in rdf_response.get("@context"):
+                                        rdf_response["@context"] = "https://schema.org/docs/jsonldcontext.json"
                             rdf_response = jsonld.expand(rdf_response)
                             rdf_response = json.dumps(rdf_response)
                     except Exception as e:
-                        print('RDF Collector Error: ',e)
+                        print("RDF Collector Error: ", e)
                         pass
-                #t ry to make graph from JSON-LD string
+                # t ry to make graph from JSON-LD string
                 if isinstance(rdf_response, str):
                     try:
-                        rdf_response = str(rdf_response).encode('utf-8')
+                        rdf_response = str(rdf_response).encode("utf-8")
                     except:
-                        self.logger.info('FsF-F2-01M : UTF-8 string conversion of JSON-LD failed')
+                        self.logger.info("FsF-F2-01M : UTF-8 string conversion of JSON-LD failed")
                         pass
-                    self.logger.info('FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s' % (jsonld_source_url))
+                    self.logger.info(
+                        "FsF-F2-01M : Try to parse JSON-LD using RDFLib retrieved as string from -: %s"
+                        % (jsonld_source_url)
+                    )
                     try:
                         jsonldgraph = rdflib.ConjunctiveGraph()
-                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format='json-ld')
-                        #rdf_response_graph = jsonldgraph
+                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format="json-ld")
+                        # rdf_response_graph = jsonldgraph
                         self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                     except Exception as e:
-                        print('JSON-LD parsing error', e, rdf_response[:100])
-                        self.logger.info('FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}'.format(e))
+                        print("JSON-LD parsing error", e, rdf_response[:100])
+                        self.logger.info(
+                            "FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}".format(e)
+                        )
 
             elif self.accept_type == AcceptTypes.rdf:
-                #print('ACCEPT: ',self.accept_type)
+                # print('ACCEPT: ',self.accept_type)
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
-                format_dict = {'text/ttl':'turtle',
-                               'application/xhtml+xml':'rdfa',
-                               'application/n-triples':'nt',
-                               'application/n-quads':'nquads'
-                               }
+                format_dict = {
+                    "text/ttl": "turtle",
+                    "application/xhtml+xml": "rdfa",
+                    "application/n-triples": "nt",
+                    "application/n-quads": "nquads",
+                }
                 if self.content_type in format_dict:
                     parseformat = (None, format_dict[self.content_type])
                 else:
-                    parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(self.content_type))
+                    parseformat = re.search(r"[\/+]([a-z0-9]+)$", str(self.content_type))
                 if parseformat:
                     parse_format = parseformat[1]
-                    if parse_format =='rdfa':
+                    if parse_format == "rdfa":
                         self.metadata_format = MetadataFormats.RDFA
-                    if parse_format not in ['xml', 'n3','turtle', 'nt', 'pretty-xml','trix','trig','nquads', 'json-ld','hext']:
-                        parse_format = 'turtle'
-                    if 'html' not in str(parse_format) and 'zip' not in str(parse_format) :
+                    if parse_format not in [
+                        "xml",
+                        "n3",
+                        "turtle",
+                        "nt",
+                        "pretty-xml",
+                        "trix",
+                        "trig",
+                        "nquads",
+                        "json-ld",
+                        "hext",
+                    ]:
+                        parse_format = "turtle"
+                    if "html" not in str(parse_format) and "zip" not in str(parse_format):
                         RDFparsed = False
-                        self.logger.info('FsF-F2-01M : Try to parse RDF from -: %s as %s' % (self.target_url,parse_format))
+                        self.logger.info(
+                            "FsF-F2-01M : Try to parse RDF from -: %s as %s" % (self.target_url, parse_format)
+                        )
                         badline = None
                         while not RDFparsed:
                             try:
-                                graph = rdflib.Graph(identifier = self.target_url)
+                                graph = rdflib.Graph(identifier=self.target_url)
                                 graph.parse(data=rdf_response, format=parse_format)
                                 rdf_response_graph = graph
                                 self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
                                 RDFparsed = True
                             except Exception as e:
-                                #<unknown>:74964:92: unclosed token
-                                errorlinematch = re.search(r'\sline\s([0-9]+)',str(e))
+                                # <unknown>:74964:92: unclosed token
+                                errorlinematch = re.search(r"\sline\s([0-9]+)", str(e))
                                 if not errorlinematch:
-                                    errorlinematch = re.search(r'<unknown>:([0-9]+)',str(e))
-                                if errorlinematch and parseformat[1] !='xml':
-                                    if  int(errorlinematch[1])+1 != badline:
+                                    errorlinematch = re.search(r"<unknown>:([0-9]+)", str(e))
+                                if errorlinematch and parseformat[1] != "xml":
+                                    if int(errorlinematch[1]) + 1 != badline:
                                         badline = int(errorlinematch[1])
                                         self.logger.warning(
-                                            'FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s ' % str(badline))
+                                            "FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s "
+                                            % str(badline)
+                                        )
                                         splitRDF = rdf_response.splitlines()
-                                        if len(splitRDF) >=1 and badline <= len(splitRDF) and badline > 1:
-                                            rdf_response = b'\n'.join(splitRDF[:badline-1])
+                                        if len(splitRDF) >= 1 and badline <= len(splitRDF) and badline > 1:
+                                            rdf_response = b"\n".join(splitRDF[: badline - 1])
                                         else:
-                                            RDFparsed = True # end reached
+                                            RDFparsed = True  # end reached
                                     else:
                                         RDFparsed = True
                                 else:
-                                    RDFparsed = True # give up
+                                    RDFparsed = True  # give up
                                 if not RDFparsed:
                                     continue
                                 else:
                                     self.logger.warning(
-                                        'FsF-F2-01M : Failed to parse RDF -: %s %s' % (self.target_url, str(e)))
+                                        "FsF-F2-01M : Failed to parse RDF -: %s %s" % (self.target_url, str(e))
+                                    )
                     else:
-                        self.logger.info('FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s' % (self.target_url))
+                        self.logger.info(
+                            "FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s"
+                            % (self.target_url)
+                        )
                 else:
-                    self.logger.info('FsF-F2-01M : Could not determine RDF serialisation format for -: {}'.format(self.target_url))
+                    self.logger.info(
+                        "FsF-F2-01M : Could not determine RDF serialisation format for -: {}".format(self.target_url)
+                    )
 
         if not rdf_metadata:
             rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
@@ -399,57 +448,76 @@ class MetaDataCollectorRdf(MetaDataCollector):
         meta = dict()
 
         try:
-            if (len(g) >= 1):
-                self.logger.info('FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:'+str(len(g)))
+            if len(g) >= 1:
+                self.logger.info("FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:" + str(len(g)))
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
                     for l, v in row.asdict().items():
                         if l is not None:
                             if l in [
-                                    'references', 'source', 'isVersionOf', 'isReferencedBy', 'isPartOf', 'hasVersion',
-                                    'replaces', 'hasPart', 'isReplacedBy', 'requires', 'isRequiredBy'
+                                "references",
+                                "source",
+                                "isVersionOf",
+                                "isReferencedBy",
+                                "isPartOf",
+                                "hasVersion",
+                                "replaces",
+                                "hasPart",
+                                "isReplacedBy",
+                                "requires",
+                                "isRequiredBy",
                             ]:
-                                if not meta.get('related_resources'):
-                                    meta['related_resources'] = []
-                                meta['related_resources'].append({'related_resource': str(v), 'relation_type': l})
+                                if not meta.get("related_resources"):
+                                    meta["related_resources"] = []
+                                meta["related_resources"].append({"related_resource": str(v), "relation_type": l})
                             else:
                                 meta[l] = str(v)
                     break
             else:
                 self.logger.warning(
-                    'FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test')
+                    "FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test"
+                )
         except Exception as e:
-            self.logger.info('FsF-F2-01M : SPARQLing error -: {}'.format(e))
+            self.logger.info("FsF-F2-01M : SPARQLing error -: {}".format(e))
         if len(meta) <= 0:
             goodtriples = []
             has_xhtml = False
             for t in list(g):
                 # exclude xhtml properties/predicates:
-                if not '/xhtml/vocab' in t[1] and not '/ogp.me' in t[1]:
+                if not "/xhtml/vocab" in t[1] and not "/ogp.me" in t[1]:
                     goodtriples.append(t)
                 else:
                     has_xhtml = True
             if has_xhtml:
-                self.logger.info('FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML or OpenGraph properties which are excluded')
-            if len(goodtriples) > 1:
-                if not meta.get('object_type'):
-                    meta['object_type'] = 'Other'
                 self.logger.info(
-                    'FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found '
-                    + str(len(goodtriples)) + ' triples in the given graph')
-        elif meta.get('object_type'):
-            #Ignore non CreativeWork schema.org types
-            if 'schema.org' in meta['object_type']:
-                if meta['object_type'].split('/')[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
-                    self.logger.info('FsF-F2-01M : Ignoring SPARQLed metadata seems to be non CreativeWork schema.org type: '+str(meta['object_type']))
+                    "FsF-F2-01M : Found RDFa like triples but at least some of them seem to be XHTML or OpenGraph properties which are excluded"
+                )
+            if len(goodtriples) > 1:
+                if not meta.get("object_type"):
+                    meta["object_type"] = "Other"
+                self.logger.info(
+                    "FsF-F2-01M : Could not find core metadata elements through generic SPARQL query on RDF but found "
+                    + str(len(goodtriples))
+                    + " triples in the given graph"
+                )
+        elif meta.get("object_type"):
+            # Ignore non CreativeWork schema.org types
+            if "schema.org" in meta["object_type"]:
+                if meta["object_type"].split("/")[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                    self.logger.info(
+                        "FsF-F2-01M : Ignoring SPARQLed metadata seems to be non CreativeWork schema.org type: "
+                        + str(meta["object_type"])
+                    )
                     meta = dict()
             if meta:
-                self.logger.info('FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: ' +
-                             str(meta.keys()))
+                self.logger.info(
+                    "FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: "
+                    + str(meta.keys())
+                )
         return meta
 
-    #TODO rename to: get_core_metadata
-    def get_metadata(self, g, item, type='Dataset'):
+    # TODO rename to: get_core_metadata
+    def get_metadata(self, g, item, type="Dataset"):
         """Get the core (domain agnostic, DCAT, DC, schema.org) metadata given in RDF graph.
 
         Parameters
@@ -466,112 +534,181 @@ class MetaDataCollectorRdf(MetaDataCollector):
         dict
             a dictionary of core metadata in RDF graph
         """
-        DCAT = Namespace('http://www.w3.org/ns/dcat#')
-        SMA = Namespace('http://schema.org/')
+        DCAT = Namespace("http://www.w3.org/ns/dcat#")
+        SMA = Namespace("http://schema.org/")
         meta = dict()
-        #default sparql
-        #meta = self.get_default_metadata(g)
-        self.logger.info('FsF-F2-01M : Trying to get some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph')
-        if not meta.get('object_identifier'):
-            meta['object_identifier'] = []
-            for identifier in (list(g.objects(item, DC.identifier)) + list(g.objects(item, DCTERMS.identifier)) +
-                               list(g.objects(item, SDO.identifier)) + list(g.objects(item, SMA.identifier)) +
-                               list(g.objects(item, SDO.sameAs))+ list(g.objects(item, SMA.sameAs))):
-                meta['object_identifier'].append(str(identifier))
+        # default sparql
+        # meta = self.get_default_metadata(g)
+        self.logger.info(
+            "FsF-F2-01M : Trying to get some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph"
+        )
+        if not meta.get("object_identifier"):
+            meta["object_identifier"] = []
+            for identifier in (
+                list(g.objects(item, DC.identifier))
+                + list(g.objects(item, DCTERMS.identifier))
+                + list(g.objects(item, SDO.identifier))
+                + list(g.objects(item, SMA.identifier))
+                + list(g.objects(item, SDO.sameAs))
+                + list(g.objects(item, SMA.sameAs))
+            ):
+                meta["object_identifier"].append(str(identifier))
 
-            '''
+            """
              meta['object_identifier'] = (g.value(item, DC.identifier) or
                  g.value(item, DCTERMS.identifier) or
                  g.value(item, SDO.identifier) or
                  g.value(item, SMA.identifier) or
                  g.value(item, SMA.sameAs))
-            '''
-        '''
+            """
+        """
         if self.source_name != self.getEnumSourceNames().RDFA.value:
             meta['object_identifier'] = str(item)
             meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
-        '''
-        if not meta.get('language'):
-            meta['language'] = str(g.value(item, DC.language) or g.value(item, DCTERMS.language) or
-                                   g.value(item, SDO.inLanguage) or g.value(item, SMA.inLanguage))
-        if not meta.get('title'):
-            meta['title'] = str(g.value(item, DC.title) or g.value(item, DCTERMS.title) or g.value(item, SMA.name) or g.value(item, SDO.name) or g.value(item, SMA.headline) or g.value(item, SDO.headline))
-        if not meta.get('summary'):
-            meta['summary'] = str(g.value(item, DC.description) or g.value(item, DCTERMS.description) or g.value(item, DCTERMS.abstract) or
-                               g.value(item, SMA.description) or g.value(item, SDO.description)
-                               or g.value(item, SMA.abstract) or g.value(item, SDO.abstract))
-        if not meta.get('publication_date'):
-            meta['publication_date'] = str(g.value(item, DC.date) or g.value(item, DCTERMS.date) or
-                                        g.value(item, DCTERMS.issued)
-                                        or  g.value(item, SMA.datePublished) or  g.value(item, SMA.dateCreated)
-                                        or g.value(item, SDO.datePublished) or g.value(item, SDO.dateCreated)
-                                        )
-        if not meta.get('publisher'):
-            meta['publisher']=[]
-            for publisher in (list(g.objects(item, DC.publisher)) or list(g.objects(item, DCTERMS.publisher)) or
-                                 list(g.objects(item, SMA.publisher)) or list(g.objects(item, SDO.publisher)) or
-                                 list(g.objects(item, SMA.provider)) or list(g.objects(item, SDO.provider))):
-                publishername = (g.value(publisher,FOAF.name) or (g.value(publisher,SMA.name))or (g.value(publisher,SDO.name)))
+        """
+        if not meta.get("language"):
+            meta["language"] = str(
+                g.value(item, DC.language)
+                or g.value(item, DCTERMS.language)
+                or g.value(item, SDO.inLanguage)
+                or g.value(item, SMA.inLanguage)
+            )
+        if not meta.get("title"):
+            meta["title"] = str(
+                g.value(item, DC.title)
+                or g.value(item, DCTERMS.title)
+                or g.value(item, SMA.name)
+                or g.value(item, SDO.name)
+                or g.value(item, SMA.headline)
+                or g.value(item, SDO.headline)
+            )
+        if not meta.get("summary"):
+            meta["summary"] = str(
+                g.value(item, DC.description)
+                or g.value(item, DCTERMS.description)
+                or g.value(item, DCTERMS.abstract)
+                or g.value(item, SMA.description)
+                or g.value(item, SDO.description)
+                or g.value(item, SMA.abstract)
+                or g.value(item, SDO.abstract)
+            )
+        if not meta.get("publication_date"):
+            meta["publication_date"] = str(
+                g.value(item, DC.date)
+                or g.value(item, DCTERMS.date)
+                or g.value(item, DCTERMS.issued)
+                or g.value(item, SMA.datePublished)
+                or g.value(item, SMA.dateCreated)
+                or g.value(item, SDO.datePublished)
+                or g.value(item, SDO.dateCreated)
+            )
+        if not meta.get("publisher"):
+            meta["publisher"] = []
+            for publisher in (
+                list(g.objects(item, DC.publisher))
+                or list(g.objects(item, DCTERMS.publisher))
+                or list(g.objects(item, SMA.publisher))
+                or list(g.objects(item, SDO.publisher))
+                or list(g.objects(item, SMA.provider))
+                or list(g.objects(item, SDO.provider))
+            ):
+                publishername = (
+                    g.value(publisher, FOAF.name) or (g.value(publisher, SMA.name)) or (g.value(publisher, SDO.name))
+                )
                 if publishername:
-                    meta['publisher'].append(str(publishername))
+                    meta["publisher"].append(str(publishername))
                 else:
-                    meta['publisher'].append(str(publisher))
-            #meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
+                    meta["publisher"].append(str(publisher))
+            # meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
             #                     g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
-        if not meta.get('keywords'):
-            meta['keywords'] = []
-            for keyword in (list(g.objects(item, DCAT.keyword)) + list(g.objects(item, DCTERMS.subject)) +
-                            list(g.objects(item, DC.subject))
-                            or list(g.objects(item, SMA.keywords)) or list(g.objects(item, SDO.keywords))):
-                meta['keywords'].append(str(keyword))
-        #TODO creators, contributors
-        if not meta.get('creator'):
-            meta['creator'] = []
-            for creator in (list(g.objects(item, DCTERMS.creator)) or list(g.objects(item, DC.creator)) or list(g.objects(item, SMA.author))):
-                if g.value(creator,FOAF.name):
-                    meta['creator'].append(str(g.value(creator,FOAF.name)))
+        if not meta.get("keywords"):
+            meta["keywords"] = []
+            for keyword in (
+                list(g.objects(item, DCAT.keyword))
+                + list(g.objects(item, DCTERMS.subject))
+                + list(g.objects(item, DC.subject))
+                or list(g.objects(item, SMA.keywords))
+                or list(g.objects(item, SDO.keywords))
+            ):
+                meta["keywords"].append(str(keyword))
+        # TODO creators, contributors
+        if not meta.get("creator"):
+            meta["creator"] = []
+            for creator in (
+                list(g.objects(item, DCTERMS.creator))
+                or list(g.objects(item, DC.creator))
+                or list(g.objects(item, SMA.author))
+            ):
+                if g.value(creator, FOAF.name):
+                    meta["creator"].append(str(g.value(creator, FOAF.name)))
                 else:
-                    meta['creator'].append(str(creator))
+                    meta["creator"].append(str(creator))
 
-        if not meta.get('contributor'):
-            meta['contributor'] = []
-            for contributor in (list(g.objects(item, DCTERMS.contributor)) or list(g.objects(item, DC.contributor)) or list(g.objects(item, SMA.contributor))):
-                meta['contributor'].append(str(contributor))
-        if not meta.get('license'):
-            meta['license'] = str(g.value(item, DCTERMS.license) or g.value(item, SDO.license) or  g.value(item, SMA.license))
-        if not meta.get('access_level'):
-            meta['access_level'] = str(g.value(item, DCTERMS.accessRights) or g.value(item, DCTERMS.rights) or
-                                    g.value(item, DC.rights)
-                                    or g.value(item, SDO.conditionsOfAccess) or g.value(item, SMA.conditionsOfAccess) )
-        if not meta.get('related_resources'):
-            meta['related_resources'] = []
+        if not meta.get("contributor"):
+            meta["contributor"] = []
+            for contributor in (
+                list(g.objects(item, DCTERMS.contributor))
+                or list(g.objects(item, DC.contributor))
+                or list(g.objects(item, SMA.contributor))
+            ):
+                meta["contributor"].append(str(contributor))
+        if not meta.get("license"):
+            meta["license"] = str(
+                g.value(item, DCTERMS.license) or g.value(item, SDO.license) or g.value(item, SMA.license)
+            )
+        if not meta.get("access_level"):
+            meta["access_level"] = str(
+                g.value(item, DCTERMS.accessRights)
+                or g.value(item, DCTERMS.rights)
+                or g.value(item, DC.rights)
+                or g.value(item, SDO.conditionsOfAccess)
+                or g.value(item, SMA.conditionsOfAccess)
+            )
+        if not meta.get("related_resources"):
+            meta["related_resources"] = []
             for dctrelationtype in [
-                    DCTERMS.references, DCTERMS.source, DCTERMS.isVersionOf, DCTERMS.isReferencedBy, DCTERMS.isPartOf,
-                    DCTERMS.hasVersion, DCTERMS.replaces, DCTERMS.hasPart, DCTERMS.isReplacedBy, DCTERMS.requires,
-                    DCTERMS.isRequiredBy
+                DCTERMS.references,
+                DCTERMS.source,
+                DCTERMS.isVersionOf,
+                DCTERMS.isReferencedBy,
+                DCTERMS.isPartOf,
+                DCTERMS.hasVersion,
+                DCTERMS.replaces,
+                DCTERMS.hasPart,
+                DCTERMS.isReplacedBy,
+                DCTERMS.requires,
+                DCTERMS.isRequiredBy,
             ]:
                 dctrelation = g.value(item, dctrelationtype)
                 if dctrelation:
-                    meta['related_resources'].append({
-                        'related_resource': str(dctrelation),
-                        'relation_type': str(dctrelationtype)
-                    })
+                    meta["related_resources"].append(
+                        {"related_resource": str(dctrelation), "relation_type": str(dctrelationtype)}
+                    )
             for schemarelationtype in [
-                SMA.isPartOf,  SMA.includedInDataCatalog, SMA.subjectOf, SMA.isBasedOn, SMA.sameAs,
-                SDO.isPartOf, SDO.includedInDataCatalog, SDO.subjectOf, SDO.isBasedOn, SDO.sameAs
+                SMA.isPartOf,
+                SMA.includedInDataCatalog,
+                SMA.subjectOf,
+                SMA.isBasedOn,
+                SMA.sameAs,
+                SDO.isPartOf,
+                SDO.includedInDataCatalog,
+                SDO.subjectOf,
+                SDO.isBasedOn,
+                SDO.sameAs,
             ]:
                 schemarelation = g.value(item, schemarelationtype)
                 if schemarelation:
-                    meta['related_resources'].append({
-                        'related_resource': str(schemarelation),
-                        'relation_type': str(schemarelationtype)
-                    })
+                    meta["related_resources"].append(
+                        {"related_resource": str(schemarelation), "relation_type": str(schemarelationtype)}
+                    )
 
         if meta:
-            meta['object_type'] = type
-            meta = {k: v for k, v in meta.items() if v not in [None, 'None',[]]}
+            meta["object_type"] = type
+            meta = {k: v for k, v in meta.items() if v not in [None, "None", []]}
             self.logger.info(
-                'FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: '+str(meta))
+                "FsF-F2-01M : Found some core domain agnostic (DCAT, DC, schema.org) metadata from RDF graph -: "
+                + str(meta)
+            )
         return meta
 
     def get_ontology_metadata(self, graph):
@@ -588,190 +725,206 @@ class MetaDataCollectorRdf(MetaDataCollector):
             a dictionary of Ontology in RDF graph
         """
         ont_metadata = dict()
-        OWL = Namespace('http://www.w3.org/2002/07/owl#')
-        SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
-        ontologies = list(graph[:RDF.type:OWL.Ontology])
+        OWL = Namespace("http://www.w3.org/2002/07/owl#")
+        SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+        ontologies = list(graph[: RDF.type : OWL.Ontology])
         if len(ontologies) > 0:
-            self.logger.info('FsF-F2-01M : RDF Graph seems to represent a OWL Ontology')
-            ont_metadata = self.get_metadata(graph, ontologies[0], type='DefinedTermSet')
+            self.logger.info("FsF-F2-01M : RDF Graph seems to represent a OWL Ontology")
+            ont_metadata = self.get_metadata(graph, ontologies[0], type="DefinedTermSet")
         else:
-            ontologies = list(graph[:RDF.type:SKOS.ConceptScheme]) or list(graph[:RDF.type:SKOS.Collection])
+            ontologies = list(graph[: RDF.type : SKOS.ConceptScheme]) or list(graph[: RDF.type : SKOS.Collection])
             if len(ontologies) > 0:
-                self.logger.info('FsF-F2-01M : RDF Graph seems to represent a SKOS Ontology')
-                ont_metadata = self.get_metadata(graph, ontologies[0], type='DefinedTermSet')
+                self.logger.info("FsF-F2-01M : RDF Graph seems to represent a SKOS Ontology")
+                ont_metadata = self.get_metadata(graph, ontologies[0], type="DefinedTermSet")
             else:
-                self.logger.info('FsF-F2-01M : Could not parse Ontology RDF')
+                self.logger.info("FsF-F2-01M : Could not parse Ontology RDF")
         return ont_metadata
 
     def get_schemorg_metadata_from_dict(self, json_dict):
-        jsnld_metadata ={}
+        jsnld_metadata = {}
         trusted = True
 
         if isinstance(json_dict, dict):
-            self.logger.info('FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}'.format(
-                self.source_name.name))
+            self.logger.info(
+                "FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}".format(self.source_name.name)
+            )
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             try:
-                #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
-                if str(json_dict.get('@context')).find('://schema.org') > -1:
-                    schemaorgns = 'schema'
-                    if isinstance(json_dict.get('@context'), dict):
-                        for contextname, contexturi in json_dict.get('@context').items():
-                            if contexturi.endswith('schema.org/'):
+                # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
+                if str(json_dict.get("@context")).find("://schema.org") > -1:
+                    schemaorgns = "schema"
+                    if isinstance(json_dict.get("@context"), dict):
+                        for contextname, contexturi in json_dict.get("@context").items():
+                            if contexturi.endswith("schema.org/"):
                                 schemaorgns = contextname
 
-                    json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ':', '"'))
-                    #special case #1
-                    if json_dict.get('mainEntity'):
-                        self.logger.info('FsF-F2-01M : \'MainEntity\' detected in JSON-LD, trying to identify its properties')
-                        for mainEntityprop in json_dict.get('mainEntity'):
-                            if isinstance(json_dict.get('mainEntity'), dict):
-                                json_dict[mainEntityprop] = json_dict.get('mainEntity').get(mainEntityprop)
-                    #special case #2
-                    #if json_dict.get('@graph'):
+                    json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ":", '"'))
+                    # special case #1
+                    if json_dict.get("mainEntity"):
+                        self.logger.info(
+                            "FsF-F2-01M : 'MainEntity' detected in JSON-LD, trying to identify its properties"
+                        )
+                        for mainEntityprop in json_dict.get("mainEntity"):
+                            if isinstance(json_dict.get("mainEntity"), dict):
+                                json_dict[mainEntityprop] = json_dict.get("mainEntity").get(mainEntityprop)
+                    # special case #2
+                    # if json_dict.get('@graph'):
                     #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
-                        #ext_meta = self.compact_jsonld(ext_meta)
+                    # ext_meta = self.compact_jsonld(ext_meta)
 
-                    if not isinstance(json_dict.get('@type'), list):
-                        json_dict['@type'] = [json_dict.get('@type')]
+                    if not isinstance(json_dict.get("@type"), list):
+                        json_dict["@type"] = [json_dict.get("@type")]
 
-                    if not json_dict.get('@type'):
+                    if not json_dict.get("@type"):
                         self.logger.info(
-                            'FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type')
-                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get('@type')):
-                    #elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
+                            "FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type"
+                        )
+                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get("@type")):
+                        # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
                         trusted = False
                         self.logger.info(
-                            'FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:'
-                            + str(json_dict.get('@type')))
-                    elif not any(tt.lower() in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get('@type')):
-                    #elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
+                            "FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:"
+                            + str(json_dict.get("@type"))
+                        )
+                    elif not any(tt.lower() in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get("@type")):
+                        # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
                         trusted = False
                         self.logger.info(
-                            'FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:'+str(json_dict.get('@type')))
+                            "FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:"
+                            + str(json_dict.get("@type"))
+                        )
                     else:
                         self.logger.info(
-                            'FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:'
-                            + str(json_dict.get('@type')))
+                            "FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:"
+                            + str(json_dict.get("@type"))
+                        )
 
-                        self.namespaces.append('http://schema.org/')
+                        self.namespaces.append("http://schema.org/")
                         jsnld_metadata = jmespath.search(Mapper.SCHEMAORG_MAPPING.value, json_dict)
-                    if jsnld_metadata.get('creator') is None:
-                        first = jsnld_metadata.get('creator_first')
-                        last = jsnld_metadata.get('creator_last')
+                    if jsnld_metadata.get("creator") is None:
+                        first = jsnld_metadata.get("creator_first")
+                        last = jsnld_metadata.get("creator_last")
                         if last:
                             if isinstance(first, list) and isinstance(last, list):
                                 if len(first) == len(last):
-                                    names = [str(i) + ' ' + str(j) for i, j in zip(first, last)]
-                                    jsnld_metadata['creator'] = names
+                                    names = [str(i) + " " + str(j) for i, j in zip(first, last)]
+                                    jsnld_metadata["creator"] = names
                             else:
-                                jsnld_metadata['creator'] = [str(first) + ' ' + str(last)]
+                                jsnld_metadata["creator"] = [str(first) + " " + str(last)]
 
                     invalid_license = False
-                    if jsnld_metadata.get('license'):
-                        self.logger.info('FsF-R1.1-01M : License metadata found (schema.org) -: {}'.format(
-                            jsnld_metadata.get('license')))
-                        if not isinstance(jsnld_metadata.get('license'), list):
-                            jsnld_metadata['license'] = [jsnld_metadata['license']]
+                    if jsnld_metadata.get("license"):
+                        self.logger.info(
+                            "FsF-R1.1-01M : License metadata found (schema.org) -: {}".format(
+                                jsnld_metadata.get("license")
+                            )
+                        )
+                        if not isinstance(jsnld_metadata.get("license"), list):
+                            jsnld_metadata["license"] = [jsnld_metadata["license"]]
                         lk = 0
-                        for licence in jsnld_metadata.get('license'):
+                        for licence in jsnld_metadata.get("license"):
                             if isinstance(licence, dict):
-                                ls_type = licence.get('@type')
-                                #license can be of type URL or CreativeWork
-                                if ls_type == 'CreativeWork':
-                                    ls = licence.get('url')
+                                ls_type = licence.get("@type")
+                                # license can be of type URL or CreativeWork
+                                if ls_type == "CreativeWork":
+                                    ls = licence.get("url")
                                     if not ls:
-                                        ls = licence.get('name')
+                                        ls = licence.get("name")
                                     if ls:
-                                        jsnld_metadata['license'][lk] = ls
+                                        jsnld_metadata["license"][lk] = ls
                                     else:
                                         invalid_license = True
                                 else:
                                     invalid_license = True
                                 if invalid_license:
                                     self.logger.warning(
-                                        'FsF-R1.1-01M : Looks like schema.org representation of license is incorrect.'
+                                        "FsF-R1.1-01M : Looks like schema.org representation of license is incorrect."
                                     )
-                                    jsnld_metadata['license'][lk] = None
-                            lk+=1
-
+                                    jsnld_metadata["license"][lk] = None
+                            lk += 1
 
                     # filter out None values of related_resources
 
-                    if jsnld_metadata.get('related_resources'):
-                        relateds = [d for d in jsnld_metadata['related_resources'] if d['related_resource'] is not None]
+                    if jsnld_metadata.get("related_resources"):
+                        relateds = [d for d in jsnld_metadata["related_resources"] if d["related_resource"] is not None]
                         if relateds:
-                            jsnld_metadata['related_resources'] = relateds
-                            self.logger.info('FsF-I3-01M : {0} related resource(s) extracted from -: {1}'.format(
-                                len(jsnld_metadata['related_resources']), self.source_name.name))
+                            jsnld_metadata["related_resources"] = relateds
+                            self.logger.info(
+                                "FsF-I3-01M : {0} related resource(s) extracted from -: {1}".format(
+                                    len(jsnld_metadata["related_resources"]), self.source_name.name
+                                )
+                            )
                         else:
-                            del jsnld_metadata['related_resources']
-                            self.logger.info('FsF-I3-01M : No related resource(s) found in Schema.org metadata')
+                            del jsnld_metadata["related_resources"]
+                            self.logger.info("FsF-I3-01M : No related resource(s) found in Schema.org metadata")
 
-                    if jsnld_metadata.get('object_size'):
-                        #print(jsnld_metadata.get('object_size'))
-                        if isinstance(jsnld_metadata['object_size'], dict):
-                            jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value'))
+                    if jsnld_metadata.get("object_size"):
+                        # print(jsnld_metadata.get('object_size'))
+                        if isinstance(jsnld_metadata["object_size"], dict):
+                            jsnld_metadata["object_size"] = str(jsnld_metadata["object_size"].get("value"))
 
-                        #jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
+                        # jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
 
                 else:
-                    self.logger.info('FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: ' + str(json_dict.get('@context')))
+                    self.logger.info(
+                        "FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: "
+                        + str(json_dict.get("@context"))
+                    )
 
             except Exception as err:
-                #print(err.with_traceback())
-                self.logger.info('FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}'.format(err))
+                # print(err.with_traceback())
+                self.logger.info("FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}".format(err))
         else:
-            self.logger.info('FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict')
+            self.logger.info("FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict")
 
         if not trusted:
             jsnld_metadata = {}
         return jsnld_metadata
 
     def get_schemaorg_metadata_from_graph(self, graph):
-        #we will only test creative works and subtypes
+        # we will only test creative works and subtypes
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
         creative_work = None
-        schema_metadata={}
-        SMA = Namespace('http://schema.org/')
+        schema_metadata = {}
+        SMA = Namespace("http://schema.org/")
         schema_org_nodes = []
         # use only schema.org properties and create graph using these.
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
-        creative_work_type = 'Dataset'
+        creative_work_type = "Dataset"
         try:
             cand_creative_work = {}
-            object_types_dict ={}
+            object_types_dict = {}
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
-                if 'schema.org' in str(root):
-                    root_name = str(root).rsplit('/')[-1].strip()
+                if "schema.org" in str(root):
+                    root_name = str(root).rsplit("/")[-1].strip()
                     if root_name.lower() in creative_work_types:
-                        creative_works = list(graph[:RDF.type:root])
+                        creative_works = list(graph[: RDF.type : root])
 
                         # Finding the schema.org root
 
                         if len(list(graph.subjects(object=creative_works[0]))) == 0:
-                            cand_creative_work[root_name] =creative_works[0]
+                            cand_creative_work[root_name] = creative_works[0]
                             if object_types_dict.get(str(creative_works[0])):
                                 object_types_dict[str(creative_works[0])].append(root_name)
                             else:
-                                object_types_dict[str(creative_works[0])]=[root_name]
+                                object_types_dict[str(creative_works[0])] = [root_name]
                             # prioritize Dataset type
             if cand_creative_work:
-                if 'Dataset' in cand_creative_work:
-                    creative_work = cand_creative_work['Dataset']
+                if "Dataset" in cand_creative_work:
+                    creative_work = cand_creative_work["Dataset"]
                 else:
                     creative_work = cand_creative_work[list(cand_creative_work)[0]]
                     creative_work_type = list(cand_creative_work)[0]
 
         except Exception as e:
-            self.logger.info('FsF-F2-01M : Schema.org RDF graph parsing failed -: '+str(e))
+            self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))
         if creative_work:
-            schema_metadata = self.get_metadata(graph, creative_work, type = creative_work_type)
-            #object type (in case there are more than one
-            if isinstance(object_types_dict.get(str(creative_work)),list):
-                schema_metadata['object_type'] = object_types_dict.get(str(creative_work))
+            schema_metadata = self.get_metadata(graph, creative_work, type=creative_work_type)
+            # object type (in case there are more than one
+            if isinstance(object_types_dict.get(str(creative_work)), list):
+                schema_metadata["object_type"] = object_types_dict.get(str(creative_work))
             # creator
             creator_node = None
             if graph.value(creative_work, SMA.creator):
@@ -787,34 +940,41 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 creators = graph.objects(creative_work, creator_node)
                 creator_name = []
                 for creator in creators:
-                    creator_name.append((graph.value(creator, SMA.familyName) or graph.value(creator, SDO.familyName)
-                                         or graph.value(creator, SDO.name) or graph.value(creator, SMA.name) ))
+                    creator_name.append(
+                        (
+                            graph.value(creator, SMA.familyName)
+                            or graph.value(creator, SDO.familyName)
+                            or graph.value(creator, SDO.name)
+                            or graph.value(creator, SMA.name)
+                        )
+                    )
                 if len(creator_name) > 0:
-                    schema_metadata['creator'] = creator_name
+                    schema_metadata["creator"] = creator_name
 
-            distribution = (graph.objects(creative_work, SMA.distribution) or graph.objects(creative_work, SDO.distribution))
-            schema_metadata['object_content_identifier'] = []
+            distribution = graph.objects(creative_work, SMA.distribution) or graph.objects(
+                creative_work, SDO.distribution
+            )
+            schema_metadata["object_content_identifier"] = []
             for dist in distribution:
-                durl = (graph.value(dist, SMA.contentUrl) or graph.value(dist, SDO.contentUrl))
-                dtype = (graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat))
-                dsize = (graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize))
+                durl = graph.value(dist, SMA.contentUrl) or graph.value(dist, SDO.contentUrl)
+                dtype = graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat)
+                dsize = graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize)
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
                         if dtype:
-                            dtype = '/'.join(str(dtype).split('/')[-2:])
-                    schema_metadata['object_content_identifier'].append({
-                        'url': str(durl),
-                        'type': dtype,
-                        'size': str(dsize)
-                    })
-            schema_metadata['measured_variable'] = []
-            for variable  in (list(graph.objects(creative_works[0], SMA.variableMeasured))
-                              or list(graph.objects(creative_works[0], SDO.variableMeasured))):
-                variablename = (graph.value(variable, SMA.name) or graph.value(variable, SDO.name))
+                            dtype = "/".join(str(dtype).split("/")[-2:])
+                    schema_metadata["object_content_identifier"].append(
+                        {"url": str(durl), "type": dtype, "size": str(dsize)}
+                    )
+            schema_metadata["measured_variable"] = []
+            for variable in list(graph.objects(creative_works[0], SMA.variableMeasured)) or list(
+                graph.objects(creative_works[0], SDO.variableMeasured)
+            ):
+                variablename = graph.value(variable, SMA.name) or graph.value(variable, SDO.name)
                 if variablename:
-                    schema_metadata['measured_variable'].append(variablename)
+                    schema_metadata["measured_variable"].append(variablename)
                 else:
-                    schema_metadata['measured_variable'].append(variable)
+                    schema_metadata["measured_variable"].append(variable)
 
             #'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
 
@@ -834,69 +994,74 @@ class MetaDataCollectorRdf(MetaDataCollector):
             a dictionary of Ontology in RDF graph
         """
         dcat_metadata = dict()
-        DCAT = Namespace('http://www.w3.org/ns/dcat#')
+        DCAT = Namespace("http://www.w3.org/ns/dcat#")
 
-        datasets = list(graph[:RDF.type:DCAT.Dataset])
+        datasets = list(graph[: RDF.type : DCAT.Dataset])
         if len(datasets) > 1:
-            self.logger.info('FsF-F2-01M : Found more than one DCAT Dataset description, will use first one')
+            self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
-            dcat_metadata = self.get_metadata(graph, datasets[0], type='Dataset')
+            dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
-            dcat_metadata['object_content_identifier'] = []
+            dcat_metadata["object_content_identifier"] = []
             for dist in distribution:
                 dtype, durl, dsize = None, None, None
                 if not (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)):
-                    self.logger.info('FsF-F2-01M : Trying to retrieve DCAT distributions from remote location -:' +
-                                     str(dist))
+                    self.logger.info(
+                        "FsF-F2-01M : Trying to retrieve DCAT distributions from remote location -:" + str(dist)
+                    )
                     try:
                         distgraph = rdflib.Graph()
                         disturl = str(dist)
-                        distresponse = requests.get(disturl, headers={'Accept': 'application/rdf+xml'})
+                        distresponse = requests.get(disturl, headers={"Accept": "application/rdf+xml"})
                         if distresponse.text:
-                            distgraph.parse(data=distresponse.text, format='application/rdf+xml')
-                            extdist = list(distgraph[:RDF.type:DCAT.Distribution])
-                            durl = (distgraph.value(extdist[0], DCAT.accessURL) or
-                                    distgraph.value(extdist[0], DCAT.downloadURL))
+                            distgraph.parse(data=distresponse.text, format="application/rdf+xml")
+                            extdist = list(distgraph[: RDF.type : DCAT.Distribution])
+                            durl = distgraph.value(extdist[0], DCAT.accessURL) or distgraph.value(
+                                extdist[0], DCAT.downloadURL
+                            )
                             dsize = distgraph.value(extdist[0], DCAT.byteSize)
                             dtype = distgraph.value(extdist[0], DCAT.mediaType)
-                            self.logger.info('FsF-F2-01M : Found DCAT distribution URL info from remote location -:' +
-                                             str(durl))
+                            self.logger.info(
+                                "FsF-F2-01M : Found DCAT distribution URL info from remote location -:" + str(durl)
+                            )
                     except Exception as e:
-                        self.logger.info('FsF-F2-01M : Failed to retrieve DCAT distributions from remote location -:' +
-                                         str(dist))
-                        #print(e)
+                        self.logger.info(
+                            "FsF-F2-01M : Failed to retrieve DCAT distributions from remote location -:" + str(dist)
+                        )
+                        # print(e)
                         durl = str(dist)
                 else:
-                    durl = (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL))
-                    #taking only one just to check if licence is available
-                    dcat_metadata['license'] = graph.value(dist, DCTERMS.license)
+                    durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
+                    # taking only one just to check if licence is available
+                    dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
                     # TODO: check if this really works..
-                    dcat_metadata['access_rights'] = (graph.value(dist, DCTERMS.accessRights) or
-                                                      graph.value(dist, DCTERMS.rights))
+                    dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
+                        dist, DCTERMS.rights
+                    )
                     dtype = graph.value(dist, DCAT.mediaType)
                     dsize = graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
-                        dtype = '/'.join(str(dtype).split('/')[-2:])
-                    dcat_metadata['object_content_identifier'].append({
-                        'url': str(durl),
-                        'type': dtype,
-                        'size': str(dsize)
-                    })
+                        dtype = "/".join(str(dtype).split("/")[-2:])
+                    dcat_metadata["object_content_identifier"].append(
+                        {"url": str(durl), "type": dtype, "size": str(dsize)}
+                    )
 
-            if dcat_metadata['object_content_identifier']:
-                self.logger.info('FsF-F3-01M : Found data links in DCAT.org metadata -: ' +
-                                 str(dcat_metadata['object_content_identifier']))
-                #TODO: add provenance metadata retrieval
-        #else:
+            if dcat_metadata["object_content_identifier"]:
+                self.logger.info(
+                    "FsF-F3-01M : Found data links in DCAT.org metadata -: "
+                    + str(dcat_metadata["object_content_identifier"])
+                )
+                # TODO: add provenance metadata retrieval
+        # else:
         #    self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
-            #in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
-            #dcat_metadata['object_type'] = 'Dataset'
+        # in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
+        # dcat_metadata['object_type'] = 'Dataset'
         return dcat_metadata
-        #rdf_meta.query(self.metadata_mapping.value)
-        #print(rdf_meta)
-        #return None
+        # rdf_meta.query(self.metadata_mapping.value)
+        # print(rdf_meta)
+        # return None
 
     def get_content_type(self):
         """Get the content type.

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class DataContentMetadataOutputInner(Model):
@@ -15,10 +15,9 @@ class DataContentMetadataOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 descriptor: str = None,
-                 descriptor_value: str = None,
-                 matches_content: bool = False):  # noqa: E501
+    def __init__(
+        self, descriptor: str = None, descriptor_value: str = None, matches_content: bool = False
+    ):  # noqa: E501
         """DataContentMetadataOutputInner - a model defined in Swagger
 
         :param descriptor: The descriptor of this DataContentMetadataOutputInner.  # noqa: E501
@@ -28,19 +27,19 @@ class DataContentMetadataOutputInner(Model):
         :param matches_content: The matches_content of this DataContentMetadataOutputInner.  # noqa: E501
         :type matches_content: bool
         """
-        self.swagger_types = {'descriptor': str, 'descriptor_value': str, 'matches_content': bool}
+        self.swagger_types = {"descriptor": str, "descriptor_value": str, "matches_content": bool}
 
         self.attribute_map = {
-            'descriptor': 'descriptor',
-            'descriptor_value': 'descriptor_value',
-            'matches_content': 'matches_content'
+            "descriptor": "descriptor",
+            "descriptor_value": "descriptor_value",
+            "matches_content": "matches_content",
         }
         self._descriptor = descriptor
         self._descriptor_value = descriptor_value
         self._matches_content = matches_content
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataContentMetadataOutputInner':
+    def from_dict(cls, dikt) -> "DataContentMetadataOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class FAIRResultCommonScore(Model):
@@ -14,7 +14,8 @@ class FAIRResultCommonScore(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, earned: float=0, total: float=0):  # noqa: E501
+
+    def __init__(self, earned: float = 0, total: float = 0):  # noqa: E501
         """FAIRResultCommonScore - a model defined in Swagger
 
         :param earned: The earned of this FAIRResultCommonScore.  # noqa: E501
@@ -22,20 +23,14 @@ class FAIRResultCommonScore(Model):
         :param total: The total of this FAIRResultCommonScore.  # noqa: E501
         :type total: float
         """
-        self.swagger_types = {
-            'earned': float,
-            'total': float
-        }
+        self.swagger_types = {"earned": float, "total": float}
 
-        self.attribute_map = {
-            'earned': 'earned',
-            'total': 'total'
-        }
+        self.attribute_map = {"earned": "earned", "total": "total"}
         self._earned = earned
         self._total = total
 
     @classmethod
-    def from_dict(cls, dikt) -> 'FAIRResultCommonScore':
+    def from_dict(cls, dikt) -> "FAIRResultCommonScore":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class DataProvenanceOutputInner(Model):
@@ -23,14 +23,14 @@ class DataProvenanceOutputInner(Model):
         :param provenance_metadata: The provenance_metadata of this DataProvenanceOutputInner.  # noqa: E501
         :type provenance_metadata: List[Dict[str, str]]
         """
-        self.swagger_types = {'is_available': bool, 'provenance_metadata': List[Dict[str, str]]}
+        self.swagger_types = {"is_available": bool, "provenance_metadata": List[Dict[str, str]]}
 
-        self.attribute_map = {'is_available': 'is_available', 'provenance_metadata': 'provenance_metadata'}
+        self.attribute_map = {"is_available": "is_available", "provenance_metadata": "provenance_metadata"}
         self._is_available = is_available
         self._provenance_metadata = provenance_metadata
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataProvenanceOutputInner':
+    def from_dict(cls, dikt) -> "DataProvenanceOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

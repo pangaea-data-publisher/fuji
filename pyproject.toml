@@ -16,30 +16,32 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
 dependencies = [
+  # dependencies with major version on zero are defined with
+  # major.minor.patch, because they can potentially introduce breaking changes
+  # in minor version updates anytime
   "beautifulsoup4~=4.12",
   "configparser~=6.0",
   "connexion[swagger-ui]~=2.14",
-  "extruct~=0.13.0",
+  "extruct~=0.16.0",
   "feedparser~=6.0",
-  "flask~=2.2.5",  # pin due to flask 2.3.0 json_encoder issue
   "flask-cors~=4.0",
-  "flask-limiter<=2.0.0",
+  "flask-limiter~=3.5",
   "hashid~=3.1.4",
   "idutils~=1.2",
   "jmespath~=1.0",
-  "levenshtein~=0.21.1",
+  "levenshtein~=0.22.0",
   "lxml~=4.9",
-  "pandas~=1.3",
+  "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
-  "pyyaml!=6.0.0,!=5.4.0,!=5.4.1",  # 6.0.1
+  "pyyaml~=6.0",
   "rapidfuzz~=3.3",
-  "rdflib~=6.1",
+  "rdflib~=7.0",
   "requests~=2.31",
-  "sparqlwrapper~=1.8",
-  "tika~=1.24",
-  "tldextract~=3.1",
-  "urlextract~=1.2",
+  "sparqlwrapper~=2.0",
+  "tika~=2.6",
+  "tldextract~=3.4",
+  "urlextract~=1.8",
   "waitress~=2.1"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
@@ -66,22 +68,21 @@ dev = [
   "fuji[testing]"
 ]
 docs = [
-  "docutils>=0.14,<0.18",
-  "myst-parser~=0.16",
-  "sphinx~=4.2",
-  "sphinx-rtd-theme~=1.0"
+  "myst-parser~=2.0",
+  "sphinx~=7.2",
+  "sphinx-rtd-theme~=1.3"
 ]
 lint = [
-  "pre-commit~=3.3"
+  "pre-commit~=3.4"
 ]
 report = [
-  "bokeh~=2.4",
+  "bokeh~=3.2",
   "jupyter~=1.0"
 ]
 testing = [
   "pytest~=7.4",
   "pytest-cov~=4.1",
-  "pytest-randomly~=3.1",
+  "pytest-randomly~=3.15",
   "pytest-recording~=0.13",
   "pytest-xdist~=3.3"
 ]
@@ -96,6 +97,8 @@ line-length = 120
 target_version = ["py311"]
 
 [tool.coverage.report]
+show_missing = true
+skip_covered = true
 skip_empty = true
 
 [tool.coverage.run]
@@ -124,12 +127,22 @@ features = [
 
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov {args}"
+cov-ci = "pytest --cov --junitxml=junit.xml | tee pytest-coverage.txt"
 cov-html = "pytest --cov --cov-report=html {args}"
 cov-xml = "pytest --cov --cov-report=xml {args}"
 lint = "pre-commit run --all-files --color=always {args}"
 test = "pytest {args}"
 
 [tool.pytest.ini_options]
+filterwarnings = [
+  # warnings from pyrdfa
+  "ignore: the imp module is deprecated in favour of importlib and slated for removal in Python 3.12:DeprecationWarning",
+  # warnings from feedparser
+  "ignore:'cgi' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
+  # warnings from tika
+  "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
+  "ignore:Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning"
+]
 markers = [
   "manual",  # tests which should be triggered manual only
   "noci",  # tests which should not run on the CI

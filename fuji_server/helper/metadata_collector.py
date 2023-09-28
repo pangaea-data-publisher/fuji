@@ -25,41 +25,44 @@
 import enum
 import logging
 from typing import Optional
+
 from urlextract import URLExtract
+
 from fuji_server.helper import metadata_mapper
+from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
 class MetadataFormats(enum.Enum):
-    HTML = {'label':'HTML', 'acronym':'html'}
-    XHTML= {'label':'XHTML', 'acronym':'xhtml'}
-    XML= {'label':'XML', 'acronym':'xml'}
-    RDF= {'label':'RDF', 'acronym':'rdf'}
-    RDFA ={'label':'RDFa', 'acronym':'rdfa'}
-    JSON= {'label':'JSON', 'acronym':'json'}
-    JSONLD= {'label':'JSON-LD', 'acronym':'json-ld'}
-    MICRODATA ={'label':'MICRODATA','acronym':'microdata'}
-    TEXT ={'label':'Text', 'acronym':'text'}
+    HTML = {"label": "HTML", "acronym": "html"}
+    XHTML = {"label": "XHTML", "acronym": "xhtml"}
+    XML = {"label": "XML", "acronym": "xml"}
+    RDF = {"label": "RDF", "acronym": "rdf"}
+    RDFA = {"label": "RDFa", "acronym": "rdfa"}
+    JSON = {"label": "JSON", "acronym": "json"}
+    JSONLD = {"label": "JSON-LD", "acronym": "json-ld"}
+    MICRODATA = {"label": "MICRODATA", "acronym": "microdata"}
+    TEXT = {"label": "Text", "acronym": "text"}
 
     def acronym(self):
-        return self.value.get('acronym')
+        return self.value.get("acronym")
+
 
 class MetadataOfferingMethods(enum.Enum):
-    HTML_EMBEDDING = {'label': 'HTML Embedding', 'acronym': 'html_embedding'}
-    MICRODATA_RDFA = {'label': 'Microdata and RDFa', 'acronym': 'microdata_rdfa'}
-    TYPED_LINKS = {'label': 'Typed Links', 'acronym': 'typed_links'}
-    SIGNPOSTING = {'label': 'Signposting Links', 'acronym': 'signposting'}
-    CONTENT_NEGOTIATION = {'label': 'Content Negotiation', 'acronym': 'content_negotiation'}
+    HTML_EMBEDDING = {"label": "HTML Embedding", "acronym": "html_embedding"}
+    MICRODATA_RDFA = {"label": "Microdata and RDFa", "acronym": "microdata_rdfa"}
+    TYPED_LINKS = {"label": "Typed Links", "acronym": "typed_links"}
+    SIGNPOSTING = {"label": "Signposting Links", "acronym": "signposting"}
+    CONTENT_NEGOTIATION = {"label": "Content Negotiation", "acronym": "content_negotiation"}
 
     def acronym(self):
-        return self.value.get('acronym')
+        return self.value.get("acronym")
 
 
 # Using enum class create enumerations of metadata sources
 class MetadataSources(enum.Enum):
-    """"Enum class to enumerate metadata sources."""
+    """ "Enum class to enumerate metadata sources."""
 
     @classmethod
     def getSourcesbyMethod(cls, methods):
@@ -70,49 +73,116 @@ class MetadataSources(enum.Enum):
             if isinstance(method, str):
                 method = MetadataOfferingMethods[method]
             for ms in MetadataSources:
-                if ms.value.get('method') == method:
+                if ms.value.get("method") == method:
                     found_sources.append(ms)
         return found_sources
 
-    HIGHWIRE_EPRINTS_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded Highwire or Eprints',
-                                 'acronym': 'highwire-eprints-html', 'format':MetadataFormats.HTML}
-    DUBLINCORE_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded DublinCore',
-                           'acronym': 'dublincore-html', 'format':MetadataFormats.XHTML}
-    OPENGRAPH_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Embedded OpenGraph',
-                          'acronym': 'opengraph-html', 'format':MetadataFormats.RDFA}#OpenGraph is based on RDFa
-    SCHEMAORG_EMBEDDED = {'method': MetadataOfferingMethods.HTML_EMBEDDING, 'label': 'Schema.org JSON-LD (Embedded)',
-                          'acronym': 'schemaorg-html','format':MetadataFormats.JSONLD}
-    RDFA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded RDFa', 'acronym': 'rdfa-html', 'format':MetadataFormats.RDFA}
-    MICRODATA_EMBEDDED = {'method': MetadataOfferingMethods.MICRODATA_RDFA, 'label': 'Embedded Microdata',
-                          'acronym': 'microdata-html', 'format':MetadataFormats.MICRODATA}
-    SCHEMAORG_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Schema.org JSON-LD (Negotiated)',
-                            'acronym': 'schemaorg-negotiated','format':MetadataFormats.JSONLD}
-    DATACITE_JSON_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Datacite Search',
-                                'acronym': 'datacite-negotiated','format':'JSON'}
-    RDF_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Linked Data (RDF)',
-                      'acronym': 'rdf-negotiated', 'format':MetadataFormats.RDF}
-    XML_NEGOTIATED = {'method': MetadataOfferingMethods.CONTENT_NEGOTIATION, 'label': 'Generic XML (Negotiated)',
-                      'acronym': 'xml-negotiated', 'format':MetadataFormats.XML}
-    XML_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Generic XML, Typed Links',
-                       'acronym': 'xml-type-linked', 'format':MetadataFormats.XML}
-    RDF_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Linked Data (RDF), Typed Links',
-                       'acronym': 'rdf-type-linked','format':MetadataFormats.RDF}  # Links in header which lead to a RDF resource
-    SCHEMAORG_TYPED_LINKS = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'Schema.org JSON-LD, Typed Links',
-                       'acronym': 'schemaorg-type-linked', 'format': MetadataFormats.JSONLD}
+    HIGHWIRE_EPRINTS_EMBEDDED = {
+        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "label": "Embedded Highwire or Eprints",
+        "acronym": "highwire-eprints-html",
+        "format": MetadataFormats.HTML,
+    }
+    DUBLINCORE_EMBEDDED = {
+        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "label": "Embedded DublinCore",
+        "acronym": "dublincore-html",
+        "format": MetadataFormats.XHTML,
+    }
+    OPENGRAPH_EMBEDDED = {
+        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "label": "Embedded OpenGraph",
+        "acronym": "opengraph-html",
+        "format": MetadataFormats.RDFA,
+    }  # OpenGraph is based on RDFa
+    SCHEMAORG_EMBEDDED = {
+        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "label": "Schema.org JSON-LD (Embedded)",
+        "acronym": "schemaorg-html",
+        "format": MetadataFormats.JSONLD,
+    }
+    RDFA_EMBEDDED = {
+        "method": MetadataOfferingMethods.MICRODATA_RDFA,
+        "label": "Embedded RDFa",
+        "acronym": "rdfa-html",
+        "format": MetadataFormats.RDFA,
+    }
+    MICRODATA_EMBEDDED = {
+        "method": MetadataOfferingMethods.MICRODATA_RDFA,
+        "label": "Embedded Microdata",
+        "acronym": "microdata-html",
+        "format": MetadataFormats.MICRODATA,
+    }
+    SCHEMAORG_NEGOTIATED = {
+        "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
+        "label": "Schema.org JSON-LD (Negotiated)",
+        "acronym": "schemaorg-negotiated",
+        "format": MetadataFormats.JSONLD,
+    }
+    DATACITE_JSON_NEGOTIATED = {
+        "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
+        "label": "Datacite Search",
+        "acronym": "datacite-negotiated",
+        "format": "JSON",
+    }
+    RDF_NEGOTIATED = {
+        "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
+        "label": "Linked Data (RDF)",
+        "acronym": "rdf-negotiated",
+        "format": MetadataFormats.RDF,
+    }
+    XML_NEGOTIATED = {
+        "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
+        "label": "Generic XML (Negotiated)",
+        "acronym": "xml-negotiated",
+        "format": MetadataFormats.XML,
+    }
+    XML_TYPED_LINKS = {
+        "method": MetadataOfferingMethods.TYPED_LINKS,
+        "label": "Generic XML, Typed Links",
+        "acronym": "xml-type-linked",
+        "format": MetadataFormats.XML,
+    }
+    RDF_TYPED_LINKS = {
+        "method": MetadataOfferingMethods.TYPED_LINKS,
+        "label": "Linked Data (RDF), Typed Links",
+        "acronym": "rdf-type-linked",
+        "format": MetadataFormats.RDF,
+    }  # Links in header which lead to a RDF resource
+    SCHEMAORG_TYPED_LINKS = {
+        "method": MetadataOfferingMethods.TYPED_LINKS,
+        "label": "Schema.org JSON-LD, Typed Links",
+        "acronym": "schemaorg-type-linked",
+        "format": MetadataFormats.JSONLD,
+    }
     # TYPED_LINK = 'Typed Links'
-    SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Signposting Typed Links',
-                          'acronym': 'signposting-linked'}
-    RDF_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Linked Data (RDF), Signposting Links',
-                          'acronym': 'rdf-signposting-linked','format':MetadataFormats.RDF}
-    XML_SIGNPOSTING_LINKS = {'method': MetadataOfferingMethods.SIGNPOSTING, 'label': 'Generic XML, Signposting Links',
-                          'acronym': 'xml-signposting-linked','format':MetadataFormats.XML}
+    SIGNPOSTING_LINKS = {
+        "method": MetadataOfferingMethods.SIGNPOSTING,
+        "label": "Signposting Typed Links",
+        "acronym": "signposting-linked",
+    }
+    RDF_SIGNPOSTING_LINKS = {
+        "method": MetadataOfferingMethods.SIGNPOSTING,
+        "label": "Linked Data (RDF), Signposting Links",
+        "acronym": "rdf-signposting-linked",
+        "format": MetadataFormats.RDF,
+    }
+    XML_SIGNPOSTING_LINKS = {
+        "method": MetadataOfferingMethods.SIGNPOSTING,
+        "label": "Generic XML, Signposting Links",
+        "acronym": "xml-signposting-linked",
+        "format": MetadataFormats.XML,
+    }
     # B2FIND = 'B2FIND Metadata Aggregator'
-    XML_GUESSED = {'method': None, 'label': 'Guessed XML Link','acronym':'xml-guessed', 'format':MetadataFormats.XML}
-    OAI_ORE = {'method': MetadataOfferingMethods.TYPED_LINKS, 'label': 'OAI-ORE','format':MetadataFormats.XML}
+    XML_GUESSED = {"method": None, "label": "Guessed XML Link", "acronym": "xml-guessed", "format": MetadataFormats.XML}
+    OAI_ORE = {"method": MetadataOfferingMethods.TYPED_LINKS, "label": "OAI-ORE", "format": MetadataFormats.XML}
+
     def acronym(self):
-        return self.value.get('acronym')
+        return self.value.get("acronym")
+
     def format(self):
-        return self.value.get('format')
+        return self.value.get("format")
+
 
 class MetaDataCollector(object):
     """
@@ -160,12 +230,9 @@ class MetaDataCollector(object):
 
     metadata_mapping: Optional[Mapper]
 
-
-
-    def __init__(self,
-                 sourcemetadata: dict = None,
-                 mapping: metadata_mapper.Mapper = None,
-                 logger: logging.Logger = None):
+    def __init__(
+        self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None
+    ):
         """
         Parameters
         ----------
@@ -181,13 +248,13 @@ class MetaDataCollector(object):
         self.metadata_format = None
         self.logger = logger
         self.target_metadata = {}
-        #namespaces used in the declaration parts
+        # namespaces used in the declaration parts
         self.namespaces = []
-        #namespaces recognized in lonked URIs
+        # namespaces recognized in lonked URIs
         self.linked_namespaces = {}
         self.content_type = None
         self.uris = []
-        self.auth_token_type = 'Basic'
+        self.auth_token_type = "Basic"
         self.auth_token = None
         self.accept_type = None
 
@@ -252,7 +319,7 @@ class MetaDataCollector(object):
                 if isinstance(url, str):
                     found_lov = lov_helper.get_linked_vocab_by_iri(url)
                     if found_lov:
-                        self.linked_namespaces[found_lov.get('namespace')] = found_lov
+                        self.linked_namespaces[found_lov.get("namespace")] = found_lov
 
     def set_auth_token(self, authtoken, authtokentype):
         self.auth_token = authtoken

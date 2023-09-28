@@ -1,65 +1,70 @@
 {
-  "fuji.mtlo": {
-    "id": "fuji.mtlo",
-    "homepage": "http://www.ics.forth.gr/isl/ontology/MarineTLO/",
-    "uri_format": "http://www.ics.forth.gr/isl/ontology/MarineTLO/$1",
-    "download.owl": "http://www.ics.forth.gr/isl/ontology/content-MTLO/marinetlo.owl",
-    "prefix": "mtlo",
-    "name": "MarineTLO Ontology",
-    "description": "MarineTLO is a top-level ontology for the marine domain (also applicable to the terrestrial domain)",
+  "fuji.euroscivoc": {
+    "id": "fuji.euroscivoc",
+    "name": "European Science Vocabulary (EuroSciVoc)",
+    "prefix": "euroscivoc",
     "subjects": [
-     "earth and related environmental sciences"
-    ]
+      "science and technology studies"
+    ],
+    "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1"
   },
-  "fuji.qudt": {
-    "id": "fuji.qudt",
-    "homepage": "http://qudt.org",
-    "prefix": "qudt",
-    "uri_format": "http://qudt.org/$1",
-    "pattern":"([\\d\\.]+\\/vocab\\/quantity#)"
-  },
-  "fuji.igsn": {
-    "id": "fuji.igsn",
-    "prefix": "igsn",
-    "uri_format": "http://pid.geoscience.gov.au/def/ont/ga/igsn#$1",
-    "name": "The IGSN Ontology",
-    "subjects": [
-       "earth and related environmental sciences"
-     ]
+  "fuji.i-adopt": {
+    "id": "fuji.i-adopt",
+    "name": "I-ADOPT Framework ontology",
+    "prefix": "i-adopt",
+    "uri_format": "https://w3id.org/iadopt/ont/$1"
   },
   "fuji.icos": {
     "id": "fuji.icos",
-    "prefix": "icos",
-    "uri_format": "http://meta.icos-cp.eu/ontologies/$1",
     "name": "The Integrated Carbon Observation System (ICOS) ontology",
+    "prefix": "icos",
     "subjects": [
-       "earth and related environmental sciences"
-     ]
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://meta.icos-cp.eu/ontologies/$1"
   },
-  "fuji.i-adopt": {
-    "id" : "fuji.i-adopt",
-    "prefix" : "i-adopt",
-    "name": "I-ADOPT Framework ontology",
-    "uri_format": "https://w3id.org/iadopt/ont/$1"
+  "fuji.igsn": {
+    "id": "fuji.igsn",
+    "name": "The IGSN Ontology",
+    "prefix": "igsn",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://pid.geoscience.gov.au/def/ont/ga/igsn#$1"
   },
-  "fuji.euroscivoc": {
-    "id": "fuji.euroscivoc",
-    "prefix": "euroscivoc",
-    "name": "European Science Vocabulary (EuroSciVoc)",
-    "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1",
-    "subjects": ["science and technology studies"]
-  },
-  "fuji.meta-share" : {
+  "fuji.meta-share": {
     "id": "fuji.meta-share",
-    "prefix": "meta-share",
     "name": "META-SHARE ontology",
-    "uri_format": "http://w3id.org/meta-share/meta-share/$1",
-    "subjects" : ["humanities", "languages and literature"]
+    "prefix": "meta-share",
+    "subjects": [
+      "humanities",
+      "languages and literature"
+    ],
+    "uri_format": "http://w3id.org/meta-share/meta-share/$1"
+  },
+  "fuji.mtlo": {
+    "description": "MarineTLO is a top-level ontology for the marine domain (also applicable to the terrestrial domain)",
+    "download.owl": "http://www.ics.forth.gr/isl/ontology/content-MTLO/marinetlo.owl",
+    "homepage": "http://www.ics.forth.gr/isl/ontology/MarineTLO/",
+    "id": "fuji.mtlo",
+    "name": "MarineTLO Ontology",
+    "prefix": "mtlo",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.ics.forth.gr/isl/ontology/MarineTLO/$1"
+  },
+  "fuji.qudt": {
+    "homepage": "http://qudt.org",
+    "id": "fuji.qudt",
+    "pattern": "([\\d\\.]+\\/vocab\\/quantity#)",
+    "prefix": "qudt",
+    "uri_format": "http://qudt.org/$1"
   },
   "fuji.wikidata": {
     "id": "fuji.wikidata",
-    "prefix": "wikidata",
     "name": "Wikidata",
+    "prefix": "wikidata",
     "uri_format": "https://www.wikidata.org/wiki/$1"
   }
 }

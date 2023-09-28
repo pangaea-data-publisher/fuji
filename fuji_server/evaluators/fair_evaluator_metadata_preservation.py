@@ -40,25 +40,27 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
     """
 
     def evaluate(self):
-        registry_bound_pid = ['doi']
-        self.result = MetadataPreserved(id=self.metric_number,
-                                        metric_identifier=self.metric_identifier,
-                                        metric_name=self.metric_name)
+        registry_bound_pid = ["doi"]
+        self.result = MetadataPreserved(
+            id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
+        )
         outputs = []
-        test_status = 'fail'
+        test_status = "fail"
         score = 0
         if self.fuji.pid_scheme:
             if self.fuji.pid_scheme in registry_bound_pid:
-                test_status = 'pass'
-                outputs.append(MetadataPreservedOutput(metadata_preservation_method='datacite'))
+                test_status = "pass"
+                outputs.append(MetadataPreservedOutput(metadata_preservation_method="datacite"))
                 score = 1
-                self.setEvaluationCriteriumScore('FsF-A2-01M-1', 1, 'pass')
+                self.setEvaluationCriteriumScore("FsF-A2-01M-1", 1, "pass")
                 self.maturity = 3
                 self.logger.log(
-                    self.fuji.LOG_SUCCESS, '{0} : Metadata registry bound PID system used: ' +
-                    self.fuji.pid_scheme.format(self.metric_identifier))
+                    self.fuji.LOG_SUCCESS,
+                    "{0} : Metadata registry bound PID system used: "
+                    + self.fuji.pid_scheme.format(self.metric_identifier),
+                )
             else:
-                self.logger.warning('{0} : NO metadata registry bound PID system used'.format(self.metric_identifier))
+                self.logger.warning("{0} : NO metadata registry bound PID system used".format(self.metric_identifier))
         self.score.earned = score
         self.result.score = self.score
         self.result.output = outputs

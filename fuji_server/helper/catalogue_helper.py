@@ -4,7 +4,7 @@ import logging
 
 
 class MetaDataCatalogue(object):
-    """ A base class of to access a metadata catalogue
+    """A base class of to access a metadata catalogue
     Attributes
     ----------
     apiURI : str
@@ -19,14 +19,15 @@ class MetaDataCatalogue(object):
     query(pid)
         Method to access the metadata catalog given a parameter of PID
     """
+
     apiURI = None
 
     # Using enum class create enumerations of metadata catalogs
 
     class Sources(enum.Enum):
-        DATACITE = 'DataCite Registry'
-        GOOGLE_DATASET = 'Google Dataset Search'
-        MENDELEY_DATA = 'Mendeley Data'
+        DATACITE = "DataCite Registry"
+        GOOGLE_DATASET = "Google Dataset Search"
+        MENDELEY_DATA = "Mendeley Data"
 
     def __init__(self, logger: logging.Logger = None):
         """

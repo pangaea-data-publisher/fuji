@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium  # noqa: F401,E501
-from fuji_server import util
 
 
 class FAIRResultCommon(Model):
@@ -17,14 +17,16 @@ class FAIRResultCommon(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 id: int = None,
-                 metric_identifier: str = None,
-                 metric_name: str = None,
-                 metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
-                 test_status: str = 'fail',
-                 score: FAIRResultCommonScore = None,
-                 maturity: int = 0):  # noqa: E501
+    def __init__(
+        self,
+        id: int = None,
+        metric_identifier: str = None,
+        metric_name: str = None,
+        metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
+        test_status: str = "fail",
+        score: FAIRResultCommonScore = None,
+        maturity: int = 0,
+    ):  # noqa: E501
         """FAIRResultCommon - a model defined in Swagger
 
         :param id: The id of this FAIRResultCommon.  # noqa: E501
@@ -43,23 +45,23 @@ class FAIRResultCommon(Model):
         :type maturity: int
         """
         self.swagger_types = {
-            'id': int,
-            'metric_identifier': str,
-            'metric_name': str,
-            'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
-            'test_status': str,
-            'score': FAIRResultCommonScore,
-            'maturity': int
+            "id": int,
+            "metric_identifier": str,
+            "metric_name": str,
+            "metric_tests": Dict[str, FAIRResultEvaluationCriterium],
+            "test_status": str,
+            "score": FAIRResultCommonScore,
+            "maturity": int,
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'metric_identifier': 'metric_identifier',
-            'metric_name': 'metric_name',
-            'metric_tests': 'metric_tests',
-            'test_status': 'test_status',
-            'score': 'score',
-            'maturity': 'maturity'
+            "id": "id",
+            "metric_identifier": "metric_identifier",
+            "metric_name": "metric_name",
+            "metric_tests": "metric_tests",
+            "test_status": "test_status",
+            "score": "score",
+            "maturity": "maturity",
         }
         self._id = id
         self._metric_identifier = metric_identifier
@@ -70,7 +72,7 @@ class FAIRResultCommon(Model):
         self._maturity = maturity
 
     @classmethod
-    def from_dict(cls, dikt) -> 'FAIRResultCommon':
+    def from_dict(cls, dikt) -> "FAIRResultCommon":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -99,7 +101,7 @@ class FAIRResultCommon(Model):
         :type id: int
         """
         if id is None:
-            raise ValueError('Invalid value for `id`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
 
@@ -122,7 +124,7 @@ class FAIRResultCommon(Model):
         :type metric_identifier: str
         """
         if metric_identifier is None:
-            raise ValueError('Invalid value for `metric_identifier`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_identifier`, must not be `None`")  # noqa: E501
 
         self._metric_identifier = metric_identifier
 
@@ -145,7 +147,7 @@ class FAIRResultCommon(Model):
         :type metric_name: str
         """
         if metric_name is None:
-            raise ValueError('Invalid value for `metric_name`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_name`, must not be `None`")  # noqa: E501
 
         self._metric_name = metric_name
 
@@ -188,10 +190,11 @@ class FAIRResultCommon(Model):
         :param test_status: The test_status of this FAIRResultCommon.
         :type test_status: str
         """
-        allowed_values = ['pass', 'fail', 'indeterminate']  # noqa: E501
+        allowed_values = ["pass", "fail", "indeterminate"]  # noqa: E501
         if test_status not in allowed_values:
-            raise ValueError('Invalid value for `test_status` ({0}), must be one of {1}'.format(
-                test_status, allowed_values))
+            raise ValueError(
+                "Invalid value for `test_status` ({0}), must be one of {1}".format(test_status, allowed_values)
+            )
 
         self._test_status = test_status
 
@@ -214,7 +217,7 @@ class FAIRResultCommon(Model):
         :type score: FAIRResultCommonScore
         """
         if score is None:
-            raise ValueError('Invalid value for `score`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
 

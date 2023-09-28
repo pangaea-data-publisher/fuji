@@ -41,6 +41,7 @@ def get_metrics(version):  # noqa: E501
     else:
         return response, 404
 
+
 def get_metric(version, metric):  # noqa: E501
     """Return all metrics and their definitions.
     :rtype: Metrics

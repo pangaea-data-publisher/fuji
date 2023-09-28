@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
-from fuji_server.models.community_endorsed_standard_output_inner import CommunityEndorsedStandardOutputInner  # noqa: F401,E501
+# noqa: F401,E501
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
+from fuji_server.models.community_endorsed_standard_output_inner import (
+    CommunityEndorsedStandardOutputInner,
+)
 
 
 class CommunityEndorsedStandardOutput(Model):
@@ -17,15 +20,13 @@ class CommunityEndorsedStandardOutput(Model):
     """
 
     def __init__(self):  # noqa: E501
-        """CommunityEndorsedStandardOutput - a model defined in Swagger
-
-        """
+        """CommunityEndorsedStandardOutput - a model defined in Swagger"""
         self.swagger_types = {}
 
         self.attribute_map = {}
 
     @classmethod
-    def from_dict(cls, dikt) -> 'CommunityEndorsedStandardOutput':
+    def from_dict(cls, dikt) -> "CommunityEndorsedStandardOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

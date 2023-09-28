@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class FAIRResultEvaluationCriteriumRequirements(Model):
@@ -14,7 +14,15 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, target: str=None, modality: str=None, required: List[str]=None, tested_on: str=None, comment: str=None):  # noqa: E501
+
+    def __init__(
+        self,
+        target: str = None,
+        modality: str = None,
+        required: List[str] = None,
+        tested_on: str = None,
+        comment: str = None,
+    ):  # noqa: E501
         """FAIRResultEvaluationCriteriumRequirements - a model defined in Swagger
 
         :param target: The target of this FAIRResultEvaluationCriteriumRequirements.  # noqa: E501
@@ -28,20 +36,14 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         :param comment: The comment of this FAIRResultEvaluationCriteriumRequirements.  # noqa: E501
         :type comment: str
         """
-        self.swagger_types = {
-            'target': str,
-            'modality': str,
-            'required': List[str],
-            'tested_on': str,
-            'comment': str
-        }
+        self.swagger_types = {"target": str, "modality": str, "required": List[str], "tested_on": str, "comment": str}
 
         self.attribute_map = {
-            'target': 'target',
-            'modality': 'modality',
-            'required': 'required',
-            'tested_on': 'tested_on',
-            'comment': 'comment'
+            "target": "target",
+            "modality": "modality",
+            "required": "required",
+            "tested_on": "tested_on",
+            "comment": "comment",
         }
         self._target = target
         self._modality = modality
@@ -50,7 +52,7 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         self._comment = comment
 
     @classmethod
-    def from_dict(cls, dikt) -> 'FAIRResultEvaluationCriteriumRequirements':
+    def from_dict(cls, dikt) -> "FAIRResultEvaluationCriteriumRequirements":
         """Returns the dict as a model
 
         :param dikt: A dict.

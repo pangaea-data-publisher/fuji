@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.output_search_mechanisms import OutputSearchMechanisms  # noqa: F401,E501
-from fuji_server import util
 
 
 class SearchableOutput(Model):
@@ -22,13 +22,13 @@ class SearchableOutput(Model):
         :param search_mechanisms: The search_mechanisms of this SearchableOutput.  # noqa: E501
         :type search_mechanisms: List[OutputSearchMechanisms]
         """
-        self.swagger_types = {'search_mechanisms': List[OutputSearchMechanisms]}
+        self.swagger_types = {"search_mechanisms": List[OutputSearchMechanisms]}
 
-        self.attribute_map = {'search_mechanisms': 'search_mechanisms'}
+        self.attribute_map = {"search_mechanisms": "search_mechanisms"}
         self._search_mechanisms = search_mechanisms
 
     @classmethod
-    def from_dict(cls, dikt) -> 'SearchableOutput':
+    def from_dict(cls, dikt) -> "SearchableOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

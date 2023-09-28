@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class HarvestResultsMetadata(Model):
@@ -14,7 +14,16 @@ class HarvestResultsMetadata(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, method: str=None, url: str=None, format: str=None, schema: str=None, namespaces: List[str]=None, metadata: Dict=None):  # noqa: E501
+
+    def __init__(
+        self,
+        method: str = None,
+        url: str = None,
+        format: str = None,
+        schema: str = None,
+        namespaces: List[str] = None,
+        metadata: Dict = None,
+    ):  # noqa: E501
         """HarvestResultsMetadata - a model defined in Swagger
 
         :param method: The method of this HarvestResultsMetadata.  # noqa: E501
@@ -31,21 +40,21 @@ class HarvestResultsMetadata(Model):
         :type metadata: Dict
         """
         self.swagger_types = {
-            'method': str,
-            'url': str,
-            'format': str,
-            'schema': str,
-            'namespaces': List[str],
-            'metadata': Dict
+            "method": str,
+            "url": str,
+            "format": str,
+            "schema": str,
+            "namespaces": List[str],
+            "metadata": Dict,
         }
 
         self.attribute_map = {
-            'method': 'method',
-            'url': 'url',
-            'format': 'format',
-            'schema': 'schema',
-            'namespaces': 'namespaces',
-            'metadata': 'metadata'
+            "method": "method",
+            "url": "url",
+            "format": "format",
+            "schema": "schema",
+            "namespaces": "namespaces",
+            "metadata": "metadata",
         }
         self._method = method
         self._url = url
@@ -55,7 +64,7 @@ class HarvestResultsMetadata(Model):
         self._metadata = metadata
 
     @classmethod
-    def from_dict(cls, dikt) -> 'HarvestResultsMetadata':
+    def from_dict(cls, dikt) -> "HarvestResultsMetadata":
         """Returns the dict as a model
 
         :param dikt: A dict.

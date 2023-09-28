@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class StandardisedProtocolMetadataOutput(Model):
@@ -21,13 +21,13 @@ class StandardisedProtocolMetadataOutput(Model):
         :param standard_metadata_protocol: The standard_metadata_protocol of this StandardisedProtocolMetadataOutput.  # noqa: E501
         :type standard_metadata_protocol: str
         """
-        self.swagger_types = {'standard_metadata_protocol': str}
+        self.swagger_types = {"standard_metadata_protocol": str}
 
-        self.attribute_map = {'standard_metadata_protocol': 'standard_metadata_protocol'}
+        self.attribute_map = {"standard_metadata_protocol": "standard_metadata_protocol"}
         self._standard_metadata_protocol = standard_metadata_protocol
 
     @classmethod
-    def from_dict(cls, dikt) -> 'StandardisedProtocolMetadataOutput':
+    def from_dict(cls, dikt) -> "StandardisedProtocolMetadataOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

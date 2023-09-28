@@ -145,19 +145,19 @@
       {
         "email": "laylamichan@ciencias.unam.mx",
         "github": "lmichan",
-        "name": "Layla Michán Aguirre",
+        "name": "Layla Mich\u00e1n Aguirre",
         "orcid": "0000-0002-5798-662X"
       },
       {
         "email": "mineromero2901@ciencias.unam.mx",
         "github": "MinRo60",
-        "name": "Minerva María Romero Pérez",
+        "name": "Minerva Mar\u00eda Romero P\u00e9rez",
         "orcid": "0000-0002-6240-9325"
       },
       {
         "email": "victorinolavida@ciencias.unam.mx",
         "github": "Victorinolavida",
-        "name": "José Victorino Ruiz Lavida",
+        "name": "Jos\u00e9 Victorino Ruiz Lavida",
         "orcid": "0000-0001-5130-7705"
       }
     ],
@@ -731,7 +731,7 @@
       {
         "email": "laylamichan@ciencias.unam.mx",
         "github": "lmichan",
-        "name": "Layla Michán Aguirre",
+        "name": "Layla Mich\u00e1n Aguirre",
         "orcid": "0000-0002-5798-662X"
       }
     ],
@@ -879,7 +879,7 @@
     "obofoundry": {
       "contact": "m.a.laporte@cgiar.org",
       "contact.github": "marieALaporte",
-      "contact.label": "Marie-Angélique Laporte",
+      "contact.label": "Marie-Ang\u00e9lique Laporte",
       "contact.orcid": "0000-0002-8461-9745",
       "depends_on": [
         "bfo",
@@ -982,7 +982,7 @@
       ],
       "contact": "entiminae@gmail.com",
       "contact.github": "JCGiron",
-      "contact.label": "Jennifer C. Girón",
+      "contact.label": "Jennifer C. Gir\u00f3n",
       "contact.orcid": "0000-0002-0851-6883",
       "depends_on": [
         "bfo",
@@ -2809,7 +2809,7 @@
   "bacdive": {
     "fairsharing": {
       "abbreviation": "BacDive",
-      "description": "BacDive—the Bacterial Diversity Metadatabase merges detailed strain-linked information on the different aspects of bacterial and archaeal biodiversity. BacDive contains entries for over 63,000 strains and provides information on their taxonomy, morphology, physiology, sampling and concomitant environmental conditions as well as molecular biology.",
+      "description": "BacDive\u2014the Bacterial Diversity Metadatabase merges detailed strain-linked information on the different aspects of bacterial and archaeal biodiversity. BacDive contains entries for over 63,000 strains and provides information on their taxonomy, morphology, physiology, sampling and concomitant environmental conditions as well as molecular biology.",
       "id": "2674",
       "name": "Bacterial Diversity Metadatabase",
       "prefix": "FAIRsharing.aSszvY",
@@ -2826,7 +2826,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "BacDive—the Bacterial Diversity Metadatabase merges detailed strain-linked information on the different aspects of bacterial and archaeal biodiversity.",
+      "description": "BacDive\u2014the Bacterial Diversity Metadatabase merges detailed strain-linked information on the different aspects of bacterial and archaeal biodiversity.",
       "homepage": "https://bacdive.dsmz.de/",
       "id": "00000676",
       "name": "Bacterial Diversity Metadatabase",
@@ -3537,9 +3537,9 @@
     "example": "0000001",
     "fairsharing": {
       "abbreviation": "ISO/IEC 21838-2:2021 BFO",
-      "description": "ISO/IEC 21838-2:2021 describes Basic Formal Ontology (BFO), which is an ontology that is conformant to the requirements specified for top-level ontologies in ISO/IEC 21838‑1.",
+      "description": "ISO/IEC 21838-2:2021 describes Basic Formal Ontology (BFO), which is an ontology that is conformant to the requirements specified for top-level ontologies in ISO/IEC 21838\u20111.",
       "id": "1248",
-      "name": "ISO/IEC 21838-2:2021 Information technology — Top-level ontologies (TLO) — Part 2: Basic Formal Ontology (BFO)",
+      "name": "ISO/IEC 21838-2:2021 Information technology \u2014 Top-level ontologies (TLO) \u2014 Part 2: Basic Formal Ontology (BFO)",
       "prefix": "FAIRsharing.wcpd6f",
       "subjects": [
         "Subject Agnostic"
@@ -4145,7 +4145,7 @@
     },
     "fairsharing": {
       "abbreviation": "BioGRID",
-      "description": "The Biological General Repository for Interaction Datasets (BioGRID) is a public database that archives and disseminates genetic and protein interaction data from model organisms and humans. BioGRID currently holds over 1,740,000 interactions curated from both high-throughput datasets and individual focused studies, as derived from over 70,000+ publications in the primary literature. Complete coverage of the entire literature is maintained for budding yeast (S. cerevisiae), fission yeast (S. pombe) and thale cress (A. thaliana), and efforts to expand curation across multiple metazoan species are underway. All data are freely provided via our search index and available for download in many standardized formats.",
+      "description": "The Biological General Repository for Interaction Datasets (BioGRID) is a public database that archives and disseminates genetic and protein interaction data from model organisms and humans. BioGRID currently holds over\u00a01,740,000 interactions\u00a0curated from both high-throughput datasets and individual focused studies, as derived from over 70,000+ publications in the primary literature. Complete coverage of the entire literature is maintained for budding yeast (S. cerevisiae), fission yeast (S. pombe) and thale cress (A. thaliana), and efforts to expand curation across multiple metazoan species are underway. All data are freely provided via our search index and available for download in many standardized formats.",
       "id": "2028",
       "name": "Biological General Repository for Interaction Datasets",
       "prefix": "FAIRsharing.9d5f5r",
@@ -4673,7 +4673,7 @@
     },
     "fairsharing": {
       "abbreviation": "BioPortal",
-      "description": "BioPortal is a library of biomedical ontologies and terminologies developed in Web Ontology Language (OWL), Resource Description Framework (RDF)(S), Open Biological and Biomedical Ontologies (OBO) format, and Protégé frames and Rich Release Format. BioPortal groups ontologies by domain to aid discoverability and allows users to browse, search and visualize the content of ontologies. BioPortal also provides ontology recommendation, text annotation, ontology mapping, and a reference index to resources like PubMed.",
+      "description": "BioPortal is a library of biomedical ontologies and terminologies developed in Web Ontology Language (OWL), Resource Description Framework (RDF)(S), Open Biological and Biomedical Ontologies (OBO) format, and Prot\u00e9g\u00e9 frames and Rich Release Format. BioPortal groups ontologies by domain to aid discoverability and allows users to browse, search and visualize the content of ontologies. BioPortal also provides ontology recommendation, text annotation, ontology mapping, and a reference index to resources like PubMed.",
       "id": "2290",
       "name": "BioPortal",
       "prefix": "FAIRsharing.4m97ah",
@@ -4691,7 +4691,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "BioPortal is an open repository of biomedical ontologies that provides access via Web services and Web browsers to ontologies developed in OWL, RDF, OBO format and Protégé frames. BioPortal functionality includes the ability to browse, search and visualize ontologies.",
+      "description": "BioPortal is an open repository of biomedical ontologies that provides access via Web services and Web browsers to ontologies developed in OWL, RDF, OBO format and Prot\u00e9g\u00e9 frames. BioPortal functionality includes the ability to browse, search and visualize ontologies.",
       "homepage": "http://bioportal.bioontology.org/",
       "id": "00000187",
       "name": "BioPortal",
@@ -4752,7 +4752,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "BioProject provides an organizational framework to access metadata about research projects and the data from the projects that are deposited into different databases. It provides information about a project’s scope, material, objectives, funding source and general relevance categories.",
+      "description": "BioProject provides an organizational framework to access metadata about research projects and the data from the projects that are deposited into different databases. It provides information about a project\u2019s scope, material, objectives, funding source and general relevance categories.",
       "homepage": "http://trace.ddbj.nig.ac.jp/bioproject/",
       "id": "00000349",
       "name": "BioProject",
@@ -4910,7 +4910,7 @@
     },
     "fairsharing": {
       "abbreviation": "BioSample",
-      "description": "The NCBI BioSample database stores submitter-supplied descriptive information, or metadata, about the biological materials from which data stored in NCBI’s primary data archives are derived. NCBI’s archives host data from diverse types of samples from any species, so the BioSample database is similarly diverse; typical examples of a BioSample include a cell line, a primary tissue biopsy, an individual organism or an environmental isolate. The BioSample database promotes the use of structured and consistent attribute names and values that describe what the samples are as well as information about their provenance, where appropriate.",
+      "description": "The NCBI BioSample database stores submitter-supplied descriptive information, or metadata, about the biological materials from which data stored in NCBI\u2019s primary data archives are derived. NCBI\u2019s archives host data from diverse types of samples from any species, so the BioSample database is similarly diverse; typical examples of a BioSample include a cell line, a primary tissue biopsy, an individual organism or an environmental isolate. The BioSample database promotes the use of structured and consistent attribute names and values that describe what the samples are as well as information about their provenance, where appropriate.",
       "id": "2211",
       "name": "NCBI BioSample",
       "prefix": "FAIRsharing.qr6pqk",
@@ -7230,7 +7230,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "The Cell: An Image Library™ is a freely accessible, public repository of reviewed and annotated images, videos, and animations of cells from a variety of organisms, showcasing cell architecture, intracellular functionalities, and both normal and abnormal processes.",
+      "description": "The Cell: An Image Library\u2122 is a freely accessible, public repository of reviewed and annotated images, videos, and animations of cells from a variety of organisms, showcasing cell architecture, intracellular functionalities, and both normal and abnormal processes.",
       "homepage": "http://cellimagelibrary.org/",
       "id": "00000257",
       "name": "Cell Image Library",
@@ -7251,7 +7251,7 @@
       "uri_format": "http://cellimagelibrary.org/images/$1"
     },
     "prefixcommons": {
-      "description": "The Cell: An Image Library™ is a freely accessible, public repository of reviewed and annotated images, videos, and animations of cells from a variety of organisms, showcasing cell architecture, intracellular functionalities, and both normal and abnormal processes.",
+      "description": "The Cell: An Image Library\u2122 is a freely accessible, public repository of reviewed and annotated images, videos, and animations of cells from a variety of organisms, showcasing cell architecture, intracellular functionalities, and both normal and abnormal processes.",
       "example": "24801",
       "keywords": [
         "image"
@@ -7714,7 +7714,7 @@
     "example": "24867",
     "fairsharing": {
       "abbreviation": "ChEBI",
-      "description": "Chemical Entities of Biological Interest (ChEBI) is a free dictionary that describes 'small’ chemical compounds. These compound includes distinct synthetic or natural atoms, molecules, ions, ion pair, radicals, radical ions, complexes, conformers, etc.. These molecular entities can interact with or affect the processes of living organisms.",
+      "description": "Chemical Entities of Biological Interest (ChEBI) is a free dictionary that describes 'small\u2019 chemical compounds. These compound includes distinct synthetic or natural atoms, molecules, ions, ion pair, radicals, radical ions, complexes, conformers, etc.. These molecular entities can interact with or affect the processes of living organisms.",
       "id": "1036",
       "name": "Chemical Entities of Biological Interest",
       "prefix": "FAIRsharing.62qk8w",
@@ -8642,7 +8642,7 @@
     "obofoundry": {
       "contact": "frederic.bastian@unil.ch",
       "contact.github": "fbastian",
-      "contact.label": "Frédéric Bastian",
+      "contact.label": "Fr\u00e9d\u00e9ric Bastian",
       "contact.orcid": "0000-0002-9415-5104",
       "deprecated": false,
       "description": "An ontology to capture confidence information about annotations.",
@@ -8739,7 +8739,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "Evidence Items are the central building block of the Clinical Interpretation of Variants in Cancer (CIViC) knowledgebase. The clinical Evidence Item is a piece of information that has been manually curated from trustable medical literature about a Variant or genomic ‘event’ that has implications in cancer Predisposition, Diagnosis (aka molecular classification), Prognosis, Predictive response to therapy, Oncogenicity or protein Function. For example, an Evidence Item might describe a line of evidence supporting the notion that tumors with a somatic BRAF V600 mutation generally respond well to the drug dabrafenib. A Variant may be a single nucleotide substitution, a small insertion or deletion, an RNA gene fusion, a chromosomal rearrangement, an RNA expression pattern (e.g. over-expression), etc. Each clinical Evidence statement corresponds to a single citable Source (a publication or conference abstract).",
+      "description": "Evidence Items are the central building block of the Clinical Interpretation of Variants in Cancer (CIViC) knowledgebase. The clinical Evidence Item is a piece of information that has been manually curated from trustable medical literature about a Variant or genomic \u2018event\u2019 that has implications in cancer Predisposition, Diagnosis (aka molecular classification), Prognosis, Predictive response to therapy, Oncogenicity or protein Function. For example, an Evidence Item might describe a line of evidence supporting the notion that tumors with a somatic BRAF V600 mutation generally respond well to the drug dabrafenib. A Variant may be a single nucleotide substitution, a small insertion or deletion, an RNA gene fusion, a chromosomal rearrangement, an RNA expression pattern (e.g. over-expression), etc. Each clinical Evidence statement corresponds to a single citable Source (a publication or conference abstract).",
       "homepage": "https://civicdb.org/",
       "id": "00000839",
       "name": "CIViC Evidence",
@@ -8916,7 +8916,7 @@
     "obofoundry": {
       "contact": "lagonzalezmo@unal.edu.co",
       "contact.github": "luis-gonzalez-m",
-      "contact.label": "Luis González-Montaña",
+      "contact.label": "Luis Gonz\u00e1lez-Monta\u00f1a",
       "contact.orcid": "0000-0002-9136-9932",
       "depends_on": [
         "ro"
@@ -9577,7 +9577,7 @@
     "example": "0000618",
     "fairsharing": {
       "abbreviation": "CO_320",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The IBP Rice Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology. Based on SES, Rice Descriptor and IRIS DB.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The IBP Rice Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology. Based on SES, Rice Descriptor and IRIS DB.",
       "id": "832",
       "name": "Rice Ontology",
       "prefix": "FAIRsharing.2jkxp5",
@@ -9666,7 +9666,7 @@
     "example": "0000252",
     "fairsharing": {
       "abbreviation": "CO_323",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Barley Ontology is one of these reference plant ontologies integrated within the Crop Ontology. Its focus is on traits and variable used in field trials for breeding.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Barley Ontology is one of these reference plant ontologies integrated within the Crop Ontology. Its focus is on traits and variable used in field trials for breeding.",
       "id": "872",
       "name": "Barley Ontology",
       "prefix": "FAIRsharing.f69084",
@@ -9796,7 +9796,7 @@
     "example": "0000106",
     "fairsharing": {
       "abbreviation": "CO_330",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Potato Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Potato Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1307",
       "name": "Potato Ontology",
       "prefix": "FAIRsharing.4fa657",
@@ -9826,7 +9826,7 @@
     "example": "0000088",
     "fairsharing": {
       "abbreviation": "CO_331",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Sweet Potato Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Sweet Potato Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "496",
       "name": "Sweet Potato Ontology",
       "prefix": "FAIRsharing.4g5qcw",
@@ -9855,7 +9855,7 @@
     "example": "3000045",
     "fairsharing": {
       "abbreviation": "CO_333",
-      "description": "This ontology was built as part of the AKER project. It describes variables used in beet phenotyping (experimental properties and measurement scale) for each institution and breeding company within the project. Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Beet Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "This ontology was built as part of the AKER project. It describes variables used in beet phenotyping (experimental properties and measurement scale) for each institution and breeding company within the project. Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Beet Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1079",
       "name": "Beet Ontology",
       "prefix": "FAIRsharing.af5655",
@@ -9915,7 +9915,7 @@
     "example": "0000189",
     "fairsharing": {
       "abbreviation": "CO_335",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Common Bean Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Common Bean Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1096",
       "name": "Common Bean Ontology",
       "prefix": "FAIRsharing.a14123",
@@ -10089,7 +10089,7 @@
     "example": "0000140",
     "fairsharing": {
       "abbreviation": "CO_341",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Pigeon Pea Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Pigeon Pea Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1078",
       "name": "Pigeon Pea Ontology",
       "prefix": "FAIRsharing.ehe3yp",
@@ -10119,7 +10119,7 @@
     "example": "0100010",
     "fairsharing": {
       "abbreviation": "CO_343",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Yam Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Yam Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "838",
       "name": "Yam Ontology",
       "prefix": "FAIRsharing.7e9cff",
@@ -10149,7 +10149,7 @@
     "example": "0000127",
     "fairsharing": {
       "abbreviation": "CO_345",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Brachiaria Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Brachiaria Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "494",
       "name": "Brachiaria Ontology",
       "prefix": "FAIRsharing.9e9683",
@@ -10237,7 +10237,7 @@
     "example": "1100107",
     "fairsharing": {
       "abbreviation": "CO_348",
-      "description": "Brassica Trait Ontology (BRaTO) hosts trait information to describe brassica crop data. Terms are collected from various projects including OREGIN, RIPR (UK) and Rapsodyn (France). Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Brassica Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Brassica Trait Ontology (BRaTO) hosts trait information to describe brassica crop data. Terms are collected from various projects including OREGIN, RIPR (UK) and Rapsodyn (France). Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Brassica Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1019",
       "name": "Brassica Ontology",
       "prefix": "FAIRsharing.af7a2d",
@@ -10267,7 +10267,7 @@
     "example": "0000215",
     "fairsharing": {
       "abbreviation": "CO_350",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Oat Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology. The Oat Trait Dictionary was commissioned by Oat Global (http://oatglobal.org/) to hold the traits used in the T3/Oat database (http://triticeaetoolbox.org/oat/).",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Oat Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology. The Oat Trait Dictionary was commissioned by Oat Global (http://oatglobal.org/) to hold the traits used in the T3/Oat database (http://triticeaetoolbox.org/oat/).",
       "id": "652",
       "name": "Oat Trait Ontology",
       "prefix": "FAIRsharing.35e1c3",
@@ -10297,7 +10297,7 @@
     "example": "4000027",
     "fairsharing": {
       "abbreviation": "CO_356",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Vitis Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Vitis Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1092",
       "name": "Vitis Ontology",
       "prefix": "FAIRsharing.c7f4d7",
@@ -10327,7 +10327,7 @@
     "example": "1000290",
     "fairsharing": {
       "abbreviation": "CO_357",
-      "description": "The Woody Plant Ontology lists all variables used for woody plant observations. Terms are collected from various sources (past and ongoing projects at national and international levels). Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Woody Plant Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "The Woody Plant Ontology lists all variables used for woody plant observations. Terms are collected from various sources (past and ongoing projects at national and international levels). Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Woody Plant Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1103",
       "name": "Woody Plant Ontology",
       "prefix": "FAIRsharing.2b04ae",
@@ -10388,7 +10388,7 @@
     "example": "0000071",
     "fairsharing": {
       "abbreviation": "CO_360",
-      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders’ trait names, measurement methods, scales and standard variables for many crops. The Sugar Kelp Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
+      "description": "Reference Plant Ontologies are being developed in the context of the Planteome project and are being integrated with the Crop Ontology, which provides harmonized breeders\u2019 trait names, measurement methods, scales and standard variables for many crops. The Sugar Kelp Trait Ontology is one of these reference plant ontologies integrated within the Crop Ontology.",
       "id": "1093",
       "name": "Sugar Kelp Trait Ontology",
       "prefix": "FAIRsharing.1c1738",
@@ -11257,7 +11257,7 @@
     "contact": {
       "email": "zmp@ebi.ac.uk",
       "github": "zoependlington",
-      "name": "Zoë May Pendlington",
+      "name": "Zo\u00eb May Pendlington",
       "orcid": "0000-0002-4071-8397"
     },
     "example": "0010034",
@@ -11386,7 +11386,7 @@
         "orcid": "0000-0003-2975-882X"
       }
     ],
-    "description": "Current Procedural Terminology, more commonly known as CPT®, refers to a medical code set created and maintained by the American Medical Association — and used by physicians, allied health professionals, nonphysician practitioners, hospitals, outpatient facilities, and laboratories to represent the services and procedures they perform. No provider of outpatient services gets paid without reporting the proper CPT® codes. [Description taken from this site](https://www.aapc.com/codes/cpt-codes-range/)]",
+    "description": "Current Procedural Terminology, more commonly known as CPT\u00ae, refers to a medical code set created and maintained by the American Medical Association \u2014 and used by physicians, allied health professionals, nonphysician practitioners, hospitals, outpatient facilities, and laboratories to represent the services and procedures they perform. No provider of outpatient services gets paid without reporting the proper CPT\u00ae codes. [Description taken from this site](https://www.aapc.com/codes/cpt-codes-range/)]",
     "example": "00103",
     "fairsharing": {
       "abbreviation": "CPT",
@@ -11428,7 +11428,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "CRediT (Contributor Roles Taxonomy) is high-level taxonomy, including 14 roles, that can be used to represent the roles typically played by contributors to scientific scholarly output. The roles describe each contributor’s specific contribution to the scholarly output.",
+    "description": "CRediT (Contributor Roles Taxonomy) is high-level taxonomy, including 14 roles, that can be used to represent the roles typically played by contributors to scientific scholarly output. The roles describe each contributor\u2019s specific contribution to the scholarly output.",
     "example": "Software",
     "homepage": "https://casrai.org/credit/",
     "name": "CASRAI Contributor Roles Taxonomy"
@@ -13201,7 +13201,7 @@
     "example": "0001417",
     "fairsharing": {
       "abbreviation": "DDPHENO",
-      "description": "A structured controlled vocabulary of phenotypes of the social amoeba Dictyostelium discoideum. The Dicty Phenotype Ontology is a hierarchical controlled vocabulary used for annotating strains with phenotypes. Terms from the Dicty Phenotype Ontology are required when annotating phenotypes within dictyBase. The phenotype ontology consists of two composite terms: (1) the anatomical part or the biological process changed in the mutant, and (2) a quality describing that modification. For example, a ‘delayed aggregation’ phenotype qualifies the ‘aggregation’ (biological process) as being ‘delayed’, or the ‘decreased spore size’ qualifies the ‘spore’ to be of ‘decreased size’.",
+      "description": "A structured controlled vocabulary of phenotypes of the social amoeba Dictyostelium discoideum. The Dicty Phenotype Ontology is a hierarchical controlled vocabulary used for annotating strains with phenotypes. Terms from the Dicty Phenotype Ontology are required when annotating phenotypes within dictyBase. The phenotype ontology consists of two composite terms: (1) the anatomical part or the biological process changed in the mutant, and (2) a quality describing that modification. For example, a \u2018delayed aggregation\u2019 phenotype qualifies the \u2018aggregation\u2019 (biological process) as being \u2018delayed\u2019, or the \u2018decreased spore size\u2019 qualifies the \u2018spore\u2019 to be of \u2018decreased size\u2019.",
       "id": "867",
       "name": "Dictyostelium Phenotype Ontology",
       "prefix": "FAIRsharing.9c1p18",
@@ -13602,7 +13602,7 @@
     "example": "109082",
     "fairsharing": {
       "abbreviation": "DICOM",
-      "description": "DICOM — Digital Imaging and Communications in Medicine — is the international standard for medical images and related information (ISO 12052). It defines the formats for medical images that can be exchanged with the data and quality necessary for clinical use. DICOM is implemented in almost every radiology, cardiology imaging, and radiotherapy device (X-ray, CT, MRI, ultrasound, etc.), and increasingly in devices in other medical domains such as ophthalmology and dentistry. With tens of thousands of imaging devices in use, DICOM is one of the most widely deployed healthcare messaging standards in the world. There are literally billions of DICOM images currently in use for clinical care. Since its first publication in 1993, DICOM has revolutionized the practice of radiology, allowing the replacement of X-ray film with a fully digital workflow. Much as the Internet has become the platform for new consumer information applications, DICOM has enabled advanced medical imaging applications that have “changed the face of clinical medicine”. From the emergency department, to cardiac stress testing, to breast cancer detection, DICOM is the standard that makes medical imaging work — for doctors and for patients.",
+      "description": "DICOM \u2014 Digital Imaging and Communications in Medicine \u2014 is the international standard for medical images and related information (ISO 12052). It defines the formats for medical images that can be exchanged with the data and quality necessary for clinical use. DICOM is implemented in almost every radiology, cardiology imaging, and radiotherapy device (X-ray, CT, MRI, ultrasound, etc.), and increasingly in devices in other medical domains such as ophthalmology and dentistry. With tens of thousands of imaging devices in use, DICOM is one of the most widely deployed healthcare messaging standards in the world. There are literally billions of DICOM images currently in use for clinical care. Since its first publication in 1993, DICOM has revolutionized the practice of radiology, allowing the replacement of X-ray film with a fully digital workflow. Much as the Internet has become the platform for new consumer information applications, DICOM has enabled advanced medical imaging applications that have \u201cchanged the face of clinical medicine\u201d. From the emergency department, to cardiac stress testing, to breast cancer detection, DICOM is the standard that makes medical imaging work \u2014 for doctors and for patients.",
       "id": "84",
       "name": "Digital Imaging and COmmunications in Medicine",
       "prefix": "FAIRsharing.b7z8by",
@@ -13892,7 +13892,7 @@
       "publications": [
         {
           "id": "https://www.ncbi.nlm.nih.gov/pubmed/26147071",
-          "title": "DINTO: Using OWL Ontologies and SWRL Rules to Infer Drug–Drug Interactions and Their Mechanisms."
+          "title": "DINTO: Using OWL Ontologies and SWRL Rules to Infer Drug\u2013Drug Interactions and Their Mechanisms."
         }
       ],
       "repository": "https://github.com/labda/DINTO"
@@ -14231,7 +14231,7 @@
     ],
     "fairsharing": {
       "abbreviation": "DOI",
-      "description": "The digital object identifier (DOI) system originated in a joint initiative of three trade associations in the publishing industry (International Publishers Association; International Association of Scientific, Technical and Medical Publishers; Association of American Publishers). The system was announced at the Frankfurt Book Fair 1997. The International DOI® Foundation (IDF) was created to develop and manage the DOI system, also in 1997. The DOI system was adopted as International Standard ISO 26324 in 2012. The DOI system implements the Handle System and adds a number of new features. The DOI system provides an infrastructure for persistent unique identification of objects of any type. The DOI system is designed to work over the Internet. A DOI name is permanently assigned to an object to provide a resolvable persistent network link to current information about that object, including where the object, or information about it, can be found on the Internet. While information about an object can change over time, its DOI name will not change. A DOI name can be resolved within the DOI system to values of one or more types of data relating to the object identified by that DOI name, such as a URL, an e-mail address, other identifiers and descriptive metadata. The DOI system enables the construction of automated services and transactions. Applications of the DOI system include but are not limited to managing information and documentation location and access; managing metadata; facilitating electronic transactions; persistent unique identification of any form of any data; and commercial and non-commercial transactions. The content of an object associated with a DOI name is described unambiguously by DOI metadata, based on a structured extensible data model that enables the object to be associated with metadata of any desired degree of precision and granularity to support description and services. The data model supports interoperability between DOI applications. The scope of the DOI system is not defined by reference to the type of content (format, etc.) of the referent, but by reference to the functionalities it provides and the context of use. The DOI system provides, within networks of DOI applications, for unique identification, persistence, resolution, metadata and semantic interoperability.",
+      "description": "The digital object identifier (DOI) system originated in a joint initiative of three trade associations in the publishing industry (International Publishers Association; International Association of Scientific, Technical and Medical Publishers; Association of American Publishers). The system was announced at the Frankfurt Book Fair 1997. The International DOI\u00ae Foundation (IDF) was created to develop and manage the DOI system, also in 1997. The DOI system was adopted as International Standard ISO 26324 in 2012. The DOI system implements the Handle System and adds a number of new features. The DOI system provides an infrastructure for persistent unique identification of objects of any type. The DOI system is designed to work over the Internet. A DOI name is permanently assigned to an object to provide a resolvable persistent network link to current information about that object, including where the object, or information about it, can be found on the Internet. While information about an object can change over time, its DOI name will not change. A DOI name can be resolved within the DOI system to values of one or more types of data relating to the object identified by that DOI name, such as a URL, an e-mail address, other identifiers and descriptive metadata. The DOI system enables the construction of automated services and transactions. Applications of the DOI system include but are not limited to managing information and documentation location and access; managing metadata; facilitating electronic transactions; persistent unique identification of any form of any data; and commercial and non-commercial transactions. The content of an object associated with a DOI name is described unambiguously by DOI metadata, based on a structured extensible data model that enables the object to be associated with metadata of any desired degree of precision and granularity to support description and services. The data model supports interoperability between DOI applications. The scope of the DOI system is not defined by reference to the type of content (format, etc.) of the referent, but by reference to the functionalities it provides and the context of use. The DOI system provides, within networks of DOI applications, for unique identification, persistence, resolution, metadata and semantic interoperability.",
       "id": "1332",
       "name": "Digital Object Identifier",
       "prefix": "FAIRsharing.hFLKCn",
@@ -15677,7 +15677,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The ECMDB is an expertly curated database containing extensive metabolomic data and metabolic pathway diagrams about Escherichia coli (strain K12, MG1655). This database includes significant quantities of “original” data compiled by members of the Wishart laboratory as well as additional material derived from hundreds of textbooks, scientific journals, metabolic reconstructions and other electronic databases. Each metabolite is linked to more than 100 data fields describing the compound, its ontology, physical properties, reactions, pathways, references, external links and associated proteins or enzymes.",
+    "description": "The ECMDB is an expertly curated database containing extensive metabolomic data and metabolic pathway diagrams about Escherichia coli (strain K12, MG1655). This database includes significant quantities of \u201coriginal\u201d data compiled by members of the Wishart laboratory as well as additional material derived from hundreds of textbooks, scientific journals, metabolic reconstructions and other electronic databases. Each metabolite is linked to more than 100 data fields describing the compound, its ontology, physical properties, reactions, pathways, references, external links and associated proteins or enzymes.",
     "example": "ECMDB00005",
     "homepage": "https://ecmdb.ca",
     "name": "E. coli Metabolite Database",
@@ -16125,7 +16125,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction — as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references entities.",
+      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction \u2014 as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references entities.",
       "homepage": "http://www.e-cyanobacterium.org/bcs/entity/",
       "id": "00000585",
       "name": "E-cyanobacterium entity",
@@ -16180,7 +16180,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction — as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references models.",
+      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction \u2014 as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references models.",
       "homepage": "http://e-cyanobacterium.org/models/",
       "id": "00000586",
       "name": "E-cyanobacterium model",
@@ -16216,7 +16216,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction — as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references rules.",
+      "description": "E-cyanobacterium.org is a web-based platform for public sharing, annotation, analysis, and visualisation of dynamical models and wet-lab experiments related to cyanobacteria. It allows models to be represented at different levels of abstraction \u2014 as biochemical reaction networks or ordinary differential equations.It provides concise mappings of mathematical models to a formalised consortium-agreed biochemical description, with the aim of connecting the world of biological knowledge with benefits of mathematical description of dynamic processes. This collection references rules.",
       "homepage": "http://www.e-cyanobacterium.org/bcs/rule/",
       "id": "00000587",
       "name": "E-cyanobacterium rule",
@@ -16252,7 +16252,7 @@
     },
     "fairsharing": {
       "abbreviation": "EDAM",
-      "description": "EDAM (originally from “EMBRACE Data and Methods”) is an ontology of well established, familiar concepts that are prevalent within bioinformatics, including types of data and data identifiers, data formats, operations and topics.",
+      "description": "EDAM (originally from \u201cEMBRACE Data and Methods\u201d) is an ontology of well established, familiar concepts that are prevalent within bioinformatics, including types of data and data identifiers, data formats, operations and topics.",
       "id": "1205",
       "name": "EMBRACE Data and Methods Ontology",
       "prefix": "FAIRsharing.a6r7zs",
@@ -16720,7 +16720,7 @@
     "example": "0000000",
     "fairsharing": {
       "abbreviation": "EHDAA2",
-      "description": "The EHDAA2 ontology is a human developmental anatomy covering the first 49 days [Carnegie stages (CS)1–20], primarily structured around the parts of organ systems and their development. The ontology includes more than 2000 anatomical entities (AEs) that range from the whole embryo, through organ systems and organ parts down to simple or leaf tissues (groups of cells with the same morphological phenotype), as well as features such as cavities. It represents a complete rebuilding of the EHDA intended to meet current standards. The intention has been to include as much information about human developmental anatomy as is practical and as is available in the literature.",
+      "description": "The EHDAA2 ontology is a human developmental anatomy covering the first 49 days [Carnegie stages (CS)1\u201320], primarily structured around the parts of organ systems and their development. The ontology includes more than 2000 anatomical entities (AEs) that range from the whole embryo, through organ systems and organ parts down to simple or leaf tissues (groups of cells with the same morphological phenotype), as well as features such as cavities. It represents a complete rebuilding of the EHDA intended to meet current standards. The intention has been to include as much information about human developmental anatomy as is practical and as is available in the literature.",
       "id": "199",
       "name": "Edinburgh human developmental anatomy abstract version 2",
       "prefix": "FAIRsharing.7zxrs6",
@@ -17972,7 +17972,7 @@
     },
     "ols": {
       "contact": "pylebail@rennes.inra.fr",
-      "description": "L'ontologie EOL décrit les conditions d'environnement des élevages d'animaux domestiques. Elle décrit plus particulièrement les modalités de l'alimentation, de l'environnement, de la structure des élevages et des systèmes d'élevage",
+      "description": "L'ontologie EOL d\u00e9crit les conditions d'environnement des \u00e9levages d'animaux domestiques. Elle d\u00e9crit plus particuli\u00e8rement les modalit\u00e9s de l'alimentation, de l'environnement, de la structure des \u00e9levages et des syst\u00e8mes d'\u00e9levage",
       "download": "http://www.atol-ontology.com/public/telechargement/eol.owl",
       "homepage": "http://www.atol-ontology.com",
       "name": "Environment Ontology for Livestock",
@@ -18241,7 +18241,7 @@
     "example": "0001655",
     "fairsharing": {
       "abbreviation": "ERO",
-      "description": "A unique feature of the eagle-i software is that the data collection and search tools are completely driven by ontologies. These ontologies are a set of modules that are written in the OWL language and edited and managed using Protégé. Beginning in 2009, the eagle-i Research Resource Ontology (ERO) was developed alongside the eagle-i applications to model various biomedical research resources such as instruments, Core Facilities, protocols, reagents, animal models and biospecimens. It has now been integrated into the VIVO-ISF Ontology, which leverages and expands upon both the eagle-i and VIVO ontologies to create a semantic framework that describes not only scientific resources but research activities and clinical activities.",
+      "description": "A unique feature of the eagle-i software is that the data collection and search tools are completely driven by ontologies. These ontologies are a set of modules that are written in the OWL language and edited and managed using Prot\u00e9g\u00e9. Beginning in 2009, the eagle-i Research Resource Ontology (ERO) was developed alongside the eagle-i applications to model various biomedical research resources such as instruments, Core Facilities, protocols, reagents, animal models and biospecimens. It has now been integrated into the VIVO-ISF Ontology, which leverages and expands upon both the eagle-i and VIVO ontologies to create a semantic framework that describes not only scientific resources but research activities and clinical activities.",
       "id": "1166",
       "name": "eagle-i Research Resource Ontology",
       "prefix": "FAIRsharing.nwgynk",
@@ -18861,7 +18861,7 @@
     "example": "ForwardStrandPosition",
     "fairsharing": {
       "abbreviation": "FALDO",
-      "description": "The Feature Annotation Location Description Ontology (FALDO), to describe the positions of annotated features on linear and circular sequences for data resources represented in RDF and/or OWL. FALDO can be used to describe nucleotide features in sequence records, protein annotations, and glycan binding sites, among other features in coordinate systems of the aforementioned “omics” areas. Using the same data format to represent sequence positions that are independent of file formats allows us to integrate sequence data from multiple sources and data types.",
+      "description": "The Feature Annotation Location Description Ontology (FALDO), to describe the positions of annotated features on linear and circular sequences for data resources represented in RDF and/or OWL. FALDO can be used to describe nucleotide features in sequence records, protein annotations, and glycan binding sites, among other features in coordinate systems of the aforementioned \u201comics\u201d areas. Using the same data format to represent sequence positions that are independent of file formats allows us to integrate sequence data from multiple sources and data types.",
       "id": "478",
       "name": "Feature Annotation Location Description Ontology",
       "prefix": "FAIRsharing.haxp7g",
@@ -19507,7 +19507,7 @@
       "repository": "https://github.com/getbordea/fideo"
     },
     "ols": {
-      "description": "The Food Interactions with Drugs Evidence Ontology (FIDEO) represents Food-Drug Interactions and underlying interaction mechanisms described in scientific publications, drug and adverse effects databases, and drug interactions compendia. The ontology builds on previous efforts from the FoodOn, DRON, ChEBI, and DIDEO ontologies as well as the Thériaque database. This ontology is maintained at https://gitub.u-bordeaux.fr/erias/fideo, and requests for changes or additions should be filed at the issue tracker there.",
+      "description": "The Food Interactions with Drugs Evidence Ontology (FIDEO) represents Food-Drug Interactions and underlying interaction mechanisms described in scientific publications, drug and adverse effects databases, and drug interactions compendia. The ontology builds on previous efforts from the FoodOn, DRON, ChEBI, and DIDEO ontologies as well as the Th\u00e9riaque database. This ontology is maintained at https://gitub.u-bordeaux.fr/erias/fideo, and requests for changes or additions should be filed at the issue tracker there.",
       "download": "http://purl.obolibrary.org/obo/fideo.owl",
       "homepage": "https://gitub.u-bordeaux.fr/erias/fideo",
       "name": "Food Interactions with Drugs Evidence Ontology",
@@ -20136,7 +20136,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "FooDB is resource on food and its constituent compounds. It includes data on the compound’s nomenclature, its description, information on its structure, chemical class, its physico-chemical data, its food source(s), its color, its aroma, its taste, its physiological effect, presumptive health effects (from published studies), and concentrations in various foods. This collection references compounds.",
+      "description": "FooDB is resource on food and its constituent compounds. It includes data on the compound\u2019s nomenclature, its description, information on its structure, chemical class, its physico-chemical data, its food source(s), its color, its aroma, its taste, its physiological effect, presumptive health effects (from published studies), and concentrations in various foods. This collection references compounds.",
       "homepage": "http://foodb.ca/foods",
       "id": "00000530",
       "name": "FooDB Compound",
@@ -20241,7 +20241,7 @@
         "uberon"
       ],
       "deprecated": false,
-      "description": "A broadly scoped ontology representing entities which bear a “food role”. It encompasses materials in natural ecosystems and agriculture that are consumed by humans and domesticated animals. This includes any generic (unbranded) raw or processed food material found in processing plants, markets, stores or food distribution points. FoodOn also imports nutritional component and dietary pattern terms from other OBO Foundry ontologies to support interoperability in diet and nutrition research",
+      "description": "A broadly scoped ontology representing entities which bear a \u201cfood role\u201d. It encompasses materials in natural ecosystems and agriculture that are consumed by humans and domesticated animals. This includes any generic (unbranded) raw or processed food material found in processing plants, markets, stores or food distribution points. FoodOn also imports nutritional component and dietary pattern terms from other OBO Foundry ontologies to support interoperability in diet and nutrition research",
       "download.owl": "http://purl.obolibrary.org/obo/foodon.owl",
       "homepage": "https://foodon.org/",
       "license": "CC BY 3.0",
@@ -20994,11 +20994,11 @@
     }
   },
   "gbif": {
-    "description": "Database of living organisms, taxonomic. \n The GBIF—the Global Biodiversity Information Facility—is international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.",
+    "description": "Database of living organisms, taxonomic. \n The GBIF\u2014the Global Biodiversity Information Facility\u2014is international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.",
     "example": "4238",
     "fairsharing": {
       "abbreviation": "GBIF.org",
-      "description": "GBIF—the Global Biodiversity Information Facility—is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.\n\nStrictly speaking, GBIF is not a data repository. Rather, GBIF indexes thousands of datasets through a distributed infrastructure involving more than 100 formal participants that supports hundreds of data-publishing institutions worldwide. GBIF.org makes the FAIR and open data discoverable and citable, assigning each download a DOI and storing it for an extended period of time. More than three peer-reviewed research articles make use of data from the GBIF network every day, in studies spanning the impacts of climate change, the spread of pests and diseases, priority areas for conservation and food security. \n\nTo share data with GBIF, follow this quick guide: http://www.gbif.org/publishing-data/quick-guide. To deposit or host data, we suggest using one of the trusted data hosting centres (DHC) listed in FAIRsharing.org that uses GBIF's IPT (Integrated Publishing Toolkit) software. The DHC provides data publishers with a hosted IPT account enabling them to manage and publish datasets through GBIF.org.",
+      "description": "GBIF\u2014the Global Biodiversity Information Facility\u2014is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.\n\nStrictly speaking, GBIF is not a data repository. Rather, GBIF indexes thousands of datasets through a distributed infrastructure involving more than 100 formal participants that supports hundreds of data-publishing institutions worldwide. GBIF.org makes the FAIR and open data discoverable and citable, assigning each download a DOI and storing it for an extended period of time. More than three peer-reviewed research articles make use of data from the GBIF network every day, in studies spanning the impacts of climate change, the spread of pests and diseases, priority areas for conservation and food security. \n\nTo share data with GBIF, follow this quick guide: http://www.gbif.org/publishing-data/quick-guide. To deposit or host data, we suggest using one of the trusted data hosting centres (DHC) listed in FAIRsharing.org that uses GBIF's IPT (Integrated Publishing Toolkit) software. The DHC provides data publishers with a hosted IPT account enabling them to manage and publish datasets through GBIF.org.",
       "id": "2163",
       "name": "GBIF.org",
       "prefix": "FAIRsharing.zv11j3",
@@ -21299,7 +21299,7 @@
       "obsolete": false,
       "prefix": "000304"
     },
-    "description": "GenBank ® is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences (Nucleic Acids Research, 2013 Jan;41(D1):D36-42).",
+    "description": "GenBank \u00ae is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences (Nucleic Acids Research, 2013 Jan;41(D1):D36-42).",
     "example": "U49845",
     "fairsharing": {
       "abbreviation": "GenBank",
@@ -23057,7 +23057,7 @@
     }
   },
   "go.model": {
-    "description": "GO-Causal Activity Models (GO-CAMs) use a defined “grammar” for linking multiple GO annotations into larger models of biological function (such as “pathways”) in a semantically structured manner. GO-CAMs are created by expert biocurators from the GO Consortium, using the Noctua Curation Platform.",
+    "description": "GO-Causal Activity Models (GO-CAMs) use a defined \u201cgrammar\u201d for linking multiple GO annotations into larger models of biological function (such as \u201cpathways\u201d) in a semantically structured manner. GO-CAMs are created by expert biocurators from the GO Consortium, using the Noctua Curation Platform.",
     "example": "5fce9b7300001250",
     "go": {
       "homepage": "http://www.geneontology.org/gocam",
@@ -23297,7 +23297,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "- DEPRECATION NOTE -\nPlease, keep in mind that this namespace has been superseeded by ‘gold’ prefix at https://registry.identifiers.org/registry/gold, and this namespace is kept here for support to already existing citations, new ones would need to use the pointed ‘gold’ namespace.\n\nThe GOLD (Genomes OnLine Database)is a resource for centralised monitoring of genome and metagenome projects worldwide. It stores information on complete and ongoing projects, along with their associated metadata. This collection references the sequencing status of individual genomes.",
+      "description": "- DEPRECATION NOTE -\nPlease, keep in mind that this namespace has been superseeded by \u2018gold\u2019 prefix at https://registry.identifiers.org/registry/gold, and this namespace is kept here for support to already existing citations, new ones would need to use the pointed \u2018gold\u2019 namespace.\n\nThe GOLD (Genomes OnLine Database)is a resource for centralised monitoring of genome and metagenome projects worldwide. It stores information on complete and ongoing projects, along with their associated metadata. This collection references the sequencing status of individual genomes.",
       "homepage": "http://www.genomesonline.org/cgi-bin/GOLD/index.cgi",
       "id": "00000401",
       "name": "GOLD genome",
@@ -23332,7 +23332,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "- DEPRECATION NOTE -\nPlease, keep in mind that this namespace has been superseeded by ‘gold’ prefix at https://registry.identifiers.org/registry/gold, and this namespace is kept here for support to already existing citations, new ones would need to use the pointed ‘gold’ namespace. \n\nThe GOLD (Genomes OnLine Database)is a resource for centralized monitoring of genome and metagenome projects worldwide. It stores information on complete and ongoing projects, along with their associated metadata. This collection references metadata associated with samples.",
+      "description": "- DEPRECATION NOTE -\nPlease, keep in mind that this namespace has been superseeded by \u2018gold\u2019 prefix at https://registry.identifiers.org/registry/gold, and this namespace is kept here for support to already existing citations, new ones would need to use the pointed \u2018gold\u2019 namespace. \n\nThe GOLD (Genomes OnLine Database)is a resource for centralized monitoring of genome and metagenome projects worldwide. It stores information on complete and ongoing projects, along with their associated metadata. This collection references metadata associated with samples.",
       "homepage": "http://www.genomesonline.org/cgi-bin/GOLD/index.cgi",
       "id": "00000402",
       "name": "GOLD metadata",
@@ -24206,7 +24206,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The Genetic Testing Registry (GTR®) provides a central location for voluntary submission of genetic test information by providers. The scope includes the test's purpose, methodology, validity, evidence of the test's usefulness, and laboratory contacts and credentials. The overarching goal of the GTR is to advance the public health and research into the genetic basis of health and disease",
+    "description": "The Genetic Testing Registry (GTR\u00ae) provides a central location for voluntary submission of genetic test information by providers. The scope includes the test's purpose, methodology, validity, evidence of the test's usefulness, and laboratory contacts and credentials. The overarching goal of the GTR is to advance the public health and research into the genetic basis of health and disease",
     "example": "AN0097748",
     "homepage": "https://www.ncbi.nlm.nih.gov/gtr/",
     "name": "Genetic Testing Registry",
@@ -24976,7 +24976,7 @@
       },
       {
         "code": "gencc",
-        "description": "The GenCC DB provides information pertaining to the validity of gene-disease relationships, with a current focus on Mendelian diseases. Curated gene-disease relationships are submitted by GenCC member organizations. The GenCC comprises organizations that currently provide online resources (e.g. ClinGen, DECIPHER, Genomics England PanelApp, OMIM, Orphanet, PanelApp Australia, TGMI’s G2P), as well as diagnostic laboratories that have committed to sharing their internal curated gene-level knowledge (e.g. Ambry, Illumina, Invitae, Myriad Women’s Health, Mass General Brigham Laboratory for Molecular Medicine).",
+        "description": "The GenCC DB provides information pertaining to the validity of gene-disease relationships, with a current focus on Mendelian diseases. Curated gene-disease relationships are submitted by GenCC member organizations. The GenCC comprises organizations that currently provide online resources (e.g. ClinGen, DECIPHER, Genomics England PanelApp, OMIM, Orphanet, PanelApp Australia, TGMI\u2019s G2P), as well as diagnostic laboratories that have committed to sharing their internal curated gene-level knowledge (e.g. Ambry, Illumina, Invitae, Myriad Women\u2019s Health, Mass General Brigham Laboratory for Molecular Medicine).",
         "homepage": "https://thegencc.org",
         "name": "The Gene Curation Coalition",
         "uri_format": "https://search.thegencc.org/genes/HGNC:$1"
@@ -26214,7 +26214,7 @@
       ],
       "contact": "frederic.bastian@unil.ch",
       "contact.github": "fbastian",
-      "contact.label": "Frédéric Bastian",
+      "contact.label": "Fr\u00e9d\u00e9ric Bastian",
       "contact.orcid": "0000-0002-9415-5104",
       "deprecated": false,
       "description": "Life cycle stages for Human",
@@ -27475,7 +27475,7 @@
   "idr": {
     "fairsharing": {
       "abbreviation": "IDR",
-      "description": "IDR is a prototype platform for publishing, mining and integrating bioimaging data at scale, following the Euro-BioImaging/ELIXIR imaging strategy using the OMERO and Bio-Formats open source software built by the Open Microscopy Environment. Deployed on an OpenStack cloud running on the EMBL-EBI’s Embassy resource, it includes image data linked to independent studies from genetic, RNAi, chemical, localisation and geographic high content screens, super-resolution microscopy, and digital pathology.",
+      "description": "IDR is a prototype platform for publishing, mining and integrating bioimaging data at scale, following the Euro-BioImaging/ELIXIR imaging strategy using the OMERO and Bio-Formats open source software built by the Open Microscopy Environment. Deployed on an OpenStack cloud running on the EMBL-EBI\u2019s Embassy resource, it includes image data linked to independent studies from genetic, RNAi, chemical, localisation and geographic high content screens, super-resolution microscopy, and digital pathology.",
       "id": "2303",
       "name": "Image Data Resource",
       "prefix": "FAIRsharing.6wf1zw",
@@ -27491,7 +27491,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "Image Data Resource (IDR) is an online, public data repository that seeks to store, integrate and serve image datasets from published scientific studies. We have collected and are continuing to receive existing and newly created “reference image\" datasets that are valuable resources for a broad community of users, either because they will be frequently accessed and cited or because they can serve as a basis for re-analysis and the development of new computational tools.",
+      "description": "Image Data Resource (IDR) is an online, public data repository that seeks to store, integrate and serve image datasets from published scientific studies. We have collected and are continuing to receive existing and newly created \u201creference image\" datasets that are valuable resources for a broad community of users, either because they will be frequently accessed and cited or because they can serve as a basis for re-analysis and the development of new computational tools.",
       "homepage": "https://idr.openmicroscopy.org",
       "id": "00000743",
       "name": "Image Data Resource",
@@ -29420,7 +29420,7 @@
     "example": "004435",
     "fairsharing": {
       "abbreviation": "JAX",
-      "description": "JAX® Mice are the industry standard for animal model research, using precise genome solutions to better understand human disease. Our rigorous Animal Health Programs and stringent genetic quality standards ensure the reproducibility and validity of your experimental data.",
+      "description": "JAX\u00ae Mice are the industry standard for animal model research, using precise genome solutions to better understand human disease. Our rigorous Animal Health Programs and stringent genetic quality standards ensure the reproducibility and validity of your experimental data.",
       "id": "2067",
       "name": "JAX Mice Database",
       "prefix": "FAIRsharing.5701h1",
@@ -31627,7 +31627,7 @@
       "name": "Adriano Rutz",
       "orcid": "0000-0003-0443-9902"
     },
-    "description": "LOTUS, actually, represents the most exhaustive resource of documented structure-organism pairs. Within the frame of current computational approaches in Natural Produts’s research and related fields, these documented structure-organism pairs should allow a more complete understanding of organisms and their chemistry.",
+    "description": "LOTUS, actually, represents the most exhaustive resource of documented structure-organism pairs. Within the frame of current computational approaches in Natural Produts\u2019s research and related fields, these documented structure-organism pairs should allow a more complete understanding of organisms and their chemistry.",
     "example": "LTS0004651",
     "homepage": "https://lotus.naturalproducts.net",
     "name": "LOTUS Initiative for Open Natural Products Research",
@@ -32512,7 +32512,7 @@
     "obofoundry": {
       "contact": "citlalli.mejiaalmonte@gmail.com",
       "contact.github": "citmejia",
-      "contact.label": "Citlalli Mejía-Almonte",
+      "contact.label": "Citlalli Mej\u00eda-Almonte",
       "contact.orcid": "0000-0002-0142-5591",
       "depends_on": [
         "bfo",
@@ -32625,7 +32625,7 @@
     },
     "fairsharing": {
       "abbreviation": "MedDRA",
-      "description": "MedDRA is a multilingual terminology allowing most users to operate in their native languages. MedDRA can be used to analyse individual medical events (e.g., “Influenza”) or issues involving a system, organ or etiology (e.g., infections) using its hierarchical structure. MedDRA can be used for signal detection and monitoring of clinical syndromes whose symptoms encompass numerous systems or organs using its multi-axial hierarchy or through the special feature of Standardised MedDRA Queries. The ability to communicate adverse event data is another strength of MedDRA and has lead to MedDRA being an integral part of the ICH e-submission standards: eCTD (ICH M8) and ICSRs (ICH E2B).",
+      "description": "MedDRA is a multilingual terminology allowing most users to operate in their native languages. MedDRA can be used to analyse individual medical events (e.g., \u201cInfluenza\u201d) or issues involving a system, organ or etiology (e.g., infections) using its hierarchical structure. MedDRA can be used for signal detection and monitoring of clinical syndromes whose symptoms encompass numerous systems or organs using its multi-axial hierarchy or through the special feature of Standardised MedDRA Queries. The ability to communicate adverse event data is another strength of MedDRA and has lead to MedDRA being an integral part of the ICH e-submission standards: eCTD (ICH M8) and ICSRs (ICH E2B).",
       "id": "1022",
       "name": "Medical Dictionary for Regulatory Activities Terminology",
       "prefix": "FAIRsharing.ad3137",
@@ -34063,7 +34063,7 @@
     "obofoundry": {
       "contact": "pporras@ebi.ac.uk",
       "contact.github": "pporrasebi",
-      "contact.label": "Pablo Porras Millán",
+      "contact.label": "Pablo Porras Mill\u00e1n",
       "contact.orcid": "0000-0002-8429-8793",
       "deprecated": false,
       "description": "A structured controlled vocabulary for the annotation of experiments concerned with protein-protein interactions.",
@@ -34626,7 +34626,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "The Identifiers.org registry contains registered namespace and provider prefixes with associated access URIs for a large number of high quality data collections. These prefixes are used in web resolution of compact identifiers of the form “PREFIX:ACCESSION” or \"PROVIDER/PREFIX:ACCESSION” commonly used to specify bioinformatics and other data resources.",
+      "description": "The Identifiers.org registry contains registered namespace and provider prefixes with associated access URIs for a large number of high quality data collections. These prefixes are used in web resolution of compact identifiers of the form \u201cPREFIX:ACCESSION\u201d or \"PROVIDER/PREFIX:ACCESSION\u201d commonly used to specify bioinformatics and other data resources.",
       "homepage": "https://registry.identifiers.org/registry",
       "id": "00000599",
       "name": "Identifiers.org Registry",
@@ -34834,7 +34834,7 @@
     },
     "fairsharing": {
       "abbreviation": "mirEX",
-      "description": "mirEX2 is a comprehensive platform for comparative analysis of primary microRNA expression data. RT–qPCR-based gene expression profiles are stored in a universal and expandable database scheme and wrapped by an intuitive user-friendly interface.",
+      "description": "mirEX2 is a comprehensive platform for comparative analysis of primary microRNA expression data. RT\u2013qPCR-based gene expression profiles are stored in a universal and expandable database scheme and wrapped by an intuitive user-friendly interface.",
       "id": "1611",
       "name": "mirEX",
       "prefix": "FAIRsharing.q3b39v",
@@ -34850,7 +34850,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "mirEX is a comprehensive platform for comparative analysis of primary microRNA expression data, storing RT–qPCR-based gene expression profile over seven development stages of Arabidopsis. It also provides RNA structural models, publicly available deep sequencing results and experimental procedure details. This collection provides profile information for a single microRNA over all development stages.",
+      "description": "mirEX is a comprehensive platform for comparative analysis of primary microRNA expression data, storing RT\u2013qPCR-based gene expression profile over seven development stages of Arabidopsis. It also provides RNA structural models, publicly available deep sequencing results and experimental procedure details. This collection provides profile information for a single microRNA over all development stages.",
       "homepage": "http://comgen.pl/mirex/?page=home",
       "id": "00000329",
       "name": "mirEX",
@@ -35628,7 +35628,7 @@
     "obofoundry": {
       "contact": "frederic.bastian@unil.ch",
       "contact.github": "fbastian",
-      "contact.label": "Frédéric Bastian",
+      "contact.label": "Fr\u00e9d\u00e9ric Bastian",
       "contact.orcid": "0000-0002-9415-5104",
       "deprecated": false,
       "description": "Life cycle stages for Mus Musculus",
@@ -37529,7 +37529,7 @@
     "example": "0000564",
     "fairsharing": {
       "abbreviation": "NBO",
-      "description": "The Neurobehavior Ontology (NBO) consists of two main components, an ontology of behavioral processes and an ontology of behavioral phenotypes. The behavioral process branch of NBO contains a classification of behavior processes complementing and extending GO’s process ontology. The behavior phenotype branch of NBO consists of a classification of both normal and abnormal behavioral characteristics of organisms .",
+      "description": "The Neurobehavior Ontology (NBO) consists of two main components, an ontology of behavioral processes and an ontology of behavioral phenotypes. The behavioral process branch of NBO contains a classification of behavior processes complementing and extending GO\u2019s process ontology. The behavior phenotype branch of NBO consists of a classification of both normal and abnormal behavioral characteristics of organisms .",
       "id": "1470",
       "name": "Neuro Behavior Ontology",
       "prefix": "FAIRsharing.pktgc6",
@@ -38923,7 +38923,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "neXtProt is a resource on human proteins, and includes information such as proteins’ function, subcellular location, expression, interactions and role in diseases.",
+      "description": "neXtProt is a resource on human proteins, and includes information such as proteins\u2019 function, subcellular location, expression, interactions and role in diseases.",
       "homepage": "https://www.nextprot.org/",
       "id": "00000236",
       "name": "nextProt",
@@ -40301,7 +40301,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "Each OCI (Open Citation Identifier) has a simple structure: oci:number-number, where “oci:” is the identifier prefix, and is used to identify a citation as a first-class data entitiy - see https://opencitations.wordpress.com/2018/02/19/citations-as-first-class-data-entities-introduction/ for additional information.\r\n\r\nOCIs for citations stored within the OpenCitations Corpus are constructed by combining the OpenCitations Corpus local identifiers for the citing and cited bibliographic resources, separating them with a dash. For example, oci:2544384-7295288 is a valid OCI for the citation between two papers stored within the OpenCitations Corpus.\r\n\r\nOCIs can also be created for bibliographic resources described in an external bibliographic database, if they are similarly identified there by identifiers having a unique numerical part. For example, the OCI for the citation that exists between Wikidata resources Q27931310 and Q22252312 is oci:01027931310–01022252312.\r\n\r\nOCIs can also be created for bibliographic resources described in external bibliographic database such as Crossref or DataCite where they are identified by alphanumeric Digital Object Identifiers (DOIs), rather than purely numerical strings.",
+      "description": "Each OCI (Open Citation Identifier) has a simple structure: oci:number-number, where \u201coci:\u201d is the identifier prefix, and is used to identify a citation as a first-class data entitiy - see https://opencitations.wordpress.com/2018/02/19/citations-as-first-class-data-entities-introduction/ for additional information.\r\n\r\nOCIs for citations stored within the OpenCitations Corpus are constructed by combining the OpenCitations Corpus local identifiers for the citing and cited bibliographic resources, separating them with a dash. For example, oci:2544384-7295288 is a valid OCI for the citation between two papers stored within the OpenCitations Corpus.\r\n\r\nOCIs can also be created for bibliographic resources described in an external bibliographic database, if they are similarly identified there by identifiers having a unique numerical part. For example, the OCI for the citation that exists between Wikidata resources Q27931310 and Q22252312 is oci:01027931310\u201301022252312.\r\n\r\nOCIs can also be created for bibliographic resources described in external bibliographic database such as Crossref or DataCite where they are identified by alphanumeric Digital Object Identifiers (DOIs), rather than purely numerical strings.",
       "homepage": "http://opencitations.net",
       "id": "00000660",
       "name": "OCI",
@@ -40398,7 +40398,7 @@
   "odc.sci": {
     "fairsharing": {
       "abbreviation": "ODC-SCI",
-      "description": "The Open Data Commons for Spinal Cord Injury is a cloud-based community-driven repository to store, share, and publish spinal cord injury research data. There are several challenges for scientific reproducibility and bench-to-bedside translation. For example, only research and data that are published actually get disseminated, a phenomenon known as publication bias. Published research reflects to only a small fraction of all data collected, and data that do not lead to publication are largely ignored, hidden away in filing cabinets and hard drives. This results in an abundance of inaccessible scientific data known as “dark data”. Even when research is disseminated, it is usually in the form of summary reports of aggregated data (e.g. averages across individual subjects) such as scientific articles. The fact that the individual subject-level data are inaccessible further contributes to dark data. The spinal cord injury (SCI) community created the ODC-SCI to mitigate dark data in SCI research. The ODC-SCI also aims to increase transparency with individual-level data, enhance collaboration, facilitate advanced analytics, and conform to increasing mandates by funders and publishers to make data accessible. Members of the ODC-SCI have access to a private digital lab space managed by the PI or multi-PIs for dataset storage and sharing. The PIs can share their labs’ datasets with the registered members of the ODC-SCI community and make their datasets public and citable. The ODC-SCI implements stewardship principles that scientific data be made FAIR (Findable, Accessible, Interoperable and Reusable) and has been widely adopted by the international SCI research community.",
+      "description": "The Open Data Commons for Spinal Cord Injury is a cloud-based community-driven repository to store, share, and publish spinal cord injury research data. There are several challenges for scientific reproducibility and bench-to-bedside translation. For example, only research and data that are published actually get disseminated, a phenomenon known as publication bias. Published research reflects to only a small fraction of all data collected, and data that do not lead to publication are largely ignored, hidden away in filing cabinets and hard drives. This results in an abundance of inaccessible scientific data known as \u201cdark data\u201d. Even when research is disseminated, it is usually in the form of summary reports of aggregated data (e.g. averages across individual subjects) such as scientific articles. The fact that the individual subject-level data are inaccessible further contributes to dark data. The spinal cord injury (SCI) community created the ODC-SCI to mitigate dark data in SCI research. The ODC-SCI also aims to increase transparency with individual-level data, enhance collaboration, facilitate advanced analytics, and conform to increasing mandates by funders and publishers to make data accessible. Members of the ODC-SCI have access to a private digital lab space managed by the PI or multi-PIs for dataset storage and sharing. The PIs can share their labs\u2019 datasets with the registered members of the ODC-SCI community and make their datasets public and citable. The ODC-SCI implements stewardship principles that scientific data be made FAIR (Findable, Accessible, Interoperable and Reusable) and has been widely adopted by the international SCI research community.",
       "id": "3307",
       "name": "Open Data Commons for Spinal Cord Injury",
       "prefix": "FAIRsharing.M6Ruz3",
@@ -40570,7 +40570,7 @@
       "prefix": "ogi"
     },
     "ols": {
-      "description": "OGI formalized the genomic element by defining an upper class 'genetic interval'.\n\nThe definition of 'genetic interval' is \"the spatial continuous physical entity which contains ordered genomic sets(DNA, RNA, Allele, Marker,etc.) between and including two points (Nucleic Acid Base Residue) on a chromosome or RNA molecule which must have a liner primary sequence sturcture.\" \n\nRelated paper:\n\n1. Yu Lin, Norihiro Sakamoto (2009) “Genome, Gene, Interval and Ontology” Interdisciplinary Ontology Vol.2 - Proceedings of the Second Interdisciplinary Meeting, Tokyo, Feb. 28th- Mar. 1st, 2009. Page(s):25-34 (http://cdb-riken.academia.edu/LinYu/Papers/142399/Genome_Gene_Interval_and_Ontology)\nYu Lin, Hiroshi Tarui, Peter Simons (2009) “From Ontology for Genetic Interval(OGI) to Sequence Assembly – Ontology apply to next generation sequencing” Proceeding of the Semantic Web Applications and Tools for Life Science Workshop, Amsterdam, Nov.20th, 2009. (http://ceur-ws.org/Vol-559/Poster2.pdf)\nYu Lin, Peter Simons (2010) “DNA sequence from below: A Nominalist Approach” Interdisciplinary Ontology Vol.3 - Proceedings of the Second Interdisciplinary Meeting, Tokyo, Feb. 28th- Mar. 1st, 2010. (http://philpapers.org/rec/LINDSF)\n\n\n",
+      "description": "OGI formalized the genomic element by defining an upper class 'genetic interval'.\n\nThe definition of 'genetic interval' is \"the spatial continuous physical entity which contains ordered genomic sets(DNA, RNA, Allele, Marker,etc.) between and including two points (Nucleic Acid Base Residue) on a chromosome or RNA molecule which must have a liner primary sequence sturcture.\" \n\nRelated paper:\n\n1. Yu Lin, Norihiro Sakamoto (2009) \u201cGenome, Gene, Interval and Ontology\u201d Interdisciplinary Ontology Vol.2 - Proceedings of the Second Interdisciplinary Meeting, Tokyo, Feb. 28th- Mar. 1st, 2009. Page(s):25-34 (http://cdb-riken.academia.edu/LinYu/Papers/142399/Genome_Gene_Interval_and_Ontology)\nYu Lin, Hiroshi Tarui, Peter Simons (2009) \u201cFrom Ontology for Genetic Interval(OGI) to Sequence Assembly \u2013 Ontology apply to next generation sequencing\u201d Proceeding of the Semantic Web Applications and Tools for Life Science Workshop, Amsterdam, Nov.20th, 2009. (http://ceur-ws.org/Vol-559/Poster2.pdf)\nYu Lin, Peter Simons (2010) \u201cDNA sequence from below: A Nominalist Approach\u201d Interdisciplinary Ontology Vol.3 - Proceedings of the Second Interdisciplinary Meeting, Tokyo, Feb. 28th- Mar. 1st, 2010. (http://philpapers.org/rec/LINDSF)\n\n\n",
       "download": "http://purl.obolibrary.org/obo/ogi.owl",
       "homepage": "https://code.google.com/p/ontology-for-genetic-interval/",
       "name": "Ontology for genetic interval",
@@ -40964,7 +40964,7 @@
     "obofoundry": {
       "contact": "frederic.bastian@unil.ch",
       "contact.github": "fbastian",
-      "contact.label": "Frédéric Bastian",
+      "contact.label": "Fr\u00e9d\u00e9ric Bastian",
       "contact.orcid": "0000-0002-9415-5104",
       "deprecated": false,
       "description": "Life cycle stages for Medaka",
@@ -41869,7 +41869,7 @@
       "repository": "https://gitlab.com/fortunalab/ontoavida"
     },
     "ols": {
-      "description": "The Ontology for Avida (OntoAvida) project aims to develop an integrated vocabulary for the description of the most widely used computational approach for performing experimental evolution using digital organisms (i.e., self-replicating computer programs that evolve within a user-defined computational environment).\n\nThe lack of a clearly defined vocabulary makes biologists feel reluctant to embrace the field of digital evolution. This unique ontology has the potential to change this picture overnight.\n\nOntoAvida was initially developed by https://fortunalab.org, the computational biology lab at the Doñana Biological Station (a research institute of the Spanish National Research Council based at Seville, Spain). Contributors to OntoAvida are expected to include members of the Digital Evolution Laboratory (https://devolab.org/) at Michigan State University (USA).\n\nMore information can be found at https://obofoundry.org/ontology/ontoavida.html",
+      "description": "The Ontology for Avida (OntoAvida) project aims to develop an integrated vocabulary for the description of the most widely used computational approach for performing experimental evolution using digital organisms (i.e., self-replicating computer programs that evolve within a user-defined computational environment).\n\nThe lack of a clearly defined vocabulary makes biologists feel reluctant to embrace the field of digital evolution. This unique ontology has the potential to change this picture overnight.\n\nOntoAvida was initially developed by https://fortunalab.org, the computational biology lab at the Do\u00f1ana Biological Station (a research institute of the Spanish National Research Council based at Seville, Spain). Contributors to OntoAvida are expected to include members of the Digital Evolution Laboratory (https://devolab.org/) at Michigan State University (USA).\n\nMore information can be found at https://obofoundry.org/ontology/ontoavida.html",
       "download": "http://purl.obolibrary.org/obo/ontoavida.owl",
       "homepage": "https://gitlab.com/fortunalab/ontoavida",
       "name": "OntoAvida: ontology for Avida digital evolution platform.",
@@ -42021,7 +42021,7 @@
     "example": "00573",
     "fairsharing": {
       "abbreviation": "OPB",
-      "description": "The Ontology of Physics for Biology is a reference of classical physics as applied to the dynamics of biological systems. This resource provides a reference ontology of physical properties (e.g., pressure, chemical concentration) and principles (e.g., Ohm’s law, Ficke’s law) by which the physical meaning of biosimulation models may be annotated.",
+      "description": "The Ontology of Physics for Biology is a reference of classical physics as applied to the dynamics of biological systems. This resource provides a reference ontology of physical properties (e.g., pressure, chemical concentration) and principles (e.g., Ohm\u2019s law, Ficke\u2019s law) by which the physical meaning of biosimulation models may be annotated.",
       "id": "177",
       "name": "Ontology of Physics for Biology",
       "prefix": "FAIRsharing.qcceez",
@@ -42520,7 +42520,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "Orphanet is a reference portal for information on rare diseases and orphan drugs. It’s aim is to help improve the diagnosis, care and treatment of patients with rare diseases.",
+      "description": "Orphanet is a reference portal for information on rare diseases and orphan drugs. It\u2019s aim is to help improve the diagnosis, care and treatment of patients with rare diseases.",
       "homepage": "http://www.orpha.net/consor/",
       "id": "00000220",
       "name": "Orphanet",
@@ -42683,7 +42683,7 @@
     "contact": {
       "email": "jfernand@um.es",
       "github": "jesualdotomasfernandezbreis",
-      "name": "Jesualdo Tomás Fernández-Breis",
+      "name": "Jesualdo Tom\u00e1s Fern\u00e1ndez-Breis",
       "orcid": "0000-0002-7558-2880"
     },
     "download_owl": "https://github.com/qfo/OrthologyOntology/raw/master/orthOntology_RC_v2_A.owl",
@@ -43006,7 +43006,7 @@
       "uri_format": "http://oryzatagline.cirad.fr/cgi-bin/general_mutant.pl?line=$1"
     },
     "prefixcommons": {
-      "description": "Oryza Tag Line consists in a searchable database developed under the Oracle management system integrating phenotypic data resulting from the evaluation of the Génoplante rice insertion line library.",
+      "description": "Oryza Tag Line consists in a searchable database developed under the Oracle management system integrating phenotypic data resulting from the evaluation of the G\u00e9noplante rice insertion line library.",
       "example": "AGFC04",
       "homepage": "http://urgi.versailles.inra.fr/OryzaTagLine/",
       "keywords": [
@@ -43313,7 +43313,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "The PANTHER (Protein ANalysis THrough Evolutionary Relationships) Classification System is a resource that classifies genes by their functions, using published scientific experimental evidence and evolutionary relationships to predict function even in the absence of direct experimental evidence. PANTHER tree is a key element of the PANTHER System to represent ‘all’ of the evolutionary events in the gene family. PANTHER nodes represent the evolutionary events, either speciation or duplication, within the tree. PANTHER is maintaining stable identifier for these nodes.",
+      "description": "The PANTHER (Protein ANalysis THrough Evolutionary Relationships) Classification System is a resource that classifies genes by their functions, using published scientific experimental evidence and evolutionary relationships to predict function even in the absence of direct experimental evidence. PANTHER tree is a key element of the PANTHER System to represent \u2018all\u2019 of the evolutionary events in the gene family. PANTHER nodes represent the evolutionary events, either speciation or duplication, within the tree. PANTHER is maintaining stable identifier for these nodes.",
       "homepage": "http://pantree.org/",
       "id": "00000374",
       "name": "PANTHER Node",
@@ -44356,7 +44356,7 @@
     "example": "0010039",
     "fairsharing": {
       "abbreviation": "PDRO",
-      "description": "PDRO is a realist ontology that aims to represent the domain of drug prescriptions. Such an ontology is currently missing in the OBOFoundry and is highly relevant to the domains of existing ontologies like DRON, OMRSE and OAE. PDRO’s central focus is the structure of a drug prescription, which is represented as a mereology of informational entities. Our current use cases are (1) refining this structure (e.g., adding closure axioms, cardinality, datatype bindings, etc) for prospectively standardizing local electronic prescriptions and (2) annotating prescription data of differing EHRs for detecting inappropriate prescriptions using a central semantic framework. Future ontological work will include aligning PDRO more closely with the Document Acts Ontology.",
+      "description": "PDRO is a realist ontology that aims to represent the domain of drug prescriptions. Such an ontology is currently missing in the OBOFoundry and is highly relevant to the domains of existing ontologies like DRON, OMRSE and OAE. PDRO\u2019s central focus is the structure of a drug prescription, which is represented as a mereology of informational entities. Our current use cases are (1) refining this structure (e.g., adding closure axioms, cardinality, datatype bindings, etc) for prospectively standardizing local electronic prescriptions and (2) annotating prescription data of differing EHRs for detecting inappropriate prescriptions using a central semantic framework. Future ontological work will include aligning PDRO more closely with the Document Acts Ontology.",
       "id": "526",
       "name": "The Prescription of Drugs Ontology",
       "prefix": "FAIRsharing.9te3ev",
@@ -44444,7 +44444,7 @@
     "obofoundry": {
       "contact": "frederic.bastian@unil.ch",
       "contact.github": "fbastian",
-      "contact.label": "Frédéric Bastian",
+      "contact.label": "Fr\u00e9d\u00e9ric Bastian",
       "contact.orcid": "0000-0002-9415-5104",
       "deprecated": false,
       "description": "Life cycle stages for Platynereis dumerilii",
@@ -44809,7 +44809,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The Alan Wood’s Pesticides is a compendium of pesticides which contain nomenclature data sheets for more than 1700 different active ingredients.",
+    "description": "The Alan Wood\u2019s Pesticides is a compendium of pesticides which contain nomenclature data sheets for more than 1700 different active ingredients.",
     "example": "derivatives%2Fthiocyclam%20hydrochloride",
     "homepage": "http://www.alanwood.net/pesticides",
     "name": "Alan Wood's Pesticides",
@@ -46657,7 +46657,7 @@
     },
     "fairsharing": {
       "abbreviation": "PMR",
-      "description": "The Physiome Model Repository (PMR) is the main online repository for the IUPS Physiome Project, providing version and access controlled repositories, called workspaces, for users to store their data. PMR also provides a mechanism to create persistent access to specific revisions of a workspace, termed exposures. Exposure plugins are available for specific types of data (e.g., CellML or FieldML documents) which enable customizable views of the data when browsing the repository via a web browser, or an application accessing the repository’s content via web services.",
+      "description": "The Physiome Model Repository (PMR) is the main online repository for the IUPS Physiome Project, providing version and access controlled repositories, called workspaces, for users to store their data. PMR also provides a mechanism to create persistent access to specific revisions of a workspace, termed exposures. Exposure plugins are available for specific types of data (e.g., CellML or FieldML documents) which enable customizable views of the data when browsing the repository via a web browser, or an application accessing the repository\u2019s content via web services.",
       "id": "2261",
       "name": "Physiome Model Repository",
       "prefix": "FAIRsharing.bcjrnq",
@@ -49612,7 +49612,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The Reagent Ontology (ReO) adheres to OBO Foundry principles (obofoundry.org) to model the domain of biomedical research reagents, considered broadly to include materials applied “chemically” in scientific techniques to facilitate generation of data and research materials. ReO is a modular ontology that re-uses existing ontologies to facilitate cross-domain interoperability. It consists of reagents and their properties, linking diverse biological and experimental entities to which they are related. ReO supports community use cases by providing a flexible, extensible, and deeply integrated framework that can be adapted and extended with more specific modeling to meet application needs.",
+    "description": "The Reagent Ontology (ReO) adheres to OBO Foundry principles (obofoundry.org) to model the domain of biomedical research reagents, considered broadly to include materials applied \u201cchemically\u201d in scientific techniques to facilitate generation of data and research materials. ReO is a modular ontology that re-uses existing ontologies to facilitate cross-domain interoperability. It consists of reagents and their properties, linking diverse biological and experimental entities to which they are related. ReO supports community use cases by providing a flexible, extensible, and deeply integrated framework that can be adapted and extended with more specific modeling to meet application needs.",
     "download_owl": "https://github.com/tis-lab/reagent-ontology/raw/master/reo/ontology_files/reo_pre-merged_or_reasoned_files/reo_reasoned_9-6-12.owl",
     "example": "0000079",
     "homepage": "https://github.com/tis-lab/reagent-ontology",
@@ -50892,7 +50892,7 @@
     },
     "fairsharing": {
       "abbreviation": "RRID",
-      "description": "The Resource Identification Initiative (#RRID) is designed to help researchers sufficiently cite the key resources used to produce the scientific findings reported in the biomedical literature. In addition to being unique, RRID’s meet three key criteria, they are: - Machine readable - Free to generate and access - Consistent across publishers and journals",
+      "description": "The Resource Identification Initiative (#RRID) is designed to help researchers sufficiently cite the key resources used to produce the scientific findings reported in the biomedical literature. In addition to being unique, RRID\u2019s meet three key criteria, they are: - Machine readable - Free to generate and access - Consistent across publishers and journals",
       "id": "538",
       "name": "Research Resource Identifiers",
       "prefix": "FAIRsharing.ATwSZG",
@@ -51085,7 +51085,7 @@
     },
     "ols": {
       "contact": "chemistry-ontologies@googlegroups.com",
-      "description": "RXNO is the name reaction ontology. It contains more than 500 classes representing organic reactions such as the Diels–Alder cyclization.",
+      "description": "RXNO is the name reaction ontology. It contains more than 500 classes representing organic reactions such as the Diels\u2013Alder cyclization.",
       "download": "http://purl.obolibrary.org/obo/rxno.owl",
       "homepage": "https://github.com/rsc-ontologies/rxno",
       "name": "RXNO",
@@ -51590,7 +51590,7 @@
     "example": "0000728",
     "fairsharing": {
       "abbreviation": "SCDO",
-      "description": "The Sickle Cell Disease Ontology (SCDO) project is a collaboration between H3ABioNet (Pan African Bioinformatics Network) and SPAN (Sickle Cell Disease Pan African Network). The SCDO is currently under development and its purpose is to: 1) establish community standardized SCD terms and descriptions, 2) establish canonical and hierarchical representation of knowledge on SCD, 3) links to other ontologies and bodies of work such as DO, PhenX MeSH, ICD, NCI’s thesaurus, SNOMED and OMIM. Once complete, we anticipate that the ontology will: 1) be the most comprehensive collection of knowledge on SCD, 2) facilitate exploration of new scientific questions and ideas, 3) facilitate seamless data sharing and collaborations including meta-analysis within the SCD community, 4) support the building of databasing and clinical informatics in SCD.",
+      "description": "The Sickle Cell Disease Ontology (SCDO) project is a collaboration between H3ABioNet (Pan African Bioinformatics Network) and SPAN (Sickle Cell Disease Pan African Network). The SCDO is currently under development and its purpose is to: 1) establish community standardized SCD terms and descriptions, 2) establish canonical and hierarchical representation of knowledge on SCD, 3) links to other ontologies and bodies of work such as DO, PhenX MeSH, ICD, NCI\u2019s thesaurus, SNOMED and OMIM. Once complete, we anticipate that the ontology will: 1) be the most comprehensive collection of knowledge on SCD, 2) facilitate exploration of new scientific questions and ideas, 3) facilitate seamless data sharing and collaborations including meta-analysis within the SCD community, 4) support the building of databasing and clinical informatics in SCD.",
       "id": "888",
       "name": "Sickle Cell Disease Ontology",
       "prefix": "FAIRsharing.kkq6pw",
@@ -53670,7 +53670,7 @@
       "publications": [
         {
           "id": "https://doi.org/10.3390/d11100202",
-          "title": "The Spider Anatomy Ontology (SPD)—A Versatile Tool to Link Anatomy with Cross-Disciplinary Data"
+          "title": "The Spider Anatomy Ontology (SPD)\u2014A Versatile Tool to Link Anatomy with Cross-Disciplinary Data"
         }
       ],
       "repository": "https://github.com/obophenotype/spider-ontology"
@@ -55327,7 +55327,7 @@
     },
     "fairsharing": {
       "abbreviation": "TarBase",
-      "description": "DIANA-TarBase is a reference database that indexes experimentally-supported microRNA (miRNA) targets. It integrates information on cell-type specific miRNA–gene regulation and includes miRNA-binding locations. The target data provided by DIANA-TarBase is supported by information on methodologies, cell types/tissues and experimental conditions.",
+      "description": "DIANA-TarBase is a reference database that indexes experimentally-supported microRNA (miRNA) targets. It integrates information on cell-type specific miRNA\u2013gene regulation and includes miRNA-binding locations. The target data provided by DIANA-TarBase is supported by information on methodologies, cell types/tissues and experimental conditions.",
       "id": "1674",
       "name": "TarBase",
       "prefix": "FAIRsharing.a0k4cd",
@@ -55344,7 +55344,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "TarBase stores microRNA (miRNA) information for miRNA–gene interactions, as well as miRNA- and gene-related facts to information specific to the interaction and the experimental validation methodologies used.",
+      "description": "TarBase stores microRNA (miRNA) information for miRNA\u2013gene interactions, as well as miRNA- and gene-related facts to information specific to the interaction and the experimental validation methodologies used.",
       "homepage": "http://diana.imis.athena-innovation.gr/DianaTools/index.php?r=tarbase/index",
       "id": "00000340",
       "name": "TarBase",
@@ -57255,7 +57255,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "The purpose of the joint FDA/USP Substance Registration System (SRS) is to support health information technology initiatives by generating unique ingredient identifiers (UNIIs) for substances in drugs, biologics, foods, and devices. The UNII is a non- proprietary, free, unique, unambiguous, non semantic, alphanumeric identifier based on a substance’s molecular structure and/or descriptive information.",
+      "description": "The purpose of the joint FDA/USP Substance Registration System (SRS) is to support health information technology initiatives by generating unique ingredient identifiers (UNIIs) for substances in drugs, biologics, foods, and devices. The UNII is a non- proprietary, free, unique, unambiguous, non semantic, alphanumeric identifier based on a substance\u2019s molecular structure and/or descriptive information.",
       "homepage": "http://fdasis.nlm.nih.gov/srs/",
       "id": "00000531",
       "name": "UNII",
@@ -57951,7 +57951,7 @@
     },
     "fairsharing": {
       "abbreviation": null,
-      "description": "UNITE is a database and sequence management environment centered on the eukaryotic nuclear ribosomal ITS region. All eukaryotic ITS sequences from the International Nucleotide Sequence Database Collaboration are clustered to approximately the species level (distance between species in steps of 0.5%), and all such species hypotheses are given a DOI to facilitate unambiguous scientific communication and data assembly. The user can interact with these species hypotheses (e.g., SH1566366.08FU) in various ways, and third-party sequence and metadata annotation are supported. Registration is needed to access the more powerful features of the accompanying PlutoF workbench. A range of search and query options are available, and precompiled reference datasets for local sequence similarity searches and HTS pipelines are available for download. Owing to the mycological roots of UNITE, two versions of the release files are available: all eukaryotes (including fungi), and fungi only. UNITE is a community effort that relies on the scientific expertise of its users – please consider contributing by, e.g., annotating sequences of your taxa of expertise.",
+      "description": "UNITE is a database and sequence management environment centered on the eukaryotic nuclear ribosomal ITS region. All eukaryotic ITS sequences from the International Nucleotide Sequence Database Collaboration are clustered to approximately the species level (distance between species in steps of 0.5%), and all such species hypotheses are given a DOI to facilitate unambiguous scientific communication and data assembly. The user can interact with these species hypotheses (e.g., SH1566366.08FU) in various ways, and third-party sequence and metadata annotation are supported. Registration is needed to access the more powerful features of the accompanying PlutoF workbench. A range of search and query options are available, and precompiled reference datasets for local sequence similarity searches and HTS pipelines are available for download. Owing to the mycological roots of UNITE, two versions of the release files are available: all eukaryotes (including fungi), and fungi only. UNITE is a community effort that relies on the scientific expertise of its users \u2013 please consider contributing by, e.g., annotating sequences of your taxa of expertise.",
       "id": "2110",
       "name": "UNITE",
       "prefix": "FAIRsharing.cnwx8c",
@@ -59014,7 +59014,7 @@
     },
     "miriam": {
       "deprecated": false,
-      "description": "The VIAF® (Virtual International Authority File) combines multiple name authority files into a single OCLC-hosted name authority service. The goal of the service is to lower the cost and increase the utility of library authority files by matching and linking widely-used authority files and making that information available on the Web.",
+      "description": "The VIAF\u00ae (Virtual International Authority File) combines multiple name authority files into a single OCLC-hosted name authority service. The goal of the service is to lower the cost and increase the utility of library authority files by matching and linking widely-used authority files and making that information available on the Web.",
       "homepage": "http://viaf.org",
       "id": "00000685",
       "name": "Virtual International Authority File",
@@ -59372,7 +59372,7 @@
         },
         {
           "id": "https://www.ncbi.nlm.nih.gov/pubmed/21624163",
-          "title": "Mining of vaccine-associated IFN-γ gene interaction networks using the Vaccine Ontology"
+          "title": "Mining of vaccine-associated IFN-\u03b3 gene interaction networks using the Vaccine Ontology"
         }
       ],
       "repository": "https://github.com/vaccineontology/VO"
@@ -59665,7 +59665,7 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The Veterans Health Administration is America’s largest integrated health care system, providing care at 1,293 health care facilities, including 171 medical centers and 1,112 outpatient sites of care of varying complexity (VHA outpatient clinics), serving 9 million enrolled Veterans each year.",
+    "description": "The Veterans Health Administration is America\u2019s largest integrated health care system, providing care at 1,293 health care facilities, including 171 medical centers and 1,112 outpatient sites of care of varying complexity (VHA outpatient clinics), serving 9 million enrolled Veterans each year.",
     "example": "4007166",
     "homepage": "https://www.va.gov/health",
     "name": "Veterans Health Administration (VHA) unique identifier",
@@ -61351,11 +61351,11 @@
       "name": "Charles Tapley Hoyt",
       "orcid": "0000-0003-4423-4370"
     },
-    "description": "The Yeast Metabolome Database (YMDB) is a manually curated database of small molecule metabolites found in or produced by Saccharomyces cerevisiae (also known as Baker’s yeast and Brewer’s yeast).",
+    "description": "The Yeast Metabolome Database (YMDB) is a manually curated database of small molecule metabolites found in or produced by Saccharomyces cerevisiae (also known as Baker\u2019s yeast and Brewer\u2019s yeast).",
     "example": "YMDB00001",
     "fairsharing": {
       "abbreviation": "YMDB",
-      "description": "The Yeast Metabolome Database (YMDB) is a manually curated database of small molecule metabolites found in or produced by Saccharomyces cerevisiae (also known as Baker’s yeast and Brewer’s yeast). This database covers metabolites described in textbooks, scientific journals, metabolic reconstructions and other electronic databases.",
+      "description": "The Yeast Metabolome Database (YMDB) is a manually curated database of small molecule metabolites found in or produced by Saccharomyces cerevisiae (also known as Baker\u2019s yeast and Brewer\u2019s yeast). This database covers metabolites described in textbooks, scientific journals, metabolic reconstructions and other electronic databases.",
       "id": "1700",
       "name": "The Yeast Metabolome Database",
       "prefix": "FAIRsharing.tawpg2",

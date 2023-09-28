@@ -25,13 +25,15 @@
 
 import datetime
 import os
+
 import connexion
+
 from fuji_server.controllers.fair_check import FAIRCheck
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.models.body import Body  # noqa: E501
 from fuji_server.models.fair_results import FAIRResults  # noqa: E501
-from fuji_server.helper.identifier_helper import IdentifierHelper
 
 
 def assess_by_id(body):  # noqa: E501
@@ -45,16 +47,16 @@ def assess_by_id(body):  # noqa: E501
     :rtype: FAIRResults
     """
 
-    allow_remote_logging=False
+    allow_remote_logging = False
     if connexion.request.is_json:
         # The client has to send this HTTP header (Allow-Remote-Logging:True) explicitely to enable remote logging
         # Useful for e.g. web clients..
-        allow_remote_logging = connexion.request.headers.get('Allow-Remote-Logging')
+        allow_remote_logging = connexion.request.headers.get("Allow-Remote-Logging")
         debug = True
         results = []
         client_ip = connexion.request.remote_addr
         body = Body.from_dict(connexion.request.get_json())
-        #clienturi = Body.from_dict(connexion.request
+        # clienturi = Body.from_dict(connexion.request
         identifier = body.object_identifier
         debug = body.test_debug
         metadata_service_endpoint = body.metadata_service_endpoint
@@ -62,40 +64,41 @@ def assess_by_id(body):  # noqa: E501
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
         metric_version = body.metric_version
-        print('BODY METRIC', metric_version)
+        print("BODY METRIC", metric_version)
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
-        #updating re3data
+        # updating re3data
         Preprocessor.retrieve_datacite_re3repos()
 
-        logger.info('Assessment target: ' + identifier)
-        print('Assessment target: ', identifier, flush=True)
-        starttimestmp = datetime.datetime.now().replace(
-            microsecond=0).isoformat() + 'Z'
-        ft = FAIRCheck(uid=identifier,
-                       test_debug=debug,
-                       metadata_service_url=metadata_service_endpoint,
-                       metadata_service_type=metadata_service_type,
-                       use_datacite=usedatacite,
-                       oaipmh_endpoint=oaipmh_endpoint,
-                       metric_version=metric_version)
-        #dataset level authentication
+        logger.info("Assessment target: " + identifier)
+        print("Assessment target: ", identifier, flush=True)
+        starttimestmp = datetime.datetime.now().replace(microsecond=0).isoformat() + "Z"
+        ft = FAIRCheck(
+            uid=identifier,
+            test_debug=debug,
+            metadata_service_url=metadata_service_endpoint,
+            metadata_service_type=metadata_service_type,
+            use_datacite=usedatacite,
+            oaipmh_endpoint=oaipmh_endpoint,
+            metric_version=metric_version,
+        )
+        # dataset level authentication
         if auth_token:
             ft.set_auth_token(auth_token, auth_token_type)
         # set target for remote logging
         remote_log_host, remote_log_path = Preprocessor.remote_log_host, Preprocessor.remote_log_path
-        #print(remote_log_host, remote_log_path)
+        # print(remote_log_host, remote_log_path)
         if remote_log_host and remote_log_path and allow_remote_logging:
-            print('Remote logging enabled...')
+            print("Remote logging enabled...")
             if ft.weblogger:
                 ft.logger.addHandler(ft.weblogger)
         else:
-            print('Remote logging disabled...')
+            print("Remote logging disabled...")
             if ft.weblogger:
                 ft.logger.removeHandler(ft.weblogger)
 
-        print('starting harvesting ')
+        print("starting harvesting ")
         ft.harvest_all_metadata()
         uid_result, pid_result = ft.check_unique_persistent_metadata_identifier()
         if ft.repeat_pid_check:
@@ -167,43 +170,46 @@ def assess_by_id(body):  # noqa: E501
         if standard_protocol_metadata_result:
             results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
-        #ft.logger_message_stream.flush()
+        # ft.logger_message_stream.flush()
         summary = ft.get_assessment_summary(results)
         for res_k, res_v in enumerate(results):
             if ft.isDebug:
-                debug_list = debug_messages.get(res_v['metric_identifier'])
+                debug_list = debug_messages.get(res_v["metric_identifier"])
                 # debug_list= ft.msg_filter.getMessage(res_v['metric_identifier'])
                 if debug_list is not None:
-                    results[res_k]['test_debug'] = debug_messages.get(res_v['metric_identifier'])
+                    results[res_k]["test_debug"] = debug_messages.get(res_v["metric_identifier"])
                 else:
-                    results[res_k]['test_debug'] = ['INFO: No debug messages received']
+                    results[res_k]["test_debug"] = ["INFO: No debug messages received"]
             else:
-                results[res_k]['test_debug'] = ['INFO: Debugging disabled']
+                results[res_k]["test_debug"] = ["INFO: Debugging disabled"]
                 debug_messages = {}
         if len(ft.logger.handlers) > 1:
             ft.logger.handlers = [ft.logger.handlers[-1]]
-        #endtimestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
-        endtimestmp = datetime.datetime.now().replace(
-            microsecond=0).isoformat() + 'Z'  # use timestamp format from RFC 3339 as specified in openapi3
+        # endtimestmp = datetime.datetime.now().replace(microsecond=0).isoformat()
+        endtimestmp = (
+            datetime.datetime.now().replace(microsecond=0).isoformat() + "Z"
+        )  # use timestamp format from RFC 3339 as specified in openapi3
         metric_spec = ft.metric_helper.metric_specification
         resolved_url = ft.landing_url
         if not resolved_url:
-            resolved_url = 'not defined'
-        #metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
+            resolved_url = "not defined"
+        # metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
         request = body.to_dict()
         if ft.pid_url:
             idhelper = IdentifierHelper(ft.pid_url)
-            request['normalized_object_identifier'] = idhelper.get_normalized_id()
-        final_response = FAIRResults(request=request,
-                                     start_timestamp= starttimestmp,
-                                     end_timestamp=endtimestmp,
-                                     software_version=ft.FUJI_VERSION,
-                                     test_id=ft.test_id,
-                                     metric_version=metric_version,
-                                     metric_specification=metric_spec,
-                                     total_metrics=totalmetrics,
-                                     results=results,
-                                     summary=summary,
-                                     resolved_url=resolved_url)
+            request["normalized_object_identifier"] = idhelper.get_normalized_id()
+        final_response = FAIRResults(
+            request=request,
+            start_timestamp=starttimestmp,
+            end_timestamp=endtimestmp,
+            software_version=ft.FUJI_VERSION,
+            test_id=ft.test_id,
+            metric_version=metric_version,
+            metric_specification=metric_spec,
+            total_metrics=totalmetrics,
+            results=results,
+            summary=summary,
+            resolved_url=resolved_url,
+        )
     return final_response
