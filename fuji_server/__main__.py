@@ -78,7 +78,7 @@ def main():
     logger.info("Total default namespaces specified : {}".format(len(preproc.getDefaultNamespaces())))
 
     app = create_fuji_app(config)
-    limiter = Limiter(app.app, key_func=get_remote_address, default_limits=[str(config["SERVICE"]["rate_limit"])])
+    limiter = Limiter(get_remote_address, app=app.app, default_limits=[str(config["SERVICE"]["rate_limit"])])
     # comment in case waitress is wished
     # app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']),debug=False)
     # switch to waitress
