@@ -25,17 +25,16 @@ import logging
 
 
 class MessageFilter(logging.Filter):
-
     def __init__(self):
         self.messages = {}
 
     def filter(self, record):
         # Intercept logs messages #TODO - do not write FsF-* messages into a log file
-        #print(record.getMessage())
-        if record.msg.startswith('FsF-'):
+        # print(record.getMessage())
+        if record.msg.startswith("FsF-"):
             level = record.levelname
-            m = record.msg.split(':', 1)
-            msg = '%s: %s' % (level, m[1].strip())
+            m = record.msg.split(":", 1)
+            msg = "%s: %s" % (level, m[1].strip())
             record.msg = msg
         return True
 

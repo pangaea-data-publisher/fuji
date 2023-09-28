@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner  # noqa: F401,E501
-from fuji_server import util
 
 
 class DataContentMetadataOutput(Model):
@@ -16,9 +16,9 @@ class DataContentMetadataOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 object_type: str = None,
-                 data_content_descriptor: List[DataContentMetadataOutputInner] = None):  # noqa: E501
+    def __init__(
+        self, object_type: str = None, data_content_descriptor: List[DataContentMetadataOutputInner] = None
+    ):  # noqa: E501
         """DataContentMetadataOutput - a model defined in Swagger
 
         :param object_type: The object_type of this DataContentMetadataOutput.  # noqa: E501
@@ -26,14 +26,14 @@ class DataContentMetadataOutput(Model):
         :param data_content_descriptor: The data_content_descriptor of this DataContentMetadataOutput.  # noqa: E501
         :type data_content_descriptor: List[DataContentMetadataOutputInner]
         """
-        self.swagger_types = {'object_type': str, 'data_content_descriptor': List[DataContentMetadataOutputInner]}
+        self.swagger_types = {"object_type": str, "data_content_descriptor": List[DataContentMetadataOutputInner]}
 
-        self.attribute_map = {'object_type': 'object_type', 'data_content_descriptor': 'data_content_descriptor'}
+        self.attribute_map = {"object_type": "object_type", "data_content_descriptor": "data_content_descriptor"}
         self._object_type = object_type
         self._data_content_descriptor = data_content_descriptor
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataContentMetadataOutput':
+    def from_dict(cls, dikt) -> "DataContentMetadataOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -22,18 +22,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from typing import Any, List
+
 from fuji_server import OutputSearchMechanisms
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
+from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from fuji_server.helper.catalogue_helper_datacite import MetaDataCatalogueDataCite
 from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
 from fuji_server.helper.catalogue_helper_mendeley_data import MetaDataCatalogueMendeleyData
 from fuji_server.helper.identifier_helper import IdentifierHelper
+from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataOfferingMethods, MetadataSources
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources, MetadataOfferingMethods
-from fuji_server.helper.catalogue_helper import MetaDataCatalogue
-from typing import List, Any
 
 
 class FAIREvaluatorSearchable(FAIREvaluator):
@@ -51,120 +52,157 @@ class FAIREvaluatorSearchable(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-F4-01M')
+        self.set_metric("FsF-F4-01M")
         self.search_mechanisms = []
-        self.search_engines_support_offering =  ['html_embedding', 'microdata_rdfa']
-        self.search_engines_support_standards = ['schemaorg','dublin-core','dcat-data-catalog-vocabulary']# from f-uji.net/vocab/metadata/standards
+        self.search_engines_support_offering = ["html_embedding", "microdata_rdfa"]
+        self.search_engines_support_standards = [
+            "schemaorg",
+            "dublin-core",
+            "dcat-data-catalog-vocabulary",
+        ]  # from f-uji.net/vocab/metadata/standards
         self.search_engines_support = [
-            MetadataSources.SCHEMAORG_NEGOTIATED.name, MetadataSources.SCHEMAORG_EMBEDDED.name,
-            MetadataSources.DUBLINCORE_EMBEDDED.name, MetadataSources.RDFA_EMBEDDED.name
+            MetadataSources.SCHEMAORG_NEGOTIATED.name,
+            MetadataSources.SCHEMAORG_EMBEDDED.name,
+            MetadataSources.DUBLINCORE_EMBEDDED.name,
+            MetadataSources.RDFA_EMBEDDED.name,
         ]
         self.sources_registry = [
-            MetaDataCatalogue.Sources.DATACITE, MetaDataCatalogue.Sources.MENDELEY_DATA, MetaDataCatalogue.Sources.GOOGLE_DATASET
+            MetaDataCatalogue.Sources.DATACITE,
+            MetaDataCatalogue.Sources.MENDELEY_DATA,
+            MetaDataCatalogue.Sources.GOOGLE_DATASET,
         ]
 
     def testMetadataExchangeStandardsAvailable(self):
-        #test for oai, csw, sparql
+        # test for oai, csw, sparql
         test_status = False
-        standards_supported =[]
+        standards_supported = []
 
-        if self.isTestDefined(self.metric_identifier + '-3'):
+        if self.isTestDefined(self.metric_identifier + "-3"):
             if self.fuji.use_datacite:
-                self.logger.info(self.metric_identifier + ' : Trying to identify a metadata exchange standard given as input or via re3data entry')
-                test_score = self.getTestConfigScore(self.metric_identifier + '-3')
+                self.logger.info(
+                    self.metric_identifier
+                    + " : Trying to identify a metadata exchange standard given as input or via re3data entry"
+                )
+                test_score = self.getTestConfigScore(self.metric_identifier + "-3")
                 if not self.fuji.oaipmh_endpoint:
                     self.logger.info(
-                        '{} : Inferring metadata service endpoint (OAI) information through re3data/datacite services'.format(
-                            self.metric_identifier))
-                    self.fuji.oaipmh_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('OAI-PMH')
+                        "{} : Inferring metadata service endpoint (OAI) information through re3data/datacite services".format(
+                            self.metric_identifier
+                        )
+                    )
+                    self.fuji.oaipmh_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get("OAI-PMH")
                 if self.fuji.oaipmh_endpoint:
-                    standards_supported.append('OAI-PMH')
+                    standards_supported.append("OAI-PMH")
                 if self.fuji.csw_endpoint:
-                    standards_supported.append('OGC-CSW')
+                    standards_supported.append("OGC-CSW")
                 if not self.fuji.sparql_endpoint:
                     self.logger.info(
-                        '{} : Inferring metadata service endpoint (SPARQL) information through re3data/datacite services'.format(
-                            self.metric_identifier))
-                    self.fuji.sparql_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get('SPARQL')
+                        "{} : Inferring metadata service endpoint (SPARQL) information through re3data/datacite services".format(
+                            self.metric_identifier
+                        )
+                    )
+                    self.fuji.sparql_endpoint = self.fuji.repo_helper.getRe3MetadataAPIs().get("SPARQL")
                 if self.fuji.sparql_endpoint:
-                    standards_supported.append('SPARQL')
+                    standards_supported.append("SPARQL")
                 if standards_supported:
-                    self.setEvaluationCriteriumScore(self.metric_identifier + '-3', test_score, 'pass')
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-3')
+                    self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-3")
                     self.score.earned += test_score
-                    #standards_supported.append(self.fuji.self.metadata_service_type)
+                    # standards_supported.append(self.fuji.self.metadata_service_type)
                     self.search_mechanisms.append(
-                        OutputSearchMechanisms(mechanism='exchange standard', mechanism_info=standards_supported))
-                    self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found - metadata exchange standard -: '+str(standards_supported))
+                        OutputSearchMechanisms(mechanism="exchange standard", mechanism_info=standards_supported)
+                    )
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        self.metric_identifier
+                        + " : Metadata found - metadata exchange standard -: "
+                        + str(standards_supported),
+                    )
                 else:
-                    self.logger.warning(self.metric_identifier + ' : No metadata exchange standard found')
+                    self.logger.warning(self.metric_identifier + " : No metadata exchange standard found")
             else:
-                self.logger.warning(self.metric_identifier + ' : Datacite support disabled, therefore skipping re3data metadata exchange standard check')
+                self.logger.warning(
+                    self.metric_identifier
+                    + " : Datacite support disabled, therefore skipping re3data metadata exchange standard check"
+                )
 
         return test_status
 
-
     def testSearchEngineCompatibleMetadataAvailable(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + '-1'):
+        if self.isTestDefined(self.metric_identifier + "-1"):
             search_engine_support_match = []
-            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-            #NEW Way
+            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+            # NEW Way
             for found_metadata in self.fuji.metadata_unmerged:
-                if found_metadata.get('metadata'):
-                    if found_metadata.get('metadata') !={'object_type': 'Other'}:
-                        if found_metadata.get('offering_method') in self.search_engines_support_offering:
-                            standard_found = found_metadata.get('metadata_standard')
-                            #standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
-                            '''if found_metadata.get('namespaces') and not standard_found:
+                if found_metadata.get("metadata"):
+                    if found_metadata.get("metadata") != {"object_type": "Other"}:
+                        if found_metadata.get("offering_method") in self.search_engines_support_offering:
+                            standard_found = found_metadata.get("metadata_standard")
+                            # standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(found_metadata.get('schema'))
+                            """if found_metadata.get('namespaces') and not standard_found:
                                 for namesp in found_metadata.get('namespaces'):
                                     standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(namesp)
                                     if standard_found:
-                                        break'''
+                                        break"""
                             if standard_found in self.search_engines_support_standards:
-                                search_engine_support_match.append(standard_found+' via: '+found_metadata.get('offering_method'))
+                                search_engine_support_match.append(
+                                    standard_found + " via: " + found_metadata.get("offering_method")
+                                )
             search_engine_support_match = list(set(search_engine_support_match))
-            #OLD WAY
+            # OLD WAY
             # Check search mechanisms based on sources of metadata extracted.
-            '''search_engine_support_match: List[Any] = list(
-                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))'''
+            """search_engine_support_match: List[Any] = list(
+                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))"""
             if search_engine_support_match:
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
                 self.score.earned += test_score
                 test_status = True
                 self.search_mechanisms.append(
-                    OutputSearchMechanisms(mechanism='structured data', mechanism_info=search_engine_support_match))
-                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' :  Metadata is offered in a way major search engines can ingest it -: '+str(search_engine_support_match))
+                    OutputSearchMechanisms(mechanism="structured data", mechanism_info=search_engine_support_match)
+                )
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier
+                    + " :  Metadata is offered in a way major search engines can ingest it -: "
+                    + str(search_engine_support_match),
+                )
             else:
-                self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support))
+                self.logger.warning(
+                    self.metric_identifier
+                    + " : Metadata is NOT found through -: {}".format(self.search_engines_support)
+                )
         return test_status
 
     def testListedinSearchEngines(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + '-2'):
-            test_score = self.getTestConfigScore(self.metric_identifier + '-2')
+        if self.isTestDefined(self.metric_identifier + "-2"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             # check if record is listed in major catalogs -> searchable
             # DataCite registry, Google Dataset search, Mendeley data etc..
-            #Using the DataCite API in case content negotiation does not work
+            # Using the DataCite API in case content negotiation does not work
             registries_supported = []
             if self.fuji.pid_url or self.fuji.landing_url:
-                #DataCite only for DOIs
+                # DataCite only for DOIs
                 pidhelper = IdentifierHelper(self.fuji.pid_url)
                 if self.fuji.pid_scheme:
-                    if 'doi' in self.fuji.pid_scheme:
+                    if "doi" in self.fuji.pid_scheme:
                         datacite_registry_helper = MetaDataCatalogueDataCite(self.fuji.logger)
                         datacite_registry_helper.query(pidhelper.normalized_id)
                         if datacite_registry_helper.islisted:
                             registries_supported.append(datacite_registry_helper.source)
                 if not registries_supported:
-                    google_registry_helper = MetaDataCatalogueGoogleDataSearch(self.fuji.logger, self.fuji.metadata_merged.get('object_type'))
+                    google_registry_helper = MetaDataCatalogueGoogleDataSearch(
+                        self.fuji.logger, self.fuji.metadata_merged.get("object_type")
+                    )
                     google_registry_helper.query([pidhelper.normalized_id, self.fuji.landing_url])
                     if google_registry_helper.islisted:
                         registries_supported.append(google_registry_helper.source)
                 else:
                     self.logger.info(
-                        self.metric_identifier + ' : Dataset already found in registry therefore skipping Google Dataset Search Cache query'
+                        self.metric_identifier
+                        + " : Dataset already found in registry therefore skipping Google Dataset Search Cache query"
                     )
 
                 if not registries_supported:
@@ -174,39 +212,48 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                         registries_supported.append(mendeley_registry_helper.source)
                 else:
                     self.logger.info(
-                        self.metric_identifier + ' : Dataset already found in registry therefore skipping Mendeley Data query')
+                        self.metric_identifier
+                        + " : Dataset already found in registry therefore skipping Mendeley Data query"
+                    )
             else:
                 self.logger.warning(
-                    self.metric_identifier + ' : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests'
+                    self.metric_identifier
+                    + " : No resolvable PID or responding landing page found, therefore skipping data catalogue coverage tests"
                 )
             if registries_supported:
-                self.setEvaluationCriteriumScore(self.metric_identifier + '-2', test_score, 'pass')
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-2')
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
                 self.score.earned += test_score
                 self.search_mechanisms.append(
-                    OutputSearchMechanisms(mechanism='metadata registry', mechanism_info=registries_supported))
-                self.logger.log(self.fuji.LOG_SUCCESS,self.metric_identifier + ' : Metadata found through - metadata registry')
+                    OutputSearchMechanisms(mechanism="metadata registry", mechanism_info=registries_supported)
+                )
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS, self.metric_identifier + " : Metadata found through - metadata registry"
+                )
             else:
                 self.logger.warning(
-                    self.metric_identifier + ' : Metadata is NOT found through registries considered by the assessment service  -: {}'.
-                    format([s.name for s in self.sources_registry]))
+                    self.metric_identifier
+                    + " : Metadata is NOT found through registries considered by the assessment service  -: {}".format(
+                        [s.name for s in self.sources_registry]
+                    )
+                )
         return test_status
 
     def evaluate(self):
-        self.result = Searchable(id=self.metric_number,
-                                 metric_identifier=self.metric_identifier,
-                                 metric_name=self.metric_name)
+        self.result = Searchable(
+            id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
+        )
         self.output = SearchableOutput()
 
-        searchable_status = 'fail'
+        searchable_status = "fail"
         if self.testSearchEngineCompatibleMetadataAvailable():
-            searchable_status = 'pass'
+            searchable_status = "pass"
         if self.testListedinSearchEngines():
-            searchable_status = 'pass'
+            searchable_status = "pass"
         if self.testMetadataExchangeStandardsAvailable():
-            searchable_status = 'pass'
+            searchable_status = "pass"
         else:
-            self.logger.warning('NO search mechanism supported')
+            self.logger.warning("NO search mechanism supported")
         self.result.test_status = searchable_status
         self.result.score = self.score
         self.output.search_mechanisms = self.search_mechanisms

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.debug import Debug  # noqa: F401,E501
 from fuji_server.models.fair_result_common import FAIRResultCommon  # noqa: F401,E501
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium  # noqa: F401,E501
 from fuji_server.models.license_output import LicenseOutput  # noqa: F401,E501
-from fuji_server import util
 
 
 class License(Model):
@@ -20,16 +20,18 @@ class License(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 id: int = None,
-                 metric_identifier: str = None,
-                 metric_name: str = None,
-                 metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
-                 test_status: str = 'fail',
-                 score: FAIRResultCommonScore = None,
-                 maturity: str = 'incomplete',
-                 output: LicenseOutput = None,
-                 test_debug: Debug = None):  # noqa: E501
+    def __init__(
+        self,
+        id: int = None,
+        metric_identifier: str = None,
+        metric_name: str = None,
+        metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
+        test_status: str = "fail",
+        score: FAIRResultCommonScore = None,
+        maturity: str = "incomplete",
+        output: LicenseOutput = None,
+        test_debug: Debug = None,
+    ):  # noqa: E501
         """License - a model defined in Swagger
 
         :param id: The id of this License.  # noqa: E501
@@ -52,27 +54,27 @@ class License(Model):
         :type test_debug: Debug
         """
         self.swagger_types = {
-            'id': int,
-            'metric_identifier': str,
-            'metric_name': str,
-            'metric_tests': Dict[str, FAIRResultEvaluationCriterium],
-            'test_status': str,
-            'score': FAIRResultCommonScore,
-            'maturity': str,
-            'output': LicenseOutput,
-            'test_debug': Debug
+            "id": int,
+            "metric_identifier": str,
+            "metric_name": str,
+            "metric_tests": Dict[str, FAIRResultEvaluationCriterium],
+            "test_status": str,
+            "score": FAIRResultCommonScore,
+            "maturity": str,
+            "output": LicenseOutput,
+            "test_debug": Debug,
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'metric_identifier': 'metric_identifier',
-            'metric_name': 'metric_name',
-            'metric_tests': 'metric_tests',
-            'test_status': 'test_status',
-            'score': 'score',
-            'maturity': 'maturity',
-            'output': 'output',
-            'test_debug': 'test_debug'
+            "id": "id",
+            "metric_identifier": "metric_identifier",
+            "metric_name": "metric_name",
+            "metric_tests": "metric_tests",
+            "test_status": "test_status",
+            "score": "score",
+            "maturity": "maturity",
+            "output": "output",
+            "test_debug": "test_debug",
         }
         self._id = id
         self._metric_identifier = metric_identifier
@@ -85,7 +87,7 @@ class License(Model):
         self._test_debug = test_debug
 
     @classmethod
-    def from_dict(cls, dikt) -> 'License':
+    def from_dict(cls, dikt) -> "License":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -114,7 +116,7 @@ class License(Model):
         :type id: int
         """
         if id is None:
-            raise ValueError('Invalid value for `id`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
 
         self._id = id
 
@@ -137,7 +139,7 @@ class License(Model):
         :type metric_identifier: str
         """
         if metric_identifier is None:
-            raise ValueError('Invalid value for `metric_identifier`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_identifier`, must not be `None`")  # noqa: E501
 
         self._metric_identifier = metric_identifier
 
@@ -160,7 +162,7 @@ class License(Model):
         :type metric_name: str
         """
         if metric_name is None:
-            raise ValueError('Invalid value for `metric_name`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `metric_name`, must not be `None`")  # noqa: E501
 
         self._metric_name = metric_name
 
@@ -203,10 +205,11 @@ class License(Model):
         :param test_status: The test_status of this License.
         :type test_status: str
         """
-        allowed_values = ['pass', 'fail', 'indeterminate']  # noqa: E501
+        allowed_values = ["pass", "fail", "indeterminate"]  # noqa: E501
         if test_status not in allowed_values:
-            raise ValueError('Invalid value for `test_status` ({0}), must be one of {1}'.format(
-                test_status, allowed_values))
+            raise ValueError(
+                "Invalid value for `test_status` ({0}), must be one of {1}".format(test_status, allowed_values)
+            )
 
         self._test_status = test_status
 
@@ -229,7 +232,7 @@ class License(Model):
         :type score: FAIRResultCommonScore
         """
         if score is None:
-            raise ValueError('Invalid value for `score`, must not be `None`')  # noqa: E501
+            raise ValueError("Invalid value for `score`, must not be `None`")  # noqa: E501
 
         self._score = score
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class DataAccessOutput(Model):
@@ -23,14 +23,14 @@ class DataAccessOutput(Model):
         :param access_details: The access_details of this DataAccessOutput.  # noqa: E501
         :type access_details: object
         """
-        self.swagger_types = {'access_level': str, 'access_details': object}
+        self.swagger_types = {"access_level": str, "access_details": object}
 
-        self.attribute_map = {'access_level': 'access_level', 'access_details': 'access_details'}
+        self.attribute_map = {"access_level": "access_level", "access_details": "access_details"}
         self._access_level = access_level
         self._access_details = access_details
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataAccessOutput':
+    def from_dict(cls, dikt) -> "DataAccessOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -58,10 +58,11 @@ class DataAccessOutput(Model):
         :param access_level: The access_level of this DataAccessOutput.
         :type access_level: str
         """
-        allowed_values = ['public', 'embargoed', 'restricted', 'closed', 'metadataonly']  # noqa: E501
+        allowed_values = ["public", "embargoed", "restricted", "closed", "metadataonly"]  # noqa: E501
         if access_level not in allowed_values:
-            raise ValueError('Invalid value for `access_level` ({0}), must be one of {1}'.format(
-                access_level, allowed_values))
+            raise ValueError(
+                "Invalid value for `access_level` ({0}), must be one of {1}".format(access_level, allowed_values)
+            )
 
         self._access_level = access_level
 

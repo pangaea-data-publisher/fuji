@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class Metric(Model):
@@ -15,17 +15,19 @@ class Metric(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 metric_identifier: str = None,
-                 metric_name: str = None,
-                 description: str = None,
-                 fair_principle: str = None,
-                 evaluation_mechanism: str = None,
-                 date_created: date = None,
-                 date_updated: date = None,
-                 created_by: str = None,
-                 version: float = None,
-                 total_score: int = None):  # noqa: E501
+    def __init__(
+        self,
+        metric_identifier: str = None,
+        metric_name: str = None,
+        description: str = None,
+        fair_principle: str = None,
+        evaluation_mechanism: str = None,
+        date_created: date = None,
+        date_updated: date = None,
+        created_by: str = None,
+        version: float = None,
+        total_score: int = None,
+    ):  # noqa: E501
         """Metric - a model defined in Swagger
 
         :param metric_identifier: The metric_identifier of this Metric.  # noqa: E501
@@ -50,29 +52,29 @@ class Metric(Model):
         :type total_score: int
         """
         self.swagger_types = {
-            'metric_identifier': str,
-            'metric_name': str,
-            'description': str,
-            'fair_principle': str,
-            'evaluation_mechanism': str,
-            'date_created': date,
-            'date_updated': date,
-            'created_by': str,
-            'version': float,
-            'total_score': int
+            "metric_identifier": str,
+            "metric_name": str,
+            "description": str,
+            "fair_principle": str,
+            "evaluation_mechanism": str,
+            "date_created": date,
+            "date_updated": date,
+            "created_by": str,
+            "version": float,
+            "total_score": int,
         }
 
         self.attribute_map = {
-            'metric_identifier': 'metric_identifier',
-            'metric_name': 'metric_name',
-            'description': 'description',
-            'fair_principle': 'fair_principle',
-            'evaluation_mechanism': 'evaluation_mechanism',
-            'date_created': 'date_created',
-            'date_updated': 'date_updated',
-            'created_by': 'created_by',
-            'version': 'version',
-            'total_score': 'total_score'
+            "metric_identifier": "metric_identifier",
+            "metric_name": "metric_name",
+            "description": "description",
+            "fair_principle": "fair_principle",
+            "evaluation_mechanism": "evaluation_mechanism",
+            "date_created": "date_created",
+            "date_updated": "date_updated",
+            "created_by": "created_by",
+            "version": "version",
+            "total_score": "total_score",
         }
         self._metric_identifier = metric_identifier
         self._metric_name = metric_name
@@ -86,7 +88,7 @@ class Metric(Model):
         self._total_score = total_score
 
     @classmethod
-    def from_dict(cls, dikt) -> 'Metric':
+    def from_dict(cls, dikt) -> "Metric":
         """Returns the dict as a model
 
         :param dikt: A dict.

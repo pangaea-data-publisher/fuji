@@ -1,14 +1,14 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+# from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems  # noqa: F401,E501
+from fuji_server import util
 from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.base_model_ import Model
-#from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems  # noqa: F401,E501
-from fuji_server import util
 
 
 class FAIRResults(Model):
@@ -16,7 +16,22 @@ class FAIRResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, test_id: str=None, request: Dict=None, resolved_url: str=None, start_timestamp: datetime=None, end_timestamp: datetime=None, expiry_timestamp: datetime=None, metric_specification: str=None, metric_version: str=None, software_version: str=None, total_metrics: int=None, summary: Dict=None, results: List[AnyOfFAIRResultsResultsItems]=None):  # noqa: E501
+
+    def __init__(
+        self,
+        test_id: str = None,
+        request: Dict = None,
+        resolved_url: str = None,
+        start_timestamp: datetime = None,
+        end_timestamp: datetime = None,
+        expiry_timestamp: datetime = None,
+        metric_specification: str = None,
+        metric_version: str = None,
+        software_version: str = None,
+        total_metrics: int = None,
+        summary: Dict = None,
+        results: List[AnyOfFAIRResultsResultsItems] = None,
+    ):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501
@@ -45,33 +60,33 @@ class FAIRResults(Model):
         :type results: List[AnyOfFAIRResultsResultsItems]
         """
         self.swagger_types = {
-            'test_id': str,
-            'request': Dict,
-            'resolved_url': str,
-            'start_timestamp': datetime,
-            'end_timestamp': datetime,
-            'expiry_timestamp': datetime,
-            'metric_specification': str,
-            'metric_version': str,
-            'software_version': str,
-            'total_metrics': int,
-            'summary': Dict,
-            'results': List[AnyOfFAIRResultsResultsItems]
+            "test_id": str,
+            "request": Dict,
+            "resolved_url": str,
+            "start_timestamp": datetime,
+            "end_timestamp": datetime,
+            "expiry_timestamp": datetime,
+            "metric_specification": str,
+            "metric_version": str,
+            "software_version": str,
+            "total_metrics": int,
+            "summary": Dict,
+            "results": List[AnyOfFAIRResultsResultsItems],
         }
 
         self.attribute_map = {
-            'test_id': 'test_id',
-            'request': 'request',
-            'resolved_url': 'resolved_url',
-            'start_timestamp': 'start_timestamp',
-            'end_timestamp': 'end_timestamp',
-            'expiry_timestamp': 'expiry_timestamp',
-            'metric_specification': 'metric_specification',
-            'metric_version': 'metric_version',
-            'software_version': 'software_version',
-            'total_metrics': 'total_metrics',
-            'summary': 'summary',
-            'results': 'results'
+            "test_id": "test_id",
+            "request": "request",
+            "resolved_url": "resolved_url",
+            "start_timestamp": "start_timestamp",
+            "end_timestamp": "end_timestamp",
+            "expiry_timestamp": "expiry_timestamp",
+            "metric_specification": "metric_specification",
+            "metric_version": "metric_version",
+            "software_version": "software_version",
+            "total_metrics": "total_metrics",
+            "summary": "summary",
+            "results": "results",
         }
         self._test_id = test_id
         self._request = request
@@ -87,7 +102,7 @@ class FAIRResults(Model):
         self._results = results
 
     @classmethod
-    def from_dict(cls, dikt) -> 'FAIRResults':
+    def from_dict(cls, dikt) -> "FAIRResults":
         """Returns the dict as a model
 
         :param dikt: A dict.

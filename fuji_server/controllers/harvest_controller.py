@@ -25,14 +25,15 @@
 
 import datetime
 import os
+
 import connexion
+
+from fuji_server import util
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.preprocessor import Preprocessor
-
 from fuji_server.models.harvest import Harvest  # noqa: E501
 from fuji_server.models.harvest_results import HarvestResults  # noqa: E501
 from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata  # noqa: E501
-from fuji_server import util
 
 
 def harvest_by_id(body=None):  # noqa: E501
@@ -51,14 +52,16 @@ def harvest_by_id(body=None):  # noqa: E501
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
         logger = Preprocessor.logger
-        ft = FAIRCheck(uid=identifier,
-                       test_debug=False,
-                       metadata_service_url=None,
-                       metadata_service_type=None,
-                       use_datacite=False,
-                       oaipmh_endpoint=None)
+        ft = FAIRCheck(
+            uid=identifier,
+            test_debug=False,
+            metadata_service_url=None,
+            metadata_service_type=None,
+            use_datacite=False,
+            oaipmh_endpoint=None,
+        )
 
-        #dataset level authentication
+        # dataset level authentication
         if auth_token:
             ft.set_auth_token(auth_token, auth_token_type)
         ft.harvest_all_metadata()
@@ -70,17 +73,19 @@ def harvest_by_id(body=None):  # noqa: E501
             ft.retrieve_metadata_external_rdf_negotiated([ft.pid_url])
             ft.retrieve_metadata_external_datacite()
 
-        harvest_result =[]
+        harvest_result = []
         for metadata in ft.metadata_unmerged:
-            harvest_result.append(HarvestResultsMetadata(
-                metadata.get('offering_method'),
-                metadata.get('url'),
-                metadata.get('format'),
-                metadata.get('schema'),
-                metadata.get('namespaces'),
-                metadata.get('metadata')
-            ))
+            harvest_result.append(
+                HarvestResultsMetadata(
+                    metadata.get("offering_method"),
+                    metadata.get("url"),
+                    metadata.get("format"),
+                    metadata.get("schema"),
+                    metadata.get("namespaces"),
+                    metadata.get("metadata"),
+                )
+            )
         response = HarvestResults(identifier, harvest_result)
-        #response
+        # response
 
     return response

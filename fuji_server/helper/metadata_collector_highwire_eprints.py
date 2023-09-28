@@ -22,9 +22,11 @@
 # SOFTWARE.
 
 import re
+
 from bs4 import BeautifulSoup
-from fuji_server.helper.metadata_mapper import Mapper
+
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
+from fuji_server.helper.metadata_mapper import Mapper
 
 
 class MetaDataCollectorHighwireEprints(MetaDataCollector):
@@ -70,22 +72,23 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
         if self.source_metadata is not None:
             self.metadata_format = MetadataFormats.HTML
             meta_hw_matches = []
-            self.content_type = 'text/html'
-            metasoup = BeautifulSoup(self.source_metadata, 'lxml')
+            self.content_type = "text/html"
+            metasoup = BeautifulSoup(self.source_metadata, "lxml")
             meta_hw_soupresult = metasoup.findAll(
-                'meta', attrs={'name': re.compile(r'(eprints\.|citation_)([A-Z_a-z]+)')})
+                "meta", attrs={"name": re.compile(r"(eprints\.|citation_)([A-Z_a-z]+)")}
+            )
             flipped_hw = Mapper.flip_dict(Mapper.HIGHWIRE_MAPPING.value)
-            flipped_hw.update(flipped_eprints = Mapper.flip_dict(Mapper.EPRINTS_MAPPING.value))
+            flipped_hw.update(flipped_eprints=Mapper.flip_dict(Mapper.EPRINTS_MAPPING.value))
             for meta_tag in meta_hw_soupresult:
-                hw_name_parts = str(meta_tag['name']).split('.')
+                hw_name_parts = str(meta_tag["name"]).split(".")
                 if len(hw_name_parts) == 1:
                     elem_name = hw_name_parts[0]
-                    if not 'https://www.highwirepress.com/terms/' not in self.namespaces:
-                        self.namespaces.append('https://www.highwirepress.com/terms/')
+                    if not "https://www.highwirepress.com/terms/" not in self.namespaces:
+                        self.namespaces.append("https://www.highwirepress.com/terms/")
                 elif len(hw_name_parts) == 2:
                     elem_name = hw_name_parts[1]
-                    if 'http://purl.org/eprint/terms/' not in self.namespaces:
-                        self.namespaces.append('http://purl.org/eprint/terms/')
+                    if "http://purl.org/eprint/terms/" not in self.namespaces:
+                        self.namespaces.append("http://purl.org/eprint/terms/")
                 else:
                     elem_name = None
                 if elem_name in flipped_hw:
@@ -99,11 +102,11 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
                             elem = elem[0]
                             pass
                     if not value:
-                        value = meta_tag.get('content')
-                    if elem == 'related_resources':
-                        value = {'related_resource': value, 'relation_type': 'isRelatedTo'}
+                        value = meta_tag.get("content")
+                    if elem == "related_resources":
+                        value = {"related_resource": value, "relation_type": "isRelatedTo"}
                     if not hw_core_metadata.get(elem):
-                        if elem == 'related_resources':
+                        if elem == "related_resources":
                             hw_core_metadata[elem] = [value]
                         else:
                             hw_core_metadata[elem] = value

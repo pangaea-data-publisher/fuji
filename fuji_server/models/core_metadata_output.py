@@ -1,13 +1,13 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.output_core_metadata_found import OutputCoreMetadataFound  # noqa: F401,E501
-from fuji_server import util
 
 
 class CoreMetadataOutput(Model):
@@ -15,7 +15,13 @@ class CoreMetadataOutput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, core_metadata_status: str=None, core_metadata_found: OutputCoreMetadataFound=None, core_metadata_source: List[str]=None):  # noqa: E501
+
+    def __init__(
+        self,
+        core_metadata_status: str = None,
+        core_metadata_found: OutputCoreMetadataFound = None,
+        core_metadata_source: List[str] = None,
+    ):  # noqa: E501
         """CoreMetadataOutput - a model defined in Swagger
 
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.  # noqa: E501
@@ -26,22 +32,22 @@ class CoreMetadataOutput(Model):
         :type core_metadata_source: List[str]
         """
         self.swagger_types = {
-            'core_metadata_status': str,
-            'core_metadata_found': OutputCoreMetadataFound,
-            'core_metadata_source': List[str]
+            "core_metadata_status": str,
+            "core_metadata_found": OutputCoreMetadataFound,
+            "core_metadata_source": List[str],
         }
 
         self.attribute_map = {
-            'core_metadata_status': 'core_metadata_status',
-            'core_metadata_found': 'core_metadata_found',
-            'core_metadata_source': 'core_metadata_source'
+            "core_metadata_status": "core_metadata_status",
+            "core_metadata_found": "core_metadata_found",
+            "core_metadata_source": "core_metadata_source",
         }
         self._core_metadata_status = core_metadata_status
         self._core_metadata_found = core_metadata_found
         self._core_metadata_source = core_metadata_source
 
     @classmethod
-    def from_dict(cls, dikt) -> 'CoreMetadataOutput':
+    def from_dict(cls, dikt) -> "CoreMetadataOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -72,8 +78,9 @@ class CoreMetadataOutput(Model):
         allowed_values = ["insufficent metadata", "partial metadata", "all metadata"]  # noqa: E501
         if core_metadata_status not in allowed_values:
             raise ValueError(
-                "Invalid value for `core_metadata_status` ({0}), must be one of {1}"
-                .format(core_metadata_status, allowed_values)
+                "Invalid value for `core_metadata_status` ({0}), must be one of {1}".format(
+                    core_metadata_status, allowed_values
+                )
             )
 
         self._core_metadata_status = core_metadata_status

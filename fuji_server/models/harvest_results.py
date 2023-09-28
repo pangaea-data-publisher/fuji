@@ -1,13 +1,13 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata  # noqa: F401,E501
-from fuji_server import util
 
 
 class HarvestResults(Model):
@@ -15,7 +15,8 @@ class HarvestResults(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, target_uri: str=None, metadata: List[HarvestResultsMetadata]=None):  # noqa: E501
+
+    def __init__(self, target_uri: str = None, metadata: List[HarvestResultsMetadata] = None):  # noqa: E501
         """HarvestResults - a model defined in Swagger
 
         :param target_uri: The target_uri of this HarvestResults.  # noqa: E501
@@ -23,20 +24,14 @@ class HarvestResults(Model):
         :param metadata: The metadata of this HarvestResults.  # noqa: E501
         :type metadata: List[HarvestResultsMetadata]
         """
-        self.swagger_types = {
-            'target_uri': str,
-            'metadata': List[HarvestResultsMetadata]
-        }
+        self.swagger_types = {"target_uri": str, "metadata": List[HarvestResultsMetadata]}
 
-        self.attribute_map = {
-            'target_uri': 'target_uri',
-            'metadata': 'metadata'
-        }
+        self.attribute_map = {"target_uri": "target_uri", "metadata": "metadata"}
         self._target_uri = target_uri
         self._metadata = metadata
 
     @classmethod
-    def from_dict(cls, dikt) -> 'HarvestResults':
+    def from_dict(cls, dikt) -> "HarvestResults":
         """Returns the dict as a model
 
         :param dikt: A dict.

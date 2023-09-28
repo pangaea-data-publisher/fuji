@@ -22,11 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from urllib.parse import urlparse
+
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.models.standardised_protocol_metadata import StandardisedProtocolMetadata
 from fuji_server.models.standardised_protocol_metadata_output import StandardisedProtocolMetadataOutput
-from fuji_server.helper.metadata_mapper import Mapper
-from urllib.parse import urlparse
 
 
 class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
@@ -45,13 +46,13 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-A1-02M')
+        self.set_metric("FsF-A1-02M")
         self.metadata_output = {}
 
     def testStandardProtocolMetadataUsed(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + '-1'):
-            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+        if self.isTestDefined(self.metric_identifier + "-1"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
             if self.fuji.landing_url is not None:
                 metadata_required = Mapper.REQUIRED_CORE_METADATA.value
                 metadata_found = {k: v for k, v in self.fuji.metadata_merged.items() if k in metadata_required}
@@ -61,36 +62,41 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
                 metadata_url_scheme = metadata_parsed_url.scheme
                 if len(self.fuji.metadata_merged) == 0:
                     self.logger.warning(
-                        self.metric_identifier + ' : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M'
+                        self.metric_identifier
+                        + " : No metadata given or found, therefore the protocol of given PID was not assessed. See: FsF-F2-01M"
                     )
                 else:
                     if metadata_url_scheme in self.fuji.STANDARD_PROTOCOLS:
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
-                            'FsF-A1-02M : Standard protocol for access to metadata found -: ' + str(metadata_url_scheme))
+                            "FsF-A1-02M : Standard protocol for access to metadata found -: "
+                            + str(metadata_url_scheme),
+                        )
 
-                        self.metadata_output = {metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)}
+                        self.metadata_output = {
+                            metadata_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(metadata_url_scheme)
+                        }
                         test_status = True
                         self.score.earned = test_score
-                        self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-                        self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                        self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                        self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
                     # TODO: check why this is tested - delete if not required
                     if set(metadata_found) != set(metadata_required):
-                        self.logger.info('FsF-A1-02M : NOT all required metadata given, see: FsF-F2-01M')
+                        self.logger.info("FsF-A1-02M : NOT all required metadata given, see: FsF-F2-01M")
                         # parse the URL and return the protocol which has to be one of Internet RFC on Relative Uniform Resource Locators
             else:
-                self.logger.warning('FsF-A1-02M : Metadata Identifier is not actionable or protocol errors occurred')
+                self.logger.warning("FsF-A1-02M : Metadata Identifier is not actionable or protocol errors occurred")
         return test_status
 
     def evaluate(self):
-        self.result = StandardisedProtocolMetadata(id=self.metric_number,
-                                                   metric_identifier=self.metric_identifier,
-                                                   metric_name=self.metric_name)
-        test_status = 'fail'
+        self.result = StandardisedProtocolMetadata(
+            id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
+        )
+        test_status = "fail"
         score = 0
 
         if self.testStandardProtocolMetadataUsed():
-            test_status ='pass'
+            test_status = "pass"
         self.result.score = self.score
         self.result.output = StandardisedProtocolMetadataOutput(standard_metadata_protocol=self.metadata_output)
         self.result.metric_tests = self.metric_tests

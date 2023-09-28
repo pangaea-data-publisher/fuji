@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner  # noqa: F401,E501
-from fuji_server import util
 
 
 class IdentifierIncludedOutput(Model):
@@ -22,13 +22,13 @@ class IdentifierIncludedOutput(Model):
         :param object_content_identifier_included: The object_content_identifier_included of this IdentifierIncludedOutput.  # noqa: E501
         :type object_content_identifier_included: List[IdentifierIncludedOutputInner]
         """
-        self.swagger_types = {'object_content_identifier_included': List[IdentifierIncludedOutputInner]}
+        self.swagger_types = {"object_content_identifier_included": List[IdentifierIncludedOutputInner]}
 
-        self.attribute_map = {'object_content_identifier_included': 'object_content_identifier_included'}
+        self.attribute_map = {"object_content_identifier_included": "object_content_identifier_included"}
         self._object_content_identifier_included = object_content_identifier_included
 
     @classmethod
-    def from_dict(cls, dikt) -> 'IdentifierIncludedOutput':
+    def from_dict(cls, dikt) -> "IdentifierIncludedOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -49,8 +49,9 @@ class IdentifierIncludedOutput(Model):
         return self._object_content_identifier_included
 
     @object_content_identifier_included.setter
-    def object_content_identifier_included(self,
-                                           object_content_identifier_included: List[IdentifierIncludedOutputInner]):
+    def object_content_identifier_included(
+        self, object_content_identifier_included: List[IdentifierIncludedOutputInner]
+    ):
         """Sets the object_content_identifier_included of this IdentifierIncludedOutput.
 
 

@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class PersistenceOutputInner(Model):
@@ -14,7 +14,10 @@ class PersistenceOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, pid: str=None, pid_scheme: str=None, resolvable_status: bool=False, resolved_url: str=None):  # noqa: E501
+
+    def __init__(
+        self, pid: str = None, pid_scheme: str = None, resolvable_status: bool = False, resolved_url: str = None
+    ):  # noqa: E501
         """PersistenceOutputInner - a model defined in Swagger
 
         :param pid: The pid of this PersistenceOutputInner.  # noqa: E501
@@ -26,18 +29,13 @@ class PersistenceOutputInner(Model):
         :param resolved_url: The resolved_url of this PersistenceOutputInner.  # noqa: E501
         :type resolved_url: str
         """
-        self.swagger_types = {
-            'pid': str,
-            'pid_scheme': str,
-            'resolvable_status': bool,
-            'resolved_url': str
-        }
+        self.swagger_types = {"pid": str, "pid_scheme": str, "resolvable_status": bool, "resolved_url": str}
 
         self.attribute_map = {
-            'pid': 'pid',
-            'pid_scheme': 'pid_scheme',
-            'resolvable_status': 'resolvable_status',
-            'resolved_url': 'resolved_url'
+            "pid": "pid",
+            "pid_scheme": "pid_scheme",
+            "resolvable_status": "resolvable_status",
+            "resolved_url": "resolved_url",
         }
         self._pid = pid
         self._pid_scheme = pid_scheme
@@ -45,7 +43,7 @@ class PersistenceOutputInner(Model):
         self._resolved_url = resolved_url
 
     @classmethod
-    def from_dict(cls, dikt) -> 'PersistenceOutputInner':
+    def from_dict(cls, dikt) -> "PersistenceOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

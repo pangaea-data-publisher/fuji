@@ -22,12 +22,11 @@
 # SOFTWARE.
 import re
 
+import feedparser
 import lxml
 
 from fuji_server.helper.metadata_provider import MetadataProvider
-import feedparser
-
-from fuji_server.helper.request_helper import RequestHelper, AcceptTypes
+from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
 
 
 class RSSAtomMetadataProvider(MetadataProvider):
@@ -46,12 +45,12 @@ class RSSAtomMetadataProvider(MetadataProvider):
 
     """
 
-    rss_namespaces = {'atom': 'http://www.w3.org/2005/Atom', 'georss': 'http://www.georss.org/georss/'}
+    rss_namespaces = {"atom": "http://www.w3.org/2005/Atom", "georss": "http://www.georss.org/georss/"}
 
     def getMetadata(self):
         # http://ws.pangaea.de/oai/provider?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:pangaea.de:doi:10.1594/PANGAEA.66871
-        #The nature of a resource identifier is outside the scope of the OAI-PMH.
-        #To facilitate access to the resource associated with harvested metadata, repositories should use an element in
+        # The nature of a resource identifier is outside the scope of the OAI-PMH.
+        # To facilitate access to the resource associated with harvested metadata, repositories should use an element in
         # #metadata records to establish a linkage between the record (and the identifier of its item) and the identifier
         # URL, URN, DOI, etc.) of the associated resource.
         # #The mandatory Dublin Core format provides the identifier element that should be used for this purpose
@@ -66,23 +65,26 @@ class RSSAtomMetadataProvider(MetadataProvider):
             A dictionary of schemas in GeoRSS Atom
         """
         schemas = {}
-        XSI = 'http://www.w3.org/2001/XMLSchema-instance'
+        XSI = "http://www.w3.org/2001/XMLSchema-instance"
 
         try:
             requestHelper = RequestHelper(self.endpoint, self.logger)
             requestHelper.setAcceptType(AcceptTypes.default)
-            neg_source, rss_response = requestHelper.content_negotiate('FsF-F2-01M')
+            neg_source, rss_response = requestHelper.content_negotiate("FsF-F2-01M")
             if requestHelper.response_content is not None:
                 feed = feedparser.parse(requestHelper.response_content)
-            #print(feed.namespaces)
+            # print(feed.namespaces)
             for namespace_pre, namespace_uri in feed.namespaces.items():
                 if namespace_uri not in self.namespaces:
                     self.namespaces.append(str(namespace_uri))
                     schemas[str(namespace_pre)] = str(namespace_uri)
         except Exception as e:
-            print('RSS Error ',e)
-            self.logger.info('{0} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {1}'.format(
-                self.metric_id, str(e)))
+            print("RSS Error ", e)
+            self.logger.info(
+                "{0} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {1}".format(
+                    self.metric_id, str(e)
+                )
+            )
 
         return schemas
 

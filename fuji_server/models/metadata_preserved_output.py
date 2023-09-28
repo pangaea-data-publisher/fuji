@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class MetadataPreservedOutput(Model):
@@ -21,13 +21,13 @@ class MetadataPreservedOutput(Model):
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.  # noqa: E501
         :type metadata_preservation_method: List[str]
         """
-        self.swagger_types = {'metadata_preservation_method': List[str]}
+        self.swagger_types = {"metadata_preservation_method": List[str]}
 
-        self.attribute_map = {'metadata_preservation_method': 'metadata_preservation_method'}
+        self.attribute_map = {"metadata_preservation_method": "metadata_preservation_method"}
         self._metadata_preservation_method = metadata_preservation_method
 
     @classmethod
-    def from_dict(cls, dikt) -> 'MetadataPreservedOutput':
+    def from_dict(cls, dikt) -> "MetadataPreservedOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -55,13 +55,13 @@ class MetadataPreservedOutput(Model):
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.
         :type metadata_preservation_method: List[str]
         """
-        allowed_values = ['datacite', 'tombstone']  # noqa: E501
+        allowed_values = ["datacite", "tombstone"]  # noqa: E501
         if not set(metadata_preservation_method).issubset(set(allowed_values)):
             raise ValueError(
-                'Invalid values for `metadata_preservation_method` [{0}], must be a subset of [{1}]'  # noqa: E501
-                .format(
-                    ', '.join(map(str,
-                                  set(metadata_preservation_method) - set(allowed_values))),  # noqa: E501
-                    ', '.join(map(str, allowed_values))))
+                "Invalid values for `metadata_preservation_method` [{0}], must be a subset of [{1}]".format(  # noqa: E501
+                    ", ".join(map(str, set(metadata_preservation_method) - set(allowed_values))),  # noqa: E501
+                    ", ".join(map(str, allowed_values)),
+                )
+            )
 
         self._metadata_preservation_method = metadata_preservation_method

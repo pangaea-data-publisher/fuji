@@ -6,12 +6,12 @@ g = MetaDataCatalogueGoogleDataSearch()
 # Step 1 visit: https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets
 # Step 2 download the latest Dataset Search corpus file
 # Step 3 indicate the location of the file below
-google_file_location = 'C:\\Users\\Robert\\Documents\\dataset_metadata_2020_10_16.csv'
+google_file_location = "C:\\Users\\Robert\\Documents\\dataset_metadata_2020_10_16.csv"
 
 # Step 4 run the script
 if google_file_location is not None:
-    print('Starting to create Google Dataset Search DB')
+    print("Starting to create Google Dataset Search DB")
     g.create_cache_db(google_file_location)
-    print('Finished...')
+    print("Finished...")
 else:
-    print('No google_file_location provided, FUJI is not properly installed.')
+    print("No google_file_location provided, FUJI is not properly installed.")

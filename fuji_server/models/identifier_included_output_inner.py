@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class IdentifierIncludedOutputInner(Model):
@@ -14,23 +14,20 @@ class IdentifierIncludedOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, content_identifier_included: str=None):  # noqa: E501
+
+    def __init__(self, content_identifier_included: str = None):  # noqa: E501
         """IdentifierIncludedOutputInner - a model defined in Swagger
 
         :param content_identifier_included: The content_identifier_included of this IdentifierIncludedOutputInner.  # noqa: E501
         :type content_identifier_included: str
         """
-        self.swagger_types = {
-            'content_identifier_included': str
-        }
+        self.swagger_types = {"content_identifier_included": str}
 
-        self.attribute_map = {
-            'content_identifier_included': 'content_identifier_included'
-        }
+        self.attribute_map = {"content_identifier_included": "content_identifier_included"}
         self._content_identifier_included = content_identifier_included
 
     @classmethod
-    def from_dict(cls, dikt) -> 'IdentifierIncludedOutputInner':
+    def from_dict(cls, dikt) -> "IdentifierIncludedOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

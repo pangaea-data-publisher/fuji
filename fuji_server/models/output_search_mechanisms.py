@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class OutputSearchMechanisms(Model):
@@ -23,14 +23,14 @@ class OutputSearchMechanisms(Model):
         :param mechanism_info: The mechanism_info of this OutputSearchMechanisms.  # noqa: E501
         :type mechanism_info: List[str]
         """
-        self.swagger_types = {'mechanism': str, 'mechanism_info': List[str]}
+        self.swagger_types = {"mechanism": str, "mechanism_info": List[str]}
 
-        self.attribute_map = {'mechanism': 'mechanism', 'mechanism_info': 'mechanism_info'}
+        self.attribute_map = {"mechanism": "mechanism", "mechanism_info": "mechanism_info"}
         self._mechanism = mechanism
         self._mechanism_info = mechanism_info
 
     @classmethod
-    def from_dict(cls, dikt) -> 'OutputSearchMechanisms':
+    def from_dict(cls, dikt) -> "OutputSearchMechanisms":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -58,10 +58,11 @@ class OutputSearchMechanisms(Model):
         :param mechanism: The mechanism of this OutputSearchMechanisms.
         :type mechanism: str
         """
-        allowed_values = ['metadata registry', 'structured data']  # noqa: E501
+        allowed_values = ["metadata registry", "structured data"]  # noqa: E501
         if mechanism not in allowed_values:
-            raise ValueError('Invalid value for `mechanism` ({0}), must be one of {1}'.format(
-                mechanism, allowed_values))
+            raise ValueError(
+                "Invalid value for `mechanism` ({0}), must be one of {1}".format(mechanism, allowed_values)
+            )
 
         self._mechanism = mechanism
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class DataFileFormatOutputInner(Model):
@@ -15,12 +15,14 @@ class DataFileFormatOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 file_uri: str = None,
-                 mime_type: str = None,
-                 is_preferred_format: bool = False,
-                 preference_reason: List[str] = None,
-                 subject_areas: List[str] = None):  # noqa: E501
+    def __init__(
+        self,
+        file_uri: str = None,
+        mime_type: str = None,
+        is_preferred_format: bool = False,
+        preference_reason: List[str] = None,
+        subject_areas: List[str] = None,
+    ):  # noqa: E501
         """DataFileFormatOutputInner - a model defined in Swagger
 
         :param file_uri: The file_uri of this DataFileFormatOutputInner.  # noqa: E501
@@ -35,19 +37,19 @@ class DataFileFormatOutputInner(Model):
         :type subject_areas: List[str]
         """
         self.swagger_types = {
-            'file_uri': str,
-            'mime_type': str,
-            'is_preferred_format': bool,
-            'preference_reason': List[str],
-            'subject_areas': List[str]
+            "file_uri": str,
+            "mime_type": str,
+            "is_preferred_format": bool,
+            "preference_reason": List[str],
+            "subject_areas": List[str],
         }
 
         self.attribute_map = {
-            'file_uri': 'file_uri',
-            'mime_type': 'mime_type',
-            'is_preferred_format': 'is_preferred_format',
-            'preference_reason': 'preference_reason',
-            'subject_areas': 'subject_areas'
+            "file_uri": "file_uri",
+            "mime_type": "mime_type",
+            "is_preferred_format": "is_preferred_format",
+            "preference_reason": "preference_reason",
+            "subject_areas": "subject_areas",
         }
         self._file_uri = file_uri
         self._mime_type = mime_type
@@ -56,7 +58,7 @@ class DataFileFormatOutputInner(Model):
         self._subject_areas = subject_areas
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataFileFormatOutputInner':
+    def from_dict(cls, dikt) -> "DataFileFormatOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.
