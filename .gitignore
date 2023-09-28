@@ -76,6 +76,8 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+junit.xml
+pytest-coverage.txt
 
 # Translations
 *.mo
@@ -184,3 +186,6 @@ Temporary Items
 *.el
 # # Jetbrains PyCharm Project folder:
 .idea/
+
+# Ruff
+.ruff_cache

@@ -144,9 +144,9 @@ class linked_vocab_helper:
                                 if reg_res.get("regex"):
                                     comb_regex = reg_res.get("regex").lstrip("^").rstrip("$")
                                 else:
-                                    if "?" in reg_res.get("pattern"):
-                                        reg_res["pattern"] = reg_res.get("pattern").replace("?", "\?")
-                                    comb_regex = reg_res.get("pattern").split("$1")[0].rstrip("/#")
+                                    if '?' in reg_res.get('pattern'):
+                                        reg_res['pattern']=reg_res.get('pattern').replace('?',r'\?')
+                                    comb_regex = reg_res.get('pattern').split('$1')[0].rstrip('/#')
 
                                 if comb_regex not in tested_patterns:
                                     tested_patterns.append(comb_regex)
