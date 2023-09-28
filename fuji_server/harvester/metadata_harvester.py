@@ -85,19 +85,12 @@ class MetadataHarvester():
             self.allowed_harvesting_sources = MetadataSources.getSourcesbyMethod(self.allowed_harvesting_methods)
         else:
             self.allowed_harvesting_sources = [i for i in MetaDataCollector.getEnumSourceNames()]
-        #print('allowed sources: ', self.allowed_harvesting_sources)
-        #print('allowed methods: ', self.allowed_harvesting_methods)
+        print('allowed sources: ', self.allowed_harvesting_sources)
+        print('allowed methods: ', self.allowed_harvesting_methods)
         self.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
         self.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in self.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
         self.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in self.COMMUNITY_METADATA_STANDARDS.items()}
 
-
-    def is_harvesting_source_allowed(self, method):
-        #test full or part string in one of the allowed source method keys
-        if method in self.allowed_harvesting_sources:
-            return True
-        else:
-            return False
 
     def is_harvesting_method_allowed(self, method):
         if method in self.allowed_harvesting_methods:
@@ -111,6 +104,15 @@ class MetadataHarvester():
             self.metadata_sources.append((source.name, source.value.get('method')))
         except Exception as e:
             print('Add Metadata Source Error: ', str(e))
+
+
+    '''def filter_metadata(self, allowed_standards=['schemaorg'], allowed_methods=[]):
+        self.metadata_merged = []
+        if allowed_standards or allowed_methods:
+            for unmerged in self.metadata_unmerged:
+                if unmerged.get('metadata_standard') in allowed_standards:
+    '''
+
 
     def merge_metadata(self, metadict, url, method, format, mimetype, schema='', namespaces = []):
         try:
@@ -646,7 +648,6 @@ class MetadataHarvester():
         #we have to test landin_url again, because above it may have been set to None again.. (invalid DOI)
 
         if self.landing_url and self.is_html_page:
-
             self.set_html_typed_links()
             self.set_signposting_header_links(requestHelper.response_content, requestHelper.getResponseHeader())
             self.set_signposting_linkset_links()
@@ -658,177 +659,155 @@ class MetadataHarvester():
                     # ========= retrieve schema.org (embedded, or from via content-negotiation if pid provided) =========
                     extruct_metadata = self.retrieve_metadata_embedded_extruct()
                     #if extruct_metadata:
-                    if self.is_harvesting_source_allowed(MetadataSources.SCHEMAORG_EMBEDDED):
-                        ext_meta = extruct_metadata.get('json-ld')
-                        self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
+                    ext_meta = extruct_metadata.get('json-ld')
+                    self.logger.info('FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page')
 
-                        schemaorg_collector_embedded = MetaDataCollectorRdf(loggerinst=self.logger,
-                                                                            json_ld_content=ext_meta,
-                                                                            source = MetadataSources.SCHEMAORG_EMBEDDED)
-                        source_schemaorg, schemaorg_dict = schemaorg_collector_embedded.parse_metadata()
-                        metaformat = schemaorg_collector_embedded.metadata_format
-                        schemaorg_dict = self.exclude_null(schemaorg_dict)
-                        if schemaorg_dict:
-                            self.namespace_uri.extend(schemaorg_collector_embedded.namespaces)
-                            self.linked_namespace_uri.update(schemaorg_collector_embedded.getLinkedNamespaces())
-                            #self.metadata_sources.append((source_schemaorg.name, source_schemaorg.value.get('method')))
-                            self.add_metadata_source(source_schemaorg)
-                            if schemaorg_dict.get('related_resources'):
-                                self.related_resources.extend(schemaorg_dict.get('related_resources'))
+                    schemaorg_collector_embedded = MetaDataCollectorRdf(loggerinst=self.logger,
+                                                                        json_ld_content=ext_meta,
+                                                                        source = MetadataSources.SCHEMAORG_EMBEDDED)
+                    source_schemaorg, schemaorg_dict = schemaorg_collector_embedded.parse_metadata()
+                    metaformat = schemaorg_collector_embedded.metadata_format
+                    schemaorg_dict = self.exclude_null(schemaorg_dict)
+                    if schemaorg_dict:
+                        self.namespace_uri.extend(schemaorg_collector_embedded.namespaces)
+                        self.linked_namespace_uri.update(schemaorg_collector_embedded.getLinkedNamespaces())
+                        #self.metadata_sources.append((source_schemaorg.name, source_schemaorg.value.get('method')))
+                        self.add_metadata_source(source_schemaorg)
+                        if schemaorg_dict.get('related_resources'):
+                            self.related_resources.extend(schemaorg_dict.get('related_resources'))
 
-                            # add object type for future reference
-                            self.merge_metadata(schemaorg_dict, self.landing_url, source_schemaorg, metaformat,'application/ld+json','http://schema.org', schemaorg_collector_embedded.namespaces)
-                            self.logger.log(
-                                self.LOG_SUCCESS,
-                                'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: ' + str(schemaorg_dict.keys()))
-                        else:
-                            self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
+                        # add object type for future reference
+                        self.merge_metadata(schemaorg_dict, self.landing_url, source_schemaorg, metaformat,'application/ld+json','http://schema.org', schemaorg_collector_embedded.namespaces)
+                        self.logger.log(
+                            self.LOG_SUCCESS,
+                            'FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: ' + str(schemaorg_dict.keys()))
                     else:
-                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(MetadataSources.SCHEMAORG_EMBEDDED.value.get('label')))
+                        self.logger.info('FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE')
                     # ========= retrieve highwire and eprints embedded in html page =========
                     if self.reference_elements:
-                        if self.is_harvesting_source_allowed(MetadataSources.HIGHWIRE_EPRINTS_EMBEDDED):
-                            self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
-                            hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
-                                                                       sourcemetadata=self.landing_html)
-                            source_hw, hw_dict = hw_collector.parse_metadata()
-                            hw_metaformat = hw_collector.metadata_format
-                            hw_dict = self.exclude_null(hw_dict)
-                            if hw_dict:
-                                self.namespace_uri.extend(hw_collector.namespaces)
-                                #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                                self.add_metadata_source(source_hw)
-                                #self.metadata_sources.append((source_hw, 'embedded'))
-                                if hw_dict.get('related_resources'):
-                                    self.related_resources.extend(hw_dict.get('related_resources'))
-                                self.merge_metadata(hw_dict, self.landing_url, source_hw, hw_metaformat, 'text/html','highwire_eprints', hw_collector.namespaces)
+                        self.logger.info('FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page')
+                        hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger,
+                                                                   sourcemetadata=self.landing_html)
+                        source_hw, hw_dict = hw_collector.parse_metadata()
+                        hw_metaformat = hw_collector.metadata_format
+                        hw_dict = self.exclude_null(hw_dict)
+                        if hw_dict:
+                            self.namespace_uri.extend(hw_collector.namespaces)
+                            #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                            self.add_metadata_source(source_hw)
+                            #self.metadata_sources.append((source_hw, 'embedded'))
+                            if hw_dict.get('related_resources'):
+                                self.related_resources.extend(hw_dict.get('related_resources'))
+                            self.merge_metadata(hw_dict, self.landing_url, source_hw, hw_metaformat, 'text/html','highwire_eprints', hw_collector.namespaces)
 
-                                self.logger.log(self.LOG_SUCCESS,
-                                                'FsF-F2-01M : Found Highwire or eprints metadata -: ' + str(hw_dict.keys()))
-                            else:
-                                self.logger.info('FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE')
+                            self.logger.log(self.LOG_SUCCESS,
+                                            'FsF-F2-01M : Found Highwire or eprints metadata -: ' + str(hw_dict.keys()))
                         else:
-                            self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                                MetadataSources.HIGHWIRE_EPRINTS_EMBEDDED.value.get('label')))
+                            self.logger.info('FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE')
 
                     # ========= retrieve dublin core embedded in html page =========
                     if self.reference_elements:
-                        if self.is_harvesting_source_allowed(MetadataSources.DUBLINCORE_EMBEDDED):
-                            self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
-                            dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger,
-                                                                       sourcemetadata=self.landing_html,
-                                                                       mapping=Mapper.DC_MAPPING)
-                            source_dc, dc_dict = dc_collector.parse_metadata()
-                            dc_dict = self.exclude_null(dc_dict)
-                            if dc_dict:
-                                self.namespace_uri.extend(dc_collector.namespaces)
-                                #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                                #self.metadata_sources.append((source_dc, 'embedded'))
-                                self.add_metadata_source(source_dc)
-                                if dc_dict.get('related_resources'):
-                                    self.related_resources.extend(dc_dict.get('related_resources'))
-                                self.merge_metadata(dc_dict, self.landing_url, source_dc,dc_collector.metadata_format, 'text/html','http://purl.org/dc/elements/1.1/', dc_collector.namespaces)
+                        self.logger.info('FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page')
+                        dc_collector = MetaDataCollectorDublinCore(loggerinst=self.logger,
+                                                                   sourcemetadata=self.landing_html,
+                                                                   mapping=Mapper.DC_MAPPING)
+                        source_dc, dc_dict = dc_collector.parse_metadata()
+                        dc_dict = self.exclude_null(dc_dict)
+                        if dc_dict:
+                            self.namespace_uri.extend(dc_collector.namespaces)
+                            #not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                            #self.metadata_sources.append((source_dc, 'embedded'))
+                            self.add_metadata_source(source_dc)
+                            if dc_dict.get('related_resources'):
+                                self.related_resources.extend(dc_dict.get('related_resources'))
+                            self.merge_metadata(dc_dict, self.landing_url, source_dc,dc_collector.metadata_format, 'text/html','http://purl.org/dc/elements/1.1/', dc_collector.namespaces)
 
-                                self.logger.log(self.LOG_SUCCESS,
-                                                'FsF-F2-01M : Found DublinCore metadata -: ' + str(dc_dict.keys()))
-                            else:
-                                self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
+                            self.logger.log(self.LOG_SUCCESS,
+                                            'FsF-F2-01M : Found DublinCore metadata -: ' + str(dc_dict.keys()))
                         else:
-                            self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                                MetadataSources.DUBLINCORE_EMBEDDED.value.get('label')))
+                            self.logger.info('FsF-F2-01M : DublinCore metadata UNAVAILABLE')
                     # ========= retrieve embedded rdfa and microdata metadata ========
 
-                    if self.is_harvesting_source_allowed(MetadataSources.MICRODATA_EMBEDDED):
-                        self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
+                    self.logger.info('FsF-F2-01M : Trying to retrieve Microdata metadata from html page')
 
-                        micro_meta = extruct_metadata.get('microdata')
-                        microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger,
-                                                                         sourcemetadata=micro_meta,
-                                                                         mapping=Mapper.MICRODATA_MAPPING)
-                        source_micro, micro_dict = microdata_collector.parse_metadata()
-                        if micro_dict:
-                            #self.metadata_sources.append((source_micro, 'embedded'))
-                            self.add_metadata_source(source_micro)
-                            self.namespace_uri.extend(microdata_collector.getNamespaces())
-                            micro_dict = self.exclude_null(micro_dict)
-                            self.merge_metadata(micro_dict, self.landing_url, source_micro, microdata_collector.metadata_format, 'text/html', 'http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
-                            self.logger.log(self.LOG_SUCCESS,
-                                            'FsF-F2-01M : Found microdata metadata -: ' + str(micro_dict.keys()))
-                    else:
-                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetadataSources.MICRODATA_EMBEDDED.value.get('label')))
+                    micro_meta = extruct_metadata.get('microdata')
+                    microdata_collector = MetaDataCollectorMicroData(loggerinst=self.logger,
+                                                                     sourcemetadata=micro_meta,
+                                                                     mapping=Mapper.MICRODATA_MAPPING)
+                    source_micro, micro_dict = microdata_collector.parse_metadata()
+                    if micro_dict:
+                        #self.metadata_sources.append((source_micro, 'embedded'))
+                        self.add_metadata_source(source_micro)
+                        self.namespace_uri.extend(microdata_collector.getNamespaces())
+                        micro_dict = self.exclude_null(micro_dict)
+                        self.merge_metadata(micro_dict, self.landing_url, source_micro, microdata_collector.metadata_format, 'text/html', 'http://www.w3.org/TR/microdata', microdata_collector.getNamespaces())
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F2-01M : Found microdata metadata -: ' + str(micro_dict.keys()))
 
                     #================== RDFa
-                    if self.is_harvesting_source_allowed(MetadataSources.RDFA_EMBEDDED):
-                        self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
-                        rdfasource = MetadataSources.RDFA_EMBEDDED
+                    self.logger.info('FsF-F2-01M : Trying to retrieve RDFa metadata from html page')
+                    rdfasource = MetadataSources.RDFA_EMBEDDED
+                    try:
+                        rdfa_dict = {}
+                        rdflib_logger = logging.getLogger('rdflib')
+                        rdflib_logger.setLevel(logging.ERROR)
                         try:
-                            rdfa_dict = {}
-                            rdflib_logger = logging.getLogger('rdflib')
-                            rdflib_logger.setLevel(logging.ERROR)
-                            try:
-                                rdfa_html = self.landing_html.decode('utf-8')
-                            except Exception as e:
-                                rdfa_html = self.landing_html
-                                pass
-                            rdfa_html = self.clean_html_language_tag(rdfa_html)
-                            rdfabuffer= io.StringIO(rdfa_html)
-                            # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
-                            # https://github.com/RDFLib/rdflib/discussions/1582
-
-                            rdfa_graph = pyRdfa(media_type='text/html').graph_from_source(rdfabuffer)
-
-                            rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
-                                                                  target_url=self.landing_url,
-                                                                  source=rdfasource)
-                            try:
-                                rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
-                            except Exception as e:
-                                print('RDFa Graph error: ',e)
-                            if (len(rdfa_dict) > 0):
-                                #self.metadata_sources.append((rdfasource, 'embedded'))
-                                self.add_metadata_source(rdfasource)
-                                self.namespace_uri.extend(rdfa_collector.getNamespaces())
-                                #rdfa_dict['object_identifier']=self.pid_url
-                                rdfa_dict = self.exclude_null(rdfa_dict)
-                                #print(method, url, offering_method, format, mimetype, schema)
-
-                                self.merge_metadata(rdfa_dict, self.landing_url, rdfasource,rdfa_collector.metadata_format, 'application/xhtml+xml', 'http://www.w3.org/ns/rdfa#',rdfa_collector.getNamespaces())
-
-                                self.logger.log(self.LOG_SUCCESS,
-                                                'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
+                            rdfa_html = self.landing_html.decode('utf-8')
                         except Exception as e:
-                            print('RDFa parsing error',str(e))
-                            self.logger.info(
-                                'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
-                    else:
-                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetadataSources.RDFA_EMBEDDED.value.get('label')))
+                            rdfa_html = self.landing_html
+                            pass
+                        rdfa_html = self.clean_html_language_tag(rdfa_html)
+                        rdfabuffer= io.StringIO(rdfa_html)
+                        # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
+                        # https://github.com/RDFLib/rdflib/discussions/1582
 
-                    # ======== retrieve OpenGraph metadata
-                    if self.is_harvesting_source_allowed(MetadataSources.OPENGRAPH_EMBEDDED):
+                        rdfa_graph = pyRdfa(media_type='text/html').graph_from_source(rdfabuffer)
 
-                        self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
+                        rdfa_collector = MetaDataCollectorRdf(loggerinst=self.logger,
+                                                              target_url=self.landing_url,
+                                                              source=rdfasource)
+                        try:
+                            rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
+                        except Exception as e:
+                            print('RDFa Graph error: ',e)
+                        if (len(rdfa_dict) > 0):
+                            #self.metadata_sources.append((rdfasource, 'embedded'))
+                            self.add_metadata_source(rdfasource)
+                            self.namespace_uri.extend(rdfa_collector.getNamespaces())
+                            #rdfa_dict['object_identifier']=self.pid_url
+                            rdfa_dict = self.exclude_null(rdfa_dict)
+                            #print(method, url, offering_method, format, mimetype, schema)
 
-                        ext_meta = extruct_metadata.get('opengraph')
-                        opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger,
-                                                                         sourcemetadata=ext_meta,
-                                                                         mapping=Mapper.OG_MAPPING)
-                        source_opengraph, opengraph_dict = opengraph_collector.parse_metadata()
-                        opengraph_dict = self.exclude_null(opengraph_dict)
-                        if opengraph_dict:
-                            self.namespace_uri.extend(opengraph_collector.namespaces)
-                            #self.metadata_sources.append((source_opengraph, 'embedded'))
-                            self.add_metadata_source(source_opengraph)
-                            self.merge_metadata(opengraph_dict, self.landing_url, source_opengraph,opengraph_collector.metadata_format, 'text/html', 'https://ogp.me/', opengraph_collector.namespaces)
+                            self.merge_metadata(rdfa_dict, self.landing_url, rdfasource,rdfa_collector.metadata_format, 'application/xhtml+xml', 'http://www.w3.org/ns/rdfa#',rdfa_collector.getNamespaces())
 
                             self.logger.log(self.LOG_SUCCESS,
-                                            'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
-                        else:
-                            self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
+                                            'FsF-F2-01M : Found RDFa metadata -: ' + str(rdfa_dict.keys()))
+                    except Exception as e:
+                        print('RDFa parsing error',str(e))
+                        self.logger.info(
+                            'FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:' + str(e))
+
+
+                    # ======== retrieve OpenGraph metadata
+                    self.logger.info('FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page')
+
+                    ext_meta = extruct_metadata.get('opengraph')
+                    opengraph_collector = MetaDataCollectorOpenGraph(loggerinst=self.logger,
+                                                                     sourcemetadata=ext_meta,
+                                                                     mapping=Mapper.OG_MAPPING)
+                    source_opengraph, opengraph_dict = opengraph_collector.parse_metadata()
+                    opengraph_dict = self.exclude_null(opengraph_dict)
+                    if opengraph_dict:
+                        self.namespace_uri.extend(opengraph_collector.namespaces)
+                        #self.metadata_sources.append((source_opengraph, 'embedded'))
+                        self.add_metadata_source(source_opengraph)
+                        self.merge_metadata(opengraph_dict, self.landing_url, source_opengraph,opengraph_collector.metadata_format, 'text/html', 'https://ogp.me/', opengraph_collector.namespaces)
+
+                        self.logger.log(self.LOG_SUCCESS,
+                                        'FsF-F2-01M : Found OpenGraph metadata -: ' + str(opengraph_dict.keys()))
                     else:
-                        self.logger.info('FsF-F2-01M : Skipped disabled harvesting method -: ' + str(
-                            MetadataSources.OPENGRAPH_EMBEDDED.value.get('label')))
+                        self.logger.info('FsF-F2-01M : OpenGraph metadata UNAVAILABLE')
+
                 else:
                     self.logger.warning('FsF-F2-01M : Skipped EMBEDDED metadata identification of landing page at -: ' +
                                         str(self.landing_url) + ' expected html content but received: ' +
@@ -879,7 +858,7 @@ class MetadataHarvester():
 
     def retrieve_metadata_external_rdf_negotiated(self,target_url_list=[]):
         # ========= retrieve rdf metadata namespaces by content negotiation ========
-        if self.is_harvesting_source_allowed(MetadataSources.RDF_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
             source = MetadataSources.RDF_NEGOTIATED
             #if self.pid_scheme == 'purl':
             #    targeturl = self.pid_url
@@ -918,7 +897,7 @@ class MetadataHarvester():
                 MetadataSources.RDF_NEGOTIATED.value.get('label')))
 
     def retrieve_metadata_external_schemaorg_negotiated(self,target_url_list=[]):
-        if self.is_harvesting_source_allowed(MetadataSources.SCHEMAORG_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
             for target_url in target_url_list:
                 # ========= retrieve json-ld/schema.org metadata namespaces by content negotiation ========
                 self.logger.info(
@@ -949,7 +928,7 @@ class MetadataHarvester():
                 MetadataSources.SCHEMAORG_NEGOTIATED.value.get('label')))
 
     def retrieve_metadata_external_xml_negotiated(self,target_url_list=[]):
-        if self.is_harvesting_source_allowed(MetadataSources.XML_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
             for target_url in target_url_list:
                 self.logger.info(
                     'FsF-F2-01M : Trying to retrieve XML metadata through content negotiation from URL -: ' + str(target_url))
@@ -1017,7 +996,7 @@ class MetadataHarvester():
                                         'http://www.openarchives.org/ore/terms')
 
     def retrieve_metadata_external_datacite(self):
-        if self.is_harvesting_source_allowed(MetadataSources.DATACITE_JSON_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
             #if self.pid_scheme:
             # ================= datacite by content negotiation ===========
             # in case use_datacite id false use the landing page URL for content negotiation, otherwise the pid url
@@ -1096,7 +1075,7 @@ class MetadataHarvester():
                     except Exception:
                         pass
                 if re.search(r'[\/+](rdf(\+xml)?|(?:x-)?turtle|ttl|n3|n-triples|ld\+json)+$', str(metadata_link['type'])):
-                    if self.is_harvesting_source_allowed(MetadataSources.RDF_TYPED_LINKS) or self.is_harvesting_source_allowed(MetadataSources.RDF_SIGNPOSTING_LINKS):
+                    if self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS) or self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING):
                         self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to RDF Metadata -: (' +
                                          str(metadata_link['type']) + ' ' + str(metadata_link['url']) + ')')
                         if metadata_link.get('source') == MetadataOfferingMethods.SIGNPOSTING:
@@ -1129,7 +1108,7 @@ class MetadataHarvester():
                             MetadataSources.RDF_TYPED_LINKS.value.get('label')))
 
                 elif re.search(r'[+\/]xml$', str(metadata_link['type'])):
-                    if self.is_harvesting_source_allowed(MetadataSources.XML_TYPED_LINKS) or self.is_harvesting_source_allowed(MetadataSources.XML_SIGNPOSTING_LINKS):
+                    if self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS) or self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING):
                         self.logger.info('FsF-F2-01M : Found e.g. Typed Links in HTML Header linking to XML Metadata -: (' +
                                          str(metadata_link['type'] + ' ' + metadata_link['url'] + ')'))
                         linked_xml_collector = MetaDataCollectorXML(loggerinst=self.logger,
