@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import pprint
-
 import typing
 
 from fuji_server import util
 
-T = typing.TypeVar('T')
+T = typing.TypeVar("T")
 
 
 class Model(object):
@@ -32,13 +31,16 @@ class Model(object):
         for attr, _ in self.swagger_types.items():
             value = getattr(self, attr)
             if isinstance(value, list):
-                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, 'to_dict') else x, value))
-            elif hasattr(value, 'to_dict'):
+                result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))
+            elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
             elif isinstance(value, dict):
                 result[attr] = dict(
-                    map(lambda item: (item[0], item[1].to_dict())
-                        if hasattr(item[1], 'to_dict') else item, value.items()))
+                    map(
+                        lambda item: (item[0], item[1].to_dict()) if hasattr(item[1], "to_dict") else item,
+                        value.items(),
+                    )
+                )
             else:
                 result[attr] = value
 

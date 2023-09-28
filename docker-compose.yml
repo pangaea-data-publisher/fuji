@@ -1,17 +1,17 @@
-version: "3.3"
+version: '3.3'
 services:
   fujirest:
-    image: "ghcr.io/pangaea-data-publisher/fuji:latest"
+    image: ghcr.io/pangaea-data-publisher/fuji:latest
     ports:
-      - "1071:1071"
+    - 1071:1071
     environment:
-      - ENABLE_CORS=true
+    - ENABLE_CORS=true
 
   notebook:
-    image: "jupyter/minimal-notebook:latest"
+    image: jupyter/minimal-notebook:latest
     environment:
-      - JUPYTER_ENABLE_LAB=yes
+    - JUPYTER_ENABLE_LAB=yes
     volumes:
-      - .:/home/jovyan/work
+    - .:/home/jovyan/work
     ports:
-      - "8888:8888"
+    - 8888:8888

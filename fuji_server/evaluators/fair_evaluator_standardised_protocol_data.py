@@ -22,11 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from urllib.parse import urlparse
+
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
 from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
-from fuji_server.helper.metadata_mapper import Mapper
-from urllib.parse import urlparse
 
 
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
@@ -44,39 +45,45 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric('FsF-A1-03D')
+        self.set_metric("FsF-A1-03D")
         self.data_output = {}
 
     def testStandardProtocolDataUsed(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + '-1'):
-            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
+        if self.isTestDefined(self.metric_identifier + "-1"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
             if len(self.fuji.content_identifier) > 0:
                 # here we only test the first content identifier
-                data_url = list(self.fuji.content_identifier.values())[0].get('url')
+                data_url = list(self.fuji.content_identifier.values())[0].get("url")
                 data_parsed_url = urlparse(data_url)
                 data_url_scheme = data_parsed_url.scheme
                 if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                    self.logger.log(self.fuji.LOG_SUCCESS,
-                                    self.metric_identifier + ' : Standard protocol for access to data object found -: ' + data_url_scheme)
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        self.metric_identifier
+                        + " : Standard protocol for access to data object found -: "
+                        + data_url_scheme,
+                    )
                     self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
-                    self.setEvaluationCriteriumScore(self.metric_identifier + '-1', test_score, 'pass')
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + '-1')
+                    self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
                     test_status = True
                     self.score.earned = test_score
             else:
-                self.logger.warning(self.metric_identifier + ' : Skipping protocol test for data since NO content (data) identifier is given in metadata')
+                self.logger.warning(
+                    self.metric_identifier
+                    + " : Skipping protocol test for data since NO content (data) identifier is given in metadata"
+                )
         return test_status
 
     def evaluate(self):
+        self.result = StandardisedProtocolData(
+            id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
+        )
 
-        self.result = StandardisedProtocolData(id=self.metric_number,
-                                               metric_identifier=self.metric_identifier,
-                                               metric_name=self.metric_name)
-
-        test_status = 'fail'
+        test_status = "fail"
         if self.testStandardProtocolDataUsed():
-            test_status = 'pass'
+            test_status = "pass"
         self.result.score = self.score
         self.result.output = StandardisedProtocolDataOutput(standard_data_protocol=self.data_output)
         self.result.metric_tests = self.metric_tests

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner  # noqa: F401,E501
-from fuji_server import util
 
 
 class DataProvenanceOutput(Model):
@@ -16,9 +16,11 @@ class DataProvenanceOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self,
-                 provenance_metadata_included: DataProvenanceOutputInner = None,
-                 structured_provenance_available: DataProvenanceOutputInner = None):  # noqa: E501
+    def __init__(
+        self,
+        provenance_metadata_included: DataProvenanceOutputInner = None,
+        structured_provenance_available: DataProvenanceOutputInner = None,
+    ):  # noqa: E501
         """DataProvenanceOutput - a model defined in Swagger
 
         :param provenance_metadata_included: The provenance_metadata_included of this DataProvenanceOutput.  # noqa: E501
@@ -27,19 +29,19 @@ class DataProvenanceOutput(Model):
         :type structured_provenance_available: DataProvenanceOutputInner
         """
         self.swagger_types = {
-            'provenance_metadata_included': DataProvenanceOutputInner,
-            'structured_provenance_available': DataProvenanceOutputInner
+            "provenance_metadata_included": DataProvenanceOutputInner,
+            "structured_provenance_available": DataProvenanceOutputInner,
         }
 
         self.attribute_map = {
-            'provenance_metadata_included': 'provenance_metadata_included',
-            'structured_provenance_available': 'structured_provenance_available'
+            "provenance_metadata_included": "provenance_metadata_included",
+            "structured_provenance_available": "structured_provenance_available",
         }
         self._provenance_metadata_included = provenance_metadata_included
         self._structured_provenance_available = structured_provenance_available
 
     @classmethod
-    def from_dict(cls, dikt) -> 'DataProvenanceOutput':
+    def from_dict(cls, dikt) -> "DataProvenanceOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

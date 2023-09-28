@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class UniquenessOutput(Model):
@@ -23,14 +23,14 @@ class UniquenessOutput(Model):
         :param guid_scheme: The guid_scheme of this UniquenessOutput.  # noqa: E501
         :type guid_scheme: str
         """
-        self.swagger_types = {'guid': str, 'guid_scheme': str}
+        self.swagger_types = {"guid": str, "guid_scheme": str}
 
-        self.attribute_map = {'guid': 'guid', 'guid_scheme': 'guid_scheme'}
+        self.attribute_map = {"guid": "guid", "guid_scheme": "guid_scheme"}
         self._guid = guid
         self._guid_scheme = guid_scheme
 
     @classmethod
-    def from_dict(cls, dikt) -> 'UniquenessOutput':
+    def from_dict(cls, dikt) -> "UniquenessOutput":
         """Returns the dict as a model
 
         :param dikt: A dict.

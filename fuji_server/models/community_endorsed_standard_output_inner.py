@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class CommunityEndorsedStandardOutputInner(Model):
@@ -14,7 +14,15 @@ class CommunityEndorsedStandardOutputInner(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metadata_standard: str=None, url: str=None, subject_areas: List[str]=None, type: str=None, source: str=None):  # noqa: E501
+
+    def __init__(
+        self,
+        metadata_standard: str = None,
+        url: str = None,
+        subject_areas: List[str] = None,
+        type: str = None,
+        source: str = None,
+    ):  # noqa: E501
         """CommunityEndorsedStandardOutputInner - a model defined in Swagger
 
         :param metadata_standard: The metadata_standard of this CommunityEndorsedStandardOutputInner.  # noqa: E501
@@ -29,19 +37,19 @@ class CommunityEndorsedStandardOutputInner(Model):
         :type source: str
         """
         self.swagger_types = {
-            'metadata_standard': str,
-            'url': str,
-            'subject_areas': List[str],
-            'type': str,
-            'source': str
+            "metadata_standard": str,
+            "url": str,
+            "subject_areas": List[str],
+            "type": str,
+            "source": str,
         }
 
         self.attribute_map = {
-            'metadata_standard': 'metadata_standard',
-            'url': 'url',
-            'subject_areas': 'subject_areas',
-            'type': 'type',
-            'source': 'source'
+            "metadata_standard": "metadata_standard",
+            "url": "url",
+            "subject_areas": "subject_areas",
+            "type": "type",
+            "source": "source",
         }
         self._metadata_standard = metadata_standard
         self._url = url
@@ -50,7 +58,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         self._source = source
 
     @classmethod
-    def from_dict(cls, dikt) -> 'CommunityEndorsedStandardOutputInner':
+    def from_dict(cls, dikt) -> "CommunityEndorsedStandardOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

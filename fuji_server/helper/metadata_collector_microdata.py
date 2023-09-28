@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import jmespath
+
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -20,8 +21,10 @@ class MetaDataCollectorMicroData(MetaDataCollector):
     parse_metadata()
         Method to parse the Microdata metadata from the data.
     """
+
     source_name = None
     SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
+
     def __init__(self, sourcemetadata, mapping, loggerinst):
         """
         Parameters
@@ -49,14 +52,14 @@ class MetaDataCollectorMicroData(MetaDataCollector):
         """
         micro_metadata = {}
         ext_meta = None
-        self.content_type = 'text/html'
+        self.content_type = "text/html"
         self.metadata_format = MetadataFormats.MICRODATA
         if self.source_metadata:
-            #print(self.source_metadata)
-            if len(self.source_metadata)>1:
+            # print(self.source_metadata)
+            if len(self.source_metadata) > 1:
                 try:
                     for sm in self.source_metadata:
-                        if str(sm.get('type').split('/')[-1]).lower() in self.SCHEMA_ORG_CREATIVEWORKS:
+                        if str(sm.get("type").split("/")[-1]).lower() in self.SCHEMA_ORG_CREATIVEWORKS:
                             ext_meta = sm
                 except:
                     pass
@@ -65,22 +68,22 @@ class MetaDataCollectorMicroData(MetaDataCollector):
                 ext_meta = self.source_metadata[0]
 
         if ext_meta is not None:
-            self.logger.info('FsF-F2-01M : Trying to extract Microdata metadata from -: {}'.format(self.source_name))
+            self.logger.info("FsF-F2-01M : Trying to extract Microdata metadata from -: {}".format(self.source_name))
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             # TODO replace check_context_type list context comparison by regex
-            check_context_type = ['Dataset', 'Collection']
+            check_context_type = ["Dataset", "Collection"]
             try:
-                #if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
-                if str(ext_meta.get('type')).find('schema.org') > -1:
+                # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
+                if str(ext_meta.get("type")).find("schema.org") > -1:
                     micro_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
-                    self.namespaces.append('http://schema.org/')
+                    self.namespaces.append("http://schema.org/")
                 else:
-                    self.logger.info('FsF-F2-01M : Failed to parse non schema.org type Microdata')
+                    self.logger.info("FsF-F2-01M : Failed to parse non schema.org type Microdata")
             except Exception as err:
-                #print(err.with_traceback())
-                self.logger.info('FsF-F2-01M : Failed to parse Microdata -: {}'.format(err))
+                # print(err.with_traceback())
+                self.logger.info("FsF-F2-01M : Failed to parse Microdata -: {}".format(err))
         else:
-            self.logger.info('FsF-F2-01M : Could not identify Microdata metadata')
+            self.logger.info("FsF-F2-01M : Could not identify Microdata metadata")
 
         return self.source_name, micro_metadata

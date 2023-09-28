@@ -11,9 +11,9 @@ google_file_location = None
 # Step 4 run the script
 if google_file_location is None:
     # Throw an exception instead?
-    #pass # do not be verbose otherwise this gets printed on import
-    print('Could not create Google Dataset Search files, no google_file_location specified, please do so.')
+    # pass # do not be verbose otherwise this gets printed on import
+    print("Could not create Google Dataset Search files, no google_file_location specified, please do so.")
 else:
-    print('Starting to create Google Dataset Search files')
+    print("Starting to create Google Dataset Search files")
     g.create_lists(google_file_location)
-    print('Finished...')
+    print("Finished...")

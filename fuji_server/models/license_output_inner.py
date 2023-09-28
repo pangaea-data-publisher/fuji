@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class LicenseOutputInner(Model):
@@ -25,15 +25,15 @@ class LicenseOutputInner(Model):
         :param details_url: The details_url of this LicenseOutputInner.  # noqa: E501
         :type details_url: str
         """
-        self.swagger_types = {'license': str, 'osi_approved': bool, 'details_url': str}
+        self.swagger_types = {"license": str, "osi_approved": bool, "details_url": str}
 
-        self.attribute_map = {'license': 'license', 'osi_approved': 'OSI_approved', 'details_url': 'details_url'}
+        self.attribute_map = {"license": "license", "osi_approved": "OSI_approved", "details_url": "details_url"}
         self._license = license
         self._osi_approved = osi_approved
         self._details_url = details_url
 
     @classmethod
-    def from_dict(cls, dikt) -> 'LicenseOutputInner':
+    def from_dict(cls, dikt) -> "LicenseOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.

@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class Body(Model):
@@ -14,7 +14,19 @@ class Body(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, object_identifier: str=None, test_debug: bool=False, metadata_service_endpoint: str=None, metadata_service_type: str=None, use_datacite: bool=None, metric_version: str=None, auth_token: str=None, auth_token_type: str=None, oaipmh_endpoint: str=None):  # noqa: E501
+
+    def __init__(
+        self,
+        object_identifier: str = None,
+        test_debug: bool = False,
+        metadata_service_endpoint: str = None,
+        metadata_service_type: str = None,
+        use_datacite: bool = None,
+        metric_version: str = None,
+        auth_token: str = None,
+        auth_token_type: str = None,
+        oaipmh_endpoint: str = None,
+    ):  # noqa: E501
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -37,27 +49,27 @@ class Body(Model):
         :type oaipmh_endpoint: str
         """
         self.swagger_types = {
-            'object_identifier': str,
-            'test_debug': bool,
-            'metadata_service_endpoint': str,
-            'metadata_service_type': str,
-            'use_datacite': bool,
-            'metric_version': str,
-            'auth_token': str,
-            'auth_token_type': str,
-            'oaipmh_endpoint': str
+            "object_identifier": str,
+            "test_debug": bool,
+            "metadata_service_endpoint": str,
+            "metadata_service_type": str,
+            "use_datacite": bool,
+            "metric_version": str,
+            "auth_token": str,
+            "auth_token_type": str,
+            "oaipmh_endpoint": str,
         }
 
         self.attribute_map = {
-            'object_identifier': 'object_identifier',
-            'test_debug': 'test_debug',
-            'metadata_service_endpoint': 'metadata_service_endpoint',
-            'metadata_service_type': 'metadata_service_type',
-            'use_datacite': 'use_datacite',
-            'metric_version': 'metric_version',
-            'auth_token': 'auth_token',
-            'auth_token_type': 'auth_token_type',
-            'oaipmh_endpoint': 'oaipmh_endpoint'
+            "object_identifier": "object_identifier",
+            "test_debug": "test_debug",
+            "metadata_service_endpoint": "metadata_service_endpoint",
+            "metadata_service_type": "metadata_service_type",
+            "use_datacite": "use_datacite",
+            "metric_version": "metric_version",
+            "auth_token": "auth_token",
+            "auth_token_type": "auth_token_type",
+            "oaipmh_endpoint": "oaipmh_endpoint",
         }
         self._object_identifier = object_identifier
         self._test_debug = test_debug
@@ -70,7 +82,7 @@ class Body(Model):
         self._oaipmh_endpoint = oaipmh_endpoint
 
     @classmethod
-    def from_dict(cls, dikt) -> 'Body':
+    def from_dict(cls, dikt) -> "Body":
         """Returns the dict as a model
 
         :param dikt: A dict.

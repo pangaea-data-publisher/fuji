@@ -1,1 +1,38 @@
-{"gesis.cessda-topic": {"id": "gesis.cessda-topic", "homepage": "https://lod.gesis.org/cessda-topic", "prefix": "gesis.cessda-topic", "name": "CESSDA Topic Classification", "uri_format": "https://vocabularies.cessda.eu/vocabulary/TopicClassification?v=4.1$1", "subjects": ["social sciences"], "authority": "gesis", "source": "lod.gesis.org"}, "gesis.iso-3166-1": {"id": "gesis.iso-3166-1", "homepage": "https://lod.gesis.org/iso-3166-1", "prefix": "gesis.iso-3166-1", "name": "ISO 3166-1 Country Codes", "uri_format": "http://publications.europa.eu/resource/authority/country$1", "subjects": ["social sciences"], "authority": "gesis", "source": "lod.gesis.org"}, "gesis.unesco": {"id": "gesis.unesco", "homepage": "https://lod.gesis.org/unesco", "prefix": "gesis.unesco", "name": "UNESCO Thesaurus", "uri_format": "http://skos.um.es/unescothes/CS000$1", "subjects": ["social sciences"], "authority": "gesis", "source": "lod.gesis.org"}}
+{
+  "gesis.cessda-topic": {
+    "authority": "gesis",
+    "homepage": "https://lod.gesis.org/cessda-topic",
+    "id": "gesis.cessda-topic",
+    "name": "CESSDA Topic Classification",
+    "prefix": "gesis.cessda-topic",
+    "source": "lod.gesis.org",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TopicClassification?v=4.1$1"
+  },
+  "gesis.iso-3166-1": {
+    "authority": "gesis",
+    "homepage": "https://lod.gesis.org/iso-3166-1",
+    "id": "gesis.iso-3166-1",
+    "name": "ISO 3166-1 Country Codes",
+    "prefix": "gesis.iso-3166-1",
+    "source": "lod.gesis.org",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://publications.europa.eu/resource/authority/country$1"
+  },
+  "gesis.unesco": {
+    "authority": "gesis",
+    "homepage": "https://lod.gesis.org/unesco",
+    "id": "gesis.unesco",
+    "name": "UNESCO Thesaurus",
+    "prefix": "gesis.unesco",
+    "source": "lod.gesis.org",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://skos.um.es/unescothes/CS000$1"
+  }
+}

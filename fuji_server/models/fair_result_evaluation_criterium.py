@@ -1,13 +1,13 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
+from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
-from fuji_server import util
 
 
 class FAIRResultEvaluationCriterium(Model):
@@ -15,7 +15,15 @@ class FAIRResultEvaluationCriterium(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, metric_test_name: str=None, metric_test_requirements: List[Dict]=None, metric_test_score: FAIRResultCommonScore=None, metric_test_maturity: int=None, metric_test_status: str='fail'):  # noqa: E501
+
+    def __init__(
+        self,
+        metric_test_name: str = None,
+        metric_test_requirements: List[Dict] = None,
+        metric_test_score: FAIRResultCommonScore = None,
+        metric_test_maturity: int = None,
+        metric_test_status: str = "fail",
+    ):  # noqa: E501
         """FAIRResultEvaluationCriterium - a model defined in Swagger
 
         :param metric_test_name: The metric_test_name of this FAIRResultEvaluationCriterium.  # noqa: E501
@@ -30,19 +38,19 @@ class FAIRResultEvaluationCriterium(Model):
         :type metric_test_status: str
         """
         self.swagger_types = {
-            'metric_test_name': str,
-            'metric_test_requirements': List[Dict],
-            'metric_test_score': FAIRResultCommonScore,
-            'metric_test_maturity': int,
-            'metric_test_status': str
+            "metric_test_name": str,
+            "metric_test_requirements": List[Dict],
+            "metric_test_score": FAIRResultCommonScore,
+            "metric_test_maturity": int,
+            "metric_test_status": str,
         }
 
         self.attribute_map = {
-            'metric_test_name': 'metric_test_name',
-            'metric_test_requirements': 'metric_test_requirements',
-            'metric_test_score': 'metric_test_score',
-            'metric_test_maturity': 'metric_test_maturity',
-            'metric_test_status': 'metric_test_status'
+            "metric_test_name": "metric_test_name",
+            "metric_test_requirements": "metric_test_requirements",
+            "metric_test_score": "metric_test_score",
+            "metric_test_maturity": "metric_test_maturity",
+            "metric_test_status": "metric_test_status",
         }
         self._metric_test_name = metric_test_name
         self._metric_test_requirements = metric_test_requirements
@@ -51,7 +59,7 @@ class FAIRResultEvaluationCriterium(Model):
         self._metric_test_status = metric_test_status
 
     @classmethod
-    def from_dict(cls, dikt) -> 'FAIRResultEvaluationCriterium':
+    def from_dict(cls, dikt) -> "FAIRResultEvaluationCriterium":
         """Returns the dict as a model
 
         :param dikt: A dict.
@@ -166,8 +174,9 @@ class FAIRResultEvaluationCriterium(Model):
         allowed_values = ["pass", "fail"]  # noqa: E501
         if metric_test_status not in allowed_values:
             raise ValueError(
-                "Invalid value for `metric_test_status` ({0}), must be one of {1}"
-                .format(metric_test_status, allowed_values)
+                "Invalid value for `metric_test_status` ({0}), must be one of {1}".format(
+                    metric_test_status, allowed_values
+                )
             )
 
         self._metric_test_status = metric_test_status

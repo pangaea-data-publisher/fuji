@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from datetime import date, datetime  # noqa: F401
+from typing import Dict, List  # noqa: F401
 
-from typing import List, Dict  # noqa: F401
-
-from fuji_server.models.base_model_ import Model
 from fuji_server import util
+from fuji_server.models.base_model_ import Model
 
 
 class RelatedResourceOutputInner(Model):
@@ -23,14 +23,14 @@ class RelatedResourceOutputInner(Model):
         :param relation_type: The relation_type of this RelatedResourceOutputInner.  # noqa: E501
         :type relation_type: str
         """
-        self.swagger_types = {'related_resource': str, 'relation_type': str}
+        self.swagger_types = {"related_resource": str, "relation_type": str}
 
-        self.attribute_map = {'related_resource': 'related_resource', 'relation_type': 'relation_type'}
+        self.attribute_map = {"related_resource": "related_resource", "relation_type": "relation_type"}
         self._related_resource = related_resource
         self._relation_type = relation_type
 
     @classmethod
-    def from_dict(cls, dikt) -> 'RelatedResourceOutputInner':
+    def from_dict(cls, dikt) -> "RelatedResourceOutputInner":
         """Returns the dict as a model
 
         :param dikt: A dict.
