@@ -84,4 +84,32 @@ jobs:
         python -m pip install --upgrade hatch
 
     - name: Run test suite with coverage
-      run: hatch run cov
+      run: hatch run cov-ci
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        retention-days: 1
+        path: |
+          junit.xml
+          pytest-coverage.txt
+
+  coverage:
+    runs-on: ubuntu-22.04
+    needs: tests
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Download coverage reports
+      uses: actions/download-artifact@v3
+      with:
+        name: coverage
+    # Ref: https://github.com/MishaKav/pytest-coverage-comment
+    - name: Add coverage comment
+      uses: MishaKav/pytest-coverage-comment@v1.1.48
+      with:
+        title: Coverage
+        pytest-coverage-path: pytest-coverage.txt
+        junitxml-path: junit.xml
