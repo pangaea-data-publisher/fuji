@@ -209,14 +209,19 @@ class FAIRCheck:
         self.METRIC_VERSION = metric_version
         self.metrics_config = self.metric_helper.get_metrics_config()
         print('METRICS CONFIG: ', self.metrics_config)
-        allowed_harvesting_methods = self.metrics_config.get('metadata_offering_methods')
+        allowed_harvesting_methods = self.metrics_config.get('allowed_harvesting_methods')
+        allowed_metadata_standards = self.metrics_config.get('allowed_metadata_standards')
+        if not isinstance(allowed_metadata_standards, list):
+            allowed_metadata_standards = None
+        else:
+            print('ALLOWED METADATA STANDARDS: ', allowed_metadata_standards)
         if allowed_harvesting_methods:
             print('ALLOWED METADATA OFFERING METHODS: ',allowed_harvesting_methods)
             if not isinstance(allowed_harvesting_methods, list):
                 allowed_harvesting_methods = None
             else:
                 allowed_harvesting_methods = [MetadataOfferingMethods[m] for m in allowed_harvesting_methods if m in MetadataOfferingMethods._member_names_ ]
-        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, logger = self.logger, allowed_harvesting_methods = allowed_harvesting_methods)
+        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, logger = self.logger, allowed_harvesting_methods = allowed_harvesting_methods, allowed_metadata_standards=allowed_metadata_standards)
         self.repo_helper = None
 
     @classmethod
