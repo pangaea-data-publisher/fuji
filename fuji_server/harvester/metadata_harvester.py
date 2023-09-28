@@ -81,11 +81,6 @@ class MetadataHarvester():
         if allowed_harvesting_methods:
             if all(isinstance(x, enum.Enum) for x in allowed_harvesting_methods):
                 self.allowed_harvesting_methods = allowed_harvesting_methods
-        if isinstance(self.allowed_harvesting_methods,list):
-            self.allowed_harvesting_sources = MetadataSources.getSourcesbyMethod(self.allowed_harvesting_methods)
-        else:
-            self.allowed_harvesting_sources = [i for i in MetaDataCollector.getEnumSourceNames()]
-        print('allowed sources: ', self.allowed_harvesting_sources)
         print('allowed methods: ', self.allowed_harvesting_methods)
         self.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
         self.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in self.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
@@ -815,7 +810,7 @@ class MetadataHarvester():
             else:
                 self.logger.warning(
                     'FsF-F2-01M :Skipping Embedded tests, since no EMBEDDED method in allowed harvesting methods: ' + (
-                        str(self.allowed_harvesting_sources)))
+                        str(self.allowed_harvesting_methods)))
 
                 ############## end of embedded metadata content harvesting
 
