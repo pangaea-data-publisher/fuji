@@ -18,3 +18,15 @@ def test_schema_returns_200(client: FlaskClient) -> None:
     valid_url = "/fuji/api/v1/openapi.json"
     response = client.get(valid_url)
     assert response.status_code == HTTP_200_OK
+
+
+def test_all_metrics_returns_200(client: FlaskClient) -> None:
+    valid_url = "/fuji/api/v1/metrics/0.5"
+    response = client.get(valid_url)
+    assert response.status_code == HTTP_200_OK
+
+
+def test_single_metric_returns_200(client: FlaskClient) -> None:
+    valid_url = "/fuji/api/v1/metrics/0.5/FsF-F1-01D-1"
+    response = client.get(valid_url)
+    assert response.status_code == HTTP_200_OK
