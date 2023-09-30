@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -118,7 +117,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             meta_dc_matches.append([dc_name_parts[1], dc_t, meta_tag.get("content")])
                     # meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
-                    self.logger.exception("Parsing error, failed to extract DublinCore -: {}".format(e))
+                    self.logger.exception(f"Parsing error, failed to extract DublinCore -: {e}")
                 if len(meta_dc_matches) > 0:
                     self.namespaces.append("http://purl.org/dc/elements/1.1/")
                     # source = self.getEnumSourceNames().DUBLINCORE_EMBEDDED
@@ -158,7 +157,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                                 ][
                                     0
                                 ]  # fuji ref fields
-                            except Exception as e:
+                            except Exception:
                                 # nothing found so just continue
                                 pass
                             if elem == "related_resources":
@@ -194,7 +193,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                     if dc_core_metadata.get("related_resources"):
                         count = len([d for d in dc_core_metadata.get("related_resources") if d.get("related_resource")])
                         self.logger.info(
-                            "FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {0} from {1}".format(
+                            "FsF-I3-01M : number of related resource(s) extracted from DublinCore -: {} from {}".format(
                                 count, source.name
                             )
                         )
@@ -209,5 +208,5 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             )  # assume first value as media type #TODO use regex to extract mimetype
                             dc_core_metadata['file_format_only'] = format_str"""
             except Exception as e:
-                self.logger.exception("Failed to extract DublinCore - {}".format(e))
+                self.logger.exception(f"Failed to extract DublinCore - {e}")
         return source, dc_core_metadata

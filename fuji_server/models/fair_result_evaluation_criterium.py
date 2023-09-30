@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
@@ -19,7 +12,7 @@ class FAIRResultEvaluationCriterium(Model):
     def __init__(
         self,
         metric_test_name: str = None,
-        metric_test_requirements: List[Dict] = None,
+        metric_test_requirements: list[dict] = None,
         metric_test_score: FAIRResultCommonScore = None,
         metric_test_maturity: int = None,
         metric_test_status: str = "fail",
@@ -39,7 +32,7 @@ class FAIRResultEvaluationCriterium(Model):
         """
         self.swagger_types = {
             "metric_test_name": str,
-            "metric_test_requirements": List[Dict],
+            "metric_test_requirements": list[dict],
             "metric_test_score": FAIRResultCommonScore,
             "metric_test_maturity": int,
             "metric_test_status": str,
@@ -91,7 +84,7 @@ class FAIRResultEvaluationCriterium(Model):
         self._metric_test_name = metric_test_name
 
     @property
-    def metric_test_requirements(self) -> List[Dict]:
+    def metric_test_requirements(self) -> list[dict]:
         """Gets the metric_test_requirements of this FAIRResultEvaluationCriterium.
 
 
@@ -101,7 +94,7 @@ class FAIRResultEvaluationCriterium(Model):
         return self._metric_test_requirements
 
     @metric_test_requirements.setter
-    def metric_test_requirements(self, metric_test_requirements: List[Dict]):
+    def metric_test_requirements(self, metric_test_requirements: list[dict]):
         """Sets the metric_test_requirements of this FAIRResultEvaluationCriterium.
 
 
@@ -174,9 +167,7 @@ class FAIRResultEvaluationCriterium(Model):
         allowed_values = ["pass", "fail"]  # noqa: E501
         if metric_test_status not in allowed_values:
             raise ValueError(
-                "Invalid value for `metric_test_status` ({0}), must be one of {1}".format(
-                    metric_test_status, allowed_values
-                )
+                f"Invalid value for `metric_test_status` ({metric_test_status}), must be one of {allowed_values}"
             )
 
         self._metric_test_status = metric_test_status

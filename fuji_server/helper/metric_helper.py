@@ -43,7 +43,7 @@ class MetricHelper:
             print("LOADING METRICS  ", metric_file_name, metric_yml_path)
             specification = {}
             try:
-                stream = open(os.path.join(metric_yml_path, metric_file_name), "r", encoding="utf8")
+                stream = open(os.path.join(metric_yml_path, metric_file_name), encoding="utf8")
                 specification = yaml.load(stream, Loader=yaml.FullLoader)
             except FileNotFoundError as e:
                 print("ERROR: YAML LOADING ERROR -NOT FOUND")

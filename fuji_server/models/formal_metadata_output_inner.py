@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -90,7 +83,7 @@ class FormalMetadataOutputInner(Model):
         """
         allowed_values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]  # noqa: E501
         if source not in allowed_values:
-            raise ValueError("Invalid value for `source` ({0}), must be one of {1}".format(source, allowed_values))
+            raise ValueError(f"Invalid value for `source` ({source}), must be one of {allowed_values}")
 
         self._source = source
 

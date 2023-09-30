@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ################################################################################
 # MIT License
 #
@@ -23,14 +22,10 @@
 # SOFTWARE.
 ################################################################################
 
-import datetime
-import os
 
 import connexion
 
-from fuji_server import util
 from fuji_server.controllers.fair_check import FAIRCheck
-from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.models.harvest import Harvest  # noqa: E501
 from fuji_server.models.harvest_results import HarvestResults  # noqa: E501
 from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata  # noqa: E501
@@ -51,7 +46,6 @@ def harvest_by_id(body=None):  # noqa: E501
         identifier = body.object_identifier
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type
-        logger = Preprocessor.logger
         ft = FAIRCheck(
             uid=identifier,
             test_debug=False,
@@ -86,6 +80,5 @@ def harvest_by_id(body=None):  # noqa: E501
                 )
             )
         response = HarvestResults(identifier, harvest_result)
-        # response
 
     return response

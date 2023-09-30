@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -22,11 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import re
-import uuid
-
-import hashid
-import idutils
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -64,11 +57,11 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             )
             idhelper = IdentifierHelper(self.fuji.id)
             found_ids = idhelper.identifier_schemes
-            self.logger.info(self.metric_identifier + " :Starting assessment on identifier: {}".format(self.fuji.id))
+            self.logger.info(self.metric_identifier + f" :Starting assessment on identifier: {self.fuji.id}")
             if len(found_ids) > 0:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
-                    self.metric_identifier + " : Unique identifier schemes found {}".format(found_ids),
+                    self.metric_identifier + f" : Unique identifier schemes found {found_ids}",
                 )
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", self.total_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-1").metric_test_maturity_config
@@ -79,7 +72,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
                 if idhelper.is_persistent:
                     self.fuji.pid_scheme = found_id
                     self.fuji.pid_url = idhelper.identifier_url
-                self.logger.info(self.metric_identifier + " : Finalized unique identifier scheme - {}".format(found_id))
+                self.logger.info(self.metric_identifier + f" : Finalized unique identifier scheme - {found_id}")
                 self.output.guid_scheme = found_id
                 test_status = True
         return test_status

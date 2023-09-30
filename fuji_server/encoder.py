@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from connexion.apps.flask_app import FlaskJSONEncoder
 
 from fuji_server.models.base_model_ import Model

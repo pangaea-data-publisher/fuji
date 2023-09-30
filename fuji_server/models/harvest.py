@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -120,7 +113,7 @@ class Harvest(Model):
         allowed_values = ["Bearer", "Basic"]  # noqa: E501
         if auth_token_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `auth_token_type` ({0}), must be one of {1}".format(auth_token_type, allowed_values)
+                f"Invalid value for `auth_token_type` ({auth_token_type}), must be one of {allowed_values}"
             )
 
         self._auth_token_type = auth_token_type

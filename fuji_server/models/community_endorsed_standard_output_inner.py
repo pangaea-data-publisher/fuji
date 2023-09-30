@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -19,7 +12,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         self,
         metadata_standard: str = None,
         url: str = None,
-        subject_areas: List[str] = None,
+        subject_areas: list[str] = None,
         type: str = None,
         source: str = None,
     ):  # noqa: E501
@@ -39,7 +32,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         self.swagger_types = {
             "metadata_standard": str,
             "url": str,
-            "subject_areas": List[str],
+            "subject_areas": list[str],
             "type": str,
             "source": str,
         }
@@ -111,7 +104,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         self._url = url
 
     @property
-    def subject_areas(self) -> List[str]:
+    def subject_areas(self) -> list[str]:
         """Gets the subject_areas of this CommunityEndorsedStandardOutputInner.
 
 
@@ -121,7 +114,7 @@ class CommunityEndorsedStandardOutputInner(Model):
         return self._subject_areas
 
     @subject_areas.setter
-    def subject_areas(self, subject_areas: List[str]):
+    def subject_areas(self, subject_areas: list[str]):
         """Sets the subject_areas of this CommunityEndorsedStandardOutputInner.
 
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # MIT License
 #
@@ -27,13 +26,11 @@ import argparse
 import configparser
 import logging
 import os
-from pathlib import Path
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from waitress import serve
 
-import fuji_server.controllers.authorization_controller as authen
 from fuji_server.app.fuji_app import create_fuji_app
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -71,14 +68,14 @@ def main():
     preproc.set_remote_log_info(config["SERVICE"].get("remote_log_host"), config["SERVICE"].get("remote_log_path"))
     preproc.set_max_content_size(config["SERVICE"]["max_content_size"])
 
-    logger.info("Total SPDX licenses : {}".format(preproc.get_total_licenses()))
-    logger.info("Total re3repositories found from datacite api : {}".format(len(preproc.getRE3repositories())))
-    logger.info("Total subjects area of imported metadata standards : {}".format(len(preproc.metadata_standards)))
-    logger.info("Total LD vocabs imported : {}".format(len(preproc.getLinkedVocabs())))
-    logger.info("Total default namespaces specified : {}".format(len(preproc.getDefaultNamespaces())))
+    logger.info(f"Total SPDX licenses : {preproc.get_total_licenses()}")
+    logger.info(f"Total re3repositories found from datacite api : {len(preproc.getRE3repositories())}")
+    logger.info(f"Total subjects area of imported metadata standards : {len(preproc.metadata_standards)}")
+    logger.info(f"Total LD vocabs imported : {len(preproc.getLinkedVocabs())}")
+    logger.info(f"Total default namespaces specified : {len(preproc.getDefaultNamespaces())}")
 
     app = create_fuji_app(config)
-    limiter = Limiter(get_remote_address, app=app.app, default_limits=[str(config["SERVICE"]["rate_limit"])])
+    Limiter(get_remote_address, app=app.app, default_limits=[str(config["SERVICE"]["rate_limit"])])
     # comment in case waitress is wished
     # app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']),debug=False)
     # switch to waitress

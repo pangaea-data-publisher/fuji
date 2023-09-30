@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -23,19 +22,13 @@
 import gzip
 import http.cookiejar
 import json
-import logging
 import mimetypes
 import re
 import ssl
 import sys
-import traceback
 import urllib
 from enum import Enum
-from io import BytesIO
-from urllib.request import HTTPCookieProcessor, build_opener
-from zipfile import ZipFile
 
-import extruct
 import lxml
 import rdflib
 from tika import parser
@@ -80,7 +73,6 @@ class AcceptTypes(Enum):
 
     @staticmethod
     def list():
-        atypes = []
         al = list(map(lambda c: c.value.split(","), AcceptTypes))
         return list(set([item.strip().split(";", 1)[0] for sublist in al for item in sublist]))
 
@@ -147,7 +139,7 @@ class RequestHelper:
 
     def content_decode(self, content):
         if isinstance(content, "str"):
-            a = 1
+            pass
         return True
 
     def content_negotiate(self, metric_id="", ignore_html=True):
@@ -157,9 +149,7 @@ class RequestHelper:
         tp_response = None
         if self.request_url is not None:
             try:
-                self.logger.info(
-                    "{0} : Retrieving page -: {1} as {2}".format(metric_id, self.request_url, self.accept_type)
-                )
+                self.logger.info(f"{metric_id} : Retrieving page -: {self.request_url} as {self.accept_type}")
                 urllib.request.HTTPRedirectHandler.http_error_308 = urllib.request.HTTPRedirectHandler.http_error_301
 
                 cookiejar = http.cookiejar.MozillaCookieJar()
@@ -198,13 +188,13 @@ class RequestHelper:
                     elif e.code >= 500:
                         if "doi.org" in self.request_url:
                             self.logger.error(
-                                "{0} : DataCite/DOI content negotiation failed, status code -: {1}, {2} - {3}".format(
+                                "{} : DataCite/DOI content negotiation failed, status code -: {}, {} - {}".format(
                                     metric_id, self.request_url, self.accept_type, str(e.code)
                                 )
                             )
                         else:
                             self.logger.error(
-                                "{0} : Request failed, status code -: {1}, {2} - {3}".format(
+                                "{} : Request failed, status code -: {}, {} - {}".format(
                                     metric_id, self.request_url, self.accept_type, str(e.code)
                                 )
                             )
@@ -215,7 +205,7 @@ class RequestHelper:
                                 last_redirect_url = redirect_handler.redirect_list[-1]
                                 if "http://" in last_redirect_url:
                                     self.logger.warning(
-                                        "{0} : HTTP 400 Error after redirect to http page , trying to redirect to https page for -: {1}".format(
+                                        "{} : HTTP 400 Error after redirect to http page , trying to redirect to https page for -: {}".format(
                                             metric_id, redirect_handler.redirect_list[-1]
                                         )
                                     )
@@ -228,13 +218,13 @@ class RequestHelper:
                             pass
                     else:
                         self.logger.warning(
-                            "{0} : Request failed, status code -: {1}, {2} - {3}".format(
+                            "{} : Request failed, status code -: {}, {} - {}".format(
                                 metric_id, self.request_url, self.accept_type, str(e.code)
                             )
                         )
                 except urllib.error.URLError as e:
                     self.logger.warning(
-                        "{0} : Request failed, reason -: {1}, {2} - URLError: {3}".format(
+                        "{} : Request failed, reason -: {}, {} - URLError: {}".format(
                             metric_id, self.request_url, self.accept_type, str(e)
                         )
                     )
@@ -257,7 +247,7 @@ class RequestHelper:
                 except Exception as e:
                     print("Request ERROR: ", e)
                     self.logger.warning(
-                        "{0} : Request failed, reason -: {1}, {2} - Error: {3}".format(
+                        "{} : Request failed, reason -: {}, {} - Error: {}".format(
                             metric_id, self.request_url, self.accept_type, str(e)
                         )
                     )
@@ -301,8 +291,9 @@ class RequestHelper:
                     self.redirect_url = tp_response.geturl()
                     self.response_status = status_code = tp_response.status
                     self.logger.info(
-                        "%s : Content negotiation on %s accept=%s, status=%s "
-                        % (metric_id, self.request_url, self.accept_type, str(status_code))
+                        "{} : Content negotiation on {} accept={}, status={} ".format(
+                            metric_id, self.request_url, self.accept_type, str(status_code)
+                        )
                     )
                     self.content_type = self.getResponseHeader().get("Content-Type")
                     if not self.content_type:
@@ -328,15 +319,16 @@ class RequestHelper:
                                 self.content_size = int(self.getResponseHeader().get("Content-Length"))
                                 if not self.content_size:
                                     self.content_size = int(self.getResponseHeader().get("content-length"))
-                            except Exception as e:
+                            except Exception:
                                 self.content_size = 0
                                 pass
                             if self.content_size > self.max_content_size:
                                 content_truncated = True
                             if sys.getsizeof(self.response_content) >= self.max_content_size or content_truncated:
                                 self.logger.warning(
-                                    "%s : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: %s"
-                                    % (metric_id, str(self.max_content_size))
+                                    "{} : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: {}".format(
+                                        metric_id, str(self.max_content_size)
+                                    )
                                 )
                             self.response_content = tp_response.read(self.max_content_size)
                             if self.content_size == 0:
@@ -345,7 +337,7 @@ class RequestHelper:
                             if self.response_content:
                                 try:
                                     self.response_content.decode("utf-8")
-                                except (UnicodeDecodeError, AttributeError) as e:
+                                except (UnicodeDecodeError, AttributeError):
                                     self.logger.warning(
                                         "%s : Content UTF-8 encoding problem, trying to fix.. " % metric_id
                                     )
@@ -418,8 +410,9 @@ class RequestHelper:
                                             # not really the true mime types...
                                             self.content_type = "application/rdf+" + str(guessed_format)
                                         self.logger.info(
-                                            "%s : Expected plain text but identified different content type by file extension -: %s"
-                                            % (metric_id, str(guessed_format))
+                                            "{} : Expected plain text but identified different content type by file extension -: {}".format(
+                                                metric_id, str(guessed_format)
+                                            )
                                         )
 
                                 self.content_type = self.content_type.split(";", 1)[0]
@@ -455,7 +448,7 @@ class RequestHelper:
                                                         self.parse_response = (
                                                             self.response_content
                                                         ) = lxml.etree.tostring(xmltree)
-                                                except Exception as e:
+                                                except Exception:
                                                     self.logger.warning(
                                                         "%s : Parsing XML document failed !" % metric_id
                                                     )
@@ -478,9 +471,7 @@ class RequestHelper:
                                                     break
                                                 except ValueError:
                                                     self.logger.info(
-                                                        "{0} : Retrieved response seems not to be valid JSON".format(
-                                                            metric_id
-                                                        )
+                                                        f"{metric_id} : Retrieved response seems not to be valid JSON"
                                                     )
 
                                             if at.name in [
@@ -509,30 +500,25 @@ class RequestHelper:
                                     "content_truncated": content_truncated,
                                 }
                             else:
-                                self.logger.warning("{0} : Content-type is NOT SPECIFIED".format(metric_id))
+                                self.logger.warning(f"{metric_id} : Content-type is NOT SPECIFIED")
                         else:
                             self.logger.warning(
-                                "{0} : NO successful response received, status code -: {1}".format(
-                                    metric_id, str(status_code)
-                                )
+                                f"{metric_id} : NO successful response received, status code -: {str(status_code)}"
                             )
                     tp_response.close()
                 else:
                     self.logger.warning(
-                        "{0} : No response received from -: {1}, {2}".format(
-                            metric_id, self.request_url, self.accept_type
-                        )
+                        f"{metric_id} : No response received from -: {self.request_url}, {self.accept_type}"
                     )
             # except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
                 self.logger.warning(
-                    "%s : Content negotiation failed -: accept=%s, status=%s "
-                    % (metric_id, self.accept_type, str(e.code))
+                    f"{metric_id} : Content negotiation failed -: accept={self.accept_type}, status={str(e.code)} "
                 )
                 self.response_status = int(e.code)
             except urllib.error.URLError as e:
-                self.logger.warning("{} : RequestException -: {} : {}".format(metric_id, e.reason, self.request_url))
+                self.logger.warning(f"{metric_id} : RequestException -: {e.reason} : {self.request_url}")
             except Exception as e:
                 print(e, "Request helper")
-                self.logger.warning("{} : Request Failed -: {} : {}".format(metric_id, str(e), self.request_url))
+                self.logger.warning(f"{metric_id} : Request Failed -: {str(e)} : {self.request_url}")
         return format, self.parse_response

@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner  # noqa: F401,E501
@@ -17,7 +10,7 @@ class DataContentMetadataOutput(Model):
     """
 
     def __init__(
-        self, object_type: str = None, data_content_descriptor: List[DataContentMetadataOutputInner] = None
+        self, object_type: str = None, data_content_descriptor: list[DataContentMetadataOutputInner] = None
     ):  # noqa: E501
         """DataContentMetadataOutput - a model defined in Swagger
 
@@ -26,7 +19,7 @@ class DataContentMetadataOutput(Model):
         :param data_content_descriptor: The data_content_descriptor of this DataContentMetadataOutput.  # noqa: E501
         :type data_content_descriptor: List[DataContentMetadataOutputInner]
         """
-        self.swagger_types = {"object_type": str, "data_content_descriptor": List[DataContentMetadataOutputInner]}
+        self.swagger_types = {"object_type": str, "data_content_descriptor": list[DataContentMetadataOutputInner]}
 
         self.attribute_map = {"object_type": "object_type", "data_content_descriptor": "data_content_descriptor"}
         self._object_type = object_type
@@ -65,7 +58,7 @@ class DataContentMetadataOutput(Model):
         self._object_type = object_type
 
     @property
-    def data_content_descriptor(self) -> List[DataContentMetadataOutputInner]:
+    def data_content_descriptor(self) -> list[DataContentMetadataOutputInner]:
         """Gets the data_content_descriptor of this DataContentMetadataOutput.
 
 
@@ -75,7 +68,7 @@ class DataContentMetadataOutput(Model):
         return self._data_content_descriptor
 
     @data_content_descriptor.setter
-    def data_content_descriptor(self, data_content_descriptor: List[DataContentMetadataOutputInner]):
+    def data_content_descriptor(self, data_content_descriptor: list[DataContentMetadataOutputInner]):
         """Sets the data_content_descriptor of this DataContentMetadataOutput.
 
 

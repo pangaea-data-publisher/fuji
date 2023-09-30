@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
 
 g = MetaDataCatalogueGoogleDataSearch()

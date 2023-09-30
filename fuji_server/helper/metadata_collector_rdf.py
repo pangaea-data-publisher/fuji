@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -22,15 +21,13 @@
 # SOFTWARE.
 import json
 import re
-import sys
 
-import extruct
 import idutils
 import jmespath
 import rdflib
 import requests
 from pyld import jsonld
-from rdflib import Graph, Namespace, URIRef, plugin
+from rdflib import Namespace
 from rdflib.namespace import (
     DC,
     DCTERMS,
@@ -154,7 +151,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             self.namespaces = list(set(self.namespaces))
 
         except Exception as e:
-            self.logger.info("FsF-F2-01M : RDF Namespace detection error -: {}".format(e))
+            self.logger.info(f"FsF-F2-01M : RDF Namespace detection error -: {e}")
         return namespaces
 
     def get_metadata_from_graph(self, rdf_response_graph):
@@ -200,7 +197,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 # for ns in graph_namespaces.values():
                 #    self.namespaces.append(ns)
             else:
-                self.logger.info("FsF-F2-01M : Expected RDF Graph but received -: {0}".format(self.content_type))
+                self.logger.info(f"FsF-F2-01M : Expected RDF Graph but received -: {self.content_type}")
         return rdf_metadata
 
     def parse_metadata(self):
@@ -306,7 +303,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                         else:
                                             if rdf_response.get("@graph").get("@context"):
                                                 del rdf_response["@graph"]["@context"]
-                                    except Exception as e:
+                                    except Exception:
                                         print("Failed drop duplicate JSON-LD context in graph")
                                         pass
                                 # Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
@@ -342,9 +339,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                     except Exception as e:
                         print("JSON-LD parsing error", e, rdf_response[:100])
-                        self.logger.info(
-                            "FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {}".format(e)
-                        )
+                        self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
 
             elif self.accept_type == AcceptTypes.rdf:
                 # print('ACCEPT: ',self.accept_type)
@@ -379,9 +374,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         parse_format = "turtle"
                     if "html" not in str(parse_format) and "zip" not in str(parse_format):
                         RDFparsed = False
-                        self.logger.info(
-                            "FsF-F2-01M : Try to parse RDF from -: %s as %s" % (self.target_url, parse_format)
-                        )
+                        self.logger.info(f"FsF-F2-01M : Try to parse RDF from -: {self.target_url} as {parse_format}")
                         badline = None
                         while not RDFparsed:
                             try:
@@ -415,7 +408,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     continue
                                 else:
                                     self.logger.warning(
-                                        "FsF-F2-01M : Failed to parse RDF -: %s %s" % (self.target_url, str(e))
+                                        f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {str(e)}"
                                     )
                     else:
                         self.logger.info(
@@ -424,7 +417,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         )
                 else:
                     self.logger.info(
-                        "FsF-F2-01M : Could not determine RDF serialisation format for -: {}".format(self.target_url)
+                        f"FsF-F2-01M : Could not determine RDF serialisation format for -: {self.target_url}"
                     )
 
         if not rdf_metadata:
@@ -478,7 +471,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     "FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test"
                 )
         except Exception as e:
-            self.logger.info("FsF-F2-01M : SPARQLing error -: {}".format(e))
+            self.logger.info(f"FsF-F2-01M : SPARQLing error -: {e}")
         if len(meta) <= 0:
             goodtriples = []
             has_xhtml = False
@@ -746,7 +739,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         if isinstance(json_dict, dict):
             self.logger.info(
-                "FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {}".format(self.source_name.name)
+                f"FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {self.source_name.name}"
             )
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
@@ -851,7 +844,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         if relateds:
                             jsnld_metadata["related_resources"] = relateds
                             self.logger.info(
-                                "FsF-I3-01M : {0} related resource(s) extracted from -: {1}".format(
+                                "FsF-I3-01M : {} related resource(s) extracted from -: {}".format(
                                     len(jsnld_metadata["related_resources"]), self.source_name.name
                                 )
                             )
@@ -874,7 +867,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
             except Exception as err:
                 # print(err.with_traceback())
-                self.logger.info("FsF-F2-01M : Failed to parse JSON-LD schema.org -: {}".format(err))
+                self.logger.info(f"FsF-F2-01M : Failed to parse JSON-LD schema.org -: {err}")
         else:
             self.logger.info("FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict")
 
@@ -888,7 +881,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         creative_work = None
         schema_metadata = {}
         SMA = Namespace("http://schema.org/")
-        schema_org_nodes = []
         # use only schema.org properties and create graph using these.
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
         creative_work_type = "Dataset"
@@ -941,12 +933,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 creator_name = []
                 for creator in creators:
                     creator_name.append(
-                        (
-                            graph.value(creator, SMA.familyName)
-                            or graph.value(creator, SDO.familyName)
-                            or graph.value(creator, SDO.name)
-                            or graph.value(creator, SMA.name)
-                        )
+                        graph.value(creator, SMA.familyName)
+                        or graph.value(creator, SDO.familyName)
+                        or graph.value(creator, SDO.name)
+                        or graph.value(creator, SMA.name)
                     )
                 if len(creator_name) > 0:
                     schema_metadata["creator"] = creator_name
@@ -1025,7 +1015,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.logger.info(
                                 "FsF-F2-01M : Found DCAT distribution URL info from remote location -:" + str(durl)
                             )
-                    except Exception as e:
+                    except Exception:
                         self.logger.info(
                             "FsF-F2-01M : Failed to retrieve DCAT distributions from remote location -:" + str(dist)
                         )

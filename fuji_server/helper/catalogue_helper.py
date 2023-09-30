@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 import enum
 import logging
 
 
-class MetaDataCatalogue(object):
+class MetaDataCatalogue:
     """A base class of to access a metadata catalogue
     Attributes
     ----------

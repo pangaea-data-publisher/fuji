@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -20,10 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import re
 
 import feedparser
-import lxml
 
 from fuji_server.helper.metadata_provider import MetadataProvider
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
@@ -65,7 +62,6 @@ class RSSAtomMetadataProvider(MetadataProvider):
             A dictionary of schemas in GeoRSS Atom
         """
         schemas = {}
-        XSI = "http://www.w3.org/2001/XMLSchema-instance"
 
         try:
             requestHelper = RequestHelper(self.endpoint, self.logger)
@@ -81,9 +77,7 @@ class RSSAtomMetadataProvider(MetadataProvider):
         except Exception as e:
             print("RSS Error ", e)
             self.logger.info(
-                "{0} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {1}".format(
-                    self.metric_id, str(e)
-                )
+                f"{self.metric_id} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {str(e)}"
             )
 
         return schemas

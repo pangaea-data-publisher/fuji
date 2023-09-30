@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -72,7 +71,7 @@ class MetadataProvider(ABC):
         self.endpoint = endpoint
         self.metric_id = metric_id
         self.namespaces = []
-        super(MetadataProvider, self).__init__()
+        super().__init__()
 
     @abstractmethod
     def getNamespaces(self):

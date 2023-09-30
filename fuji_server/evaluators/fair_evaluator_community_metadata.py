@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -22,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import List
 
 from tldextract import extract
 
@@ -30,7 +27,6 @@ from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
-from fuji_server.helper.repository_helper import RepositoryHelper
 from fuji_server.models.community_endorsed_standard import CommunityEndorsedStandard
 from fuji_server.models.community_endorsed_standard_output_inner import CommunityEndorsedStandardOutputInner
 
@@ -69,7 +65,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             else:
                 self.logger.warning(
                     "FsF-R1.3-01M : Service URL domain/subdomain does not match with landing page domain -: {}".format(
-                        service_domain, landing_domain
+                        service_domain,
                     )
                 )
                 (
@@ -86,7 +82,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         nsstandards = []
         if self.fuji.namespace_uri:
             self.logger.info(
-                "FsF-R1.3-01M : Namespaces included in the metadata -: {}".format(list(set(self.fuji.namespace_uri)))
+                f"FsF-R1.3-01M : Namespaces included in the metadata -: {list(set(self.fuji.namespace_uri))}"
             )
             for nsuri in list(set(self.fuji.namespace_uri)):
                 sinfo = self.get_metadata_standards_info(nsuri, "ns")
@@ -283,7 +279,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                                 community_standards.append(kn_mstandard.get("id"))
                     if len(community_standards) > 0:
                         self.logger.info(
-                            "{0} : Identifiers of community specific metadata standards found -: {1}".format(
+                            "{} : Identifiers of community specific metadata standards found -: {}".format(
                                 self.metric_identifier, community_standards
                             )
                         )
@@ -381,7 +377,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             return {}
 
     def evaluate(self):
-        self.community_standards_output: List[CommunityEndorsedStandardOutputInner] = []
+        self.community_standards_output: list[CommunityEndorsedStandardOutputInner] = []
 
         self.retrieve_metadata_standards_from_namespaces()
         self.retrieve_metadata_standards_from_apis()

@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import datetime
-import typing
 
 
 def _deserialize(data, klass):
@@ -28,7 +26,7 @@ def _deserialize(data, klass):
     #     if klass.__extra__ == dict:
     #         return _deserialize_dict(data, klass.__args__[1])
     elif hasattr(klass, "__origin__"):
-        if klass.__origin__ == list or klass.__origin__ == typing.List:
+        if klass.__origin__ == list or klass.__origin__ == list:
             return _deserialize_list(data, klass.__args__[0])
         if klass.__origin__ == dict:
             return _deserialize_dict(data, klass.__args__[1])
@@ -110,7 +108,7 @@ def deserialize_model(data, klass):
         return data
 
     for attr, attr_type in instance.swagger_types.items():
-        if data is not None and instance.attribute_map[attr] in data and isinstance(data, (list, dict)):
+        if data is not None and instance.attribute_map[attr] in data and isinstance(data, list | dict):
             value = data[instance.attribute_map[attr]]
             setattr(instance, attr, _deserialize(value, attr_type))
 

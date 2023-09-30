@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Fleur plugin documentation build configuration file, created by
 # sphinx-quickstart on Wed Dec  7 16:39:12 2016.
@@ -14,7 +13,6 @@
 
 # import fuji_server
 import os
-import sys
 
 from fuji_server import __version__
 

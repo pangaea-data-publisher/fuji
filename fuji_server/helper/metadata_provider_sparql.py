@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -80,9 +79,7 @@ class SPARQLMetadataProvider(MetadataProvider):
             content_type = response.info()["content-type"].split(";")[0]
             if "html" in content_type:
                 self.logger.warning(
-                    "{0} : Looks like not a valid SPARQL endpoint, content type -: {1} ".format(
-                        self.metric_id, content_type
-                    )
+                    f"{self.metric_id} : Looks like not a valid SPARQL endpoint, content type -: {content_type} "
                 )
             else:
                 rdf_graph = response.convert()  # rdflib.graph.ConjunctiveGraph
@@ -93,7 +90,7 @@ class SPARQLMetadataProvider(MetadataProvider):
                 # an RDF graph [RDF-CONCEPTS] serialized, for example, in the RDF/XML syntax [RDF-XML], or an equivalent RDF graph serialization, for SPARQL Query forms DESCRIBE and CONSTRUCT
                 if isinstance(rdf_graph, rdflib.graph.Graph) and len(rdf_graph) > 0:
                     self.logger.info(
-                        "{0} : number of triples found in the graph, format -: {1} of  {2}".format(
+                        "{} : number of triples found in the graph, format -: {} of  {}".format(
                             self.metric_id, len(rdf_graph), content_type
                         )
                     )
@@ -103,11 +100,11 @@ class SPARQLMetadataProvider(MetadataProvider):
                         self.namespaces.append(str(n[1]))
                     self.getNamespacesfromIRIs(graph_text)
                 else:
-                    self.logger.warning("{0} : SPARQL query returns NO result.".format(self.metric_id))
+                    self.logger.warning(f"{self.metric_id} : SPARQL query returns NO result.")
         except HTTPError as err1:
-            self.logger.warning("{0} : HTTPError -: {1}".format(self.metric_id, err1))
+            self.logger.warning(f"{self.metric_id} : HTTPError -: {err1}")
         except SPARQLExceptions.EndPointNotFound as err2:
-            self.logger.warning("{0} : SPARQLExceptions -: {1}".format(self.metric_id, err2))
+            self.logger.warning(f"{self.metric_id} : SPARQLExceptions -: {err2}")
         return rdf_graph, content_type
 
     def getNamespaces(self):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -34,7 +33,7 @@ class MessageFilter(logging.Filter):
         if record.msg.startswith("FsF-"):
             level = record.levelname
             m = record.msg.split(":", 1)
-            msg = "%s: %s" % (level, m[1].strip())
+            msg = f"{level}: {m[1].strip()}"
             record.msg = msg
         return True
 

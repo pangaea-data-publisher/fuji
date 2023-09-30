@@ -1,6 +1,4 @@
-import hashlib
 import io
-import logging
 import os
 import re
 import time
@@ -139,7 +137,7 @@ class DataHarvester:
                                 + str(self.timeout)
                                 + " sec or receiving > "
                                 + str(self.max_download_size)
-                                + "- {}".format(url)
+                                + f"- {url}"
                             )
                             content_size = 0
                             content_size = str(response.headers.get("content-length")).split(";")[0]
@@ -150,30 +148,24 @@ class DataHarvester:
                             content_size = downloaded_size
                         fileinfo["content_size"] = content_size
                 response.close()
-                self.logger.warning(
-                    "FsF-R1-01MD : Content identifier accessible -: {0}, HTTPStatus code {1} ".format(url, rstatus)
-                )
+                self.logger.warning(f"FsF-R1-01MD : Content identifier accessible -: {url}, HTTPStatus code {rstatus} ")
 
             except urllib.error.HTTPError as e:
+                self.logger.warning(f"FsF-F3-01M : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
+                self.logger.warning(f"FsF-R1-01MD : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
                 self.logger.warning(
-                    "FsF-F3-01M : Content identifier inaccessible -: {0}, HTTPError code {1} ".format(url, e.code)
-                )
-                self.logger.warning(
-                    "FsF-R1-01MD : Content identifier inaccessible -: {0}, HTTPError code {1} ".format(url, e.code)
-                )
-                self.logger.warning(
-                    "FsF-R1.3-02D : Content identifier inaccessible -: {0}, HTTPError code {1} ".format(url, e.code)
+                    f"FsF-R1.3-02D : Content identifier inaccessible -: {url}, HTTPError code {e.code} "
                 )
             except urllib.error.URLError as e:
                 self.logger.exception(e.reason)
                 self.logger.warning(
-                    "FsF-F3-01M : Content identifier inaccessible -: {0}, URLError reason {1} ".format(url, e.reason)
+                    f"FsF-F3-01M : Content identifier inaccessible -: {url}, URLError reason {e.reason} "
                 )
                 self.logger.warning(
-                    "FsF-R1-01MD : Content identifier inaccessible -: {0}, URLError reason {1} ".format(url, e.reason)
+                    f"FsF-R1-01MD : Content identifier inaccessible -: {url}, URLError reason {e.reason} "
                 )
                 self.logger.warning(
-                    "FsF-R1.3-02D : Content identifier inaccessible -: {0}, URLError reason {1} ".format(url, e.reason)
+                    f"FsF-R1.3-02D : Content identifier inaccessible -: {url}, URLError reason {e.reason} "
                 )
             except Exception as e:
                 self.logger.warning("FsF-F3-01M : Content identifier inaccessible -:" + url + " " + str(e))
@@ -197,14 +189,14 @@ class DataHarvester:
                 fileinfo["tika_status"] = status = parsedFile.get("status")
                 tika_content_types = parsedFile.get("metadata").get("Content-Type")
                 parsed_content = parsedFile.get("content")
-                self.logger.info("{0} : Successfully parsed data object file using TIKA".format("FsF-R1-01MD"))
+                self.logger.info("{} : Successfully parsed data object file using TIKA".format("FsF-R1-01MD"))
                 file_buffer_object.close()
                 parsedFile.clear()
             else:
-                self.logger.warning("{0} : Could not parse data object file using TIKA".format("FsF-R1-01MD"))
+                self.logger.warning("{} : Could not parse data object file using TIKA".format("FsF-R1-01MD"))
 
         except Exception as e:
-            self.logger.warning("{0} : File parsing using TIKA failed -: {1}".format("FsF-R1-01MD", e))
+            self.logger.warning("{} : File parsing using TIKA failed -: {}".format("FsF-R1-01MD", e))
             # in case TIKA request fails use response header info
             tika_content_types = str(self.content_type)
 
@@ -216,11 +208,11 @@ class DataHarvester:
         fileinfo["tika_content_type"] = self.extend_mime_type_list(fileinfo["tika_content_type"])
 
         # Extract the text content from the parsed file and convert to string
-        self.logger.info("{0} : File request status code -: {1}".format("FsF-R1-01MD", status))
+        self.logger.info("{} : File request status code -: {}".format("FsF-R1-01MD", status))
 
         fileinfo["test_data_content_text"] = str(re.sub(r"[\r\n\t\s]+", " ", str(parsed_content)))
 
         # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
         if fileinfo["test_data_content_text"]:
-            self.logger.info("FsF-R1-01MD : Succesfully parsed data file(s) -: {}".format(url))
+            self.logger.info(f"FsF-R1-01MD : Succesfully parsed data file(s) -: {url}")
         return fileinfo

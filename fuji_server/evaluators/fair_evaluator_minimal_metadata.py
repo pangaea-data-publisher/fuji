@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -97,9 +95,9 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
     def testCoreDescriptiveMetadataAvailable(self):
         test_status = False
         test_requirements = None
-        if self.isTestDefined(self.metric_identifier + '-3'):
-            if self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements:
-                test_requirements = self.metric_tests[self.metric_identifier + '-3'].metric_test_requirements[0]
+        if self.isTestDefined(self.metric_identifier + "-3"):
+            if self.metric_tests[self.metric_identifier + "-3"].metric_test_requirements:
+                test_requirements = self.metric_tests[self.metric_identifier + "-3"].metric_test_requirements[0]
             if test_requirements:
                 test_required = []
                 if test_requirements.get("required"):
@@ -110,7 +108,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                     if not isinstance(test_required, list):
                         test_required = [test_required]
                     self.logger.info(
-                        "{0} : Will exclusively consider community specific metadata properties which are specified in metrics -: {1}".format(
+                        "{} : Will exclusively consider community specific metadata properties which are specified in metrics -: {}".format(
                             self.metric_identifier, test_requirements.get("required")
                         )
                     )
@@ -125,9 +123,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     self.metric_identifier
-                    + " : Found required core descriptive metadata elements -: {}".format(
-                        self.required_metadata_properties
-                    ),
+                    + f" : Found required core descriptive metadata elements -: {self.required_metadata_properties}",
                 )
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-3").metric_test_maturity_config
                 self.score.earned = self.total_score
@@ -137,9 +133,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 core_missing = list(set(self.required_metadata_properties) - set(self.metadata_found))
                 self.logger.warning(
                     self.metric_identifier
-                    + " : Not all required core descriptive metadata elements exist, missing -: {}".format(
-                        str(core_missing)
-                    )
+                    + f" : Not all required core descriptive metadata elements exist, missing -: {str(core_missing)}"
                 )
         return test_status
 
@@ -151,7 +145,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     self.metric_identifier
-                    + " : Found required core citation metadata elements -: {}".format(self.partial_elements),
+                    + f" : Found required core citation metadata elements -: {self.partial_elements}",
                 )
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")

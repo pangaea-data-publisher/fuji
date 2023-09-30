@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -20,8 +13,8 @@ class DataFileFormatOutputInner(Model):
         file_uri: str = None,
         mime_type: str = None,
         is_preferred_format: bool = False,
-        preference_reason: List[str] = None,
-        subject_areas: List[str] = None,
+        preference_reason: list[str] = None,
+        subject_areas: list[str] = None,
     ):  # noqa: E501
         """DataFileFormatOutputInner - a model defined in Swagger
 
@@ -40,8 +33,8 @@ class DataFileFormatOutputInner(Model):
             "file_uri": str,
             "mime_type": str,
             "is_preferred_format": bool,
-            "preference_reason": List[str],
-            "subject_areas": List[str],
+            "preference_reason": list[str],
+            "subject_areas": list[str],
         }
 
         self.attribute_map = {
@@ -132,7 +125,7 @@ class DataFileFormatOutputInner(Model):
         self._is_preferred_format = is_preferred_format
 
     @property
-    def preference_reason(self) -> List[str]:
+    def preference_reason(self) -> list[str]:
         """Gets the preference_reason of this DataFileFormatOutputInner.
 
 
@@ -142,7 +135,7 @@ class DataFileFormatOutputInner(Model):
         return self._preference_reason
 
     @preference_reason.setter
-    def preference_reason(self, preference_reason: List[str]):
+    def preference_reason(self, preference_reason: list[str]):
         """Sets the preference_reason of this DataFileFormatOutputInner.
 
 
@@ -153,7 +146,7 @@ class DataFileFormatOutputInner(Model):
         self._preference_reason = preference_reason
 
     @property
-    def subject_areas(self) -> List[str]:
+    def subject_areas(self) -> list[str]:
         """Gets the subject_areas of this DataFileFormatOutputInner.
 
 
@@ -163,7 +156,7 @@ class DataFileFormatOutputInner(Model):
         return self._subject_areas
 
     @subject_areas.setter
-    def subject_areas(self, subject_areas: List[str]):
+    def subject_areas(self, subject_areas: list[str]):
         """Sets the subject_areas of this DataFileFormatOutputInner.
 
 

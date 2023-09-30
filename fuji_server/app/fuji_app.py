@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -37,7 +35,7 @@ def create_fuji_app(config):
     Function which initializes the FUJI connexion flask app and returns it
     """
     # you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
-    ROOT_DIR = main_dir = Path(__file__).parent.parent
+    ROOT_DIR = Path(__file__).parent.parent
     YAML_DIR = config["SERVICE"]["yaml_directory"]
 
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)

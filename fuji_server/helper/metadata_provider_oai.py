@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -94,14 +93,12 @@ class OAIMetadataProvider(MetadataProvider):
                         schemas[metadata_prefix] = metadata_schema
                     else:
                         self.logger.info(
-                            "{0} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {1}".format(
+                            "{} : Skipped domain-agnostic standard listed in OAI-PMH endpoint -: {}".format(
                                 self.metric_id, metadata_prefix
                             )
                         )
             except:
-                self.logger.info(
-                    "{0} : Could not parse XML response retrieved from OAI-PMH endpoint".format(self.metric_id)
-                )
+                self.logger.info(f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint")
 
         return schemas
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -71,7 +70,6 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
         source = self.getEnumSourceNames().HIGHWIRE_EPRINTS_EMBEDDED
         if self.source_metadata is not None:
             self.metadata_format = MetadataFormats.HTML
-            meta_hw_matches = []
             self.content_type = "text/html"
             metasoup = BeautifulSoup(self.source_metadata, "lxml")
             meta_hw_soupresult = metasoup.findAll(

@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.persistence_output_inner import PersistenceOutputInner  # noqa: F401,E501
@@ -16,13 +9,13 @@ class PersistenceOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, persistent_identifiers: List[PersistenceOutputInner] = None):  # noqa: E501
+    def __init__(self, persistent_identifiers: list[PersistenceOutputInner] = None):  # noqa: E501
         """PersistenceOutput - a model defined in Swagger
 
         :param persistent_identifiers: The persistent_identifiers of this PersistenceOutput.  # noqa: E501
         :type persistent_identifiers: List[PersistenceOutputInner]
         """
-        self.swagger_types = {"persistent_identifiers": List[PersistenceOutputInner]}
+        self.swagger_types = {"persistent_identifiers": list[PersistenceOutputInner]}
 
         self.attribute_map = {"persistent_identifiers": "persistent_identifiers"}
         self._persistent_identifiers = persistent_identifiers
@@ -39,7 +32,7 @@ class PersistenceOutput(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def persistent_identifiers(self) -> List[PersistenceOutputInner]:
+    def persistent_identifiers(self) -> list[PersistenceOutputInner]:
         """Gets the persistent_identifiers of this PersistenceOutput.
 
 
@@ -49,7 +42,7 @@ class PersistenceOutput(Model):
         return self._persistent_identifiers
 
     @persistent_identifiers.setter
-    def persistent_identifiers(self, persistent_identifiers: List[PersistenceOutputInner]):
+    def persistent_identifiers(self, persistent_identifiers: list[PersistenceOutputInner]):
         """Sets the persistent_identifiers of this PersistenceOutput.
 
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,16 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import enum
-import socket
-import urllib
 
-import requests
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.identifier_included import IdentifierIncluded
 from fuji_server.models.identifier_included_output import IdentifierIncludedOutput
-from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner
 
 
 class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
@@ -71,7 +64,7 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
                                     self.content_list.append(oid)
                                     self.logger.info(
                                         self.metric_identifier
-                                        + " : Found metadata identifier in metadata -: {} via {}".format(oid, method)
+                                        + f" : Found metadata identifier in metadata -: {oid} via {method}"
                                     )
             if test_result:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
@@ -95,8 +88,7 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
         if self.result.test_status == "pass":
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
-                self.metric_identifier
-                + " : Number of object content identifier found -: {}".format(number_of_contents),
+                self.metric_identifier + f" : Number of object content identifier found -: {number_of_contents}",
             )
         else:
             self.logger.warning(self.metric_identifier + " : Valid data (content) identifier missing.")

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -106,7 +104,7 @@ class MetaDataCollectorOreAtom(MetaDataCollector):
                                         )
             except Exception as err:
                 # print(err.with_traceback())
-                self.logger.warning("FsF-F2-01M : Failed to parse OAI ORE XML -: {}".format(err))
+                self.logger.warning(f"FsF-F2-01M : Failed to parse OAI ORE XML -: {err}")
         else:
             self.logger.info("FsF-F2-01M : Could not identify OAI ORE metadata")
 
