@@ -68,16 +68,16 @@ python -m fuji_server -c fuji_server/config/server.ini
 docker run -d -p 1071:1071 ghcr.io/pangaea-data-publisher/fuji
 ```
 
-To access the Swagger  user interface, open the url below on the browser:
+To access the OpenAPI user interface, open the url below on the browser:
 
 ```
 http://localhost:1071/fuji/api/v1/ui/
 ```
 
-Your Swagger definition lives here:
+Your OpenAPI definition lives here:
 
 ```
-http://localhost:1071/fuji/api/v1/swagger.json
+http://localhost:1071/fuji/api/v1/openapi.json
 ```
 
 You can provide a different server config file this way:

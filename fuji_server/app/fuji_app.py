@@ -41,7 +41,7 @@ def create_fuji_app(config):
     YAML_DIR = config["SERVICE"]["yaml_directory"]
 
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
-    API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config["SERVICE"]["swagger_yaml"])
+    API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config["SERVICE"]["openapi_yaml"])
     app.app.json_encoder = encoder.JSONEncoder
 
     app.add_api(API_YAML, validate_responses=True)
