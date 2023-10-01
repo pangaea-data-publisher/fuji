@@ -1,0 +1,76 @@
+name: Reports
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types:
+    - completed
+permissions: {}
+
+jobs:
+  # Ref: https://github.com/EnricoMi/publish-unit-test-result-action#support-fork-repositories-and-dependabot-branches
+  test-results:
+    runs-on: ubuntu-22.04
+    if: github.event.workflow_run.conclusion != 'skipped'
+    permissions:
+      checks: write
+      # required to create pull request comments
+      pull-requests: write
+      # required by download step to access artifacts API
+      actions: read
+    steps:
+    - name: Download and Extract Artifacts
+      uses: dawidd6/action-download-artifact@268677152d06ba59fcec7a7f0b5d961b6ccd7e1e # v2.28.0
+      with:
+        run_id: ${{ github.event.workflow_run.id }}
+        path: artifacts
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@d93dbc08d265e4653da0c0af544bee2a851d3e38 # v2.10.0
+      with:
+        comment_title: ':clipboard: Pytest Results'
+        commit: ${{ github.event.workflow_run.head_sha }}
+        event_file: artifacts/event-file/event.json
+        event_name: ${{ github.event.workflow_run.event }}
+        files: artifacts/test-results/pytest-junit.xml
+
+  coverage-results:
+    runs-on: ubuntu-22.04
+    if: github.event.workflow_run.conclusion != 'skipped'
+    permissions:
+      # required to create pull request comments
+      pull-requests: write
+      # required by download step to access artifacts API
+      actions: read
+    steps:
+    - name: Download and Extract Artifacts
+      uses: dawidd6/action-download-artifact@268677152d06ba59fcec7a7f0b5d961b6ccd7e1e # v2.28.0
+      with:
+        run_id: ${{ github.event.workflow_run.id }}
+        path: artifacts
+    # Ref: https://github.com/irongut/CodeCoverageSummary#usage
+    - name: Generate Code Coverage Report
+      uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
+      with:
+        filename: artifacts/coverage-results/pytest-cobertura.xml
+        badge: true
+        format: markdown
+        hide_complexity: true
+        output: both
+    - name: Write to Job Summary
+      run: |
+        echo "## :clipboard: Code Coverage" >> $GITHUB_STEP_SUMMARY
+        cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+    - name: Get Pull Request number
+      run: |
+        echo "number=$(jq .pull_request.number artifacts/event-file/event.json)" >> $GITHUB_OUTPUT
+      id: get-pr-number
+    # Ref: https://github.com/marocchino/sticky-pull-request-comment#inputs
+    - name: Add Code Coverage PR Comment
+      if: ${{ steps.get-pr-number.outputs.number }} != null
+      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+      with:
+        recreate: true
+        number: ${{ steps.get-pr-number.outputs.number }}
+        path: code-coverage-results.md
+
+    # TODO: Coverage badge
