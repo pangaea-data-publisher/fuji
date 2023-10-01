@@ -23,6 +23,9 @@ jobs:
     # Build and push image to GitHub Container Registry https://docs.docker.com/docker-hub/builds/
     runs-on: ubuntu-22.04
 
+    # do not run in forks
+    if: github.repository == 'pangaea-data-publisher/fuji'
+
     steps:
 
     - run: docker --version
