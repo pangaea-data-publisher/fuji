@@ -10,7 +10,7 @@ from unittest import mock
 
 import pytest
 
-from fuji_server.app.fuji_app import create_fuji_app
+from fuji_server.app import create_app
 from fuji_server.helper.preprocessor import Preprocessor
 
 if TYPE_CHECKING:
@@ -105,7 +105,7 @@ def temporary_preprocessor(temporary_data_directory) -> Preprocessor:
 
 @pytest.fixture(scope="session")
 def app(test_config) -> Flask:
-    _app = create_fuji_app(test_config)
+    _app = create_app(test_config)
     _app.testing = True
     return _app.app
 
