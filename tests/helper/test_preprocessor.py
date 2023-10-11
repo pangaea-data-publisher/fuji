@@ -19,6 +19,7 @@ import json
 from typing import Any
 
 import pytest
+import yaml
 
 from fuji_server.helper.preprocessor import Preprocessor
 from tests.conftest import DATA_DIR
@@ -29,6 +30,11 @@ isDebug = True
 def load_json_from_data_directory(filename: str):
     path = DATA_DIR.joinpath(filename)
     return json.loads(path.read_text())
+
+
+def load_yaml_from_data_directory(filename: str):
+    path = DATA_DIR.joinpath(filename)
+    return yaml.safe_load(path.read_text())
 
 
 def load_txt_from_data_directory(filename: str):
@@ -48,7 +54,7 @@ def metadata_standards():
 
 @pytest.fixture(scope="session")
 def repodois():
-    return load_json_from_data_directory("repodois.json")
+    return load_yaml_from_data_directory("repodois.yaml")
 
 
 @pytest.fixture(scope="session")

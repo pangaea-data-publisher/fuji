@@ -232,7 +232,7 @@ class Preprocessor:
     def retrieve_datacite_re3repos(cls):
         # retrieve all client id and re3data doi from datacite
         isDebugMode = True
-        re3dict_path = os.path.join(cls.fuji_server_dir, "data", "repodois.json")
+        re3dict_path = os.path.join(cls.fuji_server_dir, "data", "repodois.yaml")
         repolistdate = os.path.getmtime(re3dict_path)
         try:
             # update once a day
@@ -242,7 +242,7 @@ class Preprocessor:
             pass
         if isDebugMode:
             with open(re3dict_path) as f:
-                cls.re3repositories = json.load(f)
+                cls.re3repositories = yaml.safe_load(f)
         else:
             print("updating re3data dois")
             p = {"query": "re3data_id:*"}
@@ -259,7 +259,8 @@ class Preprocessor:
                 # fix wrong entry
                 cls.re3repositories["bl.imperial"] = "http://doi.org/10.17616/R3K64N"
                 with open(re3dict_path, "w") as f2:
-                    json.dump(cls.re3repositories, f2)
+                    yaml.dump(cls.re3repositories, f2)
+
             except requests.exceptions.RequestException as e:
                 print("Preprocessor Error: " + str(e))
                 cls.logger.error(e)
