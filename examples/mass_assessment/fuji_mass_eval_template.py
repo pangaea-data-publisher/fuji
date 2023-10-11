@@ -5,7 +5,7 @@ import os
 
 import requests
 
-# That is how a request may look like (from the swagger API)
+# That is how a request may look like (from the OpenAPI API)
 # curl -X POST "http://localhost:1071/fuji/api/v1/evaluate" -H  "accept: application/json" -H  "Authorization: Basic bWFydmVsOndvbmRlcndvbWFu" -H  "Content-Type: application/json" -d "{\"object_identifier\":\"https://archive.materialscloud.org/record/2021.146\",\"test_debug\":true,\"use_datacite\":true}"
 
 results_folder = "./results/"
@@ -16,7 +16,7 @@ pids = ["https://archive.materialscloud.org/record/2021.146"]
 #    pids = fileo.readlines()
 
 fuji_api_url = "http://localhost:1071/fuji/api/v1/evaluate"
-# the Authorization key you get from your running swagger API instance
+# the Authorization key you get from your running OpenAPI API instance
 headers = {
     "accept": "application/json",
     "Authorization": "Basic bWFydmVsOndvbmRlcndvbWFu",
