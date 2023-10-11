@@ -460,7 +460,6 @@ class MetadataHarvester:
 
     def get_signposting_object_identifier(self):
         # check if there is a cite-as signposting link
-        signposting_pid = None
         signposting_header_pids = self.get_signposting_header_links("cite-as")
         signposting_html_pids = self.get_html_typed_links("cite-as")
         signposting_pid_link_list = []
@@ -941,7 +940,7 @@ class MetadataHarvester:
 
     def retrieve_metadata_external_rdf_negotiated(self, target_url_list=[]):
         # ========= retrieve rdf metadata namespaces by content negotiation ========
-        if self.is_harvesting_source_allowed(MetadataSources.RDF_NEGOTIATED):
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
             source = MetadataSources.RDF_NEGOTIATED
             # if self.pid_scheme == 'purl':
             #    targeturl = self.pid_url
