@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -23,9 +21,6 @@
 # SOFTWARE.
 import enum
 import socket
-import urllib
-
-import requests
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.identifier_included import IdentifierIncluded
@@ -95,7 +90,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                             ).metric_test_maturity_config
                         else:
                             self.logger.warning(
-                                self.metric_identifier + " : Object (content) url is empty -: {}".format(datainfo)
+                                self.metric_identifier + f" : Object (content) url is empty -: {datainfo}"
                             )
             if test_result:
                 self.score.earned += test_score
@@ -114,8 +109,6 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
         contents = self.fuji.metadata_merged.get("object_content_identifier")
         # if id_object is not None:
         #    self.logger.info('FsF-F3-01M : Object identifier specified -: {}'.format(id_object))
-        score = 0
-        content_list = []
         if contents:
             # print(contents)
             if isinstance(contents, dict):
@@ -143,8 +136,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
             if self.result.test_status == "pass":
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
-                    self.metric_identifier
-                    + " : Number of object content identifier found -: {}".format(number_of_contents),
+                    self.metric_identifier + f" : Number of object content identifier found -: {number_of_contents}",
                 )
             else:
                 self.logger.warning(self.metric_identifier + " : Valid data (content) identifier missing.")

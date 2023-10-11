@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ################################################################################
 # MIT License
 #
@@ -26,14 +25,13 @@
 Controller generated to handled auth operation described at:
 https://connexion.readthedocs.io/en/latest/security.html
 """
-from typing import Optional
 
 import fuji_server.config.users as fuji_user
 
 
 def checkUser(
     username: str, password: str, required_scopes=None, user_dict: dict = fuji_user.fuji_users
-) -> Optional[dict]:
+) -> dict | None:
     """Function to check if a given user name and password are in the allowed user dict of fuji
 
     This is not save.

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -93,7 +91,6 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
         test_status = "fail"
-        score = 0
 
         if self.testStandardProtocolMetadataUsed():
             test_status = "pass"

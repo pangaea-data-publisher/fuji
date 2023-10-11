@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -32,16 +30,16 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from fuji_server import encoder
 
 
-def create_app(config):
+def create_fuji_app(config):
     """
     Function which initializes the FUJI connexion flask app and returns it
     """
     # you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
-    ROOT_DIR = Path(__file__).parent
+    ROOT_DIR = Path(__file__).parent.parent
     YAML_DIR = config["SERVICE"]["yaml_directory"]
 
     app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
-    API_YAML = ROOT_DIR.joinpath(YAML_DIR, config["SERVICE"]["swagger_yaml"])
+    API_YAML = os.path.join(ROOT_DIR, YAML_DIR, config["SERVICE"]["swagger_yaml"])
     app.app.json_encoder = encoder.JSONEncoder
 
     app.add_api(API_YAML, validate_responses=True)

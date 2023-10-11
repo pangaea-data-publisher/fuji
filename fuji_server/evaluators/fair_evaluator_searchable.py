@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -22,17 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import Any, List
 
 from fuji_server import OutputSearchMechanisms
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
 from fuji_server.helper.catalogue_helper import MetaDataCatalogue
 from fuji_server.helper.catalogue_helper_datacite import MetaDataCatalogueDataCite
 from fuji_server.helper.catalogue_helper_google_datasearch import MetaDataCatalogueGoogleDataSearch
 from fuji_server.helper.catalogue_helper_mendeley_data import MetaDataCatalogueMendeleyData
 from fuji_server.helper.identifier_helper import IdentifierHelper
-from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataOfferingMethods, MetadataSources
+from fuji_server.helper.metadata_collector import MetadataSources
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
 
@@ -134,43 +130,48 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             test_requirements = self.metric_tests[self.metric_identifier + str(testid)].metric_test_requirements
         if test_requirements:
             for test_requirement in test_requirements:
-                if test_requirement.get('required'):
+                if test_requirement.get("required"):
                     test_required = []
-                    if isinstance(test_requirement.get('required'), list):
-                        test_required = test_requirement.get('required')
-                    elif test_requirement.get('required').get('name'):
-                        test_required = test_requirement.get('required').get('name')
+                    if isinstance(test_requirement.get("required"), list):
+                        test_required = test_requirement.get("required")
+                    elif test_requirement.get("required").get("name"):
+                        test_required = test_requirement.get("required").get("name")
                     if not isinstance(test_required, list):
                         test_required = [test_required]
 
-                if 'metadata/standard' in test_requirement.get('target'):
+                if "metadata/standard" in test_requirement.get("target"):
                     if test_required:
                         self.logger.info(
-                            '{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}'.format(
-                                self.metric_identifier, str(testid), test_required))
+                            "{0} : Will exclusively consider community specific metadata standards for {0}{1} which are specified in metrics -: {2}".format(
+                                self.metric_identifier, str(testid), test_required
+                            )
+                        )
                         self.search_engines_support_standards = test_required
-                if 'metadata/offering_method' in test_requirement.get('target'):
+                if "metadata/offering_method" in test_requirement.get("target"):
                     if test_required:
                         self.logger.info(
-                            '{0} : Will exclusively consider community specific metadata offering methods for {0}{1} which are specified in metrics -: {2}'.format(
-                                self.metric_identifier, str(testid), test_required))
+                            "{0} : Will exclusively consider community specific metadata offering methods for {0}{1} which are specified in metrics -: {2}".format(
+                                self.metric_identifier, str(testid), test_required
+                            )
+                        )
                         self.search_engines_support_offering = test_required
-
 
     def testSearchEngineCompatibleMetadataAvailable(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + '-1'):
-            self.filter_requirements('-1')
+        if self.isTestDefined(self.metric_identifier + "-1"):
+            self.filter_requirements("-1")
             search_engine_support_match = []
-            test_score = self.getTestConfigScore(self.metric_identifier + '-1')
-            #NEW Way
+            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+            # NEW Way
             for found_metadata in self.fuji.metadata_unmerged:
-                if found_metadata.get('metadata'):
+                if found_metadata.get("metadata"):
                     print(found_metadata)
-                    if found_metadata.get('metadata') !={'object_type': 'Other'}:
-                        print('MTHODS:::   ',found_metadata.get('offering_method') , self.search_engines_support_offering)
-                        if found_metadata.get('offering_method') in self.search_engines_support_offering:
-                            standard_found = found_metadata.get('metadata_standard')
+                    if found_metadata.get("metadata") != {"object_type": "Other"}:
+                        print(
+                            "MTHODS:::   ", found_metadata.get("offering_method"), self.search_engines_support_offering
+                        )
+                        if found_metadata.get("offering_method") in self.search_engines_support_offering:
+                            standard_found = found_metadata.get("metadata_standard")
                             if standard_found in self.search_engines_support_standards:
                                 search_engine_support_match.append(
                                     standard_found + " via: " + found_metadata.get("offering_method")
@@ -195,7 +196,10 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     + str(search_engine_support_match),
                 )
             else:
-                self.logger.warning(self.metric_identifier + ' : Metadata is NOT found through -: {}'.format(self.search_engines_support_offering ))
+                self.logger.warning(
+                    self.metric_identifier
+                    + f" : Metadata is NOT found through -: {self.search_engines_support_offering}"
+                )
         return test_status
 
     def testListedinSearchEngines(self):

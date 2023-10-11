@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -19,7 +12,7 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         self,
         target: str = None,
         modality: str = None,
-        required: List[str] = None,
+        required: list[str] = None,
         tested_on: str = None,
         comment: str = None,
     ):  # noqa: E501
@@ -36,7 +29,7 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         :param comment: The comment of this FAIRResultEvaluationCriteriumRequirements.  # noqa: E501
         :type comment: str
         """
-        self.swagger_types = {"target": str, "modality": str, "required": List[str], "tested_on": str, "comment": str}
+        self.swagger_types = {"target": str, "modality": str, "required": list[str], "tested_on": str, "comment": str}
 
         self.attribute_map = {
             "target": "target",
@@ -105,7 +98,7 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         self._modality = modality
 
     @property
-    def required(self) -> List[str]:
+    def required(self) -> list[str]:
         """Gets the required of this FAIRResultEvaluationCriteriumRequirements.
 
 
@@ -115,7 +108,7 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
         return self._required
 
     @required.setter
-    def required(self, required: List[str]):
+    def required(self, required: list[str]):
         """Sets the required of this FAIRResultEvaluationCriteriumRequirements.
 
 

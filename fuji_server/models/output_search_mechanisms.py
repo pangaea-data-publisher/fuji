@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -15,7 +8,7 @@ class OutputSearchMechanisms(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, mechanism: str = None, mechanism_info: List[str] = None):  # noqa: E501
+    def __init__(self, mechanism: str = None, mechanism_info: list[str] = None):  # noqa: E501
         """OutputSearchMechanisms - a model defined in Swagger
 
         :param mechanism: The mechanism of this OutputSearchMechanisms.  # noqa: E501
@@ -23,7 +16,7 @@ class OutputSearchMechanisms(Model):
         :param mechanism_info: The mechanism_info of this OutputSearchMechanisms.  # noqa: E501
         :type mechanism_info: List[str]
         """
-        self.swagger_types = {"mechanism": str, "mechanism_info": List[str]}
+        self.swagger_types = {"mechanism": str, "mechanism_info": list[str]}
 
         self.attribute_map = {"mechanism": "mechanism", "mechanism_info": "mechanism_info"}
         self._mechanism = mechanism
@@ -60,14 +53,12 @@ class OutputSearchMechanisms(Model):
         """
         allowed_values = ["metadata registry", "structured data"]  # noqa: E501
         if mechanism not in allowed_values:
-            raise ValueError(
-                "Invalid value for `mechanism` ({0}), must be one of {1}".format(mechanism, allowed_values)
-            )
+            raise ValueError(f"Invalid value for `mechanism` ({mechanism}), must be one of {allowed_values}")
 
         self._mechanism = mechanism
 
     @property
-    def mechanism_info(self) -> List[str]:
+    def mechanism_info(self) -> list[str]:
         """Gets the mechanism_info of this OutputSearchMechanisms.
 
 
@@ -77,7 +68,7 @@ class OutputSearchMechanisms(Model):
         return self._mechanism_info
 
     @mechanism_info.setter
-    def mechanism_info(self, mechanism_info: List[str]):
+    def mechanism_info(self, mechanism_info: list[str]):
         """Sets the mechanism_info of this OutputSearchMechanisms.
 
 

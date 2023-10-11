@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,18 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import re
-from urllib.parse import urlparse
 
-import requests
-from bs4 import BeautifulSoup
-from tldextract import extract
 
 from fuji_server import Persistence, PersistenceOutput
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.helper.identifier_helper import IdentifierHelper
-from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
 from fuji_server.models.persistence_output_inner import PersistenceOutputInner
 
 
@@ -107,7 +97,7 @@ class FAIREvaluatorPersistentIdentifierData(FAIREvaluator):
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
                 self.metric_identifier
-                + " : Persistence identifier scheme for data identifier -: {}".format(self.fuji.pid_scheme),
+                + f" : Persistence identifier scheme for data identifier -: {self.fuji.pid_scheme}",
             )
         return test_status
 

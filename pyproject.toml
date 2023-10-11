@@ -154,7 +154,9 @@ testpaths = "tests"
 [tool.ruff]
 line-length = 120
 select = [
-  "I"  # isort
+  "F",  # pyflakes
+  "I",  # isort
+  "UP"  # pyupgrade
 ]
 target-version = "py311"
 

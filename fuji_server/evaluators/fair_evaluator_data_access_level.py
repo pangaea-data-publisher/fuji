@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,7 +24,6 @@ import re
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
-from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.models.data_access_level import DataAccessLevel
 from fuji_server.models.data_access_output import DataAccessOutput
 
@@ -85,9 +82,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                         real_access_rights.append(access_right)
                         self.logger.info(
                             self.metric_identifier
-                            + " : Access condition does not look like license, therefore continuing -: {}".format(
-                                access_right
-                            )
+                            + f" : Access condition does not look like license, therefore continuing -: {access_right}"
                         )
                     else:
                         self.logger.warning(
@@ -177,11 +172,11 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             # Hier stimmt was nicht!!!
             rights_regex = r"((info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))"
             if not access_rights:
-                access_free = self.fuji.metadata_merged.get("access_free")
+                self.fuji.metadata_merged.get("access_free")
             if access_rights:
                 for access_right in access_rights:
                     self.logger.info(
-                        self.metric_identifier + " : Access right information specified -: {}".format(access_right)
+                        self.metric_identifier + f" : Access right information specified -: {access_right}"
                     )
                     rights_match = re.search(rights_regex, access_right, re.IGNORECASE)
                     if rights_match is not None:
@@ -256,9 +251,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if self.access_level == "embargoed":
             available_date = self.fuji.metadata_merged.get("publication_date")
             if available_date:
-                self.logger.info(
-                    self.metric_identifier + " : Embargoed access, available date -: {}".format(available_date)
-                )
+                self.logger.info(self.metric_identifier + f" : Embargoed access, available date -: {available_date}")
                 self.access_details["available_date"] = available_date
             else:
                 self.logger.warning(self.metric_identifier + " : Embargoed access, available date NOT found")

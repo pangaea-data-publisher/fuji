@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.metric import Metric  # noqa: F401,E501
@@ -16,7 +9,7 @@ class Metrics(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, total: int = None, metrics: List[Metric] = None):  # noqa: E501
+    def __init__(self, total: int = None, metrics: list[Metric] = None):  # noqa: E501
         """Metrics - a model defined in Swagger
 
         :param total: The total of this Metrics.  # noqa: E501
@@ -24,7 +17,7 @@ class Metrics(Model):
         :param metrics: The metrics of this Metrics.  # noqa: E501
         :type metrics: List[Metric]
         """
-        self.swagger_types = {"total": int, "metrics": List[Metric]}
+        self.swagger_types = {"total": int, "metrics": list[Metric]}
 
         self.attribute_map = {"total": "total", "metrics": "metrics"}
         self._total = total
@@ -63,7 +56,7 @@ class Metrics(Model):
         self._total = total
 
     @property
-    def metrics(self) -> List[Metric]:
+    def metrics(self) -> list[Metric]:
         """Gets the metrics of this Metrics.
 
 
@@ -73,7 +66,7 @@ class Metrics(Model):
         return self._metrics
 
     @metrics.setter
-    def metrics(self, metrics: List[Metric]):
+    def metrics(self, metrics: list[Metric]):
         """Sets the metrics of this Metrics.
 
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -122,7 +121,6 @@ class MetaDataCollectorXML(MetaDataCollector):
             source_name = self.getEnumSourceNames().XML_NEGOTIATED
         else:
             source_name = self.getEnumSourceNames().XML_TYPED_LINKS
-        dc_core_metadata = None
         requestHelper = RequestHelper(self.target_url, self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
         requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
@@ -133,7 +131,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         self.metadata_format = neg_format
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
-            self.logger.info("FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {}".format(self.target_url))
+            self.logger.info(f"FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {self.target_url}")
             # dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_format != MetadataFormats.XML:
                 # if neg_source != 'xml':

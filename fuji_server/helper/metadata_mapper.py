@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -335,7 +334,6 @@ class Mapper(Enum):
         "keywords": {"path": "./{*}subject"},
         "summary": {"path": "./{*}description"},
         "publisher": {"path": "./{*}publisher"},
-        "keywords": {"path": "./{*}subject"},
         "publication_date": {"path": ["./{*}date", "./{*}available", "./{*}issued"]},
         "created_date": {"path": "./{*}created"},
         "object_identifier": {"path": "./{*}identifier"},

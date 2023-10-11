@@ -1,10 +1,3 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -21,8 +14,8 @@ class HarvestResultsMetadata(Model):
         url: str = None,
         format: str = None,
         schema: str = None,
-        namespaces: List[str] = None,
-        metadata: Dict = None,
+        namespaces: list[str] = None,
+        metadata: dict = None,
     ):  # noqa: E501
         """HarvestResultsMetadata - a model defined in Swagger
 
@@ -44,8 +37,8 @@ class HarvestResultsMetadata(Model):
             "url": str,
             "format": str,
             "schema": str,
-            "namespaces": List[str],
-            "metadata": Dict,
+            "namespaces": list[str],
+            "metadata": dict,
         }
 
         self.attribute_map = {
@@ -159,7 +152,7 @@ class HarvestResultsMetadata(Model):
         self._schema = schema
 
     @property
-    def namespaces(self) -> List[str]:
+    def namespaces(self) -> list[str]:
         """Gets the namespaces of this HarvestResultsMetadata.
 
 
@@ -169,7 +162,7 @@ class HarvestResultsMetadata(Model):
         return self._namespaces
 
     @namespaces.setter
-    def namespaces(self, namespaces: List[str]):
+    def namespaces(self, namespaces: list[str]):
         """Sets the namespaces of this HarvestResultsMetadata.
 
 
@@ -180,7 +173,7 @@ class HarvestResultsMetadata(Model):
         self._namespaces = namespaces
 
     @property
-    def metadata(self) -> Dict:
+    def metadata(self) -> dict:
         """Gets the metadata of this HarvestResultsMetadata.
 
 
@@ -190,7 +183,7 @@ class HarvestResultsMetadata(Model):
         return self._metadata
 
     @metadata.setter
-    def metadata(self, metadata: Dict):
+    def metadata(self, metadata: dict):
         """Sets the metadata of this HarvestResultsMetadata.
 
 

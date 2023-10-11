@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,9 +25,7 @@ import uuid
 
 import hashid
 import idutils
-import requests
 
-from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
 
@@ -245,7 +242,7 @@ class IdentifierHelper:
                             param = query.split("=")[1]
                             if param.startswith("hdl.handle") or param.startswith("hdl:"):
                                 val = param
-                        except Exception as e:
+                        except Exception:
                             pass
             m = handle_regexp.match(val)
             if m:

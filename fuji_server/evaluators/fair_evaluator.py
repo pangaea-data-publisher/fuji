@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,13 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import re
 
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
-
-# from fuji_server.models.fair_result_evaluation_criterium_requirements import FAIRResultEvaluationCriteriumRequirements
 
 
 class FAIREvaluator:

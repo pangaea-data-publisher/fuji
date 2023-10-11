@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import os
 import re
@@ -111,7 +110,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         gf["source"] = 0
         gf.to_sql("google_links", con, if_exists="replace", index=False)
         with con:
-            data = con.execute("CREATE INDEX google_uri_index ON google_links (uri) ")
+            con.execute("CREATE INDEX google_uri_index ON google_links (uri) ")
         con.close()
 
     def add_google_search_record(self, url_to_save, source=1):
@@ -119,7 +118,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
         con = sl.connect(self.google_cache_db_path)
         try:
             with con:
-                data = con.execute("INSERT INTO google_links (uri, source) values ('" + str(url_to_save) + "',1)")
+                con.execute("INSERT INTO google_links (uri, source) values ('" + str(url_to_save) + "',1)")
             return
         except Exception as e:
             print("GOOGLE CACHE INSERT FAILED", e)

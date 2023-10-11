@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -57,15 +55,14 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 for c in contents:
                     if c.get("type"):
                         unique_types.append(c.get("type"))
-                self.logger.info("FsF-R1.3-02D : File format(s) specified -: {}".format(list(set(unique_types))))
+                self.logger.info(f"FsF-R1.3-02D : File format(s) specified -: {list(set(unique_types))}")
 
         mime_url_pair = {}
         if len(self.fuji.content_identifier) > 0:
             content_urls = [item.get("url") for item in self.fuji.content_identifier.values()]
-            self.logger.info("FsF-R1.3-02D : Data content identifier provided -: {}".format(content_urls))
+            self.logger.info(f"FsF-R1.3-02D : Data content identifier provided -: {content_urls}")
             # self.maturity = 1
 
-            preferred_detected = False
             for file_index, data_file in enumerate(self.fuji.content_identifier.values()):
                 mime_type = data_file.get("claimed_type")
                 if data_file.get("url") is not None:
@@ -88,7 +85,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         )
                         # if mime type not given try to guess it based on the file name
                         guessed_mime_type = mimetypes.guess_type(data_file.get("url"))
-                        self.logger.info("FsF-R1.3-02D : Guess return value -: {}".format(guessed_mime_type))
+                        self.logger.info(f"FsF-R1.3-02D : Guess return value -: {guessed_mime_type}")
                         mime_type = guessed_mime_type[
                             0
                         ]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
@@ -100,9 +97,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                             if mime_type not in data_file.get("tika_content_type"):
                                 valid_type = False
                         if mime_type in self.fuji.ARCHIVE_MIMETYPES:  # check archive&compress media type
-                            self.logger.info(
-                                "FsF-R1.3-02D : Archiving/compression format specified -: {}".format(mime_type)
-                            )
+                            self.logger.info(f"FsF-R1.3-02D : Archiving/compression format specified -: {mime_type}")
                             if valid_type and data_file.get("tika_content_type"):
                                 # exclude archive format
                                 # if file_index == len(self.fuji.content_identifier) - 1:
@@ -137,7 +132,6 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         # FILE FORMAT CHECKS....
         # check if format is a scientific one:
         preferred_mimetype = None
-        data_file_list = []
         text_format_regex = r"(^text)[\/]|[\/\+](xml|text|json)"
         test_status = False
         if self.isTestDefined(self.metric_identifier + "-1"):

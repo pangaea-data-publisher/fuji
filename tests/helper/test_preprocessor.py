@@ -16,7 +16,7 @@ They mock the fuji_server/data path to not override the files under fuji server
 
 """
 import json
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 
@@ -127,7 +127,7 @@ def test_set_mime_types(temporary_preprocessor: Preprocessor, initial_mime_types
     assert num_types_after > num_types_before
 
 
-def test_retrieve_licenses(temporary_preprocessor: Preprocessor, licenses: List[Dict[str, Any]]) -> None:
+def test_retrieve_licenses(temporary_preprocessor: Preprocessor, licenses: list[dict[str, Any]]) -> None:
     assert temporary_preprocessor.total_licenses == 0
     temporary_preprocessor.retrieve_licenses(isDebug)
     expected = len(licenses)
@@ -138,14 +138,14 @@ def test_retrieve_licenses(temporary_preprocessor: Preprocessor, licenses: List[
     assert actual == expected
 
 
-def test_get_licenses(temporary_preprocessor: Preprocessor, licenses: List[Dict[str, Any]]) -> None:
+def test_get_licenses(temporary_preprocessor: Preprocessor, licenses: list[dict[str, Any]]) -> None:
     all_licenses, license_names = temporary_preprocessor.get_licenses()
     expected = len(licenses)
     assert len(all_licenses) == expected
     assert "bsd zero clause license" in license_names
 
 
-def test_retrieve_datacite_re3repos(temporary_preprocessor: Preprocessor, repodois: Dict[str, str]) -> None:
+def test_retrieve_datacite_re3repos(temporary_preprocessor: Preprocessor, repodois: dict[str, str]) -> None:
     assert not temporary_preprocessor.re3repositories
     temporary_preprocessor.retrieve_datacite_re3repos()
     expected = len(repodois)
@@ -160,7 +160,7 @@ def test_retrieve_metadata_standards(temporary_preprocessor: Preprocessor, metad
 
 
 def test_retrieve_linkedvocabs(
-    temporary_preprocessor: Preprocessor, test_config: Dict, linked_vocab: List[Dict[str, str]]
+    temporary_preprocessor: Preprocessor, test_config: dict, linked_vocab: list[dict[str, str]]
 ) -> None:
     LOV_API = test_config["EXTERNAL"]["lov_api"]
     LOD_CLOUDNET = test_config["EXTERNAL"]["lod_cloudnet"]

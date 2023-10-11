@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -22,11 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import re
-import uuid
-
-import hashid
-import idutils
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.helper.identifier_helper import IdentifierHelper

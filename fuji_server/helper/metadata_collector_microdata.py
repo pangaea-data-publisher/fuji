@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import jmespath
 
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
@@ -68,11 +67,10 @@ class MetaDataCollectorMicroData(MetaDataCollector):
                 ext_meta = self.source_metadata[0]
 
         if ext_meta is not None:
-            self.logger.info("FsF-F2-01M : Trying to extract Microdata metadata from -: {}".format(self.source_name))
+            self.logger.info(f"FsF-F2-01M : Trying to extract Microdata metadata from -: {self.source_name}")
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             # TODO replace check_context_type list context comparison by regex
-            check_context_type = ["Dataset", "Collection"]
             try:
                 # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(ext_meta.get("type")).find("schema.org") > -1:
@@ -82,7 +80,7 @@ class MetaDataCollectorMicroData(MetaDataCollector):
                     self.logger.info("FsF-F2-01M : Failed to parse non schema.org type Microdata")
             except Exception as err:
                 # print(err.with_traceback())
-                self.logger.info("FsF-F2-01M : Failed to parse Microdata -: {}".format(err))
+                self.logger.info(f"FsF-F2-01M : Failed to parse Microdata -: {err}")
         else:
             self.logger.info("FsF-F2-01M : Could not identify Microdata metadata")
 

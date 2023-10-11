@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -60,9 +53,7 @@ class DataAccessOutput(Model):
         """
         allowed_values = ["public", "embargoed", "restricted", "closed", "metadataonly"]  # noqa: E501
         if access_level not in allowed_values:
-            raise ValueError(
-                "Invalid value for `access_level` ({0}), must be one of {1}".format(access_level, allowed_values)
-            )
+            raise ValueError(f"Invalid value for `access_level` ({access_level}), must be one of {allowed_values}")
 
         self._access_level = access_level
 

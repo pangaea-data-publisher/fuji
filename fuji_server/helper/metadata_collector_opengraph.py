@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 
 

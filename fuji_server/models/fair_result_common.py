@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
-
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
@@ -22,7 +15,7 @@ class FAIRResultCommon(Model):
         id: int = None,
         metric_identifier: str = None,
         metric_name: str = None,
-        metric_tests: Dict[str, FAIRResultEvaluationCriterium] = None,
+        metric_tests: dict[str, FAIRResultEvaluationCriterium] = None,
         test_status: str = "fail",
         score: FAIRResultCommonScore = None,
         maturity: int = 0,
@@ -48,7 +41,7 @@ class FAIRResultCommon(Model):
             "id": int,
             "metric_identifier": str,
             "metric_name": str,
-            "metric_tests": Dict[str, FAIRResultEvaluationCriterium],
+            "metric_tests": dict[str, FAIRResultEvaluationCriterium],
             "test_status": str,
             "score": FAIRResultCommonScore,
             "maturity": int,
@@ -152,7 +145,7 @@ class FAIRResultCommon(Model):
         self._metric_name = metric_name
 
     @property
-    def metric_tests(self) -> Dict[str, FAIRResultEvaluationCriterium]:
+    def metric_tests(self) -> dict[str, FAIRResultEvaluationCriterium]:
         """Gets the metric_tests of this FAIRResultCommon.
 
 
@@ -162,7 +155,7 @@ class FAIRResultCommon(Model):
         return self._metric_tests
 
     @metric_tests.setter
-    def metric_tests(self, metric_tests: Dict[str, FAIRResultEvaluationCriterium]):
+    def metric_tests(self, metric_tests: dict[str, FAIRResultEvaluationCriterium]):
         """Sets the metric_tests of this FAIRResultCommon.
 
 
@@ -192,9 +185,7 @@ class FAIRResultCommon(Model):
         """
         allowed_values = ["pass", "fail", "indeterminate"]  # noqa: E501
         if test_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `test_status` ({0}), must be one of {1}".format(test_status, allowed_values)
-            )
+            raise ValueError(f"Invalid value for `test_status` ({test_status}), must be one of {allowed_values}")
 
         self._test_status = test_status
 

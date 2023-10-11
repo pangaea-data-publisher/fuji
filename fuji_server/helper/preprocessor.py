@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -26,7 +24,7 @@ import logging
 import mimetypes
 import os
 import time
-from typing import Any, Dict
+from typing import Any
 from urllib.parse import urlparse
 
 import requests
@@ -35,7 +33,7 @@ import yaml
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
-class Preprocessor(object):
+class Preprocessor:
     # static elements belong to the class.
     _instance = None
 
@@ -63,7 +61,7 @@ class Preprocessor(object):
     long_term_file_formats = {}
     open_file_formats = {}
     access_rights = {}
-    re3repositories: Dict[Any, Any] = {}
+    re3repositories: dict[Any, Any] = {}
     linked_vocabs = {}
     linked_vocab_index = {}
     default_namespaces = []
@@ -86,7 +84,7 @@ class Preprocessor(object):
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(Preprocessor, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
         return cls._instance
 
     @classmethod
@@ -98,7 +96,7 @@ class Preprocessor(object):
                     for ext in mime_data.get("extensions"):
                         # if '.' + ext not in mimetypes.types_map:
                         mimetypes.add_type(mime_type, "." + ext, strict=True)
-        except Exception as e:
+        except Exception:
             cls.logger.warning("Loading additional mime types failed, will continue with standard set")
 
     @classmethod
@@ -115,7 +113,7 @@ class Preprocessor(object):
                     cls.remote_log_path = path
                 else:
                     cls.logger.warning("Remote Logging not possible, URL response: " + str(request.status_code))
-            except Exception as e:
+            except Exception:
                 cls.logger.warning("Remote Logging not possible ,please correct : " + str(host) + " " + str(path))
 
     @classmethod
@@ -212,7 +210,7 @@ class Preprocessor(object):
         cls.METRIC_YML_PATH = yaml_metric_path
         # cls.data_files_limit = limit
         # cls.metric_specification = specification_uri
-        stream = open(cls.METRIC_YML_PATH, "r", encoding="utf8")
+        stream = open(cls.METRIC_YML_PATH, encoding="utf8")
         try:
             specification = yaml.load(stream, Loader=yaml.FullLoader)
         except yaml.YAMLError as e:
@@ -486,7 +484,7 @@ class Preprocessor(object):
                 req = requests.get(lov_api, headers=cls.header)
                 raw_lov = req.json()
                 broken = []
-                cls.logger.info("{0} vocabs specified at {1}".format(len(raw_lov), lov_api))
+                cls.logger.info(f"{len(raw_lov)} vocabs specified at {lov_api}")
                 for lov in raw_lov:
                     title = [i.get("value") for i in lov.get("titles") if i.get("lang") == "en"][0]
                     uri = lov.get("uri")
@@ -498,7 +496,7 @@ class Preprocessor(object):
                             broken.append(uri)
                     else:
                         broken.append(uri)
-                cls.logger.info("{0} vocabs uri specified are broken".format(len(broken)))
+                cls.logger.info(f"{len(broken)} vocabs uri specified are broken")
             except requests.exceptions.RequestException as e:
                 cls.logger.error(e)
             except requests.exceptions.ConnectionError as e1:
@@ -510,7 +508,7 @@ class Preprocessor(object):
             try:
                 r = requests.get(lodcloud_api, headers=cls.header)
                 raw = r.json()
-                cls.logger.info("{0} vocabs specified at {1}".format(len(raw), lodcloud_api))
+                cls.logger.info(f"{len(raw)} vocabs specified at {lodcloud_api}")
                 broken_lod = []
                 for r in raw:
                     d = raw.get(r)
@@ -530,7 +528,7 @@ class Preprocessor(object):
                             broken_lod.append(website)
                     else:
                         broken_lod.append(website)
-                cls.logger.info("{0} vocabs uri specified are broken".format(len(broken_lod)))
+                cls.logger.info(f"{len(broken_lod)} vocabs uri specified are broken")
             except requests.exceptions.RequestException as e:
                 cls.logger.error(e)
             except requests.exceptions.ConnectionError as e1:
@@ -560,8 +558,8 @@ class Preprocessor(object):
                 with open(ld_path, "w") as f:
                     json.dump(vocabs, f)
                     cls.linked_vocabs = vocabs
-            except IOError as e:
-                cls.logger.error("Couldn't write to file {}.".format(ld_path))
+            except OSError:
+                cls.logger.error(f"Couldn't write to file {ld_path}.")
         # for vocab in vocabs.items():
 
     @staticmethod

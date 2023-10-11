@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -23,7 +21,6 @@
 # SOFTWARE.
 import fnmatch
 import re
-import urllib.parse
 
 import idutils
 import Levenshtein
@@ -78,7 +75,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                         licence_valid = True
                     license_output.details_url = spdx_uri
                     license_output.osi_approved = spdx_osi
-                    self.output.append((license_output))
+                    self.output.append(license_output)
                     self.license_info.append(
                         {
                             "license": l,
@@ -91,17 +88,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
                     )
                     if not spdx_uri:
                         self.logger.warning(
-                            "{0} : NO SPDX license representation (spdx url, osi_approved) found".format(
-                                self.metric_identifier
-                            )
+                            f"{self.metric_identifier} : NO SPDX license representation (spdx url, osi_approved) found"
                         )
                     else:
-                        test_status = True
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
-                            "{0} : Found SPDX license representation (spdx url, osi_approved)".format(
-                                self.metric_identifier
-                            ),
+                            f"{self.metric_identifier} : Found SPDX license representation (spdx url, osi_approved)",
                         )
 
     def isCreativeCommonsLicense(self, license_url, metric_id):
@@ -110,21 +102,19 @@ class FAIREvaluatorLicense(FAIREvaluator):
         try:
             if "creativecommons.org/publicdomain/" in license_url:
                 iscc = True
-                self.logger.info(
-                    "{0} : Found CreativeCommons Public Domain Mark or License -: {1}".format(metric_id, license_url)
-                )
+                self.logger.info(f"{metric_id} : Found CreativeCommons Public Domain Mark or License -: {license_url}")
                 genericcc = "CC0-1.0"
             else:
                 # https://wiki.creativecommons.org/wiki/License_Properties
                 ccregex = r"https?://creativecommons\.org/licenses/(by(-nc)?(-nd)?(-sa)?)/(1\.0|2\.0|2\.5|3\.0|4\.0)"
                 ccmatch = re.match(ccregex, license_url)
                 if ccmatch:
-                    self.logger.info("{0} : Found CreativeCommons license -: {1}".format(metric_id, license_url))
+                    self.logger.info(f"{metric_id} : Found CreativeCommons license -: {license_url}")
                     genericcc = ccmatch[0]
                     iscc = True
                 else:
                     iscc = False
-        except Exception as e:
+        except Exception:
             iscc = False
         return iscc, genericcc
 
@@ -146,7 +136,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return islicense
 
     def lookup_license_by_url(self, u, metric_id):
-        self.logger.info("{0} : Verify URL through SPDX registry -: {1}".format(metric_id, u))
+        self.logger.info(f"{metric_id} : Verify URL through SPDX registry -: {u}")
         html_url = None
         isOsiApproved = False
         id = None
@@ -159,7 +149,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             licenseId = item.get("licenseId")
             seeAlso = item.get("seeAlso")
             if any(u in v for v in seeAlso) or licenseId == ul:
-                self.logger.info("{0} : Found SPDX license representation -: {1}".format(metric_id, item["detailsUrl"]))
+                self.logger.info("{} : Found SPDX license representation -: {}".format(metric_id, item["detailsUrl"]))
                 # html_url = '.html'.join(item['detailsUrl'].rsplit('.json', 1))
                 html_url = item["detailsUrl"].replace(".json", ".html")
                 isOsiApproved = item["isOsiApproved"]
@@ -172,7 +162,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         html_url = None
         isOsiApproved = False
         id = None
-        self.logger.info("{0} : License verification name through SPDX registry -: {1}".format(metric_id, lvalue))
+        self.logger.info(f"{metric_id} : License verification name through SPDX registry -: {lvalue}")
         # Levenshtein distance similarity ratio between two license name
         if lvalue:
             sim = [Levenshtein.ratio(lvalue.lower(), i) for i in self.fuji.SPDX_LICENSE_NAMES]
@@ -180,7 +170,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 index_max = max(range(len(sim)), key=sim.__getitem__)
                 sim_license = self.fuji.SPDX_LICENSE_NAMES[index_max]
                 found = next((item for item in self.fuji.SPDX_LICENSES if item["name"] == sim_license), None)
-                self.logger.info("{0}: Found SPDX license representation -: {1}".format(metric_id, found["detailsUrl"]))
+                self.logger.info("{}: Found SPDX license representation -: {}".format(metric_id, found["detailsUrl"]))
                 # html_url = '.html'.join(found['detailsUrl'].rsplit('.json', 1))
                 html_url = found["detailsUrl"].replace(".json", ".html")
                 isOsiApproved = found["isOsiApproved"]
@@ -194,13 +184,13 @@ class FAIREvaluatorLicense(FAIREvaluator):
             if self.license_info is not None and self.license_info != []:
                 test_status = True
                 self.logger.log(
-                    self.fuji.LOG_SUCCESS, "{0} : Found licence information in metadata".format(self.metric_identifier)
+                    self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found licence information in metadata"
                 )
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
                 self.score.earned += test_score
             else:
-                self.logger.warning("{0} : License information unavailable in metadata".format(self.metric_identifier))
+                self.logger.warning(f"{self.metric_identifier} : License information unavailable in metadata")
         return test_status
 
     def testLicenseIsValidAndSPDXRegistered(self):
@@ -227,7 +217,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             else:
                 self.logger.info(
                     "{0} : Will consider all SPDX licenses as community specific licenses for {0} ".format(
-                        self.metric_identifier, "-2"
+                        self.metric_identifier,
                     )
                 )
             if self.license_info:
@@ -242,7 +232,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                             test_status = True
             else:
                 self.logger.warning(
-                    "{0} : Skipping SPDX and community license verification since license information unavailable in metadata".format(
+                    "{} : Skipping SPDX and community license verification since license information unavailable in metadata".format(
                         self.metric_identifier
                     )
                 )

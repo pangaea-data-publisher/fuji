@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -25,7 +23,6 @@
 from urllib.parse import urlparse
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
 from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
 

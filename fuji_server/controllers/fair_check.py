@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -23,26 +21,13 @@
 # SOFTWARE.
 import hashlib
 import io
-import json
 import logging
 import logging.handlers
-import mimetypes
-import os
 import re
+from urllib.parse import urlparse
 
-# import urllib
-import urllib.request as urllib
-
-# from typing import List, Any
-from urllib.parse import urljoin, urlparse
-
-import extruct
-
-# import idutils
 import pandas as pd
 from bs4 import BeautifulSoup
-from rapidfuzz import fuzz, process
-from tldextract import extract
 
 from fuji_server import __version__
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
@@ -71,14 +56,9 @@ from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREva
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
-from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 from fuji_server.helper.metadata_mapper import Mapper
-from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
-from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
-from fuji_server.helper.metadata_provider_rss_atom import RSSAtomMetadataProvider
-from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
 from fuji_server.helper.metric_helper import MetricHelper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
@@ -89,9 +69,9 @@ class FAIRCheck:
     METRIC_VERSION = None
     SPDX_LICENSES = None
     SPDX_LICENSE_NAMES = None
-    '''COMMUNITY_METADATA_STANDARDS_NAMES = None
+    """COMMUNITY_METADATA_STANDARDS_NAMES = None
     COMMUNITY_METADATA_STANDARDS_URIS = None
-    COMMUNITY_METADATA_STANDARDS = None'''
+    COMMUNITY_METADATA_STANDARDS = None"""
     SCIENCE_FILE_FORMATS = None
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
@@ -221,20 +201,30 @@ class FAIRCheck:
         )
         self.METRIC_VERSION = metric_version
         self.metrics_config = self.metric_helper.get_metrics_config()
-        print('METRICS CONFIG: ', self.metrics_config)
-        allowed_harvesting_methods = self.metrics_config.get('allowed_harvesting_methods')
-        allowed_metadata_standards = self.metrics_config.get('allowed_metadata_standards')
+        print("METRICS CONFIG: ", self.metrics_config)
+        allowed_harvesting_methods = self.metrics_config.get("allowed_harvesting_methods")
+        allowed_metadata_standards = self.metrics_config.get("allowed_metadata_standards")
         if not isinstance(allowed_metadata_standards, list):
             allowed_metadata_standards = None
         else:
-            print('ALLOWED METADATA STANDARDS: ', allowed_metadata_standards)
+            print("ALLOWED METADATA STANDARDS: ", allowed_metadata_standards)
         if allowed_harvesting_methods:
-            print('ALLOWED METADATA OFFERING METHODS: ',allowed_harvesting_methods)
+            print("ALLOWED METADATA OFFERING METHODS: ", allowed_harvesting_methods)
             if not isinstance(allowed_harvesting_methods, list):
                 allowed_harvesting_methods = None
             else:
-                allowed_harvesting_methods = [MetadataOfferingMethods[m] for m in allowed_harvesting_methods if m in MetadataOfferingMethods._member_names_ ]
-        self.metadata_harvester = MetadataHarvester(self.id,use_datacite = use_datacite, logger = self.logger, allowed_harvesting_methods = allowed_harvesting_methods, allowed_metadata_standards=allowed_metadata_standards)
+                allowed_harvesting_methods = [
+                    MetadataOfferingMethods[m]
+                    for m in allowed_harvesting_methods
+                    if m in MetadataOfferingMethods._member_names_
+                ]
+        self.metadata_harvester = MetadataHarvester(
+            self.id,
+            use_datacite=use_datacite,
+            logger=self.logger,
+            allowed_harvesting_methods=allowed_harvesting_methods,
+            allowed_metadata_standards=allowed_metadata_standards,
+        )
         self.repo_helper = None
 
     @classmethod
@@ -242,10 +232,10 @@ class FAIRCheck:
         cls.FILES_LIMIT = Preprocessor.data_files_limit
         if not cls.SPDX_LICENSES:
             cls.SPDX_LICENSES, cls.SPDX_LICENSE_NAMES = Preprocessor.get_licenses()
-        '''if not cls.COMMUNITY_METADATA_STANDARDS:
+        """if not cls.COMMUNITY_METADATA_STANDARDS:
             cls.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in cls.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
-            cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}'''
+            cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}"""
         if not cls.SCIENCE_FILE_FORMATS:
             cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         if not cls.LONG_TERM_FILE_FORMATS:
@@ -381,7 +371,7 @@ class FAIRCheck:
     def harvest_re3_data(self):
         if self.use_datacite:
             client_id = self.metadata_merged.get("datacite_client")
-            self.logger.info("FsF-R1.3-01M : re3data/datacite client id -: {}".format(client_id))
+            self.logger.info(f"FsF-R1.3-01M : re3data/datacite client id -: {client_id}")
             self.repo_helper = RepositoryHelper(client_id=client_id, logger=self.logger, landingpage=self.landing_url)
             self.repo_helper.lookup_re3data()
         else:
@@ -554,7 +544,7 @@ class FAIRCheck:
                 self.logger.warning(
                     "FsF-F1-02D : Landing page seems to be JavaScript generated, could not detect enough content"
                 )
-        except Exception as e:
+        except Exception:
             pass
 
     def get_log_messages_dict(self):
@@ -580,7 +570,6 @@ class FAIRCheck:
 
     def get_assessment_summary(self, results):
         status_dict = {"pass": 1, "fail": 0}
-        maturity_dict = Mapper.MATURITY_LEVELS.value
         summary_dict = {
             "fair_category": [],
             "fair_principle": [],

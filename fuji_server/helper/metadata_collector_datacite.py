@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -21,12 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import List
 
 import jmespath
 
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataSources
-from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
 
 
@@ -51,7 +48,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
         Method to parse Datacite metadata from the data
     """
 
-    exclude_conversion: List[str]
+    exclude_conversion: list[str]
 
     def __init__(self, mapping, pid_url=None, loggerinst=None):
         """
@@ -106,7 +103,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
 
                         if dcite_metadata.get("related_resources"):
                             self.logger.info(
-                                "FsF-I3-01M : {0} related resource(s) extracted from -: {1}".format(
+                                "FsF-I3-01M : {} related resource(s) extracted from -: {}".format(
                                     len(dcite_metadata["related_resources"]), source_name.name
                                 )
                             )
@@ -126,7 +123,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
                                 flat = ", ".join(map(str, value))
                                 dcite_metadata[key] = flat
                 except Exception as e:
-                    self.logger.warning("FsF-F2-01M : Failed to extract Datacite JSON -: {}".format(e))
+                    self.logger.warning(f"FsF-F2-01M : Failed to extract Datacite JSON -: {e}")
                     # self.logger.exception('Failed to extract Datacite JSON -: {}'.format(e))
         else:
             self.logger.warning("FsF-F2-01M : Skipped Datacite metadata retrieval, no PID URL detected")

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -24,7 +22,6 @@
 
 import enum
 import logging
-from typing import Optional
 
 from urlextract import URLExtract
 
@@ -184,7 +181,7 @@ class MetadataSources(enum.Enum):
         return self.value.get("format")
 
 
-class MetaDataCollector(object):
+class MetaDataCollector:
     """
     A class to collect a metadata from different metadata sources.
 
@@ -228,7 +225,7 @@ class MetaDataCollector(object):
         Return the Namespaces given the Internatiolized Resource Identifiers(IRIs)
     """
 
-    metadata_mapping: Optional[Mapper]
+    metadata_mapping: Mapper | None
 
     def __init__(
         self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None
@@ -307,7 +304,6 @@ class MetaDataCollector(object):
         meta_source:str or lst
         """
         extractor = URLExtract()
-        namespaces = {}
         found_urls = []
         lov_helper = linked_vocab_helper(Preprocessor.linked_vocab_index)
         if meta_source is not None:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -72,9 +71,7 @@ class OGCCSWMetadataProvider(MetadataProvider):
                             self.namespaces.append(str(node.text))
                             schemas[str(node.text)] = str(node.text)
             except:
-                self.logger.info(
-                    "{0} : Could not parse XML response retrieved from OGC CSW endpoint".format(self.metric_id)
-                )
+                self.logger.info(f"{self.metric_id} : Could not parse XML response retrieved from OGC CSW endpoint")
 
         return schemas
 

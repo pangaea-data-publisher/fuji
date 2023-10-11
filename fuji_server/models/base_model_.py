@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pprint
 import typing
 
@@ -7,7 +6,7 @@ from fuji_server import util
 T = typing.TypeVar("T")
 
 
-class Model(object):
+class Model:
     # swaggerTypes: The key is attribute name and the
     # value is attribute type.
     swagger_types = {}
@@ -17,7 +16,7 @@ class Model(object):
     attribute_map = {}
 
     @classmethod
-    def from_dict(cls: typing.Type[T], dikt) -> T:
+    def from_dict(cls: type[T], dikt) -> T:
         """Returns the dict as a model"""
         return util.deserialize_model(dikt, cls)
 

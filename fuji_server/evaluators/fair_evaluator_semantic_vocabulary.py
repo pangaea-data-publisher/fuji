@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -66,7 +64,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     test_required = [test_required]
                 reqsdefined = True
                 self.logger.info(
-                    "{0} : Will exclusively consider community specific vocabularies which are specified in metrics -: {1}".format(
+                    "{} : Will exclusively consider community specific vocabularies which are specified in metrics -: {}".format(
                         self.metric_identifier, test_requirements.get("required")
                     )
                 )
@@ -76,7 +74,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                             community_vocabs.append(kn_vocab)
                 if len(community_vocabs) > 0:
                     self.logger.info(
-                        "{0} : Namespaces of community specific vocabularies found -: {1}".format(
+                        "{} : Namespaces of community specific vocabularies found -: {}".format(
                             self.metric_identifier, community_vocabs
                         )
                     )
@@ -95,7 +93,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
             else:
                 self.logger.warning(
-                    "{0} : NO namespaces of semantic vocabularies found in the metadata".format(self.metric_identifier)
+                    f"{self.metric_identifier} : NO namespaces of semantic vocabularies found in the metadata"
                 )
         return test_status
 
@@ -107,13 +105,13 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             if not self.fuji.namespace_uri and not self.fuji.linked_namespace_uri:
                 self.logger.info(
-                    "{0} : Skipping namespace lookup in LOD registry list since no namespaces available".format(
+                    "{} : Skipping namespace lookup in LOD registry list since no namespaces available".format(
                         self.metric_identifier
                     )
                 )
             if self.fuji.namespace_uri:
                 self.logger.info(
-                    "{0} : Check if known namespace(s) are used in structured metadata (RDF, XML) which exist(s) in a LOD registry -: {1}".format(
+                    "{} : Check if known namespace(s) are used in structured metadata (RDF, XML) which exist(s) in a LOD registry -: {}".format(
                         self.metric_identifier, self.fuji.namespace_uri
                     )
                 )
@@ -124,7 +122,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
 
             if self.fuji.linked_namespace_uri:
                 self.logger.info(
-                    "{0} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {1}".format(
+                    "{} : Check if known namespace(s) are used in linked property URIs which exist(s) in a LOD registry -: {}".format(
                         self.metric_identifier, self.fuji.linked_namespace_uri
                     )
                 )
@@ -140,27 +138,27 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
-                    "{0} : Namespace matches found -: {1}".format(self.metric_identifier, self.knownnamespaceuris),
+                    f"{self.metric_identifier} : Namespace matches found -: {self.knownnamespaceuris}",
                 )
                 for e in self.knownnamespaceuris:
                     self.outputs.append(SemanticVocabularyOutputInner(namespace=e, is_namespace_active=True))
                 not_exists = [x for x in self.fuji.namespace_uri if x not in self.knownnamespaceuris]
                 if not_exists:
                     self.logger.warning(
-                        "{0} : Vocabulary namespace(s) or URIs specified but no match is found in LOD reference list (examples) -: {1}".format(
+                        "{} : Vocabulary namespace(s) or URIs specified but no match is found in LOD reference list (examples) -: {}".format(
                             self.metric_identifier, not_exists[:10]
                         )
                     )
             else:
                 if communityspecsdefined:
                     self.logger.warning(
-                        "{0} : NO community specific vocabulary namespace URI is found which is listed in the LOD registry".format(
+                        "{} : NO community specific vocabulary namespace URI is found which is listed in the LOD registry".format(
                             self.metric_identifier
                         )
                     )
                 else:
                     self.logger.warning(
-                        "{0} : NO known vocabulary namespace URI is found which is listed in  the LOD registry".format(
+                        "{} : NO known vocabulary namespace URI is found which is listed in  the LOD registry".format(
                             self.metric_identifier
                         )
                     )
@@ -178,9 +176,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
                     excluded.append(n)
         vocablist[:] = [x for x in vocablist if x not in excluded]
         if excluded:
-            self.logger.info(
-                "{0} : Default vocabulary namespace(s) excluded -: {1}".format(self.metric_identifier, excluded)
-            )
+            self.logger.info(f"{self.metric_identifier} : Default vocabulary namespace(s) excluded -: {excluded}")
         return vocablist
 
     def evaluate(self):
@@ -193,14 +189,14 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         # remove duplicates and default namespaces
         if len(self.fuji.namespace_uri) > 0:
             self.logger.info(
-                "{0} : Removing default namespaces from {1} vocabulary namespaces found in structured metadata".format(
+                "{} : Removing default namespaces from {} vocabulary namespaces found in structured metadata".format(
                     self.metric_identifier, len(self.fuji.namespace_uri)
                 )
             )
             self.fuji.namespace_uri = self.removeDefaultVocabularies(self.fuji.namespace_uri)
         if len(self.fuji.linked_namespace_uri) > 0:
             self.logger.info(
-                "{0} : Removing default namespaces from {1} vocabulary namespaces extracted from links found in metadata".format(
+                "{} : Removing default namespaces from {} vocabulary namespaces extracted from links found in metadata".format(
                     self.metric_identifier, len(self.fuji.linked_namespace_uri)
                 )
             )

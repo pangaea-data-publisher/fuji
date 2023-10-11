@@ -1,9 +1,4 @@
-# coding: utf-8
-
-from __future__ import absolute_import
-
-from datetime import date, datetime  # noqa: F401
-from typing import Dict, List  # noqa: F401
+from datetime import datetime
 
 # from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems  # noqa: F401,E501
 from fuji_server import util
@@ -20,7 +15,7 @@ class FAIRResults(Model):
     def __init__(
         self,
         test_id: str = None,
-        request: Dict = None,
+        request: dict = None,
         resolved_url: str = None,
         start_timestamp: datetime = None,
         end_timestamp: datetime = None,
@@ -29,8 +24,8 @@ class FAIRResults(Model):
         metric_version: str = None,
         software_version: str = None,
         total_metrics: int = None,
-        summary: Dict = None,
-        results: List[AnyOfFAIRResultsResultsItems] = None,
+        summary: dict = None,
+        results: list[AnyOfFAIRResultsResultsItems] = None,
     ):  # noqa: E501
         """FAIRResults - a model defined in Swagger
 
@@ -61,7 +56,7 @@ class FAIRResults(Model):
         """
         self.swagger_types = {
             "test_id": str,
-            "request": Dict,
+            "request": dict,
             "resolved_url": str,
             "start_timestamp": datetime,
             "end_timestamp": datetime,
@@ -70,8 +65,8 @@ class FAIRResults(Model):
             "metric_version": str,
             "software_version": str,
             "total_metrics": int,
-            "summary": Dict,
-            "results": List[AnyOfFAIRResultsResultsItems],
+            "summary": dict,
+            "results": list[AnyOfFAIRResultsResultsItems],
         }
 
         self.attribute_map = {
@@ -134,7 +129,7 @@ class FAIRResults(Model):
         self._test_id = test_id
 
     @property
-    def request(self) -> Dict:
+    def request(self) -> dict:
         """Gets the request of this FAIRResults.
 
 
@@ -144,7 +139,7 @@ class FAIRResults(Model):
         return self._request
 
     @request.setter
-    def request(self, request: Dict):
+    def request(self, request: dict):
         """Sets the request of this FAIRResults.
 
 
@@ -323,7 +318,7 @@ class FAIRResults(Model):
         self._total_metrics = total_metrics
 
     @property
-    def summary(self) -> Dict:
+    def summary(self) -> dict:
         """Gets the summary of this FAIRResults.
 
 
@@ -333,7 +328,7 @@ class FAIRResults(Model):
         return self._summary
 
     @summary.setter
-    def summary(self, summary: Dict):
+    def summary(self, summary: dict):
         """Sets the summary of this FAIRResults.
 
 
@@ -344,7 +339,7 @@ class FAIRResults(Model):
         self._summary = summary
 
     @property
-    def results(self) -> List[AnyOfFAIRResultsResultsItems]:
+    def results(self) -> list[AnyOfFAIRResultsResultsItems]:
         """Gets the results of this FAIRResults.
 
 
@@ -354,7 +349,7 @@ class FAIRResults(Model):
         return self._results
 
     @results.setter
-    def results(self, results: List[AnyOfFAIRResultsResultsItems]):
+    def results(self, results: list[AnyOfFAIRResultsResultsItems]):
         """Sets the results of this FAIRResults.
 
 

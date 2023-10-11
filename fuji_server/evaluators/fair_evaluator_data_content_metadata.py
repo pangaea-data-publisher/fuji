@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2020 PANGAEA (https://www.pangaea.de/)
@@ -119,11 +117,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 )
             elif not data_object.get("claimed_type"):
                 self.logger.warning(
-                    "{0} : NO info about file type available in given metadata -: ".format(self.metric_identifier)
+                    f"{self.metric_identifier} : NO info about file type available in given metadata -: "
                 )
             else:
                 self.logger.warning(
-                    "{0} : NO info about file size available in given metadata -: ".format(self.metric_identifier)
+                    f"{self.metric_identifier} : NO info about file size available in given metadata -: "
                 )
         return test_result
 
@@ -167,7 +165,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 if data_object.get("content_size") and data_object.get("claimed_size"):
                     if data_object.get("truncated") and data_object.get("header_content_size"):
                         self.logger.info(
-                            "{0} : Since file was truncated will rely on content size given in HTTP header -:  {1}".format(
+                            "{} : Since file was truncated will rely on content size given in HTTP header -:  {}".format(
                                 self.metric_identifier, str(data_object.get("header_content_size"))
                             )
                         )
@@ -185,7 +183,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             if object_size == int(float(data_object.get("content_size"))):
                                 size_matches = True
                                 self.logger.info(
-                                    "{0} : Sucessfully verified content size from downloaded file -: (expected: {1}, found: {2})".format(
+                                    "{} : Sucessfully verified content size from downloaded file -: (expected: {}, found: {})".format(
                                         self.metric_identifier,
                                         str(data_object.get("claimed_size")),
                                         str(data_object.get("content_size")),
@@ -193,7 +191,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 )
                             else:
                                 self.logger.warning(
-                                    "{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})".format(
+                                    "{} : Could not verify content size from downloaded file -: (expected: {}, found: {})".format(
                                         self.metric_identifier,
                                         str(data_object.get("claimed_size")),
                                         str(data_object.get("content_size")),
@@ -204,9 +202,9 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             data_content_filesize_inner.descriptor_value = data_object.get("claimed_size")
                             data_content_filesize_inner.matches_content = size_matches
                             self.data_content_descriptors.append(data_content_filesize_inner)
-                    except Exception as e:
+                    except Exception:
                         self.logger.warning(
-                            "{0} : Could not verify content size from downloaded file -: (expected: {1}, found: {2})".format(
+                            "{} : Could not verify content size from downloaded file -: (expected: {}, found: {})".format(
                                 self.metric_identifier,
                                 str(data_object.get("claimed_size")),
                                 str(data_object.get("content_size")),
@@ -218,7 +216,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 ) in data_object.get("tika_content_type"):
                     type_matches = True
                     self.logger.info(
-                        "{0} : Sucessfully verified content type from downloaded file -: (expected: {1}, found: via tika {2})".format(
+                        "{} : Sucessfully verified content type from downloaded file -: (expected: {}, found: via tika {})".format(
                             self.metric_identifier,
                             data_object.get("claimed_type"),
                             str(data_object.get("tika_content_type"))
@@ -228,7 +226,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     )
                 else:
                     self.logger.warning(
-                        "{0} : Could not verify content type from downloaded file -: (expected: {1}, found: via tika {2})".format(
+                        "{} : Could not verify content type from downloaded file -: (expected: {}, found: via tika {})".format(
                             self.metric_identifier,
                             data_object.get("claimed_type"),
                             str(data_object.get("tika_content_type"))
@@ -295,8 +293,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         self.output = DataContentMetadataOutput()
         test_status = "fail"
         self.logger.info(
-            self.metric_identifier
-            + " : Object landing page accessible status -: {}".format(self.fuji.isLandingPageAccessible)
+            self.metric_identifier + f" : Object landing page accessible status -: {self.fuji.isLandingPageAccessible}"
         )
 
         if self.testMinimalInformationAboutDataContentAvailable():
