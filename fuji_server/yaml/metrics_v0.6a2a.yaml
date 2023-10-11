@@ -1,248 +1,361 @@
-# LIST OF FAIRSFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
 config:
   metric_specification: https://doi.org/10.5281/zenodo.4081213
   metric_status: draft
   allowed_harvesting_methods:
-    - HTML_EMBEDDING
-    - MICRODATA
-    - TYPED_LINKS
-    - SIGNPOSTING
+  - HTML_EMBEDDING
+  - MICRODATA
+  - TYPED_LINKS
+  - SIGNPOSTING
   allowed_metadata_standards:
-    - jsonld
-    - dublin-core
-    - dcat-data-catalog-vocabulary
+  - jsonld
+  - dublin-core
+  - dcat-data-catalog-vocabulary
 metrics:
-  ## ---------------- FINDABILITY ---------------- ##
-- metric_identifier: FsF-F1-01M
+- metric_identifier: FsF-F1-01M-a2a
   metric_number: 1
   metric_short_name: Unique Identifier Metadata
   metric_name: Metadata is assigned a globally unique identifier.
-  description: A globally unique identifier may be assigned to a landing page containing metadata or a metadata file such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your metadata when you publish and make it available through their services.
+  description: >-
+    A globally unique identifier may be assigned to a landing page containing
+    metadata or a metadata file such that it can be referenced unambiguously
+    by humans or machines. Globally unique means an identifier should be
+    associated with only one resource at any time. Examples of unique
+    identifiers are Internationalized Resource Identifier (IRI), Uniform
+    Resource Identifier (URI) such as URL and URN, Digital Object Identifier
+    (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource
+    Key (ARK). A data repository may assign a globally unique identifier to
+    your metadata when you publish and make it available through their
+    services.
   fair_principle: F1
   target: Metadata or Landingpage
-  evaluation_mechanism: Identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+  evaluation_mechanism: >-
+    Identifier is considered unique if it is successfully validated through
+    https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13,
+    ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN,
+    Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   test_scoring_mechanism: alternative
   metric_tests:
-    - metric_test_identifier: FsF-F1-01M-1
-      metric_test_name: Identifier is resolvable and follows a defined unique identifier syntax (IRI, URL)
-      metric_test_score: 1
-      metric_test_maturity: 3
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/identifier
-          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-          modality: any
-          comment: identifier can be given as user input
-    - metric_test_identifier: FsF-F1-01M-2
-      metric_test_name: Identifier is not resolvable but follows an UUID or HASH type syntax
-      metric_test_score: 0.5
-      metric_test_maturity: 1
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/identifier/unique
-          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-          modality: any
-          required:
-            name:
-              - uuid
-              - hash
-          comment: identifier can be given as user input
+  - metric_test_identifier: FsF-F1-01M-1
+    metric_test_name: >-
+      Identifier is resolvable and follows a defined unique identifier
+      syntax (IRI, URL)
+    metric_test_score: 1
+    metric_test_maturity: 3
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/identifier
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      modality: any
+      comment: identifier can be given as user input
+  - metric_test_identifier: FsF-F1-01M-2
+    metric_test_name: Identifier is not resolvable but follows an UUID or HASH type syntax
+    metric_test_score: 0.5
+    metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/identifier/unique
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      modality: any
+      required:
+        name:
+        - uuid
+        - hash
+      comment: identifier can be given as user input
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2020-11-25
+  date_created: 2020-07-08T00:00:00Z
+  date_updated: 2020-11-25T00:00:00Z
   version: 0.5
   total_score: 1
-
 - metric_identifier: FsF-F1-02M
   metric_number: 2
   metric_short_name: Persistent Identifier Metadata
-  metric_name : Data is assigned a persistent identifier.
-  description: We make a distinction between the uniqueness and persistence of an identifier. An HTTP URL (the address of a given unique resource on the web) is globally unique, but may not be persistent as the URL of data may be not accessible (link rot problem) or the data available under the original URL may be changed (content drift problem). Identifiers based on the Handle System, DOI, ARK are both globally unique and persistent. They are maintained and governed such that they remain stable and resolvable for the long term. The persistent identifier (PID) of a data object may be resolved (point) to a landing page with metadata containing further information on how to access the data content, in some cases a downloadable artefact, or none if the data or repository is no longer maintained. Therefore, ensuring persistence is a shared responsibility between a PID service provider (e.g., datacite) and its clients (e.g., data repositories). For example, the DOI system guarantees the persistence of its identifiers through its social (e.g., policy) and technical infrastructures, whereas a data provider ensures the availability of the resource (e.g., landing page, downloadable artefact) associated with the identifier.
+  metric_name: Data is assigned a persistent identifier.
+  description: >-
+    We make a distinction between the uniqueness and persistence of an
+    identifier. An HTTP URL (the address of a given unique resource on the
+    web) is globally unique, but may not be persistent as the URL of data may
+    be not accessible (link rot problem) or the data available under the
+    original URL may be changed (content drift problem). Identifiers based on
+    the Handle System, DOI, ARK are both globally unique and persistent. They
+    are maintained and governed such that they remain stable and resolvable
+    for the long term. The persistent identifier (PID) of a data object may be
+    resolved (point) to a landing page with metadata containing further
+    information on how to access the data content, in some cases a
+    downloadable artefact, or none if the data or repository is no longer
+    maintained. Therefore, ensuring persistence is a shared responsibility
+    between a PID service provider (e.g., datacite) and its clients (e.g.,
+    data repositories). For example, the DOI system guarantees the persistence
+    of its identifiers through its social (e.g., policy) and technical
+    infrastructures, whereas a data provider ensures the availability of the
+    resource (e.g., landing page, downloadable artefact) associated with the
+    identifier.
   fair_principle: F1
   target: Data
-  evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
+  evaluation_mechanism: >-
+    A persistent identifier is considered to be valid if the given identifier
+    complies with a valid PID synthax. To be valid, the PID further has to be
+    resolvable.
   test_scoring_mechanism: alternative
   metric_tests:
-    - metric_test_identifier: FsF-F1-02M-1
-      metric_test_name: Identifier follows a defined persistent identifier syntax
-      metric_test_score: 0.5
-      metric_test_maturity: 1
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/identifier/persistent
-          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-          modality: any
-          required:
-            name:
-              - doi
-              - handle
-          comment: identifier can be given as user input
-    - metric_test_identifier: FsF-F1-02M-2
-      metric_test_name: Persistent identifier is resolvable
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/identifier/persistent
-          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-          comment: identifier has to resolve to a valid URI
-      metric_test_score: 1
-      metric_test_maturity: 3
+  - metric_test_identifier: FsF-F1-02M-1
+    metric_test_name: Identifier follows a defined persistent identifier syntax
+    metric_test_score: 0.5
+    metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/identifier/persistent
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      modality: any
+      required:
+        name:
+        - doi
+        - handle
+      comment: identifier can be given as user input
+  - metric_test_identifier: FsF-F1-02M-2
+    metric_test_name: Persistent identifier is resolvable
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/identifier/persistent
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      comment: identifier has to resolve to a valid URI
+    metric_test_score: 1
+    metric_test_maturity: 3
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2020-11-25
+  date_created: 2020-07-08T00:00:00Z
+  date_updated: 2020-11-25T00:00:00Z
   version: 0.5
   total_score: 1
-
 - metric_identifier: FsF-F1-01DD
   metric_number: 1
   metric_short_name: Unique Identifier Data
   metric_name: Data is assigned a globally unique identifier.
-  description: A globally unique identifier may be assigned to data such as a data file such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time. Examples of unique identifiers are Internationalized Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL and URN, Digital Object Identifier (DOI), the Handle System, identifiers.org, w3id.org and Archival Resource Key (ARK). A data repository may assign a globally unique identifier to your data files when you publish and make it available through their services.
+  description: >-
+    A globally unique identifier may be assigned to data such as a data file
+    such that it can be referenced unambiguously by humans or machines.
+    Globally unique means an identifier should be associated with only one
+    resource at any time. Examples of unique identifiers are Internationalized
+    Resource Identifier (IRI), Uniform Resource Identifier (URI) such as URL
+    and URN, Digital Object Identifier (DOI), the Handle System,
+    identifiers.org, w3id.org and Archival Resource Key (ARK). A data
+    repository may assign a globally unique identifier to your data files when
+    you publish and make it available through their services.
   fair_principle: F1
   target: Data
-  evaluation_mechanism: Data identifier is considered unique if it is successfully validated through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10, ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID, URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
+  evaluation_mechanism: >-
+    Data identifier is considered unique if it is successfully validated
+    through https://pythonhosted.org/IDUtils/. Supported schemes are ISBN10,
+    ISBN13, ISSN, ISTC, DOI, Handle, EAN8, EAN13, ISNI ORCID, ARK, PURL, LSID,
+    URN, Bibcode, arXiv, PubMed ID, PubMed Central ID, GND.
   test_scoring_mechanism: alternative
   metric_tests:
-    - metric_test_identifier: FsF-F1-01DD-1
-      metric_test_name: Data identifier is resolvable and follows a defined unique identifier syntax (IRI, URL)
-      metric_test_score: 1
-      metric_test_maturity: 3
-    - metric_test_identifier: FsF-F1-01DD-2
-      metric_test_name: Data identifier is not resolvable but follows an UUID or HASH type syntax
-      metric_test_score: 0.5
-      metric_test_maturity: 1
+  - metric_test_identifier: FsF-F1-01DD-1
+    metric_test_name: >-
+      Data identifier is resolvable and follows a defined unique identifier
+      syntax (IRI, URL)
+    metric_test_score: 1
+    metric_test_maturity: 3
+  - metric_test_identifier: FsF-F1-01DD-2
+    metric_test_name: >-
+      Data identifier is not resolvable but follows an UUID or HASH type
+      syntax
+    metric_test_score: 0.5
+    metric_test_maturity: 1
   created_by: FAIRsFAIR
-  date_created: 2023-05-15
-  date_updated: 2023-05-15
+  date_created: 2023-05-15T00:00:00Z
+  date_updated: 2023-05-15T00:00:00Z
   version: 0.6
   total_score: 1
-
 - metric_identifier: FsF-F1-02DD
   metric_number: 4
   metric_short_name: Persistent Identifier Data
-  metric_name : Data is assigned a persistent identifier.
-  description: We make a distinction between the uniqueness and persistence of an identifier. An HTTP URL (the address of a given unique resource on the web) is globally unique, but may not be persistent as the URL of data may be not accessible (link rot problem) or the data available under the original URL may be changed (content drift problem). Identifiers based on the Handle System, DOI, ARK are both globally unique and persistent. They are maintained and governed such that they remain stable and resolvable for the long term. The persistent identifier (PID) of a data may point to a file or streaming object or none if the data or repository is no longer maintained. Therefore, ensuring persistence is a shared responsibility between a PID service provider (e.g., datacite) and its clients (e.g., data repositories). For example, the DOI system guarantees the persistence of its identifiers through its social (e.g., policy) and technical infrastructures, whereas a data provider ensures the availability of the resource (e.g., landing page, downloadable artefact) associated with the identifier.
+  metric_name: Data is assigned a persistent identifier.
+  description: >-
+    We make a distinction between the uniqueness and persistence of an
+    identifier. An HTTP URL (the address of a given unique resource on the
+    web) is globally unique, but may not be persistent as the URL of data may
+    be not accessible (link rot problem) or the data available under the
+    original URL may be changed (content drift problem). Identifiers based on
+    the Handle System, DOI, ARK are both globally unique and persistent. They
+    are maintained and governed such that they remain stable and resolvable
+    for the long term. The persistent identifier (PID) of a data may point to
+    a file or streaming object or none if the data or repository is no longer
+    maintained. Therefore, ensuring persistence is a shared responsibility
+    between a PID service provider (e.g., datacite) and its clients (e.g.,
+    data repositories). For example, the DOI system guarantees the persistence
+    of its identifiers through its social (e.g., policy) and technical
+    infrastructures, whereas a data provider ensures the availability of the
+    resource (e.g., landing page, downloadable artefact) associated with the
+    identifier.
   fair_principle: F1
   target: Data
-  evaluation_mechanism: A persistent identifier is considered to be valid if the given identifier complies with a valid PID synthax. To be valid, the PID further has to be resolvable.
+  evaluation_mechanism: >-
+    A persistent identifier is considered to be valid if the given identifier
+    complies with a valid PID synthax. To be valid, the PID further has to be
+    resolvable.
   test_scoring_mechanism: alternative
   metric_tests:
-    - metric_test_identifier: FsF-F1-02DD-1
-      metric_test_name: At least one data identifier follows a defined persistent identifier syntax
-      metric_test_score: 0.5
-      metric_test_maturity: 1
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/identifier/persistent
-          tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-          modality: any
-          required:
-            name:
-              - doi
-              - handle
-    - metric_test_identifier: FsF-F1-02DD-2
-      metric_test_name: Persistent identifier of data is resolvable
-      metric_test_score: 1
-      metric_test_maturity: 3
+  - metric_test_identifier: FsF-F1-02DD-1-a2a
+    metric_test_name: >-
+      At least one data identifier follows a defined persistent identifier
+      syntax
+    metric_test_score: 0.5
+    metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/identifier/persistent
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      modality: any
+      required:
+        name:
+        - doi
+        - handle
+  - metric_test_identifier: FsF-F1-02DD-2
+    metric_test_name: Persistent identifier of data is resolvable
+    metric_test_score: 1
+    metric_test_maturity: 3
   created_by: FAIRsFAIR
-  date_created: 2023-05-15
-  date_updated: 2023-05-15
+  date_created: 2023-05-15T00:00:00Z
+  date_updated: 2023-05-15T00:00:00Z
   version: 0.6
   total_score: 1
-
 - metric_identifier: FsF-F2-01M
   metric_number: 3
   metric_short_name: Descriptive Core Metadata
-  metric_name: Metadata includes descriptive core elements (creator, title, data identifier, publisher, publication date, summary and keywords) to support data findability.
-  description: Metadata is descriptive information about a data object. Since the metadata required differs depending on the users and their applications, this metric focuses on core metadata. The core metadata is the minimum descriptive information required to enable data finding, including citation which makes it easier to find data. We determine the required metadata based on common data citation guidelines (e.g., DataCite, ESIP, and IASSIST), and metadata recommendations for data discovery (e.g., EOSC Datasets Minimum Information (EDMI), DataCite Metadata Schema, W3C Recommendation Data on the Web Best Practices and Data Catalog Vocabulary). This metric focuses on domain-agnostic core metadata. Domain or discipline-specific metadata specifications are covered under metric FsF-R1.3-01M. A repository should adopt a schema that includes properties of core metadata, whereas data authors should take the responsibility of providing core metadata.
+  metric_name: >-
+    Metadata includes descriptive core elements (creator, title, data
+    identifier, publisher, publication date, summary and keywords) to support
+    data findability.
+  description: >-
+    Metadata is descriptive information about a data object. Since the
+    metadata required differs depending on the users and their applications,
+    this metric focuses on core metadata. The core metadata is the minimum
+    descriptive information required to enable data finding, including
+    citation which makes it easier to find data. We determine the required
+    metadata based on common data citation guidelines (e.g., DataCite, ESIP,
+    and IASSIST), and metadata recommendations for data discovery (e.g., EOSC
+    Datasets Minimum Information (EDMI), DataCite Metadata Schema, W3C
+    Recommendation Data on the Web Best Practices and Data Catalog
+    Vocabulary). This metric focuses on domain-agnostic core metadata. Domain
+    or discipline-specific metadata specifications are covered under metric
+    FsF-R1.3-01M. A repository should adopt a schema that includes properties
+    of core metadata, whereas data authors should take the responsibility of
+    providing core metadata.
   fair_principle: F2
   target: Metadata
-  evaluation_mechanism: Metadata can be offered in different ways. here we focus on common web based strategies.
-    These include 1) embedding metadata within the landing page such as JSON-LD, OpenGraph, Microdata, Dublin Core,
-    2) offering typed links which lead to metadata within the HTML code of the metadata or signposting links.
-    3) enable content negotiation and deliver e.g. RDF, JSON-LD or XML on demand.
-    The metric evaluates the completeness of metadata in case metadata has been retrieved.
+  evaluation_mechanism: >-
+    Metadata can be offered in different ways. here we focus on common web
+    based strategies. These include 1) embedding metadata within the landing
+    page such as JSON-LD, OpenGraph, Microdata, Dublin Core, 2) offering typed
+    links which lead to metadata within the HTML code of the metadata or
+    signposting links. 3) enable content negotiation and deliver e.g. RDF,
+    JSON-LD or XML on demand. The metric evaluates the completeness of
+    metadata in case metadata has been retrieved.
   test_scoring_mechanism: cumulative
   metric_tests:
-    - metric_test_identifier: FsF-F2-01M-1
-      metric_test_name: Metadata has been made available via common web methods
-      metric_test_score: 0.5
-      metric_test_maturity: 1
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/metadata/offering_method
-          modality: any
-          required:
-            - signposting
-    - metric_test_identifier: FsF-F2-01M-3
-      metric_test_name: Core descriptive metadata is available
-      metric_test_score: 1
-      metric_test_maturity: 3
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/metadata/property
-          modality: all
-          tested_on: https://f-uji.net/vocab/metadata/property
-          required:
-            name:
-              - creator
-              - title
-              - object_identifier
-              - publication_date
-              - publisher
-              - object_type
-              - summary
-              - keywords
+  - metric_test_identifier: FsF-F2-01M-1
+    metric_test_name: Metadata has been made available via common web methods
+    metric_test_score: 0.5
+    metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/offering_method
+      modality: any
+      required:
+      - signposting
+  - metric_test_identifier: FsF-F2-01M-3
+    metric_test_name: Core descriptive metadata is available
+    metric_test_score: 1
+    metric_test_maturity: 3
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/property
+      modality: all
+      tested_on: https://f-uji.net/vocab/metadata/property
+      required:
+        name:
+        - creator
+        - title
+        - object_identifier
+        - publication_date
+        - publisher
+        - object_type
+        - summary
+        - keywords
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2022-05-30
+  date_created: 2020-07-08T00:00:00Z
+  date_updated: 2022-05-30T00:00:00Z
   version: 0.5
   total_score: 2
-
 - metric_identifier: FsF-F3-01M
   metric_number: 4
   metric_short_name: Inclusion of Data Identifier in Metadata
   metric_name: Metadata includes the identifier of the data it describes.
-  description: The metadata should explicitly specify the identifier of the data such that users can discover and access the data through the metadata. If the identifier specified is persistent and points to a landing page, the data identifier and links to download the data content should be taken into account in the assessment.
+  description: >-
+    The metadata should explicitly specify the identifier of the data such
+    that users can discover and access the data through the metadata. If the
+    identifier specified is persistent and points to a landing page, the data
+    identifier and links to download the data content should be taken into
+    account in the assessment.
   fair_principle: F3
   target: Metadata
-  evaluation_mechanism: Several metadata standards provide the possibility to include links to the actual data content. The presence of such links is evaluated here.
+  evaluation_mechanism: >-
+    Several metadata standards provide the possibility to include links to the
+    actual data content. The presence of such links is evaluated here.
   test_scoring_mechanism: cumulative
   metric_tests:
-    - metric_test_identifier: FsF-F3-01M-2
-      metric_test_name: Metadata contains a PID or URL which indicates the location of the downloadable data content
-      metric_test_score: 0.5
-      metric_test_maturity: 3
-      metric_test_requirements:
-        - target: https://f-uji.net/vocab/data/property/url
-          tested_on: https://f-uji.net/vocab/metadata/property/object_content_identifier
-          modality: any
+  - metric_test_identifier: FsF-F3-01M-2
+    metric_test_name: >-
+      Metadata contains a PID or URL which indicates the location of the
+      downloadable data content
+    metric_test_score: 0.5
+    metric_test_maturity: 3
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/data/property/url
+      tested_on: >-
+        https://f-uji.net/vocab/metadata/property/object_content_identifier
+      modality: any
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2022-05-30
+  date_created: 2020-07-08T00:00:00Z
+  date_updated: 2022-05-30T00:00:00Z
   version: 0.5
   total_score: 1
-
 - metric_identifier: FsF-F4-01M
   metric_number: 5
   metric_short_name: Searchable Metadata
-  metric_name: Metadata is offered in such a way that it can be retrieved programmatically.
-  description: This metric refers to ways through which the metadata of data is exposed or provided in a standard and machine-readable format. Assessing this metric will require an understanding of the capabilities offered by the data repository used to host the data. Metadata may be available through multiple endpoints. For example, if data is hosted by a repository, the repository may disseminate its metadata through a metadata harvesting protocol (e.g., via OAI-PMH) and/or a web service. Metadata may also be embedded as structured data on a data page for use by web search engines such as Google and Bing or be available as linked (open) data.
+  metric_name: >-
+    Metadata is offered in such a way that it can be retrieved
+    programmatically.
+  description: >-
+    This metric refers to ways through which the metadata of data is exposed
+    or provided in a standard and machine-readable format. Assessing this
+    metric will require an understanding of the capabilities offered by the
+    data repository used to host the data. Metadata may be available through
+    multiple endpoints. For example, if data is hosted by a repository, the
+    repository may disseminate its metadata through a metadata harvesting
+    protocol (e.g., via OAI-PMH) and/or a web service. Metadata may also be
+    embedded as structured data on a data page for use by web search engines
+    such as Google and Bing or be available as linked (open) data.
   fair_principle: F4
   target: Metadata
-  evaluation_mechanism: The metric is evaluated using the given metadata standards known to support major search engines such as JSON-LD and Dublin Core. Presence of metadata in research data registries is further evaluated.
+  evaluation_mechanism: >-
+    The metric is evaluated using the given metadata standards known to
+    support major search engines such as JSON-LD and Dublin Core. Presence of
+    metadata in research data registries is further evaluated.
   test_scoring_mechanism: cumulative
   metric_tests:
-    - metric_test_identifier: FsF-F4-01M-1
-      metric_test_name: Metadata is given via signposting, so some search engines can ingest it for their catalogues (Schema.org, Dublin Core, DCAT)
-      metric_test_score: 1
-      metric_test_maturity: 3
-      metric_test_requirements:
-        - target: http://f-uji.net/vocab/metadata/standard
-          modality: any
-          required:
-            - dublin-core
-            - schemaorg
-            - dcat-data-catalog-vocabulary
-        - target: http://f-uji.net/vocab/metadata/offering_method
-          modality: any
-          required:
-            - signposting
+  - metric_test_identifier: FsF-F4-01M-1
+    metric_test_name: >-
+      Metadata is given via signposting, so some search engines can ingest
+      it for their catalogues (Schema.org, Dublin Core, DCAT)
+    metric_test_score: 1
+    metric_test_maturity: 3
+    metric_test_requirements:
+    - target: http://f-uji.net/vocab/metadata/standard
+      modality: any
+      required:
+      - dublin-core
+      - schemaorg
+      - dcat-data-catalog-vocabulary
+    - target: http://f-uji.net/vocab/metadata/offering_method
+      modality: any
+      required:
+      - signposting
   created_by: FAIRsFAIR
-  date_created: 2020-07-08
-  date_updated: 2020-12-03
+  date_created: 2020-07-08T00:00:00Z
+  date_updated: 2020-12-03T00:00:00Z
   version: 0.5
   total_score: 1
   metric_specification: not available
