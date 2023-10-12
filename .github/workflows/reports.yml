@@ -56,9 +56,11 @@ jobs:
         format: markdown
         hide_complexity: true
         output: both
+    - name: Add header to code coverage report
+      run: |
+        sed -i '1s/^/## :clipboard: Code Coverage\n/' code-coverage-results.md
     - name: Write to Job Summary
       run: |
-        echo "## :clipboard: Code Coverage" >> $GITHUB_STEP_SUMMARY
         cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
     - name: Get Pull Request number
       run: |
