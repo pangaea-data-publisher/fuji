@@ -165,11 +165,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
             # NEW Way
             for found_metadata in self.fuji.metadata_unmerged:
                 if found_metadata.get("metadata"):
-                    print(found_metadata)
                     if found_metadata.get("metadata") != {"object_type": "Other"}:
-                        print(
-                            "MTHODS:::   ", found_metadata.get("offering_method"), self.search_engines_support_offering
-                        )
                         if found_metadata.get("offering_method") in self.search_engines_support_offering:
                             standard_found = found_metadata.get("metadata_standard")
                             if standard_found in self.search_engines_support_standards:
