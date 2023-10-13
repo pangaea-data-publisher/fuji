@@ -31,7 +31,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from waitress import serve
 
-from fuji_server.app.fuji_app import create_fuji_app
+from fuji_server.app.fuji_app import create_app
 from fuji_server.helper.preprocessor import Preprocessor
 
 
@@ -74,7 +74,7 @@ def main():
     logger.info(f"Total LD vocabs imported : {len(preproc.getLinkedVocabs())}")
     logger.info(f"Total default namespaces specified : {len(preproc.getDefaultNamespaces())}")
 
-    app = create_fuji_app(config)
+    app = create_app(config)
     Limiter(get_remote_address, app=app.app, default_limits=[str(config["SERVICE"]["rate_limit"])])
     # comment in case waitress is wished
     # app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']),debug=False)
