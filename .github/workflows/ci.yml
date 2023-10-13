@@ -101,6 +101,12 @@ jobs:
         name: coverage-results
         retention-days: 1
         path: pytest-cobertura.xml
+    - name: Touch repodois.yaml to generate recent timestamp (avoids download)
+      run: touch fuji_server/data/repodois.yaml
+    - name: Run server for 3 seconds and stop (test if server starts up)
+      run: |
+        hatch run python -m fuji_server -c fuji_server/config/server.ini & sleep 3
+        pkill python
 
   event_file:
     runs-on: ubuntu-22.04
