@@ -31,7 +31,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from waitress import serve
 
-from fuji_server.app.fuji_app import create_app
+from fuji_server.app import create_app
 from fuji_server.helper.preprocessor import Preprocessor
 
 
@@ -62,6 +62,7 @@ def main():
     isDebug = config.getboolean("SERVICE", "debug_mode")
     preproc.retrieve_licenses(isDebug)
     preproc.retrieve_datacite_re3repos()
+
     preproc.retrieve_metadata_standards()
     # preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
