@@ -698,7 +698,9 @@ class MetadataHarvester:
         if self.landing_url and self.is_html_page:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
-                    self.raise_warning_if_javascript_page(requestHelper.response_content)
+                    if "html" in requestHelper.content_type:
+                        self.raise_warning_if_javascript_page(requestHelper.response_content)
+
                     up = urlparse(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
                     self.landing_html = requestHelper.getResponseContent()
