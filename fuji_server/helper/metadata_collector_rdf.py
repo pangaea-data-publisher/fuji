@@ -171,7 +171,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if rdflib.term.URIRef("http://www.w3.org/ns/dcat#") in graph_namespaces.values():
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain DCAT metadata elements")
                     rdf_metadata = self.get_dcat_metadata(rdf_response_graph)
-                elif rdflib.term.URIRef("http://schema.org/") in graph_namespaces.values():
+                elif (
+                    rdflib.term.URIRef("http://schema.org/") in graph_namespaces.values()
+                    or rdflib.term.URIRef("https://schema.org/") in graph_namespaces.values()
+                ):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements")
                     rdf_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_graph)
                 elif bool(set(ontology_indicator) & set(graph_namespaces.values())):
@@ -278,13 +281,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if meta_rec_type in self.SCHEMA_ORG_CREATIVEWORKS:
                                     json_dict = meta_rec
                         if not json_dict:
-                            rdf_response = rdf_response[0]
+                            rdf_response_dict = rdf_response[0]
                         else:
-                            rdf_response = json_dict
+                            rdf_response_dict = json_dict
+                    else:
+                        rdf_response_dict = rdf_response
                     try:
-                        rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response)
+                        rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response_dict)
                         if rdf_metadata:
-                            self.setLinkedNamespaces(str(rdf_response))
+                            self.setLinkedNamespaces(str(rdf_response_dict))
                         else:
                             self.logger.info(
                                 "FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing"
@@ -292,36 +297,39 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             # quick fix for https://github.com/RDFLib/rdflib/issues/1484
                             # needs to be done before dict is converted to string
                             # print(rdf_response)
-                            if rdf_response.get("@context"):
-                                if rdf_response.get("@graph"):
-                                    try:
-                                        # drop duplicate context in graph
-                                        if isinstance(rdf_response.get("@graph"), list):
-                                            for grph in rdf_response.get("@graph"):
-                                                if grph.get("@context"):
-                                                    del grph["@context"]
-                                        else:
-                                            if rdf_response.get("@graph").get("@context"):
-                                                del rdf_response["@graph"]["@context"]
-                                    except Exception:
-                                        print("Failed drop duplicate JSON-LD context in graph")
-                                        pass
-                                # Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
-                                if isinstance(rdf_response.get("@context"), list):
-                                    for ctxi, ctxt in enumerate(rdf_response.get("@context")):
-                                        if "schema.org" in ctxt:
-                                            rdf_response["@context"][
-                                                ctxi
-                                            ] = "https://schema.org/docs/jsonldcontext.json"
-                                if isinstance(rdf_response.get("@context"), str):
-                                    if "schema.org" in rdf_response.get("@context"):
-                                        rdf_response["@context"] = "https://schema.org/docs/jsonldcontext.json"
-                            rdf_response = jsonld.expand(rdf_response)
+                            if isinstance(rdf_response, dict):
+                                if rdf_response.get("@context"):
+                                    if rdf_response.get("@graph"):
+                                        try:
+                                            # drop duplicate context in graph
+                                            if isinstance(rdf_response.get("@graph"), list):
+                                                for grph in rdf_response.get("@graph"):
+                                                    if grph.get("@context"):
+                                                        del grph["@context"]
+                                            else:
+                                                if rdf_response.get("@graph").get("@context"):
+                                                    del rdf_response["@graph"]["@context"]
+                                        except Exception:
+                                            print("Failed drop duplicate JSON-LD context in graph")
+                                            pass
+                                    # Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
+                                    if isinstance(rdf_response.get("@context"), list):
+                                        for ctxi, ctxt in enumerate(rdf_response.get("@context")):
+                                            if "schema.org" in ctxt:
+                                                rdf_response["@context"][
+                                                    ctxi
+                                                ] = "https://schema.org/docs/jsonldcontext.json"
+                                    if isinstance(rdf_response.get("@context"), str):
+                                        if "schema.org" in rdf_response.get("@context"):
+                                            rdf_response["@context"] = "https://schema.org/docs/jsonldcontext.json"
+                                # expand graph
+                                rdf_response = jsonld.expand(rdf_response)
+                            # convert dict to json string again for RDF graph parsing
                             rdf_response = json.dumps(rdf_response)
                     except Exception as e:
                         print("RDF Collector Error: ", e)
                         pass
-                # t ry to make graph from JSON-LD string
+                # try to make graph from JSON-LD string
                 if isinstance(rdf_response, str):
                     try:
                         rdf_response = str(rdf_response).encode("utf-8")
@@ -893,9 +901,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     root_name = str(root).rsplit("/")[-1].strip()
                     if root_name.lower() in creative_work_types:
                         creative_works = list(graph[: RDF.type : root])
-
                         # Finding the schema.org root
-
                         if len(list(graph.subjects(object=creative_works[0]))) == 0:
                             cand_creative_work[root_name] = creative_works[0]
                             if object_types_dict.get(str(creative_works[0])):
