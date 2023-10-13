@@ -27,7 +27,6 @@ import re
 from urllib.parse import urlparse
 
 import pandas as pd
-from bs4 import BeautifulSoup
 
 from fuji_server import __version__
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
@@ -531,7 +530,7 @@ class FAIRCheck:
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
         return standardised_protocol_metadata_check.getResult()
 
-    def raise_warning_if_javascript_page(self, response_content):
+    """def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
         try:
             soup = BeautifulSoup(response_content, features="html.parser")
@@ -546,6 +545,7 @@ class FAIRCheck:
                 )
         except Exception:
             pass
+"""
 
     def get_log_messages_dict(self):
         logger_messages = {}
