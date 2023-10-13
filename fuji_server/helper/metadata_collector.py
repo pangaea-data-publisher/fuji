@@ -228,7 +228,10 @@ class MetaDataCollector:
     metadata_mapping: Mapper | None
 
     def __init__(
-        self, sourcemetadata: dict = None, mapping: metadata_mapper.Mapper = None, logger: logging.Logger = None
+        self,
+        sourcemetadata: dict | None = None,
+        mapping: metadata_mapper.Mapper = None,
+        logger: logging.Logger | None = None,
     ):
         """
         Parameters

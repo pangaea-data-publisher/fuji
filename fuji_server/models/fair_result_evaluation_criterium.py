@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.fair_result_common_score import FAIRResultCommonScore  # noqa: F401,E501
+from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 
 
 class FAIRResultEvaluationCriterium(Model):
@@ -11,12 +11,12 @@ class FAIRResultEvaluationCriterium(Model):
 
     def __init__(
         self,
-        metric_test_name: str = None,
-        metric_test_requirements: list[dict] = None,
+        metric_test_name: str | None = None,
+        metric_test_requirements: list[dict] | None = None,
         metric_test_score: FAIRResultCommonScore = None,
-        metric_test_maturity: int = None,
+        metric_test_maturity: int | None = None,
         metric_test_status: str = "fail",
-    ):  # noqa: E501
+    ):
         """FAIRResultEvaluationCriterium - a model defined in Swagger
 
         :param metric_test_name: The metric_test_name of this FAIRResultEvaluationCriterium.  # noqa: E501
@@ -164,7 +164,7 @@ class FAIRResultEvaluationCriterium(Model):
         :param metric_test_status: The metric_test_status of this FAIRResultEvaluationCriterium.
         :type metric_test_status: str
         """
-        allowed_values = ["pass", "fail"]  # noqa: E501
+        allowed_values = ["pass", "fail"]
         if metric_test_status not in allowed_values:
             raise ValueError(
                 f"Invalid value for `metric_test_status` ({metric_test_status}), must be one of {allowed_values}"

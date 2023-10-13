@@ -23,7 +23,7 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
     islisted = False
     apiURI = "https://api.datasearch.elsevier.com/api/v2/search?query="
 
-    def __init__(self, logger: logging.Logger = None):
+    def __init__(self, logger: logging.Logger | None = None):
         self.logger = logger
         self.source = self.getEnumSourceNames().MENDELEY_DATA.value
 

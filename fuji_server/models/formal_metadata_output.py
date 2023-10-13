@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner  # noqa: F401,E501
+from fuji_server.models.formal_metadata_output_inner import FormalMetadataOutputInner  # noqa: F401
 
 
 class FormalMetadataOutput(Model):
@@ -9,7 +9,7 @@ class FormalMetadataOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self):
         """FormalMetadataOutput - a model defined in Swagger"""
         self.swagger_types = {}
 

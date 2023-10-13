@@ -419,9 +419,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if not RDFparsed:
                                     continue
                                 else:
-                                    self.logger.warning(
-                                        f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {str(e)}"
-                                    )
+                                    self.logger.warning(f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {e!s}")
                     else:
                         self.logger.info(
                             "FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s"
@@ -943,8 +941,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if "Dataset" in cand_creative_work:
                     creative_work = cand_creative_work["Dataset"]
                 else:
-                    creative_work = cand_creative_work[list(cand_creative_work)[0]]
-                    creative_work_type = list(cand_creative_work)[0]
+                    creative_work = cand_creative_work[next(iter(cand_creative_work))]
+                    creative_work_type = next(iter(cand_creative_work))
 
         except Exception as e:
             self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))

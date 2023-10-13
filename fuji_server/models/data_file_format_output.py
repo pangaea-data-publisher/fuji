@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner  # noqa: F401,E501
+from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner  # noqa: F401
 
 
 class DataFileFormatOutput(Model):
@@ -9,7 +9,7 @@ class DataFileFormatOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self):
         """DataFileFormatOutput - a model defined in Swagger"""
         self.swagger_types = {}
 

@@ -28,7 +28,7 @@ class MetaDataCatalogue:
         GOOGLE_DATASET = "Google Dataset Search"
         MENDELEY_DATA = "Mendeley Data"
 
-    def __init__(self, logger: logging.Logger = None):
+    def __init__(self, logger: logging.Logger | None = None):
         """
         Parameters
         ----------

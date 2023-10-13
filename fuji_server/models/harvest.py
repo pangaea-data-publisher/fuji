@@ -9,8 +9,8 @@ class Harvest(Model):
     """
 
     def __init__(
-        self, object_identifier: str = None, auth_token: str = None, auth_token_type: str = None
-    ):  # noqa: E501
+        self, object_identifier: str | None = None, auth_token: str | None = None, auth_token_type: str | None = None
+    ):
         """Harvest - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Harvest.  # noqa: E501
@@ -63,7 +63,7 @@ class Harvest(Model):
         :type object_identifier: str
         """
         if object_identifier is None:
-            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+            raise ValueError("Invalid value for `object_identifier`, must not be `None`")
 
         self._object_identifier = object_identifier
 
@@ -110,7 +110,7 @@ class Harvest(Model):
         :param auth_token_type: The auth_token_type of this Harvest.
         :type auth_token_type: str
         """
-        allowed_values = ["Bearer", "Basic"]  # noqa: E501
+        allowed_values = ["Bearer", "Basic"]
         if auth_token_type not in allowed_values:
             raise ValueError(
                 f"Invalid value for `auth_token_type` ({auth_token_type}), must be one of {allowed_values}"

@@ -10,12 +10,12 @@ class CommunityEndorsedStandardOutputInner(Model):
 
     def __init__(
         self,
-        metadata_standard: str = None,
-        url: str = None,
-        subject_areas: list[str] = None,
-        type: str = None,
-        source: str = None,
-    ):  # noqa: E501
+        metadata_standard: str | None = None,
+        url: str | None = None,
+        subject_areas: list[str] | None = None,
+        type: str | None = None,
+        source: str | None = None,
+    ):
         """CommunityEndorsedStandardOutputInner - a model defined in Swagger
 
         :param metadata_standard: The metadata_standard of this CommunityEndorsedStandardOutputInner.  # noqa: E501

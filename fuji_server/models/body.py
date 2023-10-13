@@ -10,16 +10,16 @@ class Body(Model):
 
     def __init__(
         self,
-        object_identifier: str = None,
+        object_identifier: str | None = None,
         test_debug: bool = False,
-        metadata_service_endpoint: str = None,
-        metadata_service_type: str = None,
-        use_datacite: bool = None,
-        metric_version: str = None,
-        auth_token: str = None,
-        auth_token_type: str = None,
-        oaipmh_endpoint: str = None,
-    ):  # noqa: E501
+        metadata_service_endpoint: str | None = None,
+        metadata_service_type: str | None = None,
+        use_datacite: bool | None = None,
+        metric_version: str | None = None,
+        auth_token: str | None = None,
+        auth_token_type: str | None = None,
+        oaipmh_endpoint: str | None = None,
+    ):
         """Body - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Body.  # noqa: E501
@@ -106,7 +106,7 @@ class Body(Model):
         :type object_identifier: str
         """
         if object_identifier is None:
-            raise ValueError("Invalid value for `object_identifier`, must not be `None`")  # noqa: E501
+            raise ValueError("Invalid value for `object_identifier`, must not be `None`")
 
         self._object_identifier = object_identifier
 

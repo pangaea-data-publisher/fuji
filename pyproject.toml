@@ -153,11 +153,15 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
+ignore = [
+  "RUF012"  # mutable-class-default
+]
 line-length = 120
 select = [
   "F",  # pyflakes
   "I",  # isort
-  "UP"  # pyupgrade
+  "UP",  # pyupgrade
+  "RUF"  # ruff
 ]
 target-version = "py311"
 

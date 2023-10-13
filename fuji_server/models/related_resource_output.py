@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner  # noqa: F401,E501
+from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner  # noqa: F401
 
 
 class RelatedResourceOutput(Model):
@@ -9,7 +9,7 @@ class RelatedResourceOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self):
         """RelatedResourceOutput - a model defined in Swagger"""
         self.swagger_types = {}
 

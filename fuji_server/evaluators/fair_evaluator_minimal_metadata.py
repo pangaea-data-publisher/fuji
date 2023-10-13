@@ -133,7 +133,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                 core_missing = list(set(self.required_metadata_properties) - set(self.metadata_found))
                 self.logger.warning(
                     self.metric_identifier
-                    + f" : Not all required core descriptive metadata elements exist, missing -: {str(core_missing)}"
+                    + f" : Not all required core descriptive metadata elements exist, missing -: {core_missing!s}"
                 )
         return test_status
 

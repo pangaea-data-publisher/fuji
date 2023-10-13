@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner  # noqa: F401,E501
+from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner
 
 
 class DataProvenanceOutput(Model):
@@ -13,7 +13,7 @@ class DataProvenanceOutput(Model):
         self,
         provenance_metadata_included: DataProvenanceOutputInner = None,
         structured_provenance_available: DataProvenanceOutputInner = None,
-    ):  # noqa: E501
+    ):
         """DataProvenanceOutput - a model defined in Swagger
 
         :param provenance_metadata_included: The provenance_metadata_included of this DataProvenanceOutput.  # noqa: E501

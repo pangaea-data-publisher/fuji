@@ -1029,7 +1029,7 @@ class MetadataHarvester:
                     if rdf_dict:
                         self.logger.log(
                             self.LOG_SUCCESS,
-                            f"FsF-F2-01M : Found Linked Data metadata -: {str(rdf_dict.keys())}",
+                            f"FsF-F2-01M : Found Linked Data metadata -: {rdf_dict.keys()!s}",
                         )
                         # self.metadata_sources.append((source_rdf, 'negotiated'))
                         self.add_metadata_source(source_rdf)
@@ -1177,7 +1177,7 @@ class MetadataHarvester:
                 source_ore, ore_dict = ore_atom_collector.parse_metadata()
                 ore_dict = self.exclude_null(ore_dict)
                 if ore_dict:
-                    self.logger.log(self.LOG_SUCCESS, f"FsF-F2-01M : Found OAI ORE metadata -: {str(ore_dict.keys())}")
+                    self.logger.log(self.LOG_SUCCESS, f"FsF-F2-01M : Found OAI ORE metadata -: {ore_dict.keys()!s}")
                     self.add_metadata_source(source_ore)
                     self.merge_metadata(
                         ore_dict,
@@ -1207,7 +1207,7 @@ class MetadataHarvester:
                     # self.metadata_sources.append((source_dcitejsn, 'negotiated'))
                     self.add_metadata_source(source_dcitejsn)
                     self.logger.log(
-                        self.LOG_SUCCESS, f"FsF-F2-01M : Found Datacite metadata -: {str(dcitejsn_dict.keys())}"
+                        self.LOG_SUCCESS, f"FsF-F2-01M : Found Datacite metadata -: {dcitejsn_dict.keys()!s}"
                     )
 
                     self.namespace_uri.extend(dcite_collector.getNamespaces())
@@ -1311,7 +1311,7 @@ class MetadataHarvester:
                             if rdf_dict:
                                 self.logger.log(
                                     self.LOG_SUCCESS,
-                                    f"FsF-F2-01M : Found Linked Data (RDF) metadata -: {str(rdf_dict.keys())}",
+                                    f"FsF-F2-01M : Found Linked Data (RDF) metadata -: {rdf_dict.keys()!s}",
                                 )
                                 # self.metadata_sources.append((source_rdf, metadata_link['source']))
                                 self.add_metadata_source(source_rdf)

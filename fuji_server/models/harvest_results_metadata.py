@@ -10,13 +10,13 @@ class HarvestResultsMetadata(Model):
 
     def __init__(
         self,
-        method: str = None,
-        url: str = None,
-        format: str = None,
-        schema: str = None,
-        namespaces: list[str] = None,
-        metadata: dict = None,
-    ):  # noqa: E501
+        method: str | None = None,
+        url: str | None = None,
+        format: str | None = None,
+        schema: str | None = None,
+        namespaces: list[str] | None = None,
+        metadata: dict | None = None,
+    ):
         """HarvestResultsMetadata - a model defined in Swagger
 
         :param method: The method of this HarvestResultsMetadata.  # noqa: E501

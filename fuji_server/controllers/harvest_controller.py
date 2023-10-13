@@ -26,12 +26,12 @@
 import connexion
 
 from fuji_server.controllers.fair_check import FAIRCheck
-from fuji_server.models.harvest import Harvest  # noqa: E501
-from fuji_server.models.harvest_results import HarvestResults  # noqa: E501
-from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata  # noqa: E501
+from fuji_server.models.harvest import Harvest
+from fuji_server.models.harvest_results import HarvestResults
+from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata
 
 
-def harvest_by_id(body=None):  # noqa: E501
+def harvest_by_id(body=None):
     """harvest_by_id
 
     Harvest metadata of a data object based on its identifier # noqa: E501
@@ -42,7 +42,7 @@ def harvest_by_id(body=None):  # noqa: E501
     :rtype: HarvestResults
     """
     if connexion.request.is_json:
-        body = Harvest.from_dict(connexion.request.get_json())  # noqa: E501
+        body = Harvest.from_dict(connexion.request.get_json())
         identifier = body.object_identifier
         auth_token = body.auth_token
         auth_token_type = body.auth_token_type

@@ -24,7 +24,6 @@ import logging
 import mimetypes
 import os
 import time
-from typing import Any
 from urllib.parse import urlparse
 
 import requests
@@ -61,7 +60,7 @@ class Preprocessor:
     long_term_file_formats = {}
     open_file_formats = {}
     access_rights = {}
-    re3repositories: dict[Any, Any] = {}
+    re3repositories: dict[str, str] = {}
     linked_vocabs = {}
     linked_vocab_index = {}
     default_namespaces = []
@@ -487,7 +486,7 @@ class Preprocessor:
                 broken = []
                 cls.logger.info(f"{len(raw_lov)} vocabs specified at {lov_api}")
                 for lov in raw_lov:
-                    title = [i.get("value") for i in lov.get("titles") if i.get("lang") == "en"][0]
+                    title = next(i.get("value") for i in lov.get("titles") if i.get("lang") == "en")
                     uri = lov.get("uri")
                     nsp = lov.get("nsp")
                     if uri and nsp:
