@@ -8,8 +8,8 @@ Developers: [Robert Huber](mailto:rhuber@marum.de), [Anusuriya Devaraju](mailto:
 
 ## Overview
 
-F-UJI is a web service to programatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project.
-The service will be applied to demostrate the evaluation of objects in repositories selected for in-depth collaboration with the project.
+F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project.
+The service will be applied to demonstrate the evaluation of objects in repositories selected for in-depth collaboration with the project.
 
 The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
 
@@ -19,18 +19,18 @@ Devaraju, A. and Huber, R. (2021). An automated solution for measuring the progr
 
 ### Clients and User Interface
 
-A web demo using F-UJI is available at https://www.f-uji.net
+A web demo using F-UJI is available at <https://www.f-uji.net>.
 
-An R client package that was generated from the F-UJI OpenAPI definition is available from https://github.com/NFDI4Chem/rfuji.
+An R client package that was generated from the F-UJI OpenAPI definition is available from <https://github.com/NFDI4Chem/rfuji>.
 
-An open source web client for F-UJI is available at https://github.com/MaastrichtU-IDS/fairificator.
+An open source web client for F-UJI is available at <https://github.com/MaastrichtU-IDS/fairificator>.
 
 ## Assessment Scope, Constraint and Limitation
 The service is **in development** and its assessment depends on several factors.
 - In the FAIR ecosystem, FAIR assessment must go beyond the object itself. FAIR enabling services and repositories are vital to ensure that research data objects remain FAIR over time. Importantly, machine-readable services (e.g., registries) and documents (e.g., policies) are required to enable automated tests.
 - In addition to repository and services requirements, automated testing depends on clear machine assessable criteria. Some aspects (rich, plurality, accurate, relevant) specified in FAIR principles still require human mediation and interpretation.
-- The tests must focus on generally applicable data/metadata characteristics until domain/community-driven criteria have been agreed (e.g., appropriate schemas and required elements for usage/access control, etc.). For example, for some of the metrics (i.e., on I and R principles), the automated tests we proposed only inspect the ‘surface’ of criteria to be evaluated. Therefore, tests are designed in consideration of generic cross-domain metadata standards such as dublin core, dcat, datacite, schema.org, etc.
-- FAIR assessment is performed based on aggregated metadata; this includes metadata embedded in the data (landing) page, metadata retrieved from a PID provider (e.g., Datacite content negotiation) and other services (e.g., re3data).
+- The tests must focus on generally applicable data/metadata characteristics until domain/community-driven criteria have been agreed (e.g., appropriate schemas and required elements for usage/access control, etc.). For example, for some metrics (i.e., on I and R principles), the automated tests we proposed only inspect the ‘surface’ of criteria to be evaluated. Therefore, tests are designed in consideration of generic cross-domain metadata standards such as Dublin Core, DCAT, DataCite, schema.org, etc.
+- FAIR assessment is performed based on aggregated metadata; this includes metadata embedded in the data (landing) page, metadata retrieved from a PID provider (e.g., DataCite content negotiation) and other services (e.g., re3data).
 
 ![alt text](https://github.com/pangaea-data-publisher/fuji/blob/master/fuji_server/static/main.png?raw=true)
 
@@ -38,9 +38,9 @@ The service is **in development** and its assessment depends on several factors.
 [Python](https://www.python.org/downloads/) `3.11+`
 
 ### Google Dataset Search
-* Download the latest Dataset Search corpus file from: https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets
-* Open file fuji_server/helper/create_google_cache_db.py and set variable 'google_file_location' according to the file location of the corpus file
-* Run create_google_cache_db.py which creates a SQLite database in the data directory. From root directory run `python3 -m fuji_server.helper.create_google_cache_db`.
+* Download the latest Dataset Search corpus file from: <https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets>
+* Open file `fuji_server/helper/create_google_cache_db.py` and set variable 'google_file_location' according to the file location of the corpus file
+* Run `create_google_cache_db.py` which creates a SQLite database in the data directory. From root directory run `python3 -m fuji_server.helper.create_google_cache_db`.
 
 The service was generated by the [swagger-codegen](https://github.com/swagger-api/swagger-codegen) project. By using the
 [OpenAPI-Spec](https://github.com/swagger-api/swagger-core/wiki) from a remote server, you can easily generate a server stub.
@@ -49,36 +49,31 @@ The service uses the [Connexion](https://github.com/spec-first/connexion) librar
 ## Usage
 Before running the service, please set user details in the configuration file, see config/users.py.
 
-To install F-UJI, you may execute the following python-based or docker-based installation commands from the root directory:
+To install F-UJI, you may execute the following Python-based or docker-based installation commands from the root directory:
 
-### Python module-based installation:
+### Python module-based installation
 
-From the fuji source folder run
+From the fuji source folder run:
 ```bash
-pip install .
+python -m pip install .
 ```
-The F-UJI server can now be started with.
-```
+The F-UJI server can now be started with:
+```bash
 python -m fuji_server -c fuji_server/config/server.ini
 ```
 
-### Docker-based installation:
+### Docker-based installation
 
 ```bash
 docker run -d -p 1071:1071 ghcr.io/pangaea-data-publisher/fuji
 ```
 
-To access the OpenAPI user interface, open the url below on the browser:
-
-```
-http://localhost:1071/fuji/api/v1/ui/
-```
+To access the OpenAPI user interface, open the URL below in the browser:
+<http://localhost:1071/fuji/api/v1/ui/>
 
 Your OpenAPI definition lives here:
 
-```
-http://localhost:1071/fuji/api/v1/openapi.json
-```
+<http://localhost:1071/fuji/api/v1/swagger.json>
 
 You can provide a different server config file this way:
 
@@ -95,12 +90,12 @@ docker run -d -p 1071:1071 <tag_name>
 
 ### Notes
 
-To avoid tika startup warning message, set environment variable TIKA_LOG_PATH. For more information, see [https://github.com/chrismattmann/tika-python](https://github.com/chrismattmann/tika-python)
+To avoid Tika startup warning message, set environment variable `TIKA_LOG_PATH`. For more information, see [https://github.com/chrismattmann/tika-python](https://github.com/chrismattmann/tika-python)
 
-If you receive the exception 'urllib2.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] on MacOS, run the install command shipped with Python :
-./Install\ Certificates.command
+If you receive the exception `urllib2.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED]` on macOS, run the install command shipped with Python:
+`./Install\ Certificates.command`.
 
-F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication), so username and password have to be provided for each REST call which can be configured in fuji_server/config/users.py
+F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication), so username and password have to be provided for each REST call which can be configured in `fuji_server/config/users.py`.
 
 
 ## License
