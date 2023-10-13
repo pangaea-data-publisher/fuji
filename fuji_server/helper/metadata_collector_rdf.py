@@ -97,6 +97,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         super().__init__(logger=loggerinst)
 
         self.target_url = target_url
+        self.resolved_url = target_url
         self.content_type = None
         self.source_name = source
         self.metadata_format = MetadataFormats.RDF
@@ -235,6 +236,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     self.logger.info("FsF-F2-01M : Ignoring RDF since content already has been parsed as XML")
             if requestHelper.response_content is not None:
                 self.content_type = requestHelper.content_type
+                self.resolved_url = requestHelper.redirect_url
         else:
             self.content_type = "application/ld+json"
             rdf_response = self.json_ld_content
@@ -243,7 +245,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # handle JSON-LD
             if self.content_type in ["application/ld+json", "application/json", "application/vnd.schemaorg.ld+json"]:
                 if self.target_url:
-                    jsonld_source_url = self.target_url
+                    jsonld_source_url = self.resolved_url
                 else:
                     jsonld_source_url = "landing page"
                 if self.json_ld_content:
@@ -341,8 +343,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         % (jsonld_source_url)
                     )
                     try:
-                        jsonldgraph = rdflib.ConjunctiveGraph()
-                        rdf_response_graph = jsonldgraph.parse(data=rdf_response, format="json-ld")
+                        jsonldgraph = rdflib.ConjunctiveGraph(identifier=self.resolved_url)
+                        rdf_response_graph = jsonldgraph.parse(
+                            data=rdf_response, format="json-ld", publicID=self.resolved_url
+                        )
                         # rdf_response_graph = jsonldgraph
                         self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                     except Exception as e:
@@ -386,7 +390,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         badline = None
                         while not RDFparsed:
                             try:
-                                graph = rdflib.Graph(identifier=self.target_url)
+                                graph = rdflib.Graph(identifier=self.resolved_url)
                                 graph.parse(data=rdf_response, format=parse_format)
                                 rdf_response_graph = graph
                                 self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
@@ -901,15 +905,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     root_name = str(root).rsplit("/")[-1].strip()
                     if root_name.lower() in creative_work_types:
                         creative_works = list(graph[: RDF.type : root])
+                        # print(root, type(creative_works[0]), list(graph.subjects(object=creative_works[0])))
                         # Finding the schema.org root
-                        if len(list(graph.subjects(object=creative_works[0]))) == 0:
+                        creative_work_subjects = list(graph.subjects(object=creative_works[0]))
+                        if len(creative_work_subjects) == 0:
                             cand_creative_work[root_name] = creative_works[0]
                             if object_types_dict.get(str(creative_works[0])):
                                 object_types_dict[str(creative_works[0])].append(root_name)
                             else:
                                 object_types_dict[str(creative_works[0])] = [root_name]
-                            # prioritize Dataset type
+                        # root in case graph id = subject id, assuming this means: isabout
+                        # helps for ro crate
+                        elif graph.identifier in creative_work_subjects:
+                            cand_creative_work[root_name] = creative_works[0]
+
             if cand_creative_work:
+                # prioritize Dataset type
                 if "Dataset" in cand_creative_work:
                     creative_work = cand_creative_work["Dataset"]
                 else:

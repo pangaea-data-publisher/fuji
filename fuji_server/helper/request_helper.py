@@ -87,7 +87,6 @@ class RequestHelper:
         self.format = None  # Guessed Metadata Format
         self.request_url = url
         self.redirect_url = None
-        self.resolved_url = None
         self.redirect_list = []
         self.redirect_status_list = []
         self.accept_type = AcceptTypes.default.value
