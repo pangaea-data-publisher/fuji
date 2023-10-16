@@ -615,12 +615,19 @@ class MetadataHarvester:
             except Exception:
                 extruct_target = self.landing_html
                 pass
+
             try:
                 self.logger.info(
                     "{} : Trying to identify EMBEDDED  Microdata, OpenGraph or Schema.org -: {}".format(
                         "FsF-F2-01M", self.landing_url
                     )
                 )
+                # remove html comments which sometimes fails in extruct...
+                try:
+                    extruct_target = re.sub("(<!--.*?-->)", "", extruct_target.decode("utf-8"))
+                except Exception:
+                    pass
+
                 extracted = extruct.extract(extruct_target, syntaxes=syntaxes, encoding="utf-8")
             except Exception as e:
                 extracted = {}
