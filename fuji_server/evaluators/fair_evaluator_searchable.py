@@ -102,7 +102,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                     standards_supported.append("SPARQL")
                 if standards_supported:
                     self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-3")
+                    self.set_maturity(self.getTestConfigMaturity(self.metric_identifier + "-3"))
                     self.score.earned += test_score
                     # standards_supported.append(self.fuji.self.metadata_service_type)
                     self.search_mechanisms.append(
@@ -179,7 +179,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))"""
             if search_engine_support_match:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
+                self.set_maturity(self.getTestConfigMaturity(self.metric_identifier + "-1"))
                 self.score.earned += test_score
                 test_status = True
                 self.search_mechanisms.append(
@@ -245,7 +245,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 )
             if registries_supported:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
+                self.set_maturity(self.getTestConfigMaturity(self.metric_identifier + "-2"))
                 self.score.earned += test_score
                 self.search_mechanisms.append(
                     OutputSearchMechanisms(mechanism="metadata registry", mechanism_info=registries_supported)

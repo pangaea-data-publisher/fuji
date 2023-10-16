@@ -74,6 +74,10 @@ class FAIREvaluator:
         self.logger = self.fuji.logger
         self.metric_regex = r"FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?"
 
+    def set_maturity(self, maturity):
+        if self.maturity < maturity:
+            self.maturity = maturity
+
     def set_metric(self, metric_identifier):
         """Set the metric for evaluation process.
 
