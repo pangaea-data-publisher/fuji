@@ -79,6 +79,7 @@ class MetadataHarvester:
         self.metadata_merged = {}
         self.typed_links = []
         self.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
+        # elements which need to be there
         self.reference_elements = Mapper.REFERENCE_METADATA_LIST.value.copy()
         self.valid_pid_types = IdentifierHelper.VALID_PIDS
         self.namespace_uri = []
@@ -146,8 +147,46 @@ class MetadataHarvester:
                 # self.metadata_sources.append((method_source, 'negotiated'))
                 for r in metadict.keys():
                     if r in self.reference_elements:
-                        self.metadata_merged[r] = metadict[r]
-                        self.reference_elements.pop(r)
+                        # enforce lists
+                        if r in ["keywords", "access_level", "license", "object_type"]:
+                            if isinstance(metadict[r], str):
+                                if r == "keywords":
+                                    metadict[r] = metadict[r].split(",")
+                                else:
+                                    metadict[r] = [metadict[r]]
+                        if self.metadata_merged.get(r):
+                            msimilarity = 0
+                            if isinstance(self.metadata_merged[r], str) and self.metadata_merged[r] != metadict[r]:
+                                # property value similarity
+                                msimilarity = fuzz.token_sort_ratio(self.metadata_merged[r], str(metadict[r]))
+                                if msimilarity <= 50:
+                                    self.logger.info(
+                                        "FsF-F2-01M : Metadata property differs from metadata previously offered in a different formats -: "
+                                        + str(r)
+                                        + ": "
+                                        + str(self.metadata_merged[r])[:50]
+                                        + " vs. "
+                                        + str(metadict[r])[:50]
+                                    )
+                            if isinstance(self.metadata_merged[r], list):
+                                if isinstance(metadict[r], list):
+                                    self.metadata_merged[r].extend(metadict[r])
+                                else:
+                                    self.metadata_merged[r].append(metadict[r])
+                                # make list unique
+                                unique_merged = []
+                                for e in self.metadata_merged[r]:
+                                    if e not in unique_merged:
+                                        unique_merged.append(e)
+                                self.metadata_merged[r] = unique_merged
+                            # overwrite old property value in case new one is longer but similar to the old one, otherwise keep the old one
+                            elif isinstance(self.metadata_merged[r], str) and isinstance(metadict[r], str):
+                                if len(self.metadata_merged[r]) < len(metadict[r]):
+                                    if msimilarity > 80:
+                                        self.metadata_merged[r] = metadict[r]
+                        else:
+                            self.metadata_merged[r] = metadict[r]
+                        # self.reference_elements.pop(r)
                         # self.reference_elements.remove(r)
                 if metadict.get("object_identifier"):
                     if not isinstance(metadict.get("object_identifier"), list):
@@ -288,53 +327,6 @@ class MetadataHarvester:
                         self.pid_scheme = "doi"
                     else:
                         self.pid_scheme, self.pid_url = next(iter(found_pids.items()))
-
-    """def get_html_xml_links(self):
-        xmllinks=[]
-        if self.landing_html:
-            try:
-                soup = BeautifulSoup(self.landing_html, features='html.parser')
-                links = soup.findAll('a')
-                if links:
-                    for link in links:
-                        if link.get('href'):
-                            linkparts = urlparse(link.get('href'))
-                            if str(linkparts.path).endswith('.xml'):
-                                xmllinks.append({'source': 'scraped', 'url':str(link.get('href')).strip(),'type': 'text/xml','rel': 'href' })
-            except Exception as e:
-                print('html links error: '+str(e))
-                pass
-        return xmllinks
-
-    def get_guessed_xml_link(self):
-        # in case object landing page URL ends with '.html' or '/html'
-        # try to find out if there is some xml content if suffix is replaced by 'xml
-        datalink = None
-        guessed_link = None
-        if self.landing_url is not None and not self.landing_url.endswith('.xml'):
-            suff_res = re.search(r'.*[\.\/](html?)?$', self.landing_url)
-            if suff_res is not None:
-                if suff_res[1] is not None:
-                    guessed_link = self.landing_url.replace(suff_res[1], 'xml')
-            else:
-                guessed_link = self.landing_url+'.xml'
-            if guessed_link:
-                try:
-                    req = urllib.Request(guessed_link, method='HEAD')
-                    response = urllib.urlopen(req)
-                    content_type = str(response.getheader('Content-Type')).split(';')[0]
-                    if content_type.strip() in ['application/xml','text/xml', 'application/rdf+xml']:
-                        datalink = {
-                            'source': 'guessed',
-                            'url': guessed_link,
-                            'type': content_type,
-                            'rel': 'alternate'
-                        }
-                        self.logger.log(self.LOG_SUCCESS, 'FsF-F2-01M : Found XML content at -: ' + guessed_link)
-                    response.close()
-                except:
-                    self.logger.info('FsF-F2-01M : Guessed XML retrieval failed for -: ' + guessed_link)
-        return datalink"""
 
     def set_html_typed_links(self):
         try:
@@ -624,7 +616,7 @@ class MetadataHarvester:
                 )
                 # remove html comments which sometimes fails in extruct...
                 try:
-                    extruct_target = re.sub("(<!--.*?-->)", "", extruct_target.decode("utf-8"))
+                    extruct_target = re.sub("(<!--.*?-->)", "", extruct_target.decode("utf-8")).encode("utf-8")
                 except Exception:
                     pass
 
@@ -783,69 +775,37 @@ class MetadataHarvester:
                         )
                     else:
                         self.logger.info("FsF-F2-01M : schema.org JSON-LD metadata in html page UNAVAILABLE")
-                    # ========= retrieve highwire and eprints embedded in html page =========
-                    if self.reference_elements:
-                        self.logger.info("FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page")
-                        hw_collector = MetaDataCollectorHighwireEprints(
-                            loggerinst=self.logger, sourcemetadata=self.landing_html
-                        )
-                        source_hw, hw_dict = hw_collector.parse_metadata()
-                        hw_metaformat = hw_collector.metadata_format
-                        hw_dict = self.exclude_null(hw_dict)
-                        if hw_dict:
-                            self.namespace_uri.extend(hw_collector.namespaces)
-                            # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                            self.add_metadata_source(source_hw)
-                            # self.metadata_sources.append((source_hw, 'embedded'))
-                            if hw_dict.get("related_resources"):
-                                self.related_resources.extend(hw_dict.get("related_resources"))
-                            self.merge_metadata(
-                                hw_dict,
-                                self.landing_url,
-                                source_hw,
-                                hw_metaformat,
-                                "text/html",
-                                "highwire_eprints",
-                                hw_collector.namespaces,
-                            )
-
-                            self.logger.log(
-                                self.LOG_SUCCESS,
-                                "FsF-F2-01M : Found Highwire or eprints metadata -: " + str(hw_dict.keys()),
-                            )
-                        else:
-                            self.logger.info("FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE")
 
                     # ========= retrieve dublin core embedded in html page =========
-                    if self.reference_elements:
-                        self.logger.info("FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page")
-                        dc_collector = MetaDataCollectorDublinCore(
-                            loggerinst=self.logger, sourcemetadata=self.landing_html, mapping=Mapper.DC_MAPPING
+                    self.logger.info("FsF-F2-01M : Trying to retrieve Dublin Core metadata from html page")
+                    dc_collector = MetaDataCollectorDublinCore(
+                        loggerinst=self.logger, sourcemetadata=self.landing_html, mapping=Mapper.DC_MAPPING
+                    )
+                    source_dc, dc_dict = dc_collector.parse_metadata()
+                    dc_dict = self.exclude_null(dc_dict)
+                    if dc_dict:
+                        self.namespace_uri.extend(dc_collector.namespaces)
+                        # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                        # self.metadata_sources.append((source_dc, 'embedded'))
+                        self.add_metadata_source(source_dc)
+                        if dc_dict.get("related_resources"):
+                            self.related_resources.extend(dc_dict.get("related_resources"))
+                        self.merge_metadata(
+                            dc_dict,
+                            self.landing_url,
+                            source_dc,
+                            dc_collector.metadata_format,
+                            "text/html",
+                            "http://purl.org/dc/elements/1.1/",
+                            dc_collector.namespaces,
                         )
-                        source_dc, dc_dict = dc_collector.parse_metadata()
-                        dc_dict = self.exclude_null(dc_dict)
-                        if dc_dict:
-                            self.namespace_uri.extend(dc_collector.namespaces)
-                            # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                            # self.metadata_sources.append((source_dc, 'embedded'))
-                            self.add_metadata_source(source_dc)
-                            if dc_dict.get("related_resources"):
-                                self.related_resources.extend(dc_dict.get("related_resources"))
-                            self.merge_metadata(
-                                dc_dict,
-                                self.landing_url,
-                                source_dc,
-                                dc_collector.metadata_format,
-                                "text/html",
-                                "http://purl.org/dc/elements/1.1/",
-                                dc_collector.namespaces,
-                            )
 
-                            self.logger.log(
-                                self.LOG_SUCCESS, "FsF-F2-01M : Found DublinCore metadata -: " + str(dc_dict.keys())
-                            )
-                        else:
-                            self.logger.info("FsF-F2-01M : DublinCore metadata UNAVAILABLE")
+                        self.logger.log(
+                            self.LOG_SUCCESS, "FsF-F2-01M : Found DublinCore metadata -: " + str(dc_dict.keys())
+                        )
+                    else:
+                        self.logger.info("FsF-F2-01M : DublinCore metadata UNAVAILABLE")
+
                     # ========= retrieve embedded rdfa and microdata metadata ========
 
                     self.logger.info("FsF-F2-01M : Trying to retrieve Microdata metadata from html page")
@@ -926,7 +886,37 @@ class MetadataHarvester:
                             "FsF-F2-01M : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:"
                             + str(e)
                         )
+                    # ========= retrieve highwire and eprints embedded in html page =========
+                    self.logger.info("FsF-F2-01M : Trying to retrieve Highwire and eprints metadata from html page")
+                    hw_collector = MetaDataCollectorHighwireEprints(
+                        loggerinst=self.logger, sourcemetadata=self.landing_html
+                    )
+                    source_hw, hw_dict = hw_collector.parse_metadata()
+                    hw_metaformat = hw_collector.metadata_format
+                    hw_dict = self.exclude_null(hw_dict)
+                    if hw_dict:
+                        self.namespace_uri.extend(hw_collector.namespaces)
+                        # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+                        self.add_metadata_source(source_hw)
+                        # self.metadata_sources.append((source_hw, 'embedded'))
+                        if hw_dict.get("related_resources"):
+                            self.related_resources.extend(hw_dict.get("related_resources"))
+                        self.merge_metadata(
+                            hw_dict,
+                            self.landing_url,
+                            source_hw,
+                            hw_metaformat,
+                            "text/html",
+                            "highwire_eprints",
+                            hw_collector.namespaces,
+                        )
 
+                        self.logger.log(
+                            self.LOG_SUCCESS,
+                            "FsF-F2-01M : Found Highwire or eprints metadata -: " + str(hw_dict.keys()),
+                        )
+                    else:
+                        self.logger.info("FsF-F2-01M : Highwire or eprints metadata UNAVAILABLE")
                     # ======== retrieve OpenGraph metadata
                     self.logger.info("FsF-F2-01M : Trying to retrieve OpenGraph metadata from html page")
 
@@ -1440,10 +1430,10 @@ class MetadataHarvester:
                     self.retrieve_metadata_external_linked_metadata()
                     self.retrieve_metadata_external_oai_ore()
 
-            if self.reference_elements:
+            """if self.reference_elements:
                 self.logger.debug(f"FsF-F2-01M : Reference metadata elements NOT FOUND -: {self.reference_elements}")
             else:
-                self.logger.debug("FsF-F2-01M : ALL reference metadata elements available")
+                self.logger.debug("FsF-F2-01M : ALL reference metadata elements available")"""
             # Now if an identifier has been detected in the metadata, potentially check for persistent identifier has to be repeated..
             self.check_pidtest_repeat()
         else:
