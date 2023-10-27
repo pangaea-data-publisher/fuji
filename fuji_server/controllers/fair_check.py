@@ -281,33 +281,6 @@ class FAIRCheck:
             else:
                 self.auth_token_type = "Basic"
 
-    """def merge_metadata(self, metadict, sourceurl, method_source, format, schema='', namespaces = []):
-        if not isinstance(namespaces, list):
-            namespaces = [namespaces]
-        if isinstance(metadict,dict):
-            #self.metadata_sources.append((method_source, 'negotiated'))
-
-            for r in metadict.keys():
-                if r in self.reference_elements:
-                    self.metadata_merged[r] = metadict[r]
-                    self.reference_elements.remove(r)
-
-            if metadict.get('related_resources'):
-                self.related_resources.extend(metadict.get('related_resources'))
-            if metadict.get('object_content_identifier'):
-                self.logger.info('FsF-F3-01M : Found data links in '+str(format)+' metadata -: ' +
-                                 str(len(metadict.get('object_content_identifier'))))
-            ## add: mechanism ('content negotiation', 'typed links', 'embedded')
-            ## add: format namespace
-            self.metadata_unmerged.append(
-                    {'method' : method_source,
-                     'url' : sourceurl,
-                     'format' : format,
-                     'schema' : schema,
-                     'metadata' : metadict,
-                     'namespaces' : namespaces}
-            )"""
-
     def clean_metadata(self):
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
@@ -383,7 +356,7 @@ class FAIRCheck:
 
     def harvest_all_data(self):
         if self.metadata_merged.get("object_content_identifier"):
-            data_links = self.metadata_merged.get("object_content_identifier")[: self.FILES_LIMIT]
+            data_links = self.metadata_merged.get("object_content_identifier")  # [: self.FILES_LIMIT]
             data_harvester = DataHarvester(data_links, self.logger, self.landing_url, metrics=self.METRICS.keys())
             data_harvester.retrieve_all_data()
             self.content_identifier = data_harvester.data
