@@ -65,6 +65,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
             for file_index, data_file in enumerate(self.fuji.content_identifier.values()):
                 mime_type = data_file.get("claimed_type")
+                # print(data_file)
                 if data_file.get("url") is not None:
                     if (mime_type is None or "/" not in mime_type) and data_file.get("header_content_type"):
                         self.logger.info(
@@ -79,16 +80,19 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         or mime_type in ["application/octet-stream", "binary/octet-stream"]
                     ):
                         self.logger.info(
-                            "FsF-R1.3-02D : No mime type given in metadata, therefore guessing  the type of a file based on its filename or URL -: {}".format(
+                            "FsF-R1.3-02D : No mime type given in metadata or generic octet-stream type given, therefore guessing  the type of a file based on its filename or URL -: {}".format(
                                 data_file.get("url")
                             )
                         )
                         # if mime type not given try to guess it based on the file name
                         guessed_mime_type = mimetypes.guess_type(data_file.get("url"))
-                        self.logger.info(f"FsF-R1.3-02D : Guess return value -: {guessed_mime_type}")
                         mime_type = guessed_mime_type[
                             0
                         ]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
+                        if mime_type:
+                            self.logger.info(f"FsF-R1.3-02D : Mime type guess return value -: {mime_type}")
+                        else:
+                            self.logger.info("FsF-R1.3-02D : Failed to guess mime type based on file name")
 
                     if mime_type:
                         self.logger.info("FsF-R1.3-02D : Found mime type in metadata -: " + str(mime_type))
