@@ -40,7 +40,7 @@ dependencies = [
   "requests~=2.31",
   "sparqlwrapper~=2.0",
   "tika~=2.6",
-  "tldextract~=3.4",
+  "tldextract~=5.0",
   "urlextract~=1.8",
   "waitress~=2.1"
 ]
