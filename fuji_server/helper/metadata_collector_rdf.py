@@ -468,6 +468,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 "hasVersion",
                                 "replaces",
                                 "hasPart",
+                                "citation",
                                 "isReplacedBy",
                                 "requires",
                                 "isRequiredBy",
@@ -695,11 +696,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 SMA.subjectOf,
                 SMA.isBasedOn,
                 SMA.sameAs,
+                SMA.citation,
                 SDO.isPartOf,
                 SDO.includedInDataCatalog,
                 SDO.subjectOf,
                 SDO.isBasedOn,
                 SDO.sameAs,
+                SDO.citation,
             ]:
                 schemarelation = g.value(item, schemarelationtype)
                 if schemarelation:
