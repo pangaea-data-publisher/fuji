@@ -49,7 +49,7 @@ class DataHarvester:
                     mime_list.append(str(xm[0] + "/" + xm[1]))
         return mime_list
 
-    def retrieve_all_data(self, howmany=1):
+    def retrieve_all_data_old(self, howmany=1):
         if self.data_links:
             if isinstance(self.data_links, list):
                 self.data_links.reverse()
@@ -78,6 +78,39 @@ class DataHarvester:
                     fileinfo["claimed_type"] = datafile.get("type")
                     fileinfo["url"] = datafile.get("url")
                     self.data[datafile.get("url")] = fileinfo
+        return True
+
+    def retrieve_all_data(self):
+        # rchoose sample of data_links which are accessible the smallest file per mime type (onbe per mime type)
+        if self.data_links:
+            if isinstance(self.data_links, list):
+                sorted_files = {}
+                for f in self.data_links:
+                    if sorted_files.get(f.get("type")):
+                        sorted_files[f.get("type")].append(f)
+                        sorted_files[f.get("type")] = sorted(
+                            sorted_files[f.get("type")], key=lambda d: d["size"] if d.get("size") else float("inf")
+                        )
+                    else:
+                        sorted_files[f.get("type")] = [f]
+                for ft in sorted_files.values():
+                    for datafile in ft:
+                        fileinfo, buffer = self.get(datafile.get("url"))
+                        fileinfo["verified"] = False
+                        if fileinfo.get("status_code") == 200:
+                            fileinfo["verified"] = True
+                        fileinfo["tika_content_type"] = []
+                        if fileinfo:
+                            fileinfo.update(self.tika(buffer, datafile.get("url")))
+                        else:
+                            fileinfo["verified"] = False
+                        fileinfo["claimed_size"] = datafile.get("size")
+                        fileinfo["claimed_type"] = datafile.get("type")
+                        fileinfo["url"] = datafile.get("url")
+                        if fileinfo["verified"]:
+                            self.data[datafile.get("url")] = fileinfo
+                            break
+            # print('DATA', self.data)
         return True
 
     def get(self, url):
