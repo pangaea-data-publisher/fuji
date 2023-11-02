@@ -108,9 +108,8 @@ class DataHarvester:
                         fileinfo["claimed_size"] = datafile.get("size")
                         fileinfo["claimed_type"] = datafile.get("type")
                         fileinfo["url"] = datafile.get("url")
-                        if fileinfo["verified"]:
-                            self.data[datafile.get("url")] = fileinfo
-                            break
+                        # if fileinfo["verified"]:
+                        self.data[datafile.get("url")] = fileinfo
             # print('DATA', self.data)
         return True
 
