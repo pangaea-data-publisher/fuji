@@ -31,10 +31,10 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
     """
 
-    islisted = False
-
     # apiURI = 'https://api.datacite.org/dois'
     def __init__(self, logger: logging.Logger = None, object_type=None):
+        self.islisted = False
+
         self.logger = logger
         self.source = self.getEnumSourceNames().GOOGLE_DATASET.value
         self.google_cache_db_path = os.path.join(Preprocessor.fuji_server_dir, "data", "google_cache.db")
@@ -75,6 +75,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
                     dbres = con.execute(dbquery)
                     found_google_links = dbres.fetchall()
+                    print("GOOGLE LINKS:  ", found_google_links)
             except Exception as e:
                 self.logger.warning("FsF-F4-01M : Google Search Cache DB Query Error: -:" + str(e))
 
@@ -86,12 +87,13 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 if found_at_google:
                     self.islisted = True
                     break
-        else:
+        # do this on your own risk..
+        """else:
             for url_to_test in pidlist:
                 found_at_google = self.query_google_webindex(url_to_test, pidlist)
                 if found_at_google:
                     self.islisted = True
-                    break
+                    break"""
 
         if self.islisted:
             self.logger.info(
