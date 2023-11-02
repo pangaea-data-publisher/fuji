@@ -966,7 +966,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
             )
             schema_metadata["object_content_identifier"] = []
             for dist in distribution:
-                durl = graph.value(dist, SMA.contentUrl) or graph.value(dist, SDO.contentUrl)
+                durl = (
+                    graph.value(dist, SMA.contentUrl)
+                    or graph.value(dist, SMA.url)
+                    or graph.value(dist, SDO.contentUrl)
+                    or graph.value(dist, SDO.url)
+                )
                 dtype = graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat)
                 dsize = graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize)
                 if durl or dtype or dsize:
