@@ -81,6 +81,7 @@ class DataHarvester:
         return True
 
     def retrieve_all_data(self):
+        # TODO: prioritise scientific files which can be opened by tika or other parsers for content analysis
         # rchoose sample of data_links which are accessible the smallest file per mime type (onbe per mime type)
         if self.data_links:
             if isinstance(self.data_links, list):
