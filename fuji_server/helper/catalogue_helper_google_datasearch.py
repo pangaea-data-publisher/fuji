@@ -75,7 +75,6 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
 
                     dbres = con.execute(dbquery)
                     found_google_links = dbres.fetchall()
-                    print("GOOGLE LINKS:  ", found_google_links)
             except Exception as e:
                 self.logger.warning("FsF-F4-01M : Google Search Cache DB Query Error: -:" + str(e))
 
