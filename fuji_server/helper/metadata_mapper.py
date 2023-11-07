@@ -320,7 +320,7 @@ class Mapper(Enum):
             OPTIONAL {?dataset  dct:requires ?requires}
             OPTIONAL {?dataset  dct:isRequiredBy ?isRequiredBy}
             OPTIONAL {?dataset  dct:language|dc:language|sdo:inLanguage ?language}
-            }LIMIT 1
+            }LIMIT 5
             """
 
     #################  XML Mappings ###############
