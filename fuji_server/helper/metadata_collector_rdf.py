@@ -477,8 +477,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     meta["related_resources"] = []
                                 meta["related_resources"].append({"related_resource": str(v), "relation_type": l})
                             else:
-                                meta[l] = str(v)
-                    break
+                                if v:
+                                    meta[l] = str(v)
+                    if meta:
+                        break
+                    # break
             else:
                 self.logger.warning(
                     "FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test"
@@ -507,14 +510,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     + " triples in the given graph"
                 )
         elif meta.get("object_type"):
-            # Ignore non CreativeWork schema.org types
+            # Ignore non CreativeWork schema.org types' metadata
             if "schema.org" in meta["object_type"]:
                 if meta["object_type"].split("/")[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
                     self.logger.info(
-                        "FsF-F2-01M : Ignoring SPARQLed metadata seems to be non CreativeWork schema.org type: "
+                        "FsF-F2-01M : Ignoring SPARQLed metadata: seems to be non CreativeWork schema.org type: "
                         + str(meta["object_type"])
                     )
-                    meta = dict()
+                    # ignore all metadata but keep the type
+                    meta = {"object_type": meta["object_type"]}
             if meta:
                 self.logger.info(
                     "FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: "
