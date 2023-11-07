@@ -763,6 +763,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             try:
+                jsoncontext = []
                 # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(json_dict.get("@context")).find("://schema.org") > -1:
                     schemaorgns = "schema"
@@ -770,7 +771,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         for contextname, contexturi in json_dict.get("@context").items():
                             if contexturi.endswith("schema.org/"):
                                 schemaorgns = contextname
-
+                            else:
+                                jsoncontext.append(contexturi)
+                    elif isinstance(json_dict.get("@context"), list):
+                        for lcontext in json_dict.get("@context"):
+                            if isinstance(lcontext, str):
+                                jsoncontext.append(lcontext)
+                            elif isinstance(lcontext, dict):
+                                for lck, lcuri in lcontext.items():
+                                    jsoncontext.append(lcuri)
                     json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ":", '"'))
                     # special case #1
                     if json_dict.get("mainEntity"):
@@ -811,8 +820,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             "FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:"
                             + str(json_dict.get("@type"))
                         )
-
                         self.namespaces.append("http://schema.org/")
+                        if jsoncontext:
+                            self.namespaces.extend(jsoncontext)
+                        self.namespaces = list(set(self.namespaces))
+
                         jsnld_metadata = jmespath.search(Mapper.SCHEMAORG_MAPPING.value, json_dict)
                     if jsnld_metadata.get("creator") is None:
                         first = jsnld_metadata.get("creator_first")
