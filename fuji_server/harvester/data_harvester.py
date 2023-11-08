@@ -61,11 +61,19 @@ class DataHarvester:
         if self.data_links:
             if isinstance(self.data_links, list):
                 for fl in self.data_links:
+                    # add more trust for more complete info
+                    fl["trust"] = 0
                     if fl.get("size"):
                         try:
-                            fl["size"] = int(fl["size"])
+                            fl["size"] = float(fl["size"])
+                            fl["trust"] += 1
                         except:
                             fl["size"] = None
+                    if fl.get("type") == None:
+                        if fl["trust"] > 1:
+                            fl["trust"] -= 1
+                    elif "/" in str(fl.get("type")):
+                        fl["trust"] += 1
                     if sorted_files.get(fl.get("type")):
                         sorted_files[fl.get("type")].append(fl)
                         sorted_files[fl.get("type")] = sorted(
@@ -73,6 +81,7 @@ class DataHarvester:
                         )
                     else:
                         sorted_files[fl.get("type")] = [fl]
+
         # threaded download starts here
         for fmime, ft in sorted_files.items():
             timeout = 10
@@ -80,9 +89,13 @@ class DataHarvester:
                 self.logger.warning(
                     f"FsF-F3-01M : Found more than -: {str(self.max_number_per_mime)} data links ({str(len(ft))}) of type {fmime} will only take {str(self.max_number_per_mime)}"
                 )
-
             for f in ft[: self.max_number_per_mime]:
-                if f.get("url"):
+                url_trust = None
+                if urls_to_check.get(f.get("url")):
+                    url_trust = urls_to_check.get(f.get("url")).get("trust")
+                if not url_trust:
+                    url_trust = 0
+                if f.get("url") and (not urls_to_check.get(f.get("url")) or url_trust < f.get("trust")):
                     urls_to_check[f.get("url")] = f
 
             # urls_to_check.extend([f.get('url') for f in ft[:self.max_number_per_mime]])
