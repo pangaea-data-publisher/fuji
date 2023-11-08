@@ -89,7 +89,11 @@ class DataHarvester:
                 self.logger.warning(
                     f"FsF-F3-01M : Found more than -: {str(self.max_number_per_mime)} data links ({str(len(ft))}) of type {fmime} will only take {str(self.max_number_per_mime)}"
                 )
-            for f in ft[: self.max_number_per_mime]:
+            files_to_check = ft[: self.max_number_per_mime]
+            # add the fifth one for compatibility reasons < f-uji 3.0.1, when we took the last of list of length FILES_LIMIT
+            if len(self.data_links) >= 5:
+                files_to_check.append(self.data_links[4])
+            for f in files_to_check:
                 url_trust = None
                 if urls_to_check.get(f.get("url")):
                     url_trust = urls_to_check.get(f.get("url")).get("trust")
@@ -97,7 +101,6 @@ class DataHarvester:
                     url_trust = 0
                 if f.get("url") and (not urls_to_check.get(f.get("url")) or url_trust < f.get("trust")):
                     urls_to_check[f.get("url")] = f
-
             # urls_to_check.extend([f.get('url') for f in ft[:self.max_number_per_mime]])
             # urls = [f.get('url') for f in ft[:self.max_number_per_mime]]
         e = threading.Event()

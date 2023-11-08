@@ -119,14 +119,14 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
             # contents = list({cv['url']:cv for cv in contents}.values())
             # print(contents)
             number_of_contents = len(contents)
-            if number_of_contents >= self.fuji.FILES_LIMIT:
+            """if number_of_contents >= self.fuji.FILES_LIMIT:
                 self.logger.info(
                     self.metric_identifier
                     + " : The total number of object (content) identifiers specified is above threshold, will use the first -: {} content identifiers for the tests".format(
                         self.fuji.FILES_LIMIT
                     )
                 )
-                contents = contents[: self.fuji.FILES_LIMIT]
+                contents = contents[: self.fuji.FILES_LIMIT]"""
             self.result.test_status = "fail"
             if self.testDataSizeTypeNameAvailable(contents):
                 self.result.test_status = "pass"

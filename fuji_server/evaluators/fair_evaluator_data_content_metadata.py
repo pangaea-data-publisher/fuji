@@ -243,7 +243,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 data_content_filetype_inner.matches_content = type_matches
                 self.data_content_descriptors.append(data_content_filetype_inner)
             if size_matches and type_matches and self.metric_identifier + "-3" not in self.test_passed:
-                self.test_passed.append(self.metric_identifier + "-1")
+                self.test_passed.append(self.metric_identifier + "-3")
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-3").metric_test_maturity_config
