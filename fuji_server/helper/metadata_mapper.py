@@ -559,7 +559,7 @@ class Mapper(Enum):
                 "./{*}Science_Keywords/{*}Term",
             ]
         },
-        "object_content_identifier_url": {"path": "./{*}Distribution/{*}Distribution_Media"},
+        # "object_content_identifier_url": {"path": "./{*}Distribution/{*}Distribution_Media"},
         "object_content_identifier_size": {"path": "./{*}Distribution/{*}Distribution_Size"},
         "object_content_identifier_type": {"path": "./{*}Distribution/{*}Distribution_Format"},
         "measured_variable": {"path": "./{*}Science_Keywords/{*}Detailed_Variable"},
