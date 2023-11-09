@@ -56,7 +56,6 @@ class DataHarvester:
         try:
             bytematch = re.search(r"([0-9]+(?:[\.,][0-9]+)*)\s*([kMGTP]?(?:[Bb](?:ytes?)?))?", str(size))
             if bytematch:
-                print("BYTES:", bytematch[1], bytematch[2])
                 size = bytematch[1]
                 mult = str(bytematch[2])
                 size = float(size)
@@ -152,16 +151,15 @@ class DataHarvester:
             header["Authorization"] = self.auth_token_type + " " + self.auth_token
         # header["Range"] = "bytes=0-" + str(self.max_download_size)
         url = urldict.get("url")
-        urldict.get("size")
         if url:
             if not idutils.is_url(url):
                 url = self.expand_url(url)
             print("Downloading.. ", url)
+            response = None
             try:
                 request = urllib.request.Request(url, headers=header)
                 response = urllib.request.urlopen(request, timeout=timeout)
                 self.responses[url] = response
-                self.set_data_info(urldict, response)
             except urllib.error.HTTPError as e:
                 self.logger.warning(f"FsF-F3-01M : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
                 self.logger.warning(f"FsF-R1-01MD : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
@@ -183,6 +181,7 @@ class DataHarvester:
                 self.logger.warning("FsF-F3-01M : Content identifier inaccessible -:" + url + " " + str(e))
                 self.logger.warning("FsF-R1-01MD : Content identifier inaccessible -:" + url + " " + str(e))
                 self.logger.warning("FsF-R1.3-02D : Content identifier inaccessible -:" + url + " " + str(e))
+            self.set_data_info(urldict, response)
 
     def set_data_info(self, urldict, response):
         fileinfo = {}
@@ -194,39 +193,45 @@ class DataHarvester:
                 "truncated": False,
                 "is_persistent": False,
             }
-            file_buffer_object = io.BytesIO()
-            rstatus = response.getcode()
             idhelper = IdentifierHelper(urldict.get("url"))
             if idhelper.preferred_schema:
                 fileinfo["schema"] = idhelper.preferred_schema
             if idhelper.is_persistent:
                 fileinfo["is_persistent"] = True
-            fileinfo["status_code"] = rstatus
-            fileinfo["verified"] = False
-            if fileinfo.get("status_code") == 200:
-                fileinfo["verified"] = True
+            # response related info
+            if response:
+                file_buffer_object = io.BytesIO()
+                rstatus = response.getcode()
+                fileinfo["status_code"] = rstatus
+                fileinfo["verified"] = False
+                if fileinfo.get("status_code") == 200:
+                    fileinfo["verified"] = True
+                fileinfo["resolved_url"] = response.geturl()
+                if response.headers.get("content-type"):
+                    self.content_type = fileinfo["header_content_type"] = response.headers.get("content-type").split(
+                        ";"
+                    )[0]
+                elif response.headers.get("Content-Type"):
+                    self.content_type = fileinfo["header_content_type"] = response.headers.get("Content-Type").split(
+                        ";"
+                    )[0]
+                if response.headers.get("content-length"):
+                    fileinfo["header_content_size"] = response.headers.get("content-length").split(";")[0]
+                elif response.headers.get("Content-Length"):
+                    fileinfo["header_content_size"] = response.headers.get("Content-Length").split(";")[0]
+                try:
+                    fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
+                except:
+                    fileinfo["header_content_size"] = self.max_download_size
+                    pass
+                content = response.read(self.max_download_size)
+                file_buffer_object.write(content)
+                fileinfo["content_size"] = file_buffer_object.getbuffer().nbytes
+                if fileinfo["content_size"] < fileinfo["header_content_size"]:
+                    fileinfo["truncated"] = True
+                if fileinfo["content_size"] > 0:
+                    fileinfo.update(self.tika(file_buffer_object, urldict.get("url")))
 
-            fileinfo["resolved_url"] = response.geturl()
-            if response.headers.get("content-type"):
-                self.content_type = fileinfo["header_content_type"] = response.headers.get("content-type").split(";")[0]
-            elif response.headers.get("Content-Type"):
-                self.content_type = fileinfo["header_content_type"] = response.headers.get("Content-Type").split(";")[0]
-            if response.headers.get("content-length"):
-                fileinfo["header_content_size"] = response.headers.get("content-length").split(";")[0]
-            elif response.headers.get("Content-Length"):
-                fileinfo["header_content_size"] = response.headers.get("Content-Length").split(";")[0]
-            try:
-                fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
-            except:
-                fileinfo["header_content_size"] = self.max_download_size
-                pass
-            content = response.read(self.max_download_size)
-            file_buffer_object.write(content)
-            fileinfo["content_size"] = file_buffer_object.getbuffer().nbytes
-            if fileinfo["content_size"] < fileinfo["header_content_size"]:
-                fileinfo["truncated"] = True
-            if fileinfo["content_size"] > 0:
-                fileinfo.update(self.tika(file_buffer_object, urldict.get("url")))
             self.data[urldict.get("url")] = fileinfo
         return fileinfo
 
