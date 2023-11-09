@@ -48,21 +48,24 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         self.data_file_list = []
 
     def setFileFormatDict(self):
+        mime_url_pair = {}
         if not self.fuji.content_identifier:  # self.content_identifier only includes uris that are accessible
             contents = self.fuji.metadata_merged.get("object_content_identifier")
-            unique_types = []
+            unverified_content_urls = []
             if contents:
                 for c in contents:
                     if c.get("type"):
-                        unique_types.append(c.get("type"))
-                self.logger.info(f"FsF-R1.3-02D : File format(s) specified -: {list(set(unique_types))}")
-
-        mime_url_pair = {}
-        if len(self.fuji.content_identifier) > 0:
-            content_urls = [item.get("url") for item in self.fuji.content_identifier.values()]
-            self.logger.info(f"FsF-R1.3-02D : Data content identifier provided -: {content_urls}")
+                        if c.get("url"):
+                            unverified_content_urls.append(c.get("url"))
+                            mime_url_pair[c.get("type")] = c.get("url")
+                if unverified_content_urls:
+                    self.logger.info(
+                        f"FsF-R1.3-02D : Data content (inaccessible) identifier provided -: -: {list(set(unverified_content_urls))}"
+                    )
+        elif len(self.fuji.content_identifier) > 0:
+            verified_content_urls = [item.get("url") for item in self.fuji.content_identifier.values()]
+            self.logger.info(f"FsF-R1.3-02D : Data content identifier provided -: {verified_content_urls}")
             # self.maturity = 1
-
             for file_index, data_file in enumerate(self.fuji.content_identifier.values()):
                 mime_type = data_file.get("claimed_type")
                 # print(data_file)
