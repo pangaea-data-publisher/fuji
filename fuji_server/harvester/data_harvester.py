@@ -52,6 +52,26 @@ class DataHarvester:
                     mime_list.append(str(xm[0] + "/" + xm[1]))
         return mime_list
 
+    def parse_content_size(self, size):
+        try:
+            bytematch = re.search(r"([0-9]+(?:[\.,][0-9]+)*)\s*([kMGTP]?(?:[Bb](?:ytes?)?))?", str(size))
+            if bytematch:
+                print("BYTES:", bytematch[1], bytematch[2])
+                size = bytematch[1]
+                mult = str(bytematch[2])
+                size = float(size)
+                if mult.startswith("k"):
+                    size = size * 1000
+                elif mult.startswith("M"):
+                    size = size * 1000000
+                elif mult.startswith("G"):
+                    size = size * 1000000000
+                elif mult.startswith("P"):
+                    size = size * 1000000000000
+        except Exception as e:
+            print("Content site Byte parsing error: ", str(e))
+        return size
+
     def retrieve_all_data(self, scan_content=True):
         # TODO: prioritise scientific files which can be opened by tika or other parsers for content analysis
         # choose sample of data_links which are accessible the smallest file per mime type (onbe per mime type)
@@ -64,11 +84,14 @@ class DataHarvester:
                     # add more trust for more complete info
                     fl["trust"] = 0
                     if fl.get("size"):
+                        fl["size"] = self.parse_content_size(fl["size"])
                         try:
-                            fl["size"] = float(fl["size"])
+                            float(fl["size"])
                             fl["trust"] += 1
-                        except:
+                        except Exception:
                             fl["size"] = None
+                    else:
+                        fl["size"] = None
                     if fl.get("type") == None:
                         if fl["trust"] > 1:
                             fl["trust"] -= 1
