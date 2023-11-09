@@ -213,6 +213,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 str(data_object.get("content_size")),
                             )
                         )
+                # clean before checking
+                if ";" in str(data_object.get("header_content_type")):
+                    data_object["header_content_type"] = str(data_object.get("header_content_type")).split(";")[0]
+                if ";" in str(data_object.get("claimed_type")):
+                    data_object["claimed_type"] = str(data_object.get("claimed_type")).split(";")[0]
 
                 if data_object.get("header_content_type") == data_object.get("claimed_type") or data_object.get(
                     "claimed_type"
