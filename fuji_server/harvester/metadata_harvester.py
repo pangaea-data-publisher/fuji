@@ -1475,7 +1475,10 @@ class MetadataHarvester:
                 try:
                     match = process.extractOne(value, self.COMMUNITY_METADATA_STANDARDS_URIS.keys())
                     if extract(str(value)).domain == extract(str(match[0])).domain:
-                        if match[1] > 90:
+                        req_similarity = 90
+                        if "w3.org/ns" in value:
+                            req_similarity = 95
+                        if match[1] > req_similarity:
                             metadata_standard_id = list(self.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
                 except Exception as e:
                     print("METADATA STANDARD LOOKUP ERROR: ", str(e))
