@@ -49,23 +49,28 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         test_status = False
         if self.isTestDefined(self.metric_identifier + "-1"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-1")
-            if len(self.fuji.content_identifier) > 0:
-                # here we only test the first content identifier
-                data_url = list(self.fuji.content_identifier.values())[0].get("url")
-                data_parsed_url = urlparse(data_url)
-                data_url_scheme = data_parsed_url.scheme
-                if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        self.metric_identifier
-                        + " : Standard protocol for access to data object found -: "
-                        + data_url_scheme,
-                    )
-                    self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
-                    self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-                    self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
-                    test_status = True
-                    self.score.earned = test_score
+            content_identifiers = self.fuji.content_identifier.values()
+            if content_identifiers:
+                if len(content_identifiers) > 0:
+                    # here we only test the first content identifier
+                    for data_link in content_identifiers:
+                        data_url = data_link.get("url")
+                        if data_url:
+                            data_parsed_url = urlparse(data_url)
+                            data_url_scheme = data_parsed_url.scheme
+                            if data_url_scheme in self.fuji.STANDARD_PROTOCOLS:
+                                self.logger.log(
+                                    self.fuji.LOG_SUCCESS,
+                                    self.metric_identifier
+                                    + " : Standard protocol for access to data object found -: "
+                                    + data_url_scheme,
+                                )
+                                self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
+                                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
+                                test_status = True
+                                self.score.earned = test_score
+                                break
             else:
                 self.logger.warning(
                     self.metric_identifier
