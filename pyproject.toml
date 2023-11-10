@@ -29,7 +29,7 @@ dependencies = [
   "hashid~=3.1.4",
   "idutils~=1.2",
   "jmespath~=1.0",
-  "levenshtein~=0.22.0",
+  "levenshtein~=0.23.0",
   "lxml~=4.9",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
@@ -40,7 +40,7 @@ dependencies = [
   "requests~=2.31",
   "sparqlwrapper~=2.0",
   "tika~=2.6",
-  "tldextract~=3.4",
+  "tldextract~=5.0",
   "urlextract~=1.8",
   "waitress~=2.1"
 ]
