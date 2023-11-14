@@ -123,6 +123,7 @@ VideoGameClip
 VideoGameSeries
 VideoObject
 VisualArtwork
+WebAPI
 WebContent
 WebPage
 WebPageElement

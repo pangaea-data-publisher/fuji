@@ -12,8 +12,8 @@ class linked_vocab_helper:
         self.linked_vocab_index = linked_vocab_index
         self.linked_vocab_dict = {}
         self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia"]
-        # prefixes used for identifiers only not terms
-        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org"]
+        # prefixes used for identifiers only so we ignore these for terms
+        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org"]
 
     def set_linked_vocab_dict(self):
         print("Setting up the vocab dict.........................")

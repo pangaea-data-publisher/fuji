@@ -43,6 +43,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric("FsF-R1-01MD")
         self.data_content_descriptors = []
+        self.test_passed = []
 
     def subtestDataContentInfoGiven(self):
         test_result = False
@@ -98,7 +99,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if self.subtestDataContentInfoGiven():
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-            if test_result:
+            if test_result and self.metric_identifier + "-1" not in self.test_passed:
+                self.test_passed.append(self.metric_identifier + "-1")
                 self.score.earned += test_score
                 self.maturity = self.getTestConfigMaturity(
                     self.metric_identifier + "-1"
@@ -146,7 +148,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     test_result = True
                 if self.subtestMeasuredVariablesGiven():
                     test_result = True
-            if test_result:
+            if test_result and self.metric_identifier + "-2" not in self.test_passed:
+                self.test_passed.append(self.metric_identifier + "-2")
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
@@ -210,6 +213,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                 str(data_object.get("content_size")),
                             )
                         )
+                # clean before checking
+                if ";" in str(data_object.get("header_content_type")):
+                    data_object["header_content_type"] = str(data_object.get("header_content_type")).split(";")[0]
+                if ";" in str(data_object.get("claimed_type")):
+                    data_object["claimed_type"] = str(data_object.get("claimed_type")).split(";")[0]
 
                 if data_object.get("header_content_type") == data_object.get("claimed_type") or data_object.get(
                     "claimed_type"
@@ -239,8 +247,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 data_content_filetype_inner.descriptor_value = data_object.get("claimed_type")
                 data_content_filetype_inner.matches_content = type_matches
                 self.data_content_descriptors.append(data_content_filetype_inner)
-
-            if size_matches and type_matches:
+            if size_matches and type_matches and self.metric_identifier + "-3" not in self.test_passed:
+                self.test_passed.append(self.metric_identifier + "-3")
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-3").metric_test_maturity_config
@@ -280,7 +288,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.logger.warning(
                         "FsF-R1-01MD : NO measured variables found in metadata, skip 'measured_variable' test."
                     )
-                if test_result:
+                if test_result and self.metric_identifier + "-4" not in self.test_passed:
+                    self.test_passed.append(self.metric_identifier + "-4")
                     self.score.earned += test_score
                     self.setEvaluationCriteriumScore(self.metric_identifier + "-4", test_score, "pass")
                     self.maturity = self.metric_tests.get(self.metric_identifier + "-4").metric_test_maturity_config
@@ -302,15 +311,16 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if len(self.fuji.content_identifier) > 0:
                 verified_urls = [e for e, v in self.fuji.content_identifier.items() if v.get("verified")]
                 if verified_urls:
-                    test_data_content_url = verified_urls[0]
+                    test_data_content_urls = verified_urls
                 else:
-                    test_data_content_url = list(self.fuji.content_identifier.keys())[0]
-                if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
-                    test_status = "pass"
-                if self.testSizeAndTypeMatchesMetadata(test_data_content_url):
-                    test_status = "pass"
-                if self.testVariablesMatchMetadata(test_data_content_url):
-                    test_status = "pass"
+                    test_data_content_urls = list(self.fuji.content_identifier.keys())
+                for test_data_content_url in test_data_content_urls:
+                    if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
+                        test_status = "pass"
+                    if self.testSizeAndTypeMatchesMetadata(test_data_content_url):
+                        test_status = "pass"
+                    if self.testVariablesMatchMetadata(test_data_content_url):
+                        test_status = "pass"
             else:
                 self.logger.warning(
                     self.metric_identifier

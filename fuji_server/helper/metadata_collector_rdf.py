@@ -477,8 +477,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     meta["related_resources"] = []
                                 meta["related_resources"].append({"related_resource": str(v), "relation_type": l})
                             else:
-                                meta[l] = str(v)
-                    break
+                                if v:
+                                    meta[l] = str(v)
+                    if meta:
+                        break
+                    # break
             else:
                 self.logger.warning(
                     "FsF-F2-01M : Graph seems to contain no triple, skipping core metadata element test"
@@ -507,14 +510,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     + " triples in the given graph"
                 )
         elif meta.get("object_type"):
-            # Ignore non CreativeWork schema.org types
+            # Ignore non CreativeWork schema.org types' metadata
             if "schema.org" in meta["object_type"]:
                 if meta["object_type"].split("/")[-1].lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
                     self.logger.info(
-                        "FsF-F2-01M : Ignoring SPARQLed metadata seems to be non CreativeWork schema.org type: "
+                        "FsF-F2-01M : Ignoring SPARQLed metadata: seems to be non CreativeWork schema.org type: "
                         + str(meta["object_type"])
                     )
-                    meta = dict()
+                    # ignore all metadata but keep the type
+                    meta = {"object_type": meta["object_type"]}
             if meta:
                 self.logger.info(
                     "FsF-F2-01M : Found some core metadata elements through generic SPARQL query on RDF -: "
@@ -759,6 +763,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # TODO check syntax - not ending with /, type and @type
             # TODO (important) extend mapping to detect other pids (link to related entities)?
             try:
+                jsoncontext = []
                 # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
                 if str(json_dict.get("@context")).find("://schema.org") > -1:
                     schemaorgns = "schema"
@@ -766,7 +771,15 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         for contextname, contexturi in json_dict.get("@context").items():
                             if contexturi.endswith("schema.org/"):
                                 schemaorgns = contextname
-
+                            else:
+                                jsoncontext.append(contexturi)
+                    elif isinstance(json_dict.get("@context"), list):
+                        for lcontext in json_dict.get("@context"):
+                            if isinstance(lcontext, str):
+                                jsoncontext.append(lcontext)
+                            elif isinstance(lcontext, dict):
+                                for lck, lcuri in lcontext.items():
+                                    jsoncontext.append(lcuri)
                     json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ":", '"'))
                     # special case #1
                     if json_dict.get("mainEntity"):
@@ -807,8 +820,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             "FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:"
                             + str(json_dict.get("@type"))
                         )
-
                         self.namespaces.append("http://schema.org/")
+                        if jsoncontext:
+                            self.namespaces.extend(jsoncontext)
+                        self.namespaces = list(set(self.namespaces))
+
                         jsnld_metadata = jmespath.search(Mapper.SCHEMAORG_MAPPING.value, json_dict)
                     if jsnld_metadata.get("creator") is None:
                         first = jsnld_metadata.get("creator_first")
