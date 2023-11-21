@@ -242,7 +242,9 @@ class Mapper(Enum):
     MICRODATA_MAPPING = (
         "{object_type: type, title: properties.name, summary: properties.description, publication_date: properties.datePublished, "
         "publisher: (properties.publisher.properties.name || properties.publisher),"
-        "creator: (properties.creator.properties.name || properties.author.properties.name)"
+        "creator: (properties.creator.properties.name || properties.author.properties.name || properties.author),"
+        "license_path: properties.license,"
+        "description: properties.text"
         "}"
     )
 
