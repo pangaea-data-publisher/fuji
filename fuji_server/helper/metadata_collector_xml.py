@@ -299,6 +299,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                 try:
                     subtrees = tree.findall(pathdef[0])
                 except Exception as e:
+                    subtrees = []
                     print("XML XPATH error ", str(e))
                 for subtree in subtrees:
                     propcontent.append({"tree": subtree, "attribute": attribute})

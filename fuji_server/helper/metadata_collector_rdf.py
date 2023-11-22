@@ -625,9 +625,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 publishername = (
                     g.value(publisher, FOAF.name) or (g.value(publisher, SMA.name)) or (g.value(publisher, SDO.name))
                 )
+                publisheruri = (
+                    g.value(publisher, FOAF.homepage) or (g.value(publisher, SMA.url)) or (g.value(publisher, SDO.url))
+                )
+                if publisheruri:
+                    meta["publisher"].append(str(publishername))
                 if publishername:
                     meta["publisher"].append(str(publishername))
-                else:
+                if not meta.get("publisher"):
                     meta["publisher"].append(str(publisher))
             # meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
             #                     g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
