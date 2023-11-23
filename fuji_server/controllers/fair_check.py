@@ -125,6 +125,7 @@ class FAIRCheck:
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.origin_url = None  # the url from where all starts - in case of redirection we'll need this later on
+        self.repository_urls = []  # urls identified which could represent the repository
         self.landing_html = None
         self.landing_content_type = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
@@ -371,6 +372,8 @@ class FAIRCheck:
         self.linked_namespace_uri.update(self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend(self.metadata_harvester.related_resources)
         self.landing_url = self.metadata_harvester.landing_url
+        self.landing_origin = self.metadata_harvester.landing_origin
+        self.landing_domain = self.metadata_harvester.landing_domain
         self.origin_url = self.metadata_harvester.origin_url
         self.pid_url = self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
@@ -631,3 +634,17 @@ class FAIRCheck:
         summary["status_passed"].update(sf.groupby(by="fair_category")["status"].sum().to_dict())
         summary["status_passed"]["FAIR"] = int(sf["status"].sum())
         return summary
+
+    def set_repository_uris(self):
+        if self.landing_origin:
+            self.repository_urls.append(self.landing_origin)
+            if self.metadata_merged.get("publisher"):
+                if not isinstance(self.metadata_merged.get("publisher"), list):
+                    self.metadata_merged["publisher"] = [self.metadata_merged.get("publisher")]
+                for publisher_url in self.metadata_merged.get("publisher"):
+                    if self.uri_validator(publisher_url):
+                        if self.landing_domain in publisher_url:
+                            self.repository_urls.append(publisher_url)
+        if self.repository_urls:
+            self.repository_urls = list(set(self.repository_urls))
+        print("REPOSITORY: ", self.repository_urls)

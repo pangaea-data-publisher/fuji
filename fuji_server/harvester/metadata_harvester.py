@@ -67,6 +67,8 @@ class MetadataHarvester:
         self.auth_token_type = auth_token_type
         self.landing_html = None
         self.landing_url = None
+        self.landing_origin = None
+        self.landing_domain = None
         self.landing_page_status = None
         self.landing_redirect_list = []  # urlsvisited during redirects
         self.landing_redirect_status_list = []  # list with stati
@@ -256,10 +258,10 @@ class MetadataHarvester:
             candidate_landing_url = self.pid_collector[pid_url].get("resolved_url")
             if candidate_landing_url and self.landing_url:
                 candidate_landing_url_parts = extract(candidate_landing_url)
-                landing_url_parts = extract(self.landing_url)
+                # landing_url_parts = extract(self.landing_url)
                 input_id_domain = candidate_landing_url_parts.domain + "." + candidate_landing_url_parts.suffix
-                landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
-                if landing_domain != input_id_domain:
+                # landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
+                if self.landing_domain != input_id_domain:
                     self.logger.warning(
                         "FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
                         + str(pid_url)
@@ -701,7 +703,9 @@ class MetadataHarvester:
                         self.raise_warning_if_javascript_page(requestHelper.response_content)
 
                     up = urlparse(self.landing_url)
+                    upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
+                    self.landing_domain = upp.domain + "." + upp.suffix
                     self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
