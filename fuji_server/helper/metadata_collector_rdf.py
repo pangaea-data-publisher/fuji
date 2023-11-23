@@ -630,7 +630,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     g.value(publisher, FOAF.homepage) or (g.value(publisher, SMA.url)) or (g.value(publisher, SDO.url))
                 )
                 if publisheruri:
-                    meta["publisher"].append(str(publishername))
+                    meta["publisher"].append(str(publisheruri))
                 if publishername:
                     meta["publisher"].append(str(publishername))
                 if not meta.get("publisher"):
@@ -668,6 +668,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 or list(g.objects(item, SMA.contributor))
             ):
                 meta["contributor"].append(str(contributor))
+
         if not meta.get("license"):
             meta["license"] = str(
                 g.value(item, DCTERMS.license) or g.value(item, SDO.license) or g.value(item, SMA.license)
@@ -1071,12 +1072,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         durl = str(dist)
                 else:
                     durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
-                    # taking only one just to check if licence is available
-                    dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
+                    # taking only one just to check if licence is available and not yet set
+                    if not dcat_metadata.get("license"):
+                        dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
                     # TODO: check if this really works..
-                    dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
-                        dist, DCTERMS.rights
-                    )
+                    if not dcat_metadata.get("access_rights"):
+                        dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
+                            dist, DCTERMS.rights
+                        )
                     dtype = graph.value(dist, DCAT.mediaType)
                     dsize = graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:
