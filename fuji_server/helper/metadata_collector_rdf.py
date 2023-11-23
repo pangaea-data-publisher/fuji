@@ -546,6 +546,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         """
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         SMA = Namespace("http://schema.org/")
+        ODLR = Namespace("http://www.w3.org/ns/odrl/2/")
         meta = dict()
         # default sparql
         # meta = self.get_default_metadata(g)
@@ -676,6 +677,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 g.value(item, DCTERMS.accessRights)
                 or g.value(item, DCTERMS.rights)
                 or g.value(item, DC.rights)
+                or g.value(item, ODLR.hasPolicy)
                 or g.value(item, SDO.conditionsOfAccess)
                 or g.value(item, SMA.conditionsOfAccess)
             )
