@@ -1,6 +1,8 @@
 # F-UJI (FAIRsFAIR Research Data Object Assessment Service)
 Developers: [Robert Huber](mailto:rhuber@marum.de), [Anusuriya Devaraju](mailto:anusuriya.devaraju@googlemail.com)
 
+Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his contributions and his help in cleaning up the code.
+
 [![CI](https://github.com/pangaea-data-publisher/fuji/actions/workflows/ci.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/ci.yml)
 [![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
