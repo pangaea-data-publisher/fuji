@@ -78,6 +78,7 @@ class Mapper(Enum):
         "right_holder": {"label": "License", "sameAs": "http://purl.org/dc/terms/rightsHolder"},
         "object_size": {"label": "Object Size", "sameAs": "http://purl.org/dc/terms/extent"},
         "language": {"label": "Language", "sameAs": "http://purl.org/dc/terms/language"},
+        "license_path": {"label": "License Path", "sameAs": None}
     }
 
     # core metadata elements (FsF-F2-01M)
