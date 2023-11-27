@@ -97,6 +97,14 @@ First, we call [`harvest_all_metadata`](fuji_server/controllers/fair_check.py#32
 
 > It seems to me that we always scrape *all* data, but then only calculate the FAIR score based on the metrics listed in the metrics file.
 
+The metadata harvester looks through HTML markup following schema.org, Dublincore etc., through signposting/typed links (see above).
+Ideally, it can find things like author information or license names that way.
+It doesn't do much with GitHub, which doesn't seem to be signposted accordingly.
+
+The data harvester is only run if the metadata harvester finds an `object_content_identifier`, which I think is supposed to point to actual content (videos, pictures, but also data files).
+Then, the data harvester runs over the data file and checks things like file format.
+I haven't seen it do anything yet (metadata harvester has not found an `object_content_identifier` as of date).
+
 Each specific evaluator, e.g. [`FAIREvaluatorLicense`](fuji_server/evaluators/fair_evaluator_license.py), is associated with a specific FsF metric.
 This makes it more difficult for us to reuse them.
 They seem to just look into the harvested data. 
