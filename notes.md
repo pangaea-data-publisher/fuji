@@ -2,6 +2,10 @@
 
 Test URL for data: https://doi.org/10.5281/zenodo.10047401
 
+Test URL for software: https://github.com/cessda/cessda.cmv.server
+
+Test URL for software not on GH: https://zenodo.org/records/6319836
+
 Presentation: https://zenodo.org/records/4068347/files/FAIRsFAIR_FUJI_30092020.pdf?download=1
 
 Working paper about metrics: https://zenodo.org/records/3934401
@@ -11,6 +15,11 @@ Paper about tool: https://doi.org/10.1016/j.patter.2021.100370
 EASE repos: https://docs.google.com/spreadsheets/d/1V4jA9zWnIT4GSQc0M4ysyy2CcVC-2LYo/edit#gid=1649627670
 
 CESSDA repos: https://github.com/cessda
+
+## concepts
+
+- signposting: Use typed links to make it easier for machine agents to understand what links lead to on the scholarly web. ([blog article](https://signposting.org/)). Adds a relation property to the link (`rel=author`).
+- [typed links](https://www.iana.org/assignments/link-relations/link-relations.xhtml): links that have info on link relations, i.e. `rel`, also called "link relation types".
 
 ## deploying LEMP
 
@@ -88,4 +97,46 @@ First, we call [`harvest_all_metadata`](fuji_server/controllers/fair_check.py#32
 
 > It seems to me that we always scrape *all* data, but then only calculate the FAIR score based on the metrics listed in the metrics file.
 
-Each specific evaluator, e.g. [`FAIREvaluatorLicense`](fuji_server/evaluators/fair_evaluator_license.py), is associated with a specific FsF metric. This makes it more difficult for us to reuse them. They seem to just look into the harvested data.
+Each specific evaluator, e.g. [`FAIREvaluatorLicense`](fuji_server/evaluators/fair_evaluator_license.py), is associated with a specific FsF metric.
+This makes it more difficult for us to reuse them.
+They seem to just look into the harvested data. 
+All evaluators are always called, but before they do anything, they check whether their associated metric is listed in the metrics YAML file.
+Only if it is, the evaluator runs through and computes a local score.
+
+In the end, all scores are aggregated into F, A, I, R scores.
+This might be a problem for us for metrics that are associated with more than one of these.
+
+
+## Questions
+
+:question: for open questions
+
+:exclamation: for answered questions
+
+### What are all the files in `fuji_server/data` for? :question:
+
+- :question: [`linked_vocabs/*_ontologies.json`](fuji_server/data/linked_vocabs): ...
+- :question: [`access_rights.json`](fuji_server/data/access_rights.json): lists COAR, EPRINTS, EU, OPENAIRE access rights. Seems to relate to metric FsF-A1-01M, which looks for metadata item `access_level`. Is that found during metadata harvesting?
+- :question: [`bioschemastypes.txt`](fuji_server/data/bioschemastypes.txt): added to `schema_org_creativeworks`, just a list of words. Not sure what happens with that.
+- :question: [`creativeworktypes.txt`](fuji_server/data/creativeworktypes.txt): added to `schema_org_creativeworks`, just a list of words. Not sure what happens with that.
+- :question: [`default_namespaces.txt`](fuji_server/data/default_namespaces.txt): "excluded" (whatever that means) during evaluation of FsF-I2-01M.
+- :exclamation: [`file_formats.json`](fuji_server/data/file_formats.json): dictionary of scientific file formats. Used in evaluation of R1.3-02D to check the file format of the data.
+- :exclamation: [`google_cache.db`](fuji_server/data/google_cache.db): Used for evaluating FsF-F4-01M (searchable in major catalogues like DataCite registry, Google Dataset, Mendeley, ...). Google Data search is queried for a PID in column `google_links`. It's a dataset with metadata about datasets that have a DOI or persistent identifier from `identifer.org`.
+- :question: [`identifiers_org_resolver_data.json`](fuji_server/data/identifiers_org_resolver_data.json): Used in [`IdentifierHelper`](fuji_server/helper/identifier_helper.py). I'm not quite sure what that class does - does it extract IDs from URLs?
+- :question: [`jsonldcontext.json`](fuji_server/data/jsonldcontext.json): Loaded into `Preprocessor.schema_org_context`. I think this is used in FsF-R1-01MD. No idea what it does though.
+- :exclamation: [`licenses.json`](fuji_server/data/licenses.json): Used to populate `Preprocessor.license_names`, a list of SPDX licences. Used in evaluation of FsF-R1.1-01M.
+- :question: [`linked_vocab.json`](fuji_server/data/linked_vocab.json): ...
+- :exclamation: [`longterm_formats.json`](fuji_server/data/longterm_formats.json): This doesn't seem to be used any more (code is commented out). Instead, the info might be pulled from [`file_formats.json`](fuji_server/data/file_formats.json).
+- :question: [`metadata_standards_uris.json`](fuji_server/data/metadata_standards_uris.json): ...
+- :question: [`metadata_standards.json`](fuji_server/data/metadata_standards.json): Used in evaluation of FsF-R1.3-01M. Something about community specific metadata standards, whatever that means. Also, no idea how it recognises which standard it should be using?
+- :exclamation: [`open_formats.json`](fuji_server/data/open_formats.json): This doesn't seem to be used any more (code is commented out). Instead, the info might be pulled from [`file_formats.json`](fuji_server/data/file_formats.json).
+- :question: [`repodois.yaml`](fuji_server/data/repodois.yaml): DOIs from re3data (Datacite). No idea where these are used.
+- :question: [`ResourceTypes.txt`](fuji_server/data/ResourceTypes.txt): List of content type identifiers? Seems to be loaded into `VALID_RESOURCE_TYPES` and used in evaluation of FsF-R1-01MD somehow.
+- :exclamation: [`standard_uri_protocols.json`](fuji_server/data/standard_uri_protocols.json): Used for evaluating access through standardised protocols (FsF-A1-03D). Mapping of acronym to long name (e.g. FTP, SFTP, HTTP etc.)
+
+### What is `fuji_server/harvester/repository_harvester.py` for? :question:
+
+It defines class `RepositoryHarvester`, which doesn't seem to be used.
+What's envisioned for this class?
+Should we reuse it?
+Is it meant for something else?
