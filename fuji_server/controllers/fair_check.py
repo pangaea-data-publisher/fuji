@@ -282,6 +282,9 @@ class FAIRCheck:
                 self.auth_token_type = "Basic"
 
     def clean_metadata(self):
+        print("\nmerged START")
+        print(self.metadata_merged)
+        print("merged END\n")
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
             data_objects = self.metadata_merged["object_content_identifier"] = None
@@ -553,6 +556,7 @@ class FAIRCheck:
         }
         for res_k, res_v in enumerate(results):
             if res_v.get("metric_identifier"):
+                # TODO: write match for FRSM
                 metric_match = re.search(r"^FsF-(([FAIR])[0-9](\.[0-9])?)-", str(res_v.get("metric_identifier")))
                 if metric_match.group(2) is not None:
                     fair_principle = metric_match[1]
@@ -584,6 +588,8 @@ class FAIRCheck:
         summary["score_total"] = sf.groupby(by="fair_category")["score_total"].sum().to_dict()
         summary["score_total"].update(sf.groupby(by="fair_principle")["score_total"].sum().to_dict())
         summary["score_total"]["FAIR"] = round(float(sf["score_total"].sum()), 2)
+
+        print(summary)
 
         summary["score_percent"] = (
             round(
