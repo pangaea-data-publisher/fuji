@@ -202,23 +202,29 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 repoHelper = self.fuji.repo_helper
                 if not self.fuji.metadata_service_url:
                     self.logger.info(
-                        "{} : Inferring metadata service endpoint (OAI, SPARQL) information through re3data/datacite services".format(
+                        "{} : Inferring metadata service endpoint (OAI, SPARQL) information and listed metadata formats through re3data/datacite services".format(
                             "FsF-R1.3-01M"
                         )
                     )
                     self.fuji.oaipmh_endpoint = repoHelper.getRe3MetadataAPIs().get("OAI-PMH")
                     self.fuji.sparql_endpoint = repoHelper.getRe3MetadataAPIs().get("SPARQL")
-                    stds = []
-                    for sturi in repoHelper.getRe3MetadataStandards():
-                        sinfo = self.get_metadata_standards_info(sturi, "re3data")
-                        # print('OAI URI ', sturi, sinfo)
-                        if sinfo:
-                            self.found_metadata_standards.append(sinfo)
-                            if sinfo.get("name") not in stds:
-                                stds.append(sinfo.get("name"))
-                    self.logger.info(
-                        "{} : Metadata standards listed in re3data record -: {}".format("FsF-R1.3-01M", str(stds))
-                    )
+                    if self.fuji.oaipmh_endpoint or self.fuji.sparql_endpoint:
+                        self.logger.info(
+                            "{} : Found metadata service endpoint (OAI, SPARQL) listed in re3data record -: {}".format(
+                                "FsF-R1.3-01M", (self.fuji.oaipmh_endpoint, self.fuji.sparql_endpoint)
+                            )
+                        )
+                stds = []
+                for sturi in repoHelper.getRe3MetadataStandards():
+                    sinfo = self.get_metadata_standards_info(sturi, "re3data")
+                    # print('OAI URI ', sturi, sinfo)
+                    if sinfo:
+                        self.found_metadata_standards.append(sinfo)
+                        if sinfo.get("name") not in stds:
+                            stds.append(sinfo.get("name"))
+                self.logger.info(
+                    "{} : Metadata standards listed in re3data record -: {}".format("FsF-R1.3-01M", str(stds))
+                )
         else:
             self.logger.info(
                 "FsF-R1.3-01M : No Datacite client id found, therefore skipping re3data metadata retrieval"
