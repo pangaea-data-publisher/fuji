@@ -1,3 +1,5 @@
+import os
+
 from github import Github, Auth
 from github.GithubException import RateLimitExceededException, UnknownObjectException
 from configparser import ConfigParser
@@ -8,7 +10,7 @@ class GithubHarvester:
     def __init__(self, id, host="https://github.com"):
         # Read Github API access token from config file.
         config = ConfigParser()
-        config.read('../../config/github.cfg')
+        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../config/github.cfg'))
         auth_token = Auth.Token(config['ACCESS']['token'])
         self.id = id
         self.host = host
