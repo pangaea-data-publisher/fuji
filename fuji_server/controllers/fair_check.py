@@ -54,6 +54,7 @@ from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import
 from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREvaluatorUniqueIdentifierData
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.harvester.data_harvester import DataHarvester
+from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
@@ -363,6 +364,10 @@ class FAIRCheck:
             data_harvester = DataHarvester(data_links, self.logger, self.landing_url, metrics=self.METRICS.keys())
             data_harvester.retrieve_all_data()
             self.content_identifier = data_harvester.data
+
+    def harvest_github(self):
+        github_harvester = GithubHarvester(self.id)
+        github_harvester.harvest()
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()

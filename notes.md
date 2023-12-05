@@ -114,6 +114,9 @@ Only if it is, the evaluator runs through and computes a local score.
 In the end, all scores are aggregated into F, A, I, R scores.
 This might be a problem for us for metrics that are associated with more than one of these.
 
+## changes
+
+- new requirement: `pygithub` package, using 2.1.1
 
 ## Questions
 
@@ -148,3 +151,7 @@ It defines class `RepositoryHarvester`, which doesn't seem to be used.
 What's envisioned for this class?
 Should we reuse it?
 Is it meant for something else?
+
+### What does `IdentifierHelper` do? :question:
+
+...

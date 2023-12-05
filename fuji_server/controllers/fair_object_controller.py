@@ -127,6 +127,7 @@ def assess_by_id(body):  # noqa: E501
         ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
+        ft.harvest_github()
         if uid_result:
             results.append(uid_result)
         if pid_result:
