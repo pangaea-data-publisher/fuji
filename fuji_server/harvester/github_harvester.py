@@ -40,7 +40,7 @@ class GithubHarvester:
         license_file = repo.get_license()
         try:  # LICENSE
             license_file = repo.get_license()
-            self.data['license'] = license_file.license.key
+            self.data['license'] = license_file.license.name
         except UnknownObjectException:
             pass
 

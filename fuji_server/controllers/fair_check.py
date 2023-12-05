@@ -368,6 +368,7 @@ class FAIRCheck:
     def harvest_github(self):
         github_harvester = GithubHarvester(self.id)
         github_harvester.harvest()
+        self.github_data = github_harvester.data
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()

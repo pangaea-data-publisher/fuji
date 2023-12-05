@@ -100,6 +100,7 @@ def assess_by_id(body):  # noqa: E501
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
         ft.harvest_re3_data()
+        ft.harvest_github()
         core_metadata_result = ft.check_minimal_metatadata()
         print(ft.metadata_unmerged)
         content_identifier_included_result = ft.check_data_identifier_included_in_metadata()
@@ -127,7 +128,6 @@ def assess_by_id(body):  # noqa: E501
         ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
-        ft.harvest_github()
         if uid_result:
             results.append(uid_result)
         if pid_result:
