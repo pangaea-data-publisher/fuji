@@ -8,7 +8,7 @@ class GithubHarvester:
     def __init__(self, id, host="https://github.com"):
         # Read Github API access token from config file.
         config = ConfigParser()
-        config.read('../config.cfg')
+        config.read('../../config/github.cfg')
         auth_token = Auth.Token(config['ACCESS']['token'])
         self.id = id
         self.host = host
