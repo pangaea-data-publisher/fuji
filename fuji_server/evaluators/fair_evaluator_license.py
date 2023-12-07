@@ -51,6 +51,19 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.output = []
         self.license_info = []
 
+    def setMetricTestMap(self):
+        """Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses."""
+        metric_test_map = {  # overall map
+            self.testLicenseIsValidAndSPDXRegistered: ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
+            self.testLicenseMetadataElementAvailable: ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"]
+        }
+        # select based on metric identifier
+        self.metric_test_map = {}
+        for k, tids in metric_test_map.items():
+            candidates = [tid for tid in tids if tid.startswith(self.metric_identifier)]
+            assert len(candidates) <= 1, "Code for metric test should not be called by more than one metric test within the same metric."
+            self.metric_test_map[k] = candidates[0]
+
     def setLicenseDataAndOutput(self):
         self.license_info = []
         specified_licenses = self.fuji.metadata_merged.get("license")
@@ -181,7 +194,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def testLicenseMetadataElementAvailable(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-1"):
+        if self.isTestDefined(self.metric_identifier + "-1"):  # TODO: use self.metric_test_map instead
             test_score = self.getTestConfigScore(self.metric_identifier + "-1")
             if self.license_info is not None and self.license_info != []:
                 test_status = True
@@ -195,7 +208,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 self.logger.warning(f"{self.metric_identifier} : License information unavailable in metadata")
         return test_status
 
-    def testLicenseIsValidAndSPDXRegistered(self):
+    def testLicenseIsValidAndSPDXRegistered(self):  # TODO: use self.metric_test_map instead
         test_status = False
         test_requirements = {}
         if self.isTestDefined(self.metric_identifier + "-2"):
