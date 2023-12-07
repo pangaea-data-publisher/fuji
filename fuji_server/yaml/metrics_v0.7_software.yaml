@@ -12,7 +12,7 @@ config:
   - dublin-core
   - dcat-data-catalog-vocabulary
 metrics:
-- metric_identifier: FRSM-15
+- metric_identifier: FRSM-15-R1.1
   metric_number: 15
   metric_short_name: Software Source Code License
   metric_name: The software source code includes licensing information for the software and any bundled external software.
@@ -22,15 +22,15 @@ metrics:
   evaluation_mechanism: Metric evaluation is based on the presence of a machine readable license file.
   test_scoring_mechanism: cumulative
   metric_tests:
-  - metric_test_identifier: FRSM-15-1
+  - metric_test_identifier: FRSM-15-R1.1-1
     metric_test_name: License file is included.
     metric_test_score: 1
     metric_test_maturity: 1
-  - metric_test_identifier: FRSM-15-2
+  - metric_test_identifier: FRSM-15-R1.1-2
     metric_test_name: Licensing information is part of the source code header.
     metric_test_score: 1
     metric_test_maturity: 2
-  - metric_test_identifier: FRSM-15-3
+  - metric_test_identifier: FRSM-15-R1.1-3
     metric_test_name: Recognized licence is in SPDX format.
     metric_test_score: 1
     metric_test_maturity: 3

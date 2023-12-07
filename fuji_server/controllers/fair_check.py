@@ -199,6 +199,9 @@ class FAIRCheck:
         self.METRICS = self.metric_helper.get_custom_metrics(
             ["metric_name", "total_score", "metric_tests", "metric_number"]
         )
+        print("\n\nFound METRICS:\n")
+        print(self.METRICS)
+        print("\n\n")
         self.METRIC_VERSION = metric_version
         self.metrics_config = self.metric_helper.get_metrics_config()
         print("METRICS CONFIG: ", self.metrics_config)
@@ -562,8 +565,7 @@ class FAIRCheck:
         }
         for res_k, res_v in enumerate(results):
             if res_v.get("metric_identifier"):
-                # TODO: write match for FRSM
-                metric_match = re.search(r"^FsF-(([FAIR])[0-9](\.[0-9])?)-", str(res_v.get("metric_identifier")))
+                metric_match = re.search(r"^(?:FRSM-[0-9]+|FsF)-(([FAIR])[0-9](\.[0-9])?)", str(res_v.get("metric_identifier")))  # match both FAIR and FsF metrics
                 if metric_match.group(2) is not None:
                     fair_principle = metric_match[1]
                     fair_category = metric_match[2]
