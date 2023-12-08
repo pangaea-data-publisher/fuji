@@ -32,7 +32,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
     """
 
     # apiURI = 'https://api.datacite.org/dois'
-    def __init__(self, logger: logging.Logger = None, object_type=None):
+    def __init__(self, logger: logging.Logger | None = None, object_type=None):
         self.islisted = False
 
         self.logger = logger

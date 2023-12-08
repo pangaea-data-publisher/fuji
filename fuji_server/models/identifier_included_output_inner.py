@@ -8,7 +8,7 @@ class IdentifierIncludedOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, content_identifier_included: str = None):  # noqa: E501
+    def __init__(self, content_identifier_included: str | None = None):
         """IdentifierIncludedOutputInner - a model defined in Swagger
 
         :param content_identifier_included: The content_identifier_included of this IdentifierIncludedOutputInner.  # noqa: E501

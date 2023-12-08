@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata  # noqa: F401,E501
+from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata
 
 
 class HarvestResults(Model):
@@ -9,7 +9,7 @@ class HarvestResults(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, target_uri: str = None, metadata: list[HarvestResultsMetadata] = None):  # noqa: E501
+    def __init__(self, target_uri: str | None = None, metadata: list[HarvestResultsMetadata] | None = None):
         """HarvestResults - a model defined in Swagger
 
         :param target_uri: The target_uri of this HarvestResults.  # noqa: E501

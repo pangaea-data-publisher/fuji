@@ -8,7 +8,7 @@ class SemanticVocabularyOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, namespace: str = None, is_namespace_active: bool = False):  # noqa: E501
+    def __init__(self, namespace: str | None = None, is_namespace_active: bool = False):
         """SemanticVocabularyOutputInner - a model defined in Swagger
 
         :param namespace: The namespace of this SemanticVocabularyOutputInner.  # noqa: E501

@@ -8,7 +8,7 @@ class AnyOfFAIRResultsResultsItems(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self):
         """AnyOfFAIRResultsResultsItems - a model defined in Swagger"""
         self.swagger_types = {}
 

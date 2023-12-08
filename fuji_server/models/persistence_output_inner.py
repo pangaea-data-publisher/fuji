@@ -9,8 +9,12 @@ class PersistenceOutputInner(Model):
     """
 
     def __init__(
-        self, pid: str = None, pid_scheme: str = None, resolvable_status: bool = False, resolved_url: str = None
-    ):  # noqa: E501
+        self,
+        pid: str | None = None,
+        pid_scheme: str | None = None,
+        resolvable_status: bool = False,
+        resolved_url: str | None = None,
+    ):
         """PersistenceOutputInner - a model defined in Swagger
 
         :param pid: The pid of this PersistenceOutputInner.  # noqa: E501

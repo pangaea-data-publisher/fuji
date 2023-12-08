@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner  # noqa: F401,E501
+from fuji_server.models.data_content_metadata_output_inner import DataContentMetadataOutputInner
 
 
 class DataContentMetadataOutput(Model):
@@ -10,8 +10,10 @@ class DataContentMetadataOutput(Model):
     """
 
     def __init__(
-        self, object_type: str = None, data_content_descriptor: list[DataContentMetadataOutputInner] = None
-    ):  # noqa: E501
+        self,
+        object_type: str | None = None,
+        data_content_descriptor: list[DataContentMetadataOutputInner] | None = None,
+    ):
         """DataContentMetadataOutput - a model defined in Swagger
 
         :param object_type: The object_type of this DataContentMetadataOutput.  # noqa: E501

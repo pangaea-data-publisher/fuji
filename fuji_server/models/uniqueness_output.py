@@ -8,7 +8,7 @@ class UniquenessOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, guid: str = None, guid_scheme: str = None):  # noqa: E501
+    def __init__(self, guid: str | None = None, guid_scheme: str | None = None):
         """UniquenessOutput - a model defined in Swagger
 
         :param guid: The guid of this UniquenessOutput.  # noqa: E501

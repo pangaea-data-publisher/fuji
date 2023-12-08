@@ -502,7 +502,7 @@ class RequestHelper:
                                 self.logger.warning(f"{metric_id} : Content-type is NOT SPECIFIED")
                         else:
                             self.logger.warning(
-                                f"{metric_id} : NO successful response received, status code -: {str(status_code)}"
+                                f"{metric_id} : NO successful response received, status code -: {status_code!s}"
                             )
                     tp_response.close()
                 else:
@@ -512,12 +512,12 @@ class RequestHelper:
             # except requests.exceptions.SSLError as e:
             except urllib.error.HTTPError as e:
                 self.logger.warning(
-                    f"{metric_id} : Content negotiation failed -: accept={self.accept_type}, status={str(e.code)} "
+                    f"{metric_id} : Content negotiation failed -: accept={self.accept_type}, status={e.code!s} "
                 )
                 self.response_status = int(e.code)
             except urllib.error.URLError as e:
                 self.logger.warning(f"{metric_id} : RequestException -: {e.reason} : {self.request_url}")
             except Exception as e:
                 print(e, "Request helper")
-                self.logger.warning(f"{metric_id} : Request Failed -: {str(e)} : {self.request_url}")
+                self.logger.warning(f"{metric_id} : Request Failed -: {e!s} : {self.request_url}")
         return format, self.parse_response

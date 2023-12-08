@@ -8,7 +8,7 @@ class LicenseOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, license: str = None, osi_approved: bool = False, details_url: str = None):  # noqa: E501
+    def __init__(self, license: str | None = None, osi_approved: bool = False, details_url: str | None = None):
         """LicenseOutputInner - a model defined in Swagger
 
         :param license: The license of this LicenseOutputInner.  # noqa: E501
