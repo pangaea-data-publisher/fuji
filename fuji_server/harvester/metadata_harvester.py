@@ -8,6 +8,7 @@ from urllib.parse import urljoin, urlparse
 
 import extruct
 import lxml
+import rdflib
 from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz, process
@@ -855,7 +856,19 @@ class MetadataHarvester:
                         # https://github.com/RDFLib/rdflib/discussions/1582
 
                         rdfa_graph = pyRdfa(media_type="text/html").graph_from_source(rdfabuffer)
-
+                        # rdfa_graph = rdflib.Graph().parse(data=rdfa_html, format='rdfa')
+                        # filter rdfagraph drop images
+                        clean_rdfa_graph = rdflib.Graph()
+                        img_triple_found = False
+                        image_suffix = [".jpg", ".jpeg", ".png", ".tif", ".gif", ".svg", ".png"]
+                        for s, o, p in list(rdfa_graph):
+                            if not any(x in s for x in image_suffix):
+                                clean_rdfa_graph.add((s, o, p))
+                            else:
+                                img_triple_found
+                        if img_triple_found:
+                            self.logger.info("FsF-F2-01M : Ignoring RDFa triples indicating image links in HTML")
+                        rdfa_graph = clean_rdfa_graph
                         rdfa_collector = MetaDataCollectorRdf(
                             loggerinst=self.logger, target_url=self.landing_url, source=rdfasource
                         )
