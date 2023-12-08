@@ -150,13 +150,11 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                         if k.lower() in dcterms:
                             # self.logger.info('FsF-F2-01M: DublinCore metadata element, %s = %s , ' % (k, v))
                             try:
-                                elem = [
+                                elem = next(
                                     key
                                     for (key, value) in Mapper.DC_MAPPING.value.items()
                                     if k.lower() in str(value).lower()
-                                ][
-                                    0
-                                ]  # fuji ref fields
+                                )  # fuji ref fields
                             except Exception:
                                 # nothing found so just continue
                                 pass

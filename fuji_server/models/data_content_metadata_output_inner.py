@@ -9,8 +9,8 @@ class DataContentMetadataOutputInner(Model):
     """
 
     def __init__(
-        self, descriptor: str = None, descriptor_value: str = None, matches_content: bool = False
-    ):  # noqa: E501
+        self, descriptor: str | None = None, descriptor_value: str | None = None, matches_content: bool = False
+    ):
         """DataContentMetadataOutputInner - a model defined in Swagger
 
         :param descriptor: The descriptor of this DataContentMetadataOutputInner.  # noqa: E501

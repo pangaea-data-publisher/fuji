@@ -8,7 +8,7 @@ class DataProvenanceOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, is_available: bool = True, provenance_metadata: list[dict[str, str]] = None):  # noqa: E501
+    def __init__(self, is_available: bool = True, provenance_metadata: list[dict[str, str]] | None = None):
         """DataProvenanceOutputInner - a model defined in Swagger
 
         :param is_available: The is_available of this DataProvenanceOutputInner.  # noqa: E501

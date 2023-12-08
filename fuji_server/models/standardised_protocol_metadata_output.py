@@ -8,7 +8,7 @@ class StandardisedProtocolMetadataOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, standard_metadata_protocol: str = None):  # noqa: E501
+    def __init__(self, standard_metadata_protocol: str | None = None):
         """StandardisedProtocolMetadataOutput - a model defined in Swagger
 
         :param standard_metadata_protocol: The standard_metadata_protocol of this StandardisedProtocolMetadataOutput.  # noqa: E501

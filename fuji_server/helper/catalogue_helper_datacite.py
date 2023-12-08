@@ -23,7 +23,7 @@ class MetaDataCatalogueDataCite(MetaDataCatalogue):
     islisted = False
     apiURI = "https://api.datacite.org/dois"
 
-    def __init__(self, logger: logging.Logger = None):
+    def __init__(self, logger: logging.Logger | None = None):
         """
         Parameters
         ----------

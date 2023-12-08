@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.metric import Metric  # noqa: F401,E501
+from fuji_server.models.metric import Metric
 
 
 class Metrics(Model):
@@ -9,7 +9,7 @@ class Metrics(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, total: int = None, metrics: list[Metric] = None):  # noqa: E501
+    def __init__(self, total: int | None = None, metrics: list[Metric] | None = None):
         """Metrics - a model defined in Swagger
 
         :param total: The total of this Metrics.  # noqa: E501

@@ -21,7 +21,7 @@ dependencies = [
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
   "configparser~=6.0",
-  "connexion[swagger-ui]~=2.14",
+  "connexion[swagger-ui]~=3.0",
   "extruct~=0.16.0",
   "feedparser~=6.0",
   "flask-cors~=4.0",
@@ -70,7 +70,7 @@ dev = [
 docs = [
   "myst-parser~=2.0",
   "sphinx~=7.2",
-  "sphinx-rtd-theme~=1.3"
+  "sphinx-rtd-theme~=2.0"
 ]
 lint = [
   "pre-commit~=3.4"
@@ -153,11 +153,15 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
+ignore = [
+  "RUF012"  # mutable-class-default
+]
 line-length = 120
 select = [
   "F",  # pyflakes
   "I",  # isort
-  "UP"  # pyupgrade
+  "UP",  # pyupgrade
+  "RUF"  # ruff
 ]
 target-version = "py311"
 

@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.persistence_output_inner import PersistenceOutputInner  # noqa: F401,E501
+from fuji_server.models.persistence_output_inner import PersistenceOutputInner
 
 
 class PersistenceOutput(Model):
@@ -9,7 +9,7 @@ class PersistenceOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, persistent_identifiers: list[PersistenceOutputInner] = None):  # noqa: E501
+    def __init__(self, persistent_identifiers: list[PersistenceOutputInner] | None = None):
         """PersistenceOutput - a model defined in Swagger
 
         :param persistent_identifiers: The persistent_identifiers of this PersistenceOutput.  # noqa: E501

@@ -27,7 +27,7 @@ FAIR Metric controller.
 from fuji_server.helper.metric_helper import MetricHelper
 
 
-def get_metrics(version):  # noqa: E501
+def get_metrics(version):
     """Return all metrics and their definitions.
     :rtype: Metrics
     """
@@ -40,7 +40,7 @@ def get_metrics(version):  # noqa: E501
         return response, 404
 
 
-def get_metric(version, metric):  # noqa: E501
+def get_metric(version, metric):
     """Return all metrics and their definitions.
     :rtype: Metrics
     """

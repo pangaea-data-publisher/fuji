@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.output_search_mechanisms import OutputSearchMechanisms  # noqa: F401,E501
+from fuji_server.models.output_search_mechanisms import OutputSearchMechanisms
 
 
 class SearchableOutput(Model):
@@ -9,7 +9,7 @@ class SearchableOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, search_mechanisms: list[OutputSearchMechanisms] = None):  # noqa: E501
+    def __init__(self, search_mechanisms: list[OutputSearchMechanisms] | None = None):
         """SearchableOutput - a model defined in Swagger
 
         :param search_mechanisms: The search_mechanisms of this SearchableOutput.  # noqa: E501

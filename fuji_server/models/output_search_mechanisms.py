@@ -8,7 +8,7 @@ class OutputSearchMechanisms(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, mechanism: str = None, mechanism_info: list[str] = None):  # noqa: E501
+    def __init__(self, mechanism: str | None = None, mechanism_info: list[str] | None = None):
         """OutputSearchMechanisms - a model defined in Swagger
 
         :param mechanism: The mechanism of this OutputSearchMechanisms.  # noqa: E501
@@ -51,7 +51,7 @@ class OutputSearchMechanisms(Model):
         :param mechanism: The mechanism of this OutputSearchMechanisms.
         :type mechanism: str
         """
-        allowed_values = ["metadata registry", "structured data"]  # noqa: E501
+        allowed_values = ["metadata registry", "structured data"]
         if mechanism not in allowed_values:
             raise ValueError(f"Invalid value for `mechanism` ({mechanism}), must be one of {allowed_values}")
 

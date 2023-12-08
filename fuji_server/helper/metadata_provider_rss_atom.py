@@ -77,7 +77,7 @@ class RSSAtomMetadataProvider(MetadataProvider):
         except Exception as e:
             print("RSS Error ", e)
             self.logger.info(
-                f"{self.metric_id} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {str(e)}"
+                f"{self.metric_id} : Could not parse response retrieved from RSS/Atom Feed endpoint -: {e!s}"
             )
 
         return schemas

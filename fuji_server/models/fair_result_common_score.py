@@ -8,7 +8,7 @@ class FAIRResultCommonScore(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, earned: float = 0, total: float = 0):  # noqa: E501
+    def __init__(self, earned: float = 0, total: float = 0):
         """FAIRResultCommonScore - a model defined in Swagger
 
         :param earned: The earned of this FAIRResultCommonScore.  # noqa: E501
