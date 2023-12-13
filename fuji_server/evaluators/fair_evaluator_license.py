@@ -57,7 +57,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
         """Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses."""
         metric_test_map = {  # overall map
             "testLicenseIsValidAndSPDXRegistered": ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
-            "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"]
+            "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"],
+            "testLicenseFileAtRoot": ["FRSM-15-R1.1-CESSDA-1"],
+            "testLicenseInHeaders": ["FRSM-15-R1.1-CESSDA-2"],
+            "testLicenseForBundled": ["FRSM-15-R1.1-2"],
+            "testBuildScriptChecksLicenseHeader": ["FRSM-15-R1.1-CESSDA-3"]
         }
         # select based on metric identifier
         self.metric_test_map = {}
@@ -265,6 +269,42 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
         return test_status
 
+    def testLicenseFileAtRoot(self):
+        #TODO: Implement
+        agnostic_test_name = "testLicenseFileAtRoot"
+        test_status = False
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            pass
+        return test_status
+    
+    def testLicenseInHeaders(self):
+        #TODO: Implement
+        agnostic_test_name = "testLicenseInHeaders"
+        test_status = False
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            pass
+        return test_status
+    
+    def testLicenseForBundled(self):
+        #TODO: Implement
+        agnostic_test_name = "testLicenseForBundled"
+        test_status = False
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            pass
+        return test_status
+    
+    def testBuildScriptChecksLicenseHeader(self):
+        #TODO: Implement
+        agnostic_test_name = "testBuildScriptChecksLicenseHeader"
+        test_status = False
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            pass
+        return test_status
+
     def evaluate(self):
         self.setLicenseDataAndOutput()
 
@@ -276,6 +316,14 @@ class FAIREvaluatorLicense(FAIREvaluator):
         if self.testLicenseMetadataElementAvailable():
             license_status = "pass"
         if self.testLicenseIsValidAndSPDXRegistered():
+            license_status = "pass"
+        if self.testLicenseFileAtRoot():
+            license_status = "pass"
+        if self.testLicenseForBundled():
+            license_status = "pass"
+        if self.testLicenseInHeaders():
+            license_status = "pass"
+        if self.testBuildScriptChecksLicenseHeader():
             license_status = "pass"
 
         self.result.test_status = license_status
