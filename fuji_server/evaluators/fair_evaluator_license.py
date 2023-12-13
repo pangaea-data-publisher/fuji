@@ -28,6 +28,7 @@ import Levenshtein
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
 from fuji_server.models.license_output_inner import LicenseOutputInner
+from pathlib import Path
 
 
 class FAIREvaluatorLicense(FAIREvaluator):
@@ -51,11 +52,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.output = []
         self.license_info = []
 
-        self.setMetricTestMap()
-
-    def setMetricTestMap(self):
-        """Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses."""
-        metric_test_map = {  # overall map
+        # Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses.
+        self.metric_test_map = {  # overall map
             "testLicenseIsValidAndSPDXRegistered": ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
             "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"],
             "testLicenseFileAtRoot": ["FRSM-15-R1.1-CESSDA-1"],
@@ -63,12 +61,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
             "testLicenseForBundled": ["FRSM-15-R1.1-2"],
             "testBuildScriptChecksLicenseHeader": ["FRSM-15-R1.1-CESSDA-3"]
         }
-        # select based on metric identifier
-        self.metric_test_map = {}
-        for k, tids in metric_test_map.items():
-            candidates = [tid for tid in tids if tid.startswith(self.metric_identifier)]
-            assert len(candidates) <= 1, "Code for metric test should not be called by more than one metric test within the same metric."
-            self.metric_test_map[k] = candidates[0]
 
     def setLicenseDataAndOutput(self):
         self.license_info = []
@@ -202,7 +194,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
         agnostic_test_name = "testLicenseMetadataElementAvailable"
         test_status = False
         test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
             test_score = self.getTestConfigScore(test_id)
             if self.license_info is not None and self.license_info != []:
                 test_status = True
@@ -220,8 +217,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
         agnostic_test_name = "testLicenseIsValidAndSPDXRegistered"
         test_status = False
         test_requirements = {}
-        test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
             if self.metric_tests[test_id].metric_test_requirements:
                 test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
             test_score = self.getTestConfigScore(test_id)
@@ -269,21 +270,46 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
         return test_status
 
-    def testLicenseFileAtRoot(self):
-        #TODO: Implement
+    def testLicenseTXTAtRoot(self):
         agnostic_test_name = "testLicenseFileAtRoot"
         test_status = False
-        test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
-            pass
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            test_score = self.getTestConfigScore(test_id)
+            license_path = self.fuji.github_data.get("license_path")
+            if license_path is not None:
+                if license_path == "LICENSE.txt":
+                    test_status = True
+                    self.logger.log(
+                            self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found LICENSE.txt at repository root."
+                        )
+                    self.maturity = self.getTestConfigMaturity(test_id)
+                    self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                    self.score.earned += test_score
+                else:  # identify what's wrong
+                    p = Path(license_path)
+                    if p.parent != ".":
+                        self.logger.warning(f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository.")
+                    if p.suffix != "":
+                        self.logger.warning(f"{self.metric_identifier} : Found a license file, but the suffix is not TXT.")
+            else:
+                self.logger.warning(f"{self.metric_identifier} : Did not find a license file.")
         return test_status
     
     def testLicenseInHeaders(self):
         #TODO: Implement
         agnostic_test_name = "testLicenseInHeaders"
         test_status = False
-        test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
             pass
         return test_status
     
@@ -291,8 +317,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
         #TODO: Implement
         agnostic_test_name = "testLicenseForBundled"
         test_status = False
-        test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
             pass
         return test_status
     
@@ -300,8 +330,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
         #TODO: Implement
         agnostic_test_name = "testBuildScriptChecksLicenseHeader"
         test_status = False
-        test_id = self.metric_test_map[agnostic_test_name]
-        if self.isTestDefined(test_id):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
             pass
         return test_status
 
@@ -317,7 +351,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             license_status = "pass"
         if self.testLicenseIsValidAndSPDXRegistered():
             license_status = "pass"
-        if self.testLicenseFileAtRoot():
+        if self.testLicenseTXTAtRoot():
             license_status = "pass"
         if self.testLicenseForBundled():
             license_status = "pass"

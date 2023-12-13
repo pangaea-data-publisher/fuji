@@ -22,7 +22,7 @@ class GithubHarvester:
         self.data = {}  # dictionary with all info
 
     def harvest(self):
-        print("\n\n\n----------------------\nGitHub Harvest\n----------------------")
+        print("\n\n\n----------------------\nGitHub Harvest\n----------------------")  # DEBUG PRINTS
         # check if it's a URL or repo ID
         # NOTE: this should probably be handled by IdentifierHelper, but I don't understand that module yet.
         if self.id.count('/') > 1:  # URL
@@ -34,12 +34,16 @@ class GithubHarvester:
         self.repo_id = "/".join([self.username, self.repo_name])
 
         # access repo via GitHub API
-        repo = self.handle.get_repo(self.repo_id)
-
+        try:
+            repo = self.handle.get_repo(self.repo_id)
+        except UnknownObjectException:
+            print("Could not find repo.")  #TODO: this will be an access log, probably?
+            return
+        
         # harvesting
-        license_file = repo.get_license()
         try:  # LICENSE
             license_file = repo.get_license()
+            self.data['license_path'] = license_file.path
             self.data['license'] = license_file.license.name
         except UnknownObjectException:
             pass
