@@ -168,8 +168,8 @@ def assess_by_id(body):
             results.append(standard_protocol_metadata_result)
         debug_messages = ft.get_log_messages_dict()
         # ft.logger_message_stream.flush()
-        print(debug_messages)
-        print(results)
+        print("Debug messages:", debug_messages)
+        print("Results:", results)
         summary = ft.get_assessment_summary(results)
         for res_k, res_v in enumerate(results):
             if ft.isDebug:

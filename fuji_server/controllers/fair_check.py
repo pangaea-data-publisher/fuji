@@ -539,7 +539,7 @@ class FAIRCheck:
         logger_messages = {}
         self.logger_message_stream.seek(0)
         for log_message in self.logger_message_stream.readlines():
-            if log_message.startswith("FsF-"):
+            if log_message.startswith("FsF-") or log_message.startswith("FRSM-"):
                 m = log_message.split(":", 1)
                 metric = m[0].strip()
                 message_n_level = m[1].strip().split("|", 1)
