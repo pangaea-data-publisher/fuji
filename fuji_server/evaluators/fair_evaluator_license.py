@@ -295,7 +295,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
                     if p.parent != ".":
                         self.logger.warning(f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository.")
                     if p.suffix != ".txt":
-                        self.logger.warning(f"{self.metric_identifier} : Found a license file, but the suffix is not TXT.")
+                        self.logger.warning(f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT.")
+                    if p.stem != "LICENSE":
+                        self.logger.warning(f"{self.metric_identifier} : Found a license file, but the file name is not LICENSE.")
             else:
                 self.logger.warning(f"{self.metric_identifier} : Did not find a license file.")
         return test_status
