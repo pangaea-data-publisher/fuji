@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.output_core_metadata_found import OutputCoreMetadataFound  # noqa: F401,E501
+from fuji_server.models.output_core_metadata_found import OutputCoreMetadataFound
 
 
 class CoreMetadataOutput(Model):
@@ -11,10 +11,10 @@ class CoreMetadataOutput(Model):
 
     def __init__(
         self,
-        core_metadata_status: str = None,
+        core_metadata_status: str | None = None,
         core_metadata_found: OutputCoreMetadataFound = None,
-        core_metadata_source: list[str] = None,
-    ):  # noqa: E501
+        core_metadata_source: list[str] | None = None,
+    ):
         """CoreMetadataOutput - a model defined in Swagger
 
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.  # noqa: E501
@@ -68,7 +68,7 @@ class CoreMetadataOutput(Model):
         :param core_metadata_status: The core_metadata_status of this CoreMetadataOutput.
         :type core_metadata_status: str
         """
-        allowed_values = ["insufficent metadata", "partial metadata", "all metadata"]  # noqa: E501
+        allowed_values = ["insufficent metadata", "partial metadata", "all metadata"]
         if core_metadata_status not in allowed_values:
             raise ValueError(
                 f"Invalid value for `core_metadata_status` ({core_metadata_status}), must be one of {allowed_values}"

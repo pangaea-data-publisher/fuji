@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner  # noqa: F401,E501
+from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner  # noqa: F401
 
 
 class SemanticVocabularyOutput(Model):
@@ -9,7 +9,7 @@ class SemanticVocabularyOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self):
         """SemanticVocabularyOutput - a model defined in Swagger"""
         self.swagger_types = {}
 

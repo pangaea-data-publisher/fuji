@@ -219,7 +219,7 @@ class Mapper(Enum):
         "creator_last: creator[*].familyName || author[*].familyName || creator.familyName || author.familyName,"
         "contributor: contributor[*].name || contributor[*].familyName, "
         "right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, "
-        "publisher: publisher.name || provider.name || publisher || provider, "
+        "publisher: [publisher.url || provider.url, publisher.name || provider.name || publisher || provider], "
         'license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, '
         "summary: description, keywords: keywords, "
         'object_identifier: [((identifier.value || identifier[*].value || identifier || "@id") || (url || url."@id")) , '
@@ -421,7 +421,14 @@ class Mapper(Enum):
         "publication_date": {"path": "./{*}dataset/{*}pubDate"},
         "keywords": {"path": "./{*}dataset/{*}keywordSet/{*}keyword"},
         "summary": {"path": "./{*}dataset/{*}abstract/{*}para"},
-        "publisher": {"path": "./{*}dataset/{*}publisher/{*}organizationName"},
+        "publisher": {
+            "path": [
+                "./{*}dataset/{*}publisher/{*}organizationName",
+                "./{*}dataset/{*}publisher/{*}onlineUrl",
+                "./{*}dataset/{*}metadataProvider/{*}organizationName",
+                "./{*}dataset/{*}metadataProvider/{*}onlineUrl",
+            ]
+        },
         "measured_variable": {"path": ".//{*}additionalMetadata/{*}metadata/{*}variableName"},
         "license": {
             "path": [
@@ -511,6 +518,7 @@ class Mapper(Enum):
             "path": [
                 "./{*}docDscr/{*}citation/{*}prodStmt/{*}producer",
                 "./{*}stdyDscr/{*}citation/{*}distStmt/{*}distrbtr",
+                "./{*}stdyDscr/{*}citation/{*}distStmt/{*}distrbtr@@URI",
             ]
         },
         "publication_date": {"path": "./{*}docDscr/{*}citation/{*}prodStmt/{*}prodDate@@date"},
@@ -554,7 +562,15 @@ class Mapper(Enum):
         "publication_date": {"path": "./{*}Dataset_Citation/{*}Dataset_Release_Date"},
         "creator": {"path": "./{*}Dataset_Citation/{*}Dataset_Creator"},
         "summary": {"path": "./{*}Summary/{*}Abstract"},
-        "publisher": {"path": ["./{*}Dataset_Citation/{*}Dataset_Publisher", "./{*}Data_Center/{*}Data_Center_Name"]},
+        "publisher": {
+            "path": [
+                "./{*}Dataset_Citation/{*}Dataset_Publisher",
+                "./{*}Data_Center/{*}Data_Center_Name",
+                "./{*}Data_Center/{*}Data_Center_URL",
+                "./{*}Organization/{*}Organization_Name",
+                "./{*}Organization/{*}Organization_URL",
+            ]
+        },
         "keywords": {
             "path": [
                 "./{*}Science_Keywords/{*}Category",
@@ -609,6 +625,9 @@ class Mapper(Enum):
         "publisher": {
             "path": [
                 "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='pointOfContact']/../{*}organisationName/{*}CharacterString",
+                "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='publisher']/../{*}organisationName/{*}CharacterString",
+                "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='pointOfContact']/../{*}contactInfo//{*}URL",
+                "./{*}contact/{*}CI_ResponsibleParty/{*}role[{*}CI_RoleCode='publisher']/../{*}contactInfo//{*}URL",
                 "./{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue='custodian']/../../{*}party//{*}name",
                 "./{*}identificationInfo//{*}pointOfContact/{*}CI_Responsibility//{*}CI_RoleCode[@codeListValue='publisher']/../../{*}party//{*}name",
             ]

@@ -1,6 +1,6 @@
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
-from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner  # noqa: F401,E501
+from fuji_server.models.identifier_included_output_inner import IdentifierIncludedOutputInner
 
 
 class IdentifierIncludedOutput(Model):
@@ -9,7 +9,7 @@ class IdentifierIncludedOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, object_content_identifier_included: list[IdentifierIncludedOutputInner] = None):  # noqa: E501
+    def __init__(self, object_content_identifier_included: list[IdentifierIncludedOutputInner] | None = None):
         """IdentifierIncludedOutput - a model defined in Swagger
 
         :param object_content_identifier_included: The object_content_identifier_included of this IdentifierIncludedOutput.  # noqa: E501

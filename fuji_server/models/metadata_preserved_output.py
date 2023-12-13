@@ -8,7 +8,7 @@ class MetadataPreservedOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, metadata_preservation_method: list[str] = None):  # noqa: E501
+    def __init__(self, metadata_preservation_method: list[str] | None = None):
         """MetadataPreservedOutput - a model defined in Swagger
 
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.  # noqa: E501
@@ -48,11 +48,11 @@ class MetadataPreservedOutput(Model):
         :param metadata_preservation_method: The metadata_preservation_method of this MetadataPreservedOutput.
         :type metadata_preservation_method: List[str]
         """
-        allowed_values = ["datacite", "tombstone"]  # noqa: E501
+        allowed_values = ["datacite", "tombstone"]
         if not set(metadata_preservation_method).issubset(set(allowed_values)):
             raise ValueError(
-                "Invalid values for `metadata_preservation_method` [{}], must be a subset of [{}]".format(  # noqa: E501
-                    ", ".join(map(str, set(metadata_preservation_method) - set(allowed_values))),  # noqa: E501
+                "Invalid values for `metadata_preservation_method` [{}], must be a subset of [{}]".format(
+                    ", ".join(map(str, set(metadata_preservation_method) - set(allowed_values))),
                     ", ".join(map(str, allowed_values)),
                 )
             )

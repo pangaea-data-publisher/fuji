@@ -9,8 +9,8 @@ class FormalMetadataOutputInner(Model):
     """
 
     def __init__(
-        self, serialization_format: str = None, source: str = None, is_metadata_found: bool = False
-    ):  # noqa: E501
+        self, serialization_format: str | None = None, source: str | None = None, is_metadata_found: bool = False
+    ):
         """FormalMetadataOutputInner - a model defined in Swagger
 
         :param serialization_format: The serialization_format of this FormalMetadataOutputInner.  # noqa: E501
@@ -81,7 +81,7 @@ class FormalMetadataOutputInner(Model):
         :param source: The source of this FormalMetadataOutputInner.
         :type source: str
         """
-        allowed_values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]  # noqa: E501
+        allowed_values = ["typed_link", "content_negotiate", "structured_data", "sparql_endpoint"]
         if source not in allowed_values:
             raise ValueError(f"Invalid value for `source` ({source}), must be one of {allowed_values}")
 

@@ -91,7 +91,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         guessed_mime_type = mimetypes.guess_type(data_file.get("url"))
                         mime_type = guessed_mime_type[
                             0
-                        ]  # the return value is a tuple (type, encoding) where type is None if the type can’t be guessed
+                        ]  # the return value is a tuple (type, encoding) where type is None if the type can`t be guessed
                         if mime_type:
                             self.logger.info(f"FsF-R1.3-02D : Mime type guess return value -: {mime_type}")
                         else:

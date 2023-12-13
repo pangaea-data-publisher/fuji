@@ -8,7 +8,7 @@ class RelatedResourceOutputInner(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, related_resource: str = None, relation_type: str = None):  # noqa: E501
+    def __init__(self, related_resource: str | None = None, relation_type: str | None = None):
         """RelatedResourceOutputInner - a model defined in Swagger
 
         :param related_resource: The related_resource of this RelatedResourceOutputInner.  # noqa: E501

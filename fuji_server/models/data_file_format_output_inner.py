@@ -10,12 +10,12 @@ class DataFileFormatOutputInner(Model):
 
     def __init__(
         self,
-        file_uri: str = None,
-        mime_type: str = None,
+        file_uri: str | None = None,
+        mime_type: str | None = None,
         is_preferred_format: bool = False,
-        preference_reason: list[str] = None,
-        subject_areas: list[str] = None,
-    ):  # noqa: E501
+        preference_reason: list[str] | None = None,
+        subject_areas: list[str] | None = None,
+    ):
         """DataFileFormatOutputInner - a model defined in Swagger
 
         :param file_uri: The file_uri of this DataFileFormatOutputInner.  # noqa: E501

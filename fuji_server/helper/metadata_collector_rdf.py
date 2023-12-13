@@ -419,9 +419,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if not RDFparsed:
                                     continue
                                 else:
-                                    self.logger.warning(
-                                        f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {str(e)}"
-                                    )
+                                    self.logger.warning(f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {e!s}")
                     else:
                         self.logger.info(
                             "FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s"
@@ -546,6 +544,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         """
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         SMA = Namespace("http://schema.org/")
+        ODLR = Namespace("http://www.w3.org/ns/odrl/2/")
         meta = dict()
         # default sparql
         # meta = self.get_default_metadata(g)
@@ -625,9 +624,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 publishername = (
                     g.value(publisher, FOAF.name) or (g.value(publisher, SMA.name)) or (g.value(publisher, SDO.name))
                 )
+                publisheruri = (
+                    g.value(publisher, FOAF.homepage) or (g.value(publisher, SMA.url)) or (g.value(publisher, SDO.url))
+                )
+                if publisheruri:
+                    meta["publisher"].append(str(publisheruri))
                 if publishername:
                     meta["publisher"].append(str(publishername))
-                else:
+                if not meta.get("publisher"):
                     meta["publisher"].append(str(publisher))
             # meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
             #                     g.value(item, SMA.publisher) or g.value(item, SDO.publisher) or g.value(item, SMA.provider) or g.value(item, SDO.provider))
@@ -662,6 +666,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 or list(g.objects(item, SMA.contributor))
             ):
                 meta["contributor"].append(str(contributor))
+
         if not meta.get("license"):
             meta["license"] = str(
                 g.value(item, DCTERMS.license) or g.value(item, SDO.license) or g.value(item, SMA.license)
@@ -671,6 +676,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 g.value(item, DCTERMS.accessRights)
                 or g.value(item, DCTERMS.rights)
                 or g.value(item, DC.rights)
+                or g.value(item, ODLR.hasPolicy)
                 or g.value(item, SDO.conditionsOfAccess)
                 or g.value(item, SMA.conditionsOfAccess)
             )
@@ -943,8 +949,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if "Dataset" in cand_creative_work:
                     creative_work = cand_creative_work["Dataset"]
                 else:
-                    creative_work = cand_creative_work[list(cand_creative_work)[0]]
-                    creative_work_type = list(cand_creative_work)[0]
+                    creative_work = cand_creative_work[next(iter(cand_creative_work))]
+                    creative_work_type = next(iter(cand_creative_work))
 
         except Exception as e:
             self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))
@@ -1064,12 +1070,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         durl = str(dist)
                 else:
                     durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
-                    # taking only one just to check if licence is available
-                    dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
+                    # taking only one just to check if licence is available and not yet set
+                    if not dcat_metadata.get("license"):
+                        dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
                     # TODO: check if this really works..
-                    dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
-                        dist, DCTERMS.rights
-                    )
+                    if not dcat_metadata.get("access_rights"):
+                        dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
+                            dist, DCTERMS.rights
+                        )
                     dtype = graph.value(dist, DCAT.mediaType)
                     dsize = graph.value(dist, DCAT.bytesSize)
                 if durl or dtype or dsize:

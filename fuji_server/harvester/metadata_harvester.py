@@ -8,6 +8,7 @@ from urllib.parse import urljoin, urlparse
 
 import extruct
 import lxml
+import rdflib
 from bs4 import BeautifulSoup
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz, process
@@ -67,6 +68,8 @@ class MetadataHarvester:
         self.auth_token_type = auth_token_type
         self.landing_html = None
         self.landing_url = None
+        self.landing_origin = None
+        self.landing_domain = None
         self.landing_page_status = None
         self.landing_redirect_list = []  # urlsvisited during redirects
         self.landing_redirect_status_list = []  # list with stati
@@ -257,10 +260,10 @@ class MetadataHarvester:
             candidate_landing_url = self.pid_collector[pid_url].get("resolved_url")
             if candidate_landing_url and self.landing_url:
                 candidate_landing_url_parts = extract(candidate_landing_url)
-                landing_url_parts = extract(self.landing_url)
+                # landing_url_parts = extract(self.landing_url)
                 input_id_domain = candidate_landing_url_parts.domain + "." + candidate_landing_url_parts.suffix
-                landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
-                if landing_domain != input_id_domain:
+                # landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
+                if self.landing_domain != input_id_domain:
                     self.logger.warning(
                         "FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
                         + str(pid_url)
@@ -702,7 +705,9 @@ class MetadataHarvester:
                         self.raise_warning_if_javascript_page(requestHelper.response_content)
 
                     up = urlparse(self.landing_url)
+                    upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
+                    self.landing_domain = upp.domain + "." + upp.suffix
                     self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
@@ -852,7 +857,19 @@ class MetadataHarvester:
                         # https://github.com/RDFLib/rdflib/discussions/1582
 
                         rdfa_graph = pyRdfa(media_type="text/html").graph_from_source(rdfabuffer)
-
+                        # rdfa_graph = rdflib.Graph().parse(data=rdfa_html, format='rdfa')
+                        # filter rdfagraph drop images
+                        clean_rdfa_graph = rdflib.Graph()
+                        img_triple_found = False
+                        image_suffix = [".jpg", ".jpeg", ".png", ".tif", ".gif", ".svg", ".png"]
+                        for s, o, p in list(rdfa_graph):
+                            if not any(x in s for x in image_suffix):
+                                clean_rdfa_graph.add((s, o, p))
+                            else:
+                                img_triple_found
+                        if img_triple_found:
+                            self.logger.info("FsF-F2-01M : Ignoring RDFa triples indicating image links in HTML")
+                        rdfa_graph = clean_rdfa_graph
                         rdfa_collector = MetaDataCollectorRdf(
                             loggerinst=self.logger, target_url=self.landing_url, source=rdfasource
                         )
@@ -1030,7 +1047,7 @@ class MetadataHarvester:
                     if rdf_dict:
                         self.logger.log(
                             self.LOG_SUCCESS,
-                            f"FsF-F2-01M : Found Linked Data metadata -: {str(rdf_dict.keys())}",
+                            f"FsF-F2-01M : Found Linked Data metadata -: {rdf_dict.keys()!s}",
                         )
                         # self.metadata_sources.append((source_rdf, 'negotiated'))
                         self.add_metadata_source(source_rdf)
@@ -1178,7 +1195,7 @@ class MetadataHarvester:
                 source_ore, ore_dict = ore_atom_collector.parse_metadata()
                 ore_dict = self.exclude_null(ore_dict)
                 if ore_dict:
-                    self.logger.log(self.LOG_SUCCESS, f"FsF-F2-01M : Found OAI ORE metadata -: {str(ore_dict.keys())}")
+                    self.logger.log(self.LOG_SUCCESS, f"FsF-F2-01M : Found OAI ORE metadata -: {ore_dict.keys()!s}")
                     self.add_metadata_source(source_ore)
                     self.merge_metadata(
                         ore_dict,
@@ -1208,7 +1225,7 @@ class MetadataHarvester:
                     # self.metadata_sources.append((source_dcitejsn, 'negotiated'))
                     self.add_metadata_source(source_dcitejsn)
                     self.logger.log(
-                        self.LOG_SUCCESS, f"FsF-F2-01M : Found Datacite metadata -: {str(dcitejsn_dict.keys())}"
+                        self.LOG_SUCCESS, f"FsF-F2-01M : Found Datacite metadata -: {dcitejsn_dict.keys()!s}"
                     )
 
                     self.namespace_uri.extend(dcite_collector.getNamespaces())
@@ -1312,7 +1329,7 @@ class MetadataHarvester:
                             if rdf_dict:
                                 self.logger.log(
                                     self.LOG_SUCCESS,
-                                    f"FsF-F2-01M : Found Linked Data (RDF) metadata -: {str(rdf_dict.keys())}",
+                                    f"FsF-F2-01M : Found Linked Data (RDF) metadata -: {rdf_dict.keys()!s}",
                                 )
                                 # self.metadata_sources.append((source_rdf, metadata_link['source']))
                                 self.add_metadata_source(source_rdf)

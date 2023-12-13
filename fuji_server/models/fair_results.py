@@ -1,6 +1,6 @@
 from datetime import datetime
 
-# from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems  # noqa: F401,E501
+# from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server import util
 from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.base_model_ import Model
@@ -14,19 +14,19 @@ class FAIRResults(Model):
 
     def __init__(
         self,
-        test_id: str = None,
-        request: dict = None,
-        resolved_url: str = None,
-        start_timestamp: datetime = None,
-        end_timestamp: datetime = None,
-        expiry_timestamp: datetime = None,
-        metric_specification: str = None,
-        metric_version: str = None,
-        software_version: str = None,
-        total_metrics: int = None,
-        summary: dict = None,
-        results: list[AnyOfFAIRResultsResultsItems] = None,
-    ):  # noqa: E501
+        test_id: str | None = None,
+        request: dict | None = None,
+        resolved_url: str | None = None,
+        start_timestamp: datetime | None = None,
+        end_timestamp: datetime | None = None,
+        expiry_timestamp: datetime | None = None,
+        metric_specification: str | None = None,
+        metric_version: str | None = None,
+        software_version: str | None = None,
+        total_metrics: int | None = None,
+        summary: dict | None = None,
+        results: list[AnyOfFAIRResultsResultsItems] | None = None,
+    ):
         """FAIRResults - a model defined in Swagger
 
         :param test_id: The test_id of this FAIRResults.  # noqa: E501

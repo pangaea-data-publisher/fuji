@@ -12,17 +12,17 @@ class Metric(Model):
 
     def __init__(
         self,
-        metric_identifier: str = None,
-        metric_name: str = None,
-        description: str = None,
-        fair_principle: str = None,
-        evaluation_mechanism: str = None,
-        date_created: date = None,
-        date_updated: date = None,
-        created_by: str = None,
-        version: float = None,
-        total_score: int = None,
-    ):  # noqa: E501
+        metric_identifier: str | None = None,
+        metric_name: str | None = None,
+        description: str | None = None,
+        fair_principle: str | None = None,
+        evaluation_mechanism: str | None = None,
+        date_created: date | None = None,
+        date_updated: date | None = None,
+        created_by: str | None = None,
+        version: float | None = None,
+        total_score: int | None = None,
+    ):
         """Metric - a model defined in Swagger
 
         :param metric_identifier: The metric_identifier of this Metric.  # noqa: E501

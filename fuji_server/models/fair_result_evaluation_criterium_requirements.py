@@ -10,12 +10,12 @@ class FAIRResultEvaluationCriteriumRequirements(Model):
 
     def __init__(
         self,
-        target: str = None,
-        modality: str = None,
-        required: list[str] = None,
-        tested_on: str = None,
-        comment: str = None,
-    ):  # noqa: E501
+        target: str | None = None,
+        modality: str | None = None,
+        required: list[str] | None = None,
+        tested_on: str | None = None,
+        comment: str | None = None,
+    ):
         """FAIRResultEvaluationCriteriumRequirements - a model defined in Swagger
 
         :param target: The target of this FAIRResultEvaluationCriteriumRequirements.  # noqa: E501
