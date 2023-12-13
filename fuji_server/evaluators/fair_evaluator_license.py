@@ -51,11 +51,13 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.output = []
         self.license_info = []
 
+        self.setMetricTestMap()
+
     def setMetricTestMap(self):
         """Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses."""
         metric_test_map = {  # overall map
-            self.testLicenseIsValidAndSPDXRegistered: ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
-            self.testLicenseMetadataElementAvailable: ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"]
+            "testLicenseIsValidAndSPDXRegistered": ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
+            "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"]
         }
         # select based on metric identifier
         self.metric_test_map = {}
@@ -193,28 +195,32 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return html_url, isOsiApproved, id
 
     def testLicenseMetadataElementAvailable(self):
+        agnostic_test_name = "testLicenseMetadataElementAvailable"
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-1"):  # TODO: use self.metric_test_map instead
-            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            test_score = self.getTestConfigScore(test_id)
             if self.license_info is not None and self.license_info != []:
                 test_status = True
                 self.logger.log(
                     self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found licence information in metadata"
                 )
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
-                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:
                 self.logger.warning(f"{self.metric_identifier} : License information unavailable in metadata")
         return test_status
 
-    def testLicenseIsValidAndSPDXRegistered(self):  # TODO: use self.metric_test_map instead
+    def testLicenseIsValidAndSPDXRegistered(self):
+        agnostic_test_name = "testLicenseIsValidAndSPDXRegistered"
         test_status = False
         test_requirements = {}
-        if self.isTestDefined(self.metric_identifier + "-2"):
-            if self.metric_tests[self.metric_identifier + "-2"].metric_test_requirements:
-                test_requirements = self.metric_tests[self.metric_identifier + "-2"].metric_test_requirements[0]
-            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
+        test_id = self.metric_test_map[agnostic_test_name]
+        if self.isTestDefined(test_id):
+            if self.metric_tests[test_id].metric_test_requirements:
+                test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            test_score = self.getTestConfigScore(test_id)
             test_required = []
             if test_requirements.get("required"):
                 if isinstance(test_requirements.get("required"), list):
@@ -226,7 +232,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
                 self.logger.info(
                     "{0} : Will exclusively consider community specific licenses for {0}{1} which are specified in metrics -: {2}".format(
-                        self.metric_identifier, "-2", test_requirements.get("required")
+                        test_id, test_requirements.get("required")
                     )
                 )
             else:
@@ -253,9 +259,9 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 )
 
             if test_status:
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
+                self.maturity = self.getTestConfigMaturity(test_id)
                 self.score.earned += test_score
-                self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
 
         return test_status
 
