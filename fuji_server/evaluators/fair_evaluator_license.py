@@ -309,7 +309,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
     
     def testLicenseInHeaders(self):
-        """Checks whether source code files include a license header. Fast-pass if the build script checks for license headers.
+        """Checks whether a sample of source code files include a license header. Fast-pass if the build script checks for license headers.
 
         Returns:
             bool: True if the test was defined and passed. False otherwise.
@@ -325,15 +325,28 @@ class FAIREvaluatorLicense(FAIREvaluator):
             test_score = self.getTestConfigScore(test_id)
             # check whether CESSDA-3 was run and passed
             for tid in self.metric_test_map["testBuildScriptChecksLicenseHeader"]:
-                if tid in self.metric_tests.keys(): #and self.metric_tests[tid]["metric_test_status"] == "pass":
-                    if self.metric_tests[tid].metric_test_status == "pass":
+                if tid in self.metric_tests.keys() and self.metric_tests[tid].metric_test_status == "pass":
+                    test_status = True
+                    self.logger.log(
+                            self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers."
+                        )
+            if not test_status:  # CESSDA-3 did not pass
+                source_code_samples = self.fuji.github_data.get("source_code_samples")
+                if source_code_samples is not None:
+                    license_headers_count = 0
+                    for sample in source_code_samples:
+                        header_region = "\n".join(sample["content"].decode("utf-8").splitlines()[:30]).lower()
+                        if "license" in header_region:
+                            license_headers_count += 1
+                    if license_headers_count == len(source_code_samples):
                         test_status = True
                         self.logger.log(
-                                self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers."
+                                self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Sample of {len(source_code_samples)} source code files all contained a license header."
                             )
-            if not test_status:  # CESSDA-3 did not pass
-                # TODO: is there a tool that recognises code files (source code)? Like from name? Could envisage choosing 5 of those and checking for "license" in the first 30-ish lines, maybe also copyright?
-                self.logger.warning(f"{self.metric_identifier} : Check for license headers in source files is not implemented.")
+                    else:
+                        self.logger.warning(f"{self.metric_identifier} : {license_headers_count} out of a sample of {len(source_code_samples)} source code files were found to contain a license header.")
+                else:
+                    self.logger.warning(f"{self.metric_identifier} : No source code files found.")
             if test_status:  # test passed, update score and maturity
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")

@@ -54,5 +54,29 @@ class GithubHarvester:
         except UnknownObjectException:
             pass
 
+        # identify source code
+        repo_languages = repo.get_languages()
+        if repo_languages != {}:
+            self.data["languages"] = repo_languages
+        main_source_code_language = repo.language
+        if main_source_code_language is not None:
+            self.data["main_language"] = main_source_code_language
+            query = f" repo:{self.repo_id} language:{main_source_code_language}"  # needs the space in front as every query needs a string to match on
+            source_code_files = self.handle.search_code(query)
+            # extract code of up to n=5 files
+            n = min(5, source_code_files.totalCount)
+            source_code_samples = []
+            for i in range(n):
+                source_code_samples.append(
+                    {
+                        "path": source_code_files[i].path,
+                        "language": main_source_code_language,
+                        "content": source_code_files[i].decoded_content
+                    }
+                )
+            if len(source_code_samples) > 0:
+                self.data["source_code_samples"] = source_code_samples
+            
+
         print(self.data)
         print("----------------------\n\n\n")
