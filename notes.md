@@ -4,6 +4,8 @@ Test URL for data: https://doi.org/10.5281/zenodo.10047401
 
 Test URL for software: https://github.com/cessda/cessda.cmv.server
 
+Test URL for terrible software repo on GitHub (private): https://github.com/karacolada/challenge-fuji
+
 Test URL for software not on GH: https://zenodo.org/records/6319836
 
 Presentation: https://zenodo.org/records/4068347/files/FAIRsFAIR_FUJI_30092020.pdf?download=1
@@ -156,6 +158,10 @@ Is it meant for something else?
 
 ...
 
-### What do test score and test maturity mean as results?
+### What do test score and test maturity mean as results? :exclamation:
+
+Resulting maturity is the highest maturity of all tests that passed. Score is the sum of the scores of all tests.
+
+### How are metric requirements used? :question:
 
 ...
