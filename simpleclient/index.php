@@ -377,8 +377,8 @@ if (isset($input_pid)) {
                             $mstyle='';
                         }
                         print('<tr'.$mstyle.'><th scope="row">'.$test_key.'</th><td>'.$metric_test['metric_test_name'].'</td><td>');
-                        if($metric_test['metric_test_score'] !=0){
-                            print($metric_test['metric_test_score']);
+                        if($metric_test['metric_test_score']['earned'] !=0){
+                            print($metric_test['metric_test_score']['earned']);
                         }
                         print('</td><td>');
                         if($metric_test['metric_test_status']=='pass'){
