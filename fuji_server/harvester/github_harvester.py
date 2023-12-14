@@ -48,5 +48,11 @@ class GithubHarvester:
         except UnknownObjectException:
             pass
 
+        try: # Maven POM
+            mvn_pom_file = repo.get_contents("pom.xml")
+            self.data["mvn_pom"] = mvn_pom_file.decoded_content
+        except UnknownObjectException:
+            pass
+
         print(self.data)
         print("----------------------\n\n\n")

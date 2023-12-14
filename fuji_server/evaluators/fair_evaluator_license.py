@@ -24,6 +24,7 @@ import re
 
 import idutils
 import Levenshtein
+import lxml.etree as ET
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
@@ -271,6 +272,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
 
     def testLicenseTXTAtRoot(self):
+        """Looks for license_path in self.fuji.github_data. Test passes if the license file is called LICENSE.txt and located at project root.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
         agnostic_test_name = "testLicenseFileAtRoot"
         test_status = False
         test_defined = False
@@ -292,7 +298,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                     self.score.earned += test_score
                 else:  # identify what's wrong
                     p = Path(license_path)
-                    if p.parent != ".":
+                    if str(p.parent) != ".":
                         self.logger.warning(f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository.")
                     if p.suffix != ".txt":
                         self.logger.warning(f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT.")
@@ -303,7 +309,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
     
     def testLicenseInHeaders(self):
-        #TODO: Implement
+        #TODO: Implement - is there a tool that recognises code files (source code)? Like from name? Could envisage choosing 5 of those and checking for "license" in the first 30-ish lines, maybe also copyright?
         agnostic_test_name = "testLicenseInHeaders"
         test_status = False
         test_defined = False
@@ -329,7 +335,12 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
     
     def testBuildScriptChecksLicenseHeader(self):
-        #TODO: Implement
+        """Parses build script looking for command that ensures the presence of license headers.
+        Currently only for Maven POM files and expects build to fail if license headers are missing.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
         agnostic_test_name = "testBuildScriptChecksLicenseHeader"
         test_status = False
         test_defined = False
@@ -338,7 +349,36 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            pass
+            test_score = self.getTestConfigScore(test_id)
+            # Maven
+            mvn_pom = self.fuji.github_data.get("mvn_pom")
+            if mvn_pom is not None:
+                # Check whether pom.xml uses license:check-file-header to validate license headers.
+                # See https://www.mojohaus.org/license-maven-plugin/check-file-header-mojo.html for more info.
+                root = ET.fromstring(mvn_pom)
+                namespaces = root.nsmap
+                # look for plugin with artifactID license-maven-plugin
+                found_license_plugin = False
+                for plugin in root.iterfind(".//plugin", namespaces):
+                    artifact_id = plugin.find("artifactId", namespaces)
+                    if artifact_id is not None and artifact_id.text == "license-maven-plugin":
+                        found_license_plugin = True
+                        fail_on_missing_header = plugin.find("configuration/failOnMissingHeader", namespaces)
+                        if fail_on_missing_header is not None and fail_on_missing_header.text == "true":
+                            test_status = True
+                            self.logger.log(
+                                self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Maven POM checks for license headers in source files."
+                            )
+                            self.maturity = self.getTestConfigMaturity(test_id)
+                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                            self.score.earned += test_score
+                        else:
+                            self.logger.warning(f"{self.metric_identifier} : Maven POM uses license-maven-plugin (license:check-file-header) but does not fail on missing header.")
+                        break
+                if not found_license_plugin:
+                    self.logger.warning(f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files.")
+            else:
+                self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file.")
         return test_status
 
     def evaluate(self):
