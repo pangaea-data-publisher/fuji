@@ -309,7 +309,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
     
     def testLicenseInHeaders(self):
-        #TODO: Implement - is there a tool that recognises code files (source code)? Like from name? Could envisage choosing 5 of those and checking for "license" in the first 30-ish lines, maybe also copyright?
+        """Checks whether source code files include a license header. Fast-pass if the build script checks for license headers.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
         agnostic_test_name = "testLicenseInHeaders"
         test_status = False
         test_defined = False
@@ -318,7 +322,22 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            pass
+            test_score = self.getTestConfigScore(test_id)
+            # check whether CESSDA-3 was run and passed
+            for tid in self.metric_test_map["testBuildScriptChecksLicenseHeader"]:
+                if tid in self.metric_tests.keys(): #and self.metric_tests[tid]["metric_test_status"] == "pass":
+                    if self.metric_tests[tid].metric_test_status == "pass":
+                        test_status = True
+                        self.logger.log(
+                                self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers."
+                            )
+            if not test_status:  # CESSDA-3 did not pass
+                # TODO: is there a tool that recognises code files (source code)? Like from name? Could envisage choosing 5 of those and checking for "license" in the first 30-ish lines, maybe also copyright?
+                self.logger.warning(f"{self.metric_identifier} : Check for license headers in source files is not implemented.")
+            if test_status:  # test passed, update score and maturity
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
         return test_status
     
     def testLicenseForBundled(self):
@@ -397,11 +416,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
             license_status = "pass"
         if self.testLicenseForBundled():
             license_status = "pass"
-        if self.testLicenseInHeaders():
-            license_status = "pass"
         if self.testBuildScriptChecksLicenseHeader():
             license_status = "pass"
-
+        if self.testLicenseInHeaders():
+            license_status = "pass"
+        
         self.result.test_status = license_status
         self.result.output = self.output
         self.result.metric_tests = self.metric_tests
