@@ -354,7 +354,11 @@ class FAIREvaluatorLicense(FAIREvaluator):
         return test_status
     
     def testLicenseForBundled(self):
-        #TODO: Implement
+        """Look for license information of bundled components. Not implemented.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
         agnostic_test_name = "testLicenseForBundled"
         test_status = False
         test_defined = False
@@ -363,7 +367,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            pass
+            self.logger.warning(f"{self.metric_identifier} : Test for license information of bundled components is not implemented.")
         return test_status
     
     def testBuildScriptChecksLicenseHeader(self):
