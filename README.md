@@ -77,7 +77,7 @@ To access the OpenAPI user interface, open the URL below in the browser:
 
 Your OpenAPI definition lives here:
 
-<http://localhost:1071/fuji/api/v1/swagger.json>
+<http://localhost:1071/fuji/api/v1/openapi.json>
 
 You can provide a different server config file this way:
 
