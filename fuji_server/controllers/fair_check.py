@@ -200,9 +200,6 @@ class FAIRCheck:
         self.METRICS = self.metric_helper.get_custom_metrics(
             ["metric_name", "total_score", "metric_tests", "metric_number"]
         )
-        print("\n\nFound METRICS:\n")
-        print(self.METRICS)
-        print("\n\n")
         self.METRIC_VERSION = metric_version
         self.metrics_config = self.metric_helper.get_metrics_config()
         print("METRICS CONFIG: ", self.metrics_config)
@@ -287,9 +284,6 @@ class FAIRCheck:
                 self.auth_token_type = "Basic"
 
     def clean_metadata(self):
-        print("\nmerged START")
-        print(self.metadata_merged)
-        print("merged END\n")
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
             data_objects = self.metadata_merged["object_content_identifier"] = None
@@ -599,8 +593,6 @@ class FAIRCheck:
         summary["score_total"] = sf.groupby(by="fair_category")["score_total"].sum().to_dict()
         summary["score_total"].update(sf.groupby(by="fair_principle")["score_total"].sum().to_dict())
         summary["score_total"]["FAIR"] = round(float(sf["score_total"].sum()), 2)
-
-        print(summary)
 
         summary["score_percent"] = (
             round(

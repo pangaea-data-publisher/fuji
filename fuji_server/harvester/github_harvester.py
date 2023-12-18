@@ -22,7 +22,6 @@ class GithubHarvester:
         self.data = {}  # dictionary with all info
 
     def harvest(self):
-        print("\n\n\n----------------------\nGitHub Harvest\n----------------------")  # DEBUG PRINTS
         # check if it's a URL or repo ID
         # NOTE: this should probably be handled by IdentifierHelper, but I don't understand that module yet.
         if self.id.count('/') > 1:  # URL
@@ -37,7 +36,7 @@ class GithubHarvester:
         try:
             repo = self.handle.get_repo(self.repo_id)
         except UnknownObjectException:
-            print("Could not find repo.")  #TODO: this will be an access log, probably?
+            print("Could not find repo.")  #TODO: this should be a log message
             return
         
         # harvesting
@@ -76,7 +75,3 @@ class GithubHarvester:
                 )
             if len(source_code_samples) > 0:
                 self.data["source_code_samples"] = source_code_samples
-            
-
-        print(self.data)
-        print("----------------------\n\n\n")

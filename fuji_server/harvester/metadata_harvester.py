@@ -148,7 +148,6 @@ class MetadataHarvester:
                     )
             if isinstance(metadict, dict) and allow_merge == True:
                 # self.metadata_sources.append((method_source, 'negotiated'))
-                print("MERGING:", metadict.keys())
                 for r in metadict.keys():
                     if r in self.reference_elements:
                         # enforce lists
