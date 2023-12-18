@@ -98,6 +98,7 @@ class FAIRCheck:
         metadata_service_url=None,
         metadata_service_type=None,
         use_datacite=True,
+        use_github=True,
         verify_pids=True,
         oaipmh_endpoint=None,
         metric_version=None,
@@ -155,6 +156,7 @@ class FAIRCheck:
 
         self.rdf_collector = None
         self.use_datacite = use_datacite
+        self.use_github = use_github
         self.repeat_pid_check = False
         self.logger_message_stream = io.StringIO()
         logging.addLevelName(self.LOG_SUCCESS, "SUCCESS")
@@ -364,9 +366,15 @@ class FAIRCheck:
             self.content_identifier = data_harvester.data
 
     def harvest_github(self):
-        github_harvester = GithubHarvester(self.id)
-        github_harvester.harvest()
-        self.github_data = github_harvester.data
+        if self.use_github:
+            github_harvester = GithubHarvester(self.id)
+            github_harvester.harvest()
+            self.github_data = github_harvester.data
+        else:
+            self.github_data = {}
+            # NOTE: Update list of metrics that are impacted by this as more are implemented.
+            for m in ["FRSM-15-R1.1"]:
+                self.logger.warning(f"{m} : Github support disabled, therefore skipping harvesting through Github API")
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()

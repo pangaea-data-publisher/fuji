@@ -103,7 +103,7 @@ F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access
 
 ## Development
 
-The repository includes a simple web client suitable for interacting with the API during development.
+The repository includes a [simple web client](./simpleclient/) suitable for interacting with the API during development.
 One way to run it would be with a LEMP stack (Linux, Nginx, MySQL, PHP), which is described in the following.
 
 First, install the necessary packages:
@@ -205,6 +205,21 @@ The multiple test methods within an evaluator also check whether their specific 
 
 For each metric, the maturity is determined as the maximum of the maturity associated with each passed test.
 This means that if a test indicating maturity 3 is passed and one indicating maturity 2 is not passed, the metric will still be shown to be fulfilled with maturity 3.
+
+### Updates to the API
+
+F-UJI makes use of Swagger Codegen. If making changes to the API, make sure to [install Swagger Codegen](https://github.com/swagger-api/swagger-codegen#prerequisites):
+
+```bash
+wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.51/swagger-codegen-cli-3.0.51.jar -O swagger-codegen-cli.jar
+java -jar swagger-codegen-cli.jar --help
+```
+Update the API definition in [`fuji_server/yaml/openapi.yaml`](./fuji_server/yaml/openapi.yaml). Then, run Swagger Codegen:
+
+```bash
+# TODO
+...
+```
 
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.

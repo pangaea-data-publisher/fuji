@@ -59,6 +59,7 @@ def assess_by_id(body):
         oaipmh_endpoint = body.oaipmh_endpoint
         metadata_service_type = body.metadata_service_type
         usedatacite = body.use_datacite
+        usegithub = body.use_github
         metric_version = body.metric_version
         print("BODY METRIC", metric_version)
         auth_token = body.auth_token
@@ -76,6 +77,7 @@ def assess_by_id(body):
             metadata_service_url=metadata_service_endpoint,
             metadata_service_type=metadata_service_type,
             use_datacite=usedatacite,
+            use_github=usegithub,
             oaipmh_endpoint=oaipmh_endpoint,
             metric_version=metric_version,
         )
