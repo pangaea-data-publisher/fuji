@@ -21,7 +21,7 @@ dependencies = [
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
   "configparser~=6.0",
-  "connexion[swagger-ui]~=3.0",
+  "connexion[flask]~=3.0",
   "extruct~=0.16.0",
   "feedparser~=6.0",
   "flask-cors~=4.0",
