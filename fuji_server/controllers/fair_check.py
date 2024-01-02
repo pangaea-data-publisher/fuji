@@ -258,7 +258,9 @@ class FAIRCheck:
             cls.LINKED_VOCAB_INDEX = Preprocessor.get_linked_vocab_index()
         if not cls.ACCESS_RIGHTS:
             cls.ACCESS_RIGHTS = Preprocessor.get_access_rights()
-        Preprocessor.set_mime_types()
+        # TODO: change this
+        # Preprocessor.set_mime_types()
+
         # not needed locally ... but init class variable
         # Preprocessor.get_google_data_dois()
         # Preprocessor.get_google_data_urls()
