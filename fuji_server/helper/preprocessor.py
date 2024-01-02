@@ -88,29 +88,7 @@ class Preprocessor:
 
     @classmethod
     def set_mime_types(cls):
-        formats_data = {}
         try:
-            file_formats_path = os.path.join(cls.fuji_server_dir, "data", "file_formats.json")
-            with open(file_formats_path, encoding="utf8") as f:
-                formats_data = json.load(f)
-            if formats_data:
-                for file_format in formats_data.values():
-                    for mime in file_format.get("mime"):
-                        ext = None
-                        if file_format.get("ext"):
-                            ext = " ".join(
-                                [
-                                    ex
-                                    for ex in file_format.get("ext")
-                                    if ex.replace("*.", ".") not in mimetypes.types_map
-                                ]
-                            )
-                            ext = ext.replace("*.", "")
-                        if ext:
-                            print(mime, ext)
-        except Exception as e:
-            print("################################### ERROR", str(e))
-        """try:
             mimes = requests.get("https://raw.githubusercontent.com/jshttp/mime-db/master/db.json").json()
             for mime_type, mime_data in mimes.items():
                 if mime_data.get("extensions"):
@@ -119,7 +97,7 @@ class Preprocessor:
                         mimetypes.add_type(mime_type, "." + ext, strict=True)
             print(len(mimetypes.types_map))
         except Exception:
-            cls.logger.warning("Loading additional mime types failed, will continue with standard set")"""
+            cls.logger.warning("Loading additional mime types failed, will continue with standard set")
 
     @classmethod
     def set_max_content_size(cls, size):
