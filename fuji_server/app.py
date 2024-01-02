@@ -38,7 +38,9 @@ def create_app(config):
     ROOT_DIR = Path(__file__).parent
     YAML_DIR = config["SERVICE"]["yaml_directory"]
 
-    app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
+    # app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
+    app = connexion.App(__name__, specification_dir=YAML_DIR)
+
     API_YAML = ROOT_DIR.joinpath(YAML_DIR, config["SERVICE"]["openapi_yaml"])
     app.app.json_encoder = encoder.JSONEncoder
 
