@@ -21,7 +21,7 @@ dependencies = [
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
   "configparser~=6.0",
-  "connexion[flask]~=3.0",
+  "connexion[flask,uvicorn,swagger-ui]~=3.0",
   "extruct~=0.16.0",
   "feedparser~=6.0",
   "flask-cors~=4.0",
@@ -41,8 +41,7 @@ dependencies = [
   "sparqlwrapper~=2.0",
   "tika~=2.6",
   "tldextract~=5.0",
-  "urlextract~=1.8",
-  "waitress~=2.1"
+  "urlextract~=1.8"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [

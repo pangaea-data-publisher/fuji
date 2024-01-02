@@ -21,13 +21,14 @@
 # SOFTWARE.
 
 import os
+
+# from fuji_server import encoder
+from json import JSONEncoder
 from pathlib import Path
 
 import connexion
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-from fuji_server import encoder
 
 
 def create_app(config):
@@ -38,11 +39,11 @@ def create_app(config):
     ROOT_DIR = Path(__file__).parent
     YAML_DIR = config["SERVICE"]["yaml_directory"]
 
-    # app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
-    app = connexion.App(__name__, specification_dir=YAML_DIR)
+    app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR)
+    # app = connexion.App(__name__, specification_dir=YAML_DIR)
 
     API_YAML = ROOT_DIR.joinpath(YAML_DIR, config["SERVICE"]["openapi_yaml"])
-    app.app.json_encoder = encoder.JSONEncoder
+    app.app.json_encoder = JSONEncoder
 
     app.add_api(API_YAML, validate_responses=True)
     app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
