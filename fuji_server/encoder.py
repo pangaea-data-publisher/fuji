@@ -1,10 +1,10 @@
 # from connexion.apps.flask_app import FlaskJSONEncoder
-from json import JSONEncoder
+from connexion.jsonifier import JSONEncoder
 
 from fuji_server.models.base_model_ import Model
 
 
-class JSONEncoder(JSONEncoder):
+class CustomJSONEncoder(JSONEncoder):
     include_nulls = False
 
     def default(self, o):

@@ -26,7 +26,6 @@
 import connexion
 
 from fuji_server.controllers.fair_check import FAIRCheck
-from fuji_server.models.harvest import Harvest
 from fuji_server.models.harvest_results import HarvestResults
 from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata
 
@@ -41,11 +40,11 @@ def harvest_by_id(body=None):
 
     :rtype: HarvestResults
     """
-    if connexion.request.is_json:
-        body = Harvest.from_dict(connexion.request.get_json())
-        identifier = body.object_identifier
-        auth_token = body.auth_token
-        auth_token_type = body.auth_token_type
+    if connexion.request.content_type == "application/json":
+        # body = Harvest.from_dict(connexion.request.get_json())
+        identifier = body.get("object_identifier")
+        auth_token = body.get("auth_token")
+        auth_token_type = body.get("auth_token_type")
         ft = FAIRCheck(
             uid=identifier,
             test_debug=False,
