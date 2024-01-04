@@ -145,4 +145,5 @@ def test_evaluation(client: FlaskClient) -> None:
             "R1.3": 2,
         },
     }
-    assert response.json["summary"].keys() == expected.keys()
+    response_json = response.json()
+    assert response_json["summary"].keys() == expected.keys()
