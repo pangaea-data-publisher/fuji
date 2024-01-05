@@ -4,6 +4,11 @@ updates:
   directory: /
   schedule:
     interval: monthly
+  groups:
+    # create a single pull request containing all updates for GitHub Actions
+    github-actions:
+      patterns:
+      - '*'
 - package-ecosystem: pip
   directory: /
   schedule:
