@@ -418,9 +418,7 @@ class RequestHelper:
                                 # init to avoid empty responses
                                 self.parse_response = self.response_content
                                 while True:
-                                    for (
-                                        at
-                                    ) in (
+                                    for at in (
                                         AcceptTypes
                                     ):  # e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
                                         if at.name == "xml" and str(self.content_type).endswith("+xml"):
