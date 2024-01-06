@@ -37,7 +37,7 @@ The service is **in development** and its assessment depends on several factors.
 ![alt text](https://github.com/pangaea-data-publisher/fuji/blob/master/fuji_server/static/main.png?raw=true)
 
 ## Requirements
-[Python](https://www.python.org/downloads/) `3.11+`
+[Python](https://www.python.org/downloads/) `3.11`
 
 ### Google Dataset Search
 * Download the latest Dataset Search corpus file from: <https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets>
