@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 """
 Here we test the Preprocessor class which provides the reference data for a server
 

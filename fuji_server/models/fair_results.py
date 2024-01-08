@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 from datetime import datetime
 
 # from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems

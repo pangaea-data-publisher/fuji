@@ -1,4 +1,7 @@
-# from connexion.apps.flask_app import FlaskJSONEncoder
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 from connexion.jsonifier import JSONEncoder
 
 from fuji_server.models.base_model_ import Model
