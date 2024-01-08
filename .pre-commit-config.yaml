@@ -14,7 +14,7 @@ repos:
   - id: file-contents-sorter
     files: ^fuji_server\/data\/.*.txt$
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.11.0
+  rev: v2.12.0
   hooks:
   - id: pretty-format-ini
     args: [--autofix]
@@ -23,11 +23,11 @@ repos:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
 - repo: https://github.com/psf/black
-  rev: 23.11.0
+  rev: 23.12.1
   hooks:
   - id: black
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.1.6
+  rev: v0.1.11
   hooks:
   - id: ruff
     args: [--fix, --exit-non-zero-on-fix]
