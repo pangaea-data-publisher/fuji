@@ -1,17 +1,16 @@
 import os
-
-from github import Github, Auth
-from github.GithubException import RateLimitExceededException, UnknownObjectException
 from configparser import ConfigParser
 
-from fuji_server.helper.identifier_helper import IdentifierHelper
+from github import Auth, Github
+from github.GithubException import UnknownObjectException
 
-class GithubHarvester:   
+
+class GithubHarvester:
     def __init__(self, id, host="https://github.com"):
         # Read Github API access token from config file.
         config = ConfigParser()
-        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../config/github.cfg'))
-        auth_token = Auth.Token(config['ACCESS']['token'])
+        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.cfg"))
+        auth_token = Auth.Token(config["ACCESS"]["token"])
         self.id = id
         self.host = host
         if host != "https://github.com":
@@ -24,7 +23,7 @@ class GithubHarvester:
     def harvest(self):
         # check if it's a URL or repo ID
         # NOTE: this should probably be handled by IdentifierHelper, but I don't understand that module yet.
-        if self.id.count('/') > 1:  # URL
+        if self.id.count("/") > 1:  # URL
             self.url = self.id
             _, self.username, self.repo_name = self.id.rsplit("/", 2)
         else:  # repo ID
@@ -36,18 +35,18 @@ class GithubHarvester:
         try:
             repo = self.handle.get_repo(self.repo_id)
         except UnknownObjectException:
-            print("Could not find repo.")  #TODO: this should be a log message
+            print("Could not find repo.")  # TODO: this should be a log message
             return
-        
+
         # harvesting
         try:  # LICENSE
             license_file = repo.get_license()
-            self.data['license_path'] = license_file.path
-            self.data['license'] = license_file.license.name
+            self.data["license_path"] = license_file.path
+            self.data["license"] = license_file.license.name
         except UnknownObjectException:
             pass
 
-        try: # Maven POM
+        try:  # Maven POM
             mvn_pom_file = repo.get_contents("pom.xml")
             self.data["mvn_pom"] = mvn_pom_file.decoded_content
         except UnknownObjectException:
@@ -70,7 +69,7 @@ class GithubHarvester:
                     {
                         "path": source_code_files[i].path,
                         "language": main_source_code_language,
-                        "content": source_code_files[i].decoded_content
+                        "content": source_code_files[i].decoded_content,
                     }
                 )
             if len(source_code_samples) > 0:
