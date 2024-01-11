@@ -64,6 +64,8 @@ The F-UJI server can now be started with:
 python -m fuji_server -c fuji_server/config/server.ini
 ```
 
+The OpenAPI user interface is then available at <http://localhost:1071/fuji/api/v1/ui/>.
+
 ### Docker-based installation
 
 ```bash
@@ -75,7 +77,7 @@ To access the OpenAPI user interface, open the URL below in the browser:
 
 Your OpenAPI definition lives here:
 
-<http://localhost:1071/fuji/api/v1/swagger.json>
+<http://localhost:1071/fuji/api/v1/openapi.json>
 
 You can provide a different server config file this way:
 
@@ -99,6 +101,125 @@ If you receive the exception `urllib2.URLError: <urlopen error [SSL: CERTIFICATE
 
 F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access_authentication), so username and password have to be provided for each REST call which can be configured in `fuji_server/config/users.py`.
 
+## Development
+
+The repository includes a [simple web client](./simpleclient/) suitable for interacting with the API during development.
+One way to run it would be with a LEMP stack (Linux, Nginx, MySQL, PHP), which is described in the following.
+
+First, install the necessary packages:
+
+```bash
+sudo apt-get update
+sudo apt-get install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo service mysql start  # expects that mysql is already installed, if not run sudo apt install mysql-server
+sudo service nginx start
+sudo apt install php8.1-fpm php-mysql
+sudo apt install php8.1-curl
+sudo phpenmod curl
+```
+
+Next, configure the service by running `sudo vim /etc/nginx/sites-available/fuji-dev` and paste:
+
+```php
+server {
+    listen 9000;
+    server_name fuji-dev;
+    root /var/www/fuji-dev;
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
+
+Link `simpleclient/index.php` and `simpleclient/icons/` to `/var/www/fuji-dev` by running `sudo ln <path_to_fuji>/fuji/simpleclient/* /var/www/fuji-dev/`. You might need to adjust the file permissions to allow non-root writes.
+
+Next,
+```bash
+sudo ln -s /etc/nginx/sites-available/fuji-dev /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo service nginx reload
+sudo service php8.1-fpm start
+```
+
+The web client should now be available at <http://localhost:9000/>. Make sure to adjust the username and password in [`simpleclient/index.php`](./simpleclient/index.php).
+
+After a restart, it may be necessary to start the services again:
+
+```bash
+sudo service php8.1-fpm start
+sudo service nginx start
+python -m fuji_server -c fuji_server/config/server.ini
+```
+
+### Component interaction (walkthrough)
+
+This walkthrough can guide you through the comprehensive codebase.
+
+A good starting point is [`fair_object_controller/assess_by_id`](fuji_server/controllers/fair_object_controller.py#36).
+Here, we create a [`FAIRCheck`](fuji_server/controllers/fair_check.py) object called `ft`.
+This reads the metrics YAML file during initialisation and will provide all the `check` methods.
+
+Next, several harvesting methods are called, first [`harvest_all_metadata`](fuji_server/controllers/fair_check.py#329), followed by [`harvest_re3_data`](fuji_server/controllers/fair_check.py#345) (Datacite) and [`harvest_github`](fuji_server/controllers/fair_check.py#366) and finally [`harvest_all_data`](fuji_server/controllers/fair_check.py#359).
+The harvesters are implemented separately in [`harvester/`](./fuji_server/harvester/), and each of them collects different kinds of data.
+This is regardless of the defined metrics, the harvesters always run.
+- The metadata harvester looks through HTML markup following schema.org, Dublincore etc., through signposting/typed links.
+Ideally, it can find things like author information or license names that way.
+- The data harvester is only run if the metadata harvester finds an `object_content_identifier` pointing at content files.
+Then, the data harvester runs over the files and checks things like the file format.
+- The Github harvester connects with the GitHub API to retrieve metadata and data from software repositories.
+It relies on an access token being defined in [`config/github.cfg`](./fujji_server/config/github.cfg).
+
+After harvesting, all evaluators are called.
+Each specific evaluator, e.g. [`FAIREvaluatorLicense`](fuji_server/evaluators/fair_evaluator_license.py), is associated with a specific FsF and/or FAIR4RS metric.
+Before the evaluator runs any checks on the harvested data, it asserts that its associated metric is listed in the metrics YAML file.
+Only if it is, the evaluator runs through and computes a local score.
+
+In the end, all scores are aggregated into F, A, I, R scores.
+
+### Adding support for new metrics
+
+Start by adding a new metrics YAML file in [`yaml/`](./fuji_server/yaml).
+Its name has to match the following regular expression: `(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)`,
+and the content should be structured similarly to the existing metric files.
+
+Metric names are tested for validity using regular expressions throughout the code.
+If your metric names do not match those, not all components of the tool will execute as expected, so make sure to adjust the expressions.
+Regular expression groups are also used for mapping to F, A, I, R categories for scoring, and debug messages are only displayed if they are associated with a valid metric.
+
+Evaluators are mapped to metrics in their `__init__` methods, so adjust existing evaluators to associate with your metric as well or define new evaluators if needed.
+The multiple test methods within an evaluator also check whether their specific test is defined.
+[`FAIREvaluatorLicense`](fuji_server/evaluators/fair_evaluator_license.py) is an example of an evaluator corresponding to metrics from different sources.
+
+For each metric, the maturity is determined as the maximum of the maturity associated with each passed test.
+This means that if a test indicating maturity 3 is passed and one indicating maturity 2 is not passed, the metric will still be shown to be fulfilled with maturity 3.
+
+### Updates to the API
+
+F-UJI makes use of Swagger Codegen. If making changes to the API, make sure to [install Swagger Codegen](https://github.com/swagger-api/swagger-codegen#prerequisites):
+
+```bash
+wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.51/swagger-codegen-cli-3.0.51.jar -O swagger-codegen-cli.jar
+java -jar swagger-codegen-cli.jar --help
+```
+Update the API definition in [`fuji_server/yaml/openapi.yaml`](./fuji_server/yaml/openapi.yaml). Then, run Swagger Codegen:
+
+```bash
+# TODO
+...
+```
 
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.

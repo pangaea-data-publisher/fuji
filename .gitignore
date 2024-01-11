@@ -21,6 +21,15 @@
 # vim
 *.swp
 
+# database
+*.db
+
+# local copies of Google database loading files
+fuji_server/helper/catalogue_helper_google_datasearch_copy.py
+fuji_server/helper/create_google_cache_db_copy.py
+
+# private config
+fuji_server/config/github.cfg
 
 # Created by https://www.gitignore.io/api/python,linux,macos
 

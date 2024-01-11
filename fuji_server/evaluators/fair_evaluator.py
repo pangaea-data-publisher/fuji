@@ -72,7 +72,7 @@ class FAIREvaluator:
         self.isDebug = self.fuji.isDebug
         self.fuji.count = self.fuji.count + 1
         self.logger = self.fuji.logger
-        self.metric_regex = r"FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?"
+        self.metric_regex = r"^FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?|^FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?(-[0-9]+)?"  # match FsF or FAIR4RS metric identifiers
 
     def set_maturity(self, maturity):
         if self.maturity < maturity:
@@ -83,20 +83,27 @@ class FAIREvaluator:
 
         Parameters
         ----------
-        metric_identifier:str
-            The metric identifier
+        metric_identifier: str | list<str>
+            The metric identifier. Can be a list if the evaluator is used for different metric sources.
         metrics: str
             FUJI metrics
         """
         self.metrics = self.fuji.METRICS
-        self.metric_identifier = metric_identifier
+        if isinstance(metric_identifier, list):  # find out whether one of them
+            for mid in metric_identifier:
+                if mid in self.metrics:
+                    self.metric_identifier = mid  # choose the first hit - it's unlikely there's more than one, and it doesn't change the behaviour either way
+                    break
+                self.metric_identifier = None  # fallback
+        else:  # str or None
+            self.metric_identifier = metric_identifier
         if self.metric_identifier is not None and self.metric_identifier in self.metrics:
-            self.agnostic_identifier = self.metrics.get(metric_identifier).get("agnostic_identifier")
-            self.community_identifier = self.metrics.get(metric_identifier).get("metric_identifier")
-            self.total_score = int(self.metrics.get(metric_identifier).get("total_score"))
+            self.agnostic_identifier = self.metrics.get(self.metric_identifier).get("agnostic_identifier")
+            self.community_identifier = self.metrics.get(self.metric_identifier).get("metric_identifier")
+            self.total_score = int(self.metrics.get(self.metric_identifier).get("total_score"))
             self.score = FAIRResultCommonScore(total=self.total_score)
-            self.metric_name = self.metrics.get(metric_identifier).get("metric_name")
-            self.metric_number = self.metrics.get(metric_identifier).get("metric_number")
+            self.metric_name = self.metrics.get(self.metric_identifier).get("metric_name")
+            self.metric_number = self.metrics.get(self.metric_identifier).get("metric_number")
             self.initializeMetricTests()
 
     def evaluate(self):
