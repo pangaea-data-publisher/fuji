@@ -41,7 +41,8 @@ dependencies = [
   "sparqlwrapper~=2.0",
   "tika~=2.6",
   "tldextract~=5.0",
-  "urlextract~=1.8"
+  "urlextract~=1.8",
+  "pygithub~=2.1"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -53,7 +54,8 @@ keywords = [
   "FAIR",
   "Research Data",
   "FAIR data",
-  "Metadata harvesting"
+  "Metadata harvesting",
+  "FAIR4RS"
 ]
 license = "MIT"
 name = "fuji"
