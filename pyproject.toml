@@ -21,7 +21,7 @@ dependencies = [
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
   "configparser~=6.0",
-  "connexion[swagger-ui]~=3.0",
+  "connexion[flask,uvicorn,swagger-ui]~=3.0",
   "extruct~=0.16.0",
   "feedparser~=6.0",
   "flask-cors~=4.0",
@@ -30,7 +30,7 @@ dependencies = [
   "idutils~=1.2",
   "jmespath~=1.0",
   "levenshtein~=0.23.0",
-  "lxml~=4.9",
+  "lxml~=5.0",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
@@ -41,8 +41,7 @@ dependencies = [
   "sparqlwrapper~=2.0",
   "tika~=2.6",
   "tldextract~=5.0",
-  "urlextract~=1.8",
-  "waitress~=2.1"
+  "urlextract~=1.8"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -60,7 +59,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = ">=3.11"
-version = "3.1.0"
+version = "3.1.1"
 
 [project.optional-dependencies]
 dev = [

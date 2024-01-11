@@ -29,11 +29,10 @@ import connexion
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.preprocessor import Preprocessor
-from fuji_server.models.body import Body
 from fuji_server.models.fair_results import FAIRResults
 
 
-def assess_by_id(body):
+async def assess_by_id(body):
     """assess_by_id
 
     Evaluate FAIRness of a data object based on its identifier # noqa: E501
@@ -45,25 +44,26 @@ def assess_by_id(body):
     """
 
     allow_remote_logging = False
-    if connexion.request.is_json:
+    if connexion.request.content_type == "application/json":
         # The client has to send this HTTP header (Allow-Remote-Logging:True) explicitely to enable remote logging
         # Useful for e.g. web clients..
         allow_remote_logging = connexion.request.headers.get("Allow-Remote-Logging")
         debug = True
         results = []
-        body = Body.from_dict(connexion.request.get_json())
+        # json_body = await connexion.request.json()
+        # body = Body.from_dict(json_body)
         # clienturi = Body.from_dict(connexion.request
-        identifier = body.object_identifier
-        debug = body.test_debug
-        metadata_service_endpoint = body.metadata_service_endpoint
-        oaipmh_endpoint = body.oaipmh_endpoint
-        metadata_service_type = body.metadata_service_type
-        usedatacite = body.use_datacite
-        usegithub = body.use_github
-        metric_version = body.metric_version
+        identifier = body.get("object_identifier")
+        debug = body.get("test_debug")
+        metadata_service_endpoint = body.get("metadata_service_endpoint")
+        oaipmh_endpoint = body.get("oaipmh_endpoint")
+        metadata_service_type = body.get("metadata_service_type")
+        usedatacite = body.get("use_datacite")
+        usegithub = body.get("use_github")
+        metric_version = body.get("metric_version")
         print("BODY METRIC", metric_version)
-        auth_token = body.auth_token
-        auth_token_type = body.auth_token_type
+        auth_token = body.get("auth_token")
+        auth_token_type = body.get("auth_token_type")
         logger = Preprocessor.logger
         # updating re3data
         Preprocessor.retrieve_datacite_re3repos()
@@ -194,7 +194,7 @@ def assess_by_id(body):
             resolved_url = "not defined"
         # metric_version = os.path.basename(Preprocessor.METRIC_YML_PATH)
         totalmetrics = len(results)
-        request = body.to_dict()
+        request = body
         if ft.pid_url:
             idhelper = IdentifierHelper(ft.pid_url)
             request["normalized_object_identifier"] = idhelper.get_normalized_id()

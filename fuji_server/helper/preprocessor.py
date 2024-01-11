@@ -95,6 +95,7 @@ class Preprocessor:
                     for ext in mime_data.get("extensions"):
                         # if '.' + ext not in mimetypes.types_map:
                         mimetypes.add_type(mime_type, "." + ext, strict=True)
+            print(len(mimetypes.types_map))
         except Exception:
             cls.logger.warning("Loading additional mime types failed, will continue with standard set")
 

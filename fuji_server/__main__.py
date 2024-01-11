@@ -29,7 +29,6 @@ import os
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from waitress import serve
 
 from fuji_server.app import create_app
 from fuji_server.helper.preprocessor import Preprocessor
@@ -77,10 +76,8 @@ def main():
 
     app = create_app(config)
     Limiter(get_remote_address, app=app.app, default_limits=[str(config["SERVICE"]["rate_limit"])])
-    # comment in case waitress is wished
-    # app.run(host=config['SERVICE']['service_host'], port=int(config['SERVICE']['service_port']),debug=False)
-    # switch to waitress
-    serve(app, host=config["SERVICE"]["service_host"], port=int(config["SERVICE"]["service_port"]))
+    # built in uvicorn ASGI
+    app.run(host=config["SERVICE"]["service_host"], port=int(config["SERVICE"]["service_port"]))
 
 
 if __name__ == "__main__":

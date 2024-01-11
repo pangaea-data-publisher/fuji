@@ -107,7 +107,7 @@ def temporary_preprocessor(temporary_data_directory) -> Preprocessor:
 def app(test_config) -> Flask:
     _app = create_app(test_config)
     _app.testing = True
-    return _app.app
+    return _app
 
 
 @pytest.fixture(scope="session")

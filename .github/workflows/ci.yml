@@ -26,7 +26,7 @@ jobs:
   #   steps:
   #   - uses: actions/checkout@v4
   #   - name: Set up Python 3.11
-  #     uses: actions/setup-python@v4
+  #     uses: actions/setup-python@v5
   #     with:
   #       python-version: '3.11'
   #   - name: Cache python dependencies
@@ -61,7 +61,7 @@ jobs:
         restore-keys: |
           lint-
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     - run: |
@@ -74,7 +74,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         cache: pip
@@ -89,14 +89,14 @@ jobs:
       run: hatch run badges
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         retention-days: 1
         path: pytest-junit.xml
     - name: Upload coverage results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-results
         retention-days: 1
@@ -105,7 +105,7 @@ jobs:
   event_file:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: event-file
         retention-days: 1
