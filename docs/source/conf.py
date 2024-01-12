@@ -39,7 +39,7 @@ extensions = [
     #'sphinx.ext.imgmath',
     #'sphinx.ext.ifconfig',
     "sphinx.ext.viewcode",
-    "myst_parser"
+    "myst_parser",
     #'sphinx.ext.intersphinx'
 ]
 
