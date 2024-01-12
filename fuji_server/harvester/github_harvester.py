@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 import os
 from configparser import ConfigParser
 
@@ -9,15 +13,19 @@ class GithubHarvester:
     def __init__(self, id, host="https://github.com"):
         # Read Github API access token from config file.
         config = ConfigParser()
-        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.cfg"))
-        auth_token = Auth.Token(config["ACCESS"]["token"])
+        config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.ini"))
+        token = config["ACCESS"]["token"]
+        if token == "":
+            auth = Auth.Token(token)
+        else:  # empty token, so no authentication possible (rate limit will be much lower)
+            auth = None
         self.id = id
         self.host = host
         if host != "https://github.com":
             base_url = f"{self.host}/api/v3"
-            self.handle = Github(auth=auth_token, base_url=base_url)
+            self.handle = Github(auth=auth, base_url=base_url)
         else:
-            self.handle = Github(auth=auth_token)
+            self.handle = Github(auth=auth)
         self.data = {}  # dictionary with all info
 
     def harvest(self):
