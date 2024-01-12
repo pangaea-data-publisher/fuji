@@ -81,7 +81,7 @@ class FAIRCheck:
         metadata_service_url=None,
         metadata_service_type=None,
         use_datacite=True,
-        use_github=True,
+        use_github=False,
         verify_pids=True,
         oaipmh_endpoint=None,
         metric_version=None,
