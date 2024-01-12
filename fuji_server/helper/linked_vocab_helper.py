@@ -110,7 +110,7 @@ class linked_vocab_helper:
     def get_overlap(self, s1, s2):
         result = ""
         for char in s1:
-            if char in s2 and not char in result:
+            if char in s2 and char not in result:
                 result += char
         return len(result)
 

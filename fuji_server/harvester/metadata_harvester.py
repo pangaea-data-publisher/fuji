@@ -150,7 +150,7 @@ class MetadataHarvester:
                         "FsF-F2-01M : Harvesting of this metadata is explicitely disabled in the metric configuration-:"
                         + str(metadata_standard)
                     )
-            if isinstance(metadict, dict) and allow_merge == True:
+            if isinstance(metadict, dict) and allow_merge is True:
                 # self.metadata_sources.append((method_source, 'negotiated'))
                 for r in metadict.keys():
                     if r in self.reference_elements:
@@ -246,14 +246,14 @@ class MetadataHarvester:
             print("Metadata Merge Error: " + str(e), format, mimetype, schema)
 
     def exclude_null(self, dt):
-        if type(dt) is dict:
+        if isinstance(dt, dict):
             return dict((k, self.exclude_null(v)) for k, v in dt.items() if v and self.exclude_null(v))
-        elif type(dt) is list:
+        elif isinstance(dt, list):
             try:
                 return list(set([self.exclude_null(v) for v in dt if v and self.exclude_null(v)]))
             except Exception:
                 return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
-        elif type(dt) is str:
+        elif isinstance(dt, str):
             return dt.strip()
         else:
             return dt
@@ -321,7 +321,7 @@ class MetadataHarvester:
                         validated = False
                     if idhelper.is_persistent and validated:
                         found_pids[found_id_scheme] = idhelper.get_identifier_url()
-                if len(found_pids) >= 1 and self.repeat_pid_check == False:
+                if len(found_pids) >= 1 and self.repeat_pid_check is False:
                     self.logger.info(
                         "FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D"
                     )
@@ -345,12 +345,12 @@ class MetadataHarvester:
                 try:
                     dom = lxml.html.fromstring(self.landing_html.encode("utf8"))
                     links = dom.xpath("/*/head/link")
-                    for l in links:
+                    for link in links:
                         source = MetadataOfferingMethods.TYPED_LINKS
-                        href = l.attrib.get("href")
-                        rel = l.attrib.get("rel")
-                        type = l.attrib.get("type")
-                        profile = l.attrib.get("format")
+                        href = link.attrib.get("href")
+                        rel = link.attrib.get("rel")
+                        type = link.attrib.get("type")
+                        profile = link.attrib.get("format")
                         type = str(type).strip()
                         # handle relative paths
                         linkparts = urlparse(href)
@@ -673,7 +673,7 @@ class MetadataHarvester:
                 # requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 neg_source, landingpage_html = requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
-                if not "html" in str(requestHelper.content_type):
+                if "html" not in str(requestHelper.content_type):
                     self.logger.info(
                         "FsF-F2-01M :Content type is "
                         + str(requestHelper.content_type)

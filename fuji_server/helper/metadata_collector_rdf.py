@@ -438,9 +438,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info("FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:" + str(len(g)))
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
-                    for l, v in row.asdict().items():
-                        if l is not None:
-                            if l in [
+                    for relation_type, related_resource in row.asdict().items():
+                        if relation_type is not None:
+                            if relation_type in [
                                 "references",
                                 "source",
                                 "isVersionOf",
@@ -456,10 +456,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             ]:
                                 if not meta.get("related_resources"):
                                     meta["related_resources"] = []
-                                meta["related_resources"].append({"related_resource": str(v), "relation_type": l})
+                                meta["related_resources"].append(
+                                    {"related_resource": str(related_resource), "relation_type": relation_type}
+                                )
                             else:
-                                if v:
-                                    meta[l] = str(v)
+                                if related_resource:
+                                    meta[relation_type] = str(related_resource)
                     if meta:
                         break
                     # break
@@ -474,7 +476,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             has_xhtml = False
             for t in list(g):
                 # exclude xhtml properties/predicates:
-                if not "/xhtml/vocab" in t[1] and not "/ogp.me" in t[1]:
+                if "/xhtml/vocab" not in t[1] and "/ogp.me" not in t[1]:
                     goodtriples.append(t)
                 else:
                     has_xhtml = True

@@ -257,8 +257,8 @@ class MetaDataCollector:
     def getLogger(self):
         return self.logger
 
-    def setLogger(self, l):
-        self.logger = l
+    def setLogger(self, logger):
+        self.logger = logger
 
     def getSourceMetadata(self):
         return self.source_metadata

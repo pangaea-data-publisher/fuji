@@ -10,8 +10,8 @@ import time
 from urllib.parse import urlparse
 
 import requests
-import yaml
 
+import yaml
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
