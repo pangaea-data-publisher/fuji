@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 import pytest
 
 from fuji_server.models.harvest import Harvest

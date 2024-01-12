@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.data_file_format_output_inner import DataFileFormatOutputInner  # noqa: F401

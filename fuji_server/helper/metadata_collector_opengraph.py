@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 
 

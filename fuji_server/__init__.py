@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
 # flake8: noqa
 from __future__ import absolute_import
 
