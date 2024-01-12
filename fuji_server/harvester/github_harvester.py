@@ -15,10 +15,11 @@ class GithubHarvester:
         config = ConfigParser()
         config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.ini"))
         token = config["ACCESS"]["token"]
-        if token == "":
+        if token != "":
             auth = Auth.Token(token)
         else:  # empty token, so no authentication possible (rate limit will be much lower)
             auth = None
+            print("Running in unauthenticated mode. Capabilities are limited.")  # TODO: this should be a log message
         self.id = id
         self.host = host
         if host != "https://github.com":

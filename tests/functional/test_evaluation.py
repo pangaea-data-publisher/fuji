@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pytest
 from requests.auth import _basic_auth_str
 
 if TYPE_CHECKING:
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
 
 DEBUG = True
 UID = "https://doi.org/10.5281/zenodo.8347772"
+UID_SOFTWARE = "https://github.com/pangaea-data-publisher/fuji"
 HTTP_200_OK = 200
 
 
@@ -151,3 +153,37 @@ def test_evaluation(client: FlaskClient) -> None:
     }
     response_json = response.json()
     assert response_json["summary"].keys() == expected.keys()
+
+
+@pytest.mark.vcr()
+def test_evaluation_software(client: FlaskClient) -> None:
+    """Functional test of the /evaluate endpoint.
+
+    This test uses canned http responses from Github and other web services (2024-01-12).
+    It compares a stored summary of a live test run on 2024-01-12.
+    """
+    payload = {
+        "object_identifier": UID_SOFTWARE,
+        "test_debug": True,
+        "use_datacite": True,
+        "use_github": True,
+        "metric_version": "metrics_v0.7_software",
+    }
+    headers = {
+        "Authorization": _basic_auth_str("marvel", "wonderwoman"),
+    }
+    valid_url = "http://localhost:1071/fuji/api/v1/evaluate"
+    response = client.post(valid_url, json=payload, headers=headers)
+    assert response.status_code == HTTP_200_OK
+
+    # these are the results from 2024-01-12
+    expected = {
+        "score_earned": {"R": 2, "R1.1": 2, "FAIR": 2},
+        "score_total": {"R": 3, "R1.1": 3, "FAIR": 3},
+        "score_percent": {"R": 66.67, "R1.1": 66.67, "FAIR": 66.67},
+        "status_total": {"R1.1": 1, "R": 1, "FAIR": 1},
+        "status_passed": {"R1.1": 1, "R": 1, "FAIR": 1},
+        "maturity": {"R": 3, "R1.1": 3, "FAIR": 1},
+    }
+    response_json = response.json()
+    assert response_json["summary"] == expected
