@@ -60,7 +60,7 @@ keywords = [
 license = "MIT"
 name = "fuji"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
 version = "3.1.1"
 
 [project.optional-dependencies]
@@ -93,10 +93,6 @@ testing = [
 Homepage = "https://www.f-uji.net"
 Issues = "https://github.com/pangaea-data-publisher/fuji/issues"
 Source = "https://github.com/pangaea-data-publisher/fuji"
-
-[tool.black]
-line-length = 120
-target_version = ["py311"]
 
 [tool.coverage.report]
 show_missing = true

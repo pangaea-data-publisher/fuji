@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
+#
+# SPDX-License-Identifier: MIT
+
+
 class RepositoryHarvester:
     def __init__(self, harvester_type="oai", endpoint_url=""):
         self.type = harvester_type

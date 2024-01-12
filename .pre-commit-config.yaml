@@ -22,12 +22,16 @@ repos:
     args: [--autofix, --indent, '2']
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
-- repo: https://github.com/psf/black
-  rev: 23.12.1
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.5.4
   hooks:
-  - id: black
+  - id: insert-license
+    types: [python]
+    args: [--license-filepath=docs/license_header.txt]
+    exclude: docs
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.1.11
   hooks:
   - id: ruff
-    args: [--fix, --exit-non-zero-on-fix]
+    args: [--fix, --show-fixes, --exit-non-zero-on-fix]
+  - id: ruff-format
