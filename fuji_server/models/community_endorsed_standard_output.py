@@ -2,8 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
+# coding: utf-8
+
+from datetime import date, datetime  # noqa: F401
+
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.community_endorsed_standard_output_inner import (
+    CommunityEndorsedStandardOutputInner,  # noqa: F401
+)
 
 
 class CommunityEndorsedStandardOutput(Model):
