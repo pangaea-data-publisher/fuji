@@ -16,16 +16,28 @@ class Harvest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, object_identifier: str | None = None):
+    def __init__(
+        self, object_identifier: str | None = None, auth_token: str | None = None, auth_token_type: str | None = None
+    ):
         """Harvest - a model defined in Swagger
 
         :param object_identifier: The object_identifier of this Harvest.  # noqa: E501
         :type object_identifier: str
+        :param auth_token: The auth_token of this Harvest.  # noqa: E501
+        :type auth_token: str
+        :param auth_token_type: The auth_token_type of this Harvest.  # noqa: E501
+        :type auth_token_type: str
         """
-        self.swagger_types = {"object_identifier": str}
+        self.swagger_types = {"object_identifier": str, "auth_token": str, "auth_token_type": str}
 
-        self.attribute_map = {"object_identifier": "object_identifier"}
+        self.attribute_map = {
+            "object_identifier": "object_identifier",
+            "auth_token": "auth_token",
+            "auth_token_type": "auth_token_type",
+        }
         self._object_identifier = object_identifier
+        self._auth_token = auth_token
+        self._auth_token_type = auth_token_type
 
     @classmethod
     def from_dict(cls, dikt) -> "Harvest":
@@ -62,3 +74,54 @@ class Harvest(Model):
             raise ValueError("Invalid value for `object_identifier`, must not be `None`")
 
         self._object_identifier = object_identifier
+
+    @property
+    def auth_token(self) -> str:
+        """Gets the auth_token of this Harvest.
+
+        The authentication token required to access protected data  # noqa: E501
+
+        :return: The auth_token of this Harvest.
+        :rtype: str
+        """
+        return self._auth_token
+
+    @auth_token.setter
+    def auth_token(self, auth_token: str):
+        """Sets the auth_token of this Harvest.
+
+        The authentication token required to access protected data  # noqa: E501
+
+        :param auth_token: The auth_token of this Harvest.
+        :type auth_token: str
+        """
+
+        self._auth_token = auth_token
+
+    @property
+    def auth_token_type(self) -> str:
+        """Gets the auth_token_type of this Harvest.
+
+        The type of authentication (Oauth Bearer or HTTP Basic) needed to use the auth token  # noqa: E501
+
+        :return: The auth_token_type of this Harvest.
+        :rtype: str
+        """
+        return self._auth_token_type
+
+    @auth_token_type.setter
+    def auth_token_type(self, auth_token_type: str):
+        """Sets the auth_token_type of this Harvest.
+
+        The type of authentication (Oauth Bearer or HTTP Basic) needed to use the auth token  # noqa: E501
+
+        :param auth_token_type: The auth_token_type of this Harvest.
+        :type auth_token_type: str
+        """
+        allowed_values = ["Bearer", "Basic"]
+        if auth_token_type not in allowed_values:
+            raise ValueError(
+                f"Invalid value for `auth_token_type` ({auth_token_type}), must be one of {allowed_values}"
+            )
+
+        self._auth_token_type = auth_token_type
