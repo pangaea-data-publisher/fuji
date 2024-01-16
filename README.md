@@ -103,6 +103,9 @@ F-UJI is using [basic authentication](https://en.wikipedia.org/wiki/Basic_access
 
 ## Development
 
+First, make sure to read the [contribution guidelines](./CONTRIBUTING.md).
+They include instructions on how to set up your environment with `pre-commit` and how to run the tests.
+
 The repository includes a [simple web client](./simpleclient/) suitable for interacting with the API during development.
 One way to run it would be with a LEMP stack (Linux, Nginx, MySQL, PHP), which is described in the following.
 
@@ -208,18 +211,19 @@ This means that if a test indicating maturity 3 is passed and one indicating mat
 
 ### Updates to the API
 
-F-UJI makes use of Swagger Codegen. If making changes to the API, make sure to [install Swagger Codegen](https://github.com/swagger-api/swagger-codegen#prerequisites):
+Making changes to the API requires re-generating parts of the code using Swagger.
+First, edit [`fuji_server/yaml/openapi.yaml`](fuji_server/yaml/openapi.yaml).
+Then, use the [Swagger Editor](https://editor.swagger.io/) to generate a python-flask server.
+The zipped files should be automatically downloaded.
+Unzip it.
 
-```bash
-wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.51/swagger-codegen-cli-3.0.51.jar -O swagger-codegen-cli.jar
-java -jar swagger-codegen-cli.jar --help
-```
-Update the API definition in [`fuji_server/yaml/openapi.yaml`](./fuji_server/yaml/openapi.yaml). Then, run Swagger Codegen:
+Next:
+1. Place the files in `swagger_server/models` into `fuji_server/models`, except `swagger_server/models/__init__.py`.
+2. Rename all occurrences of `swagger_server` to `fuji_server`.
+3. Add the content of `swagger_server/models/__init__.py` into `fuji_server/__init__.py`.
 
-```bash
-# TODO
-...
-```
+Unfortunately, the Swagger Editor doesn't always produce code that is compliant with PEP standards.
+Run `pre-commit run` (or try to commit) and fix any errors that cannot be automatically fixed.
 
 ## License
 This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
