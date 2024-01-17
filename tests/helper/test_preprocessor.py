@@ -19,7 +19,6 @@ markers. These tests can be run prior to a release manually.
 They mock the fuji_server/data path to not override the files under fuji server
 
 """
-import json
 from typing import Any
 
 import pytest
@@ -29,11 +28,6 @@ from fuji_server.helper.preprocessor import Preprocessor
 from tests.conftest import DATA_DIR
 
 isDebug = True
-
-
-def load_json_from_data_directory(filename: str):
-    path = DATA_DIR.joinpath(filename)
-    return json.loads(path.read_text())
 
 
 def load_yaml_from_data_directory(filename: str):
@@ -48,12 +42,12 @@ def load_txt_from_data_directory(filename: str):
 
 @pytest.fixture(scope="session")
 def licenses():
-    return load_json_from_data_directory("licenses.json")
+    return load_yaml_from_data_directory("licenses.yaml")
 
 
 @pytest.fixture(scope="session")
 def metadata_standards():
-    return load_json_from_data_directory("metadata_standards.json")
+    return load_yaml_from_data_directory("metadata_standards.yaml")
 
 
 @pytest.fixture(scope="session")
@@ -63,42 +57,42 @@ def repodois():
 
 @pytest.fixture(scope="session")
 def metadata_standards_uris():
-    return load_json_from_data_directory("metadata_standards_uris.json")
+    return load_yaml_from_data_directory("metadata_standards_uris.yaml")
 
 
 @pytest.fixture(scope="session")
 def science_formats():
-    return load_json_from_data_directory("science_formats.json")
+    return load_yaml_from_data_directory("science_formats.yaml")
 
 
 @pytest.fixture(scope="session")
 def linked_vocab():
-    return load_json_from_data_directory("linked_vocab.json")
+    return load_yaml_from_data_directory("linked_vocab.yaml")
 
 
 @pytest.fixture(scope="session")
 def identifiers_org_resolver_data():
-    return load_json_from_data_directory("identifiers_org_resolver_data.json")
+    return load_yaml_from_data_directory("identifiers_org_resolver_data.yaml")
 
 
 @pytest.fixture(scope="session")
 def jsonldcontext():
-    return load_json_from_data_directory("jsonldcontext.json")
+    return load_yaml_from_data_directory("jsonldcontext.yaml")
 
 
 @pytest.fixture(scope="session")
 def longterm_formats():
-    return load_json_from_data_directory("longterm_formats.json")
+    return load_yaml_from_data_directory("longterm_formats.yaml")
 
 
 @pytest.fixture(scope="session")
 def open_formats():
-    return load_json_from_data_directory("open_formats.json")
+    return load_yaml_from_data_directory("open_formats.yaml")
 
 
 @pytest.fixture(scope="session")
 def standard_uri_protocols():
-    return load_json_from_data_directory("standard_uri_protocols.json")
+    return load_yaml_from_data_directory("standard_uri_protocols.yaml")
 
 
 @pytest.fixture(scope="session")
