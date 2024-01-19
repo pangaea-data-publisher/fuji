@@ -23,7 +23,7 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-I3-01M")
+        self.set_metric(["FsF-I3-01M", "FRSM-12-I2"])
         self.is_actionable = False
 
     def testRelatedResourcesAvailable(self):

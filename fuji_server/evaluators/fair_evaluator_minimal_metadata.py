@@ -24,7 +24,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-F2-01M")
+        self.set_metric(["FsF-F2-01M", "FRSM-04-F2"])
         self.metadata_found = {}
         # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
         self.partial_elements = [

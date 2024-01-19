@@ -26,7 +26,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-R1.2-01M")
+        self.set_metric(["FsF-R1.2-01M", "FRSM-06-F2", "FRSM-17-R1.2"])
 
     def testProvenanceMetadataAvailable(self):
         test_status = False

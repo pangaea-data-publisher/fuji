@@ -31,7 +31,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric(["FsF-R1.1-01M", "FRSM-15-R1.1"])
+        self.set_metric(["FsF-R1.1-01M", "FRSM-15-R1.1", "FRSM-16-R1.1"])
 
         self.output = []
         self.license_info = []

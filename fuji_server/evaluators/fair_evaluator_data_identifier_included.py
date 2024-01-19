@@ -26,7 +26,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-F3-01M")
+        self.set_metric(["FsF-F3-01M", "FRSM-07-F3"])
         self.content_list = []
 
     def testDataSizeTypeNameAvailable(self, datainfolist):

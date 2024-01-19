@@ -26,7 +26,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-R1.3-02D")
+        self.set_metric(["FsF-R1.3-02D", "FRSM-10-I1"])
         self.data_file_list = []
 
     def setFileFormatDict(self):

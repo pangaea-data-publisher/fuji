@@ -24,7 +24,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-A1-03D")
+        self.set_metric(["FsF-A1-03D", "FRSM-09-A1"])
         self.data_output = {}
 
     def testStandardProtocolDataUsed(self):

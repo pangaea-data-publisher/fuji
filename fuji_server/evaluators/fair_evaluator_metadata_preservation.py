@@ -19,6 +19,10 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
 
     """
 
+    def __init__(self, fuji_instance):
+        FAIREvaluator.__init__(self, fuji_instance)
+        self.set_metric(["FsF-A2-01M-1", "FRSM-08-F4"])
+
     def evaluate(self):
         registry_bound_pid = ["doi"]
         self.result = MetadataPreserved(
