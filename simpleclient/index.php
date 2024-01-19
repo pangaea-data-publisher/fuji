@@ -47,7 +47,7 @@ set_time_limit(0);
 $fuji_server = 'http://localhost:1071/fuji/api/v1/evaluate';
 $fuji_username = 'marvel';
 $fuji_password = 'wonderwoman';
-$metric_version =  "metrics_v0.7_software";  #"metrics_v0.7_software_cessda"; #"metrics_v0.5";  #"metrics_v0.7_software";
+$metric_version =  "metrics_v0.7_software_cessda";  #"metrics_v0.7_software_cessda"; #"metrics_v0.5";  #"metrics_v0.7_software";
 $usegithub = false;
 ################################################################
 

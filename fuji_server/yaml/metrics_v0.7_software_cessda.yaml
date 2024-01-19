@@ -12,7 +12,342 @@ config:
   - dublin-core
   - dcat-data-catalog-vocabulary
 metrics:
-- metric_identifier: FRSM-15-R1.1
+- metric_identifier: FRSM-01-F1-CESSDA
+  metric_number: 1
+  metric_short_name: Software Identifier
+  metric_name: Does the software have a globally unique and persistent identifier?
+  description: A software object may be assigned with a globally unique identifier such that it can be referenced unambiguously by humans or machines. Globally unique means an identifier should be associated with only one resource at any time.
+  fair_principle: F1
+  target: Software
+  evaluation_mechanism: Check that an established identifier scheme from the CESSDA Software Publication polices is used to identify software.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-01-F1-CESSDA-1
+    metric_test_name: TA version-dependent DOI must be added in the repository's README as the recommended citation.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-01-F1-CESSDA-2
+    metric_test_name: Releases use the Semantic Versioning 2.0.0 notation.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-01-F1-CESSDA-3
+    metric_test_name: Only Major and Minor releases are assigned DOIs.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2023-11-10
+  date_updated: 2023-12-13
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-02-F1.1-CESSDA
+  metric_number: 2
+  metric_short_name: Software Component Identifiers
+  metric_name: Can different components of the software be individually identified?
+  description: Conceptually, it is useful for identifiers to be assigned at a more granular level than just the software project (often synonymous with the “software concept” or “software project”). For instance a software product may consist of different modules, which in turn may be implemented by different files. This metric tests that these different components are not all assigned the same identifier, and that the relationship between components is embodied in the identifier metadata.
+  fair_principle: F1.1
+  target: Software
+  evaluation_mechanism: Check that each software product is split into component microservices, each with its own DOI.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-02-F1.1-CESSDA-1
+    metric_test_name: A separate Git repository is used for the source code of each component (aka microservices). The product deployment scripts assemble the constituent components.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-02-F1.1-CESSDA-2
+    metric_test_name: Each component is deposited in Zenodo with its own DOI.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-02-F1.1-CESSDA-3
+    metric_test_name: The Zenodo record for each component is tagged with the product(s) that it contributes to.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-03-F1.2-CESSDA
+  metric_number: 3
+  metric_short_name: Software Version Identifier
+  metric_name: Does each version of the software have a unique identifier?
+  description: To make different versions of the same software (or component) findable, each version needs to be assigned a different identifier. The relationship between versions is embodied in the associated metadata.
+  fair_principle: F1.2
+  target: Software
+  evaluation_mechanism: Check that each release follows CESSDA software publication policies and is deposited in a repository that provides a unique DOI for each release.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-03-F1.2-CESSDA-1
+    metric_test_name: Each release is published to Zenodo and a DOI obtained. A publication consists of a release tarball matching the release tag in the repository. Release tags exist and adhere to SemVer 2.0.0. The README and CHANGELOG must be up to date prior to release and they must be added to the Zenodo record in addition to the tarball.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-03-F1.2-CESSDA-2
+    metric_test_name: A release checklist is used to ensure that all necessary steps are taken for each release. Releases must be available as Docker images with the release version as tag.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-03-F1.2-CESSDA-3
+    metric_test_name: Reserve the DOI in Zenodo, prior to release, to avoid a circularity problem with the CHANGELOG and the tarball.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-04-F2-CESSDA
+  metric_number: 4
+  metric_short_name: Descriptive Metadata
+  metric_name: Does the software include descriptive metadata which helps define its purpose?
+  description: Software requires descriptive metadata to support indexing, search and discoverability.
+  fair_principle: F2
+  target: Software
+  evaluation_mechanism: Query the metadata provided by the Zenodo record for the software.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-04-F2-CESSDA-1
+    metric_test_name: Zenodo metadata includes the software name and description.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-04-F2-CESSDA-2
+    metric_test_name: Zenodo metadata includes other descriptive metadata as recommended in CESSDA Software Requirements.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 2
+- metric_identifier: FRSM-05-R1-CESSDA
+  metric_number: 5
+  metric_short_name: Development Metadata
+  metric_name: Does the software include development metadata which helps define its status?
+  description: Software requires descriptive metadata to support indexing, search and discoverability
+  fair_principle: R1
+  target: Software
+  evaluation_mechanism: Check the README and CHANGELOG files for development status indicators.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-05-R1-CESSDA-1
+    metric_test_name: The README and CHANGELOG must be up to date. The README contains release details, version details, links to documentation as described in the EURISE Network Technical Reference.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-05-R1-CESSDA-2
+    metric_test_name: Version numbering follows Semantic Versioning 2.0.0 and pre-release versions may be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 2
+- metric_identifier: FRSM-06-F2-CESSDA
+  metric_number: 6
+  metric_short_name: Contributor metadata
+  metric_name: Does the software include metadata about the contributors and their roles?
+  description: Software should make it easy to recognise and credit all contributors.
+  fair_principle: F2
+  target: Software
+  evaluation_mechanism: Check that the CITATION and/or CONTRIBUTORS files exist and Zenodo metadata is present.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-06-F2-CESSDA-1
+    metric_test_name: A CITATION and/or CONTRIBUTORS files is present in the root of the repository.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-06-F2-CESSDA-2
+    metric_test_name: Author details (including ORCIDs) are present in the corresponding Zenodo record. ORCIDs are present for authors in the CITATION.cff file.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 2
+- metric_identifier: FRSM-07-F3-CESSDA
+  metric_number: 7
+  metric_short_name: Identifier in Software Metadata
+  metric_name: Does the software metadata include the identifier for the software?
+  description: Software should include its identifier to make it easier to be cited and indexed.
+  fair_principle: F3
+  target: Software
+  evaluation_mechanism: Check that README and CITATION files exist and include the DOI for the corresponding software release.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-07-F3-CESSDA-1
+    metric_test_name: The README file includes the DOI that represents all versions in Zenodo.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-07-F3-CESSDA-2
+    metric_test_name: The CITATION.cff file included in the root of the repository includes the appropriate DOI for the corresponding software release in Zenodo.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 2
+- metric_identifier: FRSM-08-F4-CESSDA
+  metric_number: 8
+  metric_short_name: FAIR Metadata
+  metric_name: Does the software have a publicly available, openly accessible and persistent metadata record?
+  description: Even if the software itself is no longer usable or accessible, its metadata should still be available and accessible.
+  fair_principle: F4
+  target: Software
+  evaluation_mechanism: Check that a DOI exists for the latest release and resolves to a Zenodo landing page.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-08-F4-CESSDA-1
+    metric_test_name: The DOI resolves to a Zenodo landing page for the latest release, and metadata can be accessed via the Zenodo API.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-08-F4-CESSDA-2
+    metric_test_name: The Zenodo metadata record is available through public search engines.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-08-F4-CESSDA-3
+    metric_test_name: The persistent metadata record is available through multiple, cross-referenced infrastructures, including OpenAIRE .
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-09-A1-CESSDA
+  metric_number: 9
+  metric_short_name: Standard Communication Protocol of Repository
+  metric_name: Is the software developed in a code repository / forge that uses standard communications protocols?
+  description: Software source code repositories / forges (a.k.a. version control platforms) should use standard communications protocols (such as https / sftp) to enable the widest possible set of contributors.
+  fair_principle: A1
+  target: Software
+  evaluation_mechanism: Check that the git repository of the component is accessible using standardised communications protocols such as https or sftp.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-09-A1-CESSDA-1
+    metric_test_name: Ensure that repositories containing component software are publicly accessible.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-09-A1-CESSDA-2
+    metric_test_name: No authentication is required to view and/or clone CESSDA's public repositories, even so, their contents cannot be modified directly by 3rd parties.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-09-A1-CESSDA-3
+    metric_test_name: Pull requests are used to propose modifications to the contents.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-10-I1-CESSDA
+  metric_number: 10
+  metric_short_name: Open Referenced Formats
+  metric_name: Are the formats used by the data consumed or produced by the software open and a reference provided to the format?
+  description: The use of open file formats for data improves the reusability and understandability of the software.
+  fair_principle: I1
+  target: Software
+  evaluation_mechanism: Check that data content used by CESSDA services is machine-readable.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-10-I1-CESSDA-1
+    metric_test_name: The data formats used by the software are noted in the documentation.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-10-I1-CESSDA-2
+    metric_test_name: The data complies with a recognised standard used by the CESSDA community (typically DDI/XML, RDF/XML, TURTLE, JSON-LD or SKOS).
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-10-I1-CESSDA-3
+    metric_test_name: Where a public API is used to access the data content, it complies with the OpenAPI standard.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-11-I1-CESSDA
+  metric_number: 11
+  metric_short_name: Open API
+  metric_name: Does the software use open APIs that support machine-readable interface definition?
+  description: An open Application Programming Interface can be freely accessed by other software or developers, which makes it easier to integrate software and encourages modularity and reuse.
+  fair_principle: I1
+  target: Software
+  evaluation_mechanism: Call the software API.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-11-I1-CESSDA-1
+    metric_test_name: The API meets SML3 of the CESSDA Development Documentation guidelines, i.e. there is external documentation that describes all API functionality, which is sufficient to be used by any developer.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-11-I1-CESSDA-2
+    metric_test_name: The software's REST APIs comply with the OpenAPI standard.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-11-I1-CESSDA-3
+    metric_test_name: The software's REST APIs are described in the published CESSDA API definitions.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-13-R1-CESSDA
+  metric_number: 13
+  metric_short_name: Requirements
+  metric_name: Does the software describe what is required to use it?
+  description: Software is made more reusable by providing suitable machine-actionable information on dependencies, build and configuration.
+  fair_principle: R1
+  target: Software
+  evaluation_mechanism: Check the README file.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-13-R1-CESSDA-1
+    metric_test_name: Dependency information and build instructions are included in the README file. Linting and other relevant checks are present in the automated build and test process (e.g. via the Jenkinsfile).
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-13-R1-CESSDA-2
+    metric_test_name: The README file includes a badge that links to the automated build tool (Jenkins). Deployment to development and staging environments is automated (conditional on test results).
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-13-R1-CESSDA-3
+    metric_test_name: The build badge indicates the status of the latest build (passing or failing).
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-14-R1-CESSDA
+  metric_number: 14
+  metric_short_name: Test Cases
+  metric_name: Does the software come with test cases to demonstrate it is working?
+  description: The provision of test cases improves confidence in the software.
+  fair_principle: R1
+  target: Software
+  evaluation_mechanism: Check the README file.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-14-R1-CESSDA-1
+    metric_test_name: The README file includes badges that link to a comprehensive code quality assessment tool (SonarQube) and automated build tool (Jenkins)
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-14-R1-CESSDA-2
+    metric_test_name: A production system has been tested and validated through successful use of the application. Compliance with open or internationally recognised standards for the software and software development process, is evident and documented, and verified through testing of all components. Ideally independent verification is documented through regular testing and certification from an independent group.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-14-R1-CESSDA-3
+    metric_test_name: The README file badges indicate the status of the tests and other code quality metrics. The repository contains a subdirectory containing code for the test cases that are run automatically.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-15-R1.1-CESSDA
   metric_number: 15
   metric_short_name: Software Source Code License
   metric_name: The software source code includes licensing information for the software and any bundled external software.
@@ -37,5 +372,51 @@ metrics:
   created_by: FAIR4RS
   date_created: 2023-12-13
   date_updated: 2023-12-13
+  version: 0.1
+  total_score: 3
+- metric_identifier: FRSM-16-R1.1-CESSDA
+  metric_number: 16
+  metric_short_name: Software Metadata License
+  metric_name: Does the software metadata record include licensing information?
+  description: It is important for licensing information to be on the publicly searchable and accessible metadata record
+  fair_principle: R1.1
+  target: Software
+  evaluation_mechanism: Check for the presence of licence information in the Zenodo repository and source code deposited in the repository.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-16-R1.1-CESSDA-1
+    metric_test_name: Licensing information is included in the Zenodo record and in a LICENSE.txt file included in the root directory of the source code deposited in Zenodo.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
+  version: 0.1
+  total_score: 1
+- metric_identifier: FRSM-17-R1.2-CESSDA
+  metric_number: 17
+  metric_short_name: Provenance
+  metric_name: Does the software include provenance information that describe the development of the software?
+  description: Good provenance metadata clarifies the origins and intent behind the development of the software, and establishes authenticity and trust.
+  fair_principle: R1.2
+  target: Software
+  evaluation_mechanism: Check the commit history of the code repository.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-17-R1.2-CESSDA-1
+    metric_test_name: Code repository contains commit messages.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-17-R1.2-CESSDA-2
+    metric_test_name: Code that addresses an issue is developed in a branch prefixed with the issue number.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-17-R1.2-CESSDA-3
+    metric_test_name: Links to Pull Requests are included in issue tracker tickets.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2024-01-18
+  date_updated: 2024-01-18
   version: 0.1
   total_score: 3
