@@ -165,3 +165,19 @@ Resulting maturity is the highest maturity of all tests that passed. Score is th
 ### How are metric requirements used? :question:
 
 ...
+
+## Thoughts
+
+- extension requires quite a lot of copying around
+- metric YAML isn't used to full potential, e.g. principle is extracted from metric identifier instead of from config YAML
+- some refactoring around the evaluators could go a long way
+  - e.g. having an evaluator factory and a test factory, and you just register those, instead of writing a mini-function in fair_check.py which just calls the new evaluator object, and calling that function in fair_object_controller and collecting the result in an if-clause there.
+  - evaluate should just be an implemented base method, it always does basically the same thing
+- some unintuitive code, e.g. test_status in evaluator class - it passes if one passes but fails o/w. but that doesn't really mean anything to the user, they just get a score.
+
+## Adding a new evaluator
+
+- write a new FAIREvaluator class with tests and evaluate function
+- write a new `FAIRCheck.check_xy` function that instantiates the new evaluator and returns its `getResult` method
+- call the `FAIRCheck.check_xy` function from `fair_object_controller.assess_by_id()`
+- check if the result is non-empty, append to the `results` list

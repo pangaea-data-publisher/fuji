@@ -98,6 +98,13 @@ async def assess_by_id(body):
         ft.harvest_all_data()
         uid_data_result = ft.check_unique_content_identifier()
         pid_data_result = ft.check_persistent_data_identifier()
+        upid_software_result = ft.check_unique_persistent_software_identifier()
+        software_component_result = ft.check_software_component_identifier()
+        version_identifier_result = ft.check_version_identifier()
+        development_metadata_result = ft.check_development_metadata()
+        open_api_result = ft.check_open_api()
+        requirements_result = ft.check_requirements()
+        test_cases_result = ft.check_test_cases()
         data_identifier_included_result = ft.check_data_content_metadata()
         metadata_identifier_included_result = ft.check_metadata_identifier_included_in_metadata()
         data_file_format_result = ft.check_data_file_format()
@@ -118,6 +125,20 @@ async def assess_by_id(body):
             results.append(uid_data_result)
         if pid_data_result:
             results.append(pid_data_result)
+        if upid_software_result:
+            results.append(upid_software_result)
+        if software_component_result:
+            results.append(software_component_result)
+        if version_identifier_result:
+            results.append(version_identifier_result)
+        if development_metadata_result:
+            results.append(development_metadata_result)
+        if open_api_result:
+            results.append(open_api_result)
+        if requirements_result:
+            results.append(requirements_result)
+        if test_cases_result:
+            results.append(test_cases_result)
         if core_metadata_result:
             results.append(core_metadata_result)
         if content_identifier_included_result:

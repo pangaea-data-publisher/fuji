@@ -199,7 +199,7 @@ metrics:
   total_score: 2
 - metric_identifier: FRSM-08-F4
   metric_number: 8
-  metric_short_name: FAIR Metadata
+  metric_short_name: Persistent Metadata
   metric_name: Does the software have a publicly available, openly accessible and persistent metadata record?
   description: Even if the software itself is no longer usable or accessible, its metadata should still be available and accessible.
   fair_principle: F4
@@ -331,7 +331,7 @@ metrics:
   test_scoring_mechanism: cumulative
   metric_tests:
   - metric_test_identifier: FRSM-13-R1-1
-    metric_test_name: The software has build, installation and/or execution instructions
+    metric_test_name: The software has build, installation and/or execution instructions.
     metric_test_score: 1
     metric_test_maturity: 1
   - metric_test_identifier: FRSM-13-R1-2

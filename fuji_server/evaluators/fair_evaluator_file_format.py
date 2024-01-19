@@ -13,7 +13,7 @@ from fuji_server.models.data_file_format_output_inner import DataFileFormatOutpu
 
 class FAIREvaluatorFileFormat(FAIREvaluator):
     """
-    A class to evaluate whether the data is available in a file format recommended by the targe research community (R1.3-02D).
+    A class to evaluate whether the data is available in a file format recommended by the target research community (R1.3-02D).
     A child class of FAIREvaluator.
     ...
 
