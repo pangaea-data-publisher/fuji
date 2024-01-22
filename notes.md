@@ -164,7 +164,11 @@ Resulting maturity is the highest maturity of all tests that passed. Score is th
 
 ### How are metric requirements used? :question:
 
-...
+From `fair_evaluator_minimal_metadata.py`:
+
+```python
+test_requirements = self.metric_tests[self.metric_identifier + "-3"].metric_test_requirements[0]
+```
 
 ## Thoughts
 
