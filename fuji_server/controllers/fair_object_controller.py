@@ -111,6 +111,7 @@ async def assess_by_id(body):
         # print('F-UJI checks: data file format')
         community_standards_result = ft.check_community_metadatastandards()
         data_provenance_result = ft.check_data_provenance()
+        code_provenance_result = ft.check_code_provenance()
         formal_metadata_result = ft.check_formal_metadata()
         # print('F-UJI checks: semantic vocab')
         semantic_vocab_result = ft.check_semantic_vocabulary()
@@ -161,6 +162,8 @@ async def assess_by_id(body):
             results.append(access_level_result)
         if data_provenance_result:
             results.append(data_provenance_result)
+        if code_provenance_result:
+            results.append(code_provenance_result)
         if community_standards_result:
             results.append(community_standards_result)
         if data_file_format_result:

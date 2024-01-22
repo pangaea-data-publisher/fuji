@@ -13,6 +13,7 @@ import pandas as pd
 
 from fuji_server import __version__
 from fuji_server.evaluators.fair_evaluator_api import FAIREvaluatorAPI
+from fuji_server.evaluators.fair_evaluator_code_provenance import FAIREvaluatorCodeProvenance
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_data_content_metadata import FAIREvaluatorDataContentMetadata
@@ -516,6 +517,10 @@ class FAIRCheck:
     def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
         return data_prov_check.getResult()
+
+    def check_code_provenance(self):
+        code_prov_check = FAIREvaluatorCodeProvenance(self)
+        return code_prov_check.getResult()
 
     def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
