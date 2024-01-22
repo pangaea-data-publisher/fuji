@@ -29,10 +29,24 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
         self.set_metric(["FsF-F3-01M", "FRSM-07-F3"])
         self.content_list = []
 
+        self.metric_test_map = {  # overall map
+            "testDataSizeTypeNameAvailable": ["FsF-F3-01M-1"],
+            "testDataUrlOrPIDAvailable": ["FsF-F3-01M-2", "FRSM-07-F3-1"],
+            "testResolvesSameContent": ["FRSM-07-F3-2"],
+            "testZenodoDoiInReadme": ["FRSM-07-F3-CESSDA-1"],
+            "testZenodoDoiInCitationFile": ["FRSM-07-F3-CESSDA-2"],
+        }
+
     def testDataSizeTypeNameAvailable(self, datainfolist):
+        agnostic_test_name = "testDataSizeTypeNameAvailable"
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-1"):
-            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+        if test_defined:
+            test_score = self.getTestConfigScore(test_id)
             if datainfolist:
                 for datainfo in datainfolist:
                     if isinstance(datainfo, dict):
@@ -46,10 +60,8 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                             test_result = True
                             if isinstance(datainfo.get("source"), enum.Enum):
                                 datainfo["source"] = datainfo.get("source").name
-                            self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-                            self.maturity = self.metric_tests.get(
-                                self.metric_identifier + "-1"
-                            ).metric_test_maturity_config
+                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                            self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
                             did_output_content = IdentifierIncludedOutputInner()
                             did_output_content.content_identifier_included = datainfo
                             self.content_list.append(did_output_content)
@@ -59,18 +71,22 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
         return test_result
 
     def testDataUrlOrPIDAvailable(self, datainfolist):
+        agnostic_test_name = "testDataUrlOrPIDAvailable"
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-2"):
-            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
+        if test_defined:
+            test_score = self.getTestConfigScore(test_id)
             if datainfolist:
                 for datainfo in datainfolist:
                     if isinstance(datainfo, dict):
                         if datainfo.get("url"):
                             test_result = True
-                            self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
-                            self.maturity = self.metric_tests.get(
-                                self.metric_identifier + "-2"
-                            ).metric_test_maturity_config
+                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                            self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
                         else:
                             self.logger.warning(
                                 self.metric_identifier + f" : Object (content) url is empty -: {datainfo}"
@@ -78,6 +94,57 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
             if test_result:
                 self.score.earned += test_score
         return test_result
+
+    def testResolvesSameContent(self):
+        """Does the identifier resolve to the same instance of the software?
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testResolvesSameContent"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for identifier resolve target is not implemented.")
+        return test_status
+
+    def testZenodoDoiInReadme(self):
+        """The README file includes the DOI that represents all versions in Zenodo.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testZenodoDoiInReadme"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for Zenodo DOI in README is not implemented.")
+        return test_status
+
+    def testZenodoDoiInCitationFile(self):
+        """The CITATION.cff file included in the root of the repository includes the appropriate DOI for the corresponding software release in Zenodo.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testZenodoDoiInCitationFile"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for Zenodo DOI in CITATION file is not implemented.")
+        return test_status
 
     def evaluate(self):
         socket.setdefaulttimeout(1)
@@ -116,13 +183,20 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
             if self.testDataUrlOrPIDAvailable(contents):
                 self.result.test_status = "pass"
 
-            if self.result.test_status == "pass":
-                self.logger.log(
-                    self.fuji.LOG_SUCCESS,
-                    self.metric_identifier + f" : Number of object content identifier found -: {number_of_contents}",
-                )
-            else:
-                self.logger.warning(self.metric_identifier + " : Valid data (content) identifier missing.")
+        if self.testResolvesSameContent():
+            self.result.test_status = "pass"
+        if self.testZenodoDoiInReadme():
+            self.result.test_status = "pass"
+        if self.testZenodoDoiInCitationFile():
+            self.result.test_status = "pass"
+
+        if self.result.test_status == "pass":
+            self.logger.log(
+                self.fuji.LOG_SUCCESS,
+                self.metric_identifier + f" : Number of object content identifier found -: {number_of_contents}",
+            )
+        else:
+            self.logger.warning(self.metric_identifier + " : Valid data (content) identifier missing.")
 
         self.result.metric_tests = self.metric_tests
         self.output.object_content_identifier_included = self.content_list
