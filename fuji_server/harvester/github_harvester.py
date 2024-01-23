@@ -68,7 +68,7 @@ class GithubHarvester:
         except UnknownObjectException:
             pass
 
-        # identify source code
+        # identify source code (sample files in the main language used in the repo)
         repo_languages = repo.get_languages()
         if repo_languages != {}:
             self.data["languages"] = repo_languages
@@ -90,3 +90,7 @@ class GithubHarvester:
                 )
             if len(source_code_samples) > 0:
                 self.data["source_code_samples"] = source_code_samples
+
+        # TODO: parse README (full), wiki (page names?), docs (???)
+
+        # TODO: consider merging parts of the GitHub data with metadata?

@@ -334,6 +334,18 @@ metrics:
     metric_test_name: The software has build, installation and/or execution instructions.
     metric_test_score: 1
     metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: any
+      required:
+        location:
+        - README
+        - docs
+        - wiki
+        keywords:
+        - build
+        - install
+        - run
   - metric_test_identifier: FRSM-13-R1-2
     metric_test_name: Dependencies are provided in a machine-readable format and the building and installation of the software is automated.
     metric_test_score: 1

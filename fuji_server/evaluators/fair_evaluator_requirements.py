@@ -49,6 +49,9 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             self.logger.warning(
                 f"{self.metric_identifier} : Test for build, installation and execution instructions is not implemented."
             )
+            test_requirements = self.metric_tests[test_id].metric_test_requirements
+            print(test_requirements)  # list
+            # TODO: check each location (if available from harvest) for keywords
         return test_status
 
     def testDependencies(self):
