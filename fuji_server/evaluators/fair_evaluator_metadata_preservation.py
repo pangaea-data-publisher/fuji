@@ -39,6 +39,11 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
                 break
         test_status = False
         if test_defined:
+            # TODO implement
+            if test_id.startswith("FRSM"):
+                self.logger.warning(
+                    f"{self.metric_identifier} : Test for descriptive metadata is not implemented for FRSM."
+                )
             registry_bound_pid = ["doi"]
             test_score = self.getTestConfigScore(test_id)
             if self.fuji.pid_scheme:
@@ -122,6 +127,12 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
 
         test_status = "fail"
         if self.testPreservationGuaranteed():
+            test_status = "pass"
+        if self.testPublicSearchEngine():
+            test_status = "pass"
+        if self.testMultipleCrossReferenced():
+            test_status = "pass"
+        if self.testZenodoLandingPage():
             test_status = "pass"
 
         self.result.score = self.score

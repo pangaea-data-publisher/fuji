@@ -541,7 +541,6 @@ class FAIRCheck:
 
     def check_metadata_preservation(self):
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
-        metadata_preserved_check.set_metric("FsF-A2-01M")
         return metadata_preserved_check.getResult()
 
     def check_standardised_protocol_data(self):

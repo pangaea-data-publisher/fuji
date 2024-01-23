@@ -116,7 +116,7 @@ async def assess_by_id(body):
         formal_metadata_result = ft.check_formal_metadata()
         # print('F-UJI checks: semantic vocab')
         semantic_vocab_result = ft.check_semantic_vocabulary()
-        ft.check_metadata_preservation()
+        metadata_preserved_result = ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
         if uid_result:
@@ -175,6 +175,8 @@ async def assess_by_id(body):
             results.append(standard_protocol_data_result)
         if standard_protocol_metadata_result:
             results.append(standard_protocol_metadata_result)
+        if metadata_preserved_result:
+            results.append(metadata_preserved_result)
         debug_messages = ft.get_log_messages_dict()
         # ft.logger_message_stream.flush()
         summary = ft.get_assessment_summary(results)
@@ -205,6 +207,7 @@ async def assess_by_id(body):
         if ft.pid_url:
             idhelper = IdentifierHelper(ft.pid_url)
             request["normalized_object_identifier"] = idhelper.get_normalized_id()
+        results.sort(key=lambda d: d["id"])  # sort results by metric ID
         final_response = FAIRResults(
             request=request,
             start_timestamp=starttimestmp,
