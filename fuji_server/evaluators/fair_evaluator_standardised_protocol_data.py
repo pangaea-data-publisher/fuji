@@ -27,9 +27,24 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         self.set_metric(["FsF-A1-03D", "FRSM-09-A1"])
         self.data_output = {}
 
+        self.metric_test_map = {  # overall map
+            "testStandardProtocolDataUsed": ["FsF-A1-03D-1", "FRSM-09-A1-1", "FRSM-09-A1-CESSDA-1"],
+            "testAuth": ["FRSM-09-A1-2", "FRSM-09-A1-CESSDA-2"],
+            "testPRs": ["FRSM-09-A1-CESSDA-3"],
+        }
+
     def testStandardProtocolDataUsed(self):
+        agnostic_test_name = "testStandardProtocolDataUsed"
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-1"):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        # TODO implement
+        if test_id.startswith("FRSM"):
+            self.logger.warning(f"{self.metric_identifier} : Test for standard protocol is not implemented for FRSM.")
+        if test_defined:
             test_score = self.getTestConfigScore(self.metric_identifier + "-1")
             content_identifiers = self.fuji.content_identifier.values()
             if content_identifiers:
@@ -58,6 +73,43 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
                     self.metric_identifier
                     + " : Skipping protocol test for data since NO content (data) identifier is given in metadata"
                 )
+        return test_status
+
+    def testAuth(self):
+        """If authentication or authorisation are required, these are supported by the communication protocols and the repository / forge.
+        CESSDA: No authentication is required to view and/or clone CESSDA's public repositories, even so, their contents cannot be modified directly by 3rd parties.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testAuth"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(
+                f"{self.metric_identifier} : Test for authentication and authorisation is not implemented."
+            )
+        return test_status
+
+    def testPRs(self):
+        """Pull requests are used to propose modifications to the contents.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testPRs"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for usage of PRs is not implemented.")
         return test_status
 
     def evaluate(self):
