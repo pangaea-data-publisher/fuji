@@ -363,7 +363,7 @@ class FAIRCheck:
 
     def harvest_github(self):
         if self.use_github:
-            github_harvester = GithubHarvester(self.id)
+            github_harvester = GithubHarvester(self.id, self.logger)
             github_harvester.harvest()
             self.github_data = github_harvester.data
         else:

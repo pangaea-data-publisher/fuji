@@ -10,7 +10,7 @@ from github.GithubException import UnknownObjectException
 
 
 class GithubHarvester:
-    def __init__(self, id, host="https://github.com"):
+    def __init__(self, id, logger, host="https://github.com"):
         # Read Github API access token from config file.
         config = ConfigParser()
         config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.ini"))
@@ -19,7 +19,10 @@ class GithubHarvester:
             auth = Auth.Token(token)
         else:  # empty token, so no authentication possible (rate limit will be much lower)
             auth = None
-            print("Running in unauthenticated mode. Capabilities are limited.")  # TODO: this should be a log message
+            print("Running in unauthenticated mode. Capabilities are limited.")
+            self.logger.warning(
+                "FRSM-09-A1 : Running in unauthenticated mode. Capabilities are limited."
+            )  # TODO: would be better if it were a general warning!
         self.id = id
         self.host = host
         if host != "https://github.com":
@@ -27,6 +30,7 @@ class GithubHarvester:
             self.handle = Github(auth=auth, base_url=base_url)
         else:
             self.handle = Github(auth=auth)
+        self.logger = logger
         self.data = {}  # dictionary with all info
 
     def harvest(self):
@@ -44,7 +48,10 @@ class GithubHarvester:
         try:
             repo = self.handle.get_repo(self.repo_id)
         except UnknownObjectException:
-            print("Could not find repo.")  # TODO: this should be a log message
+            print("Could not find repo.")
+            self.logger.warning(
+                "FRSM-09-A1 : Could not find repository on GitHub."
+            )  # TODO: would be better if it were a general warning!
             return
 
         # harvesting
