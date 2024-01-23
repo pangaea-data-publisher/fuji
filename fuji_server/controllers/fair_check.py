@@ -23,6 +23,7 @@ from fuji_server.evaluators.fair_evaluator_development_metadata import FAIREvalu
 from fuji_server.evaluators.fair_evaluator_file_format import FAIREvaluatorFileFormat
 from fuji_server.evaluators.fair_evaluator_formal_metadata import FAIREvaluatorFormalMetadata
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
+from fuji_server.evaluators.fair_evaluator_license_file import FAIREvaluatorLicenseFile
 from fuji_server.evaluators.fair_evaluator_metadata_identifier_included import FAIREvaluatorMetadataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
@@ -496,6 +497,10 @@ class FAIRCheck:
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
+        return license_check.getResult()
+
+    def check_license_file(self):
+        license_check = FAIREvaluatorLicenseFile(self)
         return license_check.getResult()
 
     def check_relatedresources(self):

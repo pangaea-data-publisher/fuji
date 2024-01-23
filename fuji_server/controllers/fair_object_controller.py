@@ -90,6 +90,7 @@ async def assess_by_id(body):
         access_level_result = ft.check_data_access_level()
         # print('F-UJI checks: license')
         license_result = ft.check_license()
+        license_file_result = ft.check_license_file()
         # print('F-UJI checks: related')
         related_resources_result = ft.check_relatedresources()
         # print('F-UJI checks: searchable')
@@ -158,6 +159,8 @@ async def assess_by_id(body):
             results.append(metadata_identifier_included_result)
         if license_result:
             results.append(license_result)
+        if license_file_result:
+            results.append(license_file_result)
         if access_level_result:
             results.append(access_level_result)
         if data_provenance_result:
