@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.models.uniqueness import Uniqueness
-from fuji_server.models.uniqueness_output import UniquenessOutput
+from fuji_server.models.test_case import TestCase
+from fuji_server.models.test_case_output import TestCaseOutput
 
 
 class FAIREvaluatorTestCases(FAIREvaluator):
@@ -148,10 +148,10 @@ class FAIREvaluatorTestCases(FAIREvaluator):
 
     def evaluate(self):
         if self.metric_identifier in self.metrics:
-            self.result = Uniqueness(
+            self.result = TestCase(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
             )
-            self.output = UniquenessOutput()
+            self.output = TestCaseOutput()
             self.result.test_status = "fail"
             if self.testPresence():
                 self.result.test_status = "pass"

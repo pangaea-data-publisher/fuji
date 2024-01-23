@@ -8,11 +8,17 @@
 from __future__ import absolute_import
 
 # import models into model package
+from fuji_server.models.api import API
+from fuji_server.models.api_output import APIOutput
 from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.body import Body
+from fuji_server.models.code_provenance import CodeProvenance
+from fuji_server.models.code_provenance_output import CodeProvenanceOutput
 from fuji_server.models.community_endorsed_standard import CommunityEndorsedStandard
 from fuji_server.models.community_endorsed_standard_output import CommunityEndorsedStandardOutput
 from fuji_server.models.community_endorsed_standard_output_inner import CommunityEndorsedStandardOutputInner
+from fuji_server.models.component_identifier import ComponentIdentifier
+from fuji_server.models.component_identifier_output import ComponentIdentifierOutput
 from fuji_server.models.core_metadata import CoreMetadata
 from fuji_server.models.core_metadata_output import CoreMetadataOutput
 from fuji_server.models.data_access_level import DataAccessLevel
@@ -27,6 +33,8 @@ from fuji_server.models.data_provenance import DataProvenance
 from fuji_server.models.data_provenance_output import DataProvenanceOutput
 from fuji_server.models.data_provenance_output_inner import DataProvenanceOutputInner
 from fuji_server.models.debug import Debug
+from fuji_server.models.development_metadata import DevelopmentMetadata
+from fuji_server.models.development_metadata_output import DevelopmentMetadataOutput
 from fuji_server.models.fair_result_common import FAIRResultCommon
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
@@ -55,6 +63,8 @@ from fuji_server.models.persistence_output_inner import PersistenceOutputInner
 from fuji_server.models.related_resource import RelatedResource
 from fuji_server.models.related_resource_output import RelatedResourceOutput
 from fuji_server.models.related_resource_output_inner import RelatedResourceOutputInner
+from fuji_server.models.requirements import Requirements
+from fuji_server.models.requirements_output import RequirementsOutput
 from fuji_server.models.searchable import Searchable
 from fuji_server.models.searchable_output import SearchableOutput
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
@@ -64,8 +74,14 @@ from fuji_server.models.standardised_protocol_data import StandardisedProtocolDa
 from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
 from fuji_server.models.standardised_protocol_metadata import StandardisedProtocolMetadata
 from fuji_server.models.standardised_protocol_metadata_output import StandardisedProtocolMetadataOutput
+from fuji_server.models.test_case import TestCase
+from fuji_server.models.test_case_output import TestCaseOutput
+from fuji_server.models.unique_persistent_identifier_software import UniquePersistentIdentifierSoftware
+from fuji_server.models.unique_persistent_identifier_software_output import UniquePersistentIdentifierSoftwareOutput
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
+from fuji_server.models.version_identifier import VersionIdentifier
+from fuji_server.models.version_identifier_output import VersionIdentifierOutput
 
 from importlib.metadata import version
 

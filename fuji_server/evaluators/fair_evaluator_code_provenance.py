@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.models.data_provenance import DataProvenance
-from fuji_server.models.data_provenance_output import DataProvenanceOutput
+from fuji_server.models.code_provenance import CodeProvenance
+from fuji_server.models.code_provenance_output import CodeProvenanceOutput
 
 
 class FAIREvaluatorCodeProvenance(FAIREvaluator):
@@ -119,10 +119,10 @@ class FAIREvaluatorCodeProvenance(FAIREvaluator):
         return test_status
 
     def evaluate(self):
-        self.result = DataProvenance(
+        self.result = CodeProvenance(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
-        self.output = DataProvenanceOutput()
+        self.output = CodeProvenanceOutput()
 
         provenance_status = "fail"
         if self.testCommitHistory():
