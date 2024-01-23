@@ -45,7 +45,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         if test_id.startswith("FRSM"):
             self.logger.warning(f"{self.metric_identifier} : Test for standard protocol is not implemented for FRSM.")
         if test_defined:
-            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+            test_score = self.getTestConfigScore(test_id)
             content_identifiers = self.fuji.content_identifier.values()
             if content_identifiers:
                 if len(content_identifiers) > 0:
@@ -63,8 +63,8 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
                                     + data_url_scheme,
                                 )
                                 self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
-                                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-                                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
+                                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                                self.maturity = self.getTestConfigMaturity(test_id)
                                 test_status = True
                                 self.score.earned = test_score
                                 break
