@@ -79,7 +79,7 @@ report = [
   "jupyter~=1.0"
 ]
 testing = [
-  "genbadge[tests]~=1.1",
+  "genbadge[coverage]~=1.1",
   "pytest~=7.4",
   "pytest-cov~=4.1",
   "pytest-randomly~=3.15",
@@ -122,10 +122,9 @@ features = [
 ]
 
 [tool.hatch.envs.default.scripts]
-badges = "genbadge tests --input-file=pytest-junit.xml"
 cov = "pytest --cov {args}"
-cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml {args}"
-cov-html = "pytest --cov --cov-report=html {args}"
+cov-badge = "genbadge coverage --input-file=pytest-cobertura.xml --output-file=./reports/coverage/coveragebadge.svg"
+cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml --cov-report=html:./reports/coverage/ {args}"
 lint = "pre-commit run --all-files --color=always {args}"
 test = "pytest {args}"
 

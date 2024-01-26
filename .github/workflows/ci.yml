@@ -71,6 +71,8 @@ jobs:
 
   tests:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.11
@@ -84,9 +86,6 @@ jobs:
         python -m pip install --upgrade hatch
     - name: Run test suite with coverage
       run: hatch run cov-ci
-    - name: Generate badges
-      if: always()
-      run: hatch run badges
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
@@ -101,6 +100,15 @@ jobs:
         name: coverage-results
         retention-days: 1
         path: pytest-cobertura.xml
+    - run: rm ./reports/coverage/.gitignore
+    - name: Generate coverage badge
+      if: github.ref == 'refs/heads/master'
+      run: hatch run cov-badge
+    - name: Deploy reports to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e # v4.5.0
+      with:
+        folder: ./reports
 
   event_file:
     runs-on: ubuntu-22.04
