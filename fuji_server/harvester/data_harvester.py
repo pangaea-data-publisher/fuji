@@ -95,7 +95,7 @@ class DataHarvester:
                             fl["size"] = None
                     else:
                         fl["size"] = None
-                    if fl.get("type") == None:
+                    if fl.get("type") is None:
                         if fl["trust"] > 1:
                             fl["trust"] -= 1
                     elif "/" in str(fl.get("type")):

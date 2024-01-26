@@ -138,7 +138,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                     sparql_provider = SPARQLMetadataProvider(
                         endpoint=self.fuji.sparql_endpoint, logger=self.logger, metric_id=self.metric_identifier
                     )
-                    if self.fuji.pid_url == None:
+                    if self.fuji.pid_url is None:
                         url_to_sparql = self.fuji.landing_url
                     else:
                         url_to_sparql = self.fuji.pid_url

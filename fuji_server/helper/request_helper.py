@@ -328,7 +328,7 @@ class RequestHelper:
                                     self.response_content = str(self.response_content).encode("utf-8")
 
                             # Now content should be utf-8 encoded
-                            if content_truncated == True:
+                            if content_truncated is True:
                                 try:
                                     self.response_content = self.response_content.rsplit(b"\n", 1)[0]
                                 except Exception as e:
@@ -410,7 +410,7 @@ class RequestHelper:
                                         if self.content_type in at.value:
                                             if at.name == "html":
                                                 # since we already parse HTML in the landing page we ignore this and do not parse again
-                                                if ignore_html == False:
+                                                if ignore_html is False:
                                                     self.logger.info("%s : Found HTML page!" % metric_id)
                                                 else:
                                                     self.logger.info("%s : Ignoring HTML response" % metric_id)

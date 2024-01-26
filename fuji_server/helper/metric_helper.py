@@ -7,7 +7,6 @@ import os
 import re
 
 import yaml
-
 from fuji_server.helper.preprocessor import Preprocessor
 
 

@@ -148,17 +148,21 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
-ignore = [
-  "RUF012"  # mutable-class-default
-]
 line-length = 120
-select = [
-  "F",  # pyflakes
+# Ref: https://docs.astral.sh/ruff/configuration/
+src = ["fuji_server"]
+target-version = "py311"
+
+[tool.ruff.lint]
+extend-select = [
   "I",  # isort
   "UP",  # pyupgrade
   "RUF"  # ruff
 ]
-target-version = "py311"
+ignore = [
+  "E722",  # bare-except
+  "RUF012"  # mutable-class-default
+]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["fuji_server", "tests"]

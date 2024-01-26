@@ -7668,27 +7668,6 @@
     ],
     "title": "EAD (Encoded Archival Description)"
   },
-  "https://ogp.me": {
-    "acronym": "OpenGraph",
-    "field_of_science": [],
-    "id": "opengraph",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m46"
-      },
-      {
-        "type": "homepage",
-        "value": "https://ogp.me"
-      },
-      {
-        "type": "namespace",
-        "value": "https://ogp.me/ns#"
-      }
-    ],
-    "subject_areas": null,
-    "title": "The Open Graph protocol metadata format"
-  },
   "http://a9.com/-/spec/opensearch/1.1/": {
     "acronym": null,
     "field_of_science": [],
@@ -38197,6 +38176,27 @@
       "Multidisciplinary"
     ],
     "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations"
+  },
+  "https://ogp.me": {
+    "acronym": "OpenGraph",
+    "field_of_science": [],
+    "id": "opengraph",
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m46"
+      },
+      {
+        "type": "homepage",
+        "value": "https://ogp.me"
+      },
+      {
+        "type": "namespace",
+        "value": "https://ogp.me/ns#"
+      }
+    ],
+    "subject_areas": null,
+    "title": "The Open Graph protocol metadata format"
   },
   "https://ogp.me/ns#": {
     "acronym": "OpenGraph",

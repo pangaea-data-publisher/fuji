@@ -23,8 +23,8 @@ import json
 from typing import Any
 
 import pytest
-import yaml
 
+import yaml
 from fuji_server.helper.preprocessor import Preprocessor
 from tests.conftest import DATA_DIR
 
