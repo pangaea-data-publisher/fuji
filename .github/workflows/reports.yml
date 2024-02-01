@@ -69,7 +69,7 @@ jobs:
     # Ref: https://github.com/marocchino/sticky-pull-request-comment#inputs
     - name: Add Code Coverage PR Comment
       if: ${{ steps.get-pr-number.outputs.number }} != null
-      uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # v2.9.0
       with:
         recreate: true
         number: ${{ steps.get-pr-number.outputs.number }}

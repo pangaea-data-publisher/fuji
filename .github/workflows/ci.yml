@@ -30,7 +30,7 @@ jobs:
   #     with:
   #       python-version: '3.11'
   #   - name: Cache python dependencies
-  #     uses: actions/cache@v3
+  #     uses: actions/cache@v4
   #     with:
   #       path: ~/.cache/pip
   #       key: pip-docs-${{ hashFiles('pyproject.toml') }}
@@ -52,7 +52,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Cache python dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cache/pip
