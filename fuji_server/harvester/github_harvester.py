@@ -91,6 +91,22 @@ class GithubHarvester:
             if len(source_code_samples) > 0:
                 self.data["source_code_samples"] = source_code_samples
 
-        # TODO: parse README (full), wiki (page names?), docs (???)
+        # TODO: parse README (full), wiki (page names?), docs (file names)
+        # NOTE: cannot retrieve wiki through API
+        self.data["readme"] = repo.get_readme().decoded_content
+        # see if there's a folder named docs/
+        try:
+            docs_folder = repo.get_contents("docs")
+            self.data["docs"] = []
+            # get docs/ content recursively
+            docs_folder = repo.get_contents("docs")
+            while docs_folder:
+                doc_file = docs_folder.pop(0)
+                if doc_file.type == "dir":
+                    docs_folder.extend(repo.get_contents(doc_file.path))
+                else:
+                    self.data["docs"].append({"name": doc_file.name})
+        except UnknownObjectException:
+            pass
 
         # TODO: consider merging parts of the GitHub data with metadata?

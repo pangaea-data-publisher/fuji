@@ -32,6 +32,28 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             "testBuildBadgeStatus": ["FRSM-13-R1-CESSDA-3"],
         }
 
+    def nestedDataContainsKeyword(self, data, key):
+        values = None
+        if type(data) == list:
+            values = data
+        elif type(data) == dict:
+            values = list(data.values())
+        else:
+            raise TypeError(
+                f"Can only recursively scan lists and dictionaries, but received data of type {type(data)}."
+            )
+        for d in values:
+            if type(d) == str:
+                if key in d.lower():
+                    return True
+            else:
+                try:
+                    if self.nestedDataContainsKeyword(d, key):
+                        return True
+                except TypeError as e:
+                    self.logger.warning(f"{self.metric_identifier}: scan of nested data failed ({e.message}).")
+        return False
+
     def testBuildInstructions(self):
         """The software has build, installation and/or execution instructions.
 
@@ -46,12 +68,40 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(
-                f"{self.metric_identifier} : Test for build, installation and execution instructions is not implemented."
+            test_score = self.getTestConfigScore(test_id)
+            test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            required_modality = test_requirements["modality"]
+            required_keywords = test_requirements["required"]["keywords"]
+            required_locations = test_requirements["required"]["location"]
+            self.logger.info(
+                f"{self.metric_identifier} : Looking for {required_modality} keywords {required_keywords} in {required_locations}."
             )
-            test_requirements = self.metric_tests[test_id].metric_test_requirements
-            print(test_requirements)  # list
-            # TODO: check each location (if available from harvest) for keywords
+            hit_dict = {k: False for k in required_keywords}
+            # check each location (if available) for keywords
+            for location in required_locations:
+                for k in hit_dict.keys():
+                    content = self.fuji.github_data.get(location)
+                    if content is not None:
+                        if type(content) == str:
+                            if k in content.lower():
+                                hit_dict[k] = True  # found keyword in location
+                        else:
+                            hit_dict[k] = self.nestedDataContainsKeyword(content, k)
+            found_instructions = False
+            if required_modality == "all":
+                found_instructions = all(hit_dict.values())
+            elif required_modality == "any":
+                found_instructions = any(hit_dict.values())
+            else:
+                self.logger.warning(
+                    f"{self.metric_identifier} : Unknown modality {required_modality} in test requirements. Choose 'all' or 'any'."
+                )
+            if found_instructions:
+                test_status = True
+                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
         return test_status
 
     def testDependencies(self):
