@@ -340,7 +340,7 @@ metrics:
       required:
         location:
         - README
-        - docs
+        - docs_directory
         - wiki
         keywords:
         - build
@@ -350,6 +350,21 @@ metrics:
     metric_test_name: Dependencies are provided in a machine-readable format and the building and installation of the software is automated.
     metric_test_score: 1
     metric_test_maturity: 2
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: any
+      required:
+        dependency_file:
+        - requirements.txt
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: all
+      required:
+        automation_file:
+        - Jenkinsfile
+        - github_actions
+        automation_keywords:
+        - build
+        - install
   created_by: FAIR4RS
   date_created: 2024-01-18
   date_updated: 2024-01-18

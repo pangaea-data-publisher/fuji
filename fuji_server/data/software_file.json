@@ -1,0 +1,57 @@
+{
+  "Jenkinsfile": {
+    "category": [
+      "automation"
+    ],
+    "parse": "full",
+    "pattern": [
+      "**/Jenkinsfile"
+    ]
+  },
+  "README": {
+    "category": [
+      "documentation"
+    ],
+    "parse": "full",
+    "pattern": [
+      "**/README*"
+    ]
+  },
+  "docs_directory": {
+    "category": [
+      "documentation"
+    ],
+    "parse": "file_name",
+    "pattern": [
+      "**/docs/"
+    ]
+  },
+  "github_actions": {
+    "category": [
+      "automation"
+    ],
+    "parse": "full",
+    "pattern": [
+      ".github/workflows/"
+    ]
+  },
+  "mvn_pom": {
+    "category": [
+      "documentation",
+      "automation"
+    ],
+    "parse": "full",
+    "pattern": [
+      "pom.xml"
+    ]
+  },
+  "python_code": {
+    "category": [
+      "development"
+    ],
+    "parse": "file_name",
+    "pattern": [
+      "*.py"
+    ]
+  }
+}

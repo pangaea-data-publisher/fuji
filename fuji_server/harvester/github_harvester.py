@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import json
 import os
 from configparser import ConfigParser
 
@@ -32,6 +33,11 @@ class GithubHarvester:
             self.handle = Github(auth=auth)
         self.logger = logger
         self.data = {}  # dictionary with all info
+        fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
+        software_file_path = os.path.join(fuji_server_dir, "data", "software_file.json")
+        with open(software_file_path) as f:
+            self.files_map = json.load(f)
+            self.files_parse_fully = {k: v for (k, v) in self.files_map.items() if v["parse"] == "full"}
 
     def harvest(self):
         # check if it's a URL or repo ID
@@ -93,11 +99,10 @@ class GithubHarvester:
 
         # TODO: parse README (full), wiki (page names?), docs (file names)
         # NOTE: cannot retrieve wiki through API
-        self.data["readme"] = repo.get_readme().decoded_content
+        self.data["README"] = repo.get_readme().decoded_content
         # see if there's a folder named docs/
         try:
-            docs_folder = repo.get_contents("docs")
-            self.data["docs"] = []
+            self.data["docs_directory"] = []
             # get docs/ content recursively
             docs_folder = repo.get_contents("docs")
             while docs_folder:
@@ -105,8 +110,21 @@ class GithubHarvester:
                 if doc_file.type == "dir":
                     docs_folder.extend(repo.get_contents(doc_file.path))
                 else:
-                    self.data["docs"].append({"name": doc_file.name})
+                    self.data["docs_directory"].append({"name": doc_file.name})
         except UnknownObjectException:
             pass
 
         # TODO: consider merging parts of the GitHub data with metadata?
+
+    def retrieve_all(self, repo):
+        self.data["contents"] = []
+        repo_contents = repo.get_contents("")
+        while repo_contents:
+            doc_file = repo_contents.pop(0)
+            if doc_file.type == "dir":
+                repo_contents.extend(repo.get_contents(doc_file.path))
+            else:
+                # TODO: construct a regex string out of ors (https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string)
+                # and use named groups to return the dictionary key with m.groupdict()
+                self.data["docs_directory"].append({"name": doc_file.name})
+        pass

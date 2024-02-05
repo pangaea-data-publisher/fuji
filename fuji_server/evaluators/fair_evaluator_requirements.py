@@ -33,6 +33,18 @@ class FAIREvaluatorRequirements(FAIREvaluator):
         }
 
     def nestedDataContainsKeyword(self, data, key):
+        """Recursively check whether text data in nested structures (such as list and dict) contains a keyword.
+
+        Args:
+            data (list | dict): nested structure containing text data
+            key (str): keyword to look for
+
+        Raises:
+            TypeError: argument data must be one of list or dict
+
+        Returns:
+            bool: True if key found somewhere in nested structure.
+        """
         values = None
         if type(data) == list:
             values = data
@@ -53,6 +65,31 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 except TypeError as e:
                     self.logger.warning(f"{self.metric_identifier}: scan of nested data failed ({e.message}).")
         return False
+
+    def scanForKeywords(self, keywords, locations):
+        """Scan GitHub harvesting results for keywords.
+
+        Args:
+            keywords (list<str>): list of keywords to look for
+            locations (list<str>): list of locations to scan, used as keys for GitHub harvesting results
+
+        Returns:
+            dict<str, bool>: dictionary with keywords as keys and a boolean as value indicating whether the keyword was found in some location.
+        """
+        hit_dict = {k: False for k in keywords}
+        keys_to_check = keywords
+        # check each location (if available) for keywords
+        for location in locations:
+            for k in keys_to_check:
+                content = self.fuji.github_data.get(location)
+                if content is not None:
+                    if type(content) == str:
+                        if k in content.lower():
+                            hit_dict[k] = True  # found keyword in location
+                            keys_to_check.remove(k)  # stop looking, have found something for this key
+                    else:
+                        hit_dict[k] = self.nestedDataContainsKeyword(content, k)
+        return hit_dict
 
     def testBuildInstructions(self):
         """The software has build, installation and/or execution instructions.
@@ -76,17 +113,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             self.logger.info(
                 f"{self.metric_identifier} : Looking for {required_modality} keywords {required_keywords} in {required_locations}."
             )
-            hit_dict = {k: False for k in required_keywords}
-            # check each location (if available) for keywords
-            for location in required_locations:
-                for k in hit_dict.keys():
-                    content = self.fuji.github_data.get(location)
-                    if content is not None:
-                        if type(content) == str:
-                            if k in content.lower():
-                                hit_dict[k] = True  # found keyword in location
-                        else:
-                            hit_dict[k] = self.nestedDataContainsKeyword(content, k)
+            hit_dict = self.scanForKeywords(required_keywords, required_locations)
             found_instructions = False
             if required_modality == "all":
                 found_instructions = all(hit_dict.values())
@@ -102,6 +129,10 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
+            else:  # does not pass
+                self.logger.warning(
+                    f"{self.metric_identifier} : Did not find {required_modality} keywords {required_keywords} in {required_locations}."
+                )
         return test_status
 
     def testDependencies(self):
@@ -119,6 +150,42 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 break
         if test_defined:
             self.logger.warning(f"{self.metric_identifier} : Test for dependencies is not implemented.")
+            test_score = self.getTestConfigScore(test_id)
+            # Check for presence of machine-readable dependency files
+            dependency_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            assert (
+                dependency_requirements["modality"] == "any"
+            ), f"Found requirement modality {dependency_requirements['modality']}, please choose 'any' instead. Any other modality is too strict for this test layout."
+            required_dependency_files = dependency_requirements["required"]["dependency_file"]
+            self.logger.info(f"{self.metric_identifier} : Checking presence of any of {required_dependency_files}.")
+            dependency_present = not set(self.fuji.github_data.keys()).isdisjoint(required_dependency_files)
+            # Check for automated building and installation
+            automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
+            required_automation_locations = automation_requirements["required"]["automation_file"]
+            required_automation_keywords = automation_requirements["required"]["keywords"]
+            self.logger.warning(
+                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+            )
+            automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
+            found_automation = False
+            if automation_requirements["modality"] == "all":
+                found_automation = all(automation_hit_dict.values())
+            elif automation_requirements["modality"] == "any":
+                found_automation = any(automation_hit_dict.values())
+            else:
+                self.logger.warning(
+                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                )
+            if dependency_present and found_automation:  # pass
+                test_status = True
+                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
+            else:  # fail
+                self.logger.warning(
+                    f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                )
         return test_status
 
     def testDependenciesBuildAutomatedChecks(self):
@@ -139,6 +206,13 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             self.logger.warning(
                 f"{self.metric_identifier} : Test for dependency information, build instructions and automated checks is not implemented."
             )
+            test_score = self.getTestConfigScore(test_id)
+            test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            # dependency info and build instruction in README
+            first_half = self.scanForKeywords(["dependency", "dependencies", "build"], ["README"])
+            # linting and other relevant checks present in automated build and test process
+            # TODO
+            print((test_score, test_requirements, first_half))  # fix linting error for now
         return test_status
 
     def testBadgeIncluded(self):
