@@ -5,7 +5,7 @@
     ],
     "parse": "full",
     "pattern": [
-      "**/Jenkinsfile"
+      "(\\w*/)*Jenkinsfile"
     ]
   },
   "README": {
@@ -14,7 +14,7 @@
     ],
     "parse": "full",
     "pattern": [
-      "**/README*"
+      "(\\w*/)*README(\\.(txt|md))?"
     ]
   },
   "docs_directory": {
@@ -23,7 +23,7 @@
     ],
     "parse": "file_name",
     "pattern": [
-      "**/docs/"
+      "(\\w*/)*docs/"
     ]
   },
   "github_actions": {
@@ -32,17 +32,17 @@
     ],
     "parse": "full",
     "pattern": [
-      ".github/workflows/"
+      "\\.github/workflows/"
     ]
   },
-  "mvn_pom": {
+  "maven_pom": {
     "category": [
       "documentation",
       "automation"
     ],
     "parse": "full",
     "pattern": [
-      "pom.xml"
+      "pom\\.xml"
     ]
   },
   "python_code": {
@@ -51,7 +51,7 @@
     ],
     "parse": "file_name",
     "pattern": [
-      "*.py"
+      ".*\\.py"
     ]
   }
 }

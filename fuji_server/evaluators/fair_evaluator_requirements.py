@@ -62,8 +62,8 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 try:
                     if self.nestedDataContainsKeyword(d, key):
                         return True
-                except TypeError as e:
-                    self.logger.warning(f"{self.metric_identifier}: scan of nested data failed ({e.message}).")
+                except TypeError:
+                    self.logger.warning(f"{self.metric_identifier}: scan of nested data failed for type {type(d)}.")
         return False
 
     def scanForKeywords(self, keywords, locations):
@@ -162,7 +162,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             # Check for automated building and installation
             automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
             required_automation_locations = automation_requirements["required"]["automation_file"]
-            required_automation_keywords = automation_requirements["required"]["keywords"]
+            required_automation_keywords = automation_requirements["required"]["automation_keywords"]
             self.logger.warning(
                 f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
             )
@@ -267,10 +267,11 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 self.result.test_status = "pass"
             if self.testBuildBadgeStatus():
                 self.result.test_status = "pass"
-            else:
-                self.result.test_status = "fail"
+
+            if self.result.test_status == "fail":
                 self.score.earned = 0
                 self.logger.warning(self.metric_identifier + " : Failed to check the software requirements.")
+
             self.result.score = self.score
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output

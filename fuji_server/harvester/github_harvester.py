@@ -4,6 +4,7 @@
 
 import json
 import os
+import re
 from configparser import ConfigParser
 
 from github import Auth, Github
@@ -37,7 +38,6 @@ class GithubHarvester:
         software_file_path = os.path.join(fuji_server_dir, "data", "software_file.json")
         with open(software_file_path) as f:
             self.files_map = json.load(f)
-            self.files_parse_fully = {k: v for (k, v) in self.files_map.items() if v["parse"] == "full"}
 
     def harvest(self):
         # check if it's a URL or repo ID
@@ -68,12 +68,6 @@ class GithubHarvester:
         except UnknownObjectException:
             pass
 
-        try:  # Maven POM
-            mvn_pom_file = repo.get_contents("pom.xml")
-            self.data["mvn_pom"] = mvn_pom_file.decoded_content
-        except UnknownObjectException:
-            pass
-
         # identify source code (sample files in the main language used in the repo)
         repo_languages = repo.get_languages()
         if repo_languages != {}:
@@ -97,34 +91,34 @@ class GithubHarvester:
             if len(source_code_samples) > 0:
                 self.data["source_code_samples"] = source_code_samples
 
-        # TODO: parse README (full), wiki (page names?), docs (file names)
-        # NOTE: cannot retrieve wiki through API
-        self.data["README"] = repo.get_readme().decoded_content
-        # see if there's a folder named docs/
-        try:
-            self.data["docs_directory"] = []
-            # get docs/ content recursively
-            docs_folder = repo.get_contents("docs")
-            while docs_folder:
-                doc_file = docs_folder.pop(0)
-                if doc_file.type == "dir":
-                    docs_folder.extend(repo.get_contents(doc_file.path))
-                else:
-                    self.data["docs_directory"].append({"name": doc_file.name})
-        except UnknownObjectException:
-            pass
-
-        # TODO: consider merging parts of the GitHub data with metadata?
+        self.retrieve_all(repo)
 
     def retrieve_all(self, repo):
-        self.data["contents"] = []
+        file_pattern = r"|".join([rf"(?P<{k}>{'|'.join(v['pattern'])})" for k, v in self.files_map.items()])
         repo_contents = repo.get_contents("")
         while repo_contents:
-            doc_file = repo_contents.pop(0)
-            if doc_file.type == "dir":
-                repo_contents.extend(repo.get_contents(doc_file.path))
+            content_file = repo_contents.pop(0)
+            if content_file.type == "dir":
+                repo_contents.extend(repo.get_contents(content_file.path))
             else:
-                # TODO: construct a regex string out of ors (https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string)
-                # and use named groups to return the dictionary key with m.groupdict()
-                self.data["docs_directory"].append({"name": doc_file.name})
-        pass
+                m = re.fullmatch(file_pattern, content_file.path)
+                if m is not None and any(m.groupdict().values()):
+                    for k, v in m.groupdict().items():
+                        if v is not None:
+                            if self.files_map[k]["parse"] == "full":
+                                file_entry = {
+                                    "name": content_file.name,
+                                    "path": content_file.path,
+                                    "content": content_file.decoded_content.decode("utf-8"),
+                                }
+                            elif self.files_map[k]["parse"] == "file_name":
+                                file_entry = {"name": content_file.name, "path": content_file.path}
+                            else:
+                                self.logger.warning(
+                                    f"FRSM-09-A1 : Parsing strategy {self.files_map[k]['parse']} is currently not implemented. Choose one of 'full' or 'file_name' for files {k}. Defaulting to parsing strategy 'file_name'."
+                                )
+                                file_entry = {"name": content_file.name, "path": content_file.path}
+                            try:
+                                self.data[k].append(file_entry)
+                            except KeyError:
+                                self.data[k] = [file_entry]

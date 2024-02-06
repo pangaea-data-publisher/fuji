@@ -364,7 +364,7 @@ metrics:
         - github_actions
         automation_keywords:
         - build
-        - install
+        - deploy
   created_by: FAIR4RS
   date_created: 2024-01-18
   date_updated: 2024-01-18
