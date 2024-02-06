@@ -363,40 +363,44 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
-            # Maven
-            mvn_pom = self.fuji.github_data.get("mvn_pom")
-            if mvn_pom is not None:
-                # Check whether pom.xml uses license:check-file-header to validate license headers.
-                # See https://www.mojohaus.org/license-maven-plugin/check-file-header-mojo.html for more info.
-                root = ET.fromstring(mvn_pom)
-                namespaces = root.nsmap
-                # look for plugin with artifactID license-maven-plugin
-                found_license_plugin = False
-                for plugin in root.iterfind(".//plugin", namespaces):
-                    artifact_id = plugin.find("artifactId", namespaces)
-                    if artifact_id is not None and artifact_id.text == "license-maven-plugin":
-                        found_license_plugin = True
-                        fail_on_missing_header = plugin.find("configuration/failOnMissingHeader", namespaces)
-                        if fail_on_missing_header is not None and fail_on_missing_header.text == "true":
-                            test_status = True
-                            self.logger.log(
-                                self.fuji.LOG_SUCCESS,
-                                f"{self.metric_identifier} : Maven POM checks for license headers in source files.",
-                            )
-                            self.maturity = self.getTestConfigMaturity(test_id)
-                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
-                            self.score.earned += test_score
-                        else:
-                            self.logger.warning(
-                                f"{self.metric_identifier} : Maven POM uses license-maven-plugin (license:check-file-header) but does not fail on missing header."
-                            )
-                        break
-                if not found_license_plugin:
-                    self.logger.warning(
-                        f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files."
-                    )
-            else:
-                self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file.")
+            test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            required_build_scripts = test_requirements["required"]["build_script"]
+            if "maven_pom" in required_build_scripts:  # check Maven POM for plugin
+                mvn_pom = self.fuji.github_data.get("maven_pom")
+                if mvn_pom is not None:
+                    # Check whether pom.xml uses license:check-file-header to validate license headers.
+                    # See https://www.mojohaus.org/license-maven-plugin/check-file-header-mojo.html for more info.
+                    root = ET.fromstring(mvn_pom)
+                    namespaces = root.nsmap
+                    # look for plugin with artifactID license-maven-plugin
+                    found_license_plugin = False
+                    for plugin in root.iterfind(".//plugin", namespaces):
+                        artifact_id = plugin.find("artifactId", namespaces)
+                        if artifact_id is not None and artifact_id.text == "license-maven-plugin":
+                            found_license_plugin = True
+                            fail_on_missing_header = plugin.find("configuration/failOnMissingHeader", namespaces)
+                            if fail_on_missing_header is not None and fail_on_missing_header.text == "true":
+                                test_status = True
+                                self.logger.log(
+                                    self.fuji.LOG_SUCCESS,
+                                    f"{self.metric_identifier} : Maven POM checks for license headers in source files.",
+                                )
+                                self.maturity = self.getTestConfigMaturity(test_id)
+                                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                                self.score.earned += test_score
+                            else:
+                                self.logger.warning(
+                                    f"{self.metric_identifier} : Maven POM uses license-maven-plugin (license:check-file-header) but does not fail on missing header."
+                                )
+                            break
+                    if not found_license_plugin:
+                        self.logger.warning(
+                            f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files."
+                        )
+                else:
+                    self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file.")
+            if any(e != "maven_pom" for e in required_build_scripts):
+                self.logger.warning(f"{self.metric_identifier} : Unknown build script configured.")
         return test_status
 
     def evaluate(self):
