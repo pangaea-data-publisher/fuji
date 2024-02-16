@@ -55,6 +55,8 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 f"Can only recursively scan lists and dictionaries, but received data of type {type(data)}."
             )
         for d in values:
+            if type(d) == bytes:
+                d = d.decode("utf-8")
             if type(d) == str:
                 if key in d.lower():
                     return True
