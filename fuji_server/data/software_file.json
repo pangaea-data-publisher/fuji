@@ -23,7 +23,7 @@
     ],
     "parse": "file_name",
     "pattern": [
-      "(\\w*/)*docs/"
+      "(\\w*/)*docs(/\\w*\\.\\w*)*"
     ]
   },
   "github_actions": {

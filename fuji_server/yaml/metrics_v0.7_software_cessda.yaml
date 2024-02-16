@@ -307,6 +307,23 @@ metrics:
     metric_test_name: Dependency information and build instructions are included in the README file. Linting and other relevant checks are present in the automated build and test process (e.g. via the Jenkinsfile).
     metric_test_score: 1
     metric_test_maturity: 1
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: all
+      required:
+        location:
+        - README
+        keywords:
+        - build
+        - dependencies
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: all
+      required:
+        automation_file:
+        - Jenkinsfile
+        - github_actions
+        automation_keywords:
+        - lint
   - metric_test_identifier: FRSM-13-R1-CESSDA-2
     metric_test_name: The README file includes a badge that links to the automated build tool (Jenkins). Deployment to development and staging environments is automated (conditional on test results).
     metric_test_score: 1

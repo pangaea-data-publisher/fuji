@@ -109,7 +109,7 @@ class GithubHarvester:
                                 file_entry = {
                                     "name": content_file.name,
                                     "path": content_file.path,
-                                    "content": content_file.decoded_content.decode("utf-8"),
+                                    "content": content_file.decoded_content,
                                 }
                             elif self.files_map[k]["parse"] == "file_name":
                                 file_entry = {"name": content_file.name, "path": content_file.path}

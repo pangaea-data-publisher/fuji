@@ -25,7 +25,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
 
         # Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses.
         self.metric_test_map = {  # overall map
-            "testBuildInstructions": ["FRSM-13-R1-1"],
+            "testInstructions": ["FRSM-13-R1-1"],
             "testDependencies": ["FRSM-13-R1-2"],
             "testDependenciesBuildAutomatedChecks": ["FRSM-13-R1-CESSDA-1"],
             "testBadgeIncluded": ["FRSM-13-R1-CESSDA-2"],
@@ -83,6 +83,8 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             for k in keys_to_check:
                 content = self.fuji.github_data.get(location)
                 if content is not None:
+                    if type(content) == bytes:
+                        content = content.decode("utf-8")
                     if type(content) == str:
                         if k in content.lower():
                             hit_dict[k] = True  # found keyword in location
@@ -91,13 +93,13 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                         hit_dict[k] = self.nestedDataContainsKeyword(content, k)
         return hit_dict
 
-    def testBuildInstructions(self):
+    def testInstructions(self):
         """The software has build, installation and/or execution instructions.
 
         Returns:
             bool: True if the test was defined and passed. False otherwise.
         """
-        agnostic_test_name = "testBuildInstructions"
+        agnostic_test_name = "testInstructions"
         test_status = False
         test_defined = False
         for test_id in self.metric_test_map[agnostic_test_name]:
@@ -149,7 +151,6 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(f"{self.metric_identifier} : Test for dependencies is not implemented.")
             test_score = self.getTestConfigScore(test_id)
             # Check for presence of machine-readable dependency files
             dependency_requirements = self.metric_tests[test_id].metric_test_requirements[0]
@@ -163,7 +164,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
             required_automation_locations = automation_requirements["required"]["automation_file"]
             required_automation_keywords = automation_requirements["required"]["automation_keywords"]
-            self.logger.warning(
+            self.logger.info(
                 f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
             )
             automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
@@ -183,9 +184,12 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
-                self.logger.warning(
-                    f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
-                )
+                if not dependency_present:
+                    self.logger.warning(f"{self.metric_identifier} : Did not find any of {required_dependency_files}.")
+                if not found_automation:
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                    )
         return test_status
 
     def testDependenciesBuildAutomatedChecks(self):
@@ -207,12 +211,57 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 f"{self.metric_identifier} : Test for dependency information, build instructions and automated checks is not implemented."
             )
             test_score = self.getTestConfigScore(test_id)
-            test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            instructions_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            required_instructions_locations = instructions_requirements["required"]["location"]
+            required_instructions_keywords = instructions_requirements["required"]["keywords"]
+            automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
+            required_automation_locations = automation_requirements["required"]["automation_file"]
+            required_automation_keywords = automation_requirements["required"]["automation_keywords"]
+            self.logger.info(
+                f"{self.metric_identifier} : Looking for {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations}."
+            )
             # dependency info and build instruction in README
-            first_half = self.scanForKeywords(["dependency", "dependencies", "build"], ["README"])
+            instructions_hit_dict = self.scanForKeywords(
+                required_instructions_keywords, required_instructions_locations
+            )
+            found_instructions = False
+            if instructions_requirements["modality"] == "all":
+                found_instructions = all(instructions_hit_dict.values())
+            elif instructions_requirements["modality"] == "any":
+                found_instructions = any(instructions_hit_dict.values())
+            else:
+                self.logger.warning(
+                    f"{self.metric_identifier} : Unknown modality {instructions_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                )
             # linting and other relevant checks present in automated build and test process
-            # TODO
-            print((test_score, test_requirements, first_half))  # fix linting error for now
+            self.logger.info(
+                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+            )
+            automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
+            found_automation = False
+            if automation_requirements["modality"] == "all":
+                found_automation = all(automation_hit_dict.values())
+            elif automation_requirements["modality"] == "any":
+                found_automation = any(automation_hit_dict.values())
+            else:
+                self.logger.warning(
+                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                )
+            if found_instructions and found_automation:  # pass
+                test_status = True
+                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
+            else:  # fail
+                if not found_instructions:
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations}."
+                    )
+                if not found_automation:
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                    )
         return test_status
 
     def testBadgeIncluded(self):
@@ -257,7 +306,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             )
             self.output = RequirementsOutput()
             self.result.test_status = "fail"
-            if self.testBuildInstructions():
+            if self.testInstructions():
                 self.result.test_status = "pass"
             if self.testDependencies():
                 self.result.test_status = "pass"
