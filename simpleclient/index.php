@@ -47,7 +47,7 @@ set_time_limit(0);
 $fuji_server = 'http://localhost:1071/fuji/api/v1/evaluate';
 $fuji_username = 'marvel';
 $fuji_password = 'wonderwoman';
-$metric_version =  "metrics_v0.7_software";  #"metrics_v0.7_software_cessda"; #"metrics_v0.5";  #"metrics_v0.7_software";
+#$metric_version =  "metrics_v0.7_software";  #"metrics_v0.7_software_cessda"; #"metrics_v0.5";  #"metrics_v0.7_software";
 $usegithub = true;
 ################################################################
 
@@ -83,7 +83,14 @@ if (isset($_POST['service_url'])){
         $input_service_type = $_POST['service_type'];
     }
 }
+if(isset($_POST['metric_version'])){
+    $input_metric_version=$_POST['metric_version'];
+}else{
+    $input_metric_version="metrics_v0.7_software";
+}
+
 $allowed_service_types = array('oai_pmh'=>'OAI-PMH','ogc_csw'=>'OGC CSW', 'sparql'=>'SPARQL');
+$allowed_metric_versions = array('metrics_v0.7_software'=>'software-agnostic', 'metrics_v0.7_software_cessda'=>'software-CESSDA')
 
 ?>
     <div class="container">
@@ -136,7 +143,20 @@ $allowed_service_types = array('oai_pmh'=>'OAI-PMH','ogc_csw'=>'OGC CSW', 'sparq
                                         </select>
                                     </div>
                                     <div class="row align-items-end">
-                                        <div class="col">
+                                        <div class="col-8">
+                                        <label for="metric_version" class="col-form-label-sm">Metric version:</label>
+                                        <select class="form-select form-select-sm" name="metric_version" id="metric_version">
+                                            <?php
+                                            foreach($allowed_metric_versions as $mk=> $mv){
+                                                if ($mk == $input_metric_version)
+                                                    echo '<option value ="'.$mk.'" selected>'.$mv.'</option>';
+                                                else
+                                                    echo '<option value ="'.$mk.'">'.$mv.'</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                        </div>
+                                        <div class="col-4">
                                             <?php
                                             $usedatacite_checked = ' checked';
                                             if ($usedatacite == false)
@@ -174,7 +194,7 @@ if (isset($input_pid)) {
     $message->test_debug = true;
     $message->use_datacite = $usedatacite;
     $message->use_github = $usegithub;
-    $message->metric_version = $metric_version;
+    $message->metric_version = $input_metric_version;
     $post = json_encode($message);
 
     $username = $fuji_username;
