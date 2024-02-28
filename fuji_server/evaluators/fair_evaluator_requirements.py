@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+import re
+
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.requirements import Requirements
 from fuji_server.models.requirements_output import RequirementsOutput
@@ -28,7 +30,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             "testInstructions": ["FRSM-13-R1-1"],
             "testDependencies": ["FRSM-13-R1-2"],
             "testDependenciesBuildAutomatedChecks": ["FRSM-13-R1-CESSDA-1"],
-            "testBadgeIncluded": ["FRSM-13-R1-CESSDA-2"],
+            "testBadgeIncludedAutomatedDeploy": ["FRSM-13-R1-CESSDA-2"],
             "testBuildBadgeStatus": ["FRSM-13-R1-CESSDA-3"],
         }
 
@@ -115,7 +117,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             required_keywords = test_requirements["required"]["keywords"]
             required_locations = test_requirements["required"]["location"]
             self.logger.info(
-                f"{self.metric_identifier} : Looking for {required_modality} keywords {required_keywords} in {required_locations}."
+                f"{self.metric_identifier} : Looking for {required_modality} keywords {required_keywords} in {required_locations} ({test_id})."
             )
             hit_dict = self.scanForKeywords(required_keywords, required_locations)
             found_instructions = False
@@ -125,17 +127,19 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 found_instructions = any(hit_dict.values())
             else:
                 self.logger.warning(
-                    f"{self.metric_identifier} : Unknown modality {required_modality} in test requirements. Choose 'all' or 'any'."
+                    f"{self.metric_identifier} : Unknown modality {required_modality} in test requirements ({test_id}). Choose 'all' or 'any'."
                 )
             if found_instructions:
                 test_status = True
-                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords ({test_id})."
+                )
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # does not pass
                 self.logger.warning(
-                    f"{self.metric_identifier} : Did not find {required_modality} keywords {required_keywords} in {required_locations}."
+                    f"{self.metric_identifier} : Did not find {required_modality} keywords {required_keywords} in {required_locations} ({test_id})."
                 )
         return test_status
 
@@ -160,14 +164,16 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 dependency_requirements["modality"] == "any"
             ), f"Found requirement modality {dependency_requirements['modality']}, please choose 'any' instead. Any other modality is too strict for this test layout."
             required_dependency_files = dependency_requirements["required"]["dependency_file"]
-            self.logger.info(f"{self.metric_identifier} : Checking presence of any of {required_dependency_files}.")
+            self.logger.info(
+                f"{self.metric_identifier} : Checking presence of any of {required_dependency_files} ({test_id})."
+            )
             dependency_present = not set(self.fuji.github_data.keys()).isdisjoint(required_dependency_files)
             # Check for automated building and installation
             automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
             required_automation_locations = automation_requirements["required"]["automation_file"]
             required_automation_keywords = automation_requirements["required"]["automation_keywords"]
             self.logger.info(
-                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
             )
             automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
             found_automation = False
@@ -177,20 +183,25 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 found_automation = any(automation_hit_dict.values())
             else:
                 self.logger.warning(
-                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements ({test_id}). Choose 'all' or 'any'."
                 )
             if dependency_present and found_automation:  # pass
                 test_status = True
-                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    f"{self.metric_identifier} : Found dependency and automation files ({test_id}).",
+                )
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
                 if not dependency_present:
-                    self.logger.warning(f"{self.metric_identifier} : Did not find any of {required_dependency_files}.")
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find any of {required_dependency_files} ({test_id})."
+                    )
                 if not found_automation:
                     self.logger.warning(
-                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
                     )
         return test_status
 
@@ -209,9 +220,6 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(
-                f"{self.metric_identifier} : Test for dependency information, build instructions and automated checks is not implemented."
-            )
             test_score = self.getTestConfigScore(test_id)
             instructions_requirements = self.metric_tests[test_id].metric_test_requirements[0]
             required_instructions_locations = instructions_requirements["required"]["location"]
@@ -220,7 +228,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             required_automation_locations = automation_requirements["required"]["automation_file"]
             required_automation_keywords = automation_requirements["required"]["automation_keywords"]
             self.logger.info(
-                f"{self.metric_identifier} : Looking for {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations}."
+                f"{self.metric_identifier} : Looking for {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations} ({test_id})."
             )
             # dependency info and build instruction in README
             instructions_hit_dict = self.scanForKeywords(
@@ -233,11 +241,11 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 found_instructions = any(instructions_hit_dict.values())
             else:
                 self.logger.warning(
-                    f"{self.metric_identifier} : Unknown modality {instructions_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                    f"{self.metric_identifier} : Unknown modality {instructions_requirements['modality']} in test requirements ({test_id}). Choose 'all' or 'any'."
                 )
             # linting and other relevant checks present in automated build and test process
             self.logger.info(
-                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
             )
             automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
             found_automation = False
@@ -247,33 +255,36 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 found_automation = any(automation_hit_dict.values())
             else:
                 self.logger.warning(
-                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements. Choose 'all' or 'any'."
+                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements ({test_id}). Choose 'all' or 'any'."
                 )
             if found_instructions and found_automation:  # pass
                 test_status = True
-                self.logger.log(self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords.")
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    f"{self.metric_identifier} : Found dependency, build and automation keywords ({test_id}).",
+                )
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
                 if not found_instructions:
                     self.logger.warning(
-                        f"{self.metric_identifier} : Did not find {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations}."
+                        f"{self.metric_identifier} : Did not find {instructions_requirements['modality']} keywords {required_instructions_keywords} in {required_instructions_locations} ({test_id})."
                     )
                 if not found_automation:
                     self.logger.warning(
-                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations}."
+                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
                     )
         return test_status
 
-    def testBadgeIncluded(self):
+    def testBadgeIncludedAutomatedDeploy(self):
         """The README file includes a badge that links to the automated build tool (Jenkins).
         Deployment to development and staging environments is automated (conditional on test results).
 
         Returns:
             bool: True if the test was defined and passed. False otherwise.
         """
-        agnostic_test_name = "testBadgeIncluded"
+        agnostic_test_name = "testBadgeIncludedAutomatedDeploy"
         test_status = False
         test_defined = False
         for test_id in self.metric_test_map[agnostic_test_name]:
@@ -281,7 +292,62 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(f"{self.metric_identifier} : Test for presence of build badge is not implemented.")
+            test_score = self.getTestConfigScore(test_id)
+            badge_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            required_badge_link_keywords = badge_requirements["required"]["badge_link_keywords"]
+            automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
+            required_automation_locations = automation_requirements["required"]["automation_file"]
+            required_automation_keywords = automation_requirements["required"]["automation_keywords"]
+            # test for build badge linking to Jenkins
+            found_build_badge = False
+            badge_regex = r"\[!\[.*?\]\(.*?\)\]\((https?://[^)]+)\)"  # finds badges with links
+            readme = self.fuji.github_data.get("README")
+            if readme is not None:
+                readme_raw = readme[0]["content"].decode("utf-8")
+                badge_matches = re.findall(badge_regex, readme_raw)
+                if len(badge_matches) > 0:
+                    badge_hit_dict = {}
+                    for badge_keyword in required_badge_link_keywords:
+                        badge_hit_dict[badge_keyword] = self.nestedDataContainsKeyword(badge_matches, badge_keyword)
+                    if badge_requirements["modality"] == "all":
+                        found_build_badge = all(badge_hit_dict.values())
+                    elif badge_requirements["modality"] == "any":
+                        found_build_badge = any(badge_hit_dict.values())
+                    else:
+                        self.logger.warning(
+                            f"{self.metric_identifier} : Unknown modality {badge_requirements['modality']} in test requirements ({test_id}). Choose 'all' or 'any'."
+                        )
+            # test for automated deployment
+            self.logger.info(
+                f"{self.metric_identifier} : Looking for {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
+            )
+            automation_hit_dict = self.scanForKeywords(required_automation_keywords, required_automation_locations)
+            found_automation = False
+            if automation_requirements["modality"] == "all":
+                found_automation = all(automation_hit_dict.values())
+            elif automation_requirements["modality"] == "any":
+                found_automation = any(automation_hit_dict.values())
+            else:
+                self.logger.warning(
+                    f"{self.metric_identifier} : Unknown modality {automation_requirements['modality']} in test requirements ({test_id}). Choose 'all' or 'any'."
+                )
+            # combine
+            if found_build_badge and found_automation:
+                test_status = True
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    f"{self.metric_identifier} : Found build badge and automation keywords ({test_id}).",
+                )
+                self.maturity = self.getTestConfigMaturity(test_id)
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
+            else:  # fail
+                if not found_build_badge:
+                    self.logger.warning(f"{self.metric_identifier} : Did not find build badge in README ({test_id}).")
+                if not found_automation:
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
+                    )
         return test_status
 
     def testBuildBadgeStatus(self):
@@ -298,7 +364,28 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(f"{self.metric_identifier} : Test for build badge status is not implemented.")
+            test_score = self.getTestConfigScore(test_id)
+            # test for build badge linking to Jenkins result
+            # NOTE(km 28-2-24): stricter alternative requires the jenkins path to start with 'jenkins.'
+            # badge_regex = r"\[!\[.*?\]\((https?://jenkins\.[^)]+/buildStatus/icon\?.*?)\)\]\((https?://jenkins\.[^)]+/job/[^)]+)\)"
+            badge_regex = r"\[!\[.*?\]\((https?://[^)]+/buildStatus/icon\?.*?)\)\]\((https?://[^)]+/job/[^)]+)\)"
+            readme = self.fuji.github_data.get("README")
+            if readme is not None:
+                readme_raw = readme[0]["content"].decode("utf-8")
+                badge_matches = re.findall(badge_regex, readme_raw)
+                if len(badge_matches) > 0:
+                    test_status = True
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        f"{self.metric_identifier} : Found build badge indicating build status ({test_id}).",
+                    )
+                    self.maturity = self.getTestConfigMaturity(test_id)
+                    self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                    self.score.earned += test_score
+                else:
+                    self.logger.warning(
+                        f"{self.metric_identifier} : Did not find build badge indicating the build status in README ({test_id})."
+                    )
         return test_status
 
     def evaluate(self):
@@ -314,7 +401,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 self.result.test_status = "pass"
             if self.testDependenciesBuildAutomatedChecks():
                 self.result.test_status = "pass"
-            if self.testBadgeIncluded():
+            if self.testBadgeIncludedAutomatedDeploy():
                 self.result.test_status = "pass"
             if self.testBuildBadgeStatus():
                 self.result.test_status = "pass"
