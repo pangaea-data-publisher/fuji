@@ -170,7 +170,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             self.logger.warning(
-                f"{self.metric_identifier} : Test for license information in metadata is not implemented."
+                f"{self.metric_identifier} : Test for license information in metadata is not implemented {(test_id)}."
             )
         return test_status
 
@@ -256,7 +256,8 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 if license_path == "LICENSE.txt":
                     test_status = True
                     self.logger.log(
-                        self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found LICENSE.txt at repository root."
+                        self.fuji.LOG_SUCCESS,
+                        f"{self.metric_identifier} : Found LICENSE.txt at repository root ({test_id}).",
                     )
                     self.maturity = self.getTestConfigMaturity(test_id)
                     self.setEvaluationCriteriumScore(test_id, test_score, "pass")
@@ -265,18 +266,18 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                     p = Path(license_path)
                     if str(p.parent) != ".":
                         self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository."
+                            f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository ({test_id})."
                         )
                     if p.suffix != ".txt":
                         self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT."
+                            f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT ({test_id})."
                         )
                     if p.stem != "LICENSE":
                         self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file name is not LICENSE."
+                            f"{self.metric_identifier} : Found a license file, but the file name is not LICENSE ({test_id})."
                         )
             else:
-                self.logger.warning(f"{self.metric_identifier} : Did not find a license file.")
+                self.logger.warning(f"{self.metric_identifier} : Did not find a license file ({test_id}).")
         return test_status
 
     def testLicenseInHeaders(self):
@@ -300,7 +301,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                     test_status = True
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
-                        f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers.",
+                        f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers ({test_id}).",
                     )
             if not test_status:  # CESSDA-3 did not pass
                 source_code_samples = self.fuji.github_data.get("source_code_samples")
@@ -314,14 +315,14 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                         test_status = True
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
-                            f"{self.metric_identifier} : Sample of {len(source_code_samples)} source code files all contained a license header.",
+                            f"{self.metric_identifier} : Sample of {len(source_code_samples)} source code files all contained a license header ({test_id}).",
                         )
                     else:
                         self.logger.warning(
-                            f"{self.metric_identifier} : {license_headers_count} out of a sample of {len(source_code_samples)} source code files were found to contain a license header."
+                            f"{self.metric_identifier} : {license_headers_count} out of a sample of {len(source_code_samples)} source code files were found to contain a license header ({test_id})."
                         )
                 else:
-                    self.logger.warning(f"{self.metric_identifier} : No source code files found.")
+                    self.logger.warning(f"{self.metric_identifier} : No source code files found ({test_id}).")
             if test_status:  # test passed, update score and maturity
                 self.maturity = self.getTestConfigMaturity(test_id)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
@@ -343,7 +344,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             self.logger.warning(
-                f"{self.metric_identifier} : Test for license information of bundled components is not implemented."
+                f"{self.metric_identifier} : Test for license information of bundled components is not implemented ({test_id})."
             )
         return test_status
 
@@ -385,7 +386,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                             test_status = True
                             self.logger.log(
                                 self.fuji.LOG_SUCCESS,
-                                f"{self.metric_identifier} : Maven POM checks for license headers in source files.",
+                                f"{self.metric_identifier} : Maven POM checks for license headers in source files ({test_id}).",
                             )
                             self.maturity = self.getTestConfigMaturity(test_id)
                             self.setEvaluationCriteriumScore(test_id, test_score, "pass")
@@ -393,12 +394,12 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                             break
                     if not found_license_plugin:
                         self.logger.warning(
-                            f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files."
+                            f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files ({test_id})."
                         )
                 else:
-                    self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file.")
+                    self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file ({test_id}).")
             if any(e != "maven_pom" for e in required_build_scripts):
-                self.logger.warning(f"{self.metric_identifier} : Unknown build script configured.")
+                self.logger.warning(f"{self.metric_identifier} : Unknown build script configured ({test_id}).")
         return test_status
 
     def evaluate(self):
