@@ -2,11 +2,12 @@
 #
 # SPDX-License-Identifier: MIT
 
-from datetime import datetime
+# coding: utf-8
 
-# from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
+from datetime import date, datetime  # noqa: F401
+
 from fuji_server import util
-from fuji_server.models.any_of_fair_results_items import AnyOfFAIRResultsResultsItems
+from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.base_model_ import Model
 
 

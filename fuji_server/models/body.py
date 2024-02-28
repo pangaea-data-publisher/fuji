@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+# coding: utf-8
+
+from datetime import date, datetime  # noqa: F401
+
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 
@@ -19,6 +23,7 @@ class Body(Model):
         metadata_service_endpoint: str | None = None,
         metadata_service_type: str | None = None,
         use_datacite: bool | None = None,
+        use_github: bool | None = None,
         metric_version: str | None = None,
         auth_token: str | None = None,
         auth_token_type: str | None = None,
@@ -36,6 +41,8 @@ class Body(Model):
         :type metadata_service_type: str
         :param use_datacite: The use_datacite of this Body.  # noqa: E501
         :type use_datacite: bool
+        :param use_github: The use_github of this Body.  # noqa: E501
+        :type use_github: bool
         :param metric_version: The metric_version of this Body.  # noqa: E501
         :type metric_version: str
         :param auth_token: The auth_token of this Body.  # noqa: E501
@@ -51,6 +58,7 @@ class Body(Model):
             "metadata_service_endpoint": str,
             "metadata_service_type": str,
             "use_datacite": bool,
+            "use_github": bool,
             "metric_version": str,
             "auth_token": str,
             "auth_token_type": str,
@@ -63,6 +71,7 @@ class Body(Model):
             "metadata_service_endpoint": "metadata_service_endpoint",
             "metadata_service_type": "metadata_service_type",
             "use_datacite": "use_datacite",
+            "use_github": "use_github",
             "metric_version": "metric_version",
             "auth_token": "auth_token",
             "auth_token_type": "auth_token_type",
@@ -73,6 +82,7 @@ class Body(Model):
         self._metadata_service_endpoint = metadata_service_endpoint
         self._metadata_service_type = metadata_service_type
         self._use_datacite = use_datacite
+        self._use_github = use_github
         self._metric_version = metric_version
         self._auth_token = auth_token
         self._auth_token_type = auth_token_type
@@ -203,6 +213,29 @@ class Body(Model):
         """
 
         self._use_datacite = use_datacite
+
+    @property
+    def use_github(self) -> bool:
+        """Gets the use_github of this Body.
+
+        Indicates if the GitHub REST API shall be used to collect (meta)data  # noqa: E501
+
+        :return: The use_github of this Body.
+        :rtype: bool
+        """
+        return self._use_github
+
+    @use_github.setter
+    def use_github(self, use_github: bool):
+        """Sets the use_github of this Body.
+
+        Indicates if the GitHub REST API shall be used to collect (meta)data  # noqa: E501
+
+        :param use_github: The use_github of this Body.
+        :type use_github: bool
+        """
+
+        self._use_github = use_github
 
     @property
     def metric_version(self) -> str:

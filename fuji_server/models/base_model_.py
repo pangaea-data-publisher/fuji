@@ -5,6 +5,8 @@
 import pprint
 import typing
 
+import six
+
 from fuji_server import util
 
 T = typing.TypeVar("T")
@@ -31,7 +33,7 @@ class Model:
         """
         result = {}
 
-        for attr, _ in self.swagger_types.items():
+        for attr, _ in six.iteritems(self.swagger_types):
             value = getattr(self, attr)
             if isinstance(value, list):
                 result[attr] = list(map(lambda x: x.to_dict() if hasattr(x, "to_dict") else x, value))

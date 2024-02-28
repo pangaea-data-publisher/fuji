@@ -1,0 +1,41 @@
+# LIST OF FAIR4RS METRICS AND THEIR RESPONSE OUTPUT FORMATS
+config:
+  metric_specification: https://doi.org/10.5281/zenodo.10047401
+  metric_status: draft
+  allowed_harvesting_methods:
+  - HTML_EMBEDDING
+  - MICRODATA
+  - TYPED_LINKS
+  - SIGNPOSTING
+  allowed_metadata_standards:
+  - jsonld
+  - dublin-core
+  - dcat-data-catalog-vocabulary
+metrics:
+- metric_identifier: FRSM-15-R1.1
+  metric_number: 15
+  metric_short_name: Software Source Code License
+  metric_name: The software source code includes licensing information for the software and any bundled external software.
+  description: It is important that software licences are included with the source code as many tools and processes look for licensing information there to determine licence compatibility.
+  fair_principle: R1.1
+  target: Software
+  evaluation_mechanism: Metric evaluation is based on the presence of a machine readable license file.
+  test_scoring_mechanism: cumulative
+  metric_tests:
+  - metric_test_identifier: FRSM-15-R1.1-CESSDA-1
+    metric_test_name: LICENSE.txt file is included at the root of the repository.
+    metric_test_score: 1
+    metric_test_maturity: 1
+  - metric_test_identifier: FRSM-15-R1.1-CESSDA-2
+    metric_test_name: Licensing information is part of the source code header.
+    metric_test_score: 1
+    metric_test_maturity: 2
+  - metric_test_identifier: FRSM-15-R1.1-CESSDA-3
+    metric_test_name: The build script (Maven POM, where used) checks that the standard header is present in all source code files.
+    metric_test_score: 1
+    metric_test_maturity: 3
+  created_by: FAIR4RS
+  date_created: 2023-12-13
+  date_updated: 2023-12-13
+  version: 0.1
+  total_score: 3

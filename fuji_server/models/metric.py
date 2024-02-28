@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 
-from datetime import date
+# coding: utf-8
+
+from datetime import date, datetime  # noqa: F401
 
 from fuji_server import util
 from fuji_server.models.base_model_ import Model

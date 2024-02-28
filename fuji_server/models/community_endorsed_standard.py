@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+# coding: utf-8
+
+from datetime import date, datetime  # noqa: F401
+
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
 from fuji_server.models.community_endorsed_standard_output import CommunityEndorsedStandardOutput
@@ -25,7 +29,7 @@ class CommunityEndorsedStandard(Model):
         metric_tests: dict[str, FAIRResultEvaluationCriterium] | None = None,
         test_status: str = "fail",
         score: FAIRResultCommonScore = None,
-        maturity: str = "incomplete",
+        maturity: int = 0,
         output: CommunityEndorsedStandardOutput = None,
         test_debug: Debug = None,
     ):
@@ -44,7 +48,7 @@ class CommunityEndorsedStandard(Model):
         :param score: The score of this CommunityEndorsedStandard.  # noqa: E501
         :type score: FAIRResultCommonScore
         :param maturity: The maturity of this CommunityEndorsedStandard.  # noqa: E501
-        :type maturity: str
+        :type maturity: int
         :param output: The output of this CommunityEndorsedStandard.  # noqa: E501
         :type output: CommunityEndorsedStandardOutput
         :param test_debug: The test_debug of this CommunityEndorsedStandard.  # noqa: E501
@@ -57,7 +61,7 @@ class CommunityEndorsedStandard(Model):
             "metric_tests": dict[str, FAIRResultEvaluationCriterium],
             "test_status": str,
             "score": FAIRResultCommonScore,
-            "maturity": str,
+            "maturity": int,
             "output": CommunityEndorsedStandardOutput,
             "test_debug": Debug,
         }
@@ -232,21 +236,21 @@ class CommunityEndorsedStandard(Model):
         self._score = score
 
     @property
-    def maturity(self) -> str:
+    def maturity(self) -> int:
         """Gets the maturity of this CommunityEndorsedStandard.
 
 
         :return: The maturity of this CommunityEndorsedStandard.
-        :rtype: str
+        :rtype: int
         """
         return self._maturity
 
     @maturity.setter
     def maturity(self, maturity: int):
-        """Sets the maturity of this Uniqueness.
+        """Sets the maturity of this CommunityEndorsedStandard.
 
 
-        :param maturity: The maturity of this Uniqueness.
+        :param maturity: The maturity of this CommunityEndorsedStandard.
         :type maturity: int
         """
 

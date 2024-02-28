@@ -39,6 +39,7 @@ async def assess_by_id(body):
         oaipmh_endpoint = body.get("oaipmh_endpoint")
         metadata_service_type = body.get("metadata_service_type")
         usedatacite = body.get("use_datacite")
+        usegithub = body.get("use_github")
         metric_version = body.get("metric_version")
         print("BODY METRIC", metric_version)
         auth_token = body.get("auth_token")
@@ -56,6 +57,7 @@ async def assess_by_id(body):
             metadata_service_url=metadata_service_endpoint,
             metadata_service_type=metadata_service_type,
             use_datacite=usedatacite,
+            use_github=usegithub,
             oaipmh_endpoint=oaipmh_endpoint,
             metric_version=metric_version,
         )
@@ -80,10 +82,11 @@ async def assess_by_id(body):
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
         ft.harvest_re3_data()
+        ft.harvest_github()
         core_metadata_result = ft.check_minimal_metatadata()
         # print(ft.metadata_unmerged)
         content_identifier_included_result = ft.check_data_identifier_included_in_metadata()
-        # print('F-UJI checks: accsee level')
+        # print('F-UJI checks: access level')
         access_level_result = ft.check_data_access_level()
         # print('F-UJI checks: license')
         license_result = ft.check_license()

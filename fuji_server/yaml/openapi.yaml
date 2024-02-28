@@ -40,6 +40,7 @@ paths:
               metadata_service_endpoint: http://ws.pangaea.de/oai/provider
               metadata_service_type: oai_pmh
               use_datacite: true
+              use_github: false
               metric_version: metrics_v0.5
       responses:
         '200':
@@ -678,6 +679,9 @@ components:
         use_datacite:
           type: boolean
           description: Indicates if DataCite content negotiation (using the DOI) shall be used to collect metadata
+        use_github:
+          type: boolean
+          description: Indicates if the GitHub REST API shall be used to collect (meta)data
         metric_version:
           type: string
           description: The FAIRsFAIR metric version be used fo rthe assessment

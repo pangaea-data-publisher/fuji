@@ -37,6 +37,7 @@ from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import
 from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREvaluatorUniqueIdentifierData
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
 from fuji_server.harvester.data_harvester import DataHarvester
+from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
@@ -80,6 +81,7 @@ class FAIRCheck:
         metadata_service_url=None,
         metadata_service_type=None,
         use_datacite=True,
+        use_github=False,
         verify_pids=True,
         oaipmh_endpoint=None,
         metric_version=None,
@@ -137,6 +139,7 @@ class FAIRCheck:
 
         self.rdf_collector = None
         self.use_datacite = use_datacite
+        self.use_github = use_github
         self.repeat_pid_check = False
         self.logger_message_stream = io.StringIO()
         logging.addLevelName(self.LOG_SUCCESS, "SUCCESS")
@@ -347,6 +350,17 @@ class FAIRCheck:
             data_harvester.retrieve_all_data()
             self.content_identifier = data_harvester.data
 
+    def harvest_github(self):
+        if self.use_github:
+            github_harvester = GithubHarvester(self.id)
+            github_harvester.harvest()
+            self.github_data = github_harvester.data
+        else:
+            self.github_data = {}
+            # NOTE: Update list of metrics that are impacted by this as more are implemented.
+            for m in ["FRSM-15-R1.1"]:
+                self.logger.warning(f"{m} : Github support disabled, therefore skipping harvesting through Github API")
+
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()
         self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
@@ -512,7 +526,7 @@ class FAIRCheck:
         logger_messages = {}
         self.logger_message_stream.seek(0)
         for log_message in self.logger_message_stream.readlines():
-            if log_message.startswith("FsF-"):
+            if log_message.startswith("FsF-") or log_message.startswith("FRSM-"):
                 m = log_message.split(":", 1)
                 metric = m[0].strip()
                 message_n_level = m[1].strip().split("|", 1)
@@ -541,7 +555,9 @@ class FAIRCheck:
         }
         for res_k, res_v in enumerate(results):
             if res_v.get("metric_identifier"):
-                metric_match = re.search(r"^FsF-(([FAIR])[0-9](\.[0-9])?)-", str(res_v.get("metric_identifier")))
+                metric_match = re.search(
+                    r"^(?:FRSM-[0-9]+|FsF)-(([FAIR])[0-9](\.[0-9])?)", str(res_v.get("metric_identifier"))
+                )  # match both FAIR and FsF metrics
                 if metric_match.group(2) is not None:
                     fair_principle = metric_match[1]
                     fair_category = metric_match[2]
