@@ -49,7 +49,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
     def setLicenseDataAndOutput(self):
         self.license_info = []
         specified_licenses = self.fuji.metadata_merged.get("license")
-        if specified_licenses is None:  # try GitHub data
+        if specified_licenses is None and self.metric_identifier.startswith("FRSM"):  # try GitHub data
             specified_licenses = self.fuji.github_data.get("license")
         if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
             specified_licenses = [specified_licenses]
