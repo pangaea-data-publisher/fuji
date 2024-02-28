@@ -328,6 +328,19 @@ metrics:
     metric_test_name: The README file includes a badge that links to the automated build tool (Jenkins). Deployment to development and staging environments is automated (conditional on test results).
     metric_test_score: 1
     metric_test_maturity: 2
+    metric_test_requirements:
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: any
+      required:
+        badge_link_keywords:
+        - jenkins
+    - target: https://f-uji.net/vocab/metadata/standards
+      modality: any
+      required:
+        automation_file:
+        - Jenkinsfile
+        automation_keywords:
+        - deploy
   - metric_test_identifier: FRSM-13-R1-CESSDA-3
     metric_test_name: The build badge indicates the status of the latest build (passing or failing).
     metric_test_score: 1
