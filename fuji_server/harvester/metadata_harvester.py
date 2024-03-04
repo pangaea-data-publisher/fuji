@@ -628,6 +628,7 @@ class MetadataHarvester:
                     pass
 
                 extracted = extruct.extract(extruct_target, syntaxes=syntaxes, encoding="utf-8")
+
             except Exception as e:
                 extracted = {}
                 self.logger.warning(

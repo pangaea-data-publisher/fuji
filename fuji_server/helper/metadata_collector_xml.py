@@ -181,33 +181,42 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if root_element == "codeBook":
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info("FsF-F2-01M : Identified DDI codeBook XML based on root tag")
+                        self.namespaces.append("ddi:codebook:2_5")
                     elif root_element == "StudyUnit":
                         xml_mapping = Mapper.XML_MAPPING_DDI_STUDYUNIT.value
                         self.logger.info("FsF-F2-01M : Identified DDI StudyUnit XML based on root tag")
+                        self.namespaces.append("ddi:studyunit:3_2")
                     elif root_element == "CMD":
                         xml_mapping = Mapper.XML_MAPPING_CMD.value
                         self.logger.info("FsF-F2-01M : Identified DDI CMD XML based on root tag")
+                        self.namespaces.append("http://www.clarin.eu/cmd/")
                     elif root_element == "DIF":
                         xml_mapping = Mapper.XML_MAPPING_DIF.value
                         self.logger.info(
                             "FsF-F2-01M : Identified Directory Interchange Format (DIF) XML based on root tag"
                         )
+                        self.namespaces.append("http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/")
                     elif root_element == "dc" or any(
                         "http://dublincore.org/schemas/xmls/" in s for s in self.namespaces
                     ):
                         xml_mapping = Mapper.XML_MAPPING_DUBLIN_CORE.value
                         self.logger.info("FsF-F2-01M : Identified Dublin Core XML based on root tag or namespace")
+                        self.namespaces.append("http://purl.org/dc/elements/1.1/")
                     elif root_element == "mods":
                         xml_mapping = Mapper.XML_MAPPING_MODS.value
                         self.logger.info("FsF-F2-01M : Identified MODS XML based on root tag")
+                        self.namespaces.append("http://www.loc.gov/mods/")
                     elif root_element == "eml":
                         xml_mapping = Mapper.XML_MAPPING_EML.value
                         self.logger.info("FsF-F2-01M : Identified EML XML based on root tag")
+                        self.namespaces.append("eml://ecoinformatics.org/eml-2.0.0")
                     elif root_element in ["MD_Metadata", "MI_Metadata"]:
                         xml_mapping = Mapper.XML_MAPPING_GCMD_ISO.value
                         self.logger.info("FsF-F2-01M : Identified ISO 19115 XML based on root tag")
+                        self.namespaces.append("http://www.isotc211.org/2005/gmd")
                     elif root_element == "rss":
                         self.logger.info("FsF-F2-01M : Identified RSS/GEORSS XML based on root tag")
+                        self.namespaces.append("http://www.georss.org/georss/")
                     elif root_namespace:
                         if "datacite.org/schema" in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
