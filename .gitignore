@@ -198,3 +198,6 @@ Temporary Items
 
 # Ruff
 .ruff_cache
+
+# results
+examples/mass_assessment/results
