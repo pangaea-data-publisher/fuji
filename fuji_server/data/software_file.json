@@ -35,6 +35,16 @@
       "\\.github/workflows/"
     ]
   },
+  "license_file": {
+    "category": [
+      "provenance"
+    ],
+    "parse": "full",
+    "pattern": [
+      "(\\w*/)*LICEN(S|C)E(\\.\\w*)?",
+      "(\\w*/)*licen(s|c)e(\\.\\w*)?"
+    ]
+  },
   "maven_pom": {
     "category": [
       "documentation",
@@ -43,15 +53,6 @@
     "parse": "full",
     "pattern": [
       "pom\\.xml"
-    ]
-  },
-  "python_code": {
-    "category": [
-      "development"
-    ],
-    "parse": "file_name",
-    "pattern": [
-      ".*\\.py"
     ]
   }
 }

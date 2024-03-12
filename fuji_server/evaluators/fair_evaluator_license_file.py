@@ -169,9 +169,19 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            self.logger.warning(
-                f"{self.metric_identifier} : Test for license information in metadata is not implemented {(test_id)}."
-            )
+            test_score = self.getTestConfigScore(test_id)
+            parsed_license_file_data = self.fuji.github_data.get("license_file")
+            if len(parsed_license_file_data) > 0:
+                license_file_paths = [lf["path"] for lf in parsed_license_file_data]
+                test_status = True
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found licence file: {license_file_paths}."
+                )
+                self.maturity = max(self.maturity, self.getTestConfigMaturity(test_id))
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                self.score.earned += test_score
+            else:
+                self.logger.warning(f"{self.metric_identifier} : Did not find licence file.")
         return test_status
 
     def testLicenseIsValidAndSPDXRegistered(self):
@@ -212,7 +222,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                         self.metric_identifier,
                     )
                 )
-            if self.license_info:
+            if self.license_info:  # license info is populated from recognised GitHub license
                 for l in self.license_info:
                     if test_required:
                         for rq_license_id in test_required:
@@ -224,13 +234,13 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                             test_status = True
             else:
                 self.logger.warning(
-                    "{} : Skipping SPDX and community license verification since license information unavailable in metadata".format(
+                    "{} : Skipping SPDX and community license verification since no license information was recognised from metadata".format(
                         self.metric_identifier
                     )
                 )
 
             if test_status:
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.maturity, self.getTestConfigMaturity(test_id))
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
 
@@ -251,32 +261,37 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
-            license_path = self.fuji.github_data.get("license_path")
-            if license_path is not None:
-                if license_path == "LICENSE.txt":
-                    test_status = True
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        f"{self.metric_identifier} : Found LICENSE.txt at repository root ({test_id}).",
-                    )
-                    self.maturity = self.getTestConfigMaturity(test_id)
-                    self.setEvaluationCriteriumScore(test_id, test_score, "pass")
-                    self.score.earned += test_score
-                else:  # identify what's wrong
+            license_file_paths = [self.fuji.github_data.get("license_path")]
+            parsed_license_file_data = self.fuji.github_data.get("license_file")
+            license_file_paths += [lf["path"] for lf in parsed_license_file_data]
+            for license_path in license_file_paths:
+                if license_path is not None:
                     p = Path(license_path)
-                    if str(p.parent) != ".":
+                    if p.stem == "LICENSE":
+                        if str(p.parent) == ".":  # pass: LICENSE file at root
+                            test_status = True
+                            self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
+                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
+                            self.score.earned += test_score
+                            if p.suffix == ".txt":
+                                self.logger.log(
+                                    self.fuji.LOG_SUCCESS,
+                                    f"{self.metric_identifier} : Found LICENSE.txt at repository root ({test_id}).",
+                                )
+                            else:
+                                self.logger.warning(
+                                    f"{self.metric_identifier} : Found a license file at repository root, but the file suffix is not .txt ({test_id}). Test will still pass."
+                                )
+                            break
+                        else:
+                            self.logger.warning(
+                                f"{self.metric_identifier} : Found a license file {license_path}, but it is not located at the root of the repository ({test_id})."
+                            )
+                    else:
                         self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository ({test_id})."
+                            f"{self.metric_identifier} : Found a license file {license_path}, but the file name is not LICENSE ({test_id})."
                         )
-                    if p.suffix != ".txt":
-                        self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT ({test_id})."
-                        )
-                    if p.stem != "LICENSE":
-                        self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file name is not LICENSE ({test_id})."
-                        )
-            else:
+            if not test_status:
                 self.logger.warning(f"{self.metric_identifier} : Did not find a license file ({test_id}).")
         return test_status
 
@@ -324,7 +339,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 else:
                     self.logger.warning(f"{self.metric_identifier} : No source code files found ({test_id}).")
             if test_status:  # test passed, update score and maturity
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
         return test_status
@@ -388,7 +403,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                                 self.fuji.LOG_SUCCESS,
                                 f"{self.metric_identifier} : Maven POM checks for license headers in source files ({test_id}).",
                             )
-                            self.maturity = self.getTestConfigMaturity(test_id)
+                            self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                             self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                             self.score.earned += test_score
                             break

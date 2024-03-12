@@ -134,7 +134,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found required keywords ({test_id})."
                 )
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # does not pass
@@ -191,7 +191,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                     self.fuji.LOG_SUCCESS,
                     f"{self.metric_identifier} : Found dependency and automation files ({test_id}).",
                 )
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
@@ -263,7 +263,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                     self.fuji.LOG_SUCCESS,
                     f"{self.metric_identifier} : Found dependency, build and automation keywords ({test_id}).",
                 )
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
@@ -338,7 +338,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                     self.fuji.LOG_SUCCESS,
                     f"{self.metric_identifier} : Found build badge and automation keywords ({test_id}).",
                 )
-                self.maturity = self.getTestConfigMaturity(test_id)
+                self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned += test_score
             else:  # fail
@@ -379,7 +379,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                         self.fuji.LOG_SUCCESS,
                         f"{self.metric_identifier} : Found build badge indicating build status ({test_id}).",
                     )
-                    self.maturity = self.getTestConfigMaturity(test_id)
+                    self.maturity = max(self.getTestConfigMaturity(test_id), self.maturity)
                     self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                     self.score.earned += test_score
                 else:
