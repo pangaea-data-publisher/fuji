@@ -171,7 +171,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
             parsed_license_file_data = self.fuji.github_data.get("license_file")
-            if len(parsed_license_file_data) > 0:
+            if parsed_license_file_data is not None and len(parsed_license_file_data) > 0:
                 license_file_paths = [lf["path"] for lf in parsed_license_file_data]
                 test_status = True
                 self.logger.log(
@@ -263,7 +263,8 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
             test_score = self.getTestConfigScore(test_id)
             license_file_paths = [self.fuji.github_data.get("license_path")]
             parsed_license_file_data = self.fuji.github_data.get("license_file")
-            license_file_paths += [lf["path"] for lf in parsed_license_file_data]
+            if parsed_license_file_data is not None:
+                license_file_paths += [lf["path"] for lf in parsed_license_file_data]
             for license_path in license_file_paths:
                 if license_path is not None:
                     p = Path(license_path)
