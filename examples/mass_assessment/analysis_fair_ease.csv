@@ -1,5 +1,5 @@
-FRSM-13-R1-1,FRSM-13-R1-2,FRSM-15-R1.1-1,FRSM-15-R1.1-2,FRSM-15-R1.1-3
-fail,fail,pass,fail,pass
-pass,fail,pass,fail,pass
-fail,fail,pass,fail,pass
-pass,fail,pass,fail,fail
+resolved_url,FRSM-13-R1-1,FRSM-13-R1-2,FRSM-15-R1.1-1,FRSM-15-R1.1-2,FRSM-15-R1.1-3
+https://github.com/HCBScienceProducts/CANYON-B,fail,fail,pass,fail,pass
+https://github.com/ESSI-Lab/DAB,pass,fail,pass,fail,pass
+https://github.com/gher-uliege/DIVAnd.jl,fail,fail,pass,fail,pass
+https://github.com/Geomatys/examind-community,pass,fail,pass,fail,fail
