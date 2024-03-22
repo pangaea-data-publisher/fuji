@@ -263,17 +263,22 @@ class MetadataHarvester:
             candidate_landing_url = self.pid_collector[pid_url].get("resolved_url")
             if candidate_landing_url and self.landing_url:
                 candidate_landing_url_parts = extract(candidate_landing_url)
+                # print(candidate_landing_url_parts )
                 # landing_url_parts = extract(self.landing_url)
                 input_id_domain = candidate_landing_url_parts.domain + "." + candidate_landing_url_parts.suffix
                 # landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
                 if self.landing_domain != input_id_domain:
                     self.logger.warning(
                         "FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
-                        + str(pid_url)
+                        + str(self.landing_domain)
+                        + " <> "
+                        + str(input_id_domain)
                     )
                     self.logger.warning(
                         "FsF-F2-01M : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
-                        + str(pid_url)
+                        + str(self.landing_domain)
+                        + " <> "
+                        + str(input_id_domain)
                     )
                     return False
                 else:
@@ -322,6 +327,7 @@ class MetadataHarvester:
                     if idhelper.is_persistent and validated:
                         found_pids[found_id_scheme] = idhelper.get_identifier_url()
                 if len(found_pids) >= 1 and self.repeat_pid_check is False:
+                    # print(found_pids, next(iter(found_pids.items())))
                     self.logger.info(
                         "FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D"
                     )
@@ -702,17 +708,17 @@ class MetadataHarvester:
             self.logger.error("FsF-F2-01M : Resource inaccessible -: " + str(e))
             pass
 
-        if self.landing_url and self.is_html_page:
+        if self.landing_url:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
                     if "html" in requestHelper.content_type:
                         self.raise_warning_if_javascript_page(requestHelper.response_content)
-
                     up = urlparse(self.landing_url)
                     upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
                     self.landing_domain = upp.domain + "." + upp.suffix
-                    self.landing_html = requestHelper.getResponseContent()
+                    if self.is_html_page:
+                        self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
                     self.landing_redirect_status_list = requestHelper.redirect_status_list
@@ -1441,16 +1447,19 @@ class MetadataHarvester:
                         target_url_list = [self.origin_url, self.landing_url]
                 # specific target url
                 if isinstance(target_url, str):
-                    target_url_list = [target_url]
-
-                target_url_list = set(tu for tu in target_url_list if tu is not None)
-                self.retrieve_metadata_external_xml_negotiated(target_url_list)
-                self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
-                self.retrieve_metadata_external_rdf_negotiated(target_url_list)
-                self.retrieve_metadata_external_datacite()
-                if not repeat_mode:
-                    self.retrieve_metadata_external_linked_metadata()
-                    self.retrieve_metadata_external_oai_ore()
+                    if self.use_datacite is False and "doi" == self.pid_scheme:
+                        target_url_list = []
+                    else:
+                        target_url_list = [target_url]
+                if target_url_list:
+                    target_url_list = set(tu for tu in target_url_list if tu is not None)
+                    self.retrieve_metadata_external_xml_negotiated(target_url_list)
+                    self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
+                    self.retrieve_metadata_external_rdf_negotiated(target_url_list)
+                    self.retrieve_metadata_external_datacite()
+                    if not repeat_mode:
+                        self.retrieve_metadata_external_linked_metadata()
+                        self.retrieve_metadata_external_oai_ore()
 
             """if self.reference_elements:
                 self.logger.debug(f"FsF-F2-01M : Reference metadata elements NOT FOUND -: {self.reference_elements}")

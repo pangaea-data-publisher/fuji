@@ -1008,7 +1008,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         datasets = list(graph[: RDF.type : DCAT.Dataset])
         table = list(graph[: RDF.type : CSVW.Column])
-        print("TABLE", len(table))
+        # print("TABLE", len(table))
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
