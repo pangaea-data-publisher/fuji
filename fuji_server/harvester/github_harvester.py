@@ -16,28 +16,59 @@ class GithubHarvester:
         # Read Github API access token from config file.
         config = ConfigParser()
         config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.ini"))
-        token = config["ACCESS"]["token"]
-        if token != "":
-            auth = Auth.Token(token)
-        else:  # empty token, so no authentication possible (rate limit will be much lower)
-            auth = None
-            print("Running in unauthenticated mode. Capabilities are limited.")
-            self.logger.warning(
-                "FRSM-09-A1 : Running in unauthenticated mode. Capabilities are limited."
-            )  # TODO: would be better if it were a general warning!
+        self.logger = logger
         self.id = id
         self.host = host
-        if host != "https://github.com":
-            base_url = f"{self.host}/api/v3"
-            self.handle = Github(auth=auth, base_url=base_url)
-        else:
-            self.handle = Github(auth=auth)
-        self.logger = logger
+        self.authenticate(config)
         self.data = {}  # dictionary with all info
         fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
         software_file_path = os.path.join(fuji_server_dir, "data", "software_file.json")
         with open(software_file_path) as f:
             self.files_map = json.load(f)
+
+    def authenticate(self, config):
+        """Runs every time a new harvesting request comes in, as the harvester is re-initialised every time. Picks a token (if available) and initialises the pyGithub handle.
+
+        Args:
+            config (dict): parsed configuration dictionary
+        """
+        token_file = config["ACCESS"]["token_file"]
+        token_to_use = None
+        if token_file != "":
+            with open(token_file) as f:
+                token_list = f.readlines()
+            # find a token with enough remaining requests, or the one with most remaining if none available
+            fallback_max_token = None
+            fallback_max_rate_limit = 0
+            for token in token_list:
+                try:
+                    rate_limit = Github(auth=Auth.Token(token)).get_rate_limit()
+                    if rate_limit.core.remaining >= 1000 and rate_limit.search.remaining >= 2:
+                        token_to_use = token
+                        break
+                    elif rate_limit.core.remaining > fallback_max_rate_limit:
+                        fallback_max_rate_limit = rate_limit.core.remaining
+                        fallback_max_token = token
+                except:  # ignore expired or invalid tokens
+                    pass
+            if token_to_use is None:
+                token_to_use = fallback_max_token
+        else:
+            token = config["ACCESS"]["token"]
+            if token != "":
+                token_to_use = token
+        if token_to_use is not None:  # found a token, one way or another
+            auth = Auth.Token(token)
+        else:  # empty token, so no authentication possible (rate limit will be much lower)
+            auth = None
+            self.logger.warning(
+                "FRSM-09-A1 : Running in unauthenticated mode. Capabilities are limited."
+            )  # TODO: would be better if it were a general warning!
+        if self.host != "https://github.com":
+            base_url = f"{self.host}/api/v3"
+            self.handle = Github(auth=auth, base_url=base_url)
+        else:
+            self.handle = Github(auth=auth)
 
     def harvest(self):
         # check if it's a URL or repo ID
