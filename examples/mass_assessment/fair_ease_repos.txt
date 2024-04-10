@@ -1,4 +1,0 @@
-https://github.com/gher-uliege/DIVAnd.jl
-https://github.com/HCBScienceProducts/CANYON-B 
-https://github.com/Geomatys/examind-community
-https://github.com/ESSI-Lab/DAB
