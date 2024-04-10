@@ -48,18 +48,18 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             bool: True if key found somewhere in nested structure.
         """
         values = None
-        if type(data) == list:
+        if isinstance(data, list):
             values = data
-        elif type(data) == dict:
+        elif isinstance(data, dict):
             values = list(data.values())
         else:
             raise TypeError(
                 f"Can only recursively scan lists and dictionaries, but received data of type {type(data)}."
             )
         for d in values:
-            if type(d) == bytes:
+            if isinstance(d, bytes):
                 d = d.decode("utf-8")
-            if type(d) == str:
+            if isinstance(d, str):
                 if key in d.lower():
                     return True
             else:
@@ -87,9 +87,9 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             for k in keys_to_check:
                 content = self.fuji.github_data.get(location)
                 if content is not None:
-                    if type(content) == bytes:
+                    if isinstance(content, bytes):
                         content = content.decode("utf-8")
-                    if type(content) == str:
+                    if isinstance(content, str):
                         if k in content.lower():
                             hit_dict[k] = True  # found keyword in location
                             keys_to_check.remove(k)  # stop looking, have found something for this key

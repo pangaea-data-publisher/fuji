@@ -51,20 +51,20 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
         if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
             specified_licenses = [specified_licenses]
         if specified_licenses is not None and specified_licenses != []:
-            for l in specified_licenses:
+            for license in specified_licenses:
                 isurl = False
                 licence_valid = False
                 license_output = LicenseOutputInner()
-                if isinstance(l, str):
-                    isurl = idutils.is_url(l)
+                if isinstance(license, str):
+                    isurl = idutils.is_url(license)
                     if isurl:
-                        iscc, generic_cc = self.isCreativeCommonsLicense(l, self.metric_identifier)
+                        iscc, generic_cc = self.isCreativeCommonsLicense(license, self.metric_identifier)
                         if iscc:
-                            l = generic_cc
-                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(l, self.metric_identifier)
+                            license = generic_cc
+                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(license, self.metric_identifier)
                     else:  # maybe licence name
-                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(l, self.metric_identifier)
-                    license_output.license = l
+                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(license, self.metric_identifier)
+                    license_output.license = license
                     if spdx_uri:
                         licence_valid = True
                     license_output.details_url = spdx_uri
@@ -72,7 +72,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                     self.output.append(license_output)
                     self.license_info.append(
                         {
-                            "license": l,
+                            "license": license,
                             "id": spdx_id,
                             "is_url": isurl,
                             "spdx_uri": spdx_uri,
@@ -223,14 +223,14 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                     )
                 )
             if self.license_info:  # license info is populated from recognised GitHub license
-                for l in self.license_info:
+                for license in self.license_info:
                     if test_required:
                         for rq_license_id in test_required:
-                            if l.get("id"):
-                                if fnmatch.fnmatch(l.get("id"), rq_license_id):
+                            if license.get("id"):
+                                if fnmatch.fnmatch(license.get("id"), rq_license_id):
                                     test_status = True
                     else:
-                        if l.get("valid"):
+                        if license.get("valid"):
                             test_status = True
             else:
                 self.logger.warning(
