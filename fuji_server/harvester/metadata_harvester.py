@@ -150,7 +150,7 @@ class MetadataHarvester:
                         "FsF-F2-01M : Harvesting of this metadata is explicitely disabled in the metric configuration-:"
                         + str(metadata_standard)
                     )
-            if isinstance(metadict, dict) and allow_merge == True:
+            if isinstance(metadict, dict) and allow_merge is True:
                 # self.metadata_sources.append((method_source, 'negotiated'))
                 for r in metadict.keys():
                     if r in self.reference_elements:
@@ -246,14 +246,14 @@ class MetadataHarvester:
             print("Metadata Merge Error: " + str(e), format, mimetype, schema)
 
     def exclude_null(self, dt):
-        if type(dt) is dict:
+        if isinstance(dt, dict):
             return dict((k, self.exclude_null(v)) for k, v in dt.items() if v and self.exclude_null(v))
-        elif type(dt) is list:
+        elif isinstance(dt, list):
             try:
                 return list(set([self.exclude_null(v) for v in dt if v and self.exclude_null(v)]))
             except Exception:
                 return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
-        elif type(dt) is str:
+        elif isinstance(dt, str):
             return dt.strip()
         else:
             return dt
@@ -263,17 +263,22 @@ class MetadataHarvester:
             candidate_landing_url = self.pid_collector[pid_url].get("resolved_url")
             if candidate_landing_url and self.landing_url:
                 candidate_landing_url_parts = extract(candidate_landing_url)
+                # print(candidate_landing_url_parts )
                 # landing_url_parts = extract(self.landing_url)
                 input_id_domain = candidate_landing_url_parts.domain + "." + candidate_landing_url_parts.suffix
                 # landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
                 if self.landing_domain != input_id_domain:
                     self.logger.warning(
                         "FsF-F1-02D : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
-                        + str(pid_url)
+                        + str(self.landing_domain)
+                        + " <> "
+                        + str(input_id_domain)
                     )
                     self.logger.warning(
                         "FsF-F2-01M : Landing page domain resolved from PID found in metadata does not match with input URL domain -:"
-                        + str(pid_url)
+                        + str(self.landing_domain)
+                        + " <> "
+                        + str(input_id_domain)
                     )
                     return False
                 else:
@@ -321,7 +326,8 @@ class MetadataHarvester:
                         validated = False
                     if idhelper.is_persistent and validated:
                         found_pids[found_id_scheme] = idhelper.get_identifier_url()
-                if len(found_pids) >= 1 and self.repeat_pid_check == False:
+                if len(found_pids) >= 1 and self.repeat_pid_check is False:
+                    # print(found_pids, next(iter(found_pids.items())))
                     self.logger.info(
                         "FsF-F2-01M : Found object identifier in metadata, repeating PID check for FsF-F1-02D"
                     )
@@ -345,12 +351,12 @@ class MetadataHarvester:
                 try:
                     dom = lxml.html.fromstring(self.landing_html.encode("utf8"))
                     links = dom.xpath("/*/head/link")
-                    for l in links:
+                    for link in links:
                         source = MetadataOfferingMethods.TYPED_LINKS
-                        href = l.attrib.get("href")
-                        rel = l.attrib.get("rel")
-                        type = l.attrib.get("type")
-                        profile = l.attrib.get("format")
+                        href = link.attrib.get("href")
+                        rel = link.attrib.get("rel")
+                        type = link.attrib.get("type")
+                        profile = link.attrib.get("format")
                         type = str(type).strip()
                         # handle relative paths
                         linkparts = urlparse(href)
@@ -628,6 +634,7 @@ class MetadataHarvester:
                     pass
 
                 extracted = extruct.extract(extruct_target, syntaxes=syntaxes, encoding="utf-8")
+
             except Exception as e:
                 extracted = {}
                 self.logger.warning(
@@ -673,7 +680,7 @@ class MetadataHarvester:
                 # requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 neg_source, landingpage_html = requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
-                if not "html" in str(requestHelper.content_type):
+                if "html" not in str(requestHelper.content_type):
                     self.logger.info(
                         "FsF-F2-01M :Content type is "
                         + str(requestHelper.content_type)
@@ -701,17 +708,17 @@ class MetadataHarvester:
             self.logger.error("FsF-F2-01M : Resource inaccessible -: " + str(e))
             pass
 
-        if self.landing_url and self.is_html_page:
+        if self.landing_url:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
                     if "html" in requestHelper.content_type:
                         self.raise_warning_if_javascript_page(requestHelper.response_content)
-
                     up = urlparse(self.landing_url)
                     upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
                     self.landing_domain = upp.domain + "." + upp.suffix
-                    self.landing_html = requestHelper.getResponseContent()
+                    if self.is_html_page:
+                        self.landing_html = requestHelper.getResponseContent()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
                     self.landing_redirect_status_list = requestHelper.redirect_status_list
@@ -1440,16 +1447,19 @@ class MetadataHarvester:
                         target_url_list = [self.origin_url, self.landing_url]
                 # specific target url
                 if isinstance(target_url, str):
-                    target_url_list = [target_url]
-
-                target_url_list = set(tu for tu in target_url_list if tu is not None)
-                self.retrieve_metadata_external_xml_negotiated(target_url_list)
-                self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
-                self.retrieve_metadata_external_rdf_negotiated(target_url_list)
-                self.retrieve_metadata_external_datacite()
-                if not repeat_mode:
-                    self.retrieve_metadata_external_linked_metadata()
-                    self.retrieve_metadata_external_oai_ore()
+                    if self.use_datacite is False and "doi" == self.pid_scheme:
+                        target_url_list = []
+                    else:
+                        target_url_list = [target_url]
+                if target_url_list:
+                    target_url_list = set(tu for tu in target_url_list if tu is not None)
+                    self.retrieve_metadata_external_xml_negotiated(target_url_list)
+                    self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
+                    self.retrieve_metadata_external_rdf_negotiated(target_url_list)
+                    self.retrieve_metadata_external_datacite()
+                    if not repeat_mode:
+                        self.retrieve_metadata_external_linked_metadata()
+                        self.retrieve_metadata_external_oai_ore()
 
             """if self.reference_elements:
                 self.logger.debug(f"FsF-F2-01M : Reference metadata elements NOT FOUND -: {self.reference_elements}")

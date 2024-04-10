@@ -110,7 +110,7 @@ class FAIREvaluator:
         if testid in self.metric_tests:
             return True
         else:
-            self.logger.info(
+            self.logger.debug(
                 self.metric_identifier
                 + " : This test is not defined in the metric YAML and therefore not performed: "
                 + str(testid)

@@ -95,7 +95,7 @@ class DataHarvester:
                             fl["size"] = None
                     else:
                         fl["size"] = None
-                    if fl.get("type") == None:
+                    if fl.get("type") is None:
                         if fl["trust"] > 1:
                             fl["trust"] -= 1
                     elif "/" in str(fl.get("type")):
@@ -113,7 +113,7 @@ class DataHarvester:
             timeout = 10
             if len(ft) > self.max_number_per_mime:
                 self.logger.warning(
-                    f"FsF-F3-01M : Found more than -: {self.max_number_per_mime!s} data links (out of {len(ft)!s}) of type {fmime} will only take {self.max_number_per_mime!s}"
+                    f"FsF-F3-01M : Found more than -: {self.max_number_per_mime!s} data links (out of {len(ft)!s}) of type {fmime} will only take {self.max_number_per_mime!s} for content analysis"
                 )
             files_to_check = ft[: self.max_number_per_mime]
             # add the fifth one for compatibility reasons < f-uji 3.0.1, when we took the last of list of length FILES_LIMIT

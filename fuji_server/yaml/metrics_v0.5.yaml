@@ -187,7 +187,7 @@ metrics:
     metric_test_score: 1
     metric_test_maturity: 3
     metric_test_requirements:
-    - target: http://f-uji.net/vocab/metadata/sources
+    - target: http://f-uji.net/vocab/metadata/standard
       modality: any
       required:
         name:

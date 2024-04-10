@@ -61,7 +61,7 @@ class OAIMetadataProvider(MetadataProvider):
                     namespaces=OAIMetadataProvider.oai_namespaces,
                 )
                 for node in metadata_nodes:
-                    ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces).evaluate
+                    ele = etree.XPathEvaluator(node, namespaces=OAIMetadataProvider.oai_namespaces)  # .evaluate
                     metadata_prefix = ele(
                         "string(oai:metadataPrefix/text())"
                     )  # <metadataPrefix>oai_dc</metadataPrefix>
@@ -79,8 +79,11 @@ class OAIMetadataProvider(MetadataProvider):
                                 self.metric_id, metadata_prefix
                             )
                         )
-            except:
-                self.logger.info(f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint")
+            except Exception as e:
+                self.logger.info(
+                    f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint: " + str(e)
+                )
+                print("OAI-PMH Parsing Error: ", e)
 
         return schemas
 

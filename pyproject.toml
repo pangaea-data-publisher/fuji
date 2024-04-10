@@ -29,8 +29,8 @@ dependencies = [
   "hashid~=3.1.4",
   "idutils~=1.2",
   "jmespath~=1.0",
-  "levenshtein~=0.23.0",
-  "lxml~=5.0",
+  "levenshtein~=0.24.0",
+  "lxml==5.1.0",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
@@ -61,7 +61,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
-version = "3.1.1"
+version = "3.2.0"
 
 [project.optional-dependencies]
 dev = [
@@ -81,8 +81,8 @@ report = [
   "jupyter~=1.0"
 ]
 testing = [
-  "genbadge[tests]~=1.1",
-  "pytest~=7.4",
+  "genbadge[coverage]~=1.1",
+  "pytest~=8.0",
   "pytest-cov~=4.1",
   "pytest-randomly~=3.15",
   "pytest-recording~=0.13",
@@ -124,10 +124,9 @@ features = [
 ]
 
 [tool.hatch.envs.default.scripts]
-badges = "genbadge tests --input-file=pytest-junit.xml"
 cov = "pytest --cov {args}"
-cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml {args}"
-cov-html = "pytest --cov --cov-report=html {args}"
+cov-badge = "genbadge coverage --input-file=pytest-cobertura.xml --output-file=./reports/coverage/coveragebadge.svg"
+cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml --cov-report=html:./reports/coverage/ {args}"
 lint = "pre-commit run --all-files --color=always {args}"
 test = "pytest {args}"
 
@@ -150,17 +149,21 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
-ignore = [
-  "RUF012"  # mutable-class-default
-]
 line-length = 120
-select = [
-  "F",  # pyflakes
+# Ref: https://docs.astral.sh/ruff/configuration/
+src = ["fuji_server"]
+target-version = "py311"
+
+[tool.ruff.lint]
+extend-select = [
   "I",  # isort
   "UP",  # pyupgrade
   "RUF"  # ruff
 ]
-target-version = "py311"
+ignore = [
+  "E722",  # bare-except
+  "RUF012"  # mutable-class-default
+]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["fuji_server", "tests"]

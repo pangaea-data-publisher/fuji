@@ -438,9 +438,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info("FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:" + str(len(g)))
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
-                    for l, v in row.asdict().items():
-                        if l is not None:
-                            if l in [
+                    for relation_type, related_resource in row.asdict().items():
+                        if relation_type is not None:
+                            if relation_type in [
                                 "references",
                                 "source",
                                 "isVersionOf",
@@ -456,10 +456,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             ]:
                                 if not meta.get("related_resources"):
                                     meta["related_resources"] = []
-                                meta["related_resources"].append({"related_resource": str(v), "relation_type": l})
+                                meta["related_resources"].append(
+                                    {"related_resource": str(related_resource), "relation_type": relation_type}
+                                )
                             else:
-                                if v:
-                                    meta[l] = str(v)
+                                if related_resource:
+                                    meta[relation_type] = str(related_resource)
                     if meta:
                         break
                     # break
@@ -474,7 +476,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             has_xhtml = False
             for t in list(g):
                 # exclude xhtml properties/predicates:
-                if not "/xhtml/vocab" in t[1] and not "/ogp.me" in t[1]:
+                if "/xhtml/vocab" not in t[1] and "/ogp.me" not in t[1]:
                     goodtriples.append(t)
                 else:
                     has_xhtml = True
@@ -545,19 +547,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 + list(g.objects(item, SMA.sameAs))
             ):
                 meta["object_identifier"].append(str(identifier))
-
-            """
-             meta['object_identifier'] = (g.value(item, DC.identifier) or
-                 g.value(item, DCTERMS.identifier) or
-                 g.value(item, SDO.identifier) or
-                 g.value(item, SMA.identifier) or
-                 g.value(item, SMA.sameAs))
-            """
-        """
-        if self.source_name != self.getEnumSourceNames().RDFA.value:
-            meta['object_identifier'] = str(item)
-            meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
-        """
         if not meta.get("language"):
             meta["language"] = str(
                 g.value(item, DC.language)
@@ -1015,14 +1004,20 @@ class MetaDataCollectorRdf(MetaDataCollector):
         """
         dcat_metadata = dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
+        CSVW = Namespace("http://www.w3.org/ns/csvw#")
 
         datasets = list(graph[: RDF.type : DCAT.Dataset])
+        table = list(graph[: RDF.type : CSVW.Column])
+        # print("TABLE", len(table))
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
             dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
+
+            for t in table:
+                print(t)
             dcat_metadata["object_content_identifier"] = []
             for dist in distribution:
                 dtype, durl, dsize = None, None, None

@@ -10,8 +10,8 @@ import time
 from urllib.parse import urlparse
 
 import requests
-import yaml
 
+import yaml
 from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
 
 
@@ -230,7 +230,7 @@ class Preprocessor:
             print("updating re3data dois")
             p = {"query": "re3data_id:*"}
             try:
-                req = requests.get(cls.DATACITE_API_REPO, params=p, headers=cls.header)
+                req = requests.get(cls.DATACITE_API_REPO, params=p, headers=cls.header, timeout=5)
                 raw = req.json()
                 for r in raw["data"]:
                     cls.re3repositories[r["id"]] = r["attributes"]["re3data"]
@@ -245,6 +245,7 @@ class Preprocessor:
                     yaml.dump(cls.re3repositories, f2)
 
             except requests.exceptions.RequestException as e:
+                os.utime(re3dict_path)
                 print("Preprocessor Error: " + str(e))
                 cls.logger.error(e)
 
