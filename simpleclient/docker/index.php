@@ -47,7 +47,7 @@ set_time_limit(0);
     </nav>
 <?php
 ######################## local config ##########################
-$fuji_server = 'http://fuji:1071/fuji/api/v1/evaluate';
+$fuji_server = 'http://fuji-server:1071/fuji/api/v1/evaluate';
 $fuji_username = 'yourusername';
 $fuji_password = 'yourpassword';
 $usegithub = true;
