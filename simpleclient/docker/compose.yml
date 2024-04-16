@@ -1,0 +1,16 @@
+services:
+  nginx:
+    image: nginx:1.25.3-alpine
+    ports:
+    - 9001:80
+    volumes:
+    - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    - .:/var/www/html
+
+  php:
+    image: php:8.1-fpm
+    volumes:
+    - .:/var/www/html
+
+  fuji:
+    image: fuji-ext:latest
