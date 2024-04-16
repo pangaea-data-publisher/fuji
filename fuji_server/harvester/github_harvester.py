@@ -36,7 +36,7 @@ class GithubHarvester:
         token_to_use = None
         if token_file != "":
             with open(token_file) as f:
-                token_list = f.readlines()
+                token_list = f.read().splitlines()
             # find a token with enough remaining requests, or the one with most remaining if none available
             fallback_max_token = None
             fallback_max_rate_limit = 0
