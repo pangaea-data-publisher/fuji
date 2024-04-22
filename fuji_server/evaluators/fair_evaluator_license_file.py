@@ -17,14 +17,14 @@ from fuji_server.models.license_output_inner import LicenseOutputInner
 
 class FAIREvaluatorLicenseFile(FAIREvaluator):
     """
-    A class to evaluate whether the software metadata record includes licensing information?.
+    A class to evaluate whether the software source code includes licensing information.
     A child class of FAIREvaluator.
     ...
 
     Methods
     ------
     evaluate()
-        This method will evaluate if the software identifier or the metadata record referenced by it includes licensing information.
+        This method will check the software and its documentation for the presence of a licence.
 
     """
 
