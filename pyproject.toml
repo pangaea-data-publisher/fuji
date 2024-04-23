@@ -30,7 +30,7 @@ dependencies = [
   "idutils~=1.2",
   "jmespath~=1.0",
   "levenshtein~=0.25.0",
-  "lxml~=5.0",
+  "lxml==5.1.0",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
@@ -61,7 +61,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
-version = "3.1.1"
+version = "3.2.0"
 
 [project.optional-dependencies]
 dev = [

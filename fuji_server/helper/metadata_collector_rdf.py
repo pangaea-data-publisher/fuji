@@ -547,19 +547,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 + list(g.objects(item, SMA.sameAs))
             ):
                 meta["object_identifier"].append(str(identifier))
-
-            """
-             meta['object_identifier'] = (g.value(item, DC.identifier) or
-                 g.value(item, DCTERMS.identifier) or
-                 g.value(item, SDO.identifier) or
-                 g.value(item, SMA.identifier) or
-                 g.value(item, SMA.sameAs))
-            """
-        """
-        if self.source_name != self.getEnumSourceNames().RDFA.value:
-            meta['object_identifier'] = str(item)
-            meta['object_content_identifier'] = [{'url': str(item), 'type': 'application/rdf+xml'}]
-        """
         if not meta.get("language"):
             meta["language"] = str(
                 g.value(item, DC.language)
@@ -1017,14 +1004,20 @@ class MetaDataCollectorRdf(MetaDataCollector):
         """
         dcat_metadata = dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
+        CSVW = Namespace("http://www.w3.org/ns/csvw#")
 
         datasets = list(graph[: RDF.type : DCAT.Dataset])
+        table = list(graph[: RDF.type : CSVW.Column])
+        # print("TABLE", len(table))
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
             dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
+
+            for t in table:
+                print(t)
             dcat_metadata["object_content_identifier"] = []
             for dist in distribution:
                 dtype, durl, dsize = None, None, None

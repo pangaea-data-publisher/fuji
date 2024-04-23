@@ -110,7 +110,7 @@ class FAIRCheck:
         self.pid_url = None  # full pid # e.g., "https://doi.org/10.1594/pangaea.906092 or url (non-pid)
         self.landing_url = None  # url of the landing page of self.pid_url
         self.origin_url = None  # the url from where all starts - in case of redirection we'll need this later on
-        self.repository_urls = []  # urls identified which could represent the repository
+        self.repository_urls = []  # urls identified which could represent the repository will need this probably for FAIRiCAT things
         self.landing_html = None
         self.landing_content_type = None
         self.landing_origin = None  # schema + authority of the landing page e.g. https://www.pangaea.de
@@ -388,6 +388,8 @@ class FAIRCheck:
         self.linked_namespace_uri.update(self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend(self.metadata_harvester.related_resources)
         self.metadata_harvester.get_signposting_object_identifier()
+        self.pid_url = self.metadata_harvester.pid_url
+        self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
 
     """def lookup_metadatastandard_by_name(self, value):
@@ -648,4 +650,4 @@ class FAIRCheck:
                             self.repository_urls.append(publisher_url)
         if self.repository_urls:
             self.repository_urls = list(set(self.repository_urls))
-        print("REPOSITORY: ", self.repository_urls)
+        # print("REPOSITORY: ", self.repository_urls)
