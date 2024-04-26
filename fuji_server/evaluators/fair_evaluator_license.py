@@ -72,7 +72,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
                             spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(license, self.metric_identifier)
                     else:  # maybe licence name
                         spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(license, self.metric_identifier)
-                    print("Licence info: ", spdx_uri, spdx_osi, spdx_id)
                     license_output.license = license
                     if spdx_uri:
                         licence_valid = True
