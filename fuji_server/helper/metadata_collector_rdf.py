@@ -1057,7 +1057,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             dist, DCTERMS.rights
                         )
                     dtype = graph.value(dist, DCAT.mediaType)
-                    dsize = graph.value(dist, DCAT.bytesSize)
+                    dsize = graph.value(dist, DCAT.byteSize)
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
                         dtype = "/".join(str(dtype).split("/")[-2:])
