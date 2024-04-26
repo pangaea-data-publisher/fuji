@@ -55,6 +55,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             specified_licenses = [specified_licenses]
         if specified_licenses is not None and specified_licenses != []:
             for license in specified_licenses:
+                print(license)
                 isurl = False
                 licence_valid = False
                 license_output = LicenseOutputInner()
@@ -63,10 +64,15 @@ class FAIREvaluatorLicense(FAIREvaluator):
                     if isurl:
                         iscc, generic_cc = self.isCreativeCommonsLicense(license, self.metric_identifier)
                         if iscc:
-                            license = generic_cc
-                        spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(license, self.metric_identifier)
+                            spdx_osi = True
+                            spdx_uri = license
+                            spdx_id = generic_cc
+                            #    license = generic_cc
+                        else:
+                            spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_url(license, self.metric_identifier)
                     else:  # maybe licence name
                         spdx_uri, spdx_osi, spdx_id = self.lookup_license_by_name(license, self.metric_identifier)
+                    print("Licence info: ", spdx_uri, spdx_osi, spdx_id)
                     license_output.license = license
                     if spdx_uri:
                         licence_valid = True
