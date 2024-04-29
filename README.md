@@ -210,6 +210,11 @@ The multiple test methods within an evaluator also check whether their specific 
 For each metric, the maturity is determined as the maximum of the maturity associated with each passed test.
 This means that if a test indicating maturity 3 is passed and one indicating maturity 2 is not passed, the metric will still be shown to be fulfilled with maturity 3.
 
+### Community specific metrics
+
+Some, not all, metrics can be configured using the following guidelines:
+[Metrics configuration guide](https://github.com/pangaea-data-publisher/fuji/blob/master/metrics_configuration.md)
+
 ### Updates to the API
 
 Making changes to the API requires re-generating parts of the code using Swagger.
