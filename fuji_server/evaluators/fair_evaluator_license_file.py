@@ -47,11 +47,19 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
 
     def setLicenseDataAndOutput(self):
         self.license_info = []
-        specified_licenses = self.fuji.github_data.get("license")
-        if isinstance(specified_licenses, str):  # licenses maybe string or list depending on metadata schemas
-            specified_licenses = [specified_licenses]
-        if specified_licenses is not None and specified_licenses != []:
-            for license in specified_licenses:
+        # check for any recognised license files
+        parsed_license_file_data = self.fuji.github_data.get("license_file")
+        if parsed_license_file_data is not None and len(parsed_license_file_data) > 0:
+            license_file_paths = [lf["path"] for lf in parsed_license_file_data]
+        metadata_license = self.fuji.github_data.get("license")
+        metadata_license_path = self.fuji.github_data.get("license_path")
+        recognised_licenses = []
+        if metadata_license is not None:
+            for lfp in license_file_paths:  # only use metadata information if it matches a license file
+                if lfp == metadata_license_path:
+                    recognised_licenses.append(metadata_license)
+        if recognised_licenses is not None and recognised_licenses != []:
+            for license in recognised_licenses:
                 isurl = False
                 licence_valid = False
                 license_output = LicenseOutputInner()
@@ -222,7 +230,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                         self.metric_identifier,
                     )
                 )
-            if self.license_info:  # license info is populated from recognised GitHub license
+            if self.license_info:  # license info is populated from recognised GitHub license (metadata)
                 for license in self.license_info:
                     if test_required:
                         for rq_license_id in test_required:
@@ -234,7 +242,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                             test_status = True
             else:
                 self.logger.warning(
-                    "{} : Skipping SPDX and community license verification since no license information was recognised from metadata".format(
+                    "{} : Skipping SPDX and community license verification since no license information was recognised from metadata and no other mechanism of recognising licenses is currently available.".format(
                         self.metric_identifier
                     )
                 )
@@ -261,7 +269,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
-            license_file_paths = [self.fuji.github_data.get("license_path")]
+            license_file_paths = []
             parsed_license_file_data = self.fuji.github_data.get("license_file")
             if parsed_license_file_data is not None:
                 license_file_paths += [lf["path"] for lf in parsed_license_file_data]
@@ -311,6 +319,8 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 break
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
+            test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
+            required_keywords = test_requirements["required"]["keywords"]
             # check whether CESSDA-3 was run and passed
             for tid in self.metric_test_map["testBuildScriptChecksLicenseHeader"]:
                 if tid in self.metric_tests.keys() and self.metric_tests[tid].metric_test_status == "pass":
@@ -321,12 +331,17 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                     )
             if not test_status:  # CESSDA-3 did not pass
                 source_code_samples = self.fuji.github_data.get("source_code_samples")
+                self.logger.info(
+                    f"{self.metric_identifier} : Looking for any of {required_keywords} in source code samples ({test_id})."
+                )
                 if source_code_samples is not None:
                     license_headers_count = 0
                     for sample in source_code_samples:
                         header_region = "\n".join(sample["content"].decode("utf-8").splitlines()[:30]).lower()
-                        if "license" in header_region:
-                            license_headers_count += 1
+                        for kw in required_keywords:
+                            if kw in header_region:
+                                license_headers_count += 1
+                                break
                     if license_headers_count == len(source_code_samples):
                         test_status = True
                         self.logger.log(
