@@ -74,11 +74,9 @@ class GithubHarvester:
         # check if it's a URL or repo ID
         # NOTE: this should probably be handled by IdentifierHelper, but I don't understand that module yet.
         if self.id.count("/") > 1:  # URL
-            self.url = self.id
             _, self.username, self.repo_name = self.id.rsplit("/", 2)
         else:  # repo ID
             self.username, self.repo_name = self.id.split("/")
-            self.url = "/".join([self.endpoint, self.username, self.repo_name])
         self.repo_id = "/".join([self.username, self.repo_name])
 
         # access repo via GitHub API
@@ -106,7 +104,7 @@ class GithubHarvester:
         main_source_code_language = repo.language
         if main_source_code_language is not None:
             self.data["main_language"] = main_source_code_language
-            query = f" repo:{self.repo_id} language:{main_source_code_language}"  # needs the space in front as every query needs a string to match on
+            query = f' repo:{self.repo_id} language:"{main_source_code_language}"'  # needs the space in front as every query needs a string to match on
             source_code_files = self.handle.search_code(query)
             # extract code of up to n=5 files
             n = min(5, source_code_files.totalCount)
