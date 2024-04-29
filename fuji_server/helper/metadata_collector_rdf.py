@@ -1015,7 +1015,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
-
+            # do something (check for table headers) with the table here..
             for t in table:
                 print(t)
             dcat_metadata["object_content_identifier"] = []
