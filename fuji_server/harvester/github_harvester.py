@@ -5,6 +5,7 @@
 import json
 import os
 import re
+import time
 from configparser import ConfigParser
 
 from github import Auth, Github
@@ -77,6 +78,7 @@ class GithubHarvester:
             self.handle = Github(auth=auth)
 
     def harvest(self):
+        tic = time.perf_counter()
         # check if it's a URL or repo ID
         # NOTE: this should probably be handled by IdentifierHelper, but I don't understand that module yet.
         if self.id.count("/") > 1:  # URL
@@ -127,6 +129,9 @@ class GithubHarvester:
                 self.data["source_code_samples"] = source_code_samples
 
         self.retrieve_all(repo)
+        toc = time.perf_counter()
+        if self.verbose:
+            print(f"Harvesting took {toc - tic:.4f} seconds.")
 
     def retrieve_all(self, repo):
         file_pattern = r"|".join([rf"(?P<{k}>{'|'.join(v['pattern'])})" for k, v in self.files_map.items()])
