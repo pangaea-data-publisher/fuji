@@ -12,13 +12,14 @@ from github.GithubException import UnknownObjectException
 
 
 class GithubHarvester:
-    def __init__(self, id, logger, host="https://github.com"):
+    def __init__(self, id, logger, host="https://github.com", verbose=True):
         # Read Github API access token from config file.
         config = ConfigParser()
         config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), "../config/github.ini"))
         self.logger = logger
         self.id = id
         self.host = host
+        self.verbose = verbose
         self.authenticate(config)
         self.data = {}  # dictionary with all info
         fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
@@ -59,6 +60,11 @@ class GithubHarvester:
                 token_to_use = token
         if token_to_use is not None:  # found a token, one way or another
             auth = Auth.Token(token)
+            if self.verbose:
+                rate_limit = Github(auth=Auth.Token(token)).get_rate_limit()
+                print(
+                    f"Authenticate using GitHub token ending on '{token[-4:]}'.\n    Remaining core requests: {rate_limit.core.remaining}\n    Remaining search requests: {rate_limit.search.remaining}"
+                )
         else:  # empty token, so no authentication possible (rate limit will be much lower)
             auth = None
             self.logger.warning(
