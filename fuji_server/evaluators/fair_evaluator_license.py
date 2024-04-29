@@ -179,11 +179,6 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 test_defined = True
                 break
         if test_defined:
-            # TODO implement
-            if test_id.startswith("FRSM"):
-                self.logger.warning(
-                    f"{self.metric_identifier} : Test for availability of license metadata is not implemented for FRSM."
-                )
             test_score = self.getTestConfigScore(test_id)
             if self.license_info is not None and self.license_info != []:
                 test_status = True

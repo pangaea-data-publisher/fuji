@@ -90,10 +90,10 @@ class GithubHarvester:
             return
 
         # harvesting
-        try:  # LICENSE
-            license_file = repo.get_license()
-            self.data["license_path"] = license_file.path
-            self.data["license"] = license_file.license.name
+        try:  # LICENSE in metadata
+            license_metadata = repo.get_license()
+            self.data["license_path"] = license_metadata.path
+            self.data["license"] = license_metadata.license.name
         except UnknownObjectException:
             pass
 
