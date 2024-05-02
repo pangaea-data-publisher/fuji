@@ -231,7 +231,11 @@ if (isset($input_pid)) {
             $summary = $response['summary'];
 
             foreach ($response['results'] as $result) {
-                $fair_letter=$result['metric_identifier'][4];
+                if (str_starts_with($result['metric_identifier'], 'FsF')){
+                    $fair_letter=$result['metric_identifier'][4];
+                } elseif (str_starts_with($result['metric_identifier'], 'FRSM')){
+                    $fair_letter=$result['metric_identifier'][8];
+                }
                 if($result['metric_identifier']=='FsF-F2-01M'){
                     $metadata= $result['output']['core_metadata_found'];
                 }
