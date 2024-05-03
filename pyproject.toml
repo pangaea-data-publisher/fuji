@@ -29,7 +29,7 @@ dependencies = [
   "hashid~=3.1.4",
   "idutils~=1.2",
   "jmespath~=1.0",
-  "levenshtein~=0.24.0",
+  "levenshtein~=0.25.0",
   "lxml==5.1.0",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
@@ -83,7 +83,7 @@ report = [
 testing = [
   "genbadge[coverage]~=1.1",
   "pytest~=8.0",
-  "pytest-cov~=4.1",
+  "pytest-cov~=5.0",
   "pytest-randomly~=3.15",
   "pytest-recording~=0.13",
   "pytest-xdist~=3.3"

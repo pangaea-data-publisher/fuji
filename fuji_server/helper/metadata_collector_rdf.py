@@ -1015,7 +1015,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
-
+            # do something (check for table headers) with the table here..
             for t in table:
                 print(t)
             dcat_metadata["object_content_identifier"] = []
@@ -1057,7 +1057,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             dist, DCTERMS.rights
                         )
                     dtype = graph.value(dist, DCAT.mediaType)
-                    dsize = graph.value(dist, DCAT.bytesSize)
+                    dsize = graph.value(dist, DCAT.byteSize)
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
                         dtype = "/".join(str(dtype).split("/")[-2:])

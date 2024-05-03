@@ -153,6 +153,11 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                                 search_engine_support_match.append(
                                     standard_found + " via: " + found_metadata.get("offering_method")
                                 )
+                    else:
+                        self.logger.info(
+                            self.metric_identifier
+                            + "Found RDFa like metadata which however is empty thus useless for search engines"
+                        )
             search_engine_support_match = list(set(search_engine_support_match))
             # OLD WAY
             # Check search mechanisms based on sources of metadata extracted.
