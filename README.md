@@ -7,7 +7,7 @@ Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his con
 [![Coverage](https://pangaea-data-publisher.github.io/fuji/coverage/coveragebadge.svg)](https://pangaea-data-publisher.github.io/fuji/coverage/)
 
 [![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4063720.svg)](https://doi.org/10.5281/zenodo.4063720)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11084909.svg)](https://doi.org/10.5281/zenodo.11084909)
 
 ## Overview
 
