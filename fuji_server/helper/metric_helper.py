@@ -28,7 +28,7 @@ class MetricHelper:
             self.logger = logging.getLogger()
         ym = re.match("(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?", metric_input_file_name)
         if ym:
-            print(ym.groups())
+            # print(ym.groups())
             metric_file_name = ""
             self.metric_version = ym[2]
             if ym[3]:

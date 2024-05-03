@@ -49,6 +49,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FAIRResults'
+            application/rdf+xml:
+              schema:
+                type: string
+            application/x-turtle:
+              schema:
+                type: string
+            text/turtle:
+              schema:
+                type: string
+            application/ld+json:
+              schema:
+                type: string
+            text/n3:
+              schema:
+                type: string
         '400':
           description: Invalid identifier supplied
         '401':

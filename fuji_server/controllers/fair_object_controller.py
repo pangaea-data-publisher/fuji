@@ -9,6 +9,7 @@ import connexion
 from fuji_server.controllers.fair_check import FAIRCheck
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.preprocessor import Preprocessor
+from fuji_server.helper.results_exporter import FAIRResultsMapper
 from fuji_server.models.fair_results import FAIRResults
 
 
@@ -191,4 +192,17 @@ async def assess_by_id(body):
             summary=summary,
             resolved_url=resolved_url,
         )
-    return final_response
+        # RDF
+        rdf_mimes = FAIRResultsMapper.allowed_serialisations
+        if connexion.request.headers.get("Accept") in rdf_mimes:
+            rdf_mapper = FAIRResultsMapper(final_response)
+            rdf = rdf_mapper.getQualityVocabularyRDF(connexion.request.headers.get("Accept"))
+            print("RDF")
+            return rdf, 200, {"content-type": connexion.request.headers.get("Accept")}
+        # Standard JSON
+        elif connexion.request.headers.get("Accept") == "application/json":
+            return final_response, 200, {"content-type": "application/json"}
+        else:
+            return "", 401, {"content-type": "application/json"}
+    else:
+        return "", 400, {"content-type": "application/json"}
