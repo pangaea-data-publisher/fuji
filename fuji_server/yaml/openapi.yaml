@@ -250,6 +250,14 @@ components:
             - $ref: '#/components/schemas/CommunityEndorsedStandard'
             - $ref: '#/components/schemas/DataFileFormat'
             - $ref: '#/components/schemas/MetadataPreserved'
+            - $ref: '#/components/schemas/CodeProvenance'
+            - $ref: '#/components/schemas/ComponentIdentifier'
+            - $ref: '#/components/schemas/TestCase'
+            - $ref: '#/components/schemas/UniquePersistentIdentifierSoftware'
+            - $ref: '#/components/schemas/VersionIdentifier'
+            - $ref: '#/components/schemas/API'
+            - $ref: '#/components/schemas/DevelopmentMetadata'
+            - $ref: '#/components/schemas/Requirements'
             - $ref: '#/components/schemas/StandardisedProtocolData'
             - $ref: '#/components/schemas/StandardisedProtocolMetadata'
     FAIRResultCommon:
@@ -419,6 +427,79 @@ components:
             $ref: '#/components/schemas/MetadataPreserved_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
+    CodeProvenance:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/CodeProvenance_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    ComponentIdentifier:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/ComponentIdentifier_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    TestCase:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/TestCase_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    UniquePersistentIdentifierSoftware:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/UniquePersistentIdentifierSoftware_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    VersionIdentifier:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/VersionIdentifier_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    API:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/API_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    DevelopmentMetadata:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/DevelopmentMetadata_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    Requirements:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/Requirements_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+
     StandardisedProtocolData:
       allOf:
       - $ref: '#/components/schemas/FAIRResultCommon'
@@ -605,6 +686,22 @@ components:
             enum:
             - datacite
             - tombstone
+    CodeProvenance_output:
+      type: object
+    ComponentIdentifier_output:
+      type: object
+    TestCase_output:
+      type: object
+    UniquePersistentIdentifierSoftware_output:
+      type: object
+    VersionIdentifier_output:
+      type: object
+    API_output:
+      type: object
+    DevelopmentMetadata_output:
+      type: object
+    Requirements_output:
+      type: object
     Metrics:
       type: object
       properties:

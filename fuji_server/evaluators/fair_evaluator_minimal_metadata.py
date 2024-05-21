@@ -24,7 +24,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-F2-01M")
+        self.set_metric(["FsF-F2-01M", "FRSM-04-F2"])
         self.metadata_found = {}
         # this list is following the recommendation of  DataCite see: Fenner et al 2019 and Starr & Gastl, 2011
         self.partial_elements = [
@@ -37,15 +37,29 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         ]
         self.required_metadata_properties = Mapper.REQUIRED_CORE_METADATA.value
 
+        self.metric_test_map = {  # overall map
+            "testMetadataCommonMethodsAvailable": ["FsF-F2-01M-1"],
+            "testCoreDescriptiveMetadataAvailable": ["FsF-F2-01M-3", "FRSM-04-F2-2", "FRSM-04-F2-CESSDA-2"],
+            "testCoreCitationMetadataAvailable": ["FsF-F2-01M-2"],
+            "testMinimumMetadataAvailable": ["FRSM-04-F2-1", "FRSM-04-F2-CESSDA-1"],
+            "testMetadataFormatMachineReadable": ["FRSM-04-F2-3"],
+        }
+
     def testMetadataCommonMethodsAvailable(self):
         # implements FsF-F2-01M-1
-        if self.isTestDefined("FsF-F2-01M-1"):
-            test_score = self.metric_tests.get("FsF-F2-01M-1").metric_test_score_config
+        agnostic_test_name = "testMetadataCommonMethodsAvailable"
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            test_score = self.metric_tests.get(test_id).metric_test_score_config
             if len(self.metadata_found) >= 1:
                 self.logger.info(
                     "FsF-F2-01M : Found some descriptive metadata elements -: " + str(self.metadata_found.keys())
                 )
-                self.setEvaluationCriteriumScore("FsF-F2-01M-1", test_score, "pass")
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 source_mechanisms = dict((y, x) for x, y in list(set(self.fuji.metadata_sources)))
 
                 for source_mechanism in source_mechanisms:
@@ -53,14 +67,14 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                         MetadataOfferingMethods.MICRODATA_RDFA,
                         MetadataOfferingMethods.HTML_EMBEDDING,
                     ]:
-                        self.setEvaluationCriteriumScore("FsF-F2-01M-1a", 0, "pass")
+                        self.setEvaluationCriteriumScore(f"{test_id}a", 0, "pass")
                     if source_mechanism == MetadataOfferingMethods.CONTENT_NEGOTIATION:
-                        self.setEvaluationCriteriumScore("FsF-F2-01M-1b", 0, "pass")
+                        self.setEvaluationCriteriumScore(f"{test_id}b", 0, "pass")
                     if source_mechanism == MetadataOfferingMethods.TYPED_LINKS:
-                        self.setEvaluationCriteriumScore("FsF-F2-01M-1c", 0, "pass")
+                        self.setEvaluationCriteriumScore(f"{test_id}c", 0, "pass")
                     if source_mechanism == MetadataOfferingMethods.SIGNPOSTING:
-                        self.setEvaluationCriteriumScore("FsF-F2-01M-1d", 0, "pass")
-                self.maturity = self.metric_tests.get("FsF-F2-01M-1").metric_test_maturity_config
+                        self.setEvaluationCriteriumScore(f"{test_id}d", 0, "pass")
+                self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
                 self.score.earned = test_score
                 partial_missing = list(set(self.partial_elements) - set(self.metadata_found))
                 if partial_missing:
@@ -75,11 +89,22 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             return False
 
     def testCoreDescriptiveMetadataAvailable(self):
+        agnostic_test_name = "testCoreDescriptiveMetadataAvailable"
         test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
         test_requirements = None
-        if self.isTestDefined(self.metric_identifier + "-3"):
-            if self.metric_tests[self.metric_identifier + "-3"].metric_test_requirements:
-                test_requirements = self.metric_tests[self.metric_identifier + "-3"].metric_test_requirements[0]
+        # TODO implement
+        if test_id.startswith("FRSM"):
+            self.logger.warning(
+                f"{self.metric_identifier} : Test for descriptive metadata is not implemented for FRSM."
+            )
+        if test_defined:
+            if self.metric_tests[test_id].metric_test_requirements:
+                test_requirements = self.metric_tests[test_id].metric_test_requirements[0]
             if test_requirements:
                 test_required = []
                 if test_requirements.get("required"):
@@ -98,7 +123,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
                     for rq_prop in test_required:
                         if rq_prop in Mapper.REFERENCE_METADATA_LIST.value:
                             self.required_metadata_properties.append(rq_prop)
-            test_score = self.getTestConfigScore(self.metric_identifier + "-3")
+            test_score = self.getTestConfigScore(test_id)
             if set(self.metadata_found) & set(self.required_metadata_properties) == set(
                 self.required_metadata_properties
             ):
@@ -120,19 +145,60 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         return test_status
 
     def testCoreCitationMetadataAvailable(self):
+        agnostic_test_name = "testCoreCitationMetadataAvailable"
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-2"):
-            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        test_status = False
+        if test_defined:
+            test_score = self.getTestConfigScore(test_id)
             if set(self.partial_elements).issubset(self.metadata_found):
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
                     self.metric_identifier
                     + f" : Found required core citation metadata elements -: {self.partial_elements}",
                 )
-                self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
-                self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+                self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned = self.score.earned + test_score
                 test_status = True
+        return test_status
+
+    def testMinimumMetadataAvailable(self):
+        """The software includes the software title and description. Considers different sources (e.g. README, Zenodo) depending on metric definition.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testMinimumMetadataAvailable"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for minimum metadata is not implemented.")
+        return test_status
+
+    def testMetadataFormatMachineReadable(self):
+        """The metadata is contained in a format such as CodeMeta or ProjectObjectModel that enables full machine actionability.
+
+        Returns:
+            bool: True if the test was defined and passed. False otherwise.
+        """
+        agnostic_test_name = "testMetadataFormatMachineReadable"
+        test_status = False
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            self.logger.warning(f"{self.metric_identifier} : Test for metadata format is not implemented.")
         return test_status
 
     def evaluate(self):
@@ -162,6 +228,12 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         if self.testCoreDescriptiveMetadataAvailable():
             test_status = "pass"
             metadata_status = "all metadata"
+        if self.testMinimumMetadataAvailable():
+            test_status = "pass"
+            metadata_status = "some metadata"
+        if self.testMetadataFormatMachineReadable():
+            test_status = "pass"
+            metadata_status = "machine-readable metadata"
         output_sources = []
         for oi, os in list(set(self.fuji.metadata_sources)):
             output_sources.append((oi, os.acronym()))

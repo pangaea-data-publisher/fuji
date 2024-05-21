@@ -12,14 +12,18 @@ from urllib.parse import urlparse
 import pandas as pd
 
 from fuji_server import __version__
+from fuji_server.evaluators.fair_evaluator_api import FAIREvaluatorAPI
+from fuji_server.evaluators.fair_evaluator_code_provenance import FAIREvaluatorCodeProvenance
 from fuji_server.evaluators.fair_evaluator_community_metadata import FAIREvaluatorCommunityMetadata
 from fuji_server.evaluators.fair_evaluator_data_access_level import FAIREvaluatorDataAccessLevel
 from fuji_server.evaluators.fair_evaluator_data_content_metadata import FAIREvaluatorDataContentMetadata
 from fuji_server.evaluators.fair_evaluator_data_identifier_included import FAIREvaluatorDataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_data_provenance import FAIREvaluatorDataProvenance
+from fuji_server.evaluators.fair_evaluator_development_metadata import FAIREvaluatorDevelopmentMetadata
 from fuji_server.evaluators.fair_evaluator_file_format import FAIREvaluatorFileFormat
 from fuji_server.evaluators.fair_evaluator_formal_metadata import FAIREvaluatorFormalMetadata
 from fuji_server.evaluators.fair_evaluator_license import FAIREvaluatorLicense
+from fuji_server.evaluators.fair_evaluator_license_file import FAIREvaluatorLicenseFile
 from fuji_server.evaluators.fair_evaluator_metadata_identifier_included import FAIREvaluatorMetadataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
@@ -28,14 +32,21 @@ from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import
     FAIREvaluatorPersistentIdentifierMetadata,
 )
 from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
+from fuji_server.evaluators.fair_evaluator_requirements import FAIREvaluatorRequirements
 from fuji_server.evaluators.fair_evaluator_searchable import FAIREvaluatorSearchable
 from fuji_server.evaluators.fair_evaluator_semantic_vocabulary import FAIREvaluatorSemanticVocabulary
+from fuji_server.evaluators.fair_evaluator_software_component_identifier import FAIREvaluatorSoftwareComponentIdentifier
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAIREvaluatorStandardisedProtocolData
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import (
     FAIREvaluatorStandardisedProtocolMetadata,
 )
+from fuji_server.evaluators.fair_evaluator_test_cases import FAIREvaluatorTestCases
 from fuji_server.evaluators.fair_evaluator_unique_identifier_data import FAIREvaluatorUniqueIdentifierData
 from fuji_server.evaluators.fair_evaluator_unique_identifier_metadata import FAIREvaluatorUniqueIdentifierMetadata
+from fuji_server.evaluators.fair_evaluator_unique_persistent_identifier_software import (
+    FAIREvaluatorUniquePersistentIdentifierSoftware,
+)
+from fuji_server.evaluators.fair_evaluator_version_identifier import FAIREvaluatorVersionIdentifier
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
@@ -352,7 +363,7 @@ class FAIRCheck:
 
     def harvest_github(self):
         if self.use_github:
-            github_harvester = GithubHarvester(self.id)
+            github_harvester = GithubHarvester(self.id, self.logger)
             github_harvester.harvest()
             self.github_data = github_harvester.data
         else:
@@ -442,6 +453,34 @@ class FAIRCheck:
         # self.metadata_harvester.get_signposting_object_identifier()
         return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
 
+    def check_unique_persistent_software_identifier(self):
+        unique_persistent_identifier_check = FAIREvaluatorUniquePersistentIdentifierSoftware(self)
+        return unique_persistent_identifier_check.getResult()
+
+    def check_software_component_identifier(self):
+        component_identifier_check = FAIREvaluatorSoftwareComponentIdentifier(self)
+        return component_identifier_check.getResult()
+
+    def check_version_identifier(self):
+        version_identifier_check = FAIREvaluatorVersionIdentifier(self)
+        return version_identifier_check.getResult()
+
+    def check_development_metadata(self):
+        development_metadata_check = FAIREvaluatorDevelopmentMetadata(self)
+        return development_metadata_check.getResult()
+
+    def check_open_api(self):
+        open_api_check = FAIREvaluatorAPI(self)
+        return open_api_check.getResult()
+
+    def check_requirements(self):
+        requirements_check = FAIREvaluatorRequirements(self)
+        return requirements_check.getResult()
+
+    def check_test_cases(self):
+        test_cases_check = FAIREvaluatorTestCases(self)
+        return test_cases_check.getResult()
+
     def check_minimal_metatadata(self, include_embedded=True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
         return core_metadata_check.getResult()
@@ -460,6 +499,10 @@ class FAIRCheck:
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
+        return license_check.getResult()
+
+    def check_license_file(self):
+        license_check = FAIREvaluatorLicenseFile(self)
         return license_check.getResult()
 
     def check_relatedresources(self):
@@ -482,6 +525,10 @@ class FAIRCheck:
         data_prov_check = FAIREvaluatorDataProvenance(self)
         return data_prov_check.getResult()
 
+    def check_code_provenance(self):
+        code_prov_check = FAIREvaluatorCodeProvenance(self)
+        return code_prov_check.getResult()
+
     def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
         return data_content_metadata_check.getResult()
@@ -496,7 +543,6 @@ class FAIRCheck:
 
     def check_metadata_preservation(self):
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
-        metadata_preserved_check.set_metric("FsF-A2-01M")
         return metadata_preserved_check.getResult()
 
     def check_standardised_protocol_data(self):
