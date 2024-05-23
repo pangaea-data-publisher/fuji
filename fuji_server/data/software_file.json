@@ -42,7 +42,8 @@
     "parse": "full",
     "pattern": [
       "(\\w*/)*LICEN(S|C)E(\\.\\w*)?",
-      "(\\w*/)*licen(s|c)e(\\.\\w*)?"
+      "(\\w*/)*licen(s|c)e(\\.\\w*)?",
+      "(\\w*/)*COPYING"
     ]
   },
   "maven_pom": {
