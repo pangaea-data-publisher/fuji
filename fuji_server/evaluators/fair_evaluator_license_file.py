@@ -49,15 +49,15 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
         self.license_info = []
         # check for any recognised license files
         parsed_license_file_data = self.fuji.github_data.get("license_file")
-        if parsed_license_file_data is not None and len(parsed_license_file_data) > 0:
-            license_file_paths = [lf["path"] for lf in parsed_license_file_data]
         metadata_license = self.fuji.github_data.get("license")
         metadata_license_path = self.fuji.github_data.get("license_path")
         recognised_licenses = []
         if metadata_license is not None:
-            for lfp in license_file_paths:  # only use metadata information if it matches a license file
-                if lfp == metadata_license_path:
-                    recognised_licenses.append(metadata_license)
+            if parsed_license_file_data is not None and len(parsed_license_file_data) > 0:
+                license_file_paths = [lf["path"] for lf in parsed_license_file_data]
+                for lfp in license_file_paths:  # only use metadata information if it matches a license file
+                    if lfp == metadata_license_path:
+                        recognised_licenses.append(metadata_license)
         if recognised_licenses is not None and recognised_licenses != []:
             for license in recognised_licenses:
                 isurl = False
