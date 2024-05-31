@@ -154,6 +154,9 @@ class FAIRResultsMapper:
 
                 for metric_result in self.result.results:
                     metric_string = str(metric_result.get("metric_identifier")).replace(".", "_")
+                    # print(metric_result)
+                    metric_result_log = metric_result.get("test_debug")
+                    print(metric_result_log)
                     metric_result_id = FRSC[metric_string]
                     metric_identifier = FMET[metric_string]
                     metric_passed_or_failed = metric_result.get("test_status") + "ed"
@@ -197,6 +200,8 @@ class FAIRResultsMapper:
                         self.g.add((metric_earl_node, EARL.result, EARL[metric_passed_or_failed]))
                         self.g.add((metric_result_id, EARL.result, metric_earl_node))
                         self.g.add((metric_result_id, EARL.test, metric_identifier))
+                        if isinstance(metric_result_log, list):
+                            self.g.add((metric_result_id, EARL.info, Literal("\n".join(metric_result_log))))
                         metric_results_derived_from = []
                         for metric_test_string, metric_test_result in metric_result.get("metric_tests").items():
                             metric_test_string = str(metric_test_string).replace(".", "_")
