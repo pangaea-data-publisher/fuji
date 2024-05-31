@@ -183,7 +183,7 @@ metrics:
   test_scoring_mechanism: cumulative
   metric_tests:
   - metric_test_identifier: FsF-F4-01M-1
-    metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (JSON-LD, Dublin Core, RDFa)
+    metric_test_name: Metadata is given in a way major search engines can ingest it for their catalogues (embedded JSON-LD, Dublin Core or RDFa)
     metric_test_score: 1
     metric_test_maturity: 3
     metric_test_requirements:
@@ -198,8 +198,10 @@ metrics:
       modality: any
       required:
         name:
-        - html_embedding
-        - microdata_rdfa
+        - rdfa
+        - microdata
+        - meta_tags
+        - json_in_html
   - metric_test_identifier: FsF-F4-01M-2
     metric_test_name: Metadata is registered in major research data registries (DataCite)
     metric_test_score: 1
@@ -336,8 +338,10 @@ metrics:
       modality: any
       required:
         name:
-        - html_embedding
-        - microdata_rdfa
+        - meta_tags
+        - microdata
+        - rdfa
+        - json_in_html
   - metric_test_identifier: FsF-I1-01M-2
     metric_test_name: Parsable, graph data (RDF, JSON-LD) is accessible through content negotiation, typed links or sparql endpoint
     metric_test_score: 1

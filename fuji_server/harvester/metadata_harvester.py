@@ -747,9 +747,11 @@ class MetadataHarvester:
             self.set_html_typed_links()
             self.set_signposting_header_links(requestHelper.response_content, requestHelper.getResponseHeader())
             self.set_signposting_linkset_links()
-            if self.is_harvesting_method_allowed(
-                MetadataOfferingMethods.HTML_EMBEDDING
-            ) or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA_RDFA):
+            if (
+                self.is_harvesting_method_allowed(MetadataOfferingMethods.RDFA)
+                or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA)
+                or self.is_harvesting_method_allowed(MetadataOfferingMethods.META_TAGS)
+            ):
                 self.logger.info("FsF-F2-01M : Starting to analyse EMBEDDED metadata at -: " + str(self.landing_url))
                 # test if content is html otherwise skip embedded tests
                 # print(self.landing_content_type)

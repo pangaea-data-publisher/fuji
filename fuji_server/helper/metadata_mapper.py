@@ -429,6 +429,7 @@ class Mapper(Enum):
         },
         "language": {"path": "./{*}dataset/{*}language"},
     }
+    # CLARIN CMDI
     XML_MAPPING_CMD = {
         "object_identifier": {"path": "./{*}Header/{*}MdSelfLink"},
         "creator": {"path": "./{*}Header/{*}MdCreator"},

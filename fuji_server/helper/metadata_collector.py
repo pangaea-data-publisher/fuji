@@ -29,8 +29,12 @@ class MetadataFormats(enum.Enum):
 
 
 class MetadataOfferingMethods(enum.Enum):
-    HTML_EMBEDDING = {"label": "HTML Embedding", "acronym": "html_embedding"}
-    MICRODATA_RDFA = {"label": "Microdata and RDFa", "acronym": "microdata_rdfa"}
+    # HTML_EMBEDDING = {"label": "HTML Embedding", "acronym": "html_embedding"}
+    META_TAGS = {"label": "HTML META Tags", "acronym": "meta_tag"}
+    JSON_IN_HTML = {"label": "Embedded JSON-LD in HTML", "acronym": "json_in_html"}
+    # MICRODATA_RDFA = {"label": "Microdata and RDFa", "acronym": "microdata_rdfa"}
+    MICRODATA = {"label": "Microdata", "acronym": "microdata"}
+    RDFA = {"label": "RDFa", "acronym": "rdfa"}
     TYPED_LINKS = {"label": "Typed Links", "acronym": "typed_links"}
     SIGNPOSTING = {"label": "Signposting Links", "acronym": "signposting"}
     CONTENT_NEGOTIATION = {"label": "Content Negotiation", "acronym": "content_negotiation"}
@@ -57,37 +61,43 @@ class MetadataSources(enum.Enum):
         return found_sources
 
     HIGHWIRE_EPRINTS_EMBEDDED = {
-        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "method": MetadataOfferingMethods.META_TAGS,
+        # "method": MetadataOfferingMethods.HTML_EMBEDDING,
         "label": "Embedded Highwire or Eprints",
         "acronym": "highwire-eprints-html",
         "format": MetadataFormats.HTML,
     }
     DUBLINCORE_EMBEDDED = {
-        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "method": MetadataOfferingMethods.META_TAGS,
+        # "method": MetadataOfferingMethods.HTML_EMBEDDING,
         "label": "Embedded DublinCore",
         "acronym": "dublincore-html",
         "format": MetadataFormats.XHTML,
     }
     OPENGRAPH_EMBEDDED = {
-        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "method": MetadataOfferingMethods.RDFA,
+        # "method": MetadataOfferingMethods.HTML_EMBEDDING,
         "label": "Embedded OpenGraph",
         "acronym": "opengraph-html",
         "format": MetadataFormats.RDFA,
     }  # OpenGraph is based on RDFa
     SCHEMAORG_EMBEDDED = {
-        "method": MetadataOfferingMethods.HTML_EMBEDDING,
+        "method": MetadataOfferingMethods.HTML_JSON_LD,
+        # "method": MetadataOfferingMethods.HTML_EMBEDDING,
         "label": "Schema.org JSON-LD (Embedded)",
         "acronym": "schemaorg-html",
         "format": MetadataFormats.JSONLD,
     }
     RDFA_EMBEDDED = {
-        "method": MetadataOfferingMethods.MICRODATA_RDFA,
+        "method": MetadataOfferingMethods.RDFA,
+        # "method": MetadataOfferingMethods.MICRODATA_RDFA,
         "label": "Embedded RDFa",
         "acronym": "rdfa-html",
         "format": MetadataFormats.RDFA,
     }
     MICRODATA_EMBEDDED = {
-        "method": MetadataOfferingMethods.MICRODATA_RDFA,
+        "method": MetadataOfferingMethods.MICRODATA,
+        # "method": MetadataOfferingMethods.MICRODATA_RDFA,
         "label": "Embedded Microdata",
         "acronym": "microdata-html",
         "format": MetadataFormats.MICRODATA,

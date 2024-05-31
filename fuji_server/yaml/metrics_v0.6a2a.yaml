@@ -3,9 +3,6 @@ config:
   metric_specification: https://doi.org/10.5281/zenodo.4081213
   metric_status: draft
   allowed_harvesting_methods:
-  - HTML_EMBEDDING
-  - MICRODATA
-  - TYPED_LINKS
   - SIGNPOSTING
   allowed_metadata_standards:
   - jsonld
@@ -222,7 +219,7 @@ metrics:
   test_scoring_mechanism: cumulative
   metric_tests:
   - metric_test_identifier: FsF-F4-01M-1
-    metric_test_name: Metadata is given via signposting, so some search engines can ingest it for their catalogues (Schema.org, Dublin Core, DCAT)
+    metric_test_name: Metadata is given via signposting, so some search engines can ingest it for their catalogues (embedded JSON-LD, Dublin Core  or RDFa)
     metric_test_score: 1
     metric_test_maturity: 3
     metric_test_requirements:

@@ -50,8 +50,12 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
 
                 for source_mechanism in source_mechanisms:
                     if source_mechanism in [
-                        MetadataOfferingMethods.MICRODATA_RDFA,
-                        MetadataOfferingMethods.HTML_EMBEDDING,
+                        MetadataOfferingMethods.META_TAGS,
+                        MetadataOfferingMethods.JSON_IN_HTML,
+                        MetadataOfferingMethods.RDFA,
+                        MetadataOfferingMethods.MICRODATA,
+                        # MetadataOfferingMethods.MICRODATA_RDFA,
+                        # MetadataOfferingMethods.HTML_EMBEDDING,
                     ]:
                         self.setEvaluationCriteriumScore("FsF-F2-01M-1a", 0, "pass")
                     if source_mechanism == MetadataOfferingMethods.CONTENT_NEGOTIATION:
