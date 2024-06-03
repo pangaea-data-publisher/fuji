@@ -17,6 +17,16 @@
       "(\\w*/)*README(\\.(txt|md))?"
     ]
   },
+  "dependencies": {
+    "category": [
+      "documentation",
+      "automation"
+    ],
+    "parse": "file_name",
+    "pattern": [
+      "requirements\\.txt"
+    ]
+  },
   "docs_directory": {
     "category": [
       "documentation"
@@ -32,7 +42,7 @@
     ],
     "parse": "full",
     "pattern": [
-      "\\.github/workflows/"
+      "\\.github/workflows(/\\w*\\.\\w*)*"
     ]
   },
   "license_file": {
