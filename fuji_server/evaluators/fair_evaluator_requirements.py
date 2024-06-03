@@ -159,6 +159,7 @@ class FAIREvaluatorRequirements(FAIREvaluator):
         if test_defined:
             test_score = self.getTestConfigScore(test_id)
             # Check for presence of machine-readable dependency files
+            dependency_present = False
             dependency_requirements = self.metric_tests[test_id].metric_test_requirements[0]
             assert (
                 dependency_requirements["modality"] == "any"
@@ -167,7 +168,10 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             self.logger.info(
                 f"{self.metric_identifier} : Checking presence of any of {required_dependency_files} ({test_id})."
             )
-            dependency_present = not set(self.fuji.github_data.keys()).isdisjoint(required_dependency_files)
+            detected_dependency_files = self.fuji.github_data.get("dependencies", None)
+            if detected_dependency_files is not None:
+                detected_dependency_file_names = [dep_f["name"] for dep_f in detected_dependency_files]
+                dependency_present = not set(detected_dependency_file_names).isdisjoint(required_dependency_files)
             # Check for automated building and installation
             automation_requirements = self.metric_tests[test_id].metric_test_requirements[1]
             required_automation_locations = automation_requirements["required"]["automation_file"]
@@ -199,10 +203,14 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                     self.logger.warning(
                         f"{self.metric_identifier} : Did not find any of {required_dependency_files} ({test_id})."
                     )
+                else:
+                    self.logger.log(f"{self.metric_identifier} : Found dependency files ({test_id}).")
                 if not found_automation:
                     self.logger.warning(
                         f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
                     )
+                else:
+                    self.logger.warning(f"{self.metric_identifier} : Found automation keywords ({test_id}).")
         return test_status
 
     def testDependenciesBuildAutomatedChecks(self):
