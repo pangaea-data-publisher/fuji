@@ -1,0 +1,38 @@
+{
+  "fhir.codesystem": {
+    "id": "fuji.euroscivoc",
+    "name": "FHIR Code System",
+    "prefix": "fhir_cs",
+    "subjects": [
+      "medical and health sciences"
+    ],
+    "uri_format": "http://hl7.org/fhir/CodeSystem/$1"
+  },
+  "fhir.codesystem2": {
+    "id": "fuji.euroscivoc",
+    "name": "FHIR Code System",
+    "prefix": "fhir_cs",
+    "subjects": [
+      "medical and health sciences"
+    ],
+    "uri_format": "http://terminology.hl7.org/CodeSystem/$1"
+  },
+  "fhir.valueset": {
+    "id": "fuji.euroscivoc",
+    "name": "FHIR Value Set",
+    "prefix": "fhir_vs",
+    "subjects": [
+      "medical and health sciences"
+    ],
+    "uri_format": "http://hl7.org/fhir/ValueSet/$1"
+  },
+  "fhir.valueset2": {
+    "id": "fuji.euroscivoc",
+    "name": "FHIR Value Set",
+    "prefix": "fhir_vs",
+    "subjects": [
+      "medical and health sciences"
+    ],
+    "uri_format": "http://terminology.hl7.org/ValueSet/$1"
+  }
+}
