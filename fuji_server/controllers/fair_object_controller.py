@@ -25,6 +25,7 @@ async def assess_by_id(body):
     """
 
     allow_remote_logging = False
+    # Request POST BODY has to be JSON
     if connexion.request.content_type == "application/json":
         # The client has to send this HTTP header (Allow-Remote-Logging:True) explicitely to enable remote logging
         # Useful for e.g. web clients..
@@ -192,6 +193,8 @@ async def assess_by_id(body):
             summary=summary,
             resolved_url=resolved_url,
         )
+        accept_header = connexion.request.headers.get("Accept")
+        print("ACCEPT HEADER ", accept_header)
         # RDF
         rdf_mimes = FAIRResultsMapper.allowed_serialisations
         if connexion.request.headers.get("Accept") in rdf_mimes:
@@ -200,9 +203,9 @@ async def assess_by_id(body):
             print("RDF")
             return rdf, 200, {"content-type": connexion.request.headers.get("Accept")}
         # Standard JSON
-        elif connexion.request.headers.get("Accept") == "application/json":
+        elif connexion.request.headers.get("Accept") in ["application/json", "*/*"]:
             return final_response, 200, {"content-type": "application/json"}
         else:
-            return "", 401, {"content-type": "application/json"}
+            return "", 400, {"content-type": "application/json"}
     else:
         return "", 400, {"content-type": "application/json"}
