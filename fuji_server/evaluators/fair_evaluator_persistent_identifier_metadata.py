@@ -54,7 +54,6 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
                         self.metric_identifier
                         + " : Skipping PID syntax test since the PID seems to resolve to a different entity"
                     )
-
             if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
                 self.score.earned = test_score
@@ -67,7 +66,14 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + "-2"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             for pid, pid_info in self.fuji.pid_collector.items():
-                if pid_info.get("verified") or not self.fuji.verify_pids:
+                if self.fuji.verify_pids:
+                    self.fuji.isLandingPageAccessible = True
+                    self.logger.info(
+                        self.metric_identifier
+                        + " : Found PID which was not verified (if it does resolve properly) due to config settings -: "
+                        + str(pid)
+                    )
+                elif pid_info.get("verified"):
                     if pid_info.get("resolved_url"):
                         self.fuji.isLandingPageAccessible = True
                         self.logger.info(
@@ -78,9 +84,15 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
                     else:
                         self.logger.info(
                             self.metric_identifier
-                            + " : Found PID which could not be verified (does not resolve properly) -: "
+                            + " : Found PID which could not be verified (no landing page found) -: "
                             + str(pid)
                         )
+                else:
+                    self.logger.info(
+                        self.metric_identifier
+                        + " : Found PID which could not be verified (does not resolve properly) -: "
+                        + str(pid)
+                    )
             if self.fuji.isLandingPageAccessible:
                 test_status = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
