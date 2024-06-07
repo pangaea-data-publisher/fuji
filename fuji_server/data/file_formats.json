@@ -207,6 +207,9 @@
       "*.ctx"
     ],
     "mime": [
+      "chemical/x-cactvs",
+      "chemical/x-cactvs-binary",
+      "chemical/x-cactvs-ascii",
       "chemical/x-cactus",
       "chemical/x-cactus-ascii"
     ],
@@ -238,6 +241,7 @@
       "*.ccp4"
     ],
     "mime": [
+      "application/CCP4-mtz",
       "application/CCP4-mtz-phases",
       "application/CCP4-mtz-freerflag",
       "application/CCP4-mtz-observed",
@@ -257,7 +261,8 @@
       "*.cda"
     ],
     "mime": [
-      "audio/audiocd"
+      "audio/audiocd",
+      "application/x-cda"
     ],
     "name": "CD Audio CD Audio track shortcut",
     "reason": [
@@ -274,7 +279,7 @@
     "mime": [
       "application/cgns"
     ],
-    "name": "CFD General Notation System",
+    "name": "CFD General Notation System, ADF (Advanced Data Format)",
     "reason": [
       "scientific format"
     ],
@@ -494,7 +499,8 @@
       "application/zipped-shapefile",
       "application/x-esri-shape",
       "application/shx",
-      "application/shp"
+      "application/shp",
+      "application/x-shapefile"
     ],
     "name": "ESRI Shapefile",
     "reason": [
@@ -575,6 +581,25 @@
       "chemical/seq-na-fastq"
     ],
     "name": "FASTQ",
+    "reason": [
+      "scientific format"
+    ],
+    "source": [
+      "various"
+    ]
+  },
+  "fhir_file_format": {
+    "description": "FHIR is a standard for health care data exchange, published by HL7",
+    "ext": [],
+    "mime": [
+      "application/fhir+xml",
+      "application/fhir+json",
+      "application/fhir+turtle",
+      "application/xml+fhir",
+      "application/json+fhir",
+      "application/turtle+fhir"
+    ],
+    "name": "FHIR",
     "reason": [
       "scientific format"
     ],
@@ -1428,7 +1453,7 @@
       "*.alc"
     ],
     "mime": [
-      "hemical/x-alchemy"
+      "chemical/x-alchemy"
     ],
     "name": "MSI Alchemy format",
     "reason": [
@@ -1838,7 +1863,7 @@
     "mime": [
       "application/x-root"
     ],
-    "name": "ROOT",
+    "name": "CERN ROOT file",
     "reason": [
       "scientific format"
     ],
@@ -2041,10 +2066,14 @@
   },
   "stl_stereolithography_format": {
     "ext": [
-      "*.sla"
+      "*.sla",
+      "*.stl"
     ],
     "mime": [
-      "application/sla"
+      "application/sla",
+      "model/stl",
+      "model/x.stl-ascii",
+      "model/x.stl-binary"
     ],
     "name": "STL Stereolithography format",
     "reason": [
@@ -2100,6 +2129,7 @@
     ]
   },
   "tab_ddi_format": {
+    "description": "A zipped tab (tsv) file together with a DDI XML metadata, informal type defined by Dataverse",
     "ext": [
       "*.zip"
     ],
