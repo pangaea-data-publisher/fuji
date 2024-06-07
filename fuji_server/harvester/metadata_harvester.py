@@ -211,6 +211,7 @@ class MetadataHarvester:
                             resolves_to_landing_domain = self.check_if_pid_resolves_to_landing_page(
                                 pid_helper.identifier_url
                             )
+                            # verified means: it resolves and if a PID isd given in the metadata it shall resolves to an URL which is part of the landing domain
                             self.pid_collector[pid_helper.identifier_url]["verified"] = resolves_to_landing_domain
                 if metadict.get("related_resources"):
                     self.related_resources.extend(metadict.get("related_resources"))
