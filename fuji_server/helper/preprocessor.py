@@ -21,6 +21,7 @@ class Preprocessor:
 
     all_metrics_list = []
     formatted_specification = {}
+    bool_string = {"true": True, "false": False}
     total_metrics = 0
     total_licenses = 0
     METRIC_YML_PATH = None
@@ -60,6 +61,7 @@ class Preprocessor:
     metric_specification = None
     remote_log_host = None
     remote_log_path = None
+    verify_pids = False
     max_content_size = 5000000
     google_custom_search_id = None
     google_custom_search_api_key = None
@@ -98,6 +100,12 @@ class Preprocessor:
                     cls.logger.warning("Remote Logging not possible, URL response: " + str(request.status_code))
             except Exception:
                 cls.logger.warning("Remote Logging not possible ,please correct : " + str(host) + " " + str(path))
+
+    @classmethod
+    def set_verify_pids(cls, verify):
+        # if str(verify).lower in self.bool_string:
+        cls.verify_pids = cls.bool_string.get(str(verify).lower)
+        # cls.verify_pids = verify
 
     @classmethod
     def set_google_custom_search_info(cls, search_id, api_key, web_search):

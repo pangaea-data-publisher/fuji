@@ -164,10 +164,10 @@ class FAIRCheck:
                     method="POST",
                 )
                 self.webformatter = logging.Formatter("%(levelname)s - %(message)s \r\n")
-        self.verify_pids = verify_pids
+        self.verify_pids = Preprocessor.verify_pids
         if not self.verify_pids:
             self.logger.warning(
-                "FsF-F1-02 : Verification of PIDs is disabled in the config file, the evaluation result may be misleading"
+                "FsF-F1-02D : Verification of PIDs is disabled in the config file, the evaluation result may be misleading"
             )
         self.count = 0
         FAIRCheck.load_predata()
