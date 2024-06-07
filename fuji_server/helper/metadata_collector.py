@@ -82,7 +82,7 @@ class MetadataSources(enum.Enum):
         "format": MetadataFormats.RDFA,
     }  # OpenGraph is based on RDFa
     SCHEMAORG_EMBEDDED = {
-        "method": MetadataOfferingMethods.HTML_JSON_LD,
+        "method": MetadataOfferingMethods.JSON_IN_HTML,
         # "method": MetadataOfferingMethods.HTML_EMBEDDING,
         "label": "Schema.org JSON-LD (Embedded)",
         "acronym": "schemaorg-html",
