@@ -779,14 +779,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         self.logger.info(
                             "FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type"
                         )
-                    elif not any(tt.lower() in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get("@type")):
+                    elif not any(tt.lower().split("/")[-1] in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get("@type")):
                         # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
                         trusted = False
                         self.logger.info(
                             "FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:"
                             + str(json_dict.get("@type"))
                         )
-                    elif not any(tt.lower() in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get("@type")):
+                    elif not any(
+                        tt.lower().split("/")[-1] in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get("@type")
+                    ):
                         # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
                         trusted = False
                         self.logger.info(
