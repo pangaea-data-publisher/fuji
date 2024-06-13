@@ -204,13 +204,13 @@ class FAIREvaluatorRequirements(FAIREvaluator):
                         f"{self.metric_identifier} : Did not find any of {required_dependency_files} ({test_id})."
                     )
                 else:
-                    self.logger.log(f"{self.metric_identifier} : Found dependency files ({test_id}).")
+                    self.logger.info(f"{self.metric_identifier} : Found dependency files ({test_id}).")
                 if not found_automation:
                     self.logger.warning(
                         f"{self.metric_identifier} : Did not find {automation_requirements['modality']} keywords {required_automation_keywords} in {required_automation_locations} ({test_id})."
                     )
                 else:
-                    self.logger.warning(f"{self.metric_identifier} : Found automation keywords ({test_id}).")
+                    self.logger.info(f"{self.metric_identifier} : Found automation keywords ({test_id}).")
         return test_status
 
     def testDependenciesBuildAutomatedChecks(self):
