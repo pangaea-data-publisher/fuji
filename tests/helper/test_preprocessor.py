@@ -19,6 +19,7 @@ markers. These tests can be run prior to a release manually.
 They mock the fuji_server/data path to not override the files under fuji server
 
 """
+
 import json
 from typing import Any
 
