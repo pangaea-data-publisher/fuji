@@ -48,26 +48,17 @@ jobs:
   #       SPHINXOPTS='-n' make -C docs html
 
   lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
-    - name: Cache python dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.cache/pre-commit
-        key: lint-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
-        restore-keys: |
-          lint-
     - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    - run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install hatch
-    - run: hatch run lint
+        cache: pip
+    - uses: pre-commit/action@v3.0.1
+      with:
+        extra_args: --all-files --color=always
 
   tests:
     runs-on: ubuntu-22.04
