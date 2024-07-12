@@ -34,9 +34,7 @@ class MetaDataCollectorXML(MetaDataCollector):
 
     """
 
-    target_url = None
-
-    def __init__(self, loggerinst, target_url, link_type="linked", pref_mime_type=None):
+    def __init__(self, loggerinst, target_url=None, link_type="linked", pref_mime_type=None):
         """
         Parameters
         ----------
@@ -52,6 +50,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         self.target_url = target_url
         self.link_type = link_type
         self.pref_mime_type = pref_mime_type
+        self.is_xml = False
         super().__init__(logger=loggerinst)
 
     def getAllURIs(self, metatree):
@@ -120,6 +119,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                 # if neg_source != 'xml':
                 self.logger.info("FsF-F2-01M : Expected XML but content negotiation responded -: " + str(neg_format))
             else:
+                self.is_xml = True
                 try:
                     parser = lxml.etree.XMLParser(strip_cdata=False, recover=True)
                     tree = lxml.etree.XML(xml_response, parser)

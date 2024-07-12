@@ -1376,47 +1376,49 @@ class MetadataHarvester:
                             loggerinst=self.logger,
                             target_url=metadata_link["url"],
                             link_type=metadata_link.get("source"),
-                            pref_mime_type=metadata_link["type"],
+                            pref_mime_type=metadata_link.get("type"),
                         )
-
                         if linked_xml_collector is not None:
                             source_linked_xml, linked_xml_dict = linked_xml_collector.parse_metadata()
                             lkd_namespace = "unknown xml"
-                            if len(linked_xml_collector.getNamespaces()) > 0:
-                                lkd_namespace = linked_xml_collector.getNamespaces()[0]
-                                self.namespace_uri.extend(linked_xml_collector.getNamespaces())
-                            self.linked_namespace_uri.update(linked_xml_collector.getLinkedNamespaces())
-                            if linked_xml_dict:
-                                # self.metadata_sources.append((MetaDataCollector.Sources.XML_TYPED_LINKS.value.get('label'), metadata_link['source']))
-                                if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING:
-                                    self.add_metadata_source(MetadataSources.XML_SIGNPOSTING_LINKS)
-                                else:
-                                    self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
-                                self.merge_metadata(
-                                    linked_xml_dict,
-                                    metadata_link["url"],
-                                    source_linked_xml,
-                                    linked_xml_collector.metadata_format,
-                                    linked_xml_collector.getContentType(),
-                                    lkd_namespace,
-                                )
+                            if linked_xml_collector.is_xml:
+                                if len(linked_xml_collector.getNamespaces()) > 0:
+                                    lkd_namespace = linked_xml_collector.getNamespaces()[0]
+                                    self.namespace_uri.extend(linked_xml_collector.getNamespaces())
+                                self.linked_namespace_uri.update(linked_xml_collector.getLinkedNamespaces())
 
-                                self.logger.log(
-                                    self.LOG_SUCCESS,
-                                    "FsF-F2-01M : Found XML metadata through typed links-: "
-                                    + str(linked_xml_dict.keys()),
-                                )
-                            # also add found xml namespaces without recognized data
-                            elif len(linked_xml_collector.getNamespaces()) > 0:
-                                self.merge_metadata(
-                                    dict(),
-                                    metadata_link["url"],
-                                    source_linked_xml,
-                                    linked_xml_collector.metadata_format,
-                                    linked_xml_collector.getContentType(),
-                                    lkd_namespace,
-                                    linked_xml_collector.getNamespaces(),
-                                )
+                                if linked_xml_dict:
+                                    # self.metadata_sources.append((MetaDataCollector.Sources.XML_TYPED_LINKS.value.get('label'), metadata_link['source']))
+                                    if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING:
+                                        self.add_metadata_source(MetadataSources.XML_SIGNPOSTING_LINKS)
+                                    else:
+                                        self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
+                                    self.merge_metadata(
+                                        linked_xml_dict,
+                                        metadata_link["url"],
+                                        source_linked_xml,
+                                        linked_xml_collector.metadata_format,
+                                        linked_xml_collector.getContentType(),
+                                        lkd_namespace,
+                                        [],
+                                    )
+
+                                    self.logger.log(
+                                        self.LOG_SUCCESS,
+                                        "FsF-F2-01M : Found XML metadata through typed links-: "
+                                        + str(linked_xml_dict.keys()),
+                                    )
+                                # also add found xml namespaces without recognized data
+                                elif len(linked_xml_collector.getNamespaces()) > 0:
+                                    self.merge_metadata(
+                                        dict(),
+                                        metadata_link["url"],
+                                        source_linked_xml,
+                                        linked_xml_collector.metadata_format,
+                                        linked_xml_collector.getContentType(),
+                                        lkd_namespace,
+                                        linked_xml_collector.getNamespaces(),
+                                    )
                     else:
                         self.logger.info(
                             "FsF-F2-01M : Skipped disabled harvesting method -: "
