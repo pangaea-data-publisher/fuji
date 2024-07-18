@@ -6,16 +6,14 @@ on:
   pull_request:
 
 concurrency:
-  group: ci-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
   PYTHONUNBUFFERED: 1
   FORCE_COLOR: 1 # colored output by pytest etc.
-  CLICOLOR_FORCE: 1 # colored output by ruff
 
-permissions:
-  contents: read
+permissions: {} # Set permissions at the job level.
 
 jobs:
 
