@@ -535,7 +535,8 @@ class Mapper(Enum):
         "access_level": {
             "path": ["./{*}stdyDscr/{*}dataAccs/{*}setAvail/{*}avlStatus", "./{*}stdyDscr/{*}dataAccs/{*}useStmt/*"]
         },
-        "object_content_identifier_url": {"path": ".//{*}fileDscr@@URI"},
+        "object_content_identifier_url": {"path": [".//{*}fileDscr@@URI", ".//{*}fileDscr/{*}fileTxt/{*}fileName"]},
+        "object_content_identifier_type": {"path": ".//{*}fileDscr/{*}fileTxt/{*}fileType"},
         "measured_variable": {"path": "./{*}dataDscr/{*}var@@name"},
         "language": {"path": ["./{*}codeBook@@lang", "./{*}stdyDscr/{*}citation/{*}titlStmt/{*}titl@@xml:lang"]},
     }
