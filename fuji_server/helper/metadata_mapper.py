@@ -638,6 +638,15 @@ class Mapper(Enum):
                 "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}linkage/{*}URL",
             ]
         },
+        "object_content_identifier_type": {
+            "path": [
+                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
+                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
+            ]
+        },
+        "object_content_identifier_size": {
+            "path": "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}transferSize"
+        },
         "measured_variable": {
             "path": [
                 "./{*}contentInfo/{*}MD_CoverageDescription/{*}attributeDescription/{*}RecordType",
