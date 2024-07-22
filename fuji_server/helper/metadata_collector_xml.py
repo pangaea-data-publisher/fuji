@@ -182,7 +182,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         xml_mapping = Mapper.XML_MAPPING_DDI_CODEBOOK.value
                         self.logger.info("FsF-F2-01M : Identified DDI codeBook XML based on root tag")
                         self.namespaces.append("ddi:codebook:2_5")
-                    elif root_element == "StudyUnit":
+                    elif root_element in ["StudyUnit", "DDIInstance"]:
                         xml_mapping = Mapper.XML_MAPPING_DDI_STUDYUNIT.value
                         self.logger.info("FsF-F2-01M : Identified DDI StudyUnit XML based on root tag")
                         self.namespaces.append("ddi:studyunit:3_2")

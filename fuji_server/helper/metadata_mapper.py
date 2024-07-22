@@ -473,18 +473,27 @@ class Mapper(Enum):
     }
     """
     XML_MAPPING_DDI_STUDYUNIT = {
-        "title": {"path": "./{*}Citation/{*}Title"},
-        "creator": {"path": "./{*}Citation/{*}Creator"},
-        "object_identifier": {"path": "./{*}Citation/{*}InternationalIdentifier"},
-        "publisher": {"path": "./{*}Citation/{*}Publisher"},
-        "publication_date": {"path": "./{*}Citation/{*}PublicationDate"},
-        "summary": {"path": "./{*}Abstract"},
-        "keywords": {"path": "./{*}Coverage/{*}TopicalCoverage/{*}Subject"},
+        "title": {"path": ".//{*}StudyUnit/{*}Citation/{*}Title"},
+        "creator": {"path": ".//{*}StudyUnit/{*}Citation/{*}Creator"},
+        "object_identifier": {"path": ".//{*}StudyUnit/{*}Citation/{*}InternationalIdentifier"},
+        "publisher": {"path": ".//{*}StudyUnit/{*}Citation/{*}Publisher"},
+        "publication_date": {"path": ".//{*}StudyUnit/{*}Citation/{*}PublicationDate"},
+        "summary": {"path": ".//{*}StudyUnit/{*}Abstract"},
+        "keywords": {"path": ".//{*}StudyUnit/{*}Coverage/{*}TopicalCoverage/{*}Subject"},
         "access_level": {"path": ".//{*}AccessConditions"},
-        "related_resource": {"path": "./{*}RelatedOtherMaterialReference"},
-        "related_resource_hasVersion": {"path": "./{*}Version"},
-        "related_resource_isBasedOn": {"path": "./{*}BasedOnObject"},
-        "measured_variable": {"path": "./{*}LogicalProduct/{*}VariableScheme/{*}Variable/{*}Label"},
+        "related_resource": {"path": ".//{*}StudyUnit/{*}RelatedOtherMaterialReference"},
+        "related_resource_hasVersion": {"path": ".//{*}StudyUnit/{*}Version"},
+        "related_resource_isBasedOn": {"path": ".//{*}StudyUnit/{*}BasedOnObject"},
+        "measured_variable": {"path": ".//{*}StudyUnit/{*}LogicalProduct/{*}VariableScheme/{*}Variable/{*}Label"},
+        "object_content_identifier_url": {
+            "path": [
+                ".//{*}StudyUnit/{*}PhysicalInstance/{*}DataFileIdentification/{*}URI",
+                ".//{*}StudyUnit/{*}PhysicalInstance/{*}DataFileIdentification/{*}DataFileURI",
+            ]
+        },
+        "object_content_identifier_size": {
+            "path": ".//{*}StudyUnit/{*}PhysicalInstance/{*}DataFileIdentification/{*}SizeInBytes"
+        },
     }
 
     XML_MAPPING_DDI_CODEBOOK = {
