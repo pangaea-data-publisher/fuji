@@ -1047,7 +1047,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
             dcat_metadata["object_content_identifier"] = []
             for dist in distribution:
                 dtype, durl, dsize = None, None, None
-                if not (graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)):
+                if not (
+                    graph.value(dist, DCAT.accessURL)
+                    or graph.value(dist, DCAT.downloadURL)
+                    or graph.value(dist, DCAT.accessService)
+                ):
                     self.logger.info(
                         "FsF-F2-01M : Trying to retrieve DCAT distributions from remote location -:" + str(dist)
                     )
@@ -1072,6 +1076,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         )
                         # print(e)
                         durl = str(dist)
+                elif graph.value(dist, DCAT.accessService):
+                    if not dcat_metadata["object_content_service"]:
+                        dcat_metadata["object_content_service"] = []
+                    for dcat_service in graph.objects(dist, DCAT.accessService):
+                        service_url = graph.value(dcat_service, DCAT.endpointURL)
+                        service_type = graph.value(dcat_service, DCTERMS.conformsTo)
+                        servive_desc = graph.value(dcat_service, DCAT.endpointDescription)
+                        dcat_metadata["object_content_service"].append(
+                            {"url": service_url, "type": service_type, "desc": servive_desc}
+                        )
                 else:
                     durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
                     # taking only one just to check if licence is available and not yet set
