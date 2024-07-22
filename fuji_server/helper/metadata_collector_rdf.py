@@ -733,7 +733,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
     def get_schemorg_metadata_from_dict(self, json_dict):
         jsnld_metadata = {}
         trusted = True
-
         if isinstance(json_dict, dict):
             self.logger.info(
                 f"FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {self.source_name.name}"
@@ -977,6 +976,31 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     schema_metadata["object_content_identifier"].append(
                         {"url": str(durl), "type": dtype, "size": str(dsize)}
                     )
+
+            potential_action = graph.objects(creative_work, SMA.potentialAction) or graph.objects(
+                creative_work, SDO.potentialAction
+            )
+            schema_metadata["object_content_service"] = []
+
+            for potaction in potential_action:
+                service_url, service_desc, service_type = None, None, None
+                entry_point = graph.value(potaction, SMA.EntryPoint) or graph.value(potaction, SDO.EntryPoint)
+                if not entry_point:
+                    service_url = graph.value(potaction, SMA.target) or graph.value(potaction, SDO.target)
+
+                else:
+                    service_url = graph.value(entry_point, SMA.url) or graph.value(entry_point, SDO.url)
+                    service_desc = graph.value(entry_point, SMA.urlTemplate) or graph.value(
+                        entry_point, SDO.urlTemplate
+                    )
+                    service_type = graph.value(entry_point, SMA.additionalType) or graph.value(
+                        entry_point, SDO.additionalType
+                    )
+                if service_url:
+                    schema_metadata["object_content_service"].append(
+                        {"url": service_url, "type": service_type, "desc": service_desc}
+                    )
+
             schema_metadata["measured_variable"] = []
             for variable in list(graph.objects(creative_works[0], SMA.variableMeasured)) or list(
                 graph.objects(creative_works[0], SDO.variableMeasured)

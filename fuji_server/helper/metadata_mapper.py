@@ -216,7 +216,8 @@ class Mapper(Enum):
         '{related_resource: (isBasedOn."@id" || isBasedOn[0]."@id" || isBasedOn.url || isBasedOn[0].url || isBasedOn) , relation_type: \'isBasedOn\'} , '
         '{related_resource: "@reverse".isBasedOn[0]."@id" || "@reverse".isBasedOn."@id" || "@reverse".isBasedOn[0].url || isBasedOn , relation_type: \'isBasisFor\'},'
         '{related_resource: (citation."@id" || citation[0]."@id" || citation.url || citation[0].url || citation.name || citation[0].name  || citation), relation_type:\'references\'} ], '
-        "object_content_identifier: (distribution[*].{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}])"
+        "object_content_identifier: (distribution[*].{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}]),"
+        "object_content_service: (potentialAction[*].{url: (target || url), type: target.additionalType, desc: target.urlTemplate} ),"
         "language: inLanguage.name || inLanguage.alternateName || inLanguage}"
     )
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
