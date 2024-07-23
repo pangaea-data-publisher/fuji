@@ -425,9 +425,9 @@ class RequestHelper:
                                                     xmltree = lxml.etree.XML(self.response_content, xmlparser)
                                                     root_element = xmltree.tag
                                                     if content_truncated:
-                                                        self.parse_response = (
-                                                            self.response_content
-                                                        ) = lxml.etree.tostring(xmltree)
+                                                        self.parse_response = self.response_content = (
+                                                            lxml.etree.tostring(xmltree)
+                                                        )
                                                 except Exception:
                                                     self.logger.warning(
                                                         "%s : Parsing XML document failed !" % metric_id

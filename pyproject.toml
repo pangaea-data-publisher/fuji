@@ -167,3 +167,15 @@ ignore = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["fuji_server", "tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# Note: ruff does not understand, that the logger, which gets passed through multiple inheritance is actually
+# a logger instance. It would not apply f-strings to logging messages. But let's ignore UP031 and UP032 for now.
+"fuji_server/evaluators/*.py" = [
+  "UP031",  # printf-string-formatting
+  "UP032"  # f-string
+]
+"fuji_server/helper/*.py" = [
+  "UP031",  # printf-string-formatting
+  "UP032"  # f-string
+]
