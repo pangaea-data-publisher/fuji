@@ -23,13 +23,23 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-I3-01M")
+        self.set_metric(["FsF-I3-01M", "FRSM-12-I2"])
+        self.metric_test_map = {  # overall map
+            "testRelatedResourcesAvailable": ["FsF-I3-01M-1"],
+            "testRelatedResourcesMachineReadable": ["FsF-I3-01M-2", "FRSM-12-I2-1"],
+        }
         self.is_actionable = False
 
     def testRelatedResourcesAvailable(self):
+        agnostic_test_name = "testRelatedResourcesAvailable"
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-1"):
-            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        if test_defined:
+            test_score = self.getTestConfigScore(test_id)
             if self.fuji.related_resources:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
@@ -39,16 +49,27 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                 )
                 test_status = True
                 self.output = self.fuji.related_resources
-                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
+                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                 self.score.earned = self.total_score
-                self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
+                self.maturity = self.getTestConfigMaturity(test_id)
             else:
                 self.logger.warning(self.metric_identifier + " : Could not identify related resources in metadata")
         return test_status
 
     def testRelatedResourcesMachineReadable(self):
+        agnostic_test_name = "testRelatedResourcesMachineReadable"
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-2"):
+        test_defined = False
+        for test_id in self.metric_test_map[agnostic_test_name]:
+            if self.isTestDefined(test_id):
+                test_defined = True
+                break
+        # TODO implement
+        if test_id.startswith("FRSM"):
+            self.logger.warning(
+                f"{self.metric_identifier} : Test for machine-readable related resources is not implemented for FRSM."
+            )
+        if test_defined:
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             if self.fuji.related_resources:
                 for relation in self.fuji.related_resources:

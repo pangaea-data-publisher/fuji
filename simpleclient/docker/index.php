@@ -1,3 +1,9 @@
+<?php
+if(!isset($_SESSION))
+    session_start();
+set_time_limit(0);
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,14 +46,10 @@
         </div>
     </nav>
 <?php
-if(!isset($_SESSION))
-    session_start();
-set_time_limit(0);
 ######################## local config ##########################
-$fuji_server = 'http://localhost:1071/fuji/api/v1/evaluate';
+$fuji_server = 'http://fuji-server:1071/fuji/api/v1/evaluate';
 $fuji_username = 'yourusername';
 $fuji_password = 'yourpassword';
-#$metric_version =  "metrics_v0.5";
 $usegithub = true;
 ################################################################
 
@@ -111,7 +113,7 @@ $allowed_metric_versions = array('metrics_v0.7_software'=>'software-agnostic', '
                             <div class="row align-items-end">
                                 <div class="col">
                                     <label for="pid" class="col-form-label-sm">Research Data Object (URL/PID):<sup style="color:red">*</sup></label>
-                                    <input  class="form-control form-control-sm" type="text" value="<?php echo(htmlentities($input_pid));?>" name="pid" id="pid" placeholder="Enter a valid PID or URL of the dataset's landing page (e.g. a DOI)">
+                                    <input  class="form-control form-control-sm" type="text" value="<?php echo(htmlentities($input_pid ?? ''));?>" name="pid" id="pid" placeholder="Enter a valid PID or URL of the dataset's landing page (e.g. a DOI)">
                                 </div>
 
                             </div>
@@ -127,7 +129,7 @@ $allowed_metric_versions = array('metrics_v0.7_software'=>'software-agnostic', '
                                 <div class="row align-items-end">
                                     <div class="col-8">
                                         <label for="service_url" class="col-form-label-sm">(Optional) Metadata service endpoint:</label>
-                                        <input  class="form-control form-control-sm" type="text" value="<?php echo(htmlentities($input_service_url));?>" name="service_url" id="service_url" placeholder="(Optional) endpoint serving your metadata in different formats">
+                                        <input  class="form-control form-control-sm" type="text" value="<?php echo(htmlentities($input_service_url ?? ''));?>" name="service_url" id="service_url" placeholder="(Optional) endpoint serving your metadata in different formats">
                                     </div>
                                     <div class="col-4">
                                         <label for="service_type" class="col-form-label-sm">Metadata service type:</label>
