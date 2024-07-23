@@ -3,9 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for fuji_server/helper/metadata_collector.py: 79%</title>
-    <link rel="icon" sizes="32x32" href="favicon_32.png">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <script src="coverage_html.js" defer></script>
+    <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
+    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
@@ -17,7 +17,7 @@
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
             <label for="help_panel_state">
-                <img id="keyboard_icon" src="keybd_closed.png" alt="Show/hide keyboard shortcuts">
+                <img id="keyboard_icon" src="keybd_closed_cb_ce680311.png" alt="Show/hide keyboard shortcuts">
             </label>
             <div id="help_panel">
                 <p class="legend">Shortcuts on this page</p>
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_fd9ffa8f7b4f3d8b_metadata_collector_datacite_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-03 07:28 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.0">coverage.py v7.6.0</a>,
+            created at 2024-07-23 09:26 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -375,13 +375,13 @@
     <p class="run"><span class="n"><a id="t291" href="#t291">291</a></span><span class="t">        <span class="nam">extractor</span> <span class="op">=</span> <span class="nam">URLExtract</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t292" href="#t292">292</a></span><span class="t">        <span class="nam">found_urls</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t293" href="#t293">293</a></span><span class="t">        <span class="nam">lov_helper</span> <span class="op">=</span> <span class="nam">linked_vocab_helper</span><span class="op">(</span><span class="nam">Preprocessor</span><span class="op">.</span><span class="nam">linked_vocab_index</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="par run show_par"><span class="n"><a id="t294" href="#t294">294</a></span><span class="t">        <span class="key">if</span> <span class="nam">meta_source</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">294&#x202F;&#x219B;&#x202F;exit</span><span class="annotate long">line 294 didn't return from function 'setLinkedNamespaces', because the condition on line 294 was never false</span></span></p>
+    <p class="par run show_par"><span class="n"><a id="t294" href="#t294">294</a></span><span class="t">        <span class="key">if</span> <span class="nam">meta_source</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">294&#x202F;&#x219B;&#x202F;exit</span><span class="annotate long">line 294 didn't return from function 'setLinkedNamespaces' because the condition on line 294 was always true</span></span></p>
     <p class="run"><span class="n"><a id="t295" href="#t295">295</a></span><span class="t">            <span class="key">if</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">meta_source</span><span class="op">,</span> <span class="nam">str</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t296" href="#t296">296</a></span><span class="t">                <span class="nam">found_urls</span> <span class="op">=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">extractor</span><span class="op">.</span><span class="nam">gen_urls</span><span class="op">(</span><span class="nam">str</span><span class="op">(</span><span class="nam">meta_source</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="par run show_par"><span class="n"><a id="t297" href="#t297">297</a></span><span class="t">            <span class="key">elif</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">meta_source</span><span class="op">,</span> <span class="nam">list</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">297&#x202F;&#x219B;&#x202F;299</span><span class="annotate long">line 297 didn't jump to line 299, because the condition on line 297 was never false</span></span></p>
+    <p class="par run show_par"><span class="n"><a id="t297" href="#t297">297</a></span><span class="t">            <span class="key">elif</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">meta_source</span><span class="op">,</span> <span class="nam">list</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">297&#x202F;&#x219B;&#x202F;299</span><span class="annotate long">line 297 didn't jump to line 299 because the condition on line 297 was always true</span></span></p>
     <p class="run"><span class="n"><a id="t298" href="#t298">298</a></span><span class="t">                <span class="nam">found_urls</span> <span class="op">=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">meta_source</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t299" href="#t299">299</a></span><span class="t">            <span class="key">for</span> <span class="nam">url</span> <span class="key">in</span> <span class="nam">found_urls</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="par run show_par"><span class="n"><a id="t300" href="#t300">300</a></span><span class="t">                <span class="key">if</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">url</span><span class="op">,</span> <span class="nam">str</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">300&#x202F;&#x219B;&#x202F;299</span><span class="annotate long">line 300 didn't jump to line 299, because the condition on line 300 was never false</span></span></p>
+    <p class="par run show_par"><span class="n"><a id="t300" href="#t300">300</a></span><span class="t">                <span class="key">if</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">url</span><span class="op">,</span> <span class="nam">str</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">300&#x202F;&#x219B;&#x202F;299</span><span class="annotate long">line 300 didn't jump to line 299 because the condition on line 300 was always true</span></span></p>
     <p class="run"><span class="n"><a id="t301" href="#t301">301</a></span><span class="t">                    <span class="nam">found_lov</span> <span class="op">=</span> <span class="nam">lov_helper</span><span class="op">.</span><span class="nam">get_linked_vocab_by_iri</span><span class="op">(</span><span class="nam">url</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t302" href="#t302">302</a></span><span class="t">                    <span class="key">if</span> <span class="nam">found_lov</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t303" href="#t303">303</a></span><span class="t">                        <span class="nam">self</span><span class="op">.</span><span class="nam">linked_namespaces</span><span class="op">[</span><span class="nam">found_lov</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="str">"namespace"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="nam">found_lov</span>&nbsp;</span><span class="r"></span></p>
@@ -397,8 +397,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_fd9ffa8f7b4f3d8b_metadata_collector_datacite_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-03 07:28 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.0">coverage.py v7.6.0</a>,
+            created at 2024-07-23 09:26 +0000
         </p>
     </div>
 </footer>

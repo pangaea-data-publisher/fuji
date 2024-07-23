@@ -3,9 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for fuji_server/app.py: 90%</title>
-    <link rel="icon" sizes="32x32" href="favicon_32.png">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <script src="coverage_html.js" defer></script>
+    <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
+    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
@@ -17,7 +17,7 @@
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
             <label for="help_panel_state">
-                <img id="keyboard_icon" src="keybd_closed.png" alt="Show/hide keyboard shortcuts">
+                <img id="keyboard_icon" src="keybd_closed_cb_ce680311.png" alt="Show/hide keyboard shortcuts">
             </label>
             <div id="help_panel">
                 <p class="legend">Shortcuts on this page</p>
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_d437e9ffd10cf6d6_authorization_controller_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-03 07:28 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.0">coverage.py v7.6.0</a>,
+            created at 2024-07-23 09:26 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -114,7 +114,7 @@
     <p class="run"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">    <span class="nam">app</span><span class="op">.</span><span class="nam">add_api</span><span class="op">(</span><span class="nam">API_YAML</span><span class="op">,</span> <span class="nam">validate_responses</span><span class="op">=</span><span class="key">True</span><span class="op">,</span> <span class="nam">jsonifier</span><span class="op">=</span><span class="nam">myjsonifier</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t">    <span class="nam">app</span><span class="op">.</span><span class="nam">app</span><span class="op">.</span><span class="nam">wsgi_app</span> <span class="op">=</span> <span class="nam">ProxyFix</span><span class="op">(</span><span class="nam">app</span><span class="op">.</span><span class="nam">app</span><span class="op">.</span><span class="nam">wsgi_app</span><span class="op">,</span> <span class="nam">x_for</span><span class="op">=</span><span class="num">1</span><span class="op">,</span> <span class="nam">x_host</span><span class="op">=</span><span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="par run show_par"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="key">if</span> <span class="nam">os</span><span class="op">.</span><span class="nam">getenv</span><span class="op">(</span><span class="str">"ENABLE_CORS"</span><span class="op">,</span> <span class="str">"False"</span><span class="op">)</span><span class="op">.</span><span class="nam">lower</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="str">"true"</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">33&#x202F;&#x219B;&#x202F;34</span><span class="annotate long">line 33 didn't jump to line 34, because the condition on line 33 was never true</span></span></p>
+    <p class="par run show_par"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="key">if</span> <span class="nam">os</span><span class="op">.</span><span class="nam">getenv</span><span class="op">(</span><span class="str">"ENABLE_CORS"</span><span class="op">,</span> <span class="str">"False"</span><span class="op">)</span><span class="op">.</span><span class="nam">lower</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="str">"true"</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">33&#x202F;&#x219B;&#x202F;34</span><span class="annotate long">line 33 didn't jump to line 34 because the condition on line 33 was never true</span></span></p>
     <p class="mis show_mis"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t">        <span class="nam">CORS</span><span class="op">(</span><span class="nam">app</span><span class="op">.</span><span class="nam">app</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t">    <span class="key">return</span> <span class="nam">app</span>&nbsp;</span><span class="r"></span></p>
@@ -126,8 +126,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_d437e9ffd10cf6d6_authorization_controller_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.0">coverage.py v7.5.0</a>,
-            created at 2024-05-03 07:28 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.0">coverage.py v7.6.0</a>,
+            created at 2024-07-23 09:26 +0000
         </p>
     </div>
 </footer>
