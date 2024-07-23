@@ -99,8 +99,8 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
+omit = ["tests/*"]
 parallel = true
-source = ["fuji_server"]
 
 [tool.hatch.build]
 include = [
