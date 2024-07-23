@@ -4,7 +4,7 @@ Developers: [Robert Huber](mailto:rhuber@marum.de), [Anusuriya Devaraju](mailto:
 Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his contributions and his help in cleaning up the code.
 
 [![CI](https://github.com/pangaea-data-publisher/fuji/actions/workflows/ci.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/ci.yml)
-[![Coverage](https://pangaea-data-publisher.github.io/fuji/coverage/coveragebadge.svg)](https://pangaea-data-publisher.github.io/fuji/coverage/)
+[![Coverage](https://coveralls.io/repos/github/pangaea-data-publisher/fuji/badge.svg?branch=master)](https://coveralls.io/github/pangaea-data-publisher/fuji?branch=master)
 
 [![Publish Docker image](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/pangaea-data-publisher/fuji/actions/workflows/publish-docker.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11084909.svg)](https://doi.org/10.5281/zenodo.11084909)

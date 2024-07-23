@@ -65,8 +65,7 @@ version = "3.2.0"
 
 [project.optional-dependencies]
 dev = [
-  "fuji[lint]",
-  "fuji[testing]"
+  "fuji[lint,testing]"
 ]
 docs = [
   "myst-parser~=3.0",
@@ -81,7 +80,6 @@ report = [
   "jupyter~=1.0"
 ]
 testing = [
-  "genbadge[coverage]~=1.1",
   "pytest~=8.0",
   "pytest-cov~=5.0",
   "pytest-randomly~=3.15",
@@ -125,8 +123,6 @@ features = [
 
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov {args}"
-cov-badge = "genbadge coverage --input-file=pytest-cobertura.xml --output-file=./reports/coverage/coveragebadge.svg"
-cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml --cov-report=html:./reports/coverage/ {args}"
 lint = "pre-commit run --all-files --color=always {args}"
 test = "pytest {args}"
 
