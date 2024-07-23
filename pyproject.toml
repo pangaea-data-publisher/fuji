@@ -115,10 +115,12 @@ include = [
 packages = ["fuji_server"]
 
 [tool.hatch.envs.default]
-dev-mode = true
 features = [
   "lint",
   "testing"
+]
+post-install-commands = [
+  "pre-commit install"
 ]
 
 [tool.hatch.envs.default.scripts]
@@ -145,10 +147,9 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
-line-length = 120
 # Ref: https://docs.astral.sh/ruff/configuration/
+line-length = 120
 src = ["fuji_server"]
-target-version = "py311"
 
 [tool.ruff.lint]
 extend-select = [
