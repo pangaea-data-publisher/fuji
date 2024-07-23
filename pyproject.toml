@@ -20,7 +20,7 @@ dependencies = [
   # major.minor.patch, because they can potentially introduce breaking changes
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
-  "configparser~=6.0",
+  "configparser~=7.0",
   "connexion[flask,uvicorn,swagger-ui]~=3.0",
   "extruct~=0.17.0",
   "feedparser~=6.0",
