@@ -423,6 +423,4 @@ class MetaDataCollectorXML(MetaDataCollector):
             res.pop("object_content_identifier_type", None)
             res.pop("object_content_identifier_size", None)
             res.pop("object_content_identifier_url", None)
-            # print(self.removew(res))
-        # print(res)
         return res
