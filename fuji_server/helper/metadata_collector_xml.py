@@ -292,7 +292,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                     subtrees = tree.findall(pathdef[0])
                 except Exception as e:
                     subtrees = []
-                    print("XML XPATH error ", str(e))
+                    print("XML XPATH error ", str(e), str(pathdef[0]))
                 for subtree in subtrees:
                     propcontent.append({"tree": subtree, "attribute": attribute})
                     # propcontent.extend({'tree':tree.findall(pathdef[0]),'attribute':attribute})
@@ -375,6 +375,33 @@ class MetaDataCollectorXML(MetaDataCollector):
         res.pop('object_content_identifier_size', None)
         res.pop('object_content_identifier_url', None)
         """
+        if res.get("object_content_service_url"):
+            res["object_content_service"] = []
+            if not isinstance(res["object_content_service_url"], list):
+                res["object_content_service_url"] = [res["object_content_service_url"]]
+            si = 0
+            for service_url in res["object_content_identifier_url"]:
+                service_desc = None
+                service_type = None
+                if res.get("object_content_service_type"):
+                    if si < len(res["object_content_service_type"]):
+                        service_type = res["object_content_service_type"][si]
+                if res.get("object_content_service_desc"):
+                    if si < len(res["object_content_service_desc"]):
+                        service_desc = res["object_content_service_desc"][si]
+                if (
+                    service_type
+                    and "WWW:LINK" not in str(service_type)
+                    and "www.w3.org/TR/xlink" not in str(service_type)
+                ):
+                    res["object_content_service"].append(
+                        {"url": service_url, "desc": service_desc, "type": service_type}
+                    )
+                si += 1
+        res.pop("object_content_service_url", None)
+        res.pop("object_content_service_type", None)
+        res.pop("object_content_service_desc", None)
+
         if res.get("object_content_identifier_url"):
             res["object_content_identifier"] = []
             if not isinstance(res["object_content_identifier_url"], list):
