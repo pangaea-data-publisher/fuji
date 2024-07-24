@@ -8,6 +8,12 @@
     ],
     "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1"
   },
+  "fuji.hasset": {
+    "id": "fuji.hasset",
+    "name": "HASSET Thesaurus",
+    "prefix": "hasset",
+    "uri_format": "https://hasset.ukdataservice.ac.uk/$1"
+  },
   "fuji.i-adopt": {
     "id": "fuji.i-adopt",
     "name": "I-ADOPT Framework ontology",
