@@ -581,6 +581,8 @@ class Mapper(Enum):
         "related_resource_type": {"path": "./{*}Related_URL/{*}Type"},
         "related_resource_hasVersion": {"path": "./{*}Dataset_Citation/{*}Version"},
     }
+
+    # https://github.com/INSPIRE-MIF/gp-data-service-linking-simplification/blob/main/proposals/JRC/Consolidated_proposal.md
     XML_MAPPING_GCMD_ISO = {
         "title": {
             "path": [
@@ -644,8 +646,13 @@ class Mapper(Enum):
                 "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
             ]
         },
-        "object_content_identifier_size": {
-            "path": "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}transferSize"
+        "object_content_service_url": {
+            "path": [
+                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource[{*}protocol]/{*}linkage/{*}URL",
+            ]
+        },
+        "object_content_service_type": {
+            "path": "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}protocol/{*}Anchor@@xlink:href"
         },
         "measured_variable": {
             "path": [
