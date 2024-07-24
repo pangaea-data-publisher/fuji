@@ -18,7 +18,7 @@ def _deserialize(data, klass):
 
     if klass in (int, float, str, bool):
         return _deserialize_primitive(data, klass)
-    elif klass == object:
+    elif klass is object:
         return _deserialize_object(data)
     elif klass == datetime.date:
         return deserialize_date(data)
@@ -30,9 +30,9 @@ def _deserialize(data, klass):
     #     if klass.__extra__ == dict:
     #         return _deserialize_dict(data, klass.__args__[1])
     elif hasattr(klass, "__origin__"):
-        if klass.__origin__ == list or klass.__origin__ == list:
+        if klass.__origin__ is list or klass.__origin__ is list:
             return _deserialize_list(data, klass.__args__[0])
-        if klass.__origin__ == dict:
+        if klass.__origin__ is dict:
             return _deserialize_dict(data, klass.__args__[1])
     else:
         return deserialize_model(data, klass)

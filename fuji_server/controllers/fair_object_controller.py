@@ -92,6 +92,7 @@ async def assess_by_id(body):
         access_level_result = ft.check_data_access_level()
         # print('F-UJI checks: license')
         license_result = ft.check_license()
+        license_file_result = ft.check_license_file()
         # print('F-UJI checks: related')
         related_resources_result = ft.check_relatedresources()
         # print('F-UJI checks: searchable')
@@ -100,16 +101,24 @@ async def assess_by_id(body):
         ft.harvest_all_data()
         uid_data_result = ft.check_unique_content_identifier()
         pid_data_result = ft.check_persistent_data_identifier()
+        upid_software_result = ft.check_unique_persistent_software_identifier()
+        software_component_result = ft.check_software_component_identifier()
+        version_identifier_result = ft.check_version_identifier()
+        development_metadata_result = ft.check_development_metadata()
+        open_api_result = ft.check_open_api()
+        requirements_result = ft.check_requirements()
+        test_cases_result = ft.check_test_cases()
         data_identifier_included_result = ft.check_data_content_metadata()
         metadata_identifier_included_result = ft.check_metadata_identifier_included_in_metadata()
         data_file_format_result = ft.check_data_file_format()
         # print('F-UJI checks: data file format')
         community_standards_result = ft.check_community_metadatastandards()
         data_provenance_result = ft.check_data_provenance()
+        code_provenance_result = ft.check_code_provenance()
         formal_metadata_result = ft.check_formal_metadata()
         # print('F-UJI checks: semantic vocab')
         semantic_vocab_result = ft.check_semantic_vocabulary()
-        ft.check_metadata_preservation()
+        metadata_preserved_result = ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
         if uid_result:
@@ -120,6 +129,20 @@ async def assess_by_id(body):
             results.append(uid_data_result)
         if pid_data_result:
             results.append(pid_data_result)
+        if upid_software_result:
+            results.append(upid_software_result)
+        if software_component_result:
+            results.append(software_component_result)
+        if version_identifier_result:
+            results.append(version_identifier_result)
+        if development_metadata_result:
+            results.append(development_metadata_result)
+        if open_api_result:
+            results.append(open_api_result)
+        if requirements_result:
+            results.append(requirements_result)
+        if test_cases_result:
+            results.append(test_cases_result)
         if core_metadata_result:
             results.append(core_metadata_result)
         if content_identifier_included_result:
@@ -138,10 +161,14 @@ async def assess_by_id(body):
             results.append(metadata_identifier_included_result)
         if license_result:
             results.append(license_result)
+        if license_file_result:
+            results.append(license_file_result)
         if access_level_result:
             results.append(access_level_result)
         if data_provenance_result:
             results.append(data_provenance_result)
+        if code_provenance_result:
+            results.append(code_provenance_result)
         if community_standards_result:
             results.append(community_standards_result)
         if data_file_format_result:
@@ -150,6 +177,8 @@ async def assess_by_id(body):
             results.append(standard_protocol_data_result)
         if standard_protocol_metadata_result:
             results.append(standard_protocol_metadata_result)
+        if metadata_preserved_result:
+            results.append(metadata_preserved_result)
         debug_messages = ft.get_log_messages_dict()
         # ft.logger_message_stream.flush()
         summary = ft.get_assessment_summary(results)
@@ -180,6 +209,7 @@ async def assess_by_id(body):
         if ft.pid_url:
             idhelper = IdentifierHelper(ft.pid_url)
             request["normalized_object_identifier"] = idhelper.get_normalized_id()
+        results.sort(key=lambda d: d["id"])  # sort results by metric ID
         final_response = FAIRResults(
             request=request,
             start_timestamp=starttimestmp,

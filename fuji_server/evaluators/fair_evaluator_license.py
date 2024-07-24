@@ -4,11 +4,9 @@
 
 import fnmatch
 import re
-from pathlib import Path
 
 import idutils
 import Levenshtein
-import lxml.etree as ET
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
@@ -31,19 +29,16 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric(["FsF-R1.1-01M", "FRSM-15-R1.1"])
+        self.set_metric(["FsF-R1.1-01M", "FRSM-16-R1.1"])
 
         self.output = []
         self.license_info = []
 
         # Create map from metric test names to class functions. This is necessary as functions may be reused for different metrics relating to licenses.
         self.metric_test_map = {  # overall map
-            "testLicenseIsValidAndSPDXRegistered": ["FsF-R1.1-01M-2", "FRSM-15-R1.1-3"],
-            "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-15-R1.1-1"],
-            "testLicenseFileAtRoot": ["FRSM-15-R1.1-CESSDA-1"],
-            "testLicenseInHeaders": ["FRSM-15-R1.1-CESSDA-2"],
-            "testLicenseForBundled": ["FRSM-15-R1.1-2"],
-            "testBuildScriptChecksLicenseHeader": ["FRSM-15-R1.1-CESSDA-3"],
+            "testLicenseIsValidAndSPDXRegistered": ["FsF-R1.1-01M-2", "FRSM-16-R1.1-2"],
+            "testLicenseMetadataElementAvailable": ["FsF-R1.1-01M-1", "FRSM-16-R1.1-1"],
+            "testLicenseMetadataZenodo": ["FRSM-16-R1.1-CESSDA-1"],
         }
 
     def setLicenseDataAndOutput(self):
@@ -259,106 +254,15 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
         return test_status
 
-    def testLicenseTXTAtRoot(self):
-        """Looks for license_path in self.fuji.github_data. Test passes if the license file is called LICENSE.txt and located at project root.
+    def testLicenseMetadataZenodo(self):
+        """Licensing information is included in the Zenodo record and in a LICENSE.txt file included in the root directory of the source code deposited in Zenodo.
 
         Returns:
             bool: True if the test was defined and passed. False otherwise.
         """
-        agnostic_test_name = "testLicenseFileAtRoot"
+        agnostic_test_name = "testLicenseMetadataZenodo"
         test_status = False
-        test_defined = False
-        for test_id in self.metric_test_map[agnostic_test_name]:
-            if self.isTestDefined(test_id):
-                test_defined = True
-                break
-        if test_defined:
-            test_score = self.getTestConfigScore(test_id)
-            license_path = self.fuji.github_data.get("license_path")
-            if license_path is not None:
-                if license_path == "LICENSE.txt":
-                    test_status = True
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS, f"{self.metric_identifier} : Found LICENSE.txt at repository root."
-                    )
-                    self.maturity = self.getTestConfigMaturity(test_id)
-                    self.setEvaluationCriteriumScore(test_id, test_score, "pass")
-                    self.score.earned += test_score
-                else:  # identify what's wrong
-                    p = Path(license_path)
-                    if str(p.parent) != ".":
-                        self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but it is not located at the root of the repository."
-                        )
-                    if p.suffix != ".txt":
-                        self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file suffix is not TXT."
-                        )
-                    if p.stem != "LICENSE":
-                        self.logger.warning(
-                            f"{self.metric_identifier} : Found a license file, but the file name is not LICENSE."
-                        )
-            else:
-                self.logger.warning(f"{self.metric_identifier} : Did not find a license file.")
-        return test_status
-
-    def testLicenseInHeaders(self):
-        """Checks whether a sample of source code files include a license header. Fast-pass if the build script checks for license headers.
-
-        Returns:
-            bool: True if the test was defined and passed. False otherwise.
-        """
-        agnostic_test_name = "testLicenseInHeaders"
-        test_status = False
-        test_defined = False
-        for test_id in self.metric_test_map[agnostic_test_name]:
-            if self.isTestDefined(test_id):
-                test_defined = True
-                break
-        if test_defined:
-            test_score = self.getTestConfigScore(test_id)
-            # check whether CESSDA-3 was run and passed
-            for tid in self.metric_test_map["testBuildScriptChecksLicenseHeader"]:
-                if tid in self.metric_tests.keys() and self.metric_tests[tid].metric_test_status == "pass":
-                    test_status = True
-                    self.logger.log(
-                        self.fuji.LOG_SUCCESS,
-                        f"{self.metric_identifier} : Build script checks for license headers, so we can assume that all source files do contain license headers.",
-                    )
-            if not test_status:  # CESSDA-3 did not pass
-                source_code_samples = self.fuji.github_data.get("source_code_samples")
-                if source_code_samples is not None:
-                    license_headers_count = 0
-                    for sample in source_code_samples:
-                        header_region = "\n".join(sample["content"].decode("utf-8").splitlines()[:30]).lower()
-                        if "license" in header_region:
-                            license_headers_count += 1
-                    if license_headers_count == len(source_code_samples):
-                        test_status = True
-                        self.logger.log(
-                            self.fuji.LOG_SUCCESS,
-                            f"{self.metric_identifier} : Sample of {len(source_code_samples)} source code files all contained a license header.",
-                        )
-                    else:
-                        self.logger.warning(
-                            f"{self.metric_identifier} : {license_headers_count} out of a sample of {len(source_code_samples)} source code files were found to contain a license header."
-                        )
-                else:
-                    self.logger.warning(f"{self.metric_identifier} : No source code files found.")
-            if test_status:  # test passed, update score and maturity
-                self.maturity = self.getTestConfigMaturity(test_id)
-                self.setEvaluationCriteriumScore(test_id, test_score, "pass")
-                self.score.earned += test_score
-        return test_status
-
-    def testLicenseForBundled(self):
-        """Look for license information of bundled components. Not implemented.
-
-        Returns:
-            bool: True if the test was defined and passed. False otherwise.
-        """
-        agnostic_test_name = "testLicenseForBundled"
-        test_status = False
+        test_id = self.metric_test_map[agnostic_test_name]
         test_defined = False
         for test_id in self.metric_test_map[agnostic_test_name]:
             if self.isTestDefined(test_id):
@@ -366,60 +270,8 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 break
         if test_defined:
             self.logger.warning(
-                f"{self.metric_identifier} : Test for license information of bundled components is not implemented."
+                f"{self.metric_identifier} : Test for license information in Zenodo record and TXT in Zenodo is not implemented."
             )
-        return test_status
-
-    def testBuildScriptChecksLicenseHeader(self):
-        """Parses build script looking for command that ensures the presence of license headers.
-        Currently only for Maven POM files and expects build to fail if license headers are missing.
-
-        Returns:
-            bool: True if the test was defined and passed. False otherwise.
-        """
-        agnostic_test_name = "testBuildScriptChecksLicenseHeader"
-        test_status = False
-        test_defined = False
-        for test_id in self.metric_test_map[agnostic_test_name]:
-            if self.isTestDefined(test_id):
-                test_defined = True
-                break
-        if test_defined:
-            test_score = self.getTestConfigScore(test_id)
-            # Maven
-            mvn_pom = self.fuji.github_data.get("mvn_pom")
-            if mvn_pom is not None:
-                # Check whether pom.xml uses license:check-file-header to validate license headers.
-                # See https://www.mojohaus.org/license-maven-plugin/check-file-header-mojo.html for more info.
-                root = ET.fromstring(mvn_pom)
-                namespaces = root.nsmap
-                # look for plugin with artifactID license-maven-plugin
-                found_license_plugin = False
-                for plugin in root.iterfind(".//plugin", namespaces):
-                    artifact_id = plugin.find("artifactId", namespaces)
-                    if artifact_id is not None and artifact_id.text == "license-maven-plugin":
-                        found_license_plugin = True
-                        fail_on_missing_header = plugin.find("configuration/failOnMissingHeader", namespaces)
-                        if fail_on_missing_header is not None and fail_on_missing_header.text == "true":
-                            test_status = True
-                            self.logger.log(
-                                self.fuji.LOG_SUCCESS,
-                                f"{self.metric_identifier} : Maven POM checks for license headers in source files.",
-                            )
-                            self.maturity = self.getTestConfigMaturity(test_id)
-                            self.setEvaluationCriteriumScore(test_id, test_score, "pass")
-                            self.score.earned += test_score
-                        else:
-                            self.logger.warning(
-                                f"{self.metric_identifier} : Maven POM uses license-maven-plugin (license:check-file-header) but does not fail on missing header."
-                            )
-                        break
-                if not found_license_plugin:
-                    self.logger.warning(
-                        f"{self.metric_identifier} : Maven POM does not use license-maven-plugin (license:check-file-header) to check for license headers in source code files."
-                    )
-            else:
-                self.logger.warning(f"{self.metric_identifier} : Did not find a Maven POM file.")
         return test_status
 
     def evaluate(self):
@@ -434,13 +286,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             license_status = "pass"
         if self.testLicenseIsValidAndSPDXRegistered():
             license_status = "pass"
-        if self.testLicenseTXTAtRoot():
-            license_status = "pass"
-        if self.testLicenseForBundled():
-            license_status = "pass"
-        if self.testBuildScriptChecksLicenseHeader():
-            license_status = "pass"
-        if self.testLicenseInHeaders():
+        if self.testLicenseMetadataZenodo():
             license_status = "pass"
 
         self.result.test_status = license_status

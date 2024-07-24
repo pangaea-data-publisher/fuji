@@ -6,73 +6,18 @@ on:
   pull_request:
 
 concurrency:
-  group: ci-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  PYTHONUNBUFFERED: 1
   FORCE_COLOR: 1 # colored output by pytest etc.
-  CLICOLOR_FORCE: 1 # colored output by ruff
 
-permissions:
-  contents: read
+permissions: {} # Set permissions at the job level.
 
 jobs:
 
-  # TODO: disable docs build until decision is made
-
-  # docs:
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: Set up Python 3.11
-  #     uses: actions/setup-python@v5
-  #     with:
-  #       python-version: '3.11'
-  #   - name: Cache python dependencies
-  #     uses: actions/cache@v4
-  #     with:
-  #       path: ~/.cache/pip
-  #       key: pip-docs-${{ hashFiles('pyproject.toml') }}
-  #       restore-keys: |
-  #         pip-docs-
-  #   - name: Install python dependencies
-  #     run: |
-  #       python -m pip install .[docs]
-  #       python -m pip show fuji
-  #   - name: Build documentation
-  #     env:
-  #       READTHEDOCS: 'True'
-  #     run: |
-  #       # TODO: add W flag back after fixing warnings
-  #       SPHINXOPTS='-n' make -C docs html
-
   lint:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v4
-    - name: Cache python dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.cache/pre-commit
-        key: lint-${{ hashFiles('.pre-commit-config.yaml', 'pyproject.toml') }}
-        restore-keys: |
-          lint-
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    - run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install hatch
-    - run: hatch run lint
-
-  tests:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.11
@@ -80,41 +25,23 @@ jobs:
       with:
         python-version: '3.11'
         cache: pip
-    - name: Install python dependencies
-      run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install --upgrade hatch
-    - name: Run test suite with coverage
-      run: hatch run cov-ci
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
+    - uses: pre-commit/action@v3.0.1
       with:
-        name: test-results
-        retention-days: 1
-        path: pytest-junit.xml
-    - name: Upload coverage results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-results
-        retention-days: 1
-        path: pytest-cobertura.xml
-    - run: rm ./reports/coverage/.gitignore
-    - name: Generate coverage badge
-      if: github.ref == 'refs/heads/master'
-      run: hatch run cov-badge
-    - name: Deploy reports to GitHub Pages
-      if: github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e # v4.5.0
-      with:
-        folder: ./reports
+        extra_args: --all-files --color=always
 
-  event_file:
-    runs-on: ubuntu-22.04
+  tests:
+    runs-on: ubuntu-24.04
     steps:
-    - uses: actions/upload-artifact@v4
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
       with:
-        name: event-file
-        retention-days: 1
-        path: ${{ github.event_path }}
+        python-version: '3.11'
+        cache: pip
+    - run: |
+        python -m pip install --upgrade pip
+        python -m pip install hatch
+    - name: Run test suite with coverage
+      run: hatch run cov --cov-report=xml
+    - name: Upload coverage data to coveralls.io
+      uses: coverallsapp/github-action@643bc377ffa44ace6394b2b5d0d3950076de9f63 # v2.3.0

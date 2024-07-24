@@ -301,9 +301,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     if isinstance(rdf_response.get("@context"), list):
                                         for ctxi, ctxt in enumerate(rdf_response.get("@context")):
                                             if "schema.org" in ctxt:
-                                                rdf_response["@context"][
-                                                    ctxi
-                                                ] = "https://schema.org/docs/jsonldcontext.json"
+                                                rdf_response["@context"][ctxi] = (
+                                                    "https://schema.org/docs/jsonldcontext.json"
+                                                )
                                     if isinstance(rdf_response.get("@context"), str):
                                         if "schema.org" in rdf_response.get("@context"):
                                             rdf_response["@context"] = "https://schema.org/docs/jsonldcontext.json"

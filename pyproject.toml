@@ -20,9 +20,9 @@ dependencies = [
   # major.minor.patch, because they can potentially introduce breaking changes
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
-  "configparser~=6.0",
+  "configparser~=7.0",
   "connexion[flask,uvicorn,swagger-ui]~=3.0",
-  "extruct~=0.16.0",
+  "extruct~=0.17.0",
   "feedparser~=6.0",
   "flask-cors~=4.0",
   "flask-limiter~=3.5",
@@ -30,7 +30,7 @@ dependencies = [
   "idutils~=1.2",
   "jmespath~=1.0",
   "levenshtein~=0.25.0",
-  "lxml==5.1.0",
+  "lxml==5.2.2",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
@@ -65,11 +65,10 @@ version = "3.2.2"
 
 [project.optional-dependencies]
 dev = [
-  "fuji[lint]",
-  "fuji[testing]"
+  "fuji[lint,testing]"
 ]
 docs = [
-  "myst-parser~=2.0",
+  "myst-parser~=3.0",
   "sphinx~=7.2",
   "sphinx-rtd-theme~=2.0"
 ]
@@ -81,7 +80,6 @@ report = [
   "jupyter~=1.0"
 ]
 testing = [
-  "genbadge[coverage]~=1.1",
   "pytest~=8.0",
   "pytest-cov~=5.0",
   "pytest-randomly~=3.15",
@@ -101,8 +99,8 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
+omit = ["tests/*"]
 parallel = true
-source = ["fuji_server"]
 
 [tool.hatch.build]
 include = [
@@ -117,16 +115,16 @@ include = [
 packages = ["fuji_server"]
 
 [tool.hatch.envs.default]
-dev-mode = true
 features = [
   "lint",
   "testing"
 ]
+post-install-commands = [
+  "pre-commit install"
+]
 
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov {args}"
-cov-badge = "genbadge coverage --input-file=pytest-cobertura.xml --output-file=./reports/coverage/coveragebadge.svg"
-cov-ci = "pytest --cov --junitxml=pytest-junit.xml --cov-report=xml:pytest-cobertura.xml --cov-report=html:./reports/coverage/ {args}"
 lint = "pre-commit run --all-files --color=always {args}"
 test = "pytest {args}"
 
@@ -149,10 +147,9 @@ markers = [
 testpaths = "tests"
 
 [tool.ruff]
-line-length = 120
 # Ref: https://docs.astral.sh/ruff/configuration/
+line-length = 120
 src = ["fuji_server"]
-target-version = "py311"
 
 [tool.ruff.lint]
 extend-select = [
@@ -167,3 +164,15 @@ ignore = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["fuji_server", "tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# Note: ruff does not understand, that the logger, which gets passed through multiple inheritance is actually
+# a logger instance. It would not apply f-strings to logging messages. But let's ignore UP031 and UP032 for now.
+"fuji_server/evaluators/*.py" = [
+  "UP031",  # printf-string-formatting
+  "UP032"  # f-string
+]
+"fuji_server/helper/*.py" = [
+  "UP031",  # printf-string-formatting
+  "UP032"  # f-string
+]
