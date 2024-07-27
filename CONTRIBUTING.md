@@ -80,7 +80,7 @@ Here's how to set up F-UJI for local development.
    tests:
     ```console
     $ hatch run lint
-    $ hatch run test
+    $ hatch test
     ```
 
 6. Commit your changes and push your branch to GitHub:
@@ -108,8 +108,8 @@ Before you submit a pull request, check that it meets these guidelines:
 To run a subset of tests:
 
 ```console
-$ hatch run test tests/api
-$ hatch run test -m smoke
+$ hatch test tests/api
+$ hatch test -m smoke
 ```
 
 ---
