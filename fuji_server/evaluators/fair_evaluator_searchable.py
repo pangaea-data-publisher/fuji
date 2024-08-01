@@ -31,7 +31,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric("FsF-F4-01M")
         self.search_mechanisms = []
-        self.search_engines_support_offering = ["json_in_html", "meta_tags", "microdata", "rdfa"]
+        self.search_engines_support_offering = ["json_in_html", "meta_tag", "microdata", "rdfa"]
         self.search_engines_support_standards = [
             "schemaorg",
             "dublin-core",
