@@ -1,17 +1,16 @@
 {
-  "ABCD (Access to Biological Collection Data)": {
+  "abcd-access-biological-collection-data": {
     "acronym": "ABCD",
     "field_of_science": [
-      "zoology",
-      "geology",
-      "botany",
-      "biological sciences",
-      "palaeontology",
       "earth and related environmental sciences",
-      "genetics",
-      "natural sciences"
+      "geology",
+      "natural sciences",
+      "biological sciences",
+      "botany",
+      "zoology",
+      "palaeontology",
+      "genetics"
     ],
-    "id": "abcd-access-biological-collection-data",
     "identifier": [
       {
         "type": "local",
@@ -63,7 +62,11 @@
       "Palaeontology",
       "Zoology"
     ],
+    "title": "ABCD (Access to Biological Collection Data)",
     "urls": [
+      "msc:m1",
+      "https://doi.org/10.25504/FAIRsharing.kr3215",
+      "http://www.dcc.ac.uk/resources/metadata-standards/abcd-access-biological-collection-data",
       "http://www.tdwg.org/standards/115/",
       "http://wiki.tdwg.org/ABCD",
       "https://abcd.tdwg.org/xml/ABCD_3.0.xsd",
@@ -71,16 +74,18 @@
       "https://abcd.tdwg.org/xml/ABCD_2.1.xsd",
       "http://www.tdwg.org/schemas/abcd/2.1",
       "https://abcd.tdwg.org/xml/ABCD_2.06.xsd",
-      "http://www.tdwg.org/schemas/abcd/2.06"
+      "http://www.tdwg.org/schemas/abcd/2.06",
+      "msc:g11",
+      "msc:g44",
+      "msc:g45"
     ]
   },
-  "ABCDDNA": {
+  "abcddna": {
     "acronym": "ABCDDNA",
     "field_of_science": [
       "genetics",
       "natural sciences"
     ],
-    "id": "abcddna",
     "identifier": [
       {
         "type": "local",
@@ -106,21 +111,24 @@
     "subject_areas": [
       "Genetics"
     ],
+    "title": "ABCDDNA",
     "urls": [
+      "msc:m42",
+      "https://doi.org/10.25504/FAIRsharing.7tx4ac",
       "http://www.tdwg.org/standards/640/",
       "http://www.dnabank-network.org/schemas/ABCDDNA/ABCDDNA.xsd",
-      "http://www.dnabank-network.org/schemas/ABCDDNA"
+      "http://www.dnabank-network.org/schemas/ABCDDNA",
+      "msc:m1"
     ]
   },
-  "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)": {
+  "abcdefg-access-biological-collection-databases-extended-geosciences": {
     "acronym": "ABCDEFG",
     "field_of_science": [
-      "earth and related environmental sciences",
       "mineralogy",
-      "natural sciences",
-      "palaeontology"
+      "palaeontology",
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
-    "id": "abcdefg-access-biological-collection-databases-extended-geosciences",
     "identifier": [
       {
         "type": "local",
@@ -148,18 +156,21 @@
       "Mineralogy",
       "Palaeontology"
     ],
+    "title": "ABCDEFG (Access to Biological Collection Databases Extended for Geosciences)",
     "urls": [
+      "msc:m43",
+      "https://fairsharing.org/1396",
       "http://www.geocase.eu/efg",
       "http://www.geocase.eu/sites/geocase.biodiv.naturkundemuseum-berlin.de/documentation/abcdefg.xsd",
-      "http://www.synthesys.info/ABCDEFG/1.0"
+      "http://www.synthesys.info/ABCDEFG/1.0",
+      "msc:m1"
     ]
   },
-  "AGLS Metadata Profile": {
+  "agls-metadata-profile": {
     "acronym": "AGLS",
     "field_of_science": [
       "sciences"
     ],
-    "id": "agls-metadata-profile",
     "identifier": [
       {
         "type": "local",
@@ -181,20 +192,71 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "AGLS Metadata Profile",
     "urls": [
+      "msc:m44",
+      "https://fairsharing.org/751",
       "http://www.agls.gov.au",
-      "http://www.agls.gov.au/agls/terms/"
+      "http://www.agls.gov.au/agls/terms/",
+      "msc:m15"
     ]
   },
-  "AGRIS Application Profile": {
+  "agmes-agricultural-metadata-element-set": {
+    "acronym": "AgMES",
+    "field_of_science": [
+      "fisheries",
+      "agricultural sciences",
+      "agriculture",
+      "animal and dairy science"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m2"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.vd694s"
+      },
+      {
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/agmes-agricultural-metadata-element-set"
+      },
+      {
+        "type": "homepage",
+        "value": "http://aims.fao.org/standards/agmes"
+      },
+      {
+        "type": "namespace",
+        "value": "http://purl.org/agmes/1.1/"
+      }
+    ],
+    "subject_areas": [
+      "Agricultural economics",
+      "Agriculture",
+      "Aquaculture",
+      "Livestock"
+    ],
+    "title": "AgMES (Agricultural Metadata Element Set)",
+    "urls": [
+      "msc:m2",
+      "https://doi.org/10.25504/FAIRsharing.vd694s",
+      "http://www.dcc.ac.uk/resources/metadata-standards/agmes-agricultural-metadata-element-set",
+      "http://aims.fao.org/es/standards/agmes/namespace-specification",
+      "http://aims.fao.org/standards/agmes",
+      "http://purl.org/agmes/1.1/",
+      "msc:g2",
+      "http://purl.org/agmes/1.1/"
+    ]
+  },
+  "agris-application-profile": {
     "acronym": "AGRIS",
     "field_of_science": [
-      "animal and dairy science",
-      "agriculture",
+      "fisheries",
       "agricultural sciences",
-      "fisheries"
+      "agriculture",
+      "animal and dairy science"
     ],
-    "id": "agris-application-profile",
     "identifier": [
       {
         "type": "local",
@@ -219,19 +281,63 @@
       "Aquaculture",
       "Livestock"
     ],
+    "title": "AGRIS Application Profile",
     "urls": [
+      "msc:m45",
+      "https://doi.org/10.25504/FAIRsharing.32e620",
       "http://www.fao.org/docrep/008/ae909e/ae909e00.htm",
-      "http://www.fao.org/agris"
+      "http://www.fao.org/agris",
+      "msc:m2",
+      "msc:m15"
     ]
   },
-  "ANZLIC Metadata Profile": {
+  "amf-academic-metadata-format": {
+    "acronym": "AMF",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m25"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4646"
+      },
+      {
+        "type": "namespace",
+        "value": "http://amf.openlib.org"
+      },
+      {
+        "type": "homepage",
+        "value": "http://amf.openlib.org"
+      },
+      {
+        "type": "schema",
+        "value": "http://amf.openlib.org/2001/amf.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "Academic Metadata Format",
+    "urls": [
+      "fuji:m25",
+      "https://fairsharing.org/4646",
+      "http://openlib.org/home/krichel/ebisu.html",
+      "http://amf.openlib.org",
+      "http://amf.openlib.org",
+      "http://amf.openlib.org/2001/amf.xsd"
+    ]
+  },
+  "anzlic-metadata-profile": {
     "acronym": "ANZLIC",
     "field_of_science": [
+      "cartography",
       "physical geography",
-      "natural sciences",
-      "cartography"
+      "natural sciences"
     ],
-    "id": "anzlic-metadata-profile",
     "identifier": [
       {
         "type": "local",
@@ -251,71 +357,52 @@
       "Geography",
       "Topography"
     ],
+    "title": "ANZLIC Metadata Profile",
     "urls": [
-      "https://www.anzlic.gov.au/resources/anzlic-metadata-profile"
+      "msc:m46",
+      "https://fairsharing.org/820",
+      "https://www.anzlic.gov.au/resources/anzlic-metadata-profile",
+      "msc:m15",
+      "msc:m22"
     ]
   },
-  "AODN Marine Community Profile": {
-    "acronym": "AODN",
+  "apple-core": {
+    "acronym": "aDwC",
     "field_of_science": [
-      "glaciology",
-      "climatology",
-      "oceanography",
-      "meteorology",
-      "earth and related environmental sciences",
-      "natural sciences",
-      "hydrology"
+      "botany",
+      "natural sciences"
     ],
-    "id": "marine-community-profile",
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m71"
+        "value": "msc:m47"
       },
       {
         "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.18b8b4"
+        "value": "https://fairsharing.org/726"
       },
       {
         "type": "homepage",
-        "value": "http://www.aodc.org.au/index.php?id=37"
-      },
-      {
-        "type": "namespace",
-        "value": "http://schemas.aodn.org.au/mcp-2.0"
-      },
-      {
-        "type": "namespace",
-        "value": "http://schemas.aodn.org.au"
-      },
-      {
-        "type": "schema",
-        "value": "http://schemas.aodn.org.au/mcp-2.0/schema.xsd"
+        "value": "http://code.google.com/p/applecore/wiki/Introduction"
       }
     ],
     "subject_areas": [
-      "Climatology",
-      "Earth sciences",
-      "Glaciology",
-      "Hydrology",
-      "Meteorology",
-      "Oceanography"
+      "Botany"
     ],
+    "title": "Apple Core",
     "urls": [
-      "https://mcp-profile-docs.readthedocs.io/en/stable/",
-      "http://www.aodc.org.au/index.php?id=37",
-      "http://schemas.aodn.org.au/mcp-2.0",
-      "http://schemas.aodn.org.au",
-      "http://schemas.aodn.org.au/mcp-2.0/schema.xsd"
+      "msc:m47",
+      "https://fairsharing.org/726",
+      "http://code.google.com/p/applecore/wiki/Introduction",
+      "msc:m9"
     ]
   },
-  "ARIADNE Dataset Catalogue Model (ACDM)": {
+  "ariadne-dataset-catalogue-model": {
     "acronym": "ACDM",
     "field_of_science": [
       "humanities",
       "archaeology"
     ],
-    "id": "ariadne-dataset-catalogue-model",
     "identifier": [
       {
         "type": "local",
@@ -369,7 +456,10 @@
     "subject_areas": [
       "Archaeology"
     ],
+    "title": "ARIADNE Dataset Catalogue Model (ACDM)",
     "urls": [
+      "fuji:m19",
+      "https://fairsharing.org/4647",
       "http://ariadne-registry.dcu.gr/schema_definition/6.7/acdm.xsd",
       "http://ariadne-registry.dcu.gr/schema_definition/6.8/acdm.xsd",
       "http://ariadne-registry.dcu.gr/schema_definition/6.9/acdm.xsd",
@@ -382,13 +472,88 @@
       "http://ariadne-registry.dcu.gr/"
     ]
   },
-  "AVM (Astronomy Visualization Metadata)": {
+  "asset-description-metadata-schema-adms": {
+    "acronym": "ADMS",
+    "field_of_science": [
+      "political sciences",
+      "social sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m48"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.es2t25"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.w3.org/TR/vocab-adms/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.w3.org/ns/adms#"
+      }
+    ],
+    "subject_areas": [
+      "Social policy"
+    ],
+    "title": "Asset Description Metadata Schema (ADMS)",
+    "urls": [
+      "msc:m48",
+      "https://doi.org/10.25504/FAIRsharing.es2t25",
+      "http://www.w3.org/TR/vocab-adms/",
+      "http://www.w3.org/ns/adms#",
+      "msc:m12"
+    ]
+  },
+  "atom-syndication-format": {
+    "acronym": "ATOM",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m13"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4648"
+      },
+      {
+        "type": "namespace",
+        "value": "https://www.w3.org/2005/Atom"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.w3.org/2005/Atom"
+      },
+      {
+        "type": "homepage",
+        "value": "https://datatracker.ietf.org/wg/atompub/about/"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "The Atom Syndication Format",
+    "urls": [
+      "fuji:m13",
+      "https://fairsharing.org/4648",
+      "https://www.w3.org/2005/Atom",
+      "http://www.w3.org/2005/Atom",
+      "https://datatracker.ietf.org/wg/atompub/about/",
+      "https://datatracker.ietf.org/doc/html/rfc4287"
+    ]
+  },
+  "avm-astronomy-visualization-metadata": {
     "acronym": "AVM",
     "field_of_science": [
-      "natural sciences",
-      "astronomy"
+      "astronomy",
+      "natural sciences"
     ],
-    "id": "avm-astronomy-visualization-metadata",
     "identifier": [
       {
         "type": "local",
@@ -414,159 +579,20 @@
     "subject_areas": [
       "Astronomy"
     ],
+    "title": "AVM (Astronomy Visualization Metadata)",
     "urls": [
+      "msc:m3",
+      "https://doi.org/10.25504/FAIRsharing.338ze0",
+      "http://www.dcc.ac.uk/resources/metadata-standards/avm-astronomy-visualization-metadata",
       "http://www.virtualastronomy.org/avm_metadata.php#2",
       "http://www.virtualastronomy.org/avm_metadata.php",
-      "http://www.communicatingastronomy.org/avm/1.0/"
+      "http://www.communicatingastronomy.org/avm/1.0/",
+      "msc:g88"
     ]
   },
-  "Academic Metadata Format": {
-    "acronym": "AMF",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "amf-academic-metadata-format",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m25"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4646"
-      },
-      {
-        "type": "namespace",
-        "value": "http://amf.openlib.org"
-      },
-      {
-        "type": "homepage",
-        "value": "http://amf.openlib.org"
-      },
-      {
-        "type": "schema",
-        "value": "http://amf.openlib.org/2001/amf.xsd"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "http://openlib.org/home/krichel/ebisu.html",
-      "http://amf.openlib.org",
-      "http://amf.openlib.org",
-      "http://amf.openlib.org/2001/amf.xsd"
-    ]
-  },
-  "AgMES (Agricultural Metadata Element Set)": {
-    "acronym": "AgMES",
-    "field_of_science": [
-      "animal and dairy science",
-      "agriculture",
-      "agricultural sciences",
-      "fisheries"
-    ],
-    "id": "agmes-agricultural-metadata-element-set",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m2"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.vd694s"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/agmes-agricultural-metadata-element-set"
-      },
-      {
-        "type": "homepage",
-        "value": "http://aims.fao.org/standards/agmes"
-      },
-      {
-        "type": "namespace",
-        "value": "http://purl.org/agmes/1.1/"
-      }
-    ],
-    "subject_areas": [
-      "Agricultural economics",
-      "Agriculture",
-      "Aquaculture",
-      "Livestock"
-    ],
-    "urls": [
-      "http://aims.fao.org/es/standards/agmes/namespace-specification",
-      "http://aims.fao.org/standards/agmes",
-      "http://purl.org/agmes/1.1/",
-      "http://purl.org/agmes/1.1/"
-    ]
-  },
-  "Apple Core": {
-    "acronym": "aDwC",
-    "field_of_science": [
-      "natural sciences",
-      "botany"
-    ],
-    "id": "apple-core",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m47"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/726"
-      },
-      {
-        "type": "homepage",
-        "value": "http://code.google.com/p/applecore/wiki/Introduction"
-      }
-    ],
-    "subject_areas": [
-      "Botany"
-    ],
-    "urls": [
-      "http://code.google.com/p/applecore/wiki/Introduction"
-    ]
-  },
-  "Asset Description Metadata Schema (ADMS)": {
-    "acronym": "ADMS",
-    "field_of_science": [
-      "social sciences",
-      "political sciences"
-    ],
-    "id": "asset-description-metadata-schema-adms",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m48"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.es2t25"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.w3.org/TR/vocab-adms/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.w3.org/ns/adms#"
-      }
-    ],
-    "subject_areas": [
-      "Social policy"
-    ],
-    "urls": [
-      "http://www.w3.org/TR/vocab-adms/",
-      "http://www.w3.org/ns/adms#"
-    ]
-  },
-  "BibTeX": {
+  "bibtex-format": {
     "acronym": "BibTeX",
     "field_of_science": [],
-    "id": "bibtex-format",
     "identifier": [
       {
         "type": "local",
@@ -594,22 +620,24 @@
       }
     ],
     "subject_areas": null,
+    "title": "BibTeX",
     "urls": [
+      "fuji:m34",
+      "https://doi.org/10.25504/FAIRsharing.bdf2fe",
       "http://www.bibtex.org/",
       "http://clarin-pl.eu/ns/experimental/bibtex",
       "http://lindat.mff.cuni.cz/ns/experimental/bibtex",
       "http://repository.clarin.dk/ns/experimental/bibtex"
     ]
   },
-  "CARARE metadata schema": {
+  "carare-metadata-schema": {
     "acronym": "CARARE",
     "field_of_science": [
-      "architectural design",
       "humanities",
+      "architectural design",
       "archaeology",
       "history"
     ],
-    "id": "carare-metadata-schema",
     "identifier": [
       {
         "type": "local",
@@ -639,18 +667,21 @@
       "Cultural property preservation",
       "History"
     ],
+    "title": "CARARE metadata schema",
     "urls": [
+      "msc:m49",
+      "https://doi.org/10.25504/FAIRsharing.ba7c93",
       "https://pro.carare.eu/doku.php?id=support:metadata-schema",
       "http://www.carare.eu/carareSchema",
-      "https://pro.carare.eu/lib/exe/fetch.php?media=support:carare-v1_0_6_1.xsd"
+      "https://pro.carare.eu/lib/exe/fetch.php?media=support:carare-v1_0_6_1.xsd",
+      "msc:m24"
     ]
   },
-  "CDWA Lite": {
+  "cdwa-lite-schema": {
     "acronym": "cdwa-lite",
     "field_of_science": [
       "humanities"
     ],
-    "id": "cdwa-lite-schema",
     "identifier": [
       {
         "type": "local",
@@ -681,7 +712,10 @@
       "Humanities",
       "Cultural heritage"
     ],
+    "title": "CDWA Lite",
     "urls": [
+      "fuji:m30",
+      "https://fairsharing.org/4649",
       "https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.pdf",
       "https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.html",
       "https://www.getty.edu/CDWA/CDWALite",
@@ -689,21 +723,20 @@
       "http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-0.xsd"
     ]
   },
-  "CEDAR Template Model": {
+  "cedar-template-model": {
     "acronym": "CEDAR",
     "field_of_science": [
       "earth and related environmental sciences",
-      "clinical medicine",
-      "engineering and technology",
-      "agricultural sciences",
-      "medical and health sciences",
-      "agriculture",
       "social sciences",
-      "public administration",
+      "clinical medicine",
+      "medical and health sciences",
+      "medical engineering",
       "natural sciences",
-      "medical engineering"
+      "public administration",
+      "agricultural sciences",
+      "engineering and technology",
+      "agriculture"
     ],
-    "id": "cedar-template-model",
     "identifier": [
       {
         "type": "local",
@@ -725,17 +758,19 @@
       "Earth sciences",
       "Medical information systems"
     ],
+    "title": "CEDAR Template Model",
     "urls": [
+      "msc:m94",
+      "https://doi.org/10.25504/FAIRsharing.V527H4",
       "https://more.metadatacenter.org/tools-training/outreach/cedar-template-model",
       "https://more.metadatacenter.org/sites/default/files/artifact/CEDAR%20Template%20Model%20v1.5.0_0.pdf"
     ]
   },
-  "CERIF (Common European Research Information Format)": {
+  "cerif": {
     "acronym": "CERIF",
     "field_of_science": [
       "sciences"
     ],
-    "id": "cerif",
     "identifier": [
       {
         "type": "local",
@@ -785,7 +820,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "CERIF (Common European Research Information Format)",
     "urls": [
+      "msc:m4",
+      "https://doi.org/10.25504/FAIRsharing.6945dq",
       "http://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/documentation/MInfo.html",
       "http://www.eurocris.org/cerif/main-features-cerif",
       "https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/CERIF_1.6_2.xsd",
@@ -795,19 +833,21 @@
       "urn:xmlns:org:eurocris:cerif-1.5-1",
       "urn:xmlns:org:eurocris:cerif-1.4-0",
       "http://www.eurocris.org/ontologies/cerif/1.3#",
-      "https://www.openaire.eu/cerif-profile/1.1/"
+      "https://www.openaire.eu/cerif-profile/1.1/",
+      "msc:g112",
+      "msc:g99",
+      "msc:g100"
     ]
   },
-  "CESSDA MLI - Council of European Social Science Data Archives Minimum Level of Information": {
+  "cessda-mli-council-european-social-science-data-archives-minimum-level-inf": {
     "acronym": null,
     "field_of_science": [
-      "social geography",
       "demography",
-      "sociology",
+      "social geography",
+      "social sciences",
       "economics",
-      "social sciences"
+      "sociology"
     ],
-    "id": "cessda-mli-council-european-social-science-data-archives-minimum-level-inf",
     "identifier": [
       {
         "type": "local",
@@ -828,19 +868,22 @@
       "Land use",
       "Sociology"
     ],
+    "title": "CESSDA MLI - Council of European Social Science Data Archives Minimum Level of Information",
     "urls": [
-      "http://www.cessda.org/sharing/managing/3/"
+      "msc:m50",
+      "https://fairsharing.org/4272",
+      "http://www.cessda.org/sharing/managing/3/",
+      "msc:m13"
     ]
   },
-  "CF (Climate and Forecast) Metadata Conventions": {
+  "cf-climate-and-forecast-metadata-conventions": {
     "acronym": "CF",
     "field_of_science": [
-      "climatology",
       "oceanography",
-      "natural sciences",
-      "meteorology"
+      "meteorology",
+      "climatology",
+      "natural sciences"
     ],
-    "id": "cf-climate-and-forecast-metadata-conventions",
     "identifier": [
       {
         "type": "local",
@@ -864,21 +907,61 @@
       "Meteorology",
       "Oceanography"
     ],
+    "title": "CF (Climate and Forecast) Metadata Conventions",
     "urls": [
+      "msc:m5",
+      "https://doi.org/10.25504/FAIRsharing.f8cd83",
+      "http://www.dcc.ac.uk/resources/metadata-standards/cf-climate-and-forecast-metadata-conventions",
       "http://cfconventions.org/documents.html",
-      "http://cfconventions.org/"
+      "http://cfconventions.org/",
+      "msc:g7",
+      "msc:g13",
+      "msc:g68",
+      "msc:g74",
+      "msc:g80",
+      "msc:g83",
+      "msc:g92"
     ]
   },
-  "CIF (Crystallographic Information Framework)": {
+  "chardm-astronomical-dataset-characterisation": {
+    "acronym": "CharDM",
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m29"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.yYjZWb"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html"
+      },
+      {
+        "type": "schema",
+        "value": "http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd"
+      }
+    ],
+    "subject_areas": null,
+    "title": "CharDM, Data Model for Astronomical DataSet Characterisation",
+    "urls": [
+      "fuji:m29",
+      "https://doi.org/10.25504/FAIRsharing.yYjZWb",
+      "https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html",
+      "http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd"
+    ]
+  },
+  "cif-crystallographic-information-framework": {
     "acronym": "CIF",
     "field_of_science": [
       "crystallography",
-      "engineering and technology",
       "materials engineering",
-      "chemical sciences",
-      "natural sciences"
+      "natural sciences",
+      "engineering and technology",
+      "chemical sciences"
     ],
-    "id": "cif-crystallographic-information-framework",
     "identifier": [
       {
         "type": "local",
@@ -902,18 +985,24 @@
       "Crystallography",
       "Materials engineering"
     ],
+    "title": "CIF (Crystallographic Information Framework)",
     "urls": [
+      "msc:m6",
+      "https://doi.org/10.25504/FAIRsharing.zr52g5",
+      "http://www.dcc.ac.uk/resources/metadata-standards/cif-crystallographic-information-framework",
       "http://www.iucr.org/resources/cif/spec",
-      "http://www.iucr.org/resources/cif"
+      "http://www.iucr.org/resources/cif",
+      "msc:g3",
+      "msc:g14",
+      "msc:g27"
     ]
   },
-  "CIM (Common Information Model)": {
+  "cim-common-information-model": {
     "acronym": "CIM",
     "field_of_science": [
       "climatology",
       "natural sciences"
     ],
-    "id": "cim-common-information-model",
     "identifier": [
       {
         "type": "local",
@@ -939,212 +1028,26 @@
     "subject_areas": [
       "Climatology"
     ],
+    "title": "CIM (Common Information Model)",
     "urls": [
+      "msc:m7",
+      "https://doi.org/10.25504/FAIRsharing.k3z4q9",
+      "http://www.dcc.ac.uk/resources/metadata-standards/cim-common-information-model",
       "https://earthsystemcog.org/projects/es-doc-models/cim_versions",
       "https://earthsystemcog.org/projects/es-doc-models/cim",
-      "https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd"
+      "https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd",
+      "msc:g23",
+      "msc:g24",
+      "msc:g25",
+      "msc:g34"
     ]
   },
-  "COARDS Conventions": {
-    "acronym": null,
-    "field_of_science": [
-      "climatology",
-      "oceanography",
-      "natural sciences",
-      "meteorology"
-    ],
-    "id": "coards-conventions",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m51"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.9614ca"
-      },
-      {
-        "type": "homepage",
-        "value": "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html"
-      }
-    ],
-    "subject_areas": [
-      "Climatology",
-      "Meteorology",
-      "Oceanography"
-    ],
-    "urls": [
-      "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html"
-    ]
-  },
-  "CSDGM Extensions for Remote Sensing Metadata": {
-    "acronym": "CSDGM",
-    "field_of_science": [
-      "meteorology",
-      "climatology",
-      "oceanography",
-      "natural sciences",
-      "hydrology"
-    ],
-    "id": "csdgm-extensions-remote-sensing-metadata",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m53"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/1445"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf"
-      }
-    ],
-    "subject_areas": [
-      "Climatology",
-      "Hydrology",
-      "Meteorology",
-      "Oceanography"
-    ],
-    "urls": [
-      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf"
-    ]
-  },
-  "CSMD (Core Scientific Metadata Model)": {
-    "acronym": "CSMD",
-    "field_of_science": [
-      "crystallography",
-      "biochemistry",
-      "engineering and technology",
-      "materials engineering",
-      "chemical sciences",
-      "natural sciences"
-    ],
-    "id": "csmd-cclrc-core-scientific-metadata-model",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m8"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.30fk89"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/csmd-cclrc-core-scientific-metadata-model"
-      },
-      {
-        "type": "homepage",
-        "value": "http://icatproject-contrib.github.io/CSMD/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.purl.org/net/CSMD/4.0#"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.escience.clrc.ac.uk/schemas/scientific"
-      }
-    ],
-    "subject_areas": [
-      "Biochemistry",
-      "Chemistry",
-      "Crystallography",
-      "Materials engineering"
-    ],
-    "urls": [
-      "http://icatproject-contrib.github.io/CSMD/",
-      "http://www.purl.org/net/CSMD/4.0#",
-      "http://www.escience.clrc.ac.uk/schemas/scientific"
-    ]
-  },
-  "Catalogue Service for the Web": {
-    "acronym": "CSW",
-    "field_of_science": [
-      "earth and related environmental sciences",
-      "natural sciences",
-      "cartography"
-    ],
-    "id": "csw-catalogue-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m32"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4650"
-      },
-      {
-        "type": "schema",
-        "value": "http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.opengis.net/cat/csw/2.0.2"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.opengis.net/cat/csw/3.0"
-      },
-      {
-        "type": "schema",
-        "value": "http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd"
-      },
-      {
-        "type": "homepage",
-        "value": "https://www.ogc.org/standard/cat/"
-      }
-    ],
-    "subject_areas": [
-      "Cartography",
-      "Earth sciences"
-    ],
-    "urls": [
-      "http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd",
-      "http://www.opengis.net/cat/csw/2.0.2",
-      "http://www.opengis.net/cat/csw/3.0",
-      "http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd",
-      "https://www.ogc.org/standard/cat/"
-    ]
-  },
-  "CharDM, Data Model for Astronomical DataSet Characterisation": {
-    "acronym": "CharDM",
-    "field_of_science": [],
-    "id": "chardm-astronomical-dataset-characterisation",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m29"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.yYjZWb"
-      },
-      {
-        "type": "homepage",
-        "value": "https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html"
-      },
-      {
-        "type": "schema",
-        "value": "http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd"
-      }
-    ],
-    "subject_areas": null,
-    "urls": [
-      "https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html",
-      "http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd"
-    ]
-  },
-  "Clarivate Data Citation Index Schema": {
+  "clarivate-data-citation-index-schema": {
     "acronym": "dci",
     "field_of_science": [
-      "library sciences",
-      "humanities"
+      "humanities",
+      "library sciences"
     ],
-    "id": "clarivate-data-citation-index-schema",
     "identifier": [
       {
         "type": "local",
@@ -1162,19 +1065,20 @@
     "subject_areas": [
       "Bibliographic standards"
     ],
+    "title": "Clarivate Data Citation Index Schema",
     "urls": [
+      "fuji:m39",
       "https://clarivate.com/products/web-of-science/web-science-form/data-citation-index/",
       "https://clarivate.com/products/scientific-and-academic-research/research-discovery-and-workflow-solutions/webofscience-platform/data-citation-index/"
     ]
   },
-  "Component MetaData Specification (CMDI)": {
+  "cmd-component-metadata": {
     "acronym": "CMDI",
     "field_of_science": [
       "humanities",
       "linguistics",
       "languages and literature"
     ],
-    "id": "cmd-component-metadata",
     "identifier": [
       {
         "type": "local",
@@ -1225,7 +1129,10 @@
       "Linguistics",
       "Languages"
     ],
+    "title": "Component MetaData Specification (CMDI)",
     "urls": [
+      "fuji:m6",
+      "https://doi.org/10.25504/FAIRsharing.2e0599",
       "http://www.clarin.eu/cmd/",
       "https://www.clarin.eu/cmd/1",
       "https://www.clarin.eu/content/component-metadata",
@@ -1238,12 +1145,46 @@
       "https://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/1.x/profiles/clarin.eu:cr1:p_1290431694484/xsd"
     ]
   },
-  "Crossref Schema": {
+  "coards-conventions": {
+    "acronym": null,
+    "field_of_science": [
+      "oceanography",
+      "meteorology",
+      "climatology",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m51"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.9614ca"
+      },
+      {
+        "type": "homepage",
+        "value": "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html"
+      }
+    ],
+    "subject_areas": [
+      "Climatology",
+      "Meteorology",
+      "Oceanography"
+    ],
+    "title": "COARDS Conventions",
+    "urls": [
+      "msc:m51",
+      "https://doi.org/10.25504/FAIRsharing.9614ca",
+      "http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html",
+      "msc:m5"
+    ]
+  },
+  "crossref-schema": {
     "acronym": "crossref",
     "field_of_science": [
       "sciences"
     ],
-    "id": "crossref-schema",
     "identifier": [
       {
         "type": "local",
@@ -1309,7 +1250,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "Crossref Schema",
     "urls": [
+      "fuji:m40",
+      "https://doi.org/10.25504/FAIRsharing.bbQbSW",
       "http://www.crossref.org/schema",
       "http://www.crossref.org/schema/4.4.0",
       "https://data.crossref.org/schemas/crossref4.4.0.xsd",
@@ -1325,18 +1269,17 @@
       "https://data.crossref.org/schemas/crossref5.3.1.xsd"
     ]
   },
-  "Cruise Summary Reports": {
+  "cruise-summary-reports": {
     "acronym": "CSR",
     "field_of_science": [
-      "glaciology",
-      "climatology",
-      "oceanography",
-      "meteorology",
+      "hydrology",
       "earth and related environmental sciences",
+      "climatology",
       "natural sciences",
-      "hydrology"
+      "meteorology",
+      "glaciology",
+      "oceanography"
     ],
-    "id": "cruise-summary-reports",
     "identifier": [
       {
         "type": "local",
@@ -1371,19 +1314,429 @@
       "Meteorology",
       "Oceanography"
     ],
+    "title": "Cruise Summary Reports",
     "urls": [
+      "msc:m52",
+      "https://doi.org/10.25504/FAIRsharing.e36460",
       "http://www.seadatanet.org/Metadata/CSR",
       "http://www.seadatanet.org",
       "http://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CSR_ISO19139_5.2.0.xsd",
-      " http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd"
+      " http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd",
+      "msc:m22"
     ]
   },
-  "DCAT (Data Catalog Vocabulary)": {
+  "csdgm-extensions-remote-sensing-metadata": {
+    "acronym": "CSDGM",
+    "field_of_science": [
+      "hydrology",
+      "climatology",
+      "natural sciences",
+      "meteorology",
+      "oceanography"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m53"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/1445"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf"
+      }
+    ],
+    "subject_areas": [
+      "Climatology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ],
+    "title": "CSDGM Extensions for Remote Sensing Metadata",
+    "urls": [
+      "msc:m53",
+      "https://fairsharing.org/1445",
+      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf",
+      "msc:m17"
+    ]
+  },
+  "csmd-cclrc-core-scientific-metadata-model": {
+    "acronym": "CSMD",
+    "field_of_science": [
+      "crystallography",
+      "materials engineering",
+      "natural sciences",
+      "engineering and technology",
+      "chemical sciences",
+      "biochemistry"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m8"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.30fk89"
+      },
+      {
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/csmd-cclrc-core-scientific-metadata-model"
+      },
+      {
+        "type": "homepage",
+        "value": "http://icatproject-contrib.github.io/CSMD/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.purl.org/net/CSMD/4.0#"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.escience.clrc.ac.uk/schemas/scientific"
+      }
+    ],
+    "subject_areas": [
+      "Biochemistry",
+      "Chemistry",
+      "Crystallography",
+      "Materials engineering"
+    ],
+    "title": "CSMD (Core Scientific Metadata Model)",
+    "urls": [
+      "msc:m8",
+      "https://doi.org/10.25504/FAIRsharing.30fk89",
+      "http://www.dcc.ac.uk/resources/metadata-standards/csmd-cclrc-core-scientific-metadata-model",
+      "http://icatproject-contrib.github.io/CSMD/",
+      "http://www.purl.org/net/CSMD/4.0#",
+      "http://www.escience.clrc.ac.uk/schemas/scientific",
+      "msc:g28",
+      "msc:g52"
+    ]
+  },
+  "csw-catalogue-schema": {
+    "acronym": "CSW",
+    "field_of_science": [
+      "cartography",
+      "earth and related environmental sciences",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m32"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4650"
+      },
+      {
+        "type": "schema",
+        "value": "http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.opengis.net/cat/csw/2.0.2"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.opengis.net/cat/csw/3.0"
+      },
+      {
+        "type": "schema",
+        "value": "http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.ogc.org/standard/cat/"
+      }
+    ],
+    "subject_areas": [
+      "Cartography",
+      "Earth sciences"
+    ],
+    "title": "Catalogue Service for the Web",
+    "urls": [
+      "fuji:m32",
+      "https://fairsharing.org/4650",
+      "http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd",
+      "http://www.opengis.net/cat/csw/2.0.2",
+      "http://www.opengis.net/cat/csw/3.0",
+      "http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd",
+      "https://www.ogc.org/standard/cat/"
+    ]
+  },
+  "dara-metadata-schema": {
+    "acronym": "da|ra",
+    "field_of_science": [
+      "sociology",
+      "political sciences",
+      "social sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m10"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4651"
+      },
+      {
+        "type": "namespace",
+        "value": "http://da-ra.de/schema/kernel-4"
+      },
+      {
+        "type": "schema",
+        "value": "http://da-ra.de/dara/schemadefinitions/dara.xsd"
+      },
+      {
+        "type": "schema",
+        "value": "dara_v2.2.1_de_en_19112012.xsd"
+      },
+      {
+        "type": "schema",
+        "value": "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.da-ra.de/downloads#metadata"
+      }
+    ],
+    "subject_areas": [
+      "Social policy",
+      "Sociology"
+    ],
+    "title": "da|ra Metadata Schema",
+    "urls": [
+      "fuji:m10",
+      "https://fairsharing.org/4651",
+      "http://da-ra.de/schema/kernel-4",
+      "http://da-ra.de/dara/schemadefinitions/dara.xsd",
+      "dara_v2.2.1_de_en_19112012.xsd",
+      "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd",
+      "https://www.da-ra.de/downloads#version-3-0",
+      "https://www.da-ra.de/downloads#metadata"
+    ]
+  },
+  "darwin-core": {
+    "acronym": "DwC",
+    "field_of_science": [
+      "cartography",
+      "ecology",
+      "earth and related environmental sciences",
+      "natural sciences",
+      "biological sciences",
+      "botany",
+      "zoology",
+      "palaeontology",
+      "physical geography",
+      "marine biology",
+      "oceanography"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m9"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.xvf5y3"
+      },
+      {
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/darwin-core"
+      },
+      {
+        "type": "homepage",
+        "value": "http://rs.tdwg.org/dwc/index.htm"
+      },
+      {
+        "type": "namespace",
+        "value": "http://rs.tdwg.org/dwc/terms/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://rs.tdwg.org/dwc/iri/"
+      },
+      {
+        "type": "schema",
+        "value": "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Biogeography",
+      "Biological diversity",
+      "Botany",
+      "Cartography",
+      "Earth sciences",
+      "Ecology",
+      "Marine animals",
+      "Oceanography",
+      "Palaeontology",
+      "Physical geography",
+      "Topography",
+      "Zoology"
+    ],
+    "title": "Darwin Core",
+    "urls": [
+      "msc:m9",
+      "https://doi.org/10.25504/FAIRsharing.xvf5y3",
+      "http://www.dcc.ac.uk/resources/metadata-standards/darwin-core",
+      "http://www.tdwg.org/standards/450",
+      "http://rs.tdwg.org/dwc/index.htm",
+      "http://rs.tdwg.org/dwc/terms/",
+      "http://rs.tdwg.org/dwc/iri/",
+      "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd",
+      "msc:g4",
+      "msc:g44",
+      "msc:g78",
+      "msc:g85",
+      "msc:g94"
+    ]
+  },
+  "darwin-core-geospatial-extension": {
+    "acronym": "DwC-S",
+    "field_of_science": [
+      "cartography",
+      "biological sciences",
+      "physical geography",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m54"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.76c06d"
+      },
+      {
+        "type": "homepage",
+        "value": "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension"
+      }
+    ],
+    "subject_areas": [
+      "Biogeography",
+      "Cartography",
+      "Topography"
+    ],
+    "title": "Darwin Core Geospatial Extension",
+    "urls": [
+      "msc:m54",
+      "https://doi.org/10.25504/FAIRsharing.76c06d",
+      "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension",
+      "msc:m9"
+    ]
+  },
+  "data-package": {
+    "acronym": null,
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m10"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.3b861d"
+      },
+      {
+        "type": "homepage",
+        "value": "https://frictionlessdata.io/data-packages/"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "Data Package",
+    "urls": [
+      "msc:m10",
+      "https://doi.org/10.25504/FAIRsharing.3b861d",
+      "https://frictionlessdata.io/specs/data-package/",
+      "https://frictionlessdata.io/data-packages/",
+      "msc:g101",
+      "msc:g29"
+    ]
+  },
+  "datacite-metadata-schema": {
+    "acronym": "datacite",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m11"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.me4qwe"
+      },
+      {
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema"
+      },
+      {
+        "type": "homepage",
+        "value": "http://schema.datacite.org"
+      },
+      {
+        "type": "namespace",
+        "value": "http://datacite.org/schema/kernel"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "DataCite Metadata Schema",
+    "urls": [
+      "msc:m11",
+      "https://doi.org/10.25504/FAIRsharing.me4qwe",
+      "http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema",
+      "http://schema.datacite.org",
+      "http://datacite.org/schema/kernel",
+      "msc:g18",
+      "msc:g37",
+      "msc:g64",
+      "msc:g112",
+      "10.5438/0003",
+      "10.5438/0004",
+      "http://schema.datacite.org/meta/kernel-2.1/doc/DataCite-MetadataKernel_v2.2.pdf",
+      "http://schema.datacite.org/meta/kernel-2.1/metadata.xsd",
+      "http://datacite.org/schema/kernel-2.1",
+      "10.5438/0005",
+      "10.5438/0006",
+      "http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf",
+      "http://schema.datacite.org/meta/kernel-2.2/metadata.xsd",
+      "http://datacite.org/schema/kernel-2.2",
+      "10.5438/0008",
+      "10.5438/0009",
+      "http://schema.datacite.org/meta/kernel-3.0/doc/DataCite-MetadataKernel_v3.0.pdf",
+      "http://schema.datacite.org/meta/kernel-3.0/metadata.xsd",
+      "http://datacite.org/schema/kernel-3",
+      "10.5438/0010",
+      "10.5438/0011",
+      "http://schema.datacite.org/meta/kernel-3.1/doc/DataCite-MetadataKernel_v3.1.pdf",
+      "http://schema.datacite.org/meta/kernel-3.1/metadata.xsd",
+      "http://datacite.org/schema/kernel-3.1",
+      "10.5438/0012",
+      "10.5438/0013",
+      "http://schema.datacite.org/meta/kernel-4.0/doc/DataCite-MetadataKernel_v4.0.pdf",
+      "http://schema.datacite.org/meta/kernel-4.0/metadata.xsd",
+      "http://datacite.org/schema/kernel-4"
+    ]
+  },
+  "dcat-data-catalog-vocabulary": {
     "acronym": "DCAT",
     "field_of_science": [
       "sciences"
     ],
-    "id": "dcat-data-catalog-vocabulary",
     "identifier": [
       {
         "type": "local",
@@ -1413,33 +1766,38 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "DCAT (Data Catalog Vocabulary)",
     "urls": [
       "https://www.w3.org/TR/vocab-dcat/#class-dataset",
       "https://www.w3.org/TR/vocab-dcat/#class-catalog",
+      "msc:m12",
+      "https://doi.org/10.25504/FAIRsharing.h4j3qm",
+      "http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary",
       "http://www.w3.org/TR/vocab-dcat/",
       "https://www.w3.org/ns/dcat.ttl",
       "https://www.w3.org/2017/dxwg/wiki/Main_Page",
-      "http://www.w3.org/ns/dcat#"
+      "http://www.w3.org/ns/dcat#",
+      "msc:m15",
+      "msc:g106"
     ]
   },
-  "DDI (Data Documentation Initiative)": {
+  "ddi-data-documentation-initiative": {
     "acronym": "DDI",
     "field_of_science": [
-      "political sciences",
-      "public health",
-      "social geography",
-      "history",
       "demography",
-      "medical and health sciences",
-      "sociology",
-      "statistics and probability",
-      "economics",
+      "social geography",
       "law",
       "social sciences",
+      "medical and health sciences",
+      "natural sciences",
+      "public health",
+      "economics",
+      "history",
+      "sociology",
       "humanities",
-      "natural sciences"
+      "statistics and probability",
+      "political sciences"
     ],
-    "id": "ddi-data-documentation-initiative",
     "identifier": [
       {
         "type": "local",
@@ -1547,7 +1905,12 @@
       "Sociology",
       "Statistics"
     ],
+    "title": "DDI (Data Documentation Initiative)",
     "urls": [
+      "msc:m13",
+      "https://doi.org/10.25504/FAIRsharing.1t5ws6",
+      "https://doi.org/10.25504/FAIRsharing.EZCpPd",
+      "http://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative",
       "http://www.ddialliance.org/Specification/",
       "http://www.ddialliance.org/",
       "http://www.icpsr.umich.edu/DDI",
@@ -1567,25 +1930,66 @@
       "https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/instance.xsd",
       "https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd",
       "https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd",
-      "https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd"
+      "https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd",
+      "msc:g20",
+      "msc:g31",
+      "msc:g32",
+      "msc:g53",
+      "msc:g55",
+      "msc:g91",
+      "msc:g113"
     ]
   },
-  "DIF (Directory Interchange Format)": {
+  "didl-digital-item-declaration-language": {
+    "acronym": "DIDL",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m4"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4652"
+      },
+      {
+        "type": "namespace",
+        "value": "urn:mpeg:mpeg21:2002:02-DIDL-NS"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.iso.org/standard/35366.html"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "Digital Item Declaration Language (DIDL)",
+    "urls": [
+      "fuji:m4",
+      "https://fairsharing.org/4652",
+      "urn:mpeg:mpeg21:2002:02-DIDL-NS",
+      "http://www.dlib.org/dlib/november03/bekaert/11bekaert.html",
+      "https://www.iso.org/standard/35366.html"
+    ]
+  },
+  "dif-directory-interchange-format": {
     "acronym": "DIF",
     "field_of_science": [
       "ecology",
+      "hydrology",
+      "climatology",
+      "natural sciences",
+      "agricultural sciences",
+      "marine biology",
+      "biochemistry",
+      "agriculture",
       "meteorology",
       "glaciology",
-      "biochemistry",
-      "climatology",
-      "agricultural sciences",
-      "oceanography",
-      "agriculture",
-      "marine biology",
-      "natural sciences",
-      "hydrology"
+      "oceanography"
     ],
-    "id": "dif-directory-interchange-format",
     "identifier": [
       {
         "type": "local",
@@ -1639,7 +2043,11 @@
       "Meteorology",
       "Oceanography"
     ],
+    "title": "DIF (Directory Interchange Format)",
     "urls": [
+      "msc:m14",
+      "https://doi.org/10.25504/FAIRsharing.esxaaq",
+      "http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format",
       "http://gcmd.nasa.gov/add/difguide/WRITEADIF.pdf",
       "http://gcmd.nasa.gov/add/difguide/",
       "https://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v10.2.xsd",
@@ -1647,13 +2055,18 @@
       "https://git.earthdata.nasa.gov/projects/EMFD/repos/dif-schemas/browse/10.x/dif.xsd",
       "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/",
       "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif",
-      "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd"
+      "http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd",
+      "msc:g8",
+      "msc:g13",
+      "msc:g19",
+      "msc:g46",
+      "msc:g47",
+      "msc:g71"
     ]
   },
-  "DSpace Intermediate Metadata Format": {
+  "dim-dspace-intermediate-format": {
     "acronym": "dspace-dim",
     "field_of_science": [],
-    "id": "dim-dspace-intermediate-format",
     "identifier": [
       {
         "type": "local",
@@ -1669,229 +2082,18 @@
       }
     ],
     "subject_areas": null,
+    "title": "DSpace Intermediate Metadata Format",
     "urls": [
+      "fuji:m36",
       "http://www.dspace.org/xmlns/dspace/dim",
       "https://wiki.lyrasis.org/display/DSPACE/"
     ]
   },
-  "Darwin Core": {
-    "acronym": "DwC",
-    "field_of_science": [
-      "ecology",
-      "zoology",
-      "botany",
-      "biological sciences",
-      "palaeontology",
-      "oceanography",
-      "physical geography",
-      "marine biology",
-      "earth and related environmental sciences",
-      "natural sciences",
-      "cartography"
-    ],
-    "id": "darwin-core",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m9"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.xvf5y3"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/darwin-core"
-      },
-      {
-        "type": "homepage",
-        "value": "http://rs.tdwg.org/dwc/index.htm"
-      },
-      {
-        "type": "namespace",
-        "value": "http://rs.tdwg.org/dwc/terms/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://rs.tdwg.org/dwc/iri/"
-      },
-      {
-        "type": "schema",
-        "value": "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd"
-      }
-    ],
-    "subject_areas": [
-      "Biogeography",
-      "Biological diversity",
-      "Botany",
-      "Cartography",
-      "Earth sciences",
-      "Ecology",
-      "Marine animals",
-      "Oceanography",
-      "Palaeontology",
-      "Physical geography",
-      "Topography",
-      "Zoology"
-    ],
-    "urls": [
-      "http://www.tdwg.org/standards/450",
-      "http://rs.tdwg.org/dwc/index.htm",
-      "http://rs.tdwg.org/dwc/terms/",
-      "http://rs.tdwg.org/dwc/iri/",
-      "http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd"
-    ]
-  },
-  "Darwin Core Geospatial Extension": {
-    "acronym": "DwC-S",
-    "field_of_science": [
-      "biological sciences",
-      "physical geography",
-      "natural sciences",
-      "cartography"
-    ],
-    "id": "darwin-core-geospatial-extension",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m54"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.76c06d"
-      },
-      {
-        "type": "homepage",
-        "value": "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension"
-      }
-    ],
-    "subject_areas": [
-      "Biogeography",
-      "Cartography",
-      "Topography"
-    ],
-    "urls": [
-      "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension"
-    ]
-  },
-  "Data Package": {
+  "dryad-metadata-application-profile": {
     "acronym": null,
     "field_of_science": [
       "sciences"
     ],
-    "id": "data-package",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m10"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.3b861d"
-      },
-      {
-        "type": "homepage",
-        "value": "https://frictionlessdata.io/data-packages/"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "https://frictionlessdata.io/specs/data-package/",
-      "https://frictionlessdata.io/data-packages/"
-    ]
-  },
-  "DataCite Metadata Schema": {
-    "acronym": "datacite",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "datacite-metadata-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m11"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.me4qwe"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema"
-      },
-      {
-        "type": "homepage",
-        "value": "http://schema.datacite.org"
-      },
-      {
-        "type": "namespace",
-        "value": "http://datacite.org/schema/kernel"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "http://schema.datacite.org",
-      "http://datacite.org/schema/kernel",
-      "http://schema.datacite.org/meta/kernel-2.1/doc/DataCite-MetadataKernel_v2.2.pdf",
-      "http://schema.datacite.org/meta/kernel-2.1/metadata.xsd",
-      "http://datacite.org/schema/kernel-2.1",
-      "http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf",
-      "http://schema.datacite.org/meta/kernel-2.2/metadata.xsd",
-      "http://datacite.org/schema/kernel-2.2",
-      "http://schema.datacite.org/meta/kernel-3.0/doc/DataCite-MetadataKernel_v3.0.pdf",
-      "http://schema.datacite.org/meta/kernel-3.0/metadata.xsd",
-      "http://datacite.org/schema/kernel-3",
-      "http://schema.datacite.org/meta/kernel-3.1/doc/DataCite-MetadataKernel_v3.1.pdf",
-      "http://schema.datacite.org/meta/kernel-3.1/metadata.xsd",
-      "http://datacite.org/schema/kernel-3.1",
-      "http://schema.datacite.org/meta/kernel-4.0/doc/DataCite-MetadataKernel_v4.0.pdf",
-      "http://schema.datacite.org/meta/kernel-4.0/metadata.xsd",
-      "http://datacite.org/schema/kernel-4"
-    ]
-  },
-  "Digital Item Declaration Language (DIDL)": {
-    "acronym": "DIDL",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "didl-digital-item-declaration-language",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m4"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4652"
-      },
-      {
-        "type": "namespace",
-        "value": "urn:mpeg:mpeg21:2002:02-DIDL-NS"
-      },
-      {
-        "type": "homepage",
-        "value": "https://www.iso.org/standard/35366.html"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "urn:mpeg:mpeg21:2002:02-DIDL-NS",
-      "http://www.dlib.org/dlib/november03/bekaert/11bekaert.html",
-      "https://www.iso.org/standard/35366.html"
-    ]
-  },
-  "Dryad Metadata Application Profile": {
-    "acronym": null,
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "dryad-metadata-application-profile",
     "identifier": [
       {
         "type": "local",
@@ -1921,20 +2123,22 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "Dryad Metadata Application Profile",
     "urls": [
+      "msc:m55",
       "http://wiki.datadryad.org/Metadata_Profile",
       "http://datadryad.org/metadata/",
       "http://datadryad.org/profile/v3.1/dryad.xsd",
       "http://datadryad.org/profile/v3/dryad.xsd",
-      "http://ils.unc.edu/mrc/dryad/version1_0/dryad_1_0.xsd"
+      "http://ils.unc.edu/mrc/dryad/version1_0/dryad_1_0.xsd",
+      "msc:m15"
     ]
   },
-  "Dublin Core": {
+  "dublin-core": {
     "acronym": "DC",
     "field_of_science": [
       "sciences"
     ],
-    "id": "dublin-core",
     "identifier": [
       {
         "type": "local",
@@ -2004,7 +2208,11 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "Dublin Core",
     "urls": [
+      "msc:m15",
+      "https://doi.org/10.25504/FAIRsharing.3nx7t",
+      "http://www.dcc.ac.uk/resources/metadata-standards/dublin-core",
       "http://dublincore.org/specifications/",
       "http://dublincore.org",
       "http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcterms.xsd",
@@ -2018,16 +2226,101 @@
       "http://dublincore.org/schemas/xmls/qdc/dcmitype.xsd",
       "http://purl.org/dc/elements/1.1/",
       "http://purl.org/dc/terms/",
-      "http://purl.org/dc/dcmitype/"
+      "http://purl.org/dc/dcmitype/",
+      "msc:g1",
+      "msc:g13",
+      "msc:g121",
+      "msc:g35",
+      "msc:g36",
+      "msc:g37",
+      "msc:g39",
+      "msc:g73",
+      "msc:g112",
+      "msc:g55",
+      "msc:g90"
     ]
   },
-  "DwC Germplasm": {
+  "dublin-core-qualified": {
+    "acronym": "QDC",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m22"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.3nx7t"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/"
+      },
+      {
+        "type": "namespace",
+        "value": "urn:dc:qdc:container"
+      },
+      {
+        "type": "namespace",
+        "value": "figshare:oai:qdc"
+      },
+      {
+        "type": "namespace",
+        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc"
+      },
+      {
+        "type": "schema",
+        "value": "https://cocoon.huma-num.fr/schemas/dcq.xsd"
+      },
+      {
+        "type": "namespace",
+        "value": "http://crdo.risc.cnrs.fr/schemas/dcq/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://oai.base-search.net/base_dc/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://oai.base-search.net/base_dc"
+      },
+      {
+        "type": "schema",
+        "value": "http://oai.base-search.net/base_dc/base_dc.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "Qualified Dublin Core",
+    "urls": [
+      "fuji:m22",
+      "https://doi.org/10.25504/FAIRsharing.3nx7t",
+      "https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/",
+      "urn:dc:qdc:container",
+      "figshare:oai:qdc",
+      "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/",
+      "http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc",
+      "https://cocoon.huma-num.fr/schemas/dcq.xsd",
+      "http://crdo.risc.cnrs.fr/schemas/dcq/",
+      "http://oai.base-search.net/base_dc/",
+      "http://oai.base-search.net/base_dc",
+      "http://oai.base-search.net/base_dc/base_dc.xsd",
+      "msc:m15"
+    ]
+  },
+  "dwc-germplasm": {
     "acronym": null,
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "botany",
+      "natural sciences"
     ],
-    "id": "dwc-germplasm",
     "identifier": [
       {
         "type": "local",
@@ -2053,19 +2346,22 @@
     "subject_areas": [
       "Botany"
     ],
+    "title": "DwC Germplasm",
     "urls": [
+      "msc:m56",
+      "https://doi.org/10.25504/FAIRsharing.hgsFLe",
       "http://code.google.com/p/darwincore-germplasm/",
       "http://purl.org/germplasm#",
-      "http://purl.org/germplasm/germplasmTerm#"
+      "http://purl.org/germplasm/germplasmTerm#",
+      "msc:m9"
     ]
   },
-  "EAD (Encoded Archival Description)": {
+  "ead-encoded-archival-description": {
     "acronym": "ead",
     "field_of_science": [
       "humanities",
       "history"
     ],
-    "id": "ead-encoded-archival-description",
     "identifier": [
       {
         "type": "local",
@@ -2095,11 +2391,17 @@
     "subject_areas": [
       "History"
     ],
+    "title": "EAD (Encoded Archival Description)",
     "urls": [
+      "msc:m96",
+      "https://doi.org/10.25504/FAIRsharing.95f59a",
       "https://www.loc.gov/ead/",
       "urn:isbn:1-931666-22-9",
       "http://ead3.archivists.org/schema",
       "http://ead3.archivists.org/schema/",
+      "msc:g104",
+      "msc:g114",
+      "msc:g121",
       "https://www.loc.gov/ead/tglib1998/",
       "https://www.loc.gov/ead/ag/aghome.html",
       "https://www.loc.gov/ead/ead.xsd",
@@ -2110,21 +2412,106 @@
       "https://www.loc.gov/ead/EAD3taglib/EAD3.html"
     ]
   },
-  "EDMED Metadata Profile": {
+  "ebank-uk-metadata-application-profile": {
+    "acronym": null,
+    "field_of_science": [
+      "crystallography",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m57"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.ad4856"
+      },
+      {
+        "type": "homepage",
+        "value": "http://ecrystals.chem.soton.ac.uk"
+      },
+      {
+        "type": "schema",
+        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd"
+      },
+      {
+        "type": "namespace",
+        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/"
+      }
+    ],
+    "subject_areas": [
+      "Crystallography"
+    ],
+    "title": "eBank UK Metadata Application Profile",
+    "urls": [
+      "msc:m57",
+      "https://doi.org/10.25504/FAIRsharing.ad4856",
+      "http://ecrystals.chem.soton.ac.uk",
+      "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd",
+      "http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/",
+      "msc:m15"
+    ]
+  },
+  "edm-europeana-data-model": {
+    "acronym": "EDM",
+    "field_of_science": [
+      "humanities"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m33"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4653"
+      },
+      {
+        "type": "homepage",
+        "value": "https://pro.europeana.eu/page/edm-documentation"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.europeana.eu/schemas/edm/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.europeana.eu/schemas/edm"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.europeana.eu/schemas/ese/"
+      }
+    ],
+    "subject_areas": [
+      "Humanities",
+      "Cultural heritage"
+    ],
+    "title": "Europeana Data Model (EDM)",
+    "urls": [
+      "fuji:m33",
+      "https://fairsharing.org/4653",
+      "https://pro.europeana.eu/page/edm-documentation",
+      "http://www.europeana.eu/schemas/edm/",
+      "http://www.europeana.eu/schemas/edm",
+      "http://www.europeana.eu/schemas/ese/"
+    ]
+  },
+  "edmed-metadata-profile": {
     "acronym": null,
     "field_of_science": [
       "ecology",
-      "glaciology",
-      "environmental sciences",
+      "hydrology",
       "climatology",
-      "oceanography",
-      "soil sciences",
       "hydrogeology",
-      "meteorology",
       "natural sciences",
-      "hydrology"
+      "environmental sciences",
+      "soil sciences",
+      "meteorology",
+      "glaciology",
+      "oceanography"
     ],
-    "id": "edmed-metadata-profile",
     "identifier": [
       {
         "type": "local",
@@ -2154,21 +2541,68 @@
       "Oceanography",
       "Soil sciences"
     ],
+    "title": "EDMED Metadata Profile",
     "urls": [
+      "msc:m58",
+      "https://doi.org/10.25504/FAIRsharing.ed7f20",
       "https://www.bodc.ac.uk/data/information_and_inventories/edmed/",
-      "EDMED_sdn_V1.2.xsd"
+      "EDMED_sdn_V1.2.xsd",
+      "msc:m22"
     ]
   },
-  "EML (Ecological Metadata Language)": {
+  "emblem-metadata-schema": {
+    "acronym": "Emblem",
+    "field_of_science": [
+      "humanities"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m16"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4654"
+      },
+      {
+        "type": "homepage",
+        "value": "http://diglib.hab.de/rules/schema/emblem/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://diglib.hab.de/rules/schema/emblem"
+      },
+      {
+        "type": "schema",
+        "value": "http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd"
+      },
+      {
+        "type": "schema",
+        "value": "http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Humanities"
+    ],
+    "title": "Emblem XML-Schema",
+    "urls": [
+      "fuji:m16",
+      "https://fairsharing.org/4654",
+      "http://diglib.hab.de/rules/schema/emblem/",
+      "http://diglib.hab.de/rules/schema/emblem",
+      "http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd",
+      "http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd"
+    ]
+  },
+  "eml-ecological-metadata-language": {
     "acronym": "EML",
     "field_of_science": [
       "ecology",
-      "botany",
+      "natural sciences",
       "biological sciences",
-      "zoology",
-      "natural sciences"
+      "botany",
+      "zoology"
     ],
-    "id": "eml-ecological-metadata-language",
     "identifier": [
       {
         "type": "local",
@@ -2225,7 +2659,11 @@
       "Ecology",
       "Zoology"
     ],
+    "title": "EML (Ecological Metadata Language)",
     "urls": [
+      "msc:m16",
+      "https://doi.org/10.25504/FAIRsharing.r3vtvx",
+      "http://www.dcc.ac.uk/resources/metadata-standards/eml-ecological-metadata-language",
       "https://eml.ecoinformatics.org/",
       "https://eml.ecoinformatics.org/schema",
       "eml://eml.ecoinformatics.org/eml-2.0.0",
@@ -2235,15 +2673,55 @@
       "eml://ecoinformatics.org/eml-2.1.1",
       "https://eml.ecoinformatics.org/eml-2.2.0",
       "https://eml.ecoinformatics.org/eml-2.2.1",
-      "https://eml.ecoinformatics.org/schema/eml_xsd"
+      "https://eml.ecoinformatics.org/schema/eml_xsd",
+      "msc:g119",
+      "msc:g44",
+      "msc:g63",
+      "msc:g66",
+      "msc:g72",
+      "10.5063/F11834T2"
     ]
   },
-  "EPrints XML": {
+  "epicur-metadata-schema": {
+    "acronym": "epicur",
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m21"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4659"
+      },
+      {
+        "type": "namespace",
+        "value": "urn:nbn:de:1111-2004033116"
+      },
+      {
+        "type": "schema",
+        "value": "https://files.dnb.de/Web/xepicur.xsd"
+      },
+      {
+        "type": "homepage",
+        "value": "https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN"
+      }
+    ],
+    "subject_areas": null,
+    "title": "xepicur",
+    "urls": [
+      "fuji:m21",
+      "https://fairsharing.org/4659",
+      "urn:nbn:de:1111-2004033116",
+      " https://files.dnb.de/Web/xepicur.xsd",
+      "https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN"
+    ]
+  },
+  "eprints-xml": {
     "acronym": "EPrints",
     "field_of_science": [
       "sciences"
     ],
-    "id": "eprints-xml",
     "identifier": [
       {
         "type": "local",
@@ -2261,17 +2739,18 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "EPrints XML",
     "urls": [
+      "fuji:m23",
       "http://eprints.org/ep2/data/2.0",
       "https://wiki.eprints.org/w/XML_Export_Format"
     ]
   },
-  "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations": {
+  "etdms-metadata-schema": {
     "acronym": "ETD-MS",
     "field_of_science": [
       "sciences"
     ],
-    "id": "etdms-metadata-schema",
     "identifier": [
       {
         "type": "local",
@@ -2317,7 +2796,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations",
     "urls": [
+      "fuji:m17",
+      "https://fairsharing.org/4660",
       "https://ndltd.org/metadata/",
       "http://www.ndltd.org/standards/metadata/etdms/1.1/",
       "http://www.ndltd.org/standards/metadata/etdms/1.0/",
@@ -2328,10 +2810,9 @@
       "http://www.ndltd.org/standards/metadata/etdms/1-0/"
     ]
   },
-  "EURISCO Descriptors": {
+  "eurisco-descriptors": {
     "acronym": null,
     "field_of_science": [],
-    "id": "eurisco-descriptors",
     "identifier": [
       {
         "type": "local",
@@ -2343,112 +2824,92 @@
       }
     ],
     "subject_areas": null,
+    "title": "EURISCO Descriptors",
     "urls": [
+      "msc:m85",
       "http://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/upload/MISC/EURISCO_Descriptors.pdf",
       "https://www.ecpgr.cgiar.org/resources/germplasm-databases/eurisco-catalogue"
     ]
   },
-  "Emblem XML-Schema": {
-    "acronym": "Emblem",
+  "fdsn-seismograph": {
+    "acronym": null,
     "field_of_science": [
-      "humanities"
+      "geophysics",
+      "earth and related environmental sciences",
+      "natural sciences"
     ],
-    "id": "emblem-metadata-schema",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m16"
+        "value": "fuji:m8"
       },
       {
         "type": "local",
-        "value": "https://fairsharing.org/4654"
-      },
-      {
-        "type": "homepage",
-        "value": "http://diglib.hab.de/rules/schema/emblem/"
+        "value": "https://fairsharing.org/1434"
       },
       {
         "type": "namespace",
-        "value": "http://diglib.hab.de/rules/schema/emblem"
+        "value": "http://www.fdsn.org/xml/station/1"
       },
       {
-        "type": "schema",
-        "value": "http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd"
-      },
-      {
-        "type": "schema",
-        "value": "http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd"
+        "type": "homepage",
+        "value": "http://www.fdsn.org/xml/station/"
       }
     ],
     "subject_areas": [
-      "Humanities"
+      "Earth sciences",
+      "Geophysics"
     ],
+    "title": "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)",
     "urls": [
-      "http://diglib.hab.de/rules/schema/emblem/",
-      "http://diglib.hab.de/rules/schema/emblem",
-      "http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd",
-      "http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd"
+      "fuji:m8",
+      "https://fairsharing.org/1434",
+      "http://www.fdsn.org/xml/station/1",
+      "http://www.fdsn.org/xml/station/",
+      "http://docs.fdsn.org/projects/stationxml/en/latest/"
     ]
   },
-  "Europeana Data Model (EDM)": {
-    "acronym": "EDM",
+  "fgdccsdgm-biological-data-profile": {
+    "acronym": null,
     "field_of_science": [
-      "humanities"
+      "biological sciences",
+      "natural sciences"
     ],
-    "id": "edm-europeana-data-model",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m33"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4653"
+        "value": "msc:m59"
       },
       {
         "type": "homepage",
-        "value": "https://pro.europeana.eu/page/edm-documentation"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.europeana.eu/schemas/edm/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.europeana.eu/schemas/edm"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.europeana.eu/schemas/ese/"
+        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf"
       }
     ],
     "subject_areas": [
-      "Humanities",
-      "Cultural heritage"
+      "Biogeography"
     ],
+    "title": "FGDC/CSDGM Biological Data Profile",
     "urls": [
-      "https://pro.europeana.eu/page/edm-documentation",
-      "http://www.europeana.eu/schemas/edm/",
-      "http://www.europeana.eu/schemas/edm",
-      "http://www.europeana.eu/schemas/ese/"
+      "msc:m59",
+      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf",
+      "msc:m17"
     ]
   },
-  "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)": {
+  "fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge": {
     "acronym": "fgdc",
     "field_of_science": [
-      "meteorology",
-      "biochemistry",
+      "cartography",
+      "hydrology",
       "climatology",
       "social geography",
-      "oceanography",
-      "physical geography",
-      "marine biology",
       "social sciences",
+      "oceanography",
       "natural sciences",
-      "cartography",
-      "hydrology"
+      "biochemistry",
+      "meteorology",
+      "marine biology",
+      "physical geography"
     ],
-    "id": "fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge",
     "identifier": [
       {
         "type": "local",
@@ -2495,47 +2956,63 @@
       "Oceanography",
       "Topography"
     ],
+    "title": "FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata)",
     "urls": [
+      "msc:m17",
+      "https://fairsharing.org/1445",
+      "http://www.dcc.ac.uk/resources/metadata-standards/fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge",
       "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/base-metadata/v2_0698.pdf",
       "http://www.fgdc.gov/metadata/geospatial-metadata-standards/",
       "https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.xsd",
       "https://www.fgdc.gov/schemas/metadata/fgdc-std-001.2-2001.xsd",
       "https://www.fgdc.gov/schemas/metadata/",
-      "http://www.fgdc.gov/metadata/csdgm/index_html"
+      "http://www.fgdc.gov/metadata/csdgm/index_html",
+      "msc:g13",
+      "msc:g75"
     ]
   },
-  "FGDC/CSDGM Biological Data Profile": {
-    "acronym": null,
+  "fhir-fast-healthcare-interoperability-resources": {
+    "acronym": "FHIR",
     "field_of_science": [
-      "biological sciences",
-      "natural sciences"
+      "medical and health sciences",
+      "clinical medicine"
     ],
-    "id": "fgdccsdgm-biological-data-profile",
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m59"
+        "value": "fuji:m47"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.25k4yp"
       },
       {
         "type": "homepage",
-        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf"
+        "value": "https://hl7.org/fhir/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://hl7.org/fhir"
       }
     ],
     "subject_areas": [
-      "Biogeography"
+      "Clinical medicine"
     ],
+    "title": "Fast Healthcare Interoperability Resources",
     "urls": [
-      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf"
+      "fuji:m47",
+      "https://doi.org/10.25504/FAIRsharing.25k4yp",
+      "https://hl7.org/fhir/",
+      "http://hl7.org/fhir"
     ]
   },
-  "FITS (Flexible Image Transport System)": {
+  "fits-flexible-image-transport-system": {
     "acronym": null,
     "field_of_science": [
+      "astronomy",
       "astrophysics",
-      "natural sciences",
-      "astronomy"
+      "natural sciences"
     ],
-    "id": "fits-flexible-image-transport-system",
     "identifier": [
       {
         "type": "local",
@@ -2559,19 +3036,29 @@
       "Astrophysics",
       "Sun"
     ],
+    "title": "FITS (Flexible Image Transport System)",
     "urls": [
+      "msc:m18",
+      "https://doi.org/10.25504/FAIRsharing.xvash1",
+      "http://www.dcc.ac.uk/resources/metadata-standards/fits-flexible-image-transport-system",
       "http://fits.gsfc.nasa.gov/fits_standard.html",
-      "http://fits.gsfc.nasa.gov/fits_standard.html"
+      "http://fits.gsfc.nasa.gov/fits_standard.html",
+      "msc:g9",
+      "msc:g40",
+      "msc:g51",
+      "msc:g60",
+      "msc:g61",
+      "msc:g89",
+      "msc:g95"
     ]
   },
-  "FITS World Coordinate System (WCS)": {
+  "fits-world-coordinate-system-wcs": {
     "acronym": null,
     "field_of_science": [
+      "astronomy",
       "astrophysics",
-      "natural sciences",
-      "astronomy"
+      "natural sciences"
     ],
-    "id": "fits-world-coordinate-system-wcs",
     "identifier": [
       {
         "type": "local",
@@ -2587,53 +3074,22 @@
       "Astrophysics",
       "Sun"
     ],
+    "title": "FITS World Coordinate System (WCS)",
     "urls": [
-      "http://fits.gsfc.nasa.gov/fits_wcs.html"
+      "msc:m60",
+      "http://fits.gsfc.nasa.gov/fits_wcs.html",
+      "msc:m18"
     ]
   },
-  "Fast Healthcare Interoperability Resources": {
-    "acronym": "FHIR",
-    "field_of_science": [
-      "medical and health sciences",
-      "clinical medicine"
-    ],
-    "id": "fhir-fast-healthcare-interoperability-resources",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m47"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.25k4yp"
-      },
-      {
-        "type": "homepage",
-        "value": "https://hl7.org/fhir/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://hl7.org/fhir"
-      }
-    ],
-    "subject_areas": [
-      "Clinical medicine"
-    ],
-    "urls": [
-      "https://hl7.org/fhir/",
-      "http://hl7.org/fhir"
-    ]
-  },
-  "GBIF Metadata Profile": {
+  "gbif-metadata-profile": {
     "acronym": null,
     "field_of_science": [
       "ecology",
-      "botany",
+      "natural sciences",
       "biological sciences",
-      "zoology",
-      "natural sciences"
+      "botany",
+      "zoology"
     ],
-    "id": "gbif-metadata-profile",
     "identifier": [
       {
         "type": "local",
@@ -2651,76 +3107,21 @@
       "Ecology",
       "Zoology"
     ],
+    "title": "GBIF Metadata Profile",
     "urls": [
+      "msc:m61",
       "http://rs.gbif.org/schema/eml-gbif-profile/",
+      "msc:m16",
       "http://rs.gbif.org/schema/eml-gbif-profile/1.0.2/eml-gbif-profile.xsd",
       "http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml-gbif-profile.xsd"
     ]
   },
-  "GESMES/TS (Generic Statistical Message for Time Series)": {
-    "acronym": null,
-    "field_of_science": [
-      "political sciences",
-      "statistics and probability",
-      "economics",
-      "social sciences",
-      "natural sciences"
-    ],
-    "id": "gesmests-generic-statistical-message-time-series",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m62"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.ecb.int/stats/services/sdmx/html/index.en.html"
-      }
-    ],
-    "subject_areas": [
-      "Economics",
-      "Social policy",
-      "Statistics"
-    ],
-    "urls": [
-      "http://www.ecb.int/stats/services/sdmx/html/index.en.html"
-    ]
-  },
-  "GSIM (Generic Statistical Information Model)": {
-    "acronym": null,
-    "field_of_science": [
-      "statistics and probability",
-      "natural sciences"
-    ],
-    "id": "gsim-generic-statistical-information-model",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m63"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.22bb25"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model"
-      }
-    ],
-    "subject_areas": [
-      "Statistics"
-    ],
-    "urls": [
-      "http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model"
-    ]
-  },
-  "Genome Metadata": {
+  "genome-metadata": {
     "acronym": null,
     "field_of_science": [
       "genetics",
       "natural sciences"
     ],
-    "id": "genome-metadata",
     "identifier": [
       {
         "type": "local",
@@ -2738,17 +3139,19 @@
     "subject_areas": [
       "Genetics"
     ],
+    "title": "Genome Metadata",
     "urls": [
+      "msc:m19",
+      "http://www.dcc.ac.uk/resources/metadata-standards/genome-metadata",
       "http://enews.patricbrc.org/faqs/genome-metadata-faqs/"
     ]
   },
-  "GeoRSS": {
+  "georss-encoding-standard": {
     "acronym": null,
     "field_of_science": [
       "earth and related environmental sciences",
       "natural sciences"
     ],
-    "id": "georss-encoding-standard",
     "identifier": [
       {
         "type": "local",
@@ -2774,77 +3177,83 @@
     "subject_areas": [
       "Earth sciences"
     ],
+    "title": "GeoRSS",
     "urls": [
+      "fuji:m1",
+      "https://fairsharing.org/4663",
       "http://www.georss.org",
       "http://www.georss.org/georss/",
       "http://schemas.opengis.net/georss/1.0/"
     ]
   },
-  "Geography Markup Language": {
+  "gesmests-generic-statistical-message-time-series": {
     "acronym": null,
     "field_of_science": [
-      "geology",
-      "glaciology",
-      "climatology",
-      "oceanography",
-      "physical geography",
-      "hydrogeology",
-      "meteorology",
-      "earth and related environmental sciences",
+      "social sciences",
       "natural sciences",
-      "cartography",
-      "hydrology"
+      "economics",
+      "political sciences",
+      "statistics and probability"
     ],
-    "id": "iso-19136",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m3"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.d69ee0"
+        "value": "msc:m62"
       },
       {
         "type": "homepage",
-        "value": "www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.opengis.net/gml/3.2"
-      },
-      {
-        "type": "namespace",
-        "value": "http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+        "value": "http://www.ecb.int/stats/services/sdmx/html/index.en.html"
       }
     ],
     "subject_areas": [
-      "Cartography",
-      "Climatology",
-      "Earth sciences",
-      "Geography",
-      "Geology",
-      "Glaciology",
-      "Hydrogeology",
-      "Hydrology",
-      "Meteorology",
-      "Oceanography",
-      "Topography"
+      "Economics",
+      "Social policy",
+      "Statistics"
     ],
+    "title": "GESMES/TS (Generic Statistical Message for Time Series)",
     "urls": [
-      "https://www.ogc.org/standards/gml",
-      "www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554",
-      "http://www.opengis.net/gml/3.2",
-      "http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+      "msc:m62",
+      "http://www.ecb.int/stats/services/sdmx/html/index.en.html",
+      "msc:m38"
     ]
   },
-  "HISPID (Herbarium Information Standards and Protocols for Interchange of Data)": {
+  "gsim-generic-statistical-information-model": {
     "acronym": null,
     "field_of_science": [
-      "natural sciences",
-      "botany"
+      "statistics and probability",
+      "natural sciences"
     ],
-    "id": "hispid-herbarium-information-standards-and-protocols-interchange-data",
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m63"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.22bb25"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model"
+      }
+    ],
+    "subject_areas": [
+      "Statistics"
+    ],
+    "title": "GSIM (Generic Statistical Information Model)",
+    "urls": [
+      "msc:m63",
+      "https://doi.org/10.25504/FAIRsharing.22bb25",
+      "http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model",
+      "msc:m13"
+    ]
+  },
+  "hispid-herbarium-information-standards-and-protocols-interchange-data": {
+    "acronym": null,
+    "field_of_science": [
+      "botany",
+      "natural sciences"
+    ],
     "identifier": [
       {
         "type": "local",
@@ -2862,14 +3271,17 @@
     "subject_areas": [
       "Botany"
     ],
+    "title": "HISPID (Herbarium Information Standards and Protocols for Interchange of Data)",
     "urls": [
-      "http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5"
+      "msc:m64",
+      "https://doi.org/10.25504/FAIRsharing.y49yj6",
+      "http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5",
+      "msc:m1"
     ]
   },
-  "IDF (International DOI Foundation) Metadata Kernel": {
+  "idf-international-doi-foundation-metadata-kernel": {
     "acronym": null,
     "field_of_science": [],
-    "id": "idf-international-doi-foundation-metadata-kernel",
     "identifier": [
       {
         "type": "local",
@@ -2889,19 +3301,20 @@
       }
     ],
     "subject_areas": null,
+    "title": "IDF (International DOI Foundation) Metadata Kernel",
     "urls": [
+      "msc:m86",
       "https://www.doi.org/the-identifier/resources/handbook/doi_kernel_xml_schema/",
       "https://www.doi.org/doi_schemas/DOIMetadataKernel.xsd",
       "http://www.doi.org/2010/DOISchema"
     ]
   },
-  "IMDI Metadata Standard": {
+  "imdi-metadata-schema": {
     "acronym": "IMDI",
     "field_of_science": [
       "humanities",
       "linguistics"
     ],
-    "id": "imdi-metadata-schema",
     "identifier": [
       {
         "type": "local",
@@ -2932,20 +3345,22 @@
       "Humanities",
       "Linguistics"
     ],
+    "title": "IMDI Metadata Standard",
     "urls": [
+      "fuji:m15",
+      "https://doi.org/10.25504/FAIRsharing.2cfb88",
       "http://www.mpi.nl/IMDI/Schema/IMDI",
       "http://www.mpi.nl/IMDI/schemas/xsd/",
       "https://www.mpi.nl/IMDI/Schema/IMDI_3.0.xsd",
       "https://archive.mpi.nl/forums/t/imdi-metadata-information/2933"
     ]
   },
-  "IMPEx Data Model": {
+  "impex-data-model": {
     "acronym": null,
     "field_of_science": [
-      "natural sciences",
-      "astronomy"
+      "astronomy",
+      "natural sciences"
     ],
-    "id": "impex-data-model",
     "identifier": [
       {
         "type": "local",
@@ -2961,25 +3376,27 @@
       "Astronomy",
       "Sun"
     ],
+    "title": "IMPEx Data Model",
     "urls": [
-      "http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf"
+      "msc:m65",
+      "http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf",
+      "msc:m39"
     ]
   },
-  "INSPIRE Metadata Regulation": {
+  "inspire-metadata-regulation": {
     "acronym": null,
     "field_of_science": [
-      "glaciology",
-      "climatology",
-      "oceanography",
-      "physical geography",
-      "hydrogeology",
-      "meteorology",
-      "earth and related environmental sciences",
-      "natural sciences",
       "cartography",
-      "hydrology"
+      "earth and related environmental sciences",
+      "climatology",
+      "hydrology",
+      "hydrogeology",
+      "oceanography",
+      "natural sciences",
+      "meteorology",
+      "glaciology",
+      "physical geography"
     ],
-    "id": "inspire-metadata-regulation",
     "identifier": [
       {
         "type": "local",
@@ -3014,57 +3431,58 @@
       "Oceanography",
       "Topography"
     ],
+    "title": "INSPIRE Metadata Regulation",
     "urls": [
+      "msc:m66",
+      "https://doi.org/10.25504/FAIRsharing.nrx5kk",
       "http://inspire.ec.europa.eu/",
       "http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd",
-      "http://inspire.ec.europa.eu/schemas/common/1.0/network.xsd"
+      "http://inspire.ec.europa.eu/schemas/common/1.0/network.xsd",
+      "msc:m22"
     ]
   },
-  "ISA-TAB Nano": {
-    "acronym": null,
+  "international-virtual-observatory-alliance-technical-specifications": {
+    "acronym": "IVOA",
     "field_of_science": [
-      "biological sciences",
-      "biochemistry",
-      "engineering and technology",
+      "astronomy",
       "natural sciences"
     ],
-    "id": "isa-tab-nano",
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m67"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.njqq5b"
+        "value": "msc:m20"
       },
       {
         "type": "homepage",
-        "value": "https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title"
+        "value": "http://ivoa.net/documents/"
       }
     ],
     "subject_areas": [
-      "Biochemicals",
-      "Biotechnology"
+      "Astronomy"
     ],
+    "title": "International Virtual Observatory Alliance Technical Specifications",
     "urls": [
-      "https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title"
+      "msc:m20",
+      "http://www.ivoa.net/documents/#specs",
+      "http://ivoa.net/documents/",
+      "msc:g5",
+      "msc:g41",
+      "msc:g93"
     ]
   },
-  "ISA-Tab": {
+  "isa-tab": {
     "acronym": null,
     "field_of_science": [
-      "biological sciences",
-      "biochemistry",
-      "engineering and technology",
-      "cell metabolism",
-      "molecular biology",
-      "biophysics",
       "cell biology",
+      "molecular biology",
+      "cell metabolism",
+      "natural sciences",
+      "biological sciences",
+      "engineering and technology",
+      "biochemistry",
       "genetics",
-      "natural sciences"
+      "biophysics"
     ],
-    "id": "isa-tab",
     "identifier": [
       {
         "type": "local",
@@ -3089,27 +3507,96 @@
       "Metabolism",
       "Molecular biology"
     ],
+    "title": "ISA-Tab",
     "urls": [
+      "msc:m21",
+      "http://www.dcc.ac.uk/resources/metadata-standards/isa-tab",
       "http://isatab.sourceforge.net/docs/ISA-TAB_release-candidate-1_v1.0_24nov08.pdf",
-      "http://isatab.sourceforge.net/format.html"
+      "http://isatab.sourceforge.net/format.html",
+      "msc:g50",
+      "msc:g59",
+      "msc:g69",
+      "msc:g76"
     ]
   },
-  "ISO 19115": {
+  "isa-tab-nano": {
+    "acronym": null,
+    "field_of_science": [
+      "biochemistry",
+      "biological sciences",
+      "engineering and technology",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m67"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.njqq5b"
+      },
+      {
+        "type": "homepage",
+        "value": "https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title"
+      }
+    ],
+    "subject_areas": [
+      "Biochemicals",
+      "Biotechnology"
+    ],
+    "title": "ISA-TAB Nano",
+    "urls": [
+      "msc:m67",
+      "https://doi.org/10.25504/FAIRsharing.njqq5b",
+      "https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title",
+      "msc:m21"
+    ]
+  },
+  "isaconfig-dixa": {
+    "acronym": null,
+    "field_of_science": [
+      "genetics",
+      "medical and health sciences",
+      "toxicology",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m68"
+      },
+      {
+        "type": "homepage",
+        "value": "https://bitbucket.org/kanterae/isaconfig-dixa"
+      }
+    ],
+    "subject_areas": [
+      "Genetics",
+      "Toxicology"
+    ],
+    "title": "isaconfig-diXa",
+    "urls": [
+      "msc:m68",
+      "https://bitbucket.org/kanterae/isaconfig-dixa",
+      "msc:m21"
+    ]
+  },
+  "iso-19115": {
     "acronym": "ISO19115",
     "field_of_science": [
-      "geology",
-      "glaciology",
-      "climatology",
-      "oceanography",
-      "physical geography",
-      "hydrogeology",
-      "meteorology",
-      "earth and related environmental sciences",
-      "natural sciences",
       "cartography",
-      "hydrology"
+      "earth and related environmental sciences",
+      "climatology",
+      "hydrology",
+      "hydrogeology",
+      "oceanography",
+      "geology",
+      "natural sciences",
+      "meteorology",
+      "glaciology",
+      "physical geography"
     ],
-    "id": "iso-19115",
     "identifier": [
       {
         "type": "local",
@@ -3161,7 +3648,10 @@
       "Oceanography",
       "Topography"
     ],
+    "title": "ISO 19115",
     "urls": [
+      "msc:m22",
+      "https://doi.org/10.25504/FAIRsharing.t7mby9",
       "http://standards.iso.org/iso/19115/-3/",
       "http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798",
       "http://www.isotc211.org/2005/gmd/gmd.xsd",
@@ -3169,56 +3659,33 @@
       "http://standards.iso.org/iso/19115/-3/mds/2.0",
       "http://standards.iso.org/iso/19115/-3/mds/1.0",
       "http://standards.iso.org/iso/19115/-3/mdb/2.0",
-      "http://bluenet3.antcrc.utas.edu.au/mcp"
+      "http://bluenet3.antcrc.utas.edu.au/mcp",
+      "msc:g6",
+      "msc:g8",
+      "msc:g10",
+      "msc:g26",
+      "msc:g33",
+      "msc:g37",
+      "msc:g48",
+      "msc:g49",
+      "msc:g56"
     ]
   },
-  "ISO 19115 North American Profile": {
+  "iso-19115-2-imagery-and-gridded-data": {
     "acronym": null,
     "field_of_science": [
-      "physical geography",
-      "natural sciences",
-      "cartography"
-    ],
-    "id": "iso-19115-north-american-profile",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m70"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.b4af3c"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata"
-      }
-    ],
-    "subject_areas": [
-      "Cartography",
-      "Geography",
-      "Topography"
-    ],
-    "urls": [
-      "http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata"
-    ]
-  },
-  "ISO 19115-2 - Imagery and gridded data": {
-    "acronym": null,
-    "field_of_science": [
-      "glaciology",
+      "cartography",
+      "earth and related environmental sciences",
       "climatology",
+      "hydrology",
+      "social sciences",
       "social geography",
       "oceanography",
-      "physical geography",
-      "social sciences",
-      "meteorology",
-      "earth and related environmental sciences",
       "natural sciences",
-      "cartography",
-      "hydrology"
+      "meteorology",
+      "glaciology",
+      "physical geography"
     ],
-    "id": "iso-19115-2-imagery-and-gridded-data",
     "identifier": [
       {
         "type": "local",
@@ -3245,17 +3712,114 @@
       "Oceanography",
       "Topography"
     ],
+    "title": "ISO 19115-2 - Imagery and gridded data",
     "urls": [
-      "http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229"
+      "msc:m69",
+      "https://doi.org/10.25504/FAIRsharing.a6b18c",
+      "http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229",
+      "msc:m22"
     ]
   },
-  "IVOA Registry Interfaces": {
+  "iso-19115-north-american-profile": {
+    "acronym": null,
+    "field_of_science": [
+      "cartography",
+      "physical geography",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m70"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.b4af3c"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata"
+      }
+    ],
+    "subject_areas": [
+      "Cartography",
+      "Geography",
+      "Topography"
+    ],
+    "title": "ISO 19115 North American Profile",
+    "urls": [
+      "msc:m70",
+      "https://doi.org/10.25504/FAIRsharing.b4af3c",
+      "http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata",
+      "msc:m22"
+    ]
+  },
+  "iso-19136": {
+    "acronym": null,
+    "field_of_science": [
+      "cartography",
+      "earth and related environmental sciences",
+      "climatology",
+      "hydrology",
+      "hydrogeology",
+      "oceanography",
+      "geology",
+      "natural sciences",
+      "meteorology",
+      "glaciology",
+      "physical geography"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m3"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.d69ee0"
+      },
+      {
+        "type": "homepage",
+        "value": "www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.opengis.net/gml/3.2"
+      },
+      {
+        "type": "namespace",
+        "value": "http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Cartography",
+      "Climatology",
+      "Earth sciences",
+      "Geography",
+      "Geology",
+      "Glaciology",
+      "Hydrogeology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography",
+      "Topography"
+    ],
+    "title": "Geography Markup Language",
+    "urls": [
+      "fuji:m3",
+      "https://doi.org/10.25504/FAIRsharing.d69ee0",
+      "https://www.ogc.org/standards/gml",
+      "www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554",
+      "http://www.opengis.net/gml/3.2",
+      "http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+    ]
+  },
+  "ivoa-registry-metdata": {
     "acronym": "ivoa-reg",
     "field_of_science": [
-      "natural sciences",
-      "astronomy"
+      "astronomy",
+      "natural sciences"
     ],
-    "id": "ivoa-registry-metdata",
     "identifier": [
       {
         "type": "local",
@@ -3285,81 +3849,23 @@
     "subject_areas": [
       "Astronomy"
     ],
+    "title": "IVOA Registry Interfaces",
     "urls": [
+      "fuji:m35",
+      "https://doi.org/10.25504/FAIRsharing.RycpEU",
+      "http://www.dcc.ac.uk/resources/metadata-standards/international-virtual-observatory-alliance-technical-specifications",
       "https://www.ivoa.net/documents/RegistryInterface/20180723/REC-RegistryInterface-1.1.html",
       "http://www.ivoa.net/xml/VORegistry/v1.0",
       "http://www.ivoa.net/xml/RegistryInterface/v1.0",
       "https://www.ivoa.net/Documents/cover/RDFVORegistry-20070920.html"
     ]
   },
-  "International Federation of Digital Seismograph Networks StationXML (FDSN StationXML)": {
-    "acronym": null,
-    "field_of_science": [
-      "earth and related environmental sciences",
-      "geophysics",
-      "natural sciences"
-    ],
-    "id": "fdsn-seismograph",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m8"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/1434"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.fdsn.org/xml/station/1"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.fdsn.org/xml/station/"
-      }
-    ],
-    "subject_areas": [
-      "Earth sciences",
-      "Geophysics"
-    ],
-    "urls": [
-      "http://www.fdsn.org/xml/station/1",
-      "http://www.fdsn.org/xml/station/",
-      "http://docs.fdsn.org/projects/stationxml/en/latest/"
-    ]
-  },
-  "International Virtual Observatory Alliance Technical Specifications": {
-    "acronym": "IVOA",
-    "field_of_science": [
-      "natural sciences",
-      "astronomy"
-    ],
-    "id": "international-virtual-observatory-alliance-technical-specifications",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m20"
-      },
-      {
-        "type": "homepage",
-        "value": "http://ivoa.net/documents/"
-      }
-    ],
-    "subject_areas": [
-      "Astronomy"
-    ],
-    "urls": [
-      "http://www.ivoa.net/documents/#specs",
-      "http://ivoa.net/documents/"
-    ]
-  },
-  "Journal Publishing Tag Set (Jats)": {
+  "jats-schema": {
     "acronym": "jats",
     "field_of_science": [
-      "library sciences",
-      "humanities"
+      "humanities",
+      "library sciences"
     ],
-    "id": "jats-schema",
     "identifier": [
       {
         "type": "local",
@@ -3386,18 +3892,20 @@
       "Bibliographic standards",
       "Information/library standards"
     ],
+    "title": "Journal Publishing Tag Set (Jats)",
     "urls": [
+      "fuji:m41",
+      "https://doi.org/10.25504/FAIRsharing.smr0rh",
       "http://jats.nlm.nih.gov/publishing/",
       "https://jats.nlm.nih.gov/publishing/1.0/xsd/JATS-journalpublishing1.xsd",
       "http://jats.nlm.nih.gov/publishing/1.0"
     ]
   },
-  "LIDO, Lightweight Information Describing Objects": {
+  "lido-lightweight-information-describing-objects": {
     "acronym": "LIDO",
     "field_of_science": [
       "humanities"
     ],
-    "id": "lido-lightweight-information-describing-objects",
     "identifier": [
       {
         "type": "local",
@@ -3436,7 +3944,10 @@
       "Humanities",
       "Cultural heritage"
     ],
+    "title": "LIDO, Lightweight Information Describing Objects",
     "urls": [
+      "fuji:m18",
+      "https://doi.org/10.25504/FAIRsharing.73558b",
       "www.lido-schema.org/schema/latest/lido.xsd",
       "www.lido-schema.org/schema/v1.1/lido-v1.1.xsd",
       "http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd",
@@ -3446,10 +3957,9 @@
       "https://cidoc.mini.icom.museum/working-groups/lido/lido-overview/about-lido/what-is-lido/"
     ]
   },
-  "Learning Object Metadata (LOM)": {
+  "lom-higher-education-schema": {
     "acronym": "LOM",
     "field_of_science": [],
-    "id": "lom-higher-education-schema",
     "identifier": [
       {
         "type": "local",
@@ -3485,7 +3995,10 @@
       }
     ],
     "subject_areas": null,
+    "title": "Learning Object Metadata (LOM)",
     "urls": [
+      "fuji:m24",
+      "https://fairsharing.org/4664",
       "http://www.imsglobal.org/metadata/index.html",
       "https://dini-ag-kim.github.io/hs-oer-lom-profil/latest/",
       "https://ieeexplore.ieee.org/document/1032843",
@@ -3496,10 +4009,9 @@
       "https://w3id.org/kim/hs-oer-lom-profil/latest/schemas/hs-oer-lom.xsd"
     ]
   },
-  "MAGE-TAB": {
+  "mage-tab": {
     "acronym": null,
     "field_of_science": [],
-    "id": "mage-tab",
     "identifier": [
       {
         "type": "local",
@@ -3515,18 +4027,20 @@
       }
     ],
     "subject_areas": null,
+    "title": "MAGE-TAB",
     "urls": [
+      "msc:m87",
+      "https://fairsharing.org/4680",
       "https://psidev.info/magetab"
     ]
   },
-  "MARC (Machine-Readable Cataloging)": {
+  "marc-machine-readable-cataloging": {
     "acronym": "MARC",
     "field_of_science": [
-      "library sciences",
+      "humanities",
       "sciences",
-      "humanities"
+      "library sciences"
     ],
-    "id": "marc-machine-readable-cataloging",
     "identifier": [
       {
         "type": "local",
@@ -3562,21 +4076,123 @@
       "Bibliographic standards",
       "Information/library standards"
     ],
+    "title": "MARC (Machine-Readable Cataloging)",
     "urls": [
+      "msc:m88",
+      "https://doi.org/10.25504/FAIRsharing.217b1b",
       "http://www.loc.gov/marc/",
       "http://www.loc.gov/marc/bibliographic/",
       "http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd",
       "https://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd",
       "http://www.loc.gov/MARC21/slim",
-      "http://www.ddb.de/professionell/MARC21/plus"
+      "http://www.ddb.de/professionell/MARC21/plus",
+      "msc:g104",
+      "msc:g121"
     ]
   },
-  "METS - Metadata Encoding and Transmission Standard": {
+  "marine-community-profile": {
+    "acronym": "AODN",
+    "field_of_science": [
+      "hydrology",
+      "earth and related environmental sciences",
+      "climatology",
+      "natural sciences",
+      "meteorology",
+      "glaciology",
+      "oceanography"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m71"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.18b8b4"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.aodc.org.au/index.php?id=37"
+      },
+      {
+        "type": "namespace",
+        "value": "http://schemas.aodn.org.au/mcp-2.0"
+      },
+      {
+        "type": "namespace",
+        "value": "http://schemas.aodn.org.au"
+      },
+      {
+        "type": "schema",
+        "value": "http://schemas.aodn.org.au/mcp-2.0/schema.xsd"
+      }
+    ],
+    "subject_areas": [
+      "Climatology",
+      "Earth sciences",
+      "Glaciology",
+      "Hydrology",
+      "Meteorology",
+      "Oceanography"
+    ],
+    "title": "AODN Marine Community Profile",
+    "urls": [
+      "msc:m71",
+      "https://doi.org/10.25504/FAIRsharing.18b8b4",
+      "https://mcp-profile-docs.readthedocs.io/en/stable/",
+      "http://www.aodc.org.au/index.php?id=37",
+      "http://schemas.aodn.org.au/mcp-2.0",
+      "http://schemas.aodn.org.au",
+      "http://schemas.aodn.org.au/mcp-2.0/schema.xsd",
+      "msc:m22"
+    ]
+  },
+  "metashare-metadata": {
+    "acronym": "META-SHARE",
+    "field_of_science": [
+      "humanities",
+      "linguistics"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m12"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4665"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.meta-share.org/p/93/Documentation#model"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.ilsp.gr/META-XMLSchema"
+      },
+      {
+        "type": "namespace",
+        "value": "http://w3id.org/meta-share/meta-share/"
+      }
+    ],
+    "subject_areas": [
+      "Humanities",
+      "Linguistics"
+    ],
+    "title": "Metadata Schema for the Description of Language Resources",
+    "urls": [
+      "fuji:m12",
+      "https://fairsharing.org/4665",
+      "http://www.meta-share.org/p/93/Documentation#model",
+      "http://www.ilsp.gr/META-XMLSchema",
+      "http://w3id.org/meta-share/meta-share/"
+    ]
+  },
+  "mets-metadata-encoding-and-transmission-standard": {
     "acronym": "METS",
     "field_of_science": [
       "sciences"
     ],
-    "id": "mets-metadata-encoding-and-transmission-standard",
     "identifier": [
       {
         "type": "local",
@@ -3610,7 +4226,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "METS - Metadata Encoding and Transmission Standard",
     "urls": [
+      "fuji:m11",
+      "https://doi.org/10.25504/FAIRsharing.921056",
       "http://www.loc.gov/METS/",
       "https://www.loc.gov/standards/mets/profile_docs/mets.profile.v1-2.xsd",
       "https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-1.xsd",
@@ -3618,21 +4237,20 @@
       "https://www.loc.gov/standards/mets/mets-profiles.html"
     ]
   },
-  "MIBBI (Minimum Information for Biological and Biomedical Investigations)": {
+  "mibbi-minimum-information-biological-and-biomedical-investigations": {
     "acronym": null,
     "field_of_science": [
-      "computer and information sciences",
-      "biological sciences",
-      "environmental sciences",
-      "biochemistry",
-      "engineering and technology",
       "cell metabolism",
-      "proteins",
-      "cell biology",
+      "natural sciences",
+      "biological sciences",
+      "engineering and technology",
+      "environmental sciences",
+      "computer and information sciences",
+      "biochemistry",
       "genetics",
-      "natural sciences"
+      "proteins",
+      "cell biology"
     ],
-    "id": "mibbi-minimum-information-biological-and-biomedical-investigations",
     "identifier": [
       {
         "type": "local",
@@ -3662,20 +4280,29 @@
       "Metabolism",
       "Proteins"
     ],
+    "title": "MIBBI (Minimum Information for Biological and Biomedical Investigations)",
     "urls": [
+      "msc:m23",
+      "https://fairsharing.org/3518",
+      "http://www.dcc.ac.uk/resources/metadata-standards/mibbi-minimum-information-biological-and-biomedical-investigations",
       "http://mibbi.sourceforge.net/foundry.shtml",
-      "http://mibbi.sourceforge.net/portal.shtml"
+      "http://mibbi.sourceforge.net/portal.shtml",
+      "msc:g12",
+      "msc:g15",
+      "msc:g43",
+      "msc:g58",
+      "msc:g76",
+      "msc:g82"
     ]
   },
-  "MIDAS-Heritage": {
+  "midas-heritage": {
     "acronym": "MIDAS",
     "field_of_science": [
-      "architectural design",
       "humanities",
+      "architectural design",
       "archaeology",
       "history"
     ],
-    "id": "midas-heritage",
     "identifier": [
       {
         "type": "local",
@@ -3705,20 +4332,24 @@
       "Cultural property preservation",
       "History"
     ],
+    "title": "MIDAS-Heritage",
     "urls": [
+      "msc:m24",
+      "https://doi.org/10.25504/FAIRsharing.q0hgq",
+      "http://www.dcc.ac.uk/resources/metadata-standards/midas-heritage",
       "http://www.english-heritage.org.uk/content/publications/publicationsNew/guidelines-standards/midas-heritage/midas-heritage-2012-v1_1.pdf",
       "https://historicengland.org.uk/images-books/publications/midas-heritage/",
       "http://www.english-heritage.org.uk/publications/midas-heritage/",
-      "http://www.heritage-standards.org/midas/schema/1.0"
+      "http://www.heritage-standards.org/midas/schema/1.0",
+      "msc:g38"
     ]
   },
-  "MODS (Metadata Object Description Schema)": {
+  "mods-metadata-object-description-schema": {
     "acronym": "MODS",
     "field_of_science": [
-      "library sciences",
-      "humanities"
+      "humanities",
+      "library sciences"
     ],
-    "id": "mods-metadata-object-description-schema",
     "identifier": [
       {
         "type": "local",
@@ -3745,10 +4376,16 @@
       "Bibliographic standards",
       "Information/library standards"
     ],
+    "title": "MODS (Metadata Object Description Schema)",
     "urls": [
+      "msc:m97",
+      "https://doi.org/10.25504/FAIRsharing.o67X7e",
       "http://www.loc.gov/standards/mods/",
       "http://www.loc.gov/mods/v3",
       "http://www.loc.gov/mods/",
+      "msc:m88",
+      "msc:g104",
+      "msc:g121",
       "http://www.loc.gov/standards/mods/v3/mods-3-3.xsd",
       "http://www.loc.gov/standards/mods/mods-outline-3-4.html",
       "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd",
@@ -3760,52 +4397,67 @@
       "http://www.loc.gov/standards/mods/v3/mods-3-7.xsd"
     ]
   },
-  "Metadata Schema for the Description of Language Resources": {
-    "acronym": "META-SHARE",
+  "museumdat-schema": {
+    "acronym": "museumdat",
     "field_of_science": [
-      "humanities",
-      "linguistics"
+      "humanities"
     ],
-    "id": "metashare-metadata",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m12"
+        "value": "fuji:m31"
       },
       {
         "type": "local",
-        "value": "https://fairsharing.org/4665"
+        "value": "https://fairsharing.org/4671"
+      },
+      {
+        "type": "schema",
+        "value": "http://museum.zib.de/museumdat/museumdat-v1.0.xsd"
       },
       {
         "type": "homepage",
-        "value": "http://www.meta-share.org/p/93/Documentation#model"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.ilsp.gr/META-XMLSchema"
-      },
-      {
-        "type": "namespace",
-        "value": "http://w3id.org/meta-share/meta-share/"
+        "value": "http://museum.zib.de/museumdat/"
       }
     ],
     "subject_areas": [
       "Humanities",
-      "Linguistics"
+      "Cultural heritage"
     ],
+    "title": "museumdat",
     "urls": [
-      "http://www.meta-share.org/p/93/Documentation#model",
-      "http://www.ilsp.gr/META-XMLSchema",
-      "http://w3id.org/meta-share/meta-share/"
+      "fuji:m31",
+      "https://fairsharing.org/4671",
+      "http://museum.zib.de/museumdat/museumdat-v1.0.xsd",
+      "http://museum.zib.de/museumdat/"
     ]
   },
-  "NeXML": {
+  "netcdf-attribute-convention-for-dataset-discovery": {
+    "acronym": null,
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m89"
+      },
+      {
+        "type": "homepage",
+        "value": "https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery"
+      }
+    ],
+    "subject_areas": null,
+    "title": "NetCDF Attribute Convention for Dataset Discovery",
+    "urls": [
+      "msc:m89",
+      "https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery"
+    ]
+  },
+  "nexml": {
     "acronym": null,
     "field_of_science": [
       "biological sciences",
       "natural sciences"
     ],
-    "id": "nexml",
     "identifier": [
       {
         "type": "local",
@@ -3831,23 +4483,25 @@
     "subject_areas": [
       "Biology"
     ],
+    "title": "NeXML",
     "urls": [
+      "fuji:m45",
+      "https://doi.org/10.25504/FAIRsharing.knrb06",
       "http://download.nexusformat.org/doc/html/ref_doc.html",
       "http://www.nexusformat.org/",
       "http://www.nexml.org/2009",
       "http://www.nexml.org/2009 ../xsd/nexml.xsd"
     ]
   },
-  "NeXus": {
+  "nexus": {
     "acronym": null,
     "field_of_science": [
       "crystallography",
-      "engineering and technology",
       "materials engineering",
-      "chemical sciences",
-      "natural sciences"
+      "natural sciences",
+      "engineering and technology",
+      "chemical sciences"
     ],
-    "id": "nexus",
     "identifier": [
       {
         "type": "local",
@@ -3867,40 +4521,73 @@
       "Crystallography",
       "Materials engineering"
     ],
+    "title": "NeXus",
     "urls": [
+      "msc:m25",
+      "https://doi.org/10.25504/FAIRsharing.eq2pdx",
       "http://download.nexusformat.org/doc/html/ref_doc.html",
-      "http://www.nexusformat.org/"
+      "http://www.nexusformat.org/",
+      "msc:g110"
     ]
   },
-  "NetCDF Attribute Convention for Dataset Discovery": {
-    "acronym": null,
-    "field_of_science": [],
-    "id": "netcdf-attribute-convention-for-dataset-discovery",
+  "oai-dublin-core-schema": {
+    "acronym": "oai_dc",
+    "field_of_science": [
+      "sciences"
+    ],
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m89"
+        "value": "fuji:m44"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.0417cf"
+      },
+      {
+        "type": "namespace",
+        "value": "https://resources.bepress.com/OAI/2.0/qualified-dublin-core/"
+      },
+      {
+        "type": "schema",
+        "value": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.openarchives.org/OAI/2.0/oai_dc/"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.openarchives.org/OAI/2.0/oai_dc"
       },
       {
         "type": "homepage",
-        "value": "https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery"
+        "value": "http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore"
       }
     ],
-    "subject_areas": null,
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "Open Archive Initiative Dublin Core (OAI DC)",
     "urls": [
-      "https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery"
+      "fuji:m44",
+      "https://doi.org/10.25504/FAIRsharing.0417cf",
+      "https://resources.bepress.com/OAI/2.0/qualified-dublin-core/",
+      "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+      "http://www.openarchives.org/OAI/2.0/oai_dc/",
+      "http://www.openarchives.org/OAI/2.0/oai_dc",
+      "http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore"
     ]
   },
-  "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)": {
+  "oai-ore-open-archives-initiative-object-reuse-and-exchange": {
     "acronym": "OAI-ORE",
     "field_of_science": [
-      "anthropology",
-      "history",
       "sciences",
       "social sciences",
+      "history",
+      "anthropology",
       "humanities"
     ],
-    "id": "oai-ore-open-archives-initiative-object-reuse-and-exchange",
     "identifier": [
       {
         "type": "local",
@@ -3928,16 +4615,20 @@
       "History",
       "Multidisciplinary"
     ],
+    "title": "OAI-ORE (Open Archives Initiative Object Reuse and Exchange)",
     "urls": [
+      "msc:m26",
+      "https://doi.org/10.25504/FAIRsharing.3mtaee",
+      "http://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange",
       "http://www.openarchives.org/ore/",
       "http://www.openarchives.org/ore/toc",
-      "http://www.openarchives.org/ore/terms/"
+      "http://www.openarchives.org/ore/terms/",
+      "msc:g81"
     ]
   },
-  "OAI-RDF Schema": {
+  "oai-rdf-schema": {
     "acronym": "oai-rdf",
     "field_of_science": [],
-    "id": "oai-rdf-schema",
     "identifier": [
       {
         "type": "local",
@@ -3961,55 +4652,124 @@
       }
     ],
     "subject_areas": null,
+    "title": "OAI-RDF Schema",
     "urls": [
+      "fuji:m38",
       "http://www.openarchives.org/OAI/2.0/rdf.xsd",
       "http://www.openarchives.org/OAI/2.0/rdf/",
       "https://api.aiscr.cz/schema/oai_rdf/",
       "http://www.openarchives.org/OAI/2.0/rdf/"
     ]
   },
-  "OCLC PICA XML": {
-    "acronym": "pica",
-    "field_of_science": [],
-    "id": "pica-metadata-schema",
+  "observ-om": {
+    "acronym": null,
+    "field_of_science": [
+      "biological sciences",
+      "natural sciences"
+    ],
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m37"
+        "value": "msc:m27"
       },
       {
         "type": "local",
-        "value": "https://fairsharing.org/4688"
+        "value": "https://fairsharing.org/4682"
       },
       {
-        "type": "namespace",
-        "value": "info:srw/schema/5/picaXML-v1.0"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.oclcpica.org/xmlns/ppxml-1.0"
-      },
-      {
-        "type": "schema",
-        "value": "http://www.oclcpica.org/xml/picaplus.xsd"
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/observ-om"
       },
       {
         "type": "homepage",
-        "value": "http://www.oclcpica.org"
+        "value": "http://www.molgenis.org/wiki/ObservStart"
       }
     ],
-    "subject_areas": null,
+    "subject_areas": [
+      "Biology"
+    ],
+    "title": "Observ-OM",
     "urls": [
-      "info:srw/schema/5/picaXML-v1.0",
-      "http://www.oclcpica.org/xmlns/ppxml-1.0",
-      "http://www.oclcpica.org/xml/picaplus.xsd",
-      "http://www.oclcpica.org"
+      "msc:m27",
+      "https://fairsharing.org/4682",
+      "http://www.dcc.ac.uk/resources/metadata-standards/observ-om",
+      "http://www.molgenis.org/wiki/ObservStart",
+      "msc:g21",
+      "msc:g57",
+      "msc:g70",
+      "msc:g96",
+      "msc:g97"
     ]
   },
-  "ODAM Structural Metadata": {
+  "observations-and-measurements": {
+    "acronym": null,
+    "field_of_science": [
+      "remote sensing",
+      "geology",
+      "natural sciences",
+      "engineering and technology",
+      "chemical sciences",
+      "meteorology"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m28"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.4ehmy9"
+      },
+      {
+        "type": "local",
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/observations-and-measurements"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.opengeospatial.org/standards/om"
+      },
+      {
+        "type": "namespace",
+        "value": "http://schemas.opengis.net/om/2.0/"
+      },
+      {
+        "type": "schema",
+        "value": "https://schemas.opengis.net/om/2.0/observation.xsd"
+      },
+      {
+        "type": "schema",
+        "value": "https://schemas.opengis.net/om/1.0.0/observation.xsd"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.opengis.net/om/1.0"
+      }
+    ],
+    "subject_areas": [
+      "Chemistry",
+      "Geology",
+      "Meteorology",
+      "Remote sensing"
+    ],
+    "title": "Observations and Measurements",
+    "urls": [
+      "msc:m28",
+      "https://doi.org/10.25504/FAIRsharing.4ehmy9",
+      "http://www.dcc.ac.uk/resources/metadata-standards/observations-and-measurements",
+      "http://portal.opengeospatial.org/files/?artifact_id=41579",
+      "http://www.opengeospatial.org/standards/om",
+      "http://schemas.opengis.net/om/2.0/",
+      "https://schemas.opengis.net/om/2.0/observation.xsd",
+      "https://schemas.opengis.net/om/1.0.0/observation.xsd",
+      "http://www.opengis.net/om/1.0",
+      "msc:g54",
+      "msc:g79",
+      "msc:g103"
+    ]
+  },
+  "odam-datapackage": {
     "acronym": null,
     "field_of_science": [],
-    "id": "odam-datapackage",
     "identifier": [
       {
         "type": "local",
@@ -4027,17 +4787,18 @@
       "biomaterials",
       "bioengineering"
     ],
+    "title": "ODAM Structural Metadata",
     "urls": [
+      "10.25504/FAIRsharing.ld9wne",
       "https://inrae.github.io/ODAM/data-preparation/url"
     ]
   },
-  "OLAC metadata": {
+  "olac-metadata": {
     "acronym": "OLAC",
     "field_of_science": [
       "humanities",
       "linguistics"
     ],
-    "id": "olac-metadata",
     "identifier": [
       {
         "type": "local",
@@ -4064,26 +4825,28 @@
       "Humanities",
       "Linguistics"
     ],
+    "title": "OLAC metadata",
     "urls": [
+      "fuji:m14",
+      "https://doi.org/10.25504/FAIRsharing.17fbae",
       "http://www.language-archives.org/OLAC/1.1/",
       "http://www.language-archives.org/OLAC/1.1/olac.xsd",
       "http://www.language-archives.org/OLAC"
     ]
   },
-  "OME-TIFF (Open Microscopy Environment TIFF)": {
+  "ome-tiff-open-microscopy-environment-tiff": {
     "acronym": null,
     "field_of_science": [
-      "botany",
-      "physiology",
-      "agricultural sciences",
-      "medical and health sciences",
-      "veterinary sciences",
       "plant protection",
+      "veterinary sciences",
+      "medical and health sciences",
+      "natural sciences",
+      "agricultural sciences",
+      "botany",
       "zoology",
-      "cell biology",
-      "natural sciences"
+      "physiology",
+      "cell biology"
     ],
-    "id": "ome-tiff-open-microscopy-environment-tiff",
     "identifier": [
       {
         "type": "local",
@@ -4106,24 +4869,27 @@
       "Plant physiology",
       "Zoology"
     ],
+    "title": "OME-TIFF (Open Microscopy Environment TIFF)",
     "urls": [
-      "http://www.openmicroscopy.org/site/support/file-formats/ome-tiff"
+      "msc:m73",
+      "https://doi.org/10.25504/FAIRsharing.cq8tg2",
+      "http://www.openmicroscopy.org/site/support/file-formats/ome-tiff",
+      "msc:m29"
     ]
   },
-  "OME-XML (Open Microscopy Environment XML)": {
+  "ome-xml-open-microscopy-environment-xml": {
     "acronym": null,
     "field_of_science": [
-      "botany",
-      "physiology",
-      "agricultural sciences",
-      "medical and health sciences",
-      "veterinary sciences",
       "plant protection",
+      "veterinary sciences",
+      "medical and health sciences",
+      "natural sciences",
+      "agricultural sciences",
+      "botany",
       "zoology",
-      "cell biology",
-      "natural sciences"
+      "physiology",
+      "cell biology"
     ],
-    "id": "ome-xml-open-microscopy-environment-xml",
     "identifier": [
       {
         "type": "local",
@@ -4238,7 +5004,11 @@
       "Plant physiology",
       "Zoology"
     ],
+    "title": "OME-XML (Open Microscopy Environment XML)",
     "urls": [
+      "msc:m29",
+      "https://doi.org/10.25504/FAIRsharing.zk8p4g",
+      "http://www.dcc.ac.uk/resources/metadata-standards/ome-xml-open-microscopy-environment-xml",
       "http://www.openmicroscopy.org/Schemas/",
       "http://www.openmicroscopy.org/site/support/file-formats",
       "http://www.openmicroscopy.org/Schemas/OME/2016-06",
@@ -4262,16 +5032,17 @@
       "http://www.openmicroscopy.org/Schemas/OME/2009-09/index.html",
       "http://www.openmicroscopy.org/Schemas/OME/2008-09/index.html",
       "http://www.openmicroscopy.org/Schemas/OME/2008-02/index.html",
-      "http://www.openmicroscopy.org/Schemas/OME/2007-06/index.html"
+      "http://www.openmicroscopy.org/Schemas/OME/2007-06/index.html",
+      "msc:g17",
+      "msc:g62"
     ]
   },
-  "ONIX for Books Product Information Message": {
+  "onix-metadata-schema": {
     "acronym": "onix",
     "field_of_science": [
-      "library sciences",
-      "humanities"
+      "humanities",
+      "library sciences"
     ],
-    "id": "onix-metadata-schema",
     "identifier": [
       {
         "type": "local",
@@ -4298,158 +5069,21 @@
       "Bibliographic standards",
       "Information/library standards"
     ],
+    "title": "ONIX for Books Product Information Message",
     "urls": [
+      "fuji:m42",
+      "https://fairsharing.org/4683",
       "https://www.editeur.org/8/ONIX/",
       "https://www.editeur.org/files/ONIX%203/APPNOTE%20Describing%20e-books%20in%20ONIX.pdf",
       "http://www.editeur.org/onix/2.1/short",
       "http://www.editeur.org/onix/2.1/short/ONIX_BookProduct_Release2.1_short"
     ]
   },
-  "Observ-OM": {
-    "acronym": null,
-    "field_of_science": [
-      "biological sciences",
-      "natural sciences"
-    ],
-    "id": "observ-om",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m27"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4682"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/observ-om"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.molgenis.org/wiki/ObservStart"
-      }
-    ],
-    "subject_areas": [
-      "Biology"
-    ],
-    "urls": [
-      "http://www.molgenis.org/wiki/ObservStart"
-    ]
-  },
-  "Observations and Measurements": {
-    "acronym": null,
-    "field_of_science": [
-      "geology",
-      "engineering and technology",
-      "remote sensing",
-      "meteorology",
-      "chemical sciences",
-      "natural sciences"
-    ],
-    "id": "observations-and-measurements",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m28"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.4ehmy9"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/observations-and-measurements"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.opengeospatial.org/standards/om"
-      },
-      {
-        "type": "namespace",
-        "value": "http://schemas.opengis.net/om/2.0/"
-      },
-      {
-        "type": "schema",
-        "value": "https://schemas.opengis.net/om/2.0/observation.xsd"
-      },
-      {
-        "type": "schema",
-        "value": "https://schemas.opengis.net/om/1.0.0/observation.xsd"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.opengis.net/om/1.0"
-      }
-    ],
-    "subject_areas": [
-      "Chemistry",
-      "Geology",
-      "Meteorology",
-      "Remote sensing"
-    ],
-    "urls": [
-      "http://portal.opengeospatial.org/files/?artifact_id=41579",
-      "http://www.opengeospatial.org/standards/om",
-      "http://schemas.opengis.net/om/2.0/",
-      "https://schemas.opengis.net/om/2.0/observation.xsd",
-      "https://schemas.opengis.net/om/1.0.0/observation.xsd",
-      "http://www.opengis.net/om/1.0"
-    ]
-  },
-  "Open Archive Initiative Dublin Core (OAI DC)": {
-    "acronym": "oai_dc",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "oai-dublin-core-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m44"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.0417cf"
-      },
-      {
-        "type": "namespace",
-        "value": "https://resources.bepress.com/OAI/2.0/qualified-dublin-core/"
-      },
-      {
-        "type": "schema",
-        "value": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.openarchives.org/OAI/2.0/oai_dc/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.openarchives.org/OAI/2.0/oai_dc"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "https://resources.bepress.com/OAI/2.0/qualified-dublin-core/",
-      "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-      "http://www.openarchives.org/OAI/2.0/oai_dc/",
-      "http://www.openarchives.org/OAI/2.0/oai_dc",
-      "http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore"
-    ]
-  },
-  "OpenAIRE Guidelines": {
+  "openaire-guidelines": {
     "acronym": "OpenAIRE_G",
     "field_of_science": [
       "sciences"
     ],
-    "id": "openaire-guidelines",
     "identifier": [
       {
         "type": "local",
@@ -4483,20 +5117,26 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "OpenAIRE Guidelines",
     "urls": [
+      "msc:m92",
+      "https://doi.org/10.25504/FAIRsharing.123197",
       "https://guidelines.openaire.eu/",
       "https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd",
       "http://namespace.openaire.eu/schema/oaire/",
       "oai_openaire",
-      "https://openaire.eu"
+      "https://openaire.eu",
+      "msc:g112",
+      "msc:m4",
+      "msc:m11",
+      "msc:m15"
     ]
   },
-  "OpenAIRE Research Graph": {
+  "openaire-research-graph": {
     "acronym": "OpenAIRE_RG",
     "field_of_science": [
       "sciences"
     ],
-    "id": "openaire-research-graph",
     "identifier": [
       {
         "type": "local",
@@ -4522,17 +5162,44 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "OpenAIRE Research Graph",
     "urls": [
+      "fuji:m20",
+      "https://fairsharing.org/4684",
       "http://namespace.openaire.eu/oaf",
       "https://www.openaire.eu/schema/latest/doc/oaf.html",
       "https://www.openaire.eu/schema/1.0/oaf-1.0.xsd",
       "https://graph.openaire.eu/"
     ]
   },
-  "OpenSearch": {
+  "opengraph": {
+    "acronym": "OpenGraph",
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m46"
+      },
+      {
+        "type": "homepage",
+        "value": "https://ogp.me"
+      },
+      {
+        "type": "namespace",
+        "value": "https://ogp.me/ns#"
+      }
+    ],
+    "subject_areas": null,
+    "title": "The Open Graph protocol metadata format",
+    "urls": [
+      "fuji:m46",
+      "https://ogp.me",
+      "https://ogp.me/ns#"
+    ]
+  },
+  "opensearch": {
     "acronym": null,
     "field_of_science": [],
-    "id": "opensearch",
     "identifier": [
       {
         "type": "local",
@@ -4552,23 +5219,65 @@
       }
     ],
     "subject_areas": null,
+    "title": "OpenSearch",
     "urls": [
+      "fuji:m2",
+      "https://fairsharing.org/4685",
       "http://a9.com/-/spec/opensearch/1.1/",
       "https://github.com/dewitt/opensearch"
     ]
   },
-  "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)": {
+  "openurl-contextobject": {
+    "acronym": "CTX",
+    "field_of_science": [
+      "sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m7"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4686"
+      },
+      {
+        "type": "namespace",
+        "value": "info:ofi/fmt:xml:xsd:ctx"
+      },
+      {
+        "type": "namespace",
+        "value": "info:ofi/fmt:kev:mtx:ctx"
+      },
+      {
+        "type": "homepage",
+        "value": "https://www.oclc.org/research/activities/registry.html"
+      }
+    ],
+    "subject_areas": [
+      "Multidisciplinary"
+    ],
+    "title": "The OpenURL ContextObject Format",
+    "urls": [
+      "fuji:m7",
+      "https://fairsharing.org/4686",
+      "info:ofi/fmt:xml:xsd:ctx",
+      "info:ofi/fmt:kev:mtx:ctx",
+      "https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf",
+      "https://www.oclc.org/research/activities/registry.html"
+    ]
+  },
+  "pdbx-mmcif": {
     "acronym": null,
     "field_of_science": [
+      "crystallography",
+      "natural sciences",
+      "biological sciences",
       "computer and information sciences",
       "physical sciences",
-      "biological sciences",
-      "crystallography",
       "chemical sciences",
-      "molecular biology",
-      "natural sciences"
+      "molecular biology"
     ],
-    "id": "pdbx-mmcif",
     "identifier": [
       {
         "type": "local",
@@ -4591,17 +5300,62 @@
       "Molecular biology",
       "Physics"
     ],
+    "title": "PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework)",
     "urls": [
+      "msc:m30",
+      "https://doi.org/10.25504/FAIRsharing.fd28en",
       "http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Index/",
-      "http://mmcif.wwpdb.org/"
+      "http://mmcif.wwpdb.org/",
+      "msc:g22",
+      "msc:g98",
+      "msc:g98"
     ]
   },
-  "PREMIS": {
+  "pica-metadata-schema": {
+    "acronym": "pica",
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m37"
+      },
+      {
+        "type": "local",
+        "value": "https://fairsharing.org/4688"
+      },
+      {
+        "type": "namespace",
+        "value": "info:srw/schema/5/picaXML-v1.0"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.oclcpica.org/xmlns/ppxml-1.0"
+      },
+      {
+        "type": "schema",
+        "value": "http://www.oclcpica.org/xml/picaplus.xsd"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.oclcpica.org"
+      }
+    ],
+    "subject_areas": null,
+    "title": "OCLC PICA XML",
+    "urls": [
+      "fuji:m37",
+      "https://fairsharing.org/4688",
+      "info:srw/schema/5/picaXML-v1.0",
+      "http://www.oclcpica.org/xmlns/ppxml-1.0",
+      "http://www.oclcpica.org/xml/picaplus.xsd",
+      "http://www.oclcpica.org"
+    ]
+  },
+  "premis": {
     "acronym": "premis",
     "field_of_science": [
       "sciences"
     ],
-    "id": "premis",
     "identifier": [
       {
         "type": "local",
@@ -4651,7 +5405,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "PREMIS",
     "urls": [
+      "msc:m31",
+      "https://doi.org/10.25504/FAIRsharing.27a0f4",
       "http://www.loc.gov/standards/premis/v3/premis-3-0-final.pdf",
       "http://www.loc.gov/standards/premis/",
       "http://www.loc.gov/standards/premis",
@@ -4661,13 +5418,14 @@
       "info:lc/xmlns/premis-v2",
       "https://www.loc.gov/standards/premis/v2/premis-v2-3.xsd",
       "https://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd",
-      "http://www.loc.gov/standards/premis/v1"
+      "http://www.loc.gov/standards/premis/v1",
+      "msc:g104",
+      "msc:g111"
     ]
   },
-  "PRISM Publishing Requirements for Industry Standard Metadata": {
+  "prism-publishing-industry-standard-metadata": {
     "acronym": "PRISM",
     "field_of_science": [],
-    "id": "prism-publishing-industry-standard-metadata",
     "identifier": [
       {
         "type": "local",
@@ -4727,7 +5485,10 @@
       }
     ],
     "subject_areas": null,
+    "title": "PRISM Publishing Requirements for Industry Standard Metadata",
     "urls": [
+      "fuji:m27",
+      "https://fairsharing.org/4689",
       "https://www.w3.org/Submission/prism",
       "http://prismstandard.org/namespaces/pam/0.0/",
       "http://prismstandard.org/namespaces/pam/1.2/",
@@ -4742,55 +5503,12 @@
       "http://prismstandard.org/namespaces/pim/1.2/"
     ]
   },
-  "PROV": {
-    "acronym": null,
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "prov",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m33"
-      },
-      {
-        "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/prov"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.fe7cda"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.w3.org/2001/sw/wiki/PROV"
-      },
-      {
-        "type": "schema",
-        "value": "http://www.w3.org/ns/prov.xsd"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.w3.org/ns/prov#"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "http://www.w3.org/TR/prov-overview/",
-      "http://www.w3.org/2001/sw/wiki/PROV",
-      "http://www.w3.org/ns/prov.xsd",
-      "http://www.w3.org/ns/prov#"
-    ]
-  },
-  "Protocol Data Element Definitions": {
+  "protocol-data-element-definitions": {
     "acronym": null,
     "field_of_science": [
       "medical and health sciences",
       "clinical medicine"
     ],
-    "id": "protocol-data-element-definitions",
     "identifier": [
       {
         "type": "local",
@@ -4828,65 +5546,74 @@
     "subject_areas": [
       "Clinical medicine"
     ],
+    "title": "Protocol Data Element Definitions",
     "urls": [
+      "msc:m32",
+      "http://www.dcc.ac.uk/resources/metadata-standards/protocol-data-element-definitions",
+      "https://doi.org/10.25504/FAIRsharing.7e962d",
       "http://prsinfo.clinicaltrials.gov/definitions.html",
       "http://clinicaltrials.gov/ct2/manage-recs/resources",
       "https://prsinfo.clinicaltrials.gov/ProtocolRecordSchema.xsd",
       "http://clinicaltrials.gov/prs",
       "https://prsinfo.clinicaltrials.gov/RRSUploadSchema.xsd",
-      "http://clinicaltrials.gov/rrs"
+      "http://clinicaltrials.gov/rrs",
+      "msc:g105"
     ]
   },
-  "QuDEx (Qualitative Data Exchange Format)": {
+  "prov": {
     "acronym": null,
     "field_of_science": [
       "sciences"
     ],
-    "id": "qudex-qualitative-data-exchange-format",
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m34"
+        "value": "msc:m33"
       },
       {
         "type": "local",
-        "value": "http://www.dcc.ac.uk/resources/metadata-standards/qudex-qualitative-data-exchange-format"
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/prov"
       },
       {
         "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.d42cb9"
+        "value": "https://doi.org/10.25504/FAIRsharing.fe7cda"
       },
       {
         "type": "homepage",
-        "value": "http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1"
+        "value": "http://www.w3.org/2001/sw/wiki/PROV"
       },
       {
         "type": "schema",
-        "value": "https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd"
+        "value": "http://www.w3.org/ns/prov.xsd"
       },
       {
         "type": "namespace",
-        "value": "http://www.data-archive.ac.uk/dext/schema/draft"
+        "value": "http://www.w3.org/ns/prov#"
       }
     ],
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "PROV",
     "urls": [
-      "http://data-archive.ac.uk/create-manage/projects/qudex?index=1",
-      "http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1",
-      "https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd",
-      "http://www.data-archive.ac.uk/dext/schema/draft"
+      "msc:m33",
+      "http://www.dcc.ac.uk/resources/metadata-standards/prov",
+      "https://doi.org/10.25504/FAIRsharing.fe7cda",
+      "http://www.w3.org/TR/prov-overview/",
+      "http://www.w3.org/2001/sw/wiki/PROV",
+      "http://www.w3.org/ns/prov.xsd",
+      "http://www.w3.org/ns/prov#",
+      "msc:g84",
+      "msc:g106"
     ]
   },
-  "QuakeML": {
+  "quakeml": {
     "acronym": "QuakeML",
     "field_of_science": [
-      "earth and related environmental sciences",
       "geophysics",
+      "earth and related environmental sciences",
       "natural sciences"
     ],
-    "id": "quakeml",
     "identifier": [
       {
         "type": "local",
@@ -4925,7 +5652,10 @@
       "Earth sciences",
       "Geophysics"
     ],
+    "title": "QuakeML",
     "urls": [
+      "fuji:m9",
+      "https://fairsharing.org/1444",
       "http://quakeml.org/xmlns/quakeml/2.0",
       "http://quakeml.org/xmlns/quakeml/1.2",
       "http://quakeml.org/xmlns/quakeml/1.1",
@@ -4935,85 +5665,58 @@
       "http://www.quakeml.org/"
     ]
   },
-  "Qualified Dublin Core": {
-    "acronym": "QDC",
+  "qudex-qualitative-data-exchange-format": {
+    "acronym": null,
     "field_of_science": [
       "sciences"
     ],
-    "id": "dublin-core-qualified",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m22"
+        "value": "msc:m34"
       },
       {
         "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.3nx7t"
+        "value": "http://www.dcc.ac.uk/resources/metadata-standards/qudex-qualitative-data-exchange-format"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.d42cb9"
       },
       {
         "type": "homepage",
-        "value": "https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/"
-      },
-      {
-        "type": "namespace",
-        "value": "urn:dc:qdc:container"
-      },
-      {
-        "type": "namespace",
-        "value": "figshare:oai:qdc"
-      },
-      {
-        "type": "namespace",
-        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc"
+        "value": "http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1"
       },
       {
         "type": "schema",
-        "value": "https://cocoon.huma-num.fr/schemas/dcq.xsd"
+        "value": "https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd"
       },
       {
         "type": "namespace",
-        "value": "http://crdo.risc.cnrs.fr/schemas/dcq/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://oai.base-search.net/base_dc/"
-      },
-      {
-        "type": "namespace",
-        "value": "http://oai.base-search.net/base_dc"
-      },
-      {
-        "type": "schema",
-        "value": "http://oai.base-search.net/base_dc/base_dc.xsd"
+        "value": "http://www.data-archive.ac.uk/dext/schema/draft"
       }
     ],
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "QuDEx (Qualitative Data Exchange Format)",
     "urls": [
-      "https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/",
-      "urn:dc:qdc:container",
-      "figshare:oai:qdc",
-      "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/",
-      "http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc",
-      "https://cocoon.huma-num.fr/schemas/dcq.xsd",
-      "http://crdo.risc.cnrs.fr/schemas/dcq/",
-      "http://oai.base-search.net/base_dc/",
-      "http://oai.base-search.net/base_dc",
-      "http://oai.base-search.net/base_dc/base_dc.xsd"
+      "msc:m34",
+      "http://www.dcc.ac.uk/resources/metadata-standards/qudex-qualitative-data-exchange-format",
+      "https://doi.org/10.25504/FAIRsharing.d42cb9",
+      "http://data-archive.ac.uk/create-manage/projects/qudex?index=1",
+      "http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1",
+      "https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd",
+      "http://www.data-archive.ac.uk/dext/schema/draft",
+      "msc:g91"
     ]
   },
-  "RDF Data Cube Vocabulary": {
+  "rdf-data-cube-vocabulary": {
     "acronym": null,
     "field_of_science": [
       "statistics and probability",
       "natural sciences"
     ],
-    "id": "rdf-data-cube-vocabulary",
     "identifier": [
       {
         "type": "local",
@@ -5039,17 +5742,55 @@
     "subject_areas": [
       "Statistics"
     ],
+    "title": "RDF Data Cube Vocabulary",
     "urls": [
+      "msc:m35",
+      "http://www.dcc.ac.uk/resources/metadata-standards/rdf-data-cube-vocabulary",
+      "https://doi.org/10.25504/FAIRsharing.c3b573",
       "http://www.w3.org/TR/vocab-data-cube/",
-      "http://purl.org/linked-data/cube#"
+      "http://purl.org/linked-data/cube#",
+      "msc:g65",
+      "msc:g106",
+      "msc:g107"
     ]
   },
-  "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)": {
+  "resource-metadata-virtual-observatory": {
+    "acronym": null,
+    "field_of_science": [
+      "astronomy",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m74"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.qSULus"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.ivoa.net/documents/latest/RM.html"
+      }
+    ],
+    "subject_areas": [
+      "Astronomy"
+    ],
+    "title": "Resource Metadata for the Virtual Observatory",
+    "urls": [
+      "msc:m74",
+      "https://doi.org/10.25504/FAIRsharing.qSULus",
+      "http://www.ivoa.net/documents/latest/RM.html",
+      "msc:m15",
+      "msc:m20"
+    ]
+  },
+  "rif-cs-registry-interchange-format-collections-and-services": {
     "acronym": "RIF-CS",
     "field_of_science": [
       "sciences"
     ],
-    "id": "rif-cs-registry-interchange-format-collections-and-services",
     "identifier": [
       {
         "type": "local",
@@ -5079,20 +5820,23 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "RIF-CS (Registry Interchange Format \u00e2\u20ac\u201c Collections and Services)",
     "urls": [
+      "msc:m98",
+      "https://doi.org/10.25504/FAIRsharing.reybx2",
       "https://www.ands.org.au/online-services/rif-cs-schema",
       "http://services.ands.org.au/documentation/rifcs/schemadocs/registryObjects.html",
       "http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd",
       "http://ands.org.au/standards/rif-cs/registryObjects",
-      "https://ands.org.au/standards/rif-cs/registryObjects"
+      "https://ands.org.au/standards/rif-cs/registryObjects",
+      "msc:g118"
     ]
   },
-  "RIOXX Metadata Application Profile": {
+  "rioxx-metadata-application-profile": {
     "acronym": "rioxx",
     "field_of_science": [
       "sciences"
     ],
-    "id": "rioxx-metadata-application-profile",
     "identifier": [
       {
         "type": "local",
@@ -5122,19 +5866,21 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "RIOXX Metadata Application Profile",
     "urls": [
+      "fuji:m5",
+      "https://fairsharing.org/4690",
       "http://www.rioxx.net/schema/v2.0/rioxx/",
       "https://www.rioxx.net/",
       "https://www.rioxx.net/schema/v2.0/rioxxterms/",
       "http://docs.rioxx.net/schema/v1.0/"
     ]
   },
-  "RO-Crate": {
+  "ro-crate": {
     "acronym": null,
     "field_of_science": [
       "sciences"
     ],
-    "id": "ro-crate",
     "identifier": [
       {
         "type": "local",
@@ -5164,7 +5910,10 @@
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "RO-Crate",
     "urls": [
+      "https://doi.org/10.25504/FAIRsharing.wUoZKE",
+      "msc:m102",
       "https://w3id.org/ro/crate/1.1",
       "https://w3id.org/ro/crate",
       "https://w3id.org/ro/crate/1.1/context",
@@ -5172,42 +5921,93 @@
       "https://w3id.org/ro/crate/0.2/context"
     ]
   },
-  "Resource Metadata for the Virtual Observatory": {
-    "acronym": null,
+  "schemaorg": {
+    "acronym": "schemaorg",
     "field_of_science": [
-      "natural sciences",
-      "astronomy"
+      "sciences"
     ],
-    "id": "resource-metadata-virtual-observatory",
     "identifier": [
       {
         "type": "local",
-        "value": "msc:m74"
+        "value": "https://doi.org/10.25504/FAIRsharing.hzdzq8"
       },
       {
         "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.qSULus"
+        "value": "msc:m101"
+      },
+      {
+        "type": "namespace",
+        "value": "https://schema.org"
+      },
+      {
+        "type": "namespace",
+        "value": "http://schema.org"
       },
       {
         "type": "homepage",
-        "value": "http://www.ivoa.net/documents/latest/RM.html"
+        "value": "https://schema.org/docs/schemas.html"
       }
     ],
     "subject_areas": [
-      "Astronomy"
+      "Multidisciplinary"
     ],
+    "title": "Schema.org",
     "urls": [
-      "http://www.ivoa.net/documents/latest/RM.html"
+      "https://doi.org/10.25504/FAIRsharing.hzdzq8",
+      "msc:m101",
+      "https://schema.org",
+      "http://schema.org",
+      "https://schema.org/docs/documents.html",
+      "https://schema.org/docs/schemas.html"
     ]
   },
-  "SDAC (Standard for Documentation of Astronomical Catalogues)": {
+  "scholix-metadata-schema": {
+    "acronym": "scholix",
+    "field_of_science": [],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "fuji:m28"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.B0d5Kn"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.scholix.org/schema"
+      },
+      {
+        "type": "namespace",
+        "value": "http://www.scholix.org"
+      },
+      {
+        "type": "schema",
+        "value": "https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd"
+      },
+      {
+        "type": "schema",
+        "value": "https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd"
+      }
+    ],
+    "subject_areas": null,
+    "title": null,
+    "urls": [
+      "fuji:m28",
+      "https://doi.org/10.25504/FAIRsharing.B0d5Kn",
+      "http://www.scholix.org/schema",
+      "http://www.scholix.org",
+      "https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd",
+      "https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd"
+    ]
+  },
+  "sdac": {
     "acronym": null,
     "field_of_science": [
+      "astronomy",
       "astrophysics",
-      "natural sciences",
-      "astronomy"
+      "natural sciences"
     ],
-    "id": "sdac",
     "identifier": [
       {
         "type": "local",
@@ -5226,23 +6026,27 @@
       "Astronomy",
       "Astrophysics"
     ],
+    "title": "SDAC (Standard for Documentation of Astronomical Catalogues)",
     "urls": [
+      "msc:m37",
+      "https://doi.org/10.25504/FAIRsharing.zcjkc7",
       "http://cds.u-strasbg.fr/doc/catstd.pdf",
-      "http://cds.u-strasbg.fr/doc/catstd.htx"
+      "http://cds.u-strasbg.fr/doc/catstd.htx",
+      "msc:g16",
+      "msc:g16"
     ]
   },
-  "SDMX (Statistical Data and Metadata Exchange)": {
+  "sdmx-statistical-data-and-metadata-exchange": {
     "acronym": null,
     "field_of_science": [
-      "political sciences",
-      "social geography",
       "demography",
-      "statistics and probability",
-      "economics",
+      "social geography",
       "social sciences",
-      "natural sciences"
+      "natural sciences",
+      "economics",
+      "statistics and probability",
+      "political sciences"
     ],
-    "id": "sdmx-statistical-data-and-metadata-exchange",
     "identifier": [
       {
         "type": "local",
@@ -5292,7 +6096,11 @@
       "Social policy",
       "Statistics"
     ],
+    "title": "SDMX (Statistical Data and Metadata Exchange)",
     "urls": [
+      "msc:m38",
+      "http://www.dcc.ac.uk/resources/metadata-standards/sdmx-statistical-data-and-metadata-exchange",
+      "https://doi.org/10.25504/FAIRsharing.cea9zc",
       "http://sdmx.org/?page_id=5008",
       "http://sdmx.org",
       "http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common",
@@ -5300,17 +6108,51 @@
       "http://www.sdmx.org/resources/sdmxml/schemas/v3_0/structure",
       "http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message",
       "http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data",
-      "http://www.sdmx.org/resources/sdmxml/"
+      "http://www.sdmx.org/resources/sdmxml/",
+      "msc:g42",
+      "msc:g86"
     ]
   },
-  "SNRNASM ISA-Tab": {
+  "shoreline-metadata-profile": {
+    "acronym": null,
+    "field_of_science": [
+      "oceanography",
+      "hydrology",
+      "natural sciences"
+    ],
+    "identifier": [
+      {
+        "type": "local",
+        "value": "msc:m75"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.22041b"
+      },
+      {
+        "type": "homepage",
+        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/"
+      }
+    ],
+    "subject_areas": [
+      "Hydrology",
+      "Oceanography"
+    ],
+    "title": "Shoreline Metadata Profile",
+    "urls": [
+      "msc:m75",
+      "https://doi.org/10.25504/FAIRsharing.22041b",
+      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/",
+      "msc:m17"
+    ]
+  },
+  "snrnasm-isa-tab": {
     "acronym": null,
     "field_of_science": [
       "biochemistry",
       "cell biology",
       "natural sciences"
     ],
-    "id": "snrnasm-isa-tab",
     "identifier": [
       {
         "type": "local",
@@ -5325,17 +6167,19 @@
       "Biochemistry",
       "Cell biology"
     ],
+    "title": "SNRNASM ISA-Tab",
     "urls": [
-      "http://snrnasm.bio.unc.edu"
+      "msc:m76",
+      "http://snrnasm.bio.unc.edu",
+      "msc:m21"
     ]
   },
-  "SPASE Data Model": {
+  "spase-data-model": {
     "acronym": null,
     "field_of_science": [
-      "natural sciences",
-      "astronomy"
+      "astronomy",
+      "natural sciences"
     ],
-    "id": "spase-data-model",
     "identifier": [
       {
         "type": "local",
@@ -5455,7 +6299,11 @@
       "Astronomy",
       "Sun"
     ],
+    "title": "SPASE Data Model",
     "urls": [
+      "msc:m39",
+      "http://www.dcc.ac.uk/resources/metadata-standards/spase-data-model",
+      "https://doi.org/10.25504/FAIRsharing.f5d440",
       "http://www.spase-group.org/docs/schema/",
       "http://www.spase-group.org/data/",
       "http://www.spase-group.org/data/schema",
@@ -5482,6 +6330,8 @@
       "https://spase-group.org/data/schema/spase-2.4.1.xsd",
       "https://spase-group.org/data/schema/spase-2.4.2.xsd",
       "https://spase-group.org/data/schema/spase-2.5.0.xsd",
+      "msc:g77",
+      "msc:g87",
       "http://www.spase-group.org/data/model/spase-2_2_2.pdf",
       "http://www.spase-group.org/data/model/spase-2_2_3.pdf",
       "http://www.spase-group.org/data/model/spase-2_2_4.pdf",
@@ -5492,82 +6342,43 @@
       "http://www.spase-group.org/data/model/spase-2_2_8.pdf"
     ]
   },
-  "Schema.org": {
-    "acronym": "schemaorg",
+  "tabular-data-package": {
+    "acronym": null,
     "field_of_science": [
       "sciences"
     ],
-    "id": "schemaorg",
     "identifier": [
       {
         "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.hzdzq8"
+        "value": "msc:m77"
       },
       {
         "type": "local",
-        "value": "msc:m101"
-      },
-      {
-        "type": "namespace",
-        "value": "https://schema.org"
-      },
-      {
-        "type": "namespace",
-        "value": "http://schema.org"
+        "value": "https://doi.org/10.25504/FAIRsharing.082881"
       },
       {
         "type": "homepage",
-        "value": "https://schema.org/docs/schemas.html"
+        "value": "http://frictionlessdata.io/guides/tabular-data-package/"
       }
     ],
     "subject_areas": [
       "Multidisciplinary"
     ],
+    "title": "Tabular Data Package",
     "urls": [
-      "https://schema.org",
-      "http://schema.org",
-      "https://schema.org/docs/documents.html",
-      "https://schema.org/docs/schemas.html"
+      "msc:m77",
+      "https://doi.org/10.25504/FAIRsharing.082881",
+      "http://frictionlessdata.io/guides/tabular-data-package/",
+      "msc:m10"
     ]
   },
-  "Shoreline Metadata Profile": {
-    "acronym": null,
-    "field_of_science": [
-      "oceanography",
-      "natural sciences",
-      "hydrology"
-    ],
-    "id": "shoreline-metadata-profile",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m75"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.22041b"
-      },
-      {
-        "type": "homepage",
-        "value": "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/"
-      }
-    ],
-    "subject_areas": [
-      "Hydrology",
-      "Oceanography"
-    ],
-    "urls": [
-      "http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/"
-    ]
-  },
-  "TEI (Text Encoding Initiative) Guidelines": {
+  "tei-text-encoding-initiative-guidelines": {
     "acronym": "TEI",
     "field_of_science": [
       "humanities",
-      "languages and literature",
-      "history"
+      "history",
+      "languages and literature"
     ],
-    "id": "tei-text-encoding-initiative-guidelines",
     "identifier": [
       {
         "type": "local",
@@ -5590,19 +6401,27 @@
       "History",
       "Languages"
     ],
+    "title": "TEI (Text Encoding Initiative) Guidelines",
     "urls": [
+      "msc:m99",
+      "https://doi.org/10.25504/FAIRsharing.87b86e",
       "http://www.tei-c.org/Guidelines/P5/",
       "https://www.tei-c.org/release/doc/tei-p5-doc/en/html/index.html",
-      "http://www.tei-c.org/ns/1.0"
+      "http://www.tei-c.org/ns/1.0",
+      "msc:g120",
+      "10.5281/zenodo.3459202",
+      "10.5281/zenodo.3459220",
+      "10.5281/zenodo.3459231",
+      "10.5281/zenodo.3549615",
+      "10.5281/zenodo.3413524"
     ]
   },
-  "TIDCC (Towards an International Data Commons for Crystallography)": {
+  "tidcc-towards-international-data-commons-crystallography": {
     "acronym": null,
     "field_of_science": [
       "crystallography",
       "natural sciences"
     ],
-    "id": "tidcc-towards-international-data-commons-crystallography",
     "identifier": [
       {
         "type": "local",
@@ -5620,145 +6439,21 @@
     "subject_areas": [
       "Crystallography"
     ],
+    "title": "TIDCC (Towards an International Data Commons for Crystallography)",
     "urls": [
-      "http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf"
+      "msc:m78",
+      "https://fairsharing.org/208",
+      "http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf",
+      "msc:m8"
     ]
   },
-  "Tabular Data Package": {
+  "uk-agmap-academic-geospatial-metadata-application-profile": {
     "acronym": null,
     "field_of_science": [
-      "sciences"
-    ],
-    "id": "tabular-data-package",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m77"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.082881"
-      },
-      {
-        "type": "homepage",
-        "value": "http://frictionlessdata.io/guides/tabular-data-package/"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "http://frictionlessdata.io/guides/tabular-data-package/"
-    ]
-  },
-  "The Atom Syndication Format": {
-    "acronym": "ATOM",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "atom-syndication-format",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m13"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4648"
-      },
-      {
-        "type": "namespace",
-        "value": "https://www.w3.org/2005/Atom"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.w3.org/2005/Atom"
-      },
-      {
-        "type": "homepage",
-        "value": "https://datatracker.ietf.org/wg/atompub/about/"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "https://www.w3.org/2005/Atom",
-      "http://www.w3.org/2005/Atom",
-      "https://datatracker.ietf.org/wg/atompub/about/",
-      "https://datatracker.ietf.org/doc/html/rfc4287"
-    ]
-  },
-  "The Open Graph protocol metadata format": {
-    "acronym": "OpenGraph",
-    "field_of_science": [],
-    "id": "opengraph",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m46"
-      },
-      {
-        "type": "homepage",
-        "value": "https://ogp.me"
-      },
-      {
-        "type": "namespace",
-        "value": "https://ogp.me/ns#"
-      }
-    ],
-    "subject_areas": null,
-    "urls": [
-      "https://ogp.me",
-      "https://ogp.me/ns#"
-    ]
-  },
-  "The OpenURL ContextObject Format": {
-    "acronym": "CTX",
-    "field_of_science": [
-      "sciences"
-    ],
-    "id": "openurl-contextobject",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m7"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4686"
-      },
-      {
-        "type": "namespace",
-        "value": "info:ofi/fmt:xml:xsd:ctx"
-      },
-      {
-        "type": "namespace",
-        "value": "info:ofi/fmt:kev:mtx:ctx"
-      },
-      {
-        "type": "homepage",
-        "value": "https://www.oclc.org/research/activities/registry.html"
-      }
-    ],
-    "subject_areas": [
-      "Multidisciplinary"
-    ],
-    "urls": [
-      "info:ofi/fmt:xml:xsd:ctx",
-      "info:ofi/fmt:kev:mtx:ctx",
-      "https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf",
-      "https://www.oclc.org/research/activities/registry.html"
-    ]
-  },
-  "UK AGMAP (Academic Geospatial Metadata Application Profile)": {
-    "acronym": null,
-    "field_of_science": [
+      "cartography",
       "physical geography",
-      "natural sciences",
-      "cartography"
+      "natural sciences"
     ],
-    "id": "uk-agmap-academic-geospatial-metadata-application-profile",
     "identifier": [
       {
         "type": "local",
@@ -5774,18 +6469,20 @@
       "Geography",
       "Topography"
     ],
+    "title": "UK AGMAP (Academic Geospatial Metadata Application Profile)",
     "urls": [
-      "http://www.gogeo.ac.uk/gogeo/metadata/agmap.htm"
+      "msc:m79",
+      "http://www.gogeo.ac.uk/gogeo/metadata/agmap.htm",
+      "msc:m22"
     ]
   },
-  "UK Gemini": {
+  "uk-gemini": {
     "acronym": null,
     "field_of_science": [
+      "cartography",
       "physical geography",
-      "natural sciences",
-      "cartography"
+      "natural sciences"
     ],
-    "id": "uk-gemini",
     "identifier": [
       {
         "type": "local",
@@ -5805,25 +6502,28 @@
       "Geography",
       "Topography"
     ],
+    "title": "UK Gemini",
     "urls": [
-      "http://www.agi.org.uk/uk-gemini/"
+      "msc:m80",
+      "https://doi.org/10.25504/FAIRsharing.b49fab",
+      "http://www.agi.org.uk/uk-gemini/",
+      "msc:m22"
     ]
   },
-  "UKEOF": {
+  "ukeof": {
     "acronym": null,
     "field_of_science": [
       "ecology",
+      "hydrology",
+      "climatology",
+      "remote sensing",
       "geology",
+      "natural sciences",
       "biological sciences",
       "engineering and technology",
-      "climatology",
-      "soil sciences",
-      "remote sensing",
       "meteorology",
-      "natural sciences",
-      "hydrology"
+      "soil sciences"
     ],
-    "id": "ukeof",
     "identifier": [
       {
         "type": "local",
@@ -5861,21 +6561,27 @@
       "Remote sensing",
       "Soil sciences"
     ],
+    "title": "UKEOF",
     "urls": [
+      "msc:m40",
+      "https://doi.org/10.25504/FAIRsharing.9xytp6",
       "http://schema.ukeof.org.uk/",
       "http://www.ukeof.org.uk/",
       "https://cataloguestaging.ukeof.org.uk/schema/ukeof.1.0.0.xsd",
       "https://www.ukeof.org.uk/schema/1/UKEOF_v1.0.xsd",
-      "http://www.ukeof.org.uk/schema/1"
+      "http://www.ukeof.org.uk/schema/1",
+      "msc:g37",
+      "msc:g108",
+      "msc:g109",
+      "msc:g115"
     ]
   },
-  "USGIN (US Geoscience Information Network) Metadata Profile": {
+  "usgin-iso-profile": {
     "acronym": null,
     "field_of_science": [
       "earth and related environmental sciences",
       "natural sciences"
     ],
-    "id": "usgin-iso-profile",
     "identifier": [
       {
         "type": "local",
@@ -5893,18 +6599,23 @@
     "subject_areas": [
       "Earth sciences"
     ],
+    "title": "USGIN (US Geoscience Information Network) Metadata Profile",
     "urls": [
+      "msc:m81",
+      "https://doi.org/10.25504/FAIRsharing.c82136",
       "http://repository.stategeothermaldata.org/repository/resource/98ddf901b9782a25982e01af3b0bda50/",
-      "http://usgin.github.io/usginspecs/USGIN_ISO_Metadata.htm"
+      "http://usgin.github.io/usginspecs/USGIN_ISO_Metadata.htm",
+      "msc:m22",
+      "msc:g116",
+      "msc:g116"
     ]
   },
-  "VarioML": {
+  "varioml": {
     "acronym": null,
     "field_of_science": [
       "genetics",
       "natural sciences"
     ],
-    "id": "varioml",
     "identifier": [
       {
         "type": "local",
@@ -5926,46 +6637,21 @@
     "subject_areas": [
       "Genetics"
     ],
+    "title": "VarioML",
     "urls": [
+      "msc:m82",
+      "https://doi.org/10.25504/FAIRsharing.pxvkt0",
       "http://www.ncbi.nlm.nih.gov/pubmed/23031277",
-      "http://varioml.org/xml/1.0"
+      "http://varioml.org/xml/1.0",
+      "msc:m27"
     ]
   },
-  "WMO Core Metadata Profile": {
+  "waterml": {
     "acronym": null,
     "field_of_science": [
-      "natural sciences",
-      "meteorology"
+      "hydrology",
+      "natural sciences"
     ],
-    "id": "wmo-core-metadata-profile",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m84"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.5e7bdc"
-      },
-      {
-        "type": "homepage",
-        "value": "https://wis.wmo.int/2012/metadata/"
-      }
-    ],
-    "subject_areas": [
-      "Meteorology"
-    ],
-    "urls": [
-      "https://wis.wmo.int/2012/metadata/"
-    ]
-  },
-  "WaterML": {
-    "acronym": null,
-    "field_of_science": [
-      "natural sciences",
-      "hydrology"
-    ],
-    "id": "waterml",
     "identifier": [
       {
         "type": "local",
@@ -5991,44 +6677,54 @@
     "subject_areas": [
       "Hydrology"
     ],
+    "title": "WaterML",
     "urls": [
+      "msc:m83",
+      "https://doi.org/10.25504/FAIRsharing.e07e1b",
       "http://www.opengeospatial.org/standards/waterml",
       "https://schemas.opengis.net/waterml/2.0/waterml2.xsd",
-      "http://www.opengis.net/waterml/2.0"
+      "http://www.opengis.net/waterml/2.0",
+      "msc:m28"
     ]
   },
-  "XOAI, a DSPACE Metadata Format": {
-    "acronym": "XOAI",
-    "field_of_science": [],
-    "id": "xoai-metadata-format",
+  "wmo-core-metadata-profile": {
+    "acronym": null,
+    "field_of_science": [
+      "meteorology",
+      "natural sciences"
+    ],
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m6"
+        "value": "msc:m84"
+      },
+      {
+        "type": "local",
+        "value": "https://doi.org/10.25504/FAIRsharing.5e7bdc"
       },
       {
         "type": "homepage",
-        "value": "https://github.com/DSpace/xoai"
-      },
-      {
-        "type": "namespace",
-        "value": "http://www.lyncode.com/xoai"
+        "value": "https://wis.wmo.int/2012/metadata/"
       }
     ],
-    "subject_areas": null,
+    "subject_areas": [
+      "Meteorology"
+    ],
+    "title": "WMO Core Metadata Profile",
     "urls": [
-      "https://github.com/DSpace/xoai",
-      "http://www.lyncode.com/xoai"
+      "msc:m84",
+      "https://doi.org/10.25504/FAIRsharing.5e7bdc",
+      "https://wis.wmo.int/2012/metadata/",
+      "msc:m22"
     ]
   },
-  "XmetaDiss": {
+  "xmetadiss-schema": {
     "acronym": "xmetadiss",
     "field_of_science": [
-      "library sciences",
+      "humanities",
       "sciences",
-      "humanities"
+      "library sciences"
     ],
-    "id": "xmetadiss-schema",
     "identifier": [
       {
         "type": "local",
@@ -6056,7 +6752,9 @@
       "Bibliographic standards",
       "Information/library standards"
     ],
+    "title": "XmetaDiss",
     "urls": [
+      "fuji:m43",
       "https://d-nb.info/standards/schema/xmetadissplus.xsd",
       "http://www.d-nb.de/standards/xmetadissplus/",
       "http://www.d-nb.de/standards/xMetaDiss/",
@@ -6064,224 +6762,29 @@
       "https://d-nb.info/1260521133/34"
     ]
   },
-  "da|ra Metadata Schema": {
-    "acronym": "da|ra",
-    "field_of_science": [
-      "sociology",
-      "social sciences",
-      "political sciences"
-    ],
-    "id": "dara-metadata-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m10"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4651"
-      },
-      {
-        "type": "namespace",
-        "value": "http://da-ra.de/schema/kernel-4"
-      },
-      {
-        "type": "schema",
-        "value": "http://da-ra.de/dara/schemadefinitions/dara.xsd"
-      },
-      {
-        "type": "schema",
-        "value": "dara_v2.2.1_de_en_19112012.xsd"
-      },
-      {
-        "type": "schema",
-        "value": "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd"
-      },
-      {
-        "type": "homepage",
-        "value": "https://www.da-ra.de/downloads#metadata"
-      }
-    ],
-    "subject_areas": [
-      "Social policy",
-      "Sociology"
-    ],
-    "urls": [
-      "http://da-ra.de/schema/kernel-4",
-      "http://da-ra.de/dara/schemadefinitions/dara.xsd",
-      "dara_v2.2.1_de_en_19112012.xsd",
-      "http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd",
-      "https://www.da-ra.de/downloads#version-3-0",
-      "https://www.da-ra.de/downloads#metadata"
-    ]
-  },
-  "eBank UK Metadata Application Profile": {
-    "acronym": null,
-    "field_of_science": [
-      "crystallography",
-      "natural sciences"
-    ],
-    "id": "ebank-uk-metadata-application-profile",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m57"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.ad4856"
-      },
-      {
-        "type": "homepage",
-        "value": "http://ecrystals.chem.soton.ac.uk"
-      },
-      {
-        "type": "schema",
-        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd"
-      },
-      {
-        "type": "namespace",
-        "value": "http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/"
-      }
-    ],
-    "subject_areas": [
-      "Crystallography"
-    ],
-    "urls": [
-      "http://ecrystals.chem.soton.ac.uk",
-      "http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd",
-      "http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/"
-    ]
-  },
-  "isaconfig-diXa": {
-    "acronym": null,
-    "field_of_science": [
-      "medical and health sciences",
-      "toxicology",
-      "genetics",
-      "natural sciences"
-    ],
-    "id": "isaconfig-dixa",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "msc:m68"
-      },
-      {
-        "type": "homepage",
-        "value": "https://bitbucket.org/kanterae/isaconfig-dixa"
-      }
-    ],
-    "subject_areas": [
-      "Genetics",
-      "Toxicology"
-    ],
-    "urls": [
-      "https://bitbucket.org/kanterae/isaconfig-dixa"
-    ]
-  },
-  "museumdat": {
-    "acronym": "museumdat",
-    "field_of_science": [
-      "humanities"
-    ],
-    "id": "museumdat-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m31"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4671"
-      },
-      {
-        "type": "schema",
-        "value": "http://museum.zib.de/museumdat/museumdat-v1.0.xsd"
-      },
-      {
-        "type": "homepage",
-        "value": "http://museum.zib.de/museumdat/"
-      }
-    ],
-    "subject_areas": [
-      "Humanities",
-      "Cultural heritage"
-    ],
-    "urls": [
-      "http://museum.zib.de/museumdat/museumdat-v1.0.xsd",
-      "http://museum.zib.de/museumdat/"
-    ]
-  },
-  "null": {
-    "acronym": "scholix",
+  "xoai-metadata-format": {
+    "acronym": "XOAI",
     "field_of_science": [],
-    "id": "scholix-metadata-schema",
     "identifier": [
       {
         "type": "local",
-        "value": "fuji:m28"
-      },
-      {
-        "type": "local",
-        "value": "https://doi.org/10.25504/FAIRsharing.B0d5Kn"
+        "value": "fuji:m6"
       },
       {
         "type": "homepage",
-        "value": "http://www.scholix.org/schema"
+        "value": "https://github.com/DSpace/xoai"
       },
       {
         "type": "namespace",
-        "value": "http://www.scholix.org"
-      },
-      {
-        "type": "schema",
-        "value": "https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd"
-      },
-      {
-        "type": "schema",
-        "value": "https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd"
+        "value": "http://www.lyncode.com/xoai"
       }
     ],
     "subject_areas": null,
+    "title": "XOAI, a DSPACE Metadata Format",
     "urls": [
-      "http://www.scholix.org/schema",
-      "http://www.scholix.org",
-      "https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd",
-      "https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd"
-    ]
-  },
-  "xepicur": {
-    "acronym": "epicur",
-    "field_of_science": [],
-    "id": "epicur-metadata-schema",
-    "identifier": [
-      {
-        "type": "local",
-        "value": "fuji:m21"
-      },
-      {
-        "type": "local",
-        "value": "https://fairsharing.org/4659"
-      },
-      {
-        "type": "namespace",
-        "value": "urn:nbn:de:1111-2004033116"
-      },
-      {
-        "type": "schema",
-        "value": "https://files.dnb.de/Web/xepicur.xsd"
-      },
-      {
-        "type": "homepage",
-        "value": "https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN"
-      }
-    ],
-    "subject_areas": null,
-    "urls": [
-      "urn:nbn:de:1111-2004033116",
-      " https://files.dnb.de/Web/xepicur.xsd",
-      "https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN"
+      "fuji:m6",
+      "https://github.com/DSpace/xoai",
+      "http://www.lyncode.com/xoai"
     ]
   }
 }
