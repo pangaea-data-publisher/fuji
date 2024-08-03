@@ -2,15 +2,20 @@
 #
 # SPDX-License-Identifier: MIT
 
-import json
-import os
+import logging
 import re
+from pathlib import Path
 
 from tldextract import extract
 
+import yaml
+
+logger = logging.getLogger(__name__)
+
 
 class linked_vocab_helper:
-    fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
+    fuji_server_dir = Path(__file__).parent.parent  # project_root
+    linked_vocabs_dir = fuji_server_dir / "data/linked_vocabs"
 
     def __init__(self, linked_vocab_index={}):
         self.linked_vocab_index = linked_vocab_index
@@ -20,16 +25,13 @@ class linked_vocab_helper:
         self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org"]
 
     def set_linked_vocab_dict(self):
-        print("Setting up the vocab dict.........................")
+        logger.info("Setting up the vocab dict.........................")
         # a new implementation based on bioportal etc..
 
-        for ont_reg_file in os.listdir(os.path.join(self.fuji_server_dir, "data", "linked_vocabs")):
-            if ont_reg_file.endswith(".json"):  # and ont_reg_file not in ['fuji_ontologies.json', 'bioregistry.json']:
-                with open(
-                    os.path.join(self.fuji_server_dir, "data", "linked_vocabs", ont_reg_file), encoding="utf-8"
-                ) as reg_file:
-                    reg_ontologies = json.load(reg_file)
-                    self.linked_vocab_dict.update(reg_ontologies)
+        for ont_reg_file in self.linked_vocabs_dir.glob("*.yaml"):
+            with open(ont_reg_file, encoding="utf-8") as reg_file:
+                reg_ontologies = yaml.safe_load(reg_file)
+                self.linked_vocab_dict.update(reg_ontologies)
 
     def split_iri(self, iri):
         ret = {}

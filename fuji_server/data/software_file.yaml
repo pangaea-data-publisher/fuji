@@ -1,0 +1,46 @@
+Jenkinsfile:
+  category:
+  - automation
+  parse: full
+  pattern:
+  - (\w*/)*Jenkinsfile
+README:
+  category:
+  - documentation
+  parse: full
+  pattern:
+  - (\w*/)*README(\.(txt|md))?
+dependencies:
+  category:
+  - documentation
+  - automation
+  parse: file_name
+  pattern:
+  - requirements\.txt
+docs_directory:
+  category:
+  - documentation
+  parse: file_name
+  pattern:
+  - (\w*/)*docs(/\w*\.\w*)*
+github_actions:
+  category:
+  - automation
+  parse: full
+  pattern:
+  - \.github/workflows(/\w*\.\w*)*
+license_file:
+  category:
+  - provenance
+  parse: full
+  pattern:
+  - (\w*/)*LICEN(S|C)E(\.\w*)?
+  - (\w*/)*licen(s|c)e(\.\w*)?
+  - (\w*/)*COPYING
+maven_pom:
+  category:
+  - documentation
+  - automation
+  parse: full
+  pattern:
+  - pom\.xml

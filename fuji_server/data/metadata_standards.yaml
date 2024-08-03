@@ -1,0 +1,4010 @@
+ABCD (Access to Biological Collection Data):
+  acronym: ABCD
+  field_of_science:
+  - zoology
+  - geology
+  - botany
+  - biological sciences
+  - palaeontology
+  - earth and related environmental sciences
+  - genetics
+  - natural sciences
+  id: abcd-access-biological-collection-data
+  identifier:
+  - type: local
+    value: msc:m1
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.kr3215
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/abcd-access-biological-collection-data
+  - type: homepage
+    value: http://wiki.tdwg.org/ABCD
+  - type: schema
+    value: https://abcd.tdwg.org/xml/ABCD_3.0.xsd
+  - type: namespace
+    value: http://www.tdwg.org/schemas/abcd/3.0
+  - type: schema
+    value: https://abcd.tdwg.org/xml/ABCD_2.1.xsd
+  - type: namespace
+    value: http://www.tdwg.org/schemas/abcd/2.1
+  - type: schema
+    value: https://abcd.tdwg.org/xml/ABCD_2.06.xsd
+  - type: namespace
+    value: http://www.tdwg.org/schemas/abcd/2.06
+  subject_areas:
+  - Biological diversity
+  - Botany
+  - Earth sciences
+  - Genetics
+  - Geology
+  - Palaeontology
+  - Zoology
+  urls:
+  - http://www.tdwg.org/standards/115/
+  - http://wiki.tdwg.org/ABCD
+  - https://abcd.tdwg.org/xml/ABCD_3.0.xsd
+  - http://www.tdwg.org/schemas/abcd/3.0
+  - https://abcd.tdwg.org/xml/ABCD_2.1.xsd
+  - http://www.tdwg.org/schemas/abcd/2.1
+  - https://abcd.tdwg.org/xml/ABCD_2.06.xsd
+  - http://www.tdwg.org/schemas/abcd/2.06
+ABCDDNA:
+  acronym: ABCDDNA
+  field_of_science:
+  - genetics
+  - natural sciences
+  id: abcddna
+  identifier:
+  - type: local
+    value: msc:m42
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.7tx4ac
+  - type: homepage
+    value: http://www.tdwg.org/standards/640/
+  - type: schema
+    value: http://www.dnabank-network.org/schemas/ABCDDNA/ABCDDNA.xsd
+  - type: namespace
+    value: http://www.dnabank-network.org/schemas/ABCDDNA
+  subject_areas:
+  - Genetics
+  urls:
+  - http://www.tdwg.org/standards/640/
+  - http://www.dnabank-network.org/schemas/ABCDDNA/ABCDDNA.xsd
+  - http://www.dnabank-network.org/schemas/ABCDDNA
+ABCDEFG (Access to Biological Collection Databases Extended for Geosciences):
+  acronym: ABCDEFG
+  field_of_science:
+  - earth and related environmental sciences
+  - mineralogy
+  - natural sciences
+  - palaeontology
+  id: abcdefg-access-biological-collection-databases-extended-geosciences
+  identifier:
+  - type: local
+    value: msc:m43
+  - type: local
+    value: https://fairsharing.org/1396
+  - type: homepage
+    value: http://www.geocase.eu/efg
+  - type: schema
+    value: http://www.geocase.eu/sites/geocase.biodiv.naturkundemuseum-berlin.de/documentation/abcdefg.xsd
+  - type: namespace
+    value: http://www.synthesys.info/ABCDEFG/1.0
+  subject_areas:
+  - Earth sciences
+  - Mineralogy
+  - Palaeontology
+  urls:
+  - http://www.geocase.eu/efg
+  - http://www.geocase.eu/sites/geocase.biodiv.naturkundemuseum-berlin.de/documentation/abcdefg.xsd
+  - http://www.synthesys.info/ABCDEFG/1.0
+AGLS Metadata Profile:
+  acronym: AGLS
+  field_of_science:
+  - sciences
+  id: agls-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m44
+  - type: local
+    value: https://fairsharing.org/751
+  - type: homepage
+    value: http://www.agls.gov.au
+  - type: namespace
+    value: http://www.agls.gov.au/agls/terms/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.agls.gov.au
+  - http://www.agls.gov.au/agls/terms/
+AGRIS Application Profile:
+  acronym: AGRIS
+  field_of_science:
+  - animal and dairy science
+  - agriculture
+  - agricultural sciences
+  - fisheries
+  id: agris-application-profile
+  identifier:
+  - type: local
+    value: msc:m45
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.32e620
+  - type: homepage
+    value: http://www.fao.org/docrep/008/ae909e/ae909e00.htm
+  - type: namespace
+    value: http://www.fao.org/agris
+  subject_areas:
+  - Agricultural economics
+  - Agriculture
+  - Aquaculture
+  - Livestock
+  urls:
+  - http://www.fao.org/docrep/008/ae909e/ae909e00.htm
+  - http://www.fao.org/agris
+ANZLIC Metadata Profile:
+  acronym: ANZLIC
+  field_of_science:
+  - physical geography
+  - natural sciences
+  - cartography
+  id: anzlic-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m46
+  - type: local
+    value: https://fairsharing.org/820
+  - type: homepage
+    value: https://www.anzlic.gov.au/resources/anzlic-metadata-profile
+  subject_areas:
+  - Cartography
+  - Geography
+  - Topography
+  urls:
+  - https://www.anzlic.gov.au/resources/anzlic-metadata-profile
+AODN Marine Community Profile:
+  acronym: AODN
+  field_of_science:
+  - glaciology
+  - climatology
+  - oceanography
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - hydrology
+  id: marine-community-profile
+  identifier:
+  - type: local
+    value: msc:m71
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.18b8b4
+  - type: homepage
+    value: http://www.aodc.org.au/index.php?id=37
+  - type: namespace
+    value: http://schemas.aodn.org.au/mcp-2.0
+  - type: namespace
+    value: http://schemas.aodn.org.au
+  - type: schema
+    value: http://schemas.aodn.org.au/mcp-2.0/schema.xsd
+  subject_areas:
+  - Climatology
+  - Earth sciences
+  - Glaciology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  urls:
+  - https://mcp-profile-docs.readthedocs.io/en/stable/
+  - http://www.aodc.org.au/index.php?id=37
+  - http://schemas.aodn.org.au/mcp-2.0
+  - http://schemas.aodn.org.au
+  - http://schemas.aodn.org.au/mcp-2.0/schema.xsd
+ARIADNE Dataset Catalogue Model (ACDM):
+  acronym: ACDM
+  field_of_science:
+  - humanities
+  - archaeology
+  id: ariadne-dataset-catalogue-model
+  identifier:
+  - type: local
+    value: fuji:m19
+  - type: local
+    value: https://fairsharing.org/4647
+  - type: schema
+    value: http://ariadne-registry.dcu.gr/schema_definition/6.7/acdm.xsd
+  - type: schema
+    value: http://ariadne-registry.dcu.gr/schema_definition/6.8/acdm.xsd
+  - type: schema
+    value: http://ariadne-registry.dcu.gr/schema_definition/6.9/acdm.xsd
+  - type: schema
+    value: http://ariadne-registry.dcu.gr/schema_definition/sample_ariadne_xml.xsd
+  - type: schema
+    value: http://ariadne-registry.dcu.gr/schema-definition/sample_ariadne_xml.xsd
+  - type: namespace
+    value: http://registry.ariadne-infrastructure.eu/
+  - type: namespace
+    value: https://www.ariadne-infrastructure.eu/resource/ao/cat/1.1/
+  - type: namespace
+    value: https://www.ariadne-infrastructure.eu/resource/ao/
+  - type: namespace
+    value: http://ariadne-registry.dcu.gr/schema-definition
+  - type: homepage
+    value: http://ariadne-registry.dcu.gr/
+  subject_areas:
+  - Archaeology
+  urls:
+  - http://ariadne-registry.dcu.gr/schema_definition/6.7/acdm.xsd
+  - http://ariadne-registry.dcu.gr/schema_definition/6.8/acdm.xsd
+  - http://ariadne-registry.dcu.gr/schema_definition/6.9/acdm.xsd
+  - http://ariadne-registry.dcu.gr/schema_definition/sample_ariadne_xml.xsd
+  - http://ariadne-registry.dcu.gr/schema-definition/sample_ariadne_xml.xsd
+  - http://registry.ariadne-infrastructure.eu/
+  - https://www.ariadne-infrastructure.eu/resource/ao/cat/1.1/
+  - https://www.ariadne-infrastructure.eu/resource/ao/
+  - http://ariadne-registry.dcu.gr/schema-definition
+  - http://ariadne-registry.dcu.gr/
+AVM (Astronomy Visualization Metadata):
+  acronym: AVM
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: avm-astronomy-visualization-metadata
+  identifier:
+  - type: local
+    value: msc:m3
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.338ze0
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/avm-astronomy-visualization-metadata
+  - type: homepage
+    value: http://www.virtualastronomy.org/avm_metadata.php
+  - type: namespace
+    value: http://www.communicatingastronomy.org/avm/1.0/
+  subject_areas:
+  - Astronomy
+  urls:
+  - http://www.virtualastronomy.org/avm_metadata.php#2
+  - http://www.virtualastronomy.org/avm_metadata.php
+  - http://www.communicatingastronomy.org/avm/1.0/
+Academic Metadata Format:
+  acronym: AMF
+  field_of_science:
+  - sciences
+  id: amf-academic-metadata-format
+  identifier:
+  - type: local
+    value: fuji:m25
+  - type: local
+    value: https://fairsharing.org/4646
+  - type: namespace
+    value: http://amf.openlib.org
+  - type: homepage
+    value: http://amf.openlib.org
+  - type: schema
+    value: http://amf.openlib.org/2001/amf.xsd
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://openlib.org/home/krichel/ebisu.html
+  - http://amf.openlib.org
+  - http://amf.openlib.org
+  - http://amf.openlib.org/2001/amf.xsd
+AgMES (Agricultural Metadata Element Set):
+  acronym: AgMES
+  field_of_science:
+  - animal and dairy science
+  - agriculture
+  - agricultural sciences
+  - fisheries
+  id: agmes-agricultural-metadata-element-set
+  identifier:
+  - type: local
+    value: msc:m2
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.vd694s
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/agmes-agricultural-metadata-element-set
+  - type: homepage
+    value: http://aims.fao.org/standards/agmes
+  - type: namespace
+    value: http://purl.org/agmes/1.1/
+  subject_areas:
+  - Agricultural economics
+  - Agriculture
+  - Aquaculture
+  - Livestock
+  urls:
+  - http://aims.fao.org/es/standards/agmes/namespace-specification
+  - http://aims.fao.org/standards/agmes
+  - http://purl.org/agmes/1.1/
+  - http://purl.org/agmes/1.1/
+Apple Core:
+  acronym: aDwC
+  field_of_science:
+  - natural sciences
+  - botany
+  id: apple-core
+  identifier:
+  - type: local
+    value: msc:m47
+  - type: local
+    value: https://fairsharing.org/726
+  - type: homepage
+    value: http://code.google.com/p/applecore/wiki/Introduction
+  subject_areas:
+  - Botany
+  urls:
+  - http://code.google.com/p/applecore/wiki/Introduction
+Asset Description Metadata Schema (ADMS):
+  acronym: ADMS
+  field_of_science:
+  - social sciences
+  - political sciences
+  id: asset-description-metadata-schema-adms
+  identifier:
+  - type: local
+    value: msc:m48
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.es2t25
+  - type: homepage
+    value: http://www.w3.org/TR/vocab-adms/
+  - type: namespace
+    value: http://www.w3.org/ns/adms#
+  subject_areas:
+  - Social policy
+  urls:
+  - http://www.w3.org/TR/vocab-adms/
+  - http://www.w3.org/ns/adms#
+BibTeX:
+  acronym: BibTeX
+  field_of_science: []
+  id: bibtex-format
+  identifier:
+  - type: local
+    value: fuji:m34
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.bdf2fe
+  - type: homepage
+    value: http://www.bibtex.org/
+  - type: namespace
+    value: http://clarin-pl.eu/ns/experimental/bibtex
+  - type: namespace
+    value: http://lindat.mff.cuni.cz/ns/experimental/bibtex
+  - type: namespace
+    value: http://repository.clarin.dk/ns/experimental/bibtex
+  subject_areas:
+  urls:
+  - http://www.bibtex.org/
+  - http://clarin-pl.eu/ns/experimental/bibtex
+  - http://lindat.mff.cuni.cz/ns/experimental/bibtex
+  - http://repository.clarin.dk/ns/experimental/bibtex
+CARARE metadata schema:
+  acronym: CARARE
+  field_of_science:
+  - architectural design
+  - humanities
+  - archaeology
+  - history
+  id: carare-metadata-schema
+  identifier:
+  - type: local
+    value: msc:m49
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.ba7c93
+  - type: homepage
+    value: https://pro.carare.eu/doku.php?id=support:metadata-schema
+  - type: namespace
+    value: http://www.carare.eu/carareSchema
+  - type: schema
+    value: https://pro.carare.eu/lib/exe/fetch.php?media=support:carare-v1_0_6_1.xsd
+  subject_areas:
+  - Archaeology
+  - Architecture
+  - Cultural heritage
+  - Cultural property preservation
+  - History
+  urls:
+  - https://pro.carare.eu/doku.php?id=support:metadata-schema
+  - http://www.carare.eu/carareSchema
+  - https://pro.carare.eu/lib/exe/fetch.php?media=support:carare-v1_0_6_1.xsd
+CDWA Lite:
+  acronym: cdwa-lite
+  field_of_science:
+  - humanities
+  id: cdwa-lite-schema
+  identifier:
+  - type: local
+    value: fuji:m30
+  - type: local
+    value: https://fairsharing.org/4649
+  - type: homepage
+    value: https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.html
+  - type: namespace
+    value: https://www.getty.edu/CDWA/CDWALite
+  - type: schema
+    value: http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-1.xsd
+  - type: schema
+    value: http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-0.xsd
+  subject_areas:
+  - Humanities
+  - Cultural heritage
+  urls:
+  - https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.pdf
+  - https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.html
+  - https://www.getty.edu/CDWA/CDWALite
+  - http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-1.xsd
+  - http://www.getty.edu/CDWA/CDWALite/CDWALite-xsd-public-v1-0.xsd
+CEDAR Template Model:
+  acronym: CEDAR
+  field_of_science:
+  - earth and related environmental sciences
+  - clinical medicine
+  - engineering and technology
+  - agricultural sciences
+  - medical and health sciences
+  - agriculture
+  - social sciences
+  - public administration
+  - natural sciences
+  - medical engineering
+  id: cedar-template-model
+  identifier:
+  - type: local
+    value: msc:m94
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.V527H4
+  - type: homepage
+    value: https://more.metadatacenter.org/tools-training/outreach/cedar-template-model
+  subject_areas:
+  - Administration
+  - Agricultural research
+  - Clinical medicine
+  - Earth sciences
+  - Medical information systems
+  urls:
+  - https://more.metadatacenter.org/tools-training/outreach/cedar-template-model
+  - https://more.metadatacenter.org/sites/default/files/artifact/CEDAR%20Template%20Model%20v1.5.0_0.pdf
+CERIF (Common European Research Information Format):
+  acronym: CERIF
+  field_of_science:
+  - sciences
+  id: cerif
+  identifier:
+  - type: local
+    value: msc:m4
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.6945dq
+  - type: homepage
+    value: http://www.eurocris.org/cerif/main-features-cerif
+  - type: schema
+    value: https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/CERIF_1.6_2.xsd
+  - type: schema
+    value: https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.5/CERIF_1.5_1.xsd
+  - type: schema
+    value: https://www.openaire.eu/schema/cris/1.1/openaire-cerif-profile.xsd
+  - type: namespace
+    value: urn:xmlns:org:eurocris:cerif-1.6-2
+  - type: namespace
+    value: urn:xmlns:org:eurocris:cerif-1.5-1
+  - type: namespace
+    value: urn:xmlns:org:eurocris:cerif-1.4-0
+  - type: namespace
+    value: http://www.eurocris.org/ontologies/cerif/1.3#
+  - type: namespace
+    value: https://www.openaire.eu/cerif-profile/1.1/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/documentation/MInfo.html
+  - http://www.eurocris.org/cerif/main-features-cerif
+  - https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.6/CERIF_1.6_2.xsd
+  - https://www.eurocris.org/Uploads/Web%20pages/CERIF-1.5/CERIF_1.5_1.xsd
+  - https://www.openaire.eu/schema/cris/1.1/openaire-cerif-profile.xsd
+  - urn:xmlns:org:eurocris:cerif-1.6-2
+  - urn:xmlns:org:eurocris:cerif-1.5-1
+  - urn:xmlns:org:eurocris:cerif-1.4-0
+  - http://www.eurocris.org/ontologies/cerif/1.3#
+  - https://www.openaire.eu/cerif-profile/1.1/
+CESSDA MLI - Council of European Social Science Data Archives Minimum Level of Information:
+  acronym:
+  field_of_science:
+  - social geography
+  - demography
+  - sociology
+  - economics
+  - social sciences
+  id: cessda-mli-council-european-social-science-data-archives-minimum-level-inf
+  identifier:
+  - type: local
+    value: msc:m50
+  - type: local
+    value: https://fairsharing.org/4272
+  - type: homepage
+    value: http://www.cessda.org/sharing/managing/3/
+  subject_areas:
+  - Demography
+  - Economics
+  - Land use
+  - Sociology
+  urls:
+  - http://www.cessda.org/sharing/managing/3/
+CF (Climate and Forecast) Metadata Conventions:
+  acronym: CF
+  field_of_science:
+  - climatology
+  - oceanography
+  - natural sciences
+  - meteorology
+  id: cf-climate-and-forecast-metadata-conventions
+  identifier:
+  - type: local
+    value: msc:m5
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.f8cd83
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/cf-climate-and-forecast-metadata-conventions
+  - type: homepage
+    value: http://cfconventions.org/
+  subject_areas:
+  - Climatology
+  - Meteorology
+  - Oceanography
+  urls:
+  - http://cfconventions.org/documents.html
+  - http://cfconventions.org/
+CIF (Crystallographic Information Framework):
+  acronym: CIF
+  field_of_science:
+  - crystallography
+  - engineering and technology
+  - materials engineering
+  - chemical sciences
+  - natural sciences
+  id: cif-crystallographic-information-framework
+  identifier:
+  - type: local
+    value: msc:m6
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.zr52g5
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/cif-crystallographic-information-framework
+  - type: homepage
+    value: http://www.iucr.org/resources/cif
+  subject_areas:
+  - Chemistry
+  - Crystallography
+  - Materials engineering
+  urls:
+  - http://www.iucr.org/resources/cif/spec
+  - http://www.iucr.org/resources/cif
+CIM (Common Information Model):
+  acronym: CIM
+  field_of_science:
+  - climatology
+  - natural sciences
+  id: cim-common-information-model
+  identifier:
+  - type: local
+    value: msc:m7
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.k3z4q9
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/cim-common-information-model
+  - type: homepage
+    value: https://earthsystemcog.org/projects/es-doc-models/cim
+  - type: schema
+    value: https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd
+  subject_areas:
+  - Climatology
+  urls:
+  - https://earthsystemcog.org/projects/es-doc-models/cim_versions
+  - https://earthsystemcog.org/projects/es-doc-models/cim
+  - https://github.com/ES-DOC/esdoc-cim/blob/v1.10.0/cim.xsd
+COARDS Conventions:
+  acronym:
+  field_of_science:
+  - climatology
+  - oceanography
+  - natural sciences
+  - meteorology
+  id: coards-conventions
+  identifier:
+  - type: local
+    value: msc:m51
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.9614ca
+  - type: homepage
+    value: http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html
+  subject_areas:
+  - Climatology
+  - Meteorology
+  - Oceanography
+  urls:
+  - http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html
+CSDGM Extensions for Remote Sensing Metadata:
+  acronym: CSDGM
+  field_of_science:
+  - meteorology
+  - climatology
+  - oceanography
+  - natural sciences
+  - hydrology
+  id: csdgm-extensions-remote-sensing-metadata
+  identifier:
+  - type: local
+    value: msc:m53
+  - type: local
+    value: https://fairsharing.org/1445
+  - type: homepage
+    value: http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf
+  subject_areas:
+  - Climatology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  urls:
+  - http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf
+CSMD (Core Scientific Metadata Model):
+  acronym: CSMD
+  field_of_science:
+  - crystallography
+  - biochemistry
+  - engineering and technology
+  - materials engineering
+  - chemical sciences
+  - natural sciences
+  id: csmd-cclrc-core-scientific-metadata-model
+  identifier:
+  - type: local
+    value: msc:m8
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.30fk89
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/csmd-cclrc-core-scientific-metadata-model
+  - type: homepage
+    value: http://icatproject-contrib.github.io/CSMD/
+  - type: namespace
+    value: http://www.purl.org/net/CSMD/4.0#
+  - type: namespace
+    value: http://www.escience.clrc.ac.uk/schemas/scientific
+  subject_areas:
+  - Biochemistry
+  - Chemistry
+  - Crystallography
+  - Materials engineering
+  urls:
+  - http://icatproject-contrib.github.io/CSMD/
+  - http://www.purl.org/net/CSMD/4.0#
+  - http://www.escience.clrc.ac.uk/schemas/scientific
+Catalogue Service for the Web:
+  acronym: CSW
+  field_of_science:
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  id: csw-catalogue-schema
+  identifier:
+  - type: local
+    value: fuji:m32
+  - type: local
+    value: https://fairsharing.org/4650
+  - type: schema
+    value: http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd
+  - type: namespace
+    value: http://www.opengis.net/cat/csw/2.0.2
+  - type: namespace
+    value: http://www.opengis.net/cat/csw/3.0
+  - type: schema
+    value: http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd
+  - type: homepage
+    value: https://www.ogc.org/standard/cat/
+  subject_areas:
+  - Cartography
+  - Earth sciences
+  urls:
+  - http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd
+  - http://www.opengis.net/cat/csw/2.0.2
+  - http://www.opengis.net/cat/csw/3.0
+  - http://schemas.opengis.net/cat/csw/3.0/cswAll.xsd
+  - https://www.ogc.org/standard/cat/
+CharDM, Data Model for Astronomical DataSet Characterisation:
+  acronym: CharDM
+  field_of_science: []
+  id: chardm-astronomical-dataset-characterisation
+  identifier:
+  - type: local
+    value: fuji:m29
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.yYjZWb
+  - type: homepage
+    value: https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html
+  - type: schema
+    value: http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd
+  subject_areas:
+  urls:
+  - https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html
+  - http://www.ivoa.net/xml/Characterisation/Characterisation-v1.11.xsd
+Clarivate Data Citation Index Schema:
+  acronym: dci
+  field_of_science:
+  - library sciences
+  - humanities
+  id: clarivate-data-citation-index-schema
+  identifier:
+  - type: local
+    value: fuji:m39
+  - type: namespace
+    value: https://clarivate.com/products/web-of-science/web-science-form/data-citation-index/
+  - type: homepage
+    value: https://clarivate.com/products/scientific-and-academic-research/research-discovery-and-workflow-solutions/webofscience-platform/data-citation-index/
+  subject_areas:
+  - Bibliographic standards
+  urls:
+  - https://clarivate.com/products/web-of-science/web-science-form/data-citation-index/
+  - https://clarivate.com/products/scientific-and-academic-research/research-discovery-and-workflow-solutions/webofscience-platform/data-citation-index/
+Component MetaData Specification (CMDI):
+  acronym: CMDI
+  field_of_science:
+  - humanities
+  - linguistics
+  - languages and literature
+  id: cmd-component-metadata
+  identifier:
+  - type: local
+    value: fuji:m6
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.2e0599
+  - type: namespace
+    value: http://www.clarin.eu/cmd/
+  - type: namespace
+    value: https://www.clarin.eu/cmd/1
+  - type: homepage
+    value: https://www.clarin.eu/content/component-metadata
+  - type: namespace
+    value: http://www.clarin.eu/cmd/1
+  - type: schema
+    value: http://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd
+  - type: schema
+    value: http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1290431694484/xsd
+  - type: schema
+    value: https://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd
+  - type: schema
+    value: http://www.clarin.eu/cmd/1/profiles/clarin.eu:cr1:p_1290431694484
+  - type: schema
+    value: https://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/1.x/profiles/clarin.eu:cr1:p_1290431694484/xsd
+  subject_areas:
+  - Linguistics
+  - Languages
+  urls:
+  - http://www.clarin.eu/cmd/
+  - https://www.clarin.eu/cmd/1
+  - https://www.clarin.eu/content/component-metadata
+  - https://pure.mpg.de/pubman/faces/ViewItemOverviewPage.jsp?itemId=item_1480943
+  - http://www.clarin.eu/cmd/1
+  - http://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd
+  - http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1290431694484/xsd
+  - https://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd
+  - http://www.clarin.eu/cmd/1/profiles/clarin.eu:cr1:p_1290431694484
+  - https://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/1.x/profiles/clarin.eu:cr1:p_1290431694484/xsd
+Crossref Schema:
+  acronym: crossref
+  field_of_science:
+  - sciences
+  id: crossref-schema
+  identifier:
+  - type: local
+    value: fuji:m40
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.bbQbSW
+  - type: homepage
+    value: http://www.crossref.org/schema
+  - type: namespace
+    value: http://www.crossref.org/schema/4.4.0
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref4.4.0.xsd
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref4.3.7.xsd
+  - type: namespace
+    value: http://www.crossref.org/schema/4.3.7
+  - type: namespace
+    value: http://www.crossref.org/schema/4.4.1
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref4.4.1.xsd
+  - type: namespace
+    value: http://www.crossref.org/schema/4.4.2
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref4.4.2.xsd
+  - type: namespace
+    value: http://www.crossref.org/schema/4.8.1
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref4.8.1.xsd
+  - type: namespace
+    value: http://www.crossref.org/schema/5.3.1
+  - type: schema
+    value: https://data.crossref.org/schemas/crossref5.3.1.xsd
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.crossref.org/schema
+  - http://www.crossref.org/schema/4.4.0
+  - https://data.crossref.org/schemas/crossref4.4.0.xsd
+  - https://data.crossref.org/schemas/crossref4.3.7.xsd
+  - http://www.crossref.org/schema/4.3.7
+  - http://www.crossref.org/schema/4.4.1
+  - https://data.crossref.org/schemas/crossref4.4.1.xsd
+  - http://www.crossref.org/schema/4.4.2
+  - https://data.crossref.org/schemas/crossref4.4.2.xsd
+  - http://www.crossref.org/schema/4.8.1
+  - https://data.crossref.org/schemas/crossref4.8.1.xsd
+  - http://www.crossref.org/schema/5.3.1
+  - https://data.crossref.org/schemas/crossref5.3.1.xsd
+Cruise Summary Reports:
+  acronym: CSR
+  field_of_science:
+  - glaciology
+  - climatology
+  - oceanography
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - hydrology
+  id: cruise-summary-reports
+  identifier:
+  - type: local
+    value: msc:m52
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.e36460
+  - type: homepage
+    value: http://www.seadatanet.org/Metadata/CSR
+  - type: namespace
+    value: http://www.seadatanet.org
+  - type: schema
+    value: http://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CSR_ISO19139_5.2.0.xsd
+  - type: schema
+    value: http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd
+  subject_areas:
+  - Climatology
+  - Earth sciences
+  - Glaciology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  urls:
+  - http://www.seadatanet.org/Metadata/CSR
+  - http://www.seadatanet.org
+  - http://schemas.seadatanet.org/Standards-Software/Metadata-formats/SDN_CSR_ISO19139_5.2.0.xsd
+  - ' http://schemas.seadatanet.org/StandardsSoftware/Metadata-formats/SDN2_CSR_ISO19139_5.0.0.xsd'
+DCAT (Data Catalog Vocabulary):
+  acronym: DCAT
+  field_of_science:
+  - sciences
+  id: dcat-data-catalog-vocabulary
+  identifier:
+  - type: local
+    value: msc:m12
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.h4j3qm
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary
+  - type: homepage
+    value: http://www.w3.org/TR/vocab-dcat/
+  - type: homepage
+    value: https://www.w3.org/2017/dxwg/wiki/Main_Page
+  - type: namespace
+    value: http://www.w3.org/ns/dcat#
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://www.w3.org/TR/vocab-dcat/#class-dataset
+  - https://www.w3.org/TR/vocab-dcat/#class-catalog
+  - http://www.w3.org/TR/vocab-dcat/
+  - https://www.w3.org/ns/dcat.ttl
+  - https://www.w3.org/2017/dxwg/wiki/Main_Page
+  - http://www.w3.org/ns/dcat#
+DDI (Data Documentation Initiative):
+  acronym: DDI
+  field_of_science:
+  - political sciences
+  - public health
+  - social geography
+  - history
+  - demography
+  - medical and health sciences
+  - sociology
+  - statistics and probability
+  - economics
+  - law
+  - social sciences
+  - humanities
+  - natural sciences
+  id: ddi-data-documentation-initiative
+  identifier:
+  - type: local
+    value: msc:m13
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.1t5ws6
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.EZCpPd
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative
+  - type: homepage
+    value: http://www.ddialliance.org/
+  - type: namespace
+    value: http://www.icpsr.umich.edu/DDI
+  - type: schema
+    value: http://www.ddialliance.org/DDI/schema/ddi3.1/dataset.xsd
+  - type: namespace
+    value: ddi:codebook:2_5
+  - type: namespace
+    value: ddi:dataset:3_3
+  - type: namespace
+    value: ddi:dataset:3_2
+  - type: namespace
+    value: ddi:dataset:3_1
+  - type: namespace
+    value: ddi:instance:3_1
+  - type: namespace
+    value: ddi:instance:3_2
+  - type: namespace
+    value: ddi:instance:3_3
+  - type: namespace
+    value: ddi:dataset:3_0
+  - type: namespace
+    value: ddi:studyunit:3_2
+  - type: namespace
+    value: ddi:studyunit:3_1
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Codebook/2.1/XMLSchema/codebook.xsd
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/instance.xsd
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd
+  - type: schema
+    value: https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd
+  subject_areas:
+  - Demography
+  - Economics
+  - Health policy
+  - History
+  - Human geography
+  - Land use
+  - Law
+  - Politics
+  - Social policy
+  - Sociology
+  - Statistics
+  urls:
+  - http://www.ddialliance.org/Specification/
+  - http://www.ddialliance.org/
+  - http://www.icpsr.umich.edu/DDI
+  - http://www.ddialliance.org/DDI/schema/ddi3.1/dataset.xsd
+  - ddi:codebook:2_5
+  - ddi:dataset:3_3
+  - ddi:dataset:3_2
+  - ddi:dataset:3_1
+  - ddi:instance:3_1
+  - ddi:instance:3_2
+  - ddi:instance:3_3
+  - ddi:dataset:3_0
+  - ddi:studyunit:3_2
+  - ddi:studyunit:3_1
+  - https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd
+  - https://ddialliance.org/Specification/DDI-Codebook/2.1/XMLSchema/codebook.xsd
+  - https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/instance.xsd
+  - https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd
+  - https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd
+  - https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd
+DIF (Directory Interchange Format):
+  acronym: DIF
+  field_of_science:
+  - ecology
+  - meteorology
+  - glaciology
+  - biochemistry
+  - climatology
+  - agricultural sciences
+  - oceanography
+  - agriculture
+  - marine biology
+  - natural sciences
+  - hydrology
+  id: dif-directory-interchange-format
+  identifier:
+  - type: local
+    value: msc:m14
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.esxaaq
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format
+  - type: homepage
+    value: http://gcmd.nasa.gov/add/difguide/
+  - type: schema
+    value: https://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v10.2.xsd
+  - type: schema
+    value: http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd
+  - type: schema
+    value: https://git.earthdata.nasa.gov/projects/EMFD/repos/dif-schemas/browse/10.x/dif.xsd
+  - type: namespace
+    value: http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/
+  - type: namespace
+    value: http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif
+  - type: schema
+    value: http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd
+  subject_areas:
+  - Agriculture
+  - Biochemistry
+  - Climatology
+  - Ecology
+  - Glaciology
+  - Hydrology
+  - Marine biology
+  - Meteorology
+  - Oceanography
+  urls:
+  - http://gcmd.nasa.gov/add/difguide/WRITEADIF.pdf
+  - http://gcmd.nasa.gov/add/difguide/
+  - https://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v10.2.xsd
+  - http://gcmd.nasa.gov/Aboutus/xml/dif/dif.xsd
+  - https://git.earthdata.nasa.gov/projects/EMFD/repos/dif-schemas/browse/10.x/dif.xsd
+  - http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/
+  - http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif
+  - http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.4.xsd
+DSpace Intermediate Metadata Format:
+  acronym: dspace-dim
+  field_of_science: []
+  id: dim-dspace-intermediate-format
+  identifier:
+  - type: local
+    value: fuji:m36
+  - type: namespace
+    value: http://www.dspace.org/xmlns/dspace/dim
+  - type: homepage
+    value: https://wiki.lyrasis.org/display/DSPACE/
+  subject_areas:
+  urls:
+  - http://www.dspace.org/xmlns/dspace/dim
+  - https://wiki.lyrasis.org/display/DSPACE/
+Darwin Core:
+  acronym: DwC
+  field_of_science:
+  - ecology
+  - zoology
+  - botany
+  - biological sciences
+  - palaeontology
+  - oceanography
+  - physical geography
+  - marine biology
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  id: darwin-core
+  identifier:
+  - type: local
+    value: msc:m9
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.xvf5y3
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/darwin-core
+  - type: homepage
+    value: http://rs.tdwg.org/dwc/index.htm
+  - type: namespace
+    value: http://rs.tdwg.org/dwc/terms/
+  - type: namespace
+    value: http://rs.tdwg.org/dwc/iri/
+  - type: schema
+    value: http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd
+  subject_areas:
+  - Biogeography
+  - Biological diversity
+  - Botany
+  - Cartography
+  - Earth sciences
+  - Ecology
+  - Marine animals
+  - Oceanography
+  - Palaeontology
+  - Physical geography
+  - Topography
+  - Zoology
+  urls:
+  - http://www.tdwg.org/standards/450
+  - http://rs.tdwg.org/dwc/index.htm
+  - http://rs.tdwg.org/dwc/terms/
+  - http://rs.tdwg.org/dwc/iri/
+  - http://rs.tdwg.org/dwc/xsd/tdwg_dwc_simple.xsd
+Darwin Core Geospatial Extension:
+  acronym: DwC-S
+  field_of_science:
+  - biological sciences
+  - physical geography
+  - natural sciences
+  - cartography
+  id: darwin-core-geospatial-extension
+  identifier:
+  - type: local
+    value: msc:m54
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.76c06d
+  - type: homepage
+    value: http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension
+  subject_areas:
+  - Biogeography
+  - Cartography
+  - Topography
+  urls:
+  - http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension
+Data Package:
+  acronym:
+  field_of_science:
+  - sciences
+  id: data-package
+  identifier:
+  - type: local
+    value: msc:m10
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.3b861d
+  - type: homepage
+    value: https://frictionlessdata.io/data-packages/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://frictionlessdata.io/specs/data-package/
+  - https://frictionlessdata.io/data-packages/
+DataCite Metadata Schema:
+  acronym: datacite
+  field_of_science:
+  - sciences
+  id: datacite-metadata-schema
+  identifier:
+  - type: local
+    value: msc:m11
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.me4qwe
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema
+  - type: homepage
+    value: http://schema.datacite.org
+  - type: namespace
+    value: http://datacite.org/schema/kernel
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://schema.datacite.org
+  - http://datacite.org/schema/kernel
+  - http://schema.datacite.org/meta/kernel-2.1/doc/DataCite-MetadataKernel_v2.2.pdf
+  - http://schema.datacite.org/meta/kernel-2.1/metadata.xsd
+  - http://datacite.org/schema/kernel-2.1
+  - http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf
+  - http://schema.datacite.org/meta/kernel-2.2/metadata.xsd
+  - http://datacite.org/schema/kernel-2.2
+  - http://schema.datacite.org/meta/kernel-3.0/doc/DataCite-MetadataKernel_v3.0.pdf
+  - http://schema.datacite.org/meta/kernel-3.0/metadata.xsd
+  - http://datacite.org/schema/kernel-3
+  - http://schema.datacite.org/meta/kernel-3.1/doc/DataCite-MetadataKernel_v3.1.pdf
+  - http://schema.datacite.org/meta/kernel-3.1/metadata.xsd
+  - http://datacite.org/schema/kernel-3.1
+  - http://schema.datacite.org/meta/kernel-4.0/doc/DataCite-MetadataKernel_v4.0.pdf
+  - http://schema.datacite.org/meta/kernel-4.0/metadata.xsd
+  - http://datacite.org/schema/kernel-4
+Digital Item Declaration Language (DIDL):
+  acronym: DIDL
+  field_of_science:
+  - sciences
+  id: didl-digital-item-declaration-language
+  identifier:
+  - type: local
+    value: fuji:m4
+  - type: local
+    value: https://fairsharing.org/4652
+  - type: namespace
+    value: urn:mpeg:mpeg21:2002:02-DIDL-NS
+  - type: homepage
+    value: https://www.iso.org/standard/35366.html
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - urn:mpeg:mpeg21:2002:02-DIDL-NS
+  - http://www.dlib.org/dlib/november03/bekaert/11bekaert.html
+  - https://www.iso.org/standard/35366.html
+Dryad Metadata Application Profile:
+  acronym:
+  field_of_science:
+  - sciences
+  id: dryad-metadata-application-profile
+  identifier:
+  - type: local
+    value: msc:m55
+  - type: homepage
+    value: http://wiki.datadryad.org/Metadata_Profile
+  - type: namespace
+    value: http://datadryad.org/metadata/
+  - type: schema
+    value: http://datadryad.org/profile/v3.1/dryad.xsd
+  - type: schema
+    value: http://datadryad.org/profile/v3/dryad.xsd
+  - type: schema
+    value: http://ils.unc.edu/mrc/dryad/version1_0/dryad_1_0.xsd
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://wiki.datadryad.org/Metadata_Profile
+  - http://datadryad.org/metadata/
+  - http://datadryad.org/profile/v3.1/dryad.xsd
+  - http://datadryad.org/profile/v3/dryad.xsd
+  - http://ils.unc.edu/mrc/dryad/version1_0/dryad_1_0.xsd
+Dublin Core:
+  acronym: DC
+  field_of_science:
+  - sciences
+  id: dublin-core
+  identifier:
+  - type: local
+    value: msc:m15
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.3nx7t
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/dublin-core
+  - type: homepage
+    value: http://dublincore.org
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcterms.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/simpledc20021212.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcmitype.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/2008/02/11/simpledc.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/dc.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/dcterms.xsd
+  - type: schema
+    value: http://dublincore.org/schemas/xmls/qdc/dcmitype.xsd
+  - type: namespace
+    value: http://purl.org/dc/elements/1.1/
+  - type: namespace
+    value: http://purl.org/dc/terms/
+  - type: namespace
+    value: http://purl.org/dc/dcmitype/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://dublincore.org/specifications/
+  - http://dublincore.org
+  - http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcterms.xsd
+  - http://dublincore.org/schemas/xmls/simpledc20021212.xsd
+  - http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd
+  - http://dublincore.org/schemas/xmls/qdc/2008/02/11/dcmitype.xsd
+  - http://dublincore.org/schemas/xmls/qdc/2008/02/11/simpledc.xsd
+  - http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd
+  - http://dublincore.org/schemas/xmls/qdc/dc.xsd
+  - http://dublincore.org/schemas/xmls/qdc/dcterms.xsd
+  - http://dublincore.org/schemas/xmls/qdc/dcmitype.xsd
+  - http://purl.org/dc/elements/1.1/
+  - http://purl.org/dc/terms/
+  - http://purl.org/dc/dcmitype/
+DwC Germplasm:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - botany
+  id: dwc-germplasm
+  identifier:
+  - type: local
+    value: msc:m56
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.hgsFLe
+  - type: homepage
+    value: http://code.google.com/p/darwincore-germplasm/
+  - type: namespace
+    value: http://purl.org/germplasm#
+  - type: namespace
+    value: http://purl.org/germplasm/germplasmTerm#
+  subject_areas:
+  - Botany
+  urls:
+  - http://code.google.com/p/darwincore-germplasm/
+  - http://purl.org/germplasm#
+  - http://purl.org/germplasm/germplasmTerm#
+EAD (Encoded Archival Description):
+  acronym: ead
+  field_of_science:
+  - humanities
+  - history
+  id: ead-encoded-archival-description
+  identifier:
+  - type: local
+    value: msc:m96
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.95f59a
+  - type: homepage
+    value: https://www.loc.gov/ead/
+  - type: namespace
+    value: urn:isbn:1-931666-22-9
+  - type: namespace
+    value: http://ead3.archivists.org/schema
+  - type: namespace
+    value: http://ead3.archivists.org/schema/
+  subject_areas:
+  - History
+  urls:
+  - https://www.loc.gov/ead/
+  - urn:isbn:1-931666-22-9
+  - http://ead3.archivists.org/schema
+  - http://ead3.archivists.org/schema/
+  - https://www.loc.gov/ead/tglib1998/
+  - https://www.loc.gov/ead/ag/aghome.html
+  - https://www.loc.gov/ead/ead.xsd
+  - ftp://ftp.loc.gov/pub/ead/ead.dtd
+  - https://www.loc.gov/ead/tglib/
+  - https://www.loc.gov/ead/ead3.xsd
+  - https://www.loc.gov/ead/ead3.dtd
+  - https://www.loc.gov/ead/EAD3taglib/EAD3.html
+EDMED Metadata Profile:
+  acronym:
+  field_of_science:
+  - ecology
+  - glaciology
+  - environmental sciences
+  - climatology
+  - oceanography
+  - soil sciences
+  - hydrogeology
+  - meteorology
+  - natural sciences
+  - hydrology
+  id: edmed-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m58
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.ed7f20
+  - type: homepage
+    value: https://www.bodc.ac.uk/data/information_and_inventories/edmed/
+  - type: schema
+    value: EDMED_sdn_V1.2.xsd
+  subject_areas:
+  - Climatology
+  - Ecology
+  - Environmental sciences
+  - Glaciology
+  - Hydrogeology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  - Soil sciences
+  urls:
+  - https://www.bodc.ac.uk/data/information_and_inventories/edmed/
+  - EDMED_sdn_V1.2.xsd
+EML (Ecological Metadata Language):
+  acronym: EML
+  field_of_science:
+  - ecology
+  - botany
+  - biological sciences
+  - zoology
+  - natural sciences
+  id: eml-ecological-metadata-language
+  identifier:
+  - type: local
+    value: msc:m16
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.r3vtvx
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/eml-ecological-metadata-language
+  - type: homepage
+    value: https://eml.ecoinformatics.org/
+  - type: namespace
+    value: eml://eml.ecoinformatics.org/eml-2.0.0
+  - type: namespace
+    value: eml://ecoinformatics.org/eml-2.0.0
+  - type: namespace
+    value: eml://ecoinformatics.org/eml-2.0.1
+  - type: namespace
+    value: eml://ecoinformatics.org/eml-2.1.0
+  - type: namespace
+    value: eml://ecoinformatics.org/eml-2.1.1
+  - type: namespace
+    value: https://eml.ecoinformatics.org/eml-2.2.0
+  - type: namespace
+    value: https://eml.ecoinformatics.org/eml-2.2.1
+  - type: schema
+    value: https://eml.ecoinformatics.org/schema/eml_xsd
+  subject_areas:
+  - Biological diversity
+  - Botany
+  - Ecology
+  - Zoology
+  urls:
+  - https://eml.ecoinformatics.org/
+  - https://eml.ecoinformatics.org/schema
+  - eml://eml.ecoinformatics.org/eml-2.0.0
+  - eml://ecoinformatics.org/eml-2.0.0
+  - eml://ecoinformatics.org/eml-2.0.1
+  - eml://ecoinformatics.org/eml-2.1.0
+  - eml://ecoinformatics.org/eml-2.1.1
+  - https://eml.ecoinformatics.org/eml-2.2.0
+  - https://eml.ecoinformatics.org/eml-2.2.1
+  - https://eml.ecoinformatics.org/schema/eml_xsd
+EPrints XML:
+  acronym: EPrints
+  field_of_science:
+  - sciences
+  id: eprints-xml
+  identifier:
+  - type: local
+    value: fuji:m23
+  - type: namespace
+    value: http://eprints.org/ep2/data/2.0
+  - type: homepage
+    value: https://wiki.eprints.org/w/XML_Export_Format
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://eprints.org/ep2/data/2.0
+  - https://wiki.eprints.org/w/XML_Export_Format
+ETD-MS an Interoperability Metadata Standard for Electronic Theses and Dissertations:
+  acronym: ETD-MS
+  field_of_science:
+  - sciences
+  id: etdms-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m17
+  - type: local
+    value: https://fairsharing.org/4660
+  - type: homepage
+    value: https://ndltd.org/metadata/
+  - type: namespace
+    value: http://www.ndltd.org/standards/metadata/etdms/1.1/
+  - type: namespace
+    value: http://www.ndltd.org/standards/metadata/etdms/1.0/
+  - type: schema
+    value: http://www.ndltd.org/standards/metadata/etdms/1.1/etdms11.xsd
+  - type: schema
+    value: http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdc.xsd
+  - type: schema
+    value: http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdcterms.xsd
+  - type: schema
+    value: http://www.ndltd.org/standards/metadata/etdms/1.0/etdms.xsd
+  - type: namespace
+    value: http://www.ndltd.org/standards/metadata/etdms/1-0/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://ndltd.org/metadata/
+  - http://www.ndltd.org/standards/metadata/etdms/1.1/
+  - http://www.ndltd.org/standards/metadata/etdms/1.0/
+  - http://www.ndltd.org/standards/metadata/etdms/1.1/etdms11.xsd
+  - http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdc.xsd
+  - http://www.ndltd.org/standards/metadata/etdms/1.1/etdmsdcterms.xsd
+  - http://www.ndltd.org/standards/metadata/etdms/1.0/etdms.xsd
+  - http://www.ndltd.org/standards/metadata/etdms/1-0/
+EURISCO Descriptors:
+  acronym:
+  field_of_science: []
+  id: eurisco-descriptors
+  identifier:
+  - type: local
+    value: msc:m85
+  - type: homepage
+    value: https://www.ecpgr.cgiar.org/resources/germplasm-databases/eurisco-catalogue
+  subject_areas:
+  urls:
+  - http://www.ecpgr.cgiar.org/fileadmin/templates/ecpgr.org/upload/MISC/EURISCO_Descriptors.pdf
+  - https://www.ecpgr.cgiar.org/resources/germplasm-databases/eurisco-catalogue
+Emblem XML-Schema:
+  acronym: Emblem
+  field_of_science:
+  - humanities
+  id: emblem-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m16
+  - type: local
+    value: https://fairsharing.org/4654
+  - type: homepage
+    value: http://diglib.hab.de/rules/schema/emblem/
+  - type: namespace
+    value: http://diglib.hab.de/rules/schema/emblem
+  - type: schema
+    value: http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd
+  - type: schema
+    value: http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd
+  subject_areas:
+  - Humanities
+  urls:
+  - http://diglib.hab.de/rules/schema/emblem/
+  - http://diglib.hab.de/rules/schema/emblem
+  - http://diglib.hab.de/rules/schema/emblem/emblem-1-3.xsd
+  - http://diglib.hab.de/rules/schema/emblem/emblem-1-2.xsd
+Europeana Data Model (EDM):
+  acronym: EDM
+  field_of_science:
+  - humanities
+  id: edm-europeana-data-model
+  identifier:
+  - type: local
+    value: fuji:m33
+  - type: local
+    value: https://fairsharing.org/4653
+  - type: homepage
+    value: https://pro.europeana.eu/page/edm-documentation
+  - type: namespace
+    value: http://www.europeana.eu/schemas/edm/
+  - type: namespace
+    value: http://www.europeana.eu/schemas/edm
+  - type: namespace
+    value: http://www.europeana.eu/schemas/ese/
+  subject_areas:
+  - Humanities
+  - Cultural heritage
+  urls:
+  - https://pro.europeana.eu/page/edm-documentation
+  - http://www.europeana.eu/schemas/edm/
+  - http://www.europeana.eu/schemas/edm
+  - http://www.europeana.eu/schemas/ese/
+FGDC/CSDGM (Federal Geographic Data Committee Content Standard for Digital Geospatial Metadata):
+  acronym: fgdc
+  field_of_science:
+  - meteorology
+  - biochemistry
+  - climatology
+  - social geography
+  - oceanography
+  - physical geography
+  - marine biology
+  - social sciences
+  - natural sciences
+  - cartography
+  - hydrology
+  id: fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge
+  identifier:
+  - type: local
+    value: msc:m17
+  - type: local
+    value: https://fairsharing.org/1445
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge
+  - type: homepage
+    value: http://www.fgdc.gov/metadata/geospatial-metadata-standards/
+  - type: schema
+    value: https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.xsd
+  - type: schema
+    value: https://www.fgdc.gov/schemas/metadata/fgdc-std-001.2-2001.xsd
+  - type: namespace
+    value: https://www.fgdc.gov/schemas/metadata/
+  - type: namespace
+    value: http://www.fgdc.gov/metadata/csdgm/index_html
+  subject_areas:
+  - Biochemistry
+  - Cartography
+  - Climatology
+  - Geography
+  - Hydrology
+  - Land use
+  - Marine biology
+  - Meteorology
+  - Oceanography
+  - Topography
+  urls:
+  - http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/base-metadata/v2_0698.pdf
+  - http://www.fgdc.gov/metadata/geospatial-metadata-standards/
+  - https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.xsd
+  - https://www.fgdc.gov/schemas/metadata/fgdc-std-001.2-2001.xsd
+  - https://www.fgdc.gov/schemas/metadata/
+  - http://www.fgdc.gov/metadata/csdgm/index_html
+FGDC/CSDGM Biological Data Profile:
+  acronym:
+  field_of_science:
+  - biological sciences
+  - natural sciences
+  id: fgdccsdgm-biological-data-profile
+  identifier:
+  - type: local
+    value: msc:m59
+  - type: homepage
+    value: http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf
+  subject_areas:
+  - Biogeography
+  urls:
+  - http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/biometadata/biodatap.pdf
+FITS (Flexible Image Transport System):
+  acronym:
+  field_of_science:
+  - astrophysics
+  - natural sciences
+  - astronomy
+  id: fits-flexible-image-transport-system
+  identifier:
+  - type: local
+    value: msc:m18
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.xvash1
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/fits-flexible-image-transport-system
+  - type: homepage
+    value: http://fits.gsfc.nasa.gov/fits_standard.html
+  subject_areas:
+  - Astronomy
+  - Astrophysics
+  - Sun
+  urls:
+  - http://fits.gsfc.nasa.gov/fits_standard.html
+  - http://fits.gsfc.nasa.gov/fits_standard.html
+FITS World Coordinate System (WCS):
+  acronym:
+  field_of_science:
+  - astrophysics
+  - natural sciences
+  - astronomy
+  id: fits-world-coordinate-system-wcs
+  identifier:
+  - type: local
+    value: msc:m60
+  - type: homepage
+    value: http://fits.gsfc.nasa.gov/fits_wcs.html
+  subject_areas:
+  - Astronomy
+  - Astrophysics
+  - Sun
+  urls:
+  - http://fits.gsfc.nasa.gov/fits_wcs.html
+Fast Healthcare Interoperability Resources:
+  acronym: FHIR
+  field_of_science:
+  - medical and health sciences
+  - clinical medicine
+  id: fhir-fast-healthcare-interoperability-resources
+  identifier:
+  - type: local
+    value: fuji:m47
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.25k4yp
+  - type: homepage
+    value: https://hl7.org/fhir/
+  - type: namespace
+    value: http://hl7.org/fhir
+  subject_areas:
+  - Clinical medicine
+  urls:
+  - https://hl7.org/fhir/
+  - http://hl7.org/fhir
+GBIF Metadata Profile:
+  acronym:
+  field_of_science:
+  - ecology
+  - botany
+  - biological sciences
+  - zoology
+  - natural sciences
+  id: gbif-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m61
+  - type: homepage
+    value: http://rs.gbif.org/schema/eml-gbif-profile/
+  subject_areas:
+  - Biogeography
+  - Biological diversity
+  - Botany
+  - Ecology
+  - Zoology
+  urls:
+  - http://rs.gbif.org/schema/eml-gbif-profile/
+  - http://rs.gbif.org/schema/eml-gbif-profile/1.0.2/eml-gbif-profile.xsd
+  - http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml-gbif-profile.xsd
+GESMES/TS (Generic Statistical Message for Time Series):
+  acronym:
+  field_of_science:
+  - political sciences
+  - statistics and probability
+  - economics
+  - social sciences
+  - natural sciences
+  id: gesmests-generic-statistical-message-time-series
+  identifier:
+  - type: local
+    value: msc:m62
+  - type: homepage
+    value: http://www.ecb.int/stats/services/sdmx/html/index.en.html
+  subject_areas:
+  - Economics
+  - Social policy
+  - Statistics
+  urls:
+  - http://www.ecb.int/stats/services/sdmx/html/index.en.html
+GSIM (Generic Statistical Information Model):
+  acronym:
+  field_of_science:
+  - statistics and probability
+  - natural sciences
+  id: gsim-generic-statistical-information-model
+  identifier:
+  - type: local
+    value: msc:m63
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.22bb25
+  - type: homepage
+    value: http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model
+  subject_areas:
+  - Statistics
+  urls:
+  - http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model
+Genome Metadata:
+  acronym:
+  field_of_science:
+  - genetics
+  - natural sciences
+  id: genome-metadata
+  identifier:
+  - type: local
+    value: msc:m19
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/genome-metadata
+  - type: homepage
+    value: http://enews.patricbrc.org/faqs/genome-metadata-faqs/
+  subject_areas:
+  - Genetics
+  urls:
+  - http://enews.patricbrc.org/faqs/genome-metadata-faqs/
+GeoRSS:
+  acronym:
+  field_of_science:
+  - earth and related environmental sciences
+  - natural sciences
+  id: georss-encoding-standard
+  identifier:
+  - type: local
+    value: fuji:m1
+  - type: local
+    value: https://fairsharing.org/4663
+  - type: homepage
+    value: http://www.georss.org
+  - type: namespace
+    value: http://www.georss.org/georss/
+  - type: namespace
+    value: http://schemas.opengis.net/georss/1.0/
+  subject_areas:
+  - Earth sciences
+  urls:
+  - http://www.georss.org
+  - http://www.georss.org/georss/
+  - http://schemas.opengis.net/georss/1.0/
+Geography Markup Language:
+  acronym:
+  field_of_science:
+  - geology
+  - glaciology
+  - climatology
+  - oceanography
+  - physical geography
+  - hydrogeology
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  - hydrology
+  id: iso-19136
+  identifier:
+  - type: local
+    value: fuji:m3
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.d69ee0
+  - type: homepage
+    value: www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554
+  - type: namespace
+    value: http://www.opengis.net/gml/3.2
+  - type: namespace
+    value: http://schemas.opengis.net/gml/3.2.1/gml.xsd
+  subject_areas:
+  - Cartography
+  - Climatology
+  - Earth sciences
+  - Geography
+  - Geology
+  - Glaciology
+  - Hydrogeology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  - Topography
+  urls:
+  - https://www.ogc.org/standards/gml
+  - www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554
+  - http://www.opengis.net/gml/3.2
+  - http://schemas.opengis.net/gml/3.2.1/gml.xsd
+HISPID (Herbarium Information Standards and Protocols for Interchange of Data):
+  acronym:
+  field_of_science:
+  - natural sciences
+  - botany
+  id: hispid-herbarium-information-standards-and-protocols-interchange-data
+  identifier:
+  - type: local
+    value: msc:m64
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.y49yj6
+  - type: homepage
+    value: http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5
+  subject_areas:
+  - Botany
+  urls:
+  - http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5
+IDF (International DOI Foundation) Metadata Kernel:
+  acronym:
+  field_of_science: []
+  id: idf-international-doi-foundation-metadata-kernel
+  identifier:
+  - type: local
+    value: msc:m86
+  - type: homepage
+    value: https://www.doi.org/the-identifier/resources/handbook/doi_kernel_xml_schema/
+  - type: schema
+    value: https://www.doi.org/doi_schemas/DOIMetadataKernel.xsd
+  - type: namespace
+    value: http://www.doi.org/2010/DOISchema
+  subject_areas:
+  urls:
+  - https://www.doi.org/the-identifier/resources/handbook/doi_kernel_xml_schema/
+  - https://www.doi.org/doi_schemas/DOIMetadataKernel.xsd
+  - http://www.doi.org/2010/DOISchema
+IMDI Metadata Standard:
+  acronym: IMDI
+  field_of_science:
+  - humanities
+  - linguistics
+  id: imdi-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m15
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.2cfb88
+  - type: namespace
+    value: http://www.mpi.nl/IMDI/Schema/IMDI
+  - type: namespace
+    value: http://www.mpi.nl/IMDI/schemas/xsd/
+  - type: schema
+    value: https://www.mpi.nl/IMDI/Schema/IMDI_3.0.xsd
+  - type: homepage
+    value: https://archive.mpi.nl/forums/t/imdi-metadata-information/2933
+  subject_areas:
+  - Humanities
+  - Linguistics
+  urls:
+  - http://www.mpi.nl/IMDI/Schema/IMDI
+  - http://www.mpi.nl/IMDI/schemas/xsd/
+  - https://www.mpi.nl/IMDI/Schema/IMDI_3.0.xsd
+  - https://archive.mpi.nl/forums/t/imdi-metadata-information/2933
+IMPEx Data Model:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: impex-data-model
+  identifier:
+  - type: local
+    value: msc:m65
+  - type: homepage
+    value: http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf
+  subject_areas:
+  - Astronomical systems
+  - Astronomy
+  - Sun
+  urls:
+  - http://meetingorganizer.copernicus.org/EPSC2012/EPSC2012-360.pdf
+INSPIRE Metadata Regulation:
+  acronym:
+  field_of_science:
+  - glaciology
+  - climatology
+  - oceanography
+  - physical geography
+  - hydrogeology
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  - hydrology
+  id: inspire-metadata-regulation
+  identifier:
+  - type: local
+    value: msc:m66
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.nrx5kk
+  - type: homepage
+    value: http://inspire.ec.europa.eu/
+  - type: namespace
+    value: http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd
+  - type: namespace
+    value: http://inspire.ec.europa.eu/schemas/common/1.0/network.xsd
+  subject_areas:
+  - Cartography
+  - Climatology
+  - Earth sciences
+  - Geography
+  - Glaciology
+  - Hydrogeology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  - Topography
+  urls:
+  - http://inspire.ec.europa.eu/
+  - http://inspire.ec.europa.eu/schemas/common/1.0/common.xsd
+  - http://inspire.ec.europa.eu/schemas/common/1.0/network.xsd
+ISA-TAB Nano:
+  acronym:
+  field_of_science:
+  - biological sciences
+  - biochemistry
+  - engineering and technology
+  - natural sciences
+  id: isa-tab-nano
+  identifier:
+  - type: local
+    value: msc:m67
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.njqq5b
+  - type: homepage
+    value: https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title
+  subject_areas:
+  - Biochemicals
+  - Biotechnology
+  urls:
+  - https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title
+ISA-Tab:
+  acronym:
+  field_of_science:
+  - biological sciences
+  - biochemistry
+  - engineering and technology
+  - cell metabolism
+  - molecular biology
+  - biophysics
+  - cell biology
+  - genetics
+  - natural sciences
+  id: isa-tab
+  identifier:
+  - type: local
+    value: msc:m21
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/isa-tab
+  - type: homepage
+    value: http://isatab.sourceforge.net/format.html
+  subject_areas:
+  - Biochemicals
+  - Biochemistry
+  - Biophysics
+  - Biotechnology
+  - Cell biology
+  - Genetics
+  - Metabolism
+  - Molecular biology
+  urls:
+  - http://isatab.sourceforge.net/docs/ISA-TAB_release-candidate-1_v1.0_24nov08.pdf
+  - http://isatab.sourceforge.net/format.html
+ISO 19115:
+  acronym: ISO19115
+  field_of_science:
+  - geology
+  - glaciology
+  - climatology
+  - oceanography
+  - physical geography
+  - hydrogeology
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  - hydrology
+  id: iso-19115
+  identifier:
+  - type: local
+    value: msc:m22
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.t7mby9
+  - type: homepage
+    value: http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798
+  - type: namespace
+    value: http://www.isotc211.org/2005/gmd/gmd.xsd
+  - type: namespace
+    value: http://www.isotc211.org/2005/gmd
+  - type: namespace
+    value: http://standards.iso.org/iso/19115/-3/mds/2.0
+  - type: namespace
+    value: http://standards.iso.org/iso/19115/-3/mds/1.0
+  - type: namespace
+    value: http://standards.iso.org/iso/19115/-3/mdb/2.0
+  - type: namespace
+    value: http://bluenet3.antcrc.utas.edu.au/mcp
+  subject_areas:
+  - Cartography
+  - Climatology
+  - Earth sciences
+  - Geography
+  - Geology
+  - Glaciology
+  - Hydrogeology
+  - Hydrology
+  - Meteorology
+  - Oceanography
+  - Topography
+  urls:
+  - http://standards.iso.org/iso/19115/-3/
+  - http://www.iso.org/iso/catalogue_detail.htm?csnumber=53798
+  - http://www.isotc211.org/2005/gmd/gmd.xsd
+  - http://www.isotc211.org/2005/gmd
+  - http://standards.iso.org/iso/19115/-3/mds/2.0
+  - http://standards.iso.org/iso/19115/-3/mds/1.0
+  - http://standards.iso.org/iso/19115/-3/mdb/2.0
+  - http://bluenet3.antcrc.utas.edu.au/mcp
+ISO 19115 North American Profile:
+  acronym:
+  field_of_science:
+  - physical geography
+  - natural sciences
+  - cartography
+  id: iso-19115-north-american-profile
+  identifier:
+  - type: local
+    value: msc:m70
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.b4af3c
+  - type: homepage
+    value: http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata
+  subject_areas:
+  - Cartography
+  - Geography
+  - Topography
+  urls:
+  - http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata
+ISO 19115-2 - Imagery and gridded data:
+  acronym:
+  field_of_science:
+  - glaciology
+  - climatology
+  - social geography
+  - oceanography
+  - physical geography
+  - social sciences
+  - meteorology
+  - earth and related environmental sciences
+  - natural sciences
+  - cartography
+  - hydrology
+  id: iso-19115-2-imagery-and-gridded-data
+  identifier:
+  - type: local
+    value: msc:m69
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.a6b18c
+  - type: homepage
+    value: http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229
+  subject_areas:
+  - Cartography
+  - Climatology
+  - Earth sciences
+  - Geography
+  - Glaciology
+  - Hydrology
+  - Land use
+  - Meteorology
+  - Oceanography
+  - Topography
+  urls:
+  - http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229
+IVOA Registry Interfaces:
+  acronym: ivoa-reg
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: ivoa-registry-metdata
+  identifier:
+  - type: local
+    value: fuji:m35
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.RycpEU
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/international-virtual-observatory-alliance-technical-specifications
+  - type: namespace
+    value: http://www.ivoa.net/xml/VORegistry/v1.0
+  - type: namespace
+    value: http://www.ivoa.net/xml/RegistryInterface/v1.0
+  - type: homepage
+    value: https://www.ivoa.net/Documents/cover/RDFVORegistry-20070920.html
+  subject_areas:
+  - Astronomy
+  urls:
+  - https://www.ivoa.net/documents/RegistryInterface/20180723/REC-RegistryInterface-1.1.html
+  - http://www.ivoa.net/xml/VORegistry/v1.0
+  - http://www.ivoa.net/xml/RegistryInterface/v1.0
+  - https://www.ivoa.net/Documents/cover/RDFVORegistry-20070920.html
+International Federation of Digital Seismograph Networks StationXML (FDSN StationXML):
+  acronym:
+  field_of_science:
+  - earth and related environmental sciences
+  - geophysics
+  - natural sciences
+  id: fdsn-seismograph
+  identifier:
+  - type: local
+    value: fuji:m8
+  - type: local
+    value: https://fairsharing.org/1434
+  - type: namespace
+    value: http://www.fdsn.org/xml/station/1
+  - type: homepage
+    value: http://www.fdsn.org/xml/station/
+  subject_areas:
+  - Earth sciences
+  - Geophysics
+  urls:
+  - http://www.fdsn.org/xml/station/1
+  - http://www.fdsn.org/xml/station/
+  - http://docs.fdsn.org/projects/stationxml/en/latest/
+International Virtual Observatory Alliance Technical Specifications:
+  acronym: IVOA
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: international-virtual-observatory-alliance-technical-specifications
+  identifier:
+  - type: local
+    value: msc:m20
+  - type: homepage
+    value: http://ivoa.net/documents/
+  subject_areas:
+  - Astronomy
+  urls:
+  - http://www.ivoa.net/documents/#specs
+  - http://ivoa.net/documents/
+Journal Publishing Tag Set (Jats):
+  acronym: jats
+  field_of_science:
+  - library sciences
+  - humanities
+  id: jats-schema
+  identifier:
+  - type: local
+    value: fuji:m41
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.smr0rh
+  - type: homepage
+    value: http://jats.nlm.nih.gov/publishing/
+  - type: schema
+    value: https://jats.nlm.nih.gov/publishing/1.0/xsd/JATS-journalpublishing1.xsd
+  - type: namespace
+    value: http://jats.nlm.nih.gov/publishing/1.0
+  subject_areas:
+  - Bibliographic standards
+  - Information/library standards
+  urls:
+  - http://jats.nlm.nih.gov/publishing/
+  - https://jats.nlm.nih.gov/publishing/1.0/xsd/JATS-journalpublishing1.xsd
+  - http://jats.nlm.nih.gov/publishing/1.0
+LIDO, Lightweight Information Describing Objects:
+  acronym: LIDO
+  field_of_science:
+  - humanities
+  id: lido-lightweight-information-describing-objects
+  identifier:
+  - type: local
+    value: fuji:m18
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.73558b
+  - type: schema
+    value: www.lido-schema.org/schema/latest/lido.xsd
+  - type: schema
+    value: www.lido-schema.org/schema/v1.1/lido-v1.1.xsd
+  - type: schema
+    value: http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd
+  - type: schema
+    value: http://lido-schema.org/schema/v1.1/lido-v1.1.xsd
+  - type: namespace
+    value: http://www.lido-schema.org
+  - type: homepage
+    value: http://www.lido-schema.org
+  subject_areas:
+  - Humanities
+  - Cultural heritage
+  urls:
+  - www.lido-schema.org/schema/latest/lido.xsd
+  - www.lido-schema.org/schema/v1.1/lido-v1.1.xsd
+  - http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd
+  - http://lido-schema.org/schema/v1.1/lido-v1.1.xsd
+  - http://www.lido-schema.org
+  - http://www.lido-schema.org
+  - https://cidoc.mini.icom.museum/working-groups/lido/lido-overview/about-lido/what-is-lido/
+Learning Object Metadata (LOM):
+  acronym: LOM
+  field_of_science: []
+  id: lom-higher-education-schema
+  identifier:
+  - type: local
+    value: fuji:m24
+  - type: local
+    value: https://fairsharing.org/4664
+  - type: homepage
+    value: http://www.imsglobal.org/metadata/index.html
+  - type: namespace
+    value: http://ltsc.ieee.org/xsd/LOMv1p0
+  - type: namespace
+    value: http://ltsc.ieee.org/2002/09/lom-base#
+  - type: namespace
+    value: https://www.oerbw.de/hsoerlom
+  - type: schema
+    value: http://www.rdn.ac.uk/oai/lom/lom.xsd
+  - type: schema
+    value: https://w3id.org/kim/hs-oer-lom-profil/latest/schemas/hs-oer-lom.xsd
+  subject_areas:
+  urls:
+  - http://www.imsglobal.org/metadata/index.html
+  - https://dini-ag-kim.github.io/hs-oer-lom-profil/latest/
+  - https://ieeexplore.ieee.org/document/1032843
+  - http://ltsc.ieee.org/xsd/LOMv1p0
+  - http://ltsc.ieee.org/2002/09/lom-base#
+  - https://www.oerbw.de/hsoerlom
+  - http://www.rdn.ac.uk/oai/lom/lom.xsd
+  - https://w3id.org/kim/hs-oer-lom-profil/latest/schemas/hs-oer-lom.xsd
+MAGE-TAB:
+  acronym:
+  field_of_science: []
+  id: mage-tab
+  identifier:
+  - type: local
+    value: msc:m87
+  - type: local
+    value: https://fairsharing.org/4680
+  - type: homepage
+    value: https://psidev.info/magetab
+  subject_areas:
+  urls:
+  - https://psidev.info/magetab
+MARC (Machine-Readable Cataloging):
+  acronym: MARC
+  field_of_science:
+  - library sciences
+  - sciences
+  - humanities
+  id: marc-machine-readable-cataloging
+  identifier:
+  - type: local
+    value: msc:m88
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.217b1b
+  - type: homepage
+    value: http://www.loc.gov/marc/
+  - type: schema
+    value: http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
+  - type: schema
+    value: https://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
+  - type: namespace
+    value: http://www.loc.gov/MARC21/slim
+  - type: namespace
+    value: http://www.ddb.de/professionell/MARC21/plus
+  subject_areas:
+  - Multidisciplinary
+  - Bibliographic standards
+  - Information/library standards
+  urls:
+  - http://www.loc.gov/marc/
+  - http://www.loc.gov/marc/bibliographic/
+  - http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
+  - https://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
+  - http://www.loc.gov/MARC21/slim
+  - http://www.ddb.de/professionell/MARC21/plus
+METS - Metadata Encoding and Transmission Standard:
+  acronym: METS
+  field_of_science:
+  - sciences
+  id: mets-metadata-encoding-and-transmission-standard
+  identifier:
+  - type: local
+    value: fuji:m11
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.921056
+  - type: namespace
+    value: http://www.loc.gov/METS/
+  - type: schema
+    value: https://www.loc.gov/standards/mets/profile_docs/mets.profile.v1-2.xsd
+  - type: schema
+    value: https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-1.xsd
+  - type: schema
+    value: https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-0.xsd
+  - type: homepage
+    value: https://www.loc.gov/standards/mets/mets-profiles.html
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.loc.gov/METS/
+  - https://www.loc.gov/standards/mets/profile_docs/mets.profile.v1-2.xsd
+  - https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-1.xsd
+  - https://www.loc.gov/standards/mets/profile_docs/mets.profile.v2-0.xsd
+  - https://www.loc.gov/standards/mets/mets-profiles.html
+MIBBI (Minimum Information for Biological and Biomedical Investigations):
+  acronym:
+  field_of_science:
+  - computer and information sciences
+  - biological sciences
+  - environmental sciences
+  - biochemistry
+  - engineering and technology
+  - cell metabolism
+  - proteins
+  - cell biology
+  - genetics
+  - natural sciences
+  id: mibbi-minimum-information-biological-and-biomedical-investigations
+  identifier:
+  - type: local
+    value: msc:m23
+  - type: local
+    value: https://fairsharing.org/3518
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/mibbi-minimum-information-biological-and-biomedical-investigations
+  - type: homepage
+    value: http://mibbi.sourceforge.net/portal.shtml
+  subject_areas:
+  - Biochemistry
+  - Biology
+  - Biotechnology
+  - Cell biology
+  - Computer applications
+  - Environmental sciences
+  - Genetics
+  - Metabolism
+  - Proteins
+  urls:
+  - http://mibbi.sourceforge.net/foundry.shtml
+  - http://mibbi.sourceforge.net/portal.shtml
+MIDAS-Heritage:
+  acronym: MIDAS
+  field_of_science:
+  - architectural design
+  - humanities
+  - archaeology
+  - history
+  id: midas-heritage
+  identifier:
+  - type: local
+    value: msc:m24
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.q0hgq
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/midas-heritage
+  - type: homepage
+    value: http://www.english-heritage.org.uk/publications/midas-heritage/
+  - type: namespace
+    value: http://www.heritage-standards.org/midas/schema/1.0
+  subject_areas:
+  - Archaeology
+  - Architecture
+  - Cultural heritage
+  - Cultural property preservation
+  - History
+  urls:
+  - http://www.english-heritage.org.uk/content/publications/publicationsNew/guidelines-standards/midas-heritage/midas-heritage-2012-v1_1.pdf
+  - https://historicengland.org.uk/images-books/publications/midas-heritage/
+  - http://www.english-heritage.org.uk/publications/midas-heritage/
+  - http://www.heritage-standards.org/midas/schema/1.0
+MODS (Metadata Object Description Schema):
+  acronym: MODS
+  field_of_science:
+  - library sciences
+  - humanities
+  id: mods-metadata-object-description-schema
+  identifier:
+  - type: local
+    value: msc:m97
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.o67X7e
+  - type: homepage
+    value: http://www.loc.gov/standards/mods/
+  - type: namespace
+    value: http://www.loc.gov/mods/v3
+  - type: namespace
+    value: http://www.loc.gov/mods/
+  subject_areas:
+  - Bibliographic standards
+  - Information/library standards
+  urls:
+  - http://www.loc.gov/standards/mods/
+  - http://www.loc.gov/mods/v3
+  - http://www.loc.gov/mods/
+  - http://www.loc.gov/standards/mods/v3/mods-3-3.xsd
+  - http://www.loc.gov/standards/mods/mods-outline-3-4.html
+  - http://www.loc.gov/standards/mods/v3/mods-3-4.xsd
+  - http://www.loc.gov/standards/mods/mods-outline-3-5.html
+  - http://www.loc.gov/standards/mods/v3/mods-3-5.xsd
+  - http://www.loc.gov/standards/mods/mods-outline-3-6.html
+  - http://www.loc.gov/standards/mods/v3/mods-3-6.xsd
+  - http://www.loc.gov/standards/mods/mods-outline-3-7.html
+  - http://www.loc.gov/standards/mods/v3/mods-3-7.xsd
+Metadata Schema for the Description of Language Resources:
+  acronym: META-SHARE
+  field_of_science:
+  - humanities
+  - linguistics
+  id: metashare-metadata
+  identifier:
+  - type: local
+    value: fuji:m12
+  - type: local
+    value: https://fairsharing.org/4665
+  - type: homepage
+    value: http://www.meta-share.org/p/93/Documentation#model
+  - type: namespace
+    value: http://www.ilsp.gr/META-XMLSchema
+  - type: namespace
+    value: http://w3id.org/meta-share/meta-share/
+  subject_areas:
+  - Humanities
+  - Linguistics
+  urls:
+  - http://www.meta-share.org/p/93/Documentation#model
+  - http://www.ilsp.gr/META-XMLSchema
+  - http://w3id.org/meta-share/meta-share/
+NeXML:
+  acronym:
+  field_of_science:
+  - biological sciences
+  - natural sciences
+  id: nexml
+  identifier:
+  - type: local
+    value: fuji:m45
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.knrb06
+  - type: homepage
+    value: http://www.nexusformat.org/
+  - type: namespace
+    value: http://www.nexml.org/2009
+  - type: schema
+    value: http://www.nexml.org/2009 ../xsd/nexml.xsd
+  subject_areas:
+  - Biology
+  urls:
+  - http://download.nexusformat.org/doc/html/ref_doc.html
+  - http://www.nexusformat.org/
+  - http://www.nexml.org/2009
+  - http://www.nexml.org/2009 ../xsd/nexml.xsd
+NeXus:
+  acronym:
+  field_of_science:
+  - crystallography
+  - engineering and technology
+  - materials engineering
+  - chemical sciences
+  - natural sciences
+  id: nexus
+  identifier:
+  - type: local
+    value: msc:m25
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.eq2pdx
+  - type: homepage
+    value: http://www.nexusformat.org/
+  subject_areas:
+  - Chemistry
+  - Crystallography
+  - Materials engineering
+  urls:
+  - http://download.nexusformat.org/doc/html/ref_doc.html
+  - http://www.nexusformat.org/
+NetCDF Attribute Convention for Dataset Discovery:
+  acronym:
+  field_of_science: []
+  id: netcdf-attribute-convention-for-dataset-discovery
+  identifier:
+  - type: local
+    value: msc:m89
+  - type: homepage
+    value: https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery
+  subject_areas:
+  urls:
+  - https://wiki.esipfed.org/Category:Attribute_Conventions_Dataset_Discovery
+OAI-ORE (Open Archives Initiative Object Reuse and Exchange):
+  acronym: OAI-ORE
+  field_of_science:
+  - anthropology
+  - history
+  - sciences
+  - social sciences
+  - humanities
+  id: oai-ore-open-archives-initiative-object-reuse-and-exchange
+  identifier:
+  - type: local
+    value: msc:m26
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.3mtaee
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange
+  - type: homepage
+    value: http://www.openarchives.org/ore/toc
+  - type: namespace
+    value: http://www.openarchives.org/ore/terms/
+  subject_areas:
+  - Anthropology
+  - History
+  - Multidisciplinary
+  urls:
+  - http://www.openarchives.org/ore/
+  - http://www.openarchives.org/ore/toc
+  - http://www.openarchives.org/ore/terms/
+OAI-RDF Schema:
+  acronym: oai-rdf
+  field_of_science: []
+  id: oai-rdf-schema
+  identifier:
+  - type: local
+    value: fuji:m38
+  - type: schema
+    value: http://www.openarchives.org/OAI/2.0/rdf.xsd
+  - type: namespace
+    value: http://www.openarchives.org/OAI/2.0/rdf/
+  - type: namespace
+    value: https://api.aiscr.cz/schema/oai_rdf/
+  - type: homepage
+    value: http://www.openarchives.org/OAI/2.0/rdf/
+  subject_areas:
+  urls:
+  - http://www.openarchives.org/OAI/2.0/rdf.xsd
+  - http://www.openarchives.org/OAI/2.0/rdf/
+  - https://api.aiscr.cz/schema/oai_rdf/
+  - http://www.openarchives.org/OAI/2.0/rdf/
+OCLC PICA XML:
+  acronym: pica
+  field_of_science: []
+  id: pica-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m37
+  - type: local
+    value: https://fairsharing.org/4688
+  - type: namespace
+    value: info:srw/schema/5/picaXML-v1.0
+  - type: namespace
+    value: http://www.oclcpica.org/xmlns/ppxml-1.0
+  - type: schema
+    value: http://www.oclcpica.org/xml/picaplus.xsd
+  - type: homepage
+    value: http://www.oclcpica.org
+  subject_areas:
+  urls:
+  - info:srw/schema/5/picaXML-v1.0
+  - http://www.oclcpica.org/xmlns/ppxml-1.0
+  - http://www.oclcpica.org/xml/picaplus.xsd
+  - http://www.oclcpica.org
+ODAM Structural Metadata:
+  acronym:
+  field_of_science: []
+  id: odam-datapackage
+  identifier:
+  - type: local
+    value: 10.25504/FAIRsharing.ld9wne
+  - type: homepage
+    value:
+  subject_areas:
+  - biochemistry
+  - molecular-biology
+  - metabolic-biochemistry
+  - biomaterials
+  - bioengineering
+  urls:
+  - https://inrae.github.io/ODAM/data-preparation/url
+OLAC metadata:
+  acronym: OLAC
+  field_of_science:
+  - humanities
+  - linguistics
+  id: olac-metadata
+  identifier:
+  - type: local
+    value: fuji:m14
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.17fbae
+  - type: namespace
+    value: http://www.language-archives.org/OLAC/1.1/
+  - type: schema
+    value: http://www.language-archives.org/OLAC/1.1/olac.xsd
+  - type: homepage
+    value: http://www.language-archives.org/OLAC
+  subject_areas:
+  - Humanities
+  - Linguistics
+  urls:
+  - http://www.language-archives.org/OLAC/1.1/
+  - http://www.language-archives.org/OLAC/1.1/olac.xsd
+  - http://www.language-archives.org/OLAC
+OME-TIFF (Open Microscopy Environment TIFF):
+  acronym:
+  field_of_science:
+  - botany
+  - physiology
+  - agricultural sciences
+  - medical and health sciences
+  - veterinary sciences
+  - plant protection
+  - zoology
+  - cell biology
+  - natural sciences
+  id: ome-tiff-open-microscopy-environment-tiff
+  identifier:
+  - type: local
+    value: msc:m73
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.cq8tg2
+  - type: homepage
+    value: http://www.openmicroscopy.org/site/support/file-formats/ome-tiff
+  subject_areas:
+  - Animal diseases
+  - Cell biology
+  - Physiology
+  - Plant diseases
+  - Plant physiology
+  - Zoology
+  urls:
+  - http://www.openmicroscopy.org/site/support/file-formats/ome-tiff
+OME-XML (Open Microscopy Environment XML):
+  acronym:
+  field_of_science:
+  - botany
+  - physiology
+  - agricultural sciences
+  - medical and health sciences
+  - veterinary sciences
+  - plant protection
+  - zoology
+  - cell biology
+  - natural sciences
+  id: ome-xml-open-microscopy-environment-xml
+  identifier:
+  - type: local
+    value: msc:m29
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.zk8p4g
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/ome-xml-open-microscopy-environment-xml
+  - type: homepage
+    value: http://www.openmicroscopy.org/site/support/file-formats
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2016-06
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2015-01
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2013-06
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2012-06
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2011-06
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2010-04
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2010-06
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2009-09
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2008-09
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2008-02
+  - type: namespace
+    value: http://www.openmicroscopy.org/Schemas/OME/2007-06
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2015-01/ome.xsd
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2013-06/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2012-06/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2011-06/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2010-04/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2010-06/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2009-09/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2008-09/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2008-02/index.html
+  - type: schema
+    value: http://www.openmicroscopy.org/Schemas/OME/2007-06/index.html
+  subject_areas:
+  - Animal diseases
+  - Cell biology
+  - Physiology
+  - Plant diseases
+  - Plant physiology
+  - Zoology
+  urls:
+  - http://www.openmicroscopy.org/Schemas/
+  - http://www.openmicroscopy.org/site/support/file-formats
+  - http://www.openmicroscopy.org/Schemas/OME/2016-06
+  - http://www.openmicroscopy.org/Schemas/OME/2015-01
+  - http://www.openmicroscopy.org/Schemas/OME/2013-06
+  - http://www.openmicroscopy.org/Schemas/OME/2012-06
+  - http://www.openmicroscopy.org/Schemas/OME/2011-06
+  - http://www.openmicroscopy.org/Schemas/OME/2010-04
+  - http://www.openmicroscopy.org/Schemas/OME/2010-06
+  - http://www.openmicroscopy.org/Schemas/OME/2009-09
+  - http://www.openmicroscopy.org/Schemas/OME/2008-09
+  - http://www.openmicroscopy.org/Schemas/OME/2008-02
+  - http://www.openmicroscopy.org/Schemas/OME/2007-06
+  - http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd
+  - http://www.openmicroscopy.org/Schemas/OME/2015-01/ome.xsd
+  - http://www.openmicroscopy.org/Schemas/OME/2013-06/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2012-06/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2011-06/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2010-04/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2010-06/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2009-09/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2008-09/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2008-02/index.html
+  - http://www.openmicroscopy.org/Schemas/OME/2007-06/index.html
+ONIX for Books Product Information Message:
+  acronym: onix
+  field_of_science:
+  - library sciences
+  - humanities
+  id: onix-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m42
+  - type: local
+    value: https://fairsharing.org/4683
+  - type: homepage
+    value: https://www.editeur.org/8/ONIX/
+  - type: namespace
+    value: http://www.editeur.org/onix/2.1/short
+  - type: schema
+    value: http://www.editeur.org/onix/2.1/short/ONIX_BookProduct_Release2.1_short
+  subject_areas:
+  - Bibliographic standards
+  - Information/library standards
+  urls:
+  - https://www.editeur.org/8/ONIX/
+  - https://www.editeur.org/files/ONIX%203/APPNOTE%20Describing%20e-books%20in%20ONIX.pdf
+  - http://www.editeur.org/onix/2.1/short
+  - http://www.editeur.org/onix/2.1/short/ONIX_BookProduct_Release2.1_short
+Observ-OM:
+  acronym:
+  field_of_science:
+  - biological sciences
+  - natural sciences
+  id: observ-om
+  identifier:
+  - type: local
+    value: msc:m27
+  - type: local
+    value: https://fairsharing.org/4682
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/observ-om
+  - type: homepage
+    value: http://www.molgenis.org/wiki/ObservStart
+  subject_areas:
+  - Biology
+  urls:
+  - http://www.molgenis.org/wiki/ObservStart
+Observations and Measurements:
+  acronym:
+  field_of_science:
+  - geology
+  - engineering and technology
+  - remote sensing
+  - meteorology
+  - chemical sciences
+  - natural sciences
+  id: observations-and-measurements
+  identifier:
+  - type: local
+    value: msc:m28
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.4ehmy9
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/observations-and-measurements
+  - type: homepage
+    value: http://www.opengeospatial.org/standards/om
+  - type: namespace
+    value: http://schemas.opengis.net/om/2.0/
+  - type: schema
+    value: https://schemas.opengis.net/om/2.0/observation.xsd
+  - type: schema
+    value: https://schemas.opengis.net/om/1.0.0/observation.xsd
+  - type: namespace
+    value: http://www.opengis.net/om/1.0
+  subject_areas:
+  - Chemistry
+  - Geology
+  - Meteorology
+  - Remote sensing
+  urls:
+  - http://portal.opengeospatial.org/files/?artifact_id=41579
+  - http://www.opengeospatial.org/standards/om
+  - http://schemas.opengis.net/om/2.0/
+  - https://schemas.opengis.net/om/2.0/observation.xsd
+  - https://schemas.opengis.net/om/1.0.0/observation.xsd
+  - http://www.opengis.net/om/1.0
+Open Archive Initiative Dublin Core (OAI DC):
+  acronym: oai_dc
+  field_of_science:
+  - sciences
+  id: oai-dublin-core-schema
+  identifier:
+  - type: local
+    value: fuji:m44
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.0417cf
+  - type: namespace
+    value: https://resources.bepress.com/OAI/2.0/qualified-dublin-core/
+  - type: schema
+    value: http://www.openarchives.org/OAI/2.0/oai_dc.xsd
+  - type: namespace
+    value: http://www.openarchives.org/OAI/2.0/oai_dc/
+  - type: namespace
+    value: http://www.openarchives.org/OAI/2.0/oai_dc
+  - type: homepage
+    value: http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://resources.bepress.com/OAI/2.0/qualified-dublin-core/
+  - http://www.openarchives.org/OAI/2.0/oai_dc.xsd
+  - http://www.openarchives.org/OAI/2.0/oai_dc/
+  - http://www.openarchives.org/OAI/2.0/oai_dc
+  - http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore
+OpenAIRE Guidelines:
+  acronym: OpenAIRE_G
+  field_of_science:
+  - sciences
+  id: openaire-guidelines
+  identifier:
+  - type: local
+    value: msc:m92
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.123197
+  - type: homepage
+    value: https://guidelines.openaire.eu/
+  - type: schema
+    value: https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd
+  - type: namespace
+    value: http://namespace.openaire.eu/schema/oaire/
+  - type: namespace
+    value: oai_openaire
+  - type: namespace
+    value: https://openaire.eu
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://guidelines.openaire.eu/
+  - https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd
+  - http://namespace.openaire.eu/schema/oaire/
+  - oai_openaire
+  - https://openaire.eu
+OpenAIRE Research Graph:
+  acronym: OpenAIRE_RG
+  field_of_science:
+  - sciences
+  id: openaire-research-graph
+  identifier:
+  - type: local
+    value: fuji:m20
+  - type: local
+    value: https://fairsharing.org/4684
+  - type: namespace
+    value: http://namespace.openaire.eu/oaf
+  - type: schema
+    value: https://www.openaire.eu/schema/1.0/oaf-1.0.xsd
+  - type: homepage
+    value: https://graph.openaire.eu/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://namespace.openaire.eu/oaf
+  - https://www.openaire.eu/schema/latest/doc/oaf.html
+  - https://www.openaire.eu/schema/1.0/oaf-1.0.xsd
+  - https://graph.openaire.eu/
+OpenSearch:
+  acronym:
+  field_of_science: []
+  id: opensearch
+  identifier:
+  - type: local
+    value: fuji:m2
+  - type: local
+    value: https://fairsharing.org/4685
+  - type: namespace
+    value: http://a9.com/-/spec/opensearch/1.1/
+  - type: homepage
+    value: https://github.com/dewitt/opensearch
+  subject_areas:
+  urls:
+  - http://a9.com/-/spec/opensearch/1.1/
+  - https://github.com/dewitt/opensearch
+PDBx/mmCIF (Protein Data Bank Exchange Dictionary and the Macromolecular Crystallographic Information Framework):
+  acronym:
+  field_of_science:
+  - computer and information sciences
+  - physical sciences
+  - biological sciences
+  - crystallography
+  - chemical sciences
+  - molecular biology
+  - natural sciences
+  id: pdbx-mmcif
+  identifier:
+  - type: local
+    value: msc:m30
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.fd28en
+  - type: homepage
+    value: http://mmcif.wwpdb.org/
+  subject_areas:
+  - Biology
+  - Chemistry
+  - Computer applications
+  - Crystallography
+  - Molecular biology
+  - Physics
+  urls:
+  - http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Index/
+  - http://mmcif.wwpdb.org/
+PREMIS:
+  acronym: premis
+  field_of_science:
+  - sciences
+  id: premis
+  identifier:
+  - type: local
+    value: msc:m31
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.27a0f4
+  - type: homepage
+    value: http://www.loc.gov/standards/premis/
+  - type: namespace
+    value: http://www.loc.gov/standards/premis
+  - type: schema
+    value: https://www.loc.gov/standards/premis/v3/premis-v3-0.xsd
+  - type: namespace
+    value: http://www.loc.gov/premis/v3
+  - type: schema
+    value: https://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
+  - type: namespace
+    value: info:lc/xmlns/premis-v2
+  - type: schema
+    value: https://www.loc.gov/standards/premis/v2/premis-v2-3.xsd
+  - type: schema
+    value: https://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd
+  - type: namespace
+    value: http://www.loc.gov/standards/premis/v1
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.loc.gov/standards/premis/v3/premis-3-0-final.pdf
+  - http://www.loc.gov/standards/premis/
+  - http://www.loc.gov/standards/premis
+  - https://www.loc.gov/standards/premis/v3/premis-v3-0.xsd
+  - http://www.loc.gov/premis/v3
+  - https://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
+  - info:lc/xmlns/premis-v2
+  - https://www.loc.gov/standards/premis/v2/premis-v2-3.xsd
+  - https://www.loc.gov/standards/premis/v1/PREMIS-v1-1.xsd
+  - http://www.loc.gov/standards/premis/v1
+PRISM Publishing Requirements for Industry Standard Metadata:
+  acronym: PRISM
+  field_of_science: []
+  id: prism-publishing-industry-standard-metadata
+  identifier:
+  - type: local
+    value: fuji:m27
+  - type: local
+    value: https://fairsharing.org/4689
+  - type: homepage
+    value: https://www.w3.org/Submission/prism
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pam/0.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pam/1.2/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pam/2.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pam/2.1/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pam/3.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/basic/1.2/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/basic/2.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/basic/1.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/basic/2.1/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/basic/3.0/
+  - type: namespace
+    value: http://prismstandard.org/namespaces/pim/1.2/
+  subject_areas:
+  urls:
+  - https://www.w3.org/Submission/prism
+  - http://prismstandard.org/namespaces/pam/0.0/
+  - http://prismstandard.org/namespaces/pam/1.2/
+  - http://prismstandard.org/namespaces/pam/2.0/
+  - http://prismstandard.org/namespaces/pam/2.1/
+  - http://prismstandard.org/namespaces/pam/3.0/
+  - http://prismstandard.org/namespaces/basic/1.2/
+  - http://prismstandard.org/namespaces/basic/2.0/
+  - http://prismstandard.org/namespaces/basic/1.0/
+  - http://prismstandard.org/namespaces/basic/2.1/
+  - http://prismstandard.org/namespaces/basic/3.0/
+  - http://prismstandard.org/namespaces/pim/1.2/
+PROV:
+  acronym:
+  field_of_science:
+  - sciences
+  id: prov
+  identifier:
+  - type: local
+    value: msc:m33
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/prov
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.fe7cda
+  - type: homepage
+    value: http://www.w3.org/2001/sw/wiki/PROV
+  - type: schema
+    value: http://www.w3.org/ns/prov.xsd
+  - type: namespace
+    value: http://www.w3.org/ns/prov#
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.w3.org/TR/prov-overview/
+  - http://www.w3.org/2001/sw/wiki/PROV
+  - http://www.w3.org/ns/prov.xsd
+  - http://www.w3.org/ns/prov#
+Protocol Data Element Definitions:
+  acronym:
+  field_of_science:
+  - medical and health sciences
+  - clinical medicine
+  id: protocol-data-element-definitions
+  identifier:
+  - type: local
+    value: msc:m32
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/protocol-data-element-definitions
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.7e962d
+  - type: homepage
+    value: http://clinicaltrials.gov/ct2/manage-recs/resources
+  - type: schema
+    value: https://prsinfo.clinicaltrials.gov/ProtocolRecordSchema.xsd
+  - type: namespace
+    value: http://clinicaltrials.gov/prs
+  - type: schema
+    value: https://prsinfo.clinicaltrials.gov/RRSUploadSchema.xsd
+  - type: namespace
+    value: http://clinicaltrials.gov/rrs
+  subject_areas:
+  - Clinical medicine
+  urls:
+  - http://prsinfo.clinicaltrials.gov/definitions.html
+  - http://clinicaltrials.gov/ct2/manage-recs/resources
+  - https://prsinfo.clinicaltrials.gov/ProtocolRecordSchema.xsd
+  - http://clinicaltrials.gov/prs
+  - https://prsinfo.clinicaltrials.gov/RRSUploadSchema.xsd
+  - http://clinicaltrials.gov/rrs
+QuDEx (Qualitative Data Exchange Format):
+  acronym:
+  field_of_science:
+  - sciences
+  id: qudex-qualitative-data-exchange-format
+  identifier:
+  - type: local
+    value: msc:m34
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/qudex-qualitative-data-exchange-format
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.d42cb9
+  - type: homepage
+    value: http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1
+  - type: schema
+    value: https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd
+  - type: namespace
+    value: http://www.data-archive.ac.uk/dext/schema/draft
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://data-archive.ac.uk/create-manage/projects/qudex?index=1
+  - http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1
+  - https://dam.data-archive.ac.uk/standards/qudex_v03_01.xsd
+  - http://www.data-archive.ac.uk/dext/schema/draft
+QuakeML:
+  acronym: QuakeML
+  field_of_science:
+  - earth and related environmental sciences
+  - geophysics
+  - natural sciences
+  id: quakeml
+  identifier:
+  - type: local
+    value: fuji:m9
+  - type: local
+    value: https://fairsharing.org/1444
+  - type: namespace
+    value: http://quakeml.org/xmlns/quakeml/2.0
+  - type: namespace
+    value: http://quakeml.org/xmlns/quakeml/1.2
+  - type: namespace
+    value: http://quakeml.org/xmlns/quakeml/1.1
+  - type: namespace
+    value: http://quakeml.org/xmlns/quakeml/1.0.1
+  - type: namespace
+    value: http://quakeml.org/xmlns/quakeml/1.0
+  - type: homepage
+    value: https://quake.ethz.ch/quakeml
+  subject_areas:
+  - Earth sciences
+  - Geophysics
+  urls:
+  - http://quakeml.org/xmlns/quakeml/2.0
+  - http://quakeml.org/xmlns/quakeml/1.2
+  - http://quakeml.org/xmlns/quakeml/1.1
+  - http://quakeml.org/xmlns/quakeml/1.0.1
+  - http://quakeml.org/xmlns/quakeml/1.0
+  - https://quake.ethz.ch/quakeml
+  - http://www.quakeml.org/
+Qualified Dublin Core:
+  acronym: QDC
+  field_of_science:
+  - sciences
+  id: dublin-core-qualified
+  identifier:
+  - type: local
+    value: fuji:m22
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.3nx7t
+  - type: homepage
+    value: https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
+  - type: namespace
+    value: urn:dc:qdc:container
+  - type: namespace
+    value: figshare:oai:qdc
+  - type: namespace
+    value: http://naca.central.cranfield.ac.uk/ethos-oai/2.0/
+  - type: namespace
+    value: http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc
+  - type: schema
+    value: https://cocoon.huma-num.fr/schemas/dcq.xsd
+  - type: namespace
+    value: http://crdo.risc.cnrs.fr/schemas/dcq/
+  - type: namespace
+    value: http://oai.base-search.net/base_dc/
+  - type: namespace
+    value: http://oai.base-search.net/base_dc
+  - type: schema
+    value: http://oai.base-search.net/base_dc/base_dc.xsd
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
+  - urn:dc:qdc:container
+  - figshare:oai:qdc
+  - http://naca.central.cranfield.ac.uk/ethos-oai/2.0/
+  - http://ora.ox.ac.uk/oai-pmh/metadata-formats/solo_dc
+  - https://cocoon.huma-num.fr/schemas/dcq.xsd
+  - http://crdo.risc.cnrs.fr/schemas/dcq/
+  - http://oai.base-search.net/base_dc/
+  - http://oai.base-search.net/base_dc
+  - http://oai.base-search.net/base_dc/base_dc.xsd
+RDF Data Cube Vocabulary:
+  acronym:
+  field_of_science:
+  - statistics and probability
+  - natural sciences
+  id: rdf-data-cube-vocabulary
+  identifier:
+  - type: local
+    value: msc:m35
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/rdf-data-cube-vocabulary
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.c3b573
+  - type: homepage
+    value: http://www.w3.org/TR/vocab-data-cube/
+  - type: namespace
+    value: http://purl.org/linked-data/cube#
+  subject_areas:
+  - Statistics
+  urls:
+  - http://www.w3.org/TR/vocab-data-cube/
+  - http://purl.org/linked-data/cube#
+RIF-CS (Registry Interchange Format â€“ Collections and Services):
+  acronym: RIF-CS
+  field_of_science:
+  - sciences
+  id: rif-cs-registry-interchange-format-collections-and-services
+  identifier:
+  - type: local
+    value: msc:m98
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.reybx2
+  - type: homepage
+    value: https://www.ands.org.au/online-services/rif-cs-schema
+  - type: schema
+    value: http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd
+  - type: namespace
+    value: http://ands.org.au/standards/rif-cs/registryObjects
+  - type: namespace
+    value: https://ands.org.au/standards/rif-cs/registryObjects
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://www.ands.org.au/online-services/rif-cs-schema
+  - http://services.ands.org.au/documentation/rifcs/schemadocs/registryObjects.html
+  - http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd
+  - http://ands.org.au/standards/rif-cs/registryObjects
+  - https://ands.org.au/standards/rif-cs/registryObjects
+RIOXX Metadata Application Profile:
+  acronym: rioxx
+  field_of_science:
+  - sciences
+  id: rioxx-metadata-application-profile
+  identifier:
+  - type: local
+    value: fuji:m5
+  - type: local
+    value: https://fairsharing.org/4690
+  - type: namespace
+    value: http://www.rioxx.net/schema/v2.0/rioxx/
+  - type: homepage
+    value: https://www.rioxx.net/
+  - type: namespace
+    value: https://www.rioxx.net/schema/v2.0/rioxxterms/
+  - type: namespace
+    value: http://docs.rioxx.net/schema/v1.0/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://www.rioxx.net/schema/v2.0/rioxx/
+  - https://www.rioxx.net/
+  - https://www.rioxx.net/schema/v2.0/rioxxterms/
+  - http://docs.rioxx.net/schema/v1.0/
+RO-Crate:
+  acronym:
+  field_of_science:
+  - sciences
+  id: ro-crate
+  identifier:
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.wUoZKE
+  - type: local
+    value: msc:m102
+  - type: homepage
+    value: https://w3id.org/ro/crate
+  - type: namespace
+    value: https://w3id.org/ro/crate/1.1/context
+  - type: namespace
+    value: https://w3id.org/ro/crate/1.0/context
+  - type: namespace
+    value: https://w3id.org/ro/crate/0.2/context
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://w3id.org/ro/crate/1.1
+  - https://w3id.org/ro/crate
+  - https://w3id.org/ro/crate/1.1/context
+  - https://w3id.org/ro/crate/1.0/context
+  - https://w3id.org/ro/crate/0.2/context
+Resource Metadata for the Virtual Observatory:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: resource-metadata-virtual-observatory
+  identifier:
+  - type: local
+    value: msc:m74
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.qSULus
+  - type: homepage
+    value: http://www.ivoa.net/documents/latest/RM.html
+  subject_areas:
+  - Astronomy
+  urls:
+  - http://www.ivoa.net/documents/latest/RM.html
+SDAC (Standard for Documentation of Astronomical Catalogues):
+  acronym:
+  field_of_science:
+  - astrophysics
+  - natural sciences
+  - astronomy
+  id: sdac
+  identifier:
+  - type: local
+    value: msc:m37
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.zcjkc7
+  - type: homepage
+    value: http://cds.u-strasbg.fr/doc/catstd.htx
+  subject_areas:
+  - Astronomy
+  - Astrophysics
+  urls:
+  - http://cds.u-strasbg.fr/doc/catstd.pdf
+  - http://cds.u-strasbg.fr/doc/catstd.htx
+SDMX (Statistical Data and Metadata Exchange):
+  acronym:
+  field_of_science:
+  - political sciences
+  - social geography
+  - demography
+  - statistics and probability
+  - economics
+  - social sciences
+  - natural sciences
+  id: sdmx-statistical-data-and-metadata-exchange
+  identifier:
+  - type: local
+    value: msc:m38
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/sdmx-statistical-data-and-metadata-exchange
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.cea9zc
+  - type: homepage
+    value: http://sdmx.org
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/schemas/v3_0/registry
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/schemas/v3_0/structure
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data
+  - type: namespace
+    value: http://www.sdmx.org/resources/sdmxml/
+  subject_areas:
+  - Demography
+  - Economics
+  - Human geography
+  - Social policy
+  - Statistics
+  urls:
+  - http://sdmx.org/?page_id=5008
+  - http://sdmx.org
+  - http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common
+  - http://www.sdmx.org/resources/sdmxml/schemas/v3_0/registry
+  - http://www.sdmx.org/resources/sdmxml/schemas/v3_0/structure
+  - http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
+  - http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data
+  - http://www.sdmx.org/resources/sdmxml/
+SNRNASM ISA-Tab:
+  acronym:
+  field_of_science:
+  - biochemistry
+  - cell biology
+  - natural sciences
+  id: snrnasm-isa-tab
+  identifier:
+  - type: local
+    value: msc:m76
+  - type: homepage
+    value: http://snrnasm.bio.unc.edu
+  subject_areas:
+  - Biochemistry
+  - Cell biology
+  urls:
+  - http://snrnasm.bio.unc.edu
+SPASE Data Model:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - astronomy
+  id: spase-data-model
+  identifier:
+  - type: local
+    value: msc:m39
+  - type: local
+    value: http://www.dcc.ac.uk/resources/metadata-standards/spase-data-model
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.f5d440
+  - type: homepage
+    value: http://www.spase-group.org/data/
+  - type: namespace
+    value: http://www.spase-group.org/data/schema
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.0.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.1.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.2.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.2.1.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.2.2.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-1.3.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.0.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.1.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.1.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.2.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.3.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.4.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.6.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.8.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.2.9.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.3.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.3.1.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.3.2.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.4.0.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.4.1.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.4.2.xsd
+  - type: schema
+    value: https://spase-group.org/data/schema/spase-2.5.0.xsd
+  subject_areas:
+  - Astronomical systems
+  - Astronomy
+  - Sun
+  urls:
+  - http://www.spase-group.org/docs/schema/
+  - http://www.spase-group.org/data/
+  - http://www.spase-group.org/data/schema
+  - https://spase-group.org/data/schema/spase-1.0.0.xsd
+  - https://spase-group.org/data/schema/spase-1.1.0.xsd
+  - https://spase-group.org/data/schema/spase-1.2.0.xsd
+  - https://spase-group.org/data/schema/spase-1.2.1.xsd
+  - https://spase-group.org/data/schema/spase-1.2.2.xsd
+  - https://spase-group.org/data/schema/spase-1.3.0.xsd
+  - https://spase-group.org/data/schema/spase-2.0.0.xsd
+  - https://spase-group.org/data/schema/spase-2.1.0.xsd
+  - https://spase-group.org/data/schema/spase-2.2.0.xsd
+  - https://spase-group.org/data/schema/spase-2.2.1.xsd
+  - https://spase-group.org/data/schema/spase-2.2.2.xsd
+  - https://spase-group.org/data/schema/spase-2.2.3.xsd
+  - https://spase-group.org/data/schema/spase-2.2.4.xsd
+  - https://spase-group.org/data/schema/spase-2.2.6.xsd
+  - https://spase-group.org/data/schema/spase-2.2.8.xsd
+  - https://spase-group.org/data/schema/spase-2.2.9.xsd
+  - https://spase-group.org/data/schema/spase-2.3.0.xsd
+  - https://spase-group.org/data/schema/spase-2.3.1.xsd
+  - https://spase-group.org/data/schema/spase-2.3.2.xsd
+  - https://spase-group.org/data/schema/spase-2.4.0.xsd
+  - https://spase-group.org/data/schema/spase-2.4.1.xsd
+  - https://spase-group.org/data/schema/spase-2.4.2.xsd
+  - https://spase-group.org/data/schema/spase-2.5.0.xsd
+  - http://www.spase-group.org/data/model/spase-2_2_2.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_3.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_4.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_5.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_6.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_7.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_9.pdf
+  - http://www.spase-group.org/data/model/spase-2_2_8.pdf
+Schema.org:
+  acronym: schemaorg
+  field_of_science:
+  - sciences
+  id: schemaorg
+  identifier:
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.hzdzq8
+  - type: local
+    value: msc:m101
+  - type: namespace
+    value: https://schema.org
+  - type: namespace
+    value: http://schema.org
+  - type: homepage
+    value: https://schema.org/docs/schemas.html
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://schema.org
+  - http://schema.org
+  - https://schema.org/docs/documents.html
+  - https://schema.org/docs/schemas.html
+Shoreline Metadata Profile:
+  acronym:
+  field_of_science:
+  - oceanography
+  - natural sciences
+  - hydrology
+  id: shoreline-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m75
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.22041b
+  - type: homepage
+    value: http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/
+  subject_areas:
+  - Hydrology
+  - Oceanography
+  urls:
+  - http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/
+TEI (Text Encoding Initiative) Guidelines:
+  acronym: TEI
+  field_of_science:
+  - humanities
+  - languages and literature
+  - history
+  id: tei-text-encoding-initiative-guidelines
+  identifier:
+  - type: local
+    value: msc:m99
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.87b86e
+  - type: homepage
+    value: http://www.tei-c.org/Guidelines/P5/
+  - type: namespace
+    value: http://www.tei-c.org/ns/1.0
+  subject_areas:
+  - History
+  - Languages
+  urls:
+  - http://www.tei-c.org/Guidelines/P5/
+  - https://www.tei-c.org/release/doc/tei-p5-doc/en/html/index.html
+  - http://www.tei-c.org/ns/1.0
+TIDCC (Towards an International Data Commons for Crystallography):
+  acronym:
+  field_of_science:
+  - crystallography
+  - natural sciences
+  id: tidcc-towards-international-data-commons-crystallography
+  identifier:
+  - type: local
+    value: msc:m78
+  - type: local
+    value: https://fairsharing.org/208
+  - type: homepage
+    value: http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf
+  subject_areas:
+  - Crystallography
+  urls:
+  - http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf
+Tabular Data Package:
+  acronym:
+  field_of_science:
+  - sciences
+  id: tabular-data-package
+  identifier:
+  - type: local
+    value: msc:m77
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.082881
+  - type: homepage
+    value: http://frictionlessdata.io/guides/tabular-data-package/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - http://frictionlessdata.io/guides/tabular-data-package/
+The Atom Syndication Format:
+  acronym: ATOM
+  field_of_science:
+  - sciences
+  id: atom-syndication-format
+  identifier:
+  - type: local
+    value: fuji:m13
+  - type: local
+    value: https://fairsharing.org/4648
+  - type: namespace
+    value: https://www.w3.org/2005/Atom
+  - type: namespace
+    value: http://www.w3.org/2005/Atom
+  - type: homepage
+    value: https://datatracker.ietf.org/wg/atompub/about/
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - https://www.w3.org/2005/Atom
+  - http://www.w3.org/2005/Atom
+  - https://datatracker.ietf.org/wg/atompub/about/
+  - https://datatracker.ietf.org/doc/html/rfc4287
+The Open Graph protocol metadata format:
+  acronym: OpenGraph
+  field_of_science: []
+  id: opengraph
+  identifier:
+  - type: local
+    value: fuji:m46
+  - type: homepage
+    value: https://ogp.me
+  - type: namespace
+    value: https://ogp.me/ns#
+  subject_areas:
+  urls:
+  - https://ogp.me
+  - https://ogp.me/ns#
+The OpenURL ContextObject Format:
+  acronym: CTX
+  field_of_science:
+  - sciences
+  id: openurl-contextobject
+  identifier:
+  - type: local
+    value: fuji:m7
+  - type: local
+    value: https://fairsharing.org/4686
+  - type: namespace
+    value: info:ofi/fmt:xml:xsd:ctx
+  - type: namespace
+    value: info:ofi/fmt:kev:mtx:ctx
+  - type: homepage
+    value: https://www.oclc.org/research/activities/registry.html
+  subject_areas:
+  - Multidisciplinary
+  urls:
+  - info:ofi/fmt:xml:xsd:ctx
+  - info:ofi/fmt:kev:mtx:ctx
+  - https://groups.niso.org/apps/group_public/download.php/14833/z39_88_2004_r2010.pdf
+  - https://www.oclc.org/research/activities/registry.html
+UK AGMAP (Academic Geospatial Metadata Application Profile):
+  acronym:
+  field_of_science:
+  - physical geography
+  - natural sciences
+  - cartography
+  id: uk-agmap-academic-geospatial-metadata-application-profile
+  identifier:
+  - type: local
+    value: msc:m79
+  - type: homepage
+    value: http://www.gogeo.ac.uk/gogeo/metadata/agmap.htm
+  subject_areas:
+  - Cartography
+  - Geography
+  - Topography
+  urls:
+  - http://www.gogeo.ac.uk/gogeo/metadata/agmap.htm
+UK Gemini:
+  acronym:
+  field_of_science:
+  - physical geography
+  - natural sciences
+  - cartography
+  id: uk-gemini
+  identifier:
+  - type: local
+    value: msc:m80
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.b49fab
+  - type: homepage
+    value: http://www.agi.org.uk/uk-gemini/
+  subject_areas:
+  - Cartography
+  - Geography
+  - Topography
+  urls:
+  - http://www.agi.org.uk/uk-gemini/
+UKEOF:
+  acronym:
+  field_of_science:
+  - ecology
+  - geology
+  - biological sciences
+  - engineering and technology
+  - climatology
+  - soil sciences
+  - remote sensing
+  - meteorology
+  - natural sciences
+  - hydrology
+  id: ukeof
+  identifier:
+  - type: local
+    value: msc:m40
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.9xytp6
+  - type: homepage
+    value: http://www.ukeof.org.uk/
+  - type: schema
+    value: https://cataloguestaging.ukeof.org.uk/schema/ukeof.1.0.0.xsd
+  - type: schema
+    value: https://www.ukeof.org.uk/schema/1/UKEOF_v1.0.xsd
+  - type: namespace
+    value: http://www.ukeof.org.uk/schema/1
+  subject_areas:
+  - Biogeography
+  - Biological diversity
+  - Climatology
+  - Ecology
+  - Geology
+  - Hydrology
+  - Meteorology
+  - Remote sensing
+  - Soil sciences
+  urls:
+  - http://schema.ukeof.org.uk/
+  - http://www.ukeof.org.uk/
+  - https://cataloguestaging.ukeof.org.uk/schema/ukeof.1.0.0.xsd
+  - https://www.ukeof.org.uk/schema/1/UKEOF_v1.0.xsd
+  - http://www.ukeof.org.uk/schema/1
+USGIN (US Geoscience Information Network) Metadata Profile:
+  acronym:
+  field_of_science:
+  - earth and related environmental sciences
+  - natural sciences
+  id: usgin-iso-profile
+  identifier:
+  - type: local
+    value: msc:m81
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.c82136
+  - type: homepage
+    value: http://repository.stategeothermaldata.org/repository/resource/98ddf901b9782a25982e01af3b0bda50/
+  subject_areas:
+  - Earth sciences
+  urls:
+  - http://repository.stategeothermaldata.org/repository/resource/98ddf901b9782a25982e01af3b0bda50/
+  - http://usgin.github.io/usginspecs/USGIN_ISO_Metadata.htm
+VarioML:
+  acronym:
+  field_of_science:
+  - genetics
+  - natural sciences
+  id: varioml
+  identifier:
+  - type: local
+    value: msc:m82
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.pxvkt0
+  - type: homepage
+    value: http://www.ncbi.nlm.nih.gov/pubmed/23031277
+  - type: namespace
+    value: http://varioml.org/xml/1.0
+  subject_areas:
+  - Genetics
+  urls:
+  - http://www.ncbi.nlm.nih.gov/pubmed/23031277
+  - http://varioml.org/xml/1.0
+WMO Core Metadata Profile:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - meteorology
+  id: wmo-core-metadata-profile
+  identifier:
+  - type: local
+    value: msc:m84
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.5e7bdc
+  - type: homepage
+    value: https://wis.wmo.int/2012/metadata/
+  subject_areas:
+  - Meteorology
+  urls:
+  - https://wis.wmo.int/2012/metadata/
+WaterML:
+  acronym:
+  field_of_science:
+  - natural sciences
+  - hydrology
+  id: waterml
+  identifier:
+  - type: local
+    value: msc:m83
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.e07e1b
+  - type: homepage
+    value: http://www.opengeospatial.org/standards/waterml
+  - type: schema
+    value: https://schemas.opengis.net/waterml/2.0/waterml2.xsd
+  - type: namespace
+    value: http://www.opengis.net/waterml/2.0
+  subject_areas:
+  - Hydrology
+  urls:
+  - http://www.opengeospatial.org/standards/waterml
+  - https://schemas.opengis.net/waterml/2.0/waterml2.xsd
+  - http://www.opengis.net/waterml/2.0
+XOAI, a DSPACE Metadata Format:
+  acronym: XOAI
+  field_of_science: []
+  id: xoai-metadata-format
+  identifier:
+  - type: local
+    value: fuji:m6
+  - type: homepage
+    value: https://github.com/DSpace/xoai
+  - type: namespace
+    value: http://www.lyncode.com/xoai
+  subject_areas:
+  urls:
+  - https://github.com/DSpace/xoai
+  - http://www.lyncode.com/xoai
+XmetaDiss:
+  acronym: xmetadiss
+  field_of_science:
+  - library sciences
+  - sciences
+  - humanities
+  id: xmetadiss-schema
+  identifier:
+  - type: local
+    value: fuji:m43
+  - type: schema
+    value: https://d-nb.info/standards/schema/xmetadissplus.xsd
+  - type: namespace
+    value: http://www.d-nb.de/standards/xmetadissplus/
+  - type: namespace
+    value: http://www.d-nb.de/standards/xMetaDiss/
+  - type: homepage
+    value: http://www.d-nb.de/standards/xMetaDiss/
+  subject_areas:
+  - Multidisciplinary
+  - Bibliographic standards
+  - Information/library standards
+  urls:
+  - https://d-nb.info/standards/schema/xmetadissplus.xsd
+  - http://www.d-nb.de/standards/xmetadissplus/
+  - http://www.d-nb.de/standards/xMetaDiss/
+  - http://www.d-nb.de/standards/xMetaDiss/
+  - https://d-nb.info/1260521133/34
+da|ra Metadata Schema:
+  acronym: da|ra
+  field_of_science:
+  - sociology
+  - social sciences
+  - political sciences
+  id: dara-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m10
+  - type: local
+    value: https://fairsharing.org/4651
+  - type: namespace
+    value: http://da-ra.de/schema/kernel-4
+  - type: schema
+    value: http://da-ra.de/dara/schemadefinitions/dara.xsd
+  - type: schema
+    value: dara_v2.2.1_de_en_19112012.xsd
+  - type: schema
+    value: http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd
+  - type: homepage
+    value: https://www.da-ra.de/downloads#metadata
+  subject_areas:
+  - Social policy
+  - Sociology
+  urls:
+  - http://da-ra.de/schema/kernel-4
+  - http://da-ra.de/dara/schemadefinitions/dara.xsd
+  - dara_v2.2.1_de_en_19112012.xsd
+  - http://www.da-ra.de/fileadmin/media/da-ra.de/Technik/dara_v3.1_de_en_18112014.xsd
+  - https://www.da-ra.de/downloads#version-3-0
+  - https://www.da-ra.de/downloads#metadata
+eBank UK Metadata Application Profile:
+  acronym:
+  field_of_science:
+  - crystallography
+  - natural sciences
+  id: ebank-uk-metadata-application-profile
+  identifier:
+  - type: local
+    value: msc:m57
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.ad4856
+  - type: homepage
+    value: http://ecrystals.chem.soton.ac.uk
+  - type: schema
+    value: http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd
+  - type: namespace
+    value: http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/
+  subject_areas:
+  - Crystallography
+  urls:
+  - http://ecrystals.chem.soton.ac.uk
+  - http://naca.central.cranfield.ac.uk/ethos-oai/2.0/uketd_dc.xsd
+  - http://naca.central.cranfield.ac.uk/ethos-oai/uketd_dc/
+isaconfig-diXa:
+  acronym:
+  field_of_science:
+  - medical and health sciences
+  - toxicology
+  - genetics
+  - natural sciences
+  id: isaconfig-dixa
+  identifier:
+  - type: local
+    value: msc:m68
+  - type: homepage
+    value: https://bitbucket.org/kanterae/isaconfig-dixa
+  subject_areas:
+  - Genetics
+  - Toxicology
+  urls:
+  - https://bitbucket.org/kanterae/isaconfig-dixa
+museumdat:
+  acronym: museumdat
+  field_of_science:
+  - humanities
+  id: museumdat-schema
+  identifier:
+  - type: local
+    value: fuji:m31
+  - type: local
+    value: https://fairsharing.org/4671
+  - type: schema
+    value: http://museum.zib.de/museumdat/museumdat-v1.0.xsd
+  - type: homepage
+    value: http://museum.zib.de/museumdat/
+  subject_areas:
+  - Humanities
+  - Cultural heritage
+  urls:
+  - http://museum.zib.de/museumdat/museumdat-v1.0.xsd
+  - http://museum.zib.de/museumdat/
+'null':
+  acronym: scholix
+  field_of_science: []
+  id: scholix-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m28
+  - type: local
+    value: https://doi.org/10.25504/FAIRsharing.B0d5Kn
+  - type: homepage
+    value: http://www.scholix.org/schema
+  - type: namespace
+    value: http://www.scholix.org
+  - type: schema
+    value: https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd
+  - type: schema
+    value: https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd
+  subject_areas:
+  urls:
+  - http://www.scholix.org/schema
+  - http://www.scholix.org
+  - https://github.com/scholix/schema/blob/master/xsd/v3/schema.xsd
+  - https://github.com/scholix/schema/blob/master/xsd/v1/scholix.xsd
+xepicur:
+  acronym: epicur
+  field_of_science: []
+  id: epicur-metadata-schema
+  identifier:
+  - type: local
+    value: fuji:m21
+  - type: local
+    value: https://fairsharing.org/4659
+  - type: namespace
+    value: urn:nbn:de:1111-2004033116
+  - type: schema
+    value: https://files.dnb.de/Web/xepicur.xsd
+  - type: homepage
+    value: https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN
+  subject_areas:
+  urls:
+  - urn:nbn:de:1111-2004033116
+  - ' https://files.dnb.de/Web/xepicur.xsd'
+  - https://wiki.dnb.de/display/URNSERVDOK/xepicur+-+XML-Datentransferformat+zur+Verwaltung+von+URN

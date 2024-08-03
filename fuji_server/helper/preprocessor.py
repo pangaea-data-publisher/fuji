@@ -2,11 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
-import json
 import logging
 import mimetypes
-import os
 import time
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -53,8 +52,8 @@ class Preprocessor:
     identifiers_org_data = {}
     google_data_dois = []
     google_data_urls = []
-    # fuji_server_dir = os.path.dirname(sys.modules['__main__'].__file__)
-    fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
+    fuji_server_dir = Path(__file__).parent.parent  # project_root
+    data_dir = fuji_server_dir / "data"
     header = {"Accept": "application/json"}
     logger = logging.getLogger(__name__)
     data_files_limit = 3
@@ -122,9 +121,9 @@ class Preprocessor:
 
     @classmethod
     def retrieve_identifiers_org_data(cls):
-        std_uri_path = os.path.join(cls.fuji_server_dir, "data", "identifiers_org_resolver_data.json")
-        with open(std_uri_path, encoding="utf8") as f:
-            identifiers_data = json.load(f)
+        std_uri_path = cls.data_dir / "identifiers_org_resolver_data.yaml"
+        with open(std_uri_path, encoding="utf-8") as f:
+            identifiers_data = yaml.safe_load(f)
         if identifiers_data:
             for namespace in identifiers_data["payload"]["namespaces"]:
                 cls.identifiers_org_data[namespace["prefix"]] = {
@@ -141,7 +140,7 @@ class Preprocessor:
     @classmethod
     def retrieve_resource_types(cls):
         ns = []
-        ns_file_path = os.path.join(cls.fuji_server_dir, "data", "ResourceTypes.txt")
+        ns_file_path = cls.data_dir / "ResourceTypes.txt"
         with open(ns_file_path) as f:
             ns = [line.lower().rstrip() for line in f]
         if ns:
@@ -150,9 +149,9 @@ class Preprocessor:
     @classmethod
     def retrieve_schema_org_context(cls):
         data = {}
-        std_uri_path = os.path.join(cls.fuji_server_dir, "data", "jsonldcontext.json")
+        std_uri_path = cls.data_dir / "jsonldcontext.yaml"
         with open(std_uri_path) as f:
-            data = json.load(f)
+            data = yaml.safe_load(f)
         if data:
             for context, schemadict in data.get("@context").items():
                 if isinstance(schemadict, dict):
@@ -166,11 +165,11 @@ class Preprocessor:
     @classmethod
     def retrieve_schema_org_creativeworks(cls, include_bioschemas=True):
         data = []
-        cw_path = os.path.join(cls.fuji_server_dir, "data", "creativeworktypes.txt")
+        cw_path = cls.data_dir / "creativeworktypes.txt"
         with open(cw_path) as f:
             data = f.read().splitlines()
         if include_bioschemas:
-            bs_path = os.path.join(cls.fuji_server_dir, "data", "bioschemastypes.txt")
+            bs_path = cls.data_dir / "bioschemastypes.txt"
             with open(bs_path) as f:
                 bdata = f.read().splitlines()
                 data.extend(bdata)
@@ -223,8 +222,8 @@ class Preprocessor:
     def retrieve_datacite_re3repos(cls):
         # retrieve all client id and re3data doi from datacite
         isDebugMode = True
-        re3dict_path = os.path.join(cls.fuji_server_dir, "data", "repodois.yaml")
-        repolistdate = os.path.getmtime(re3dict_path)
+        re3dict_path = cls.data_dir / "repodois.yaml"
+        repolistdate = re3dict_path.stat().st_mtime
         try:
             # update once a day
             if time.time() - repolistdate >= 86400:
@@ -250,30 +249,30 @@ class Preprocessor:
                 # fix wrong entry
                 cls.re3repositories["bl.imperial"] = "http://doi.org/10.17616/R3K64N"
                 with open(re3dict_path, "w") as f2:
-                    yaml.dump(cls.re3repositories, f2)
+                    yaml.safe_dump(cls.re3repositories, f2)
 
             except requests.exceptions.RequestException as e:
-                os.utime(re3dict_path)
+                re3dict_path.touch()
                 print("Preprocessor Error: " + str(e))
                 cls.logger.error(e)
 
     @classmethod
     def get_access_rights(cls):
         data = None
-        jsn_path = os.path.join(cls.fuji_server_dir, "data", "access_rights.json")
-        with open(jsn_path) as f:
-            data = json.load(f)
+        path = cls.data_dir / "access_rights.yaml"
+        with path.open() as f:
+            data = yaml.safe_load(f)
         return data
 
     @classmethod
     def retrieve_licenses(cls, isDebugMode):
         data = None
-        jsn_path = os.path.join(cls.fuji_server_dir, "data", "licenses.json")
+        path = cls.data_dir / "licenses.yaml"
         # The repository can be found at https://github.com/spdx/license-list-data
         # https://spdx.org/spdx-license-list/license-list-overview
         if isDebugMode:  # use local file instead of downloading the file online
-            with open(jsn_path) as f:
-                data = json.load(f)
+            with open(path) as f:
+                data = yaml.safe_load(f)
         else:
             # cls.SPDX_URL = license_path
             try:
@@ -284,12 +283,12 @@ class Preprocessor:
                         data = resp["licenses"]
                         for d in data:
                             d["name"] = d["name"].lower()  # convert license name to lowercase
-                        with open(jsn_path, "w") as f:
-                            json.dump(data, f)
-                except json.decoder.JSONDecodeError as e1:
-                    cls.logger.error(e1)
-            except requests.exceptions.RequestException as e2:
-                cls.logger.error(e2)
+                        with open(path, "w") as f:
+                            yaml.safe_dump(data, f)
+                except yaml.YAMLError as exc1:
+                    cls.logger.error(exc1)
+            except requests.exceptions.RequestException as exc2:
+                cls.logger.error(exc2)
         if data:
             cls.all_licenses = data
             for licenceitem in cls.all_licenses:
@@ -314,9 +313,9 @@ class Preprocessor:
     @classmethod
     def retrieve_metadata_standards_uris(cls):
         data = {}
-        std_uri_path = os.path.join(cls.fuji_server_dir, "data", "metadata_standards_uris.json")
+        std_uri_path = cls.data_dir / "metadata_standards_uris.yaml"
         with open(std_uri_path) as f:
-            data = json.load(f)
+            data = yaml.safe_load(f)
         if data:
             cls.metadata_standards_uris = data
 
@@ -324,11 +323,11 @@ class Preprocessor:
     def retrieve_metadata_standards(cls):
         # cls.retrieve_metadata_standards_uris()
         data = {}
-        std_path = os.path.join(cls.fuji_server_dir, "data", "metadata_standards.json")
+        std_path = cls.data_dir / "metadata_standards.yaml"
         # The original repository can be retrieved via https://rdamsc.bath.ac.uk/api/m
         # or at https://github.com/rd-alliance/metadata-catalog-dev
         with open(std_path) as f:
-            data = json.load(f)
+            data = yaml.safe_load(f)
         """else:
             try:
                 r = requests.get(catalog_url)
@@ -366,9 +365,9 @@ class Preprocessor:
     @classmethod
     def retrieve_all_file_formats(cls):
         data = {}
-        sci_file_path = os.path.join(cls.fuji_server_dir, "data", "file_formats.json")
+        sci_file_path = cls.data_dir / "file_formats.yaml"
         with open(sci_file_path) as f:
-            data = json.load(f)
+            data = yaml.safe_load(f)
         if data:
             cls.all_file_formats = data
 
@@ -384,9 +383,6 @@ class Preprocessor:
                     domain = file.get("domain")[0]
                 for mime in file.get("mime"):
                     data[mime] = domain
-        """sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'science_formats.json')
-        with open(sci_file_path) as f:
-            data = json.load(f)"""
         if data:
             cls.science_file_formats = data
 
@@ -402,9 +398,6 @@ class Preprocessor:
                     domain = file.get("domain")[0]
                 for mime in file.get("mime"):
                     data[mime] = domain
-        """sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'longterm_formats.json')
-        with open(sci_file_path) as f:
-            data = json.load(f)"""
         if data:
             cls.long_term_file_formats = data
 
@@ -420,25 +413,22 @@ class Preprocessor:
                     domain = file.get("domain")[0]
                 for mime in file.get("mime"):
                     data[mime] = domain
-        """sci_file_path = os.path.join(cls.fuji_server_dir, 'data', 'open_formats.json')
-        with open(sci_file_path) as f:
-            data = json.load(f)"""
         if data:
             cls.open_file_formats = data
 
     @classmethod
     def retrieve_standard_protocols(cls, isDebugMode):
         data = {}
-        protocols_path = os.path.join(cls.fuji_server_dir, "data", "standard_uri_protocols.json")
+        protocols_path = cls.data_dir / "standard_uri_protocols.yaml"
         with open(protocols_path) as f:
-            data = json.load(f)
+            data = yaml.safe_load(f)
         if data:
             cls.standard_protocols = data
 
     @classmethod
     def retrieve_default_namespaces(cls):
         ns = []
-        ns_file_path = os.path.join(cls.fuji_server_dir, "data", "default_namespaces.txt")
+        ns_file_path = cls.data_dir / "default_namespaces.txt"
         with open(ns_file_path) as f:
             # ns = [line.split(':',1)[1].strip() for line in f]
             ns = [line.rstrip().rstrip("/#") for line in f]
@@ -465,11 +455,11 @@ class Preprocessor:
         cls.LOD_CLOUDNET = lodcloud_api
         # cls.BIOPORTAL_API = bioportal_api
         # cls.BIOPORTAL_KEY = bioportal_key
-        ld_path = os.path.join(cls.fuji_server_dir, "data", "linked_vocab.json")
+        ld_path = cls.data_dir / "linked_vocab.yaml"
         vocabs = []
         if isDebugMode:
             with open(ld_path) as f:
-                cls.linked_vocabs = json.load(f)
+                cls.linked_vocabs = yaml.safe_load(f)
         else:
             # 1. retrieve records from https://lov.linkeddata.es/dataset/lov/api
             # 714 vocabs, of which 104 vocabs uri specified are broken (02072020)
@@ -549,7 +539,7 @@ class Preprocessor:
             # 3. write to a local file
             try:
                 with open(ld_path, "w") as f:
-                    json.dump(vocabs, f)
+                    yaml.safe_dump(vocabs, f)
                     cls.linked_vocabs = vocabs
             except OSError:
                 cls.logger.error(f"Couldn't write to file {ld_path}.")
