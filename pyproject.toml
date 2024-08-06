@@ -24,7 +24,6 @@ dependencies = [
   "connexion[flask,uvicorn,swagger-ui]~=3.0",
   "extruct~=0.17.0",
   "feedparser~=6.0",
-  "flask-cors~=4.0",
   "flask-limiter~=3.5",
   "hashid~=3.1.4",
   "idutils~=1.2",
