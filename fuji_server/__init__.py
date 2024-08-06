@@ -2,15 +2,13 @@
 #
 # SPDX-License-Identifier: MIT
 
-# coding: utf-8
+# ruff: noqa: F401
 
-# flake8: noqa
-from __future__ import absolute_import
+from importlib.metadata import version
 
-# import models into model package
+from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.api import API
 from fuji_server.models.api_output import APIOutput
-from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.body import Body
 from fuji_server.models.code_provenance import CodeProvenance
 from fuji_server.models.code_provenance_output import CodeProvenanceOutput
@@ -82,7 +80,5 @@ from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
 from fuji_server.models.version_identifier import VersionIdentifier
 from fuji_server.models.version_identifier_output import VersionIdentifierOutput
-
-from importlib.metadata import version
 
 __version__ = version("fuji")
