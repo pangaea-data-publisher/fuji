@@ -64,27 +64,14 @@ requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
 version = "3.2.2"
 
 [project.optional-dependencies]
-dev = [
-  "fuji[lint,testing]"
-]
 docs = [
   "myst-parser~=3.0",
   "sphinx~=7.2",
   "sphinx-rtd-theme~=2.0"
 ]
-lint = [
-  "pre-commit~=3.4"
-]
 report = [
   "bokeh~=3.2",
   "jupyter~=1.0"
-]
-testing = [
-  "pytest~=8.0",
-  "pytest-cov~=5.0",
-  "pytest-randomly~=3.15",
-  "pytest-recording~=0.13",
-  "pytest-xdist~=3.3"
 ]
 
 [project.urls]
@@ -115,18 +102,32 @@ include = [
 packages = ["fuji_server"]
 
 [tool.hatch.envs.default]
-features = [
-  "lint",
-  "testing"
+dependencies = [
+  "pre-commit"
 ]
 post-install-commands = [
   "pre-commit install"
 ]
 
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov {args}"
 lint = "pre-commit run --all-files --color=always {args}"
-test = "pytest {args}"
+
+[tool.hatch.envs.hatch-test]
+# Ref: https://hatch.pypa.io/latest/config/internal/testing/
+extra-dependencies = [
+  "pytest-recording~=0.13"
+]
+randomize = true  # run tests in random order
+
+[tool.hatch.envs.hatch-test.scripts]
+cov-combine = """
+coverage combine
+coverage xml
+"""
+cov-report = "coverage report"
+# Ref: https://hatch.pypa.io/latest/config/internal/testing/#scripts
+run = "pytest{env:HATCH_TEST_ARGS:} {args}"
+run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
 
 [tool.pytest.ini_options]
 filterwarnings = [
