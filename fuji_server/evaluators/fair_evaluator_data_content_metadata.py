@@ -98,15 +98,17 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2a", 0, "pass")
                 self.logger.log(
-                    self.fuji.LOG_SUCCESS, self.metric_identifier + " : Found file size and type specified in metadata"
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier
+                    + f" : Found file size and type specified in metadata for -: {test_data_content_url}",
                 )
             elif not data_object.get("claimed_type"):
                 self.logger.warning(
-                    f"{self.metric_identifier} : NO info about file type available in given metadata -: "
+                    f"{self.metric_identifier} : NO info about file type available in given metadata for -: {test_data_content_url}"
                 )
             else:
                 self.logger.warning(
-                    f"{self.metric_identifier} : NO info about file size available in given metadata -: "
+                    f"{self.metric_identifier} : NO info about file size available in given metadata for -: {test_data_content_url}"
                 )
         return test_result
 
@@ -145,7 +147,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         if self.isTestDefined(self.metric_identifier + "-3"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-3")
             data_object = self.fuji.content_identifier.get(test_data_content_url)
-            if data_object.get("claimed_type") and data_object.get("claimed_size"):
+            if data_object.get("claimed_type") or data_object.get("claimed_size"):
                 if not isinstance(data_object.get("tika_content_type"), list):
                     data_object["tika_content_type"] = [data_object.get("tika_content_type")]
                 if data_object.get("content_size") and data_object.get("claimed_size"):
@@ -183,11 +185,18 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                                         str(data_object.get("content_size")),
                                     )
                                 )
-                            data_content_filesize_inner = DataContentMetadataOutputInner()
-                            data_content_filesize_inner.descriptor = "file size"
-                            data_content_filesize_inner.descriptor_value = data_object.get("claimed_size")
-                            data_content_filesize_inner.matches_content = size_matches
-                            self.data_content_descriptors.append(data_content_filesize_inner)
+                        else:
+                            self.logger.info(
+                                "{} : No content size given for downloaded file -: {}".format(
+                                    self.metric_identifier,
+                                    str(data_object.get("url")),
+                                )
+                            )
+                        data_content_filesize_inner = DataContentMetadataOutputInner()
+                        data_content_filesize_inner.descriptor = "file size"
+                        data_content_filesize_inner.descriptor_value = data_object.get("claimed_size")
+                        data_content_filesize_inner.matches_content = size_matches
+                        self.data_content_descriptors.append(data_content_filesize_inner)
                     except Exception:
                         self.logger.warning(
                             "{} : Could not verify content size from downloaded file -: (expected: {}, found: {})".format(
@@ -225,11 +234,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             + str(data_object.get("header_content_type")),
                         )
                     )
-                data_content_filetype_inner = DataContentMetadataOutputInner()
-                data_content_filetype_inner.descriptor = "file type"
-                data_content_filetype_inner.descriptor_value = data_object.get("claimed_type")
-                data_content_filetype_inner.matches_content = type_matches
-                self.data_content_descriptors.append(data_content_filetype_inner)
+            data_content_filetype_inner = DataContentMetadataOutputInner()
+            data_content_filetype_inner.descriptor = "file type"
+            data_content_filetype_inner.descriptor_value = data_object.get("claimed_type")
+            data_content_filetype_inner.matches_content = type_matches
+            self.data_content_descriptors.append(data_content_filetype_inner)
             if size_matches and type_matches and self.metric_identifier + "-3" not in self.test_passed:
                 self.test_passed.append(self.metric_identifier + "-3")
                 self.score.earned += test_score
