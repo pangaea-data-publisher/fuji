@@ -312,15 +312,6 @@ class Preprocessor:
             # cls.license_urls = dict(zip(referenceNumber, seeAlso))
 
     @classmethod
-    def retrieve_metadata_standards_uris(cls):
-        data = {}
-        std_uri_path = os.path.join(cls.fuji_server_dir, "data", "metadata_standards_uris.json")
-        with open(std_uri_path) as f:
-            data = json.load(f)
-        if data:
-            cls.metadata_standards_uris = data
-
-    @classmethod
     def retrieve_metadata_standards(cls):
         # cls.retrieve_metadata_standards_uris()
         data = {}
@@ -622,12 +613,6 @@ class Preprocessor:
         for dictm in cls.all_metrics_list:
             new_dict[dictm["metric_identifier"]] = {k: v for k, v in dictm.items() if k in wanted_fields}
         return new_dict
-
-    @classmethod
-    def get_metadata_standards_uris(cls) -> object:
-        if not cls.metadata_standards_uris:
-            cls.retrieve_metadata_standards_uris()
-        return cls.metadata_standards_uris
 
     @classmethod
     def get_metadata_standards(cls) -> object:
