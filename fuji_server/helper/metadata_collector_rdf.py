@@ -510,7 +510,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return meta
 
     # TODO rename to: get_core_metadata
-    def get_metadata(self, g, item, type="Dataset"):
+    def get_core_metadata(self, g, item, type="Dataset"):
         """Get the core (domain agnostic, DCAT, DC, schema.org) metadata given in RDF graph.
 
         Parameters
@@ -720,12 +720,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
         ontologies = list(graph[: RDF.type : OWL.Ontology])
         if len(ontologies) > 0:
             self.logger.info("FsF-F2-01M : RDF Graph seems to represent a OWL Ontology")
-            ont_metadata = self.get_metadata(graph, ontologies[0], type="DefinedTermSet")
+            ont_metadata = self.get_core_metadata(graph, ontologies[0], type="DefinedTermSet")
         else:
             ontologies = list(graph[: RDF.type : SKOS.ConceptScheme]) or list(graph[: RDF.type : SKOS.Collection])
             if len(ontologies) > 0:
                 self.logger.info("FsF-F2-01M : RDF Graph seems to represent a SKOS Ontology")
-                ont_metadata = self.get_metadata(graph, ontologies[0], type="DefinedTermSet")
+                ont_metadata = self.get_core_metadata(graph, ontologies[0], type="DefinedTermSet")
             else:
                 self.logger.info("FsF-F2-01M : Could not parse Ontology RDF")
         return ont_metadata
@@ -928,7 +928,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         except Exception as e:
             self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))
         if creative_work:
-            schema_metadata = self.get_metadata(graph, creative_work, type=creative_work_type)
+            schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
             # object type (in case there are more than one
             if isinstance(object_types_dict.get(str(creative_work)), list):
                 schema_metadata["object_type"] = object_types_dict.get(str(creative_work))
@@ -1038,7 +1038,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
-            dcat_metadata = self.get_metadata(graph, datasets[0], type="Dataset")
+            dcat_metadata = self.get_core_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
             # do something (check for table headers) with the table here..
