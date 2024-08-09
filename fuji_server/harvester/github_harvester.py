@@ -2,14 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
-import json
 import os
 import re
 import time
 from configparser import ConfigParser
+from pathlib import Path
 
 from github import Auth, Github
 from github.GithubException import UnknownObjectException
+
+import yaml
 
 
 class GithubHarvester:
@@ -23,10 +25,10 @@ class GithubHarvester:
         self.verbose = verbose
         self.authenticate(config)
         self.data = {}  # dictionary with all info
-        fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
-        software_file_path = os.path.join(fuji_server_dir, "data", "software_file.json")
+        fuji_server_dir = Path(__file__).parent.parent  # project_root
+        software_file_path = fuji_server_dir / "data" / "software_file.yaml"
         with open(software_file_path) as f:
-            self.files_map = json.load(f)
+            self.files_map = yaml.safe_load(f)
 
     def authenticate(self, config):
         """Runs every time a new harvesting request comes in, as the harvester is re-initialised every time. Picks a token (if available) and initialises the pyGithub handle.

@@ -103,6 +103,10 @@ def temporary_preprocessor(temporary_data_directory) -> Preprocessor:
     # point the preprocessor to a temporary directory,
     # to not change the fuji_server/data contents when running tests
     Preprocessor.fuji_server_dir = temporary_data_directory
+
+    # hard reset these attritbutes, because sometimes when running the tests in parallel, these were still populated
+    Preprocessor.identifiers_org_data = {}
+    Preprocessor.schema_org_context = []
     yield Preprocessor
     restore_preprocessor_state(current_state)
 
