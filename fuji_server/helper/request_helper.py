@@ -62,6 +62,7 @@ class AcceptTypes(Enum):
 
 class RequestHelper:
     def __init__(self, url, logInst: object = None):
+        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
         self.checked_content = {}
         if logInst:
             self.logger = logInst
@@ -145,7 +146,7 @@ class RequestHelper:
                     redirect_handler,
                 )
                 urllib.request.install_opener(opener)
-                request_headers = {"Accept": self.accept_type, "User-Agent": "F-UJI"}
+                request_headers = {"Accept": self.accept_type, "User-Agent": self.user_agent}
                 if self.authtoken:
                     request_headers["Authorization"] = self.tokentype + " " + self.authtoken
                 tp_request = urllib.request.Request(self.request_url, headers=request_headers)
@@ -165,6 +166,11 @@ class RequestHelper:
                     if e.code == 308:
                         self.logger.error(
                             "%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed"
+                            % metric_id
+                        )
+                    elif e.code == 405:
+                        self.logger.error(
+                            "%s : Received a 405 HTTP error, most likely because the host denied the User-Agent (web scraping detection)"
                             % metric_id
                         )
                     elif e.code >= 500:

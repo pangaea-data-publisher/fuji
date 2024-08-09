@@ -698,8 +698,6 @@ class MetadataHarvester:
                 self.redirect_url = requestHelper.redirect_url
                 response_status = requestHelper.response_status
                 self.landing_page_status = response_status
-                # if requestHelper.response_content:
-                # self.landing_url = requestHelper.redirect_url
             else:
                 self.logger.warning(
                     "FsF-F2-01M :Skipping Embedded tests, no scheme/protocol detected to be able to resolve "
