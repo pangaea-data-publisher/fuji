@@ -328,37 +328,6 @@ class Preprocessor:
         # or at https://github.com/rd-alliance/metadata-catalog-dev
         with open(std_path) as f:
             data = yaml.safe_load(f)
-        """else:
-            try:
-                r = requests.get(catalog_url)
-                try:
-                    if r.status_code == 200:
-                        resp = r.json()
-                        schemes = resp['metadata-schemes']
-                        for s in schemes:
-                            r2 = requests.get(catalog_url + str(s['id']), headers=cls.header)
-                            if r2.status_code == 200:
-                                std = r2.json()
-                                urls = None
-                                keywords = std.get('keywords')
-                                standard_title = std.get('title')
-                                locations = std.get('locations')
-                                if locations:
-                                    urls = [d['url'] for d in std.get('locations') if 'url' in d]
-                                # if keywords:
-                                # for k in keywords:
-                                # data.setdefault(k.lower(), []).append(standard_title)
-                                # else:
-                                # data.setdefault('other', []).append(standard_title)
-                                if standard_title:
-                                    data[standard_title] = {'subject_areas': keywords, 'urls': urls}
-
-                        with open(std_path, 'w') as f:
-                            json.dump(data, f)
-                except json.decoder.JSONDecodeError as e1:
-                    cls.logger.error(e1)
-            except requests.exceptions.RequestException as e2:
-                cls.logger.error(e2)"""
         if data:
             cls.metadata_standards = data
 
