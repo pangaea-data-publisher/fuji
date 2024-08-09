@@ -5,6 +5,7 @@
 import enum
 import hashlib
 import io
+import json
 import logging
 import mimetypes
 import re
@@ -759,8 +760,11 @@ class MetadataHarvester:
                     extruct_metadata = self.retrieve_metadata_embedded_extruct()
                     # if extruct_metadata:
                     ext_meta = extruct_metadata.get("json-ld")
+                    # comment the line below if jmespath handling of embedded json-ld is preferred, otherwise json-ls always will be handles as graph
+                    ext_meta = json.dumps(ext_meta)
+                    # print('EXT META',ext_meta)
                     self.logger.info("FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page")
-
+                    # TODO: actually schema.org, dcat and skos metadata is collected from a json-ld graph so this should be renamed
                     schemaorg_collector_embedded = MetaDataCollectorRdf(
                         loggerinst=self.logger, json_ld_content=ext_meta, source=MetadataSources.SCHEMAORG_EMBEDDED
                     )
@@ -787,7 +791,7 @@ class MetadataHarvester:
                         )
                         self.logger.log(
                             self.LOG_SUCCESS,
-                            "FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: "
+                            "FsF-F2-01M : Found embedded (schema.org) JSON-LD metadata in html page -: "
                             + str(schemaorg_dict.keys()),
                         )
                     else:
