@@ -160,7 +160,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 ):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements")
                     schema_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_graph)
-                    print(schema_metadata)
                 if bool(set(ontology_indicator) & set(graph_namespaces.values())):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements")
                     skos_metadata = self.get_ontology_metadata(rdf_response_graph)
@@ -941,6 +940,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # object type (in case there are more than one
             if isinstance(object_types_dict.get(str(creative_work)), list):
                 schema_metadata["object_type"] = object_types_dict.get(str(creative_work))
+            # "access_free"
+            access_free = graph.value(creative_work, SMA.isAccessibleForFree) or graph.value(
+                creative_work, SDO.isAccessibleForFree
+            )
+            if access_free:
+                schema_metadata["access_free"] = access_free
             # creator
             creator_node = None
             if graph.value(creative_work, SMA.creator):

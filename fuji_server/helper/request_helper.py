@@ -146,7 +146,11 @@ class RequestHelper:
                     redirect_handler,
                 )
                 urllib.request.install_opener(opener)
-                request_headers = {"Accept": self.accept_type, "User-Agent": self.user_agent}
+                # web servers sometimes ignore content negotiation in case user agent is detected to be a browser!
+                user_agent = self.user_agent
+                if "html" not in self.accept_type:
+                    user_agent = "F-UJI"
+                request_headers = {"Accept": self.accept_type, "User-Agent": user_agent}
                 if self.authtoken:
                     request_headers["Authorization"] = self.tokentype + " " + self.authtoken
                 tp_request = urllib.request.Request(self.request_url, headers=request_headers)
