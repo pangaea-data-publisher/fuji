@@ -339,7 +339,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
 
             elif self.accept_type == AcceptTypes.rdf:
-                # print('ACCEPT: ',self.accept_type)
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                 format_dict = {
@@ -645,9 +644,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 meta["contributor"].append(str(contributor))
 
         if not meta.get("license"):
-            meta["license"] = str(
-                g.value(item, DCTERMS.license) or g.value(item, SDO.license) or g.value(item, SMA.license)
-            )
+            license_item = g.value(item, DCTERMS.license) or g.value(item, SDO.license) or g.value(item, SMA.license)
+            # schema.org
+            license_value = str(license_item)
+            if g.value(license_item, SDO.url) or g.value(license_item, SMA.url):
+                license_value = g.value(license_item, SDO.url) or g.value(license_item, SMA.url)
+            meta["license"] = str(license_value)
         if not meta.get("access_level"):
             meta["access_level"] = str(
                 g.value(item, DCTERMS.accessRights)
@@ -868,12 +870,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             self.logger.info("FsF-I3-01M : No related resource(s) found in Schema.org metadata")
 
                     if jsnld_metadata.get("object_size"):
-                        # print(jsnld_metadata.get('object_size'))
                         if isinstance(jsnld_metadata["object_size"], dict):
                             jsnld_metadata["object_size"] = str(jsnld_metadata["object_size"].get("value"))
-
-                        # jsnld_metadata['object_size'] = str(jsnld_metadata['object_size'].get('value')) + ' '+ jsnld_metadata['object_size'].get('unitText')
-
                 else:
                     self.logger.info(
                         "FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: "
@@ -909,7 +907,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
                     if root_name.lower() in creative_work_types:
                         creative_works = list(graph[: RDF.type : root])
-                        # print(root, type(creative_works[0]), list(graph.subjects(object=creative_works[0])))
                         # Finding the schema.org root
                         creative_work_subjects = list(graph.subjects(object=creative_works[0]))
                         # don't list yourself...
@@ -946,6 +943,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
             )
             if access_free:
                 schema_metadata["access_free"] = access_free
+            # object size (total)
+
+            object_size = graph.value(creative_work, SMA.size) or graph.value(creative_work, SDO.size)
+            if object_size:
+                size_value = graph.value(object_size, SMA.value) or graph.value(object_size, SDO.value)
+                if not size_value:
+                    size_value = object_size
+                schema_metadata["object_size"] = size_value
             # creator
             creator_node = None
             if graph.value(creative_work, SMA.creator):

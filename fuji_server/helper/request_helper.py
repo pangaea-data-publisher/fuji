@@ -62,7 +62,8 @@ class AcceptTypes(Enum):
 
 class RequestHelper:
     def __init__(self, url, logInst: object = None):
-        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
+        self.user_agent = "F-UJI"
+        self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
         self.checked_content = {}
         if logInst:
             self.logger = logInst
@@ -146,11 +147,7 @@ class RequestHelper:
                     redirect_handler,
                 )
                 urllib.request.install_opener(opener)
-                # web servers sometimes ignore content negotiation in case user agent is detected to be a browser!
-                user_agent = self.user_agent
-                if "html" not in self.accept_type:
-                    user_agent = "F-UJI"
-                request_headers = {"Accept": self.accept_type, "User-Agent": user_agent}
+                request_headers = {"Accept": self.accept_type, "User-Agent": self.user_agent}
                 if self.authtoken:
                     request_headers["Authorization"] = self.tokentype + " " + self.authtoken
                 tp_request = urllib.request.Request(self.request_url, headers=request_headers)
@@ -174,9 +171,15 @@ class RequestHelper:
                         )
                     elif e.code == 405:
                         self.logger.error(
-                            "%s : Received a 405 HTTP error, most likely because the host denied the User-Agent (web scraping detection)"
+                            "%s : Received a 405 HTTP error, most likely because the host denied the User-Agent (web scraping detection), retrying..."
                             % metric_id
                         )
+                        try:
+                            request_headers["User-Agent"] = self.browser_like_user_agent
+                            tp_request = urllib.request.Request(self.request_url, headers=request_headers)
+                            tp_response = opener.open(tp_request, timeout=10)
+                        except:
+                            print("405 fix error:" + str(e))
                     elif e.code >= 500:
                         if "doi.org" in self.request_url:
                             self.logger.error(
