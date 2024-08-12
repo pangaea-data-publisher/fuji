@@ -224,16 +224,18 @@ class DataHarvester:
                     fileinfo["header_content_size"] = response.headers.get("content-length").split(";")[0]
                 elif response.headers.get("Content-Length"):
                     fileinfo["header_content_size"] = response.headers.get("Content-Length").split(";")[0]
-                try:
-                    fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
-                except:
-                    fileinfo["header_content_size"] = self.max_download_size
-                    pass
+                if fileinfo.get("header_content_size"):
+                    try:
+                        fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
+                    except:
+                        fileinfo["header_content_size"] = self.max_download_size
+                        pass
                 content = response.read(self.max_download_size)
                 file_buffer_object.write(content)
                 fileinfo["content_size"] = file_buffer_object.getbuffer().nbytes
-                if fileinfo["content_size"] < fileinfo["header_content_size"]:
-                    fileinfo["truncated"] = True
+                if fileinfo.get("header_content_size"):
+                    if fileinfo["content_size"] < fileinfo["header_content_size"]:
+                        fileinfo["truncated"] = True
                 if fileinfo["content_size"] > 0:
                     fileinfo.update(self.tika(file_buffer_object, urldict.get("url")))
 
