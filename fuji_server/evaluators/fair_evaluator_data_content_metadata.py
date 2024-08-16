@@ -112,6 +112,26 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 )
         return test_result
 
+    def subtestServiceProtocolServiceEndpointGiven(self, test_data_content_url):
+        test_result = False
+        if test_data_content_url:
+            data_object = self.fuji.content_identifier.get(test_data_content_url)
+            # print(data_object)
+            if data_object.get("claimed_service") and data_object.get("url"):
+                print("SERVICE and URL GIVEN ")
+                test_result = True
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-2c", 0, "pass")
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier
+                    + f" : Found data service endpoint and protocol specified in metadata for -: {test_data_content_url}",
+                )
+            elif not data_object.get("claimed_service"):
+                self.logger.info(
+                    f"{self.metric_identifier} : NO info about data service endpoint available in given metadata for -: {test_data_content_url}"
+                )
+        return test_result
+
     def subtestMeasuredVariablesGiven(self):
         test_result = False
         if self.fuji.metadata_merged.get("measured_variable"):
@@ -131,6 +151,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if test_data_content_url:
                 if self.subtestDataTypeAndSizeGiven(test_data_content_url):
                     test_result = True
+                if self.subtestServiceProtocolServiceEndpointGiven(test_data_content_url):
+                    test_result = True
                 if self.subtestMeasuredVariablesGiven():
                     test_result = True
             if test_result and self.metric_identifier + "-2" not in self.test_passed:
@@ -140,14 +162,15 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
         return test_result
 
-    def testSizeAndTypeMatchesMetadata(self, test_data_content_url):
+    def testSizeAndTypeOrProtocolMatchesMetadata(self, test_data_content_url):
         test_result = False
         size_matches = False
         type_matches = False
+        protocol_matches = False
         if self.isTestDefined(self.metric_identifier + "-3"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-3")
             data_object = self.fuji.content_identifier.get(test_data_content_url)
-            if data_object.get("claimed_type") or data_object.get("claimed_size"):
+            if data_object.get("claimed_type") or data_object.get("claimed_size") or data_object.get("claimed_service"):
                 if not isinstance(data_object.get("tika_content_type"), list):
                     data_object["tika_content_type"] = [data_object.get("tika_content_type")]
                 if data_object.get("content_size") and data_object.get("claimed_size"):
@@ -234,12 +257,32 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             + str(data_object.get("header_content_type")),
                         )
                     )
+                if data_object.get("claimed_service"):
+                    protocol_mime_types = ["application/xml", "text/xml", "application/ld+json", " application/json"]
+                    if data_object.get("tika_content_type"):
+                        for tika_type in data_object.get("tika_content_type"):
+                            if tika_type in protocol_mime_types:
+                                protocol_matches = True
+                                self.logger.info(
+                                    "{} : Sucessfully verified commonly used protocol mime type -: (expected: {}, found: via tika {})".format(
+                                        self.metric_identifier,
+                                        protocol_mime_types,
+                                        str(data_object.get("tika_content_type")),
+                                    )
+                                )
+                                data_content_protocol_inner = DataContentMetadataOutputInner()
+                                data_content_protocol_inner.descriptor = "data protocol"
+                                data_content_protocol_inner.descriptor_value = data_object.get("claimed_service")
+                                data_content_protocol_inner.matches_content = protocol_matches
+                                self.data_content_descriptors.append(data_content_protocol_inner)
             data_content_filetype_inner = DataContentMetadataOutputInner()
             data_content_filetype_inner.descriptor = "file type"
             data_content_filetype_inner.descriptor_value = data_object.get("claimed_type")
             data_content_filetype_inner.matches_content = type_matches
             self.data_content_descriptors.append(data_content_filetype_inner)
-            if size_matches and type_matches and self.metric_identifier + "-3" not in self.test_passed:
+            if (
+                (size_matches and type_matches) or protocol_matches
+            ) and self.metric_identifier + "-3" not in self.test_passed:
                 self.test_passed.append(self.metric_identifier + "-3")
                 self.score.earned += test_score
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
@@ -309,9 +352,11 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 for test_data_content_url in test_data_content_urls:
                     if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
                         test_status = "pass"
-                    if self.testSizeAndTypeMatchesMetadata(test_data_content_url):
+                    if self.testSizeAndTypeOrProtocolMatchesMetadata(test_data_content_url):
                         test_status = "pass"
                     if self.testVariablesMatchMetadata(test_data_content_url):
+                        test_status = "pass"
+                    if self.subtestServiceProtocolServiceEndpointGiven(test_data_content_url):
                         test_status = "pass"
             else:
                 self.logger.warning(
