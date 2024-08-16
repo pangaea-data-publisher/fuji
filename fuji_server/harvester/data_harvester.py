@@ -195,6 +195,8 @@ class DataHarvester:
                 "url": urldict.get("url"),
                 "claimed_size": urldict.get("size"),
                 "claimed_type": urldict.get("type"),
+                "claimed_service": urldict.get("service"),
+                "claimed_profile": urldict.get("profile"),
                 "truncated": False,
                 "is_persistent": False,
             }
