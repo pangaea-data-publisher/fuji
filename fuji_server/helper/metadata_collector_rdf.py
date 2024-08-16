@@ -546,6 +546,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 + list(g.objects(item, SMA.identifier))
                 + list(g.objects(item, SDO.sameAs))
                 + list(g.objects(item, SMA.sameAs))
+                + list(g.objects(item, SMA.url))
+                + list(g.objects(item, SDO.url))
             ):
                 idvalue = g.value(identifier, SDO.value) or g.value(identifier, SMA.value)
                 if idvalue:
@@ -974,9 +976,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     )
                 if len(creator_name) > 0:
                     schema_metadata["creator"] = creator_name
-
-            distribution = graph.objects(creative_work, SMA.distribution) or graph.objects(
-                creative_work, SDO.distribution
+            distribution = list(graph.objects(creative_work, SMA.distribution)) + list(
+                graph.objects(creative_work, SDO.distribution)
             )
             schema_metadata["object_content_identifier"] = []
             for dist in distribution:
@@ -996,10 +997,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         {"url": str(durl), "type": dtype, "size": str(dsize)}
                     )
 
-            potential_action = graph.objects(creative_work, SMA.potentialAction) or graph.objects(
-                creative_work, SDO.potentialAction
+            potential_action = list(graph.objects(creative_work, SMA.potentialAction)) + list(
+                graph.objects(creative_work, SDO.potentialAction)
             )
-            schema_metadata["object_content_service"] = []
 
             for potaction in potential_action:
                 service_url, service_desc, service_type = None, None, None
@@ -1016,15 +1016,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         entry_point, SDO.additionalType
                     )
                 if service_url:
-                    schema_metadata["object_content_service"].append(
-                        {"url": service_url, "type": service_type, "desc": service_desc}
+                    schema_metadata["object_content_identifier"].append(
+                        {"url": service_url, "type": service_type, "service": service_desc}
                     )
 
             schema_metadata["measured_variable"] = []
-            for variable in list(graph.objects(creative_works[0], SMA.variableMeasured)) or list(
+            for variable in list(graph.objects(creative_works[0], SMA.variableMeasured)) + list(
                 graph.objects(creative_works[0], SDO.variableMeasured)
             ):
-                variablename = graph.value(variable, SMA.name) or graph.value(variable, SDO.name)
+                variablename = graph.value(variable, SMA.name) or graph.value(variable, SDO.name) or None
+
                 if variablename:
                     schema_metadata["measured_variable"].append(variablename)
                 else:
@@ -1065,7 +1066,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 print(t)
             dcat_metadata["object_content_identifier"] = []
             for dist in distribution:
-                dtype, durl, dsize = None, None, None
+                dtype, durl, dsize, dservice = None, None, None, None
                 if not (
                     graph.value(dist, DCAT.accessURL)
                     or graph.value(dist, DCAT.downloadURL)
@@ -1098,15 +1099,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         # print(e)
                         durl = str(dist)
                 elif graph.value(dist, DCAT.accessService):
-                    if not dcat_metadata.get("object_content_service"):
-                        dcat_metadata["object_content_service"] = []
                     for dcat_service in graph.objects(dist, DCAT.accessService):
-                        service_url = graph.value(dcat_service, DCAT.endpointURL)
-                        service_type = graph.value(dcat_service, DCTERMS.conformsTo)
-                        servive_desc = graph.value(dcat_service, DCAT.endpointDescription)
-                        dcat_metadata["object_content_service"].append(
-                            {"url": service_url, "type": service_type, "desc": servive_desc}
-                        )
+                        durl = graph.value(dcat_service, DCAT.endpointURL)
+                        dtype = graph.value(dcat_service, DCTERMS.conformsTo)
+                        dservice = graph.value(dcat_service, DCAT.endpointDescription)
                 else:
                     durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
                     # taking only one just to check if licence is available and not yet set
@@ -1123,7 +1119,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     if idutils.is_url(str(durl)):
                         dtype = "/".join(str(dtype).split("/")[-2:])
                     dcat_metadata["object_content_identifier"].append(
-                        {"url": str(durl), "type": dtype, "size": str(dsize)}
+                        {"url": str(durl), "type": dtype, "size": str(dsize), "service": str(dservice)}
                     )
 
             if dcat_metadata["object_content_identifier"]:
