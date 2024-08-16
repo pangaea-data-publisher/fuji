@@ -159,10 +159,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                             + "Found RDFa like metadata which however is empty thus useless for search engines"
                         )
             search_engine_support_match = list(set(search_engine_support_match))
-            # OLD WAY
             # Check search mechanisms based on sources of metadata extracted.
-            """search_engine_support_match: List[Any] = list(
-                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))"""
             if search_engine_support_match:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
                 self.set_maturity(self.getTestConfigMaturity(self.metric_identifier + "-1"))
