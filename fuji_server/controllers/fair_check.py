@@ -391,8 +391,8 @@ class FAIRCheck:
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()
-        self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
-        self.metadata_merged.update(self.metadata_harvester.metadata_merged)
+        # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
+        # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
         self.namespace_uri.extend(self.metadata_harvester.namespace_uri)
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
@@ -408,8 +408,8 @@ class FAIRCheck:
 
     def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode=repeat_mode)
-        self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
-        self.metadata_merged.update(self.metadata_harvester.metadata_merged)
+        # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
+        # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
         self.namespace_uri.extend(self.metadata_harvester.namespace_uri)
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
@@ -420,35 +420,9 @@ class FAIRCheck:
         self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
 
-    """def lookup_metadatastandard_by_name(self, value):
-        found = None
-        # get standard name with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
-        if highest[1] > 80:
-            found = highest[2]
-        return found
-
-    def lookup_metadatastandard_by_uri(self, value):
-        found = None
-        if value:
-            value = str(value).strip().strip('#/')
-            # try to find it as direct match using http or https as prefix
-            if value.startswith('http') or value.startswith('ftp'):
-                value = value.replace('s://', '://')
-                found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value)
-                if not found:
-                    found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value.replace('://', 's://'))
-            if not found:
-                #fuzzy as fall back
-                try:
-                    match = process.extractOne(value,
-                                               FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.keys())
-                    if extract(str(value)).domain == extract(str(match[1]).domain):
-                        if match[1] > 90:
-                            found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
-                except Exception as e:
-                    pass
-        return found"""
+    def set_harvested_metadata(self):
+        self.metadata_unmerged = self.metadata_harvester.metadata_unmerged
+        self.metadata_merged = self.metadata_harvester.metadata_merged
 
     def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
@@ -467,7 +441,6 @@ class FAIRCheck:
         return persistent_identifier_check.getResult()
 
     def check_unique_persistent_metadata_identifier(self):
-        # self.metadata_harvester.get_signposting_object_identifier()
         return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
 
     def check_unique_persistent_software_identifier(self):
