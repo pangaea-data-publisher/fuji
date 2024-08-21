@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 import requests
 
 import yaml
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
 
 
 class Preprocessor:
@@ -444,7 +444,7 @@ class Preprocessor:
 
     @classmethod
     def retrieve_linked_vocab_index(cls):
-        lov_helper = linked_vocab_helper()
+        lov_helper = LinkedVocabHelper()
         lov_helper.set_linked_vocab_index()
         cls.linked_vocab_index = lov_helper.linked_vocab_index
 
