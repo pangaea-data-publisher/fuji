@@ -50,7 +50,7 @@ from fuji_server.evaluators.fair_evaluator_version_identifier import FAIREvaluat
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metric_helper import MetricHelper
@@ -184,7 +184,7 @@ class FAIRCheck:
         FAIRCheck.load_predata()
         # self.extruct = None
         self.extruct_result = {}
-        self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
+        self.lov_helper = LinkedVocabHelper(self.LINKED_VOCAB_INDEX)
         self.auth_token = None
         self.auth_token_type = "Basic"
 

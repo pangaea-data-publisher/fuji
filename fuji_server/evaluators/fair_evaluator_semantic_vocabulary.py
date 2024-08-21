@@ -5,7 +5,7 @@
 import fnmatch
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
 
@@ -81,7 +81,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         return test_status
 
     def testKnownSemanticResourcesUsed(self):
-        lov_helper = linked_vocab_helper(self.fuji.LINKED_VOCAB_INDEX)
+        lov_helper = LinkedVocabHelper(self.fuji.LINKED_VOCAB_INDEX)
         test_status = False
         communityspecsdefined = False
         if self.isTestDefined(self.metric_identifier + "-2"):

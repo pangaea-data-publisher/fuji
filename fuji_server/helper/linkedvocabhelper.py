@@ -9,15 +9,15 @@ import re
 from tldextract import extract
 
 
-class linked_vocab_helper:
+class LinkedVocabHelper:
     fuji_server_dir = os.path.dirname(os.path.dirname(__file__))  # project_root
 
     def __init__(self, linked_vocab_index={}):
         self.linked_vocab_index = linked_vocab_index
         self.linked_vocab_dict = {}
-        self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia"]
+        self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia", "github", "arxiv"]
         # prefixes used for identifiers only so we ignore these for terms
-        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org"]
+        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org", "github.com", "arxiv.org"]
 
     def set_linked_vocab_dict(self):
         print("Setting up the vocab dict.........................")

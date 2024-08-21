@@ -8,7 +8,7 @@ import logging
 from urlextract import URLExtract
 
 from fuji_server.helper import metadata_mapper
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -300,7 +300,7 @@ class MetaDataCollector:
         """
         extractor = URLExtract()
         found_urls = []
-        lov_helper = linked_vocab_helper(Preprocessor.linked_vocab_index)
+        lov_helper = LinkedVocabHelper(Preprocessor.linked_vocab_index)
         if meta_source is not None:
             if isinstance(meta_source, str):
                 found_urls = set(extractor.gen_urls(str(meta_source)))
