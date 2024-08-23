@@ -682,8 +682,18 @@ class FAIRCheck:
                     self.metadata_merged["publisher"] = [self.metadata_merged.get("publisher")]
                 for publisher_url in self.metadata_merged.get("publisher"):
                     if self.uri_validator(publisher_url):
-                        if self.landing_domain in publisher_url:
+                        if self.landing_domain in publisher_url and publisher_url.count("/") <= 3:
                             self.repository_urls.append(publisher_url)
         if self.repository_urls:
             self.repository_urls = list(set(self.repository_urls))
-        # print("REPOSITORY: ", self.repository_urls)
+        print("REPOSITORY URIS: ", self.repository_urls)
+
+    def set_repository_info(self):
+        self.set_repository_uris()
+        if self.repository_urls:
+            for repo_uri in self.repository_urls:
+                repoharvester = MetadataHarvester(repo_uri)
+                repoharvester.retrieve_metadata_embedded()
+                repoharvester.retrieve_metadata_external()
+                print("########################### REPO METADATA")
+                print(repoharvester.metadata_merged)
