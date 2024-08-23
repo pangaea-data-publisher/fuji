@@ -268,22 +268,25 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     if meta_rec_type in self.SCHEMA_ORG_CREATIVEWORKS:
                                         json_dict = meta_rec
                             if not json_dict:
-                                rdf_response_dict = rdf_response[0]
+                                rdf_response = rdf_response[0]
                             else:
-                                rdf_response_dict = json_dict
-                        else:
-                            rdf_response_dict = rdf_response
+                                rdf_response = json_dict
+                        # else:
+                        #    rdf_response_dict = rdf_response
                         try:
-                            rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response_dict)
-                            if rdf_metadata:
-                                self.setLinkedNamespaces(str(rdf_response_dict))
-                            else:
-                                self.logger.info(
-                                    "FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing"
-                                )
-                                # quick fix for https://github.com/RDFLib/rdflib/issues/1484
-                                # needs to be done before dict is converted to string
-                                # print(rdf_response)
+                            # rdf_response_json = json.dumps(rdf_response_dict)
+                            # rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response_dict)
+                            # rdf_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_json)
+                            # if rdf_metadata:
+                            #    self.setLinkedNamespaces(str(rdf_response))
+                            # else:
+                            #    self.logger.info(
+                            #        "FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing"
+                            #    )
+                            # quick fix for https://github.com/RDFLib/rdflib/issues/1484
+                            # needs to be done before dict is converted to string
+                            # print(rdf_response)
+                            if 1 == 1:
                                 if isinstance(rdf_response, dict):
                                     if rdf_response.get("@context"):
                                         if rdf_response.get("@graph"):
@@ -439,9 +442,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info("FsF-F2-01M : Trying to query generic SPARQL on RDF, found triples: -:" + str(len(g)))
                 r = g.query(Mapper.GENERIC_SPARQL.value)
                 for row in r:
-                    for relation_type, related_resource in row.asdict().items():
-                        if relation_type is not None:
-                            if relation_type in [
+                    for row_property, row_value in row.asdict().items():
+                        if row_property is not None:
+                            if row_property in [
                                 "references",
                                 "source",
                                 "isVersionOf",
@@ -458,11 +461,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if not meta.get("related_resources"):
                                     meta["related_resources"] = []
                                 meta["related_resources"].append(
-                                    {"related_resource": str(related_resource), "relation_type": relation_type}
+                                    {"related_resource": str(row_value), "relation_type": row_property}
                                 )
                             else:
-                                if related_resource:
-                                    meta[relation_type] = str(related_resource)
+                                if row_value:
+                                    if not isinstance(row_value, rdflib.term.BNode):
+                                        meta[row_property] = str(row_value)
                     if meta:
                         break
                     # break
@@ -890,24 +894,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
             jsnld_metadata = {}
         return jsnld_metadata
 
-    def get_schemaorg_metadata_from_graph(self, graph):
-        # we will only test creative works and subtypes
-        creative_work_types = Preprocessor.get_schema_org_creativeworks()
-        creative_work = None
-        schema_metadata = {}
-        SMA = Namespace("http://schema.org/")
-        # use only schema.org properties and create graph using these.
-        # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
-        creative_work_type = "Dataset"
+    def find_root_candidates(self, graph, allowed_types=["Dataset"]):
+        allowed_types = [at.lower() for at in allowed_types if isinstance(at, str)]
+        cand_creative_work = {}
+        object_types_dict = {}
         try:
-            cand_creative_work = {}
-            object_types_dict = {}
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
+
                 if "schema.org" in str(root):
                     root_name = str(root).rsplit("/")[-1].strip()
-
-                    if root_name.lower() in creative_work_types:
+                elif "dcat" in str(root):
+                    root_name = str(root).rsplit("#")[-1].strip()
+                else:
+                    root_name = None
+                if root_name:
+                    if root_name.lower() in allowed_types:
                         creative_works = list(graph[: RDF.type : root])
                         # Finding the schema.org root
                         creative_work_subjects = list(graph.subjects(object=creative_works[0]))
@@ -923,7 +925,21 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         # helps for ro crate
                         elif graph.identifier in creative_work_subjects:
                             cand_creative_work[root_name] = creative_works[0]
+        except Exception as ee:
+            print("ROOT IDENTIFICATION ERROR: ", ee)
+        return cand_creative_work, object_types_dict
 
+    def get_schemaorg_metadata_from_graph(self, graph):
+        # we will only test creative works and subtypes
+        creative_work_types = Preprocessor.get_schema_org_creativeworks()
+        creative_work = None
+        schema_metadata = {}
+        SMA = Namespace("http://schema.org/")
+        # use only schema.org properties and create graph using these.
+        # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
+        creative_work_type = "Dataset"
+        try:
+            cand_creative_work, object_types_dict = self.find_root_candidates(graph, creative_work_types)
             if cand_creative_work:
                 # prioritize Dataset type
                 if "Dataset" in cand_creative_work:
@@ -934,6 +950,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         except Exception as e:
             self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))
+            print("Cand Creative work identification Error", e)
         if creative_work:
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
             # object type (in case there are more than one
@@ -1021,8 +1038,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     )
 
             schema_metadata["measured_variable"] = []
-            for variable in list(graph.objects(creative_works[0], SMA.variableMeasured)) + list(
-                graph.objects(creative_works[0], SDO.variableMeasured)
+            for variable in list(graph.objects(creative_work, SMA.variableMeasured)) + list(
+                graph.objects(creative_work, SDO.variableMeasured)
             ):
                 variablename = graph.value(variable, SMA.name) or graph.value(variable, SDO.name) or None
 
@@ -1031,8 +1048,40 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     schema_metadata["measured_variable"].append(variable)
 
-            #'measured_variable: variableMeasured[*].name || variableMeasured , object_size: size,' \
+            # two routes to API services provided by repositories
+            # 1) via the schema.org/DataCatalog 'offers' property
+            # 2) via the schema.org/Project 'hasofferCatalog' property
+            offer_catalog = graph.value(creative_work, SMA.hasOfferCatalog) or graph.value(
+                creative_work, SDO.hasOfferCatalog
+            )
 
+            data_services = list(graph.objects(creative_work, SMA.offers)) + list(
+                graph.objects(creative_work, SDO.offers)
+            )
+
+            if offer_catalog:
+                data_services.extend(
+                    list(graph.objects(offer_catalog, SMA.itemListElement))
+                    + list(graph.objects(offer_catalog, SDO.itemListElement))
+                )
+
+            schema_metadata["metadata_service"] = []
+            for data_service in data_services:
+                if offer_catalog:
+                    service_rdf_type = graph.value(data_service, RDF.type)
+                    service_offer = data_service
+                else:
+                    service_offer = graph.value(data_service, SMA.itemOffered) or graph.value(
+                        data_service, SDO.itemOffered
+                    )
+                    service_rdf_type = graph.value(service_offer, RDF.type)
+
+                if "WebAPI" in str(service_rdf_type) or "Service" in str(service_rdf_type):
+                    service_url = graph.value(service_offer, SMA.url) or graph.value(service_offer, SDO.url)
+                    service_type = graph.value(service_offer, SMA.documentation) or graph.value(
+                        service_offer, SDO.documentation
+                    )
+                    schema_metadata["metadata_service"].append({"url": str(service_url), "type": str(service_type)})
         return schema_metadata
 
     def get_dcat_metadata(self, graph):
@@ -1051,8 +1100,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
         dcat_metadata = dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         CSVW = Namespace("http://www.w3.org/ns/csvw#")
-
-        datasets = list(graph[: RDF.type : DCAT.Dataset])
+        dcat_root_type = "Dataset"
+        datasets = []
+        cand_roots, object_types_dict = self.find_root_candidates(graph, ["Dataset", "Catalog"])
+        print("CAND ROOTS DCAT: ", cand_roots, object_types_dict)
+        if cand_roots:
+            # prioritize Dataset type
+            if "Dataset" not in cand_roots:
+                dcat_root_type = next(iter(cand_roots))
+        if dcat_root_type:
+            datasets = list(graph[: RDF.type : DCAT[dcat_root_type]])
         table = list(graph[: RDF.type : CSVW.Column])
         # print("TABLE", len(table))
         if len(datasets) > 1:
@@ -1127,15 +1184,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     "FsF-F3-01M : Found data links in DCAT.org metadata -: "
                     + str(dcat_metadata["object_content_identifier"])
                 )
-                # TODO: add provenance metadata retrieval
-        # else:
-        #    self.logger.info('FsF-F2-01M : Found DCAT content but could not correctly parse metadata')
-        # in order to keep DCAT in the found metadata list, we need to pass at least one metadata value..
-        # dcat_metadata['object_type'] = 'Dataset'
+            # metadata services
+            data_services = graph.objects(datasets[0], DCAT.service)
+            dcat_metadata["metadata_service"] = []
+            for data_service in data_services:
+                service_url = graph.value(data_service, DCAT.endpointURL)
+                service_type = graph.value(data_service, DCTERMS.conformsTo)
+                dcat_metadata["metadata_service"].append({"url": str(service_url), "type": str(service_type)})
         return dcat_metadata
-        # rdf_meta.query(self.metadata_mapping.value)
-        # print(rdf_meta)
-        # return None
 
     def get_content_type(self):
         """Get the content type.
