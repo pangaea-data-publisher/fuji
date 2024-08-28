@@ -39,15 +39,21 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def subtestResourceTypeGiven(self):
         test_result = False
         test_score = self.getTestConfigScore(self.metric_identifier + "-1a")
+        is_dataset = False
         resource_types = self.fuji.metadata_merged.get("object_type")
+        found_resource_types = []
         if resource_types:
             if not isinstance(resource_types, list):
                 resource_types = [resource_types]
+
             for resource_type in resource_types:
                 resource_type = str(resource_type).lower()
                 if str(resource_type).startswith("http"):
                     # http://schema.org/Dataset
                     resource_type = str(resource_type).split("/")[-1]
+                found_resource_types.append(resource_type)
+                if "dataset" in resource_type:
+                    is_dataset = True
                 if (
                     str(resource_type).lower() in self.fuji.VALID_RESOURCE_TYPES
                     or resource_type in self.fuji.SCHEMA_ORG_CONTEXT
@@ -68,8 +74,15 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                         + " : Invalid resource type (e.g. subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: "
                         + str(resource_type)
                     )
-        else:
-            self.logger.warning(self.metric_identifier + " : NO resource type specified ")
+        if not is_dataset:
+            self.logger.error(
+                self.metric_identifier
+                + " : The evaluated resource does not identify itself as a “dataset” but as "
+                + str(found_resource_types)
+                + ", so F-UJI may not be the right tool for this type of resource "
+            )
+        # else:
+        #    self.logger.warning(self.metric_identifier + " : NO resource type specified ")
         return test_result
 
     def testMinimalInformationAboutDataContentAvailable(self):
@@ -118,7 +131,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             data_object = self.fuji.content_identifier.get(test_data_content_url)
             # print(data_object)
             if data_object.get("claimed_service") and data_object.get("url"):
-                print("SERVICE and URL GIVEN ")
+                print("SERVICE and URL GIVEN ", type(data_object.get("claimed_service")))
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2c", 0, "pass")
                 self.logger.log(
