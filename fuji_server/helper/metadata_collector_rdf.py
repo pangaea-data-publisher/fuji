@@ -4,6 +4,7 @@
 
 import json
 import re
+import urllib
 
 import idutils
 import jmespath
@@ -321,6 +322,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             pass
                     # try to make graph from JSON-LD string
                     if isinstance(rdf_response, str) and rdf_response not in ["null", "None"]:
+                        # url escape malformed (spaces) URIs
+                        try:
+                            suris = re.findall('"http[s]?:\/\/(.*?)"', rdf_response)
+                            for suri in suris:
+                                if " " in suri:
+                                    rsuri = urllib.parse.quote(suri)
+                                    rdf_response = rdf_response.replace(suri, rsuri)
+                        except:
+                            pass
+                        # encoding
                         try:
                             rdf_response = str(rdf_response).encode("utf-8")
                         except:
@@ -335,6 +346,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             rdf_response_graph = jsonldgraph.parse(
                                 data=rdf_response, format="json-ld", publicID=self.resolved_url
                             )
+
                             # rdf_response_graph = jsonldgraph
                             self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                         except Exception as e:
