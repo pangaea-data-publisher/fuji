@@ -86,6 +86,7 @@ async def assess_by_id(body):
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
             ft.set_harvested_metadata()
+            ft.clean_metadata()
         ft.harvest_re3_data()
         ft.harvest_github()
         core_metadata_result = ft.check_minimal_metatadata()

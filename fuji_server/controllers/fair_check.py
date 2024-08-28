@@ -4,6 +4,7 @@
 
 import hashlib
 import io
+import json
 import logging
 import logging.handlers
 import re
@@ -282,6 +283,13 @@ class FAIRCheck:
                 self.auth_token_type = "Basic"
 
     def clean_metadata(self):
+        # replace nasty "None" strings by real  None
+        try:
+            nonerepdict = json.dumps(self.metadata_merged).replace('"None"', "null")
+            self.metadata_merged = json.loads(nonerepdict)
+        except:
+            print("Nasty None replace error")
+            pass
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
             data_objects = self.metadata_merged["object_content_identifier"] = None
@@ -312,7 +320,10 @@ class FAIRCheck:
                     and self.metadata_merged.get("object_size")
                     and len(self.metadata_merged["object_content_identifier"]) == 1
                 ):
-                    c["size"] = self.metadata_merged.get("object_size")
+                    # c["size"] = self.metadata_merged.get("object_size")
+                    self.metadata_merged["object_content_identifier"][oi]["size"] = self.metadata_merged.get(
+                        "object_size"
+                    )
                 # clean mime types in case these are in URI form:
                 if c.get("type"):
                     if isinstance(c["type"], list):
@@ -345,7 +356,6 @@ class FAIRCheck:
         # ========= clean merged metadata, delete all entries which are None or ''
         self.retrieve_metadata_embedded()
         self.retrieve_metadata_external()
-        self.clean_metadata()
         self.logger.info(
             "FsF-F2-01M : Type of object described by the metadata -: {}".format(
                 self.metadata_merged.get("object_type")
@@ -423,6 +433,7 @@ class FAIRCheck:
     def set_harvested_metadata(self):
         self.metadata_unmerged = self.metadata_harvester.metadata_unmerged
         self.metadata_merged = self.metadata_harvester.metadata_merged
+        self.clean_metadata()
 
     def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
