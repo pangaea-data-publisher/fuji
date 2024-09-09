@@ -1008,6 +1008,13 @@ class MetaDataCollectorRdf(MetaDataCollector):
             distribution = list(graph.objects(creative_work, SMA.distribution)) + list(
                 graph.objects(creative_work, SDO.distribution)
             )
+            # distribution as hasPart which actually are MediaObjects
+            for haspart in list(graph.objects(creative_work, SMA.hasPart)) + list(
+                graph.objects(creative_work, SDO.hasPart)
+            ):
+                if "MediaObject" in str(graph.value(haspart, RDF.type)):
+                    distribution.append(haspart)
+
             schema_metadata["object_content_identifier"] = []
             for dist in distribution:
                 durl = (
@@ -1016,6 +1023,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     or graph.value(dist, SDO.contentUrl)
                     or graph.value(dist, SDO.url)
                 )
+                if not durl:
+                    if isinstance(dist, rdflib.term.URIRef):
+                        durl = str(dist)
                 dtype = graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat)
                 dsize = graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize)
                 if durl or dtype or dsize:
