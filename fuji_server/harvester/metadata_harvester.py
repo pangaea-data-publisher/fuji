@@ -574,8 +574,8 @@ class MetadataHarvester:
                     rel_match = re.search(r'rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
                 elif link_prop.startswith("type"):
                     type_match = re.search(r'type\s*=\s*\"?([^,;"]+)\"?', link_prop)
-                elif link_prop.startswith("formats"):
-                    formats_match = re.search(r'formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                elif link_prop.startswith("profile"):
+                    formats_match = re.search(r'profile\s*=\s*\"?([^,;"]+)\"?', link_prop)
             if type_match:
                 found_type = type_match[1]
             if rel_match:
