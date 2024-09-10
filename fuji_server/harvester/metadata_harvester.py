@@ -362,7 +362,7 @@ class MetadataHarvester:
                         href = link.attrib.get("href")
                         rel = link.attrib.get("rel")
                         type = link.attrib.get("type")
-                        profile = link.attrib.get("format")
+                        profile = link.attrib.get("profile")
                         type = str(type).strip()
                         # handle relative paths
                         linkparts = urlparse(href)
