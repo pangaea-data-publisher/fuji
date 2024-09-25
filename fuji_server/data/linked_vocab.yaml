@@ -672,7 +672,9 @@
   uri: https://w3id.org/eepsa
 - namespace: http://opendata.aragon.es/def/ei2a#
   prefix: ei2a
-  title: "Aragon Interoperable Information Structure Ontology\nEI2A"
+  title: |-
+    Aragon Interoperable Information Structure Ontology
+    EI2A
   uri: https://opendata.aragon.es/def/ei2a/ei2a.owl
 - namespace: http://purl.org/ctic/sector-publico/elecciones#
   prefix: elec

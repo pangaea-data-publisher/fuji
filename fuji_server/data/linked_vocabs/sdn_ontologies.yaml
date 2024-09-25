@@ -768,7 +768,12 @@ seadatanet.e01:
   uri_format: http://vocab.nerc.ac.uk/collection/E01/current/$1
 seadatanet.e02:
   authority: seadatanet
-  description: "The standard states of processed data defined by the Earth Observing System Data and Information Ssytem (EOSDIS) Data Panel, which are also consistent with the Committee on Data Management, Archiving,\nand Computing (CODMAC) definitions."
+  description: >-
+    The standard states of processed data defined by the Earth Observing System
+    Data and Information Ssytem (EOSDIS) Data Panel, which are also consistent
+    with the Committee on Data Management, Archiving,
+
+    and Computing (CODMAC) definitions.
   homepage: http://vocab.nerc.ac.uk/collection/E02/current/
   id: seadatanet.e02
   name: Processing Levels for Earth Observing System Standard Data Products
@@ -1080,7 +1085,10 @@ seadatanet.g25:
   uri_format: http://vocab.nerc.ac.uk/collection/G25/current/$1
 seadatanet.g26:
   authority: seadatanet
-  description: "Terms used to represent geographic information in a dataset; \nISO codelist extracted from 'Codelists for description of metadata datasets compliant with ISO/TC 211 19115:2003 and 19139' at http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml; last checked on 24Sep2018."
+  description: >-
+    Terms used to represent geographic information in a dataset;
+
+    ISO codelist extracted from 'Codelists for description of metadata datasets compliant with ISO/TC 211 19115:2003 and 19139' at http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml; last checked on 24Sep2018.
   homepage: http://vocab.nerc.ac.uk/collection/G26/current/
   id: seadatanet.g26
   name: MD_SpatialRepresentationTypeCode
@@ -2208,7 +2216,12 @@ seadatanet.n05:
   uri_format: http://vocab.nerc.ac.uk/collection/N05/current/$1
 seadatanet.n06:
   authority: seadatanet
-  description: "Controlled list of terms used by the NERC Environmnetal Data Centres for submission of DOI metadata records to DataCite. The list is used to populate \nhttp://purl.org/spar/datacite/hasGeneralResourceType from the EDC's GEMINI profiles."
+  description: >-
+    Controlled list of terms used by the NERC Environmnetal Data Centres for
+    submission of DOI metadata records to DataCite. The list is used to
+    populate
+
+    http://purl.org/spar/datacite/hasGeneralResourceType from the EDC's GEMINI profiles.
   homepage: http://vocab.nerc.ac.uk/collection/N06/current/
   id: seadatanet.n06
   name: NERC Environmental Data Centres DataCite General Resource Types

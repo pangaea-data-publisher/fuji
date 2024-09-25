@@ -4,6 +4,7 @@ ardcx.curtin: https://doi.org/10.17616/R3WM02
 ardcx.griffith: https://doi.org/10.17616/R3FG92
 ardcx.usq: https://doi.org/10.17616/R36Q18
 arfm.ufzdrp: https://doi.org/10.17616/R31NJN1M
+awsod.roda: https://doi.org/10.17616/R3M91V
 awzy.fednnv: https://doi.org/10.17616/R3PM1K
 bamf.bamf: https://doi.org/10.17616/R31NJMZ5
 bf.discover: https://doi.org/10.17616/R31NJMN0
@@ -48,6 +49,7 @@ bl.ukda: https://doi.org/10.17616/R3088K
 bmbf.hirzqt: https://doi.org/10.17616/R3CK9G
 brown.bdr: https://doi.org/10.17616/R3193B
 brvz.rdr: https://doi.org/10.17616/R31NJN5S
+bvbw.dhbqgy: https://doi.org/10.17616/R3H35C
 caltech.data: https://doi.org/10.17616/R3SW99
 carl.frdr: https://doi.org/10.17616/R3X50W
 cbg.datasets: https://doi.org/10.17616/R3PP7J
@@ -90,6 +92,7 @@ dkrz.wdcc: https://doi.org/10.17616/R3989R
 dryad.dryad: https://doi.org/10.17616/R34S33
 dzhw.fdz-dzhw: https://doi.org/10.17616/R3BR0G
 elsevier.md: https://doi.org/10.17616/R3DD11
+epua.rdcrki: https://doi.org/10.17616/R3K31G
 esdis.ornl: https://doi.org/10.17616/R3SG61
 estdoi.keel: https://doi.org/10.17616/R3P636
 estdoi.qdb: https://doi.org/10.17616/R31NJMVF
@@ -131,8 +134,8 @@ gesis.dezim: https://doi.org/10.17616/R31NJMNK
 gesis.gesis: https://doi.org/10.17616/R3BB70
 gesis.icpsr: https://doi.org/10.17616/R3BC8Q
 gesis.indepth: https://doi.org/10.17616/R3432T
+gesis.iqb: https://doi.org/10.17616/R3M30D
 gesis.neps: https://doi.org/10.17616/R35P7W
-gesis.rki: https://doi.org/10.17616/R3K31G
 gesis.share: https://doi.org/10.17616/R3BK5N
 gesis.sodanet: https://doi.org/10.17616/R38G7R
 gesis.srda: https://doi.org/10.17616/R31NJMLA
@@ -141,6 +144,7 @@ gesis.zpid: https://doi.org/10.17616/R3FS48
 hain.njltcl: https://doi.org/10.17616/R31NJNAM
 heliophy.spdf: https://doi.org/10.17616/R3P301
 hlqc.znxeli: https://doi.org/10.17616/R31NJMJP
+hyfx.gqlzxo: https://doi.org/10.17616/R31NJNDH
 ieee.dataport: https://doi.org/10.17616/R3H77H
 iiasa.dare: https://doi.org/10.17616/R31NJMH0
 illinois.databank: https://doi.org/10.17616/R3C93F
@@ -150,7 +154,7 @@ inist.humanum: https://doi.org/10.17616/R3JM1B
 inist.ifremer: https://doi.org/10.17616/R31NJMHX
 inist.ifsttar: https://doi.org/10.17616/R31NJMKM
 inist.ill: https://doi.org/10.17616/R33H18
-inist.inra: https://doi.org/10.17616/R3DJ4J
+inist.osuna: https://doi.org/10.17616/R31NJNKA
 inist.otelo: https://doi.org/10.17616/R3F19K
 inist.resif: https://doi.org/10.17616/R37Q06
 iris.iris: https://doi.org/10.17616/R3X607
@@ -161,6 +165,7 @@ jbru.bbees: https://doi.org/10.17616/R31NJNEN
 jcvi.eivbwb: https://doi.org/10.17616/R30P93
 jcvi.gxpwaq: https://doi.org/10.17616/R3S634
 kaggle.kaggle: https://doi.org/10.17616/R32N5V
+kim.colabfit: https://doi.org/10.17616/R31NJNJL
 kim.openkim: https://doi.org/10.17616/R3SK8T
 kmot.rdr: https://doi.org/10.17616/R31NJMN6
 ktsw.aezvvv: https://doi.org/10.17616/R31NJMVX
@@ -173,6 +178,7 @@ mdw.repository: https://doi.org/10.17616/R30M00
 mit.physio: https://doi.org/10.17616/R3D06S
 mlbs.skuxgs: https://doi.org/10.17616/R3ZP8D
 nasapds.nasapds: https://doi.org/10.17616/R37593
+nbqj.daks: https://doi.org/10.17616/R31NJMZS
 nkn.nkn: https://doi.org/10.17616/R3JK91
 nlqq.xoncsf: https://doi.org/10.17616/R31NJMYB
 noaa.ncei: https://doi.org/10.17616/R3362J
@@ -192,8 +198,15 @@ psu.datacom: https://doi.org/10.17616/R31NJMGV
 psu.scholar: https://doi.org/10.17616/R34W4H
 pu.dataspace: https://doi.org/10.17616/R33B6F
 purdue.purduelib: https://doi.org/10.17616/R3V90N
+rdg.prod: https://doi.org/10.17616/R31NJN8R
+repod.dbuw: https://doi.org/10.17616/R31NJNHR
+repod.mxrdr: https://doi.org/10.17616/R31NJMYU
+repod.rds: https://doi.org/10.17616/R31NJMYP
 rg.rg: https://doi.org/10.17616/R36H16
 rice.kinder: https://doi.org/10.17616/R3GB90
+rpak.jpbpto: https://doi.org/10.17616/R31NJNLU
+rpak.tjjamp: https://doi.org/10.17616/R31NJNLW
+rpak.zvrzin: https://doi.org/10.17616/R31NJNLV
 sagebio.synapse: https://doi.org/10.17616/R3B934
 si.cda: https://doi.org/10.17616/R3201S
 si.si: https://doi.org/10.17616/R3W49N
@@ -224,9 +237,11 @@ tib.kit4radar: https://doi.org/10.17616/R31NJMVU
 tib.ldeo: https://doi.org/10.17616/R3PV10
 tib.luis: https://doi.org/10.17616/R3C519
 tib.radar: https://doi.org/10.17616/R3ZX96
+tib.repod: https://doi.org/10.17616/R3JS93
 tib.tuhh: https://doi.org/10.17616/R31NJML0
 tib.ub-hro: https://doi.org/10.17616/R31NJMQH
 tib.ubbs: https://doi.org/10.17616/R31NJMTU
+tib.ubmr: https://doi.org/10.17616/R31NJMTD
 tib.ukon: https://doi.org/10.17616/R3M024
 tib.zih: https://doi.org/10.17616/R31NJMHY
 tuw.tethys: https://doi.org/10.17616/R31NJMU0
@@ -237,7 +252,7 @@ umn.drum: https://doi.org/10.17616/R30D19
 umn.ipums: https://doi.org/10.17616/R3ZS59
 undr.undr: https://doi.org/10.17616/R31NJN9K
 unimelb.repo1: https://doi.org/10.17616/R3HH10
-unm.dataone: https://doi.org/10.17616/R3101G
+unisalzb.anc: https://doi.org/10.17616/R31NJNKJ
 usda.usda: https://doi.org/10.17616/R3G051
 usgs.prod: https://doi.org/10.17616/R33S3S
 uva.libra: https://doi.org/10.17616/R3TS86

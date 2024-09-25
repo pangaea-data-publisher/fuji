@@ -13,6 +13,9 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
+logger = logging.getLogger(__name__)
+
+
 class LinkedVocabHelper:
     fuji_server_dir = Path(__file__).parent.parent  # project_root
     linked_vocabs_dir = fuji_server_dir / "data/linked_vocabs"

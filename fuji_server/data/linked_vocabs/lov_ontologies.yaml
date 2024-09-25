@@ -1,6 +1,20 @@
 lov.a-loc:
   authority: lov
-  description: "The module Location models information related to the localization and georeferencing of a cultural property.\nIn this module are used as template the following Ontology Design Patterns:\n- http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl\n- http://www.ontologydesignpatterns.org/cp/owl/classification.owl\n- http://www.ontologydesignpatterns.org/cp/owl/place.owl\n- http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl\n- http://www.ontologydesignpatterns.org/cp/owl/situation.owl"
+  description: >-
+    The module Location models information related to the localization and
+    georeferencing of a cultural property.
+
+    In this module are used as template the following Ontology Design Patterns:
+
+    - http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/classification.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/place.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/situation.owl
   homepage: https://w3id.org/arco/ontology/location
   id: lov.a-loc
   name: Location Ontology (ArCo network)
@@ -289,7 +303,9 @@ lov.arco:
   uri_format: https://w3id.org/arco/ontology/core/$1
 lov.arp:
   authority: lov
-  description: "Arpenteur ontology is dedicated to photogrammetry, archeology and oceanology communities \n\t in order to perform tasks such as image processing, photogrammetry and modelling."
+  description: >-
+    Arpenteur ontology is dedicated to photogrammetry, archeology and oceanology
+    communities in order to perform tasks such as image processing, photogrammetry and modelling.
   homepage: http://www.arpenteur.org/ontology/Arpenteur.owl
   id: lov.arp
   name: Arpenteur Ontology
@@ -625,7 +641,27 @@ lov.brt:
   uri_format: http://brt.basisregistraties.overheid.nl/def/top10nl#$1
 lov.bto:
   authority: lov
-  description: "The Building Topology Ontology (BOT) is a simple ontology defining the core concepts of a building.\n\nIt is a simple, easy to extend ontology for the construction industry to document and exchange building data on the web.\n\nChanges since version 0.2.0 of the ontology are documented in:\nhttps://w3id.org/bot/bot.html#changes\n\nThe version 0.2.0 of the ontology is documented in:\nMads Holten Rasmussen, Pieter Pauwels, Maxime Lefrançois, Georg Ferdinand Schneider, Christian Anker Hviid and Jan Karlshøj (2017) Recent changes in the Building Topology Ontology, 5th Linked Data in Architecture and Construction Workshop (LDAC2017), November 13-15, 2017, Dijon, France, https://www.researchgate.net/publication/320631574_Recent_changes_in_the_Building_Topology_Ontology\n\nThe initial version 0.1.0 of the ontology was documented in:\nMads Holten Rasmussen, Pieter Pauwels, Christian Anker Hviid and Jan Karlshøj (2017) Proposing a Central AEC Ontology That Allows for Domain Specific Extensions, Lean and Computing in Construction Congress (LC3): Volume I – Proceedings of the Joint Conference on Computing in Construction (JC3), July 4-7, 2017, Heraklion, Greece, pp. 237-244 https://doi.org/10.24928/JC3-2017/0153"
+  description: >-
+    The Building Topology Ontology (BOT) is a simple ontology defining the core
+    concepts of a building.
+
+
+    It is a simple, easy to extend ontology for the construction industry to document and exchange building data on the web.
+
+
+    Changes since version 0.2.0 of the ontology are documented in:
+
+    https://w3id.org/bot/bot.html#changes
+
+
+    The version 0.2.0 of the ontology is documented in:
+
+    Mads Holten Rasmussen, Pieter Pauwels, Maxime Lefrançois, Georg Ferdinand Schneider, Christian Anker Hviid and Jan Karlshøj (2017) Recent changes in the Building Topology Ontology, 5th Linked Data in Architecture and Construction Workshop (LDAC2017), November 13-15, 2017, Dijon, France, https://www.researchgate.net/publication/320631574_Recent_changes_in_the_Building_Topology_Ontology
+
+
+    The initial version 0.1.0 of the ontology was documented in:
+
+    Mads Holten Rasmussen, Pieter Pauwels, Christian Anker Hviid and Jan Karlshøj (2017) Proposing a Central AEC Ontology That Allows for Domain Specific Extensions, Lean and Computing in Construction Congress (LC3): Volume I – Proceedings of the Joint Conference on Computing in Construction (JC3), July 4-7, 2017, Heraklion, Greece, pp. 237-244 https://doi.org/10.24928/JC3-2017/0153
   homepage: https://w3id.org/bot
   id: lov.bto
   name: 'BOT: Building Topology Ontology'
@@ -984,7 +1020,19 @@ lov.citof:
   uri_format: http://www.essepuntato.it/2013/03/cito-functions/$1
 lov.cl:
   authority: lov
-  description: "Le projet Advene a pour objectif de fournir un modèle et plusieurs formats de données pour partager des annotations sur des vidéos numériques (films, cours, conférences...), ainsi que des outils pour éditer et visualiser les hypérvidéos générées à partir de ces vidéos et des annotations. Les enseignants, les amateurs de cinéma, etc., peuvent les utiliser pour échanger leurs commentaires et analyse de documents audiovisuels.\n\nLe modèle Cinelab permet non seulement de représenter les annotations vidéos, mais aussi d'expliciter leur structure (à travers les notions de schéma et de type d'annotation), ainsi que leur présentations à l'aide de vues (modèles appliqués aux données pour produire des hypervidéos) et de requêtes.\n\nCe modèle a été développé par les partenaires du projet Cinelab (2007-2008, financé par l'ANR), et utilisé par la suite dans plusieurs projets et applications, dont Advene (LIRIS) et Ligne de temps (IRI)."
+  description: >-
+    Le projet Advene a pour objectif de fournir un modèle et plusieurs formats
+    de données pour partager des annotations sur des vidéos numériques (films,
+    cours, conférences...), ainsi que des outils pour éditer et visualiser les
+    hypérvidéos générées à partir de ces vidéos et des annotations. Les
+    enseignants, les amateurs de cinéma, etc., peuvent les utiliser pour
+    échanger leurs commentaires et analyse de documents audiovisuels.
+
+
+    Le modèle Cinelab permet non seulement de représenter les annotations vidéos, mais aussi d'expliciter leur structure (à travers les notions de schéma et de type d'annotation), ainsi que leur présentations à l'aide de vues (modèles appliqués aux données pour produire des hypervidéos) et de requêtes.
+
+
+    Ce modèle a été développé par les partenaires du projet Cinelab (2007-2008, financé par l'ANR), et utilisé par la suite dans plusieurs projets et applications, dont Advene (LIRIS) et Ligne de temps (IRI).
   homepage: http://advene.org/ns/cinelab/ld
   id: lov.cl
   name: Cinelab ontology
@@ -1283,7 +1331,14 @@ lov.ctlog:
   uri_format: https://w3id.org/arco/ontology/catalogue/$1
 lov.cto:
   authority: lov
-  description: "The Construction Tasks Ontology (CTO) describes tasks operating on construction elements, spatial zones and/or damages.  The tasks are either planned or executed depending on the dataset metadata context of the dataset its used in. Five different types of tasks are defined: instalment, removal, modification, repair and inspection. \nConsequences of tasks on the dataset, i.e. added and/or deleted triples, are modeled using reified statements. The tasks can link to a reified statement using the CTO relations."
+  description: >-
+    The Construction Tasks Ontology (CTO) describes tasks operating on
+    construction elements, spatial zones and/or damages.  The tasks are either
+    planned or executed depending on the dataset metadata context of the dataset
+    its used in. Five different types of tasks are defined: instalment, removal,
+    modification, repair and inspection.
+
+    Consequences of tasks on the dataset, i.e. added and/or deleted triples, are modeled using reified statements. The tasks can link to a reified statement using the CTO relations.
   homepage: https://w3id.org/cto
   id: lov.cto
   name: 'CTO: Construction Tasks Ontology'
@@ -1577,7 +1632,22 @@ lov.dctype:
   uri_format: http://purl.org/dc/dcmitype/$1
 lov.ddesc:
   authority: lov
-  description: "The Denotative Description module encodes the characteristics of a cultural property, as detectable and/or detected during the cataloguing process and measurable according to a reference system. Examples include measurements e.g. length, constituting materials e.g. clay, employed techniques e.g. melting, conservation status e.g. good, decent, bad.\nIn this module are used as template the following Ontology Design Patterns:\n- http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl\n- http://www.ontologydesignpatterns.org/cp/owl/classification.owl\n- http://www.ontologydesignpatterns.org/cp/owl/descriptionandsituation.owl\n- http://www.ontologydesignpatterns.org/cp/owl/situation.owl"
+  description: >-
+    The Denotative Description module encodes the characteristics of a cultural
+    property, as detectable and/or detected during the cataloguing process and
+    measurable according to a reference system. Examples include measurements
+    e.g. length, constituting materials e.g. clay, employed techniques e.g.
+    melting, conservation status e.g. good, decent, bad.
+
+    In this module are used as template the following Ontology Design Patterns:
+
+    - http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/classification.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/descriptionandsituation.owl
+
+    - http://www.ontologydesignpatterns.org/cp/owl/situation.owl
   homepage: https://w3id.org/arco/ontology/denotative-description
   id: lov.ddesc
   name: Denotative Description Ontology (ArCo network)
@@ -1809,7 +1879,16 @@ lov.dogont:
   uri_format: http://elite.polito.it/ontologies/dogont$1
 lov.donto:
   authority: lov
-  description: "The data.gov.au Dataset Ontology is an OWL ontology designed to describe the characteristics of datasets published on data.gov.au.\n\nThe ontology contains elements which describe the publication, update, origin, governance, spatial and temporal coverage and other contextual information about the dataset. The ontology also covers aspects of organisational custodianship and governance.\n \nBy using this ontology to describe datasets on data.gov.au publishers increase discoverability and enable the consumption of this information in other applications/systems as Linked Data. It further enables decentralised publishing of catalogs and facilitates federated dataset search across sites, e.g. in datasets that are published by the States.\n \nOther publishers of Linked Data may make assertions about data published using this ontology, e.g. they may publish information about the use of the dataset in other applications."
+  description: >-
+    The data.gov.au Dataset Ontology is an OWL ontology designed to describe the
+    characteristics of datasets published on data.gov.au.
+
+
+    The ontology contains elements which describe the publication, update, origin, governance, spatial and temporal coverage and other contextual information about the dataset. The ontology also covers aspects of organisational custodianship and governance.
+
+    By using this ontology to describe datasets on data.gov.au publishers increase discoverability and enable the consumption of this information in other applications/systems as Linked Data. It further enables decentralised publishing of catalogs and facilitates federated dataset search across sites, e.g. in datasets that are published by the States.
+
+    Other publishers of Linked Data may make assertions about data published using this ontology, e.g. they may publish information about the use of the dataset in other applications.
   homepage: http://reference.data.gov.au/def/ont/dataset
   id: lov.donto
   name: Dataset Ontology
@@ -1820,7 +1899,14 @@ lov.donto:
   uri_format: http://reference.data.gov.au/def/ont/dataset#$1
 lov.dot:
   authority: lov
-  description: "- Version 0.8: \n* completed ontology metadata wrt LOV\n* added classes dot:ClassifiedDamage and dot:UnclassifiedDamage (subclasses of dot:Damage)\n* made dot:StructuralDamage and dot:Defect subclasses of dot:Damage"
+  description: >-
+    - Version 0.8:
+
+    * completed ontology metadata wrt LOV
+
+    * added classes dot:ClassifiedDamage and dot:UnclassifiedDamage (subclasses of dot:Damage)
+
+    * made dot:StructuralDamage and dot:Defect subclasses of dot:Damage
   homepage: https://w3id.org/dot#
   id: lov.dot
   name: Damage Topology Ontology
@@ -1841,7 +1927,20 @@ lov.dpn:
   uri_format: http://purl.org/dpn#$1
 lov.dprov:
   authority: lov
-  description: "This ontology is a reduced-in-scope version of the [W3C Decisions and Decision-Making Incubator Group](https://www.w3.org/2005/Incubator/decision/)'s Decision Ontology (DO) which can be found at <https://github.com/nicholascar/decision-o>. It has been re-worked to align entirely with the W3C's [PROV ontology](https://www.w3.org/TR/prov-o/) since it is widely recognised that analysing the elements of decisions *post hoc* is an exercise in provenance.\n\nUnlike the original DO, this ontology cannot be used for *normative* scenarios: it is only capable of recording decisions that have already been made (so-called *data-driven* use in the DO). This is because PROV, to which this ontology is completely mapped, does not have a templating system which can indicate what *should* occur in future scenarios.\n\nThis ontology introduces only one new element for decision modelling over that which was present in the DO: an Agent which allows agency in decision making to be recorded."
+  description: >-
+    This ontology is a reduced-in-scope version of the [W3C Decisions and
+    Decision-Making Incubator
+    Group](https://www.w3.org/2005/Incubator/decision/)'s Decision Ontology (DO)
+    which can be found at <https://github.com/nicholascar/decision-o>. It has
+    been re-worked to align entirely with the W3C's [PROV
+    ontology](https://www.w3.org/TR/prov-o/) since it is widely recognised that
+    analysing the elements of decisions *post hoc* is an exercise in provenance.
+
+
+    Unlike the original DO, this ontology cannot be used for *normative* scenarios: it is only capable of recording decisions that have already been made (so-called *data-driven* use in the DO). This is because PROV, to which this ontology is completely mapped, does not have a templating system which can indicate what *should* occur in future scenarios.
+
+
+    This ontology introduces only one new element for decision modelling over that which was present in the DO: an Agent which allows agency in decision making to be recorded.
   homepage: http://promsns.org/def/decprov
   id: lov.dprov
   name: Decision Provenance ontology (DecPROV)
@@ -1901,7 +2000,15 @@ lov.dr:
   uri_format: http://purl.org/swan/2.0/discourse-relationships/$1
 lov.drama:
   authority: lov
-  description: "Designed with the goals to describe and encode the core dramatic qualities and to serve as a knowledge base underlying a number of applications, Drammar is a comprehensive ontology of drama, realized through a collaboration of computer scientists and drama scholars. It makes the knowledge about drama available as a vocabulary for the linked interchange of drama encodings and readily usable by automatic reasoners.\nBy avoinding references to style and artistic qualities Drammar aims at representing the elements shared by different, cross-media manifestations of drama, the so–called intangible elements of drama as an intangible cultural heritage form."
+  description: >-
+    Designed with the goals to describe and encode the core dramatic qualities
+    and to serve as a knowledge base underlying a number of applications,
+    Drammar is a comprehensive ontology of drama, realized through a
+    collaboration of computer scientists and drama scholars. It makes the
+    knowledge about drama available as a vocabulary for the linked interchange
+    of drama encodings and readily usable by automatic reasoners.
+
+    By avoinding references to style and artistic qualities Drammar aims at representing the elements shared by different, cross-media manifestations of drama, the so–called intangible elements of drama as an intangible cultural heritage form.
   homepage: http://www.purl.org/drammar
   id: lov.drama
   name: 'Drammar: a comprehensive ontology of drama'
@@ -2050,7 +2157,52 @@ lov.earth:
   uri_format: http://linked.earth/ontology#$1
 lov.ebg:
   authority: lov
-  description: "The euBusinessGraph (`ebg:`) ontology represents companies, type/status/economic classification, addresses, identifiers, company officers (e.g., directors and CEOs), and dataset offerings.\n\nIt uses `schema:domainIncludes/rangeIncludes` (which are polymorphic) to describe which properties are applicable to a class, \nrather than `rdfs:domain/range` (which are monomorphic) to prescribe what classes must be applied to each node using a property.\nWe find that this enables more flexible reuse and combination of different ontologies.\nWe reuse the following ontologies and nomenclatures, and extend them where appropriate with classes and properties:\n\n- W3C Org, W3C RegOrg (basic company data), \n\n- W3C Time (officer membership), \n\n- W3C Locn (addresses),\n\n- schema.org (domain/rangeIncludes and various properties)\n\n- DBpedia ontology (jurisdiction)\n\n- NGEO and Spatial (NUTS administrative divisions)\n\n- ADMS (identifiers), \n\n- FOAF, SIOC (blog posts),\n\n- RAMON, SKOS (NACE economic classifications and various nomenclatures),\n\n- VOID (dataset descriptions).\n\nThis is only a reference. See more detail in the [EBG Semantic Model](https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit) google document, which includes an informative description of classes and properties, gives examples and data provider rules, and provides more schema and instance diagrams."
+  description: >-
+    The euBusinessGraph (`ebg:`) ontology represents companies,
+    type/status/economic classification, addresses, identifiers, company
+    officers (e.g., directors and CEOs), and dataset offerings.
+
+
+    It uses `schema:domainIncludes/rangeIncludes` (which are polymorphic) to describe which properties are applicable to a class,
+
+    rather than `rdfs:domain/range` (which are monomorphic) to prescribe what classes must be applied to each node using a property.
+
+    We find that this enables more flexible reuse and combination of different ontologies.
+
+    We reuse the following ontologies and nomenclatures, and extend them where appropriate with classes and properties:
+
+
+    - W3C Org, W3C RegOrg (basic company data),
+
+
+    - W3C Time (officer membership),
+
+
+    - W3C Locn (addresses),
+
+
+    - schema.org (domain/rangeIncludes and various properties)
+
+
+    - DBpedia ontology (jurisdiction)
+
+
+    - NGEO and Spatial (NUTS administrative divisions)
+
+
+    - ADMS (identifiers),
+
+
+    - FOAF, SIOC (blog posts),
+
+
+    - RAMON, SKOS (NACE economic classifications and various nomenclatures),
+
+
+    - VOID (dataset descriptions).
+
+
+    This is only a reference. See more detail in the [EBG Semantic Model](https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit) google document, which includes an informative description of classes and properties, gives examples and data provider rules, and provides more schema and instance diagrams.
   homepage: http://data.businessgraph.io/ontology#
   id: lov.ebg
   name: euBusinessGraph ontology
@@ -2111,7 +2263,15 @@ lov.ecpo:
   uri_format: http://purl.org/ontology/ecpo#$1
 lov.ecrm:
   authority: lov
-  description: "Erlangen CRM / OWL - An OWL DL 1.0 implementation of the CIDOC Conceptual Reference Model, based on: Nick Crofts, Martin Doerr, Tony Gill, Stephen Stead, Matthew Stiff (eds.): Definition of the CIDOC Conceptual Reference Model (http://cidoc-crm.org/).\nThis implementation has been originally created by Bernhard Schiemann, Martin Oischinger and Günther Görz at the Friedrich-Alexander-University of Erlangen-Nuremberg, Department of Computer Science, Chair of Computer Science 8 (Artificial Intelligence) in cooperation with the Department of Museum Informatics of the Germanisches Nationalmuseum Nuremberg and the Department of Biodiversity Informatics of the Zoologisches Forschungsmuseum Alexander Koenig Bonn.\nThe Erlangen CRM / OWL implementation of the CIDOC Conceptual Reference Model is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License."
+  description: >-
+    Erlangen CRM / OWL - An OWL DL 1.0 implementation of the CIDOC Conceptual
+    Reference Model, based on: Nick Crofts, Martin Doerr, Tony Gill, Stephen
+    Stead, Matthew Stiff (eds.): Definition of the CIDOC Conceptual Reference
+    Model (http://cidoc-crm.org/).
+
+    This implementation has been originally created by Bernhard Schiemann, Martin Oischinger and Günther Görz at the Friedrich-Alexander-University of Erlangen-Nuremberg, Department of Computer Science, Chair of Computer Science 8 (Artificial Intelligence) in cooperation with the Department of Museum Informatics of the Germanisches Nationalmuseum Nuremberg and the Department of Biodiversity Informatics of the Zoologisches Forschungsmuseum Alexander Koenig Bonn.
+
+    The Erlangen CRM / OWL implementation of the CIDOC Conceptual Reference Model is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
   homepage: http://erlangen-crm.org/current/
   id: lov.ecrm
   name: Erlangen CRM / OWL
@@ -2122,7 +2282,14 @@ lov.ecrm:
   uri_format: http://erlangen-crm.org/current/$1
 lov.edac:
   authority: lov
-  description: "The ELSEWeb EDAC ontology describes datasets published by EDAC. This project provides foundational support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb EDAC ontology describes datasets published by EDAC. This project
+    provides foundational support for the ELSEWeb
+    project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-edac.owl
   id: lov.edac
   name: ELSEWeb EDAC Ontology
@@ -2186,10 +2353,26 @@ lov.eeo:
   uri_format: https://w3id.org/eeo#$1
 lov.ei2a:
   authority: lov
-  description: "The initiative Aragón Open Data was initiated by agreement of 17 of July of 2012 of the Government of Aragon. Under the same was ordered the start of the project to open public data and on February 6, 2013 was implemented through the Portal <a href=\"http://opendata.aragon.es/\"> opendata.aragon.es </a>.\n\nThroughout this time there have been numerous works to achieve automation in the publication of information to ensure that third parties can reuse it in the best way. Given the volume of data that begins to exist, within the line of work of automation in information management, all those elements that help in the improvement of the <b> structuring of information </b>  and the <b> standardization of the data </b> contained in the databases are beginning to have a special relevance.\n\nBased on this, within the General Directorate of Electronic Administration and Information Society, the idea arises of generating a set of technical and legal rules that allow to deepen in that standardization and that lead to think in the creation of the Interoperable Information Scheme Of Aragon (E2IA). The E2IA thus emerges as the framework in which the open data and in general the information of the Government of Aragon can begin to be automated in a much more profound way. The E2IA has to have a number of technical, organizational and legal elements that need to be developed.\n\nFor this reason, the Technological Institute of Aragon (ITAINNOVA) has been entrusted with carrying out actions consisting in identifying, studying and analyzing current research trends and technological development in relation to ontologies and dictionaries of data interoperability, defining the ontological proposal, performing The necessary tests to validate the ontological proposal and generate the text and web versions of the ontology."
+  description: >-
+    The initiative Aragón Open Data was initiated by agreement of 17 of July of
+    2012 of the Government of Aragon. Under the same was ordered the start of
+    the project to open public data and on February 6, 2013 was implemented
+    through the Portal <a href="http://opendata.aragon.es/"> opendata.aragon.es
+    </a>.
+
+
+    Throughout this time there have been numerous works to achieve automation in the publication of information to ensure that third parties can reuse it in the best way. Given the volume of data that begins to exist, within the line of work of automation in information management, all those elements that help in the improvement of the <b> structuring of information </b>  and the <b> standardization of the data </b> contained in the databases are beginning to have a special relevance.
+
+
+    Based on this, within the General Directorate of Electronic Administration and Information Society, the idea arises of generating a set of technical and legal rules that allow to deepen in that standardization and that lead to think in the creation of the Interoperable Information Scheme Of Aragon (E2IA). The E2IA thus emerges as the framework in which the open data and in general the information of the Government of Aragon can begin to be automated in a much more profound way. The E2IA has to have a number of technical, organizational and legal elements that need to be developed.
+
+
+    For this reason, the Technological Institute of Aragon (ITAINNOVA) has been entrusted with carrying out actions consisting in identifying, studying and analyzing current research trends and technological development in relation to ontologies and dictionaries of data interoperability, defining the ontological proposal, performing The necessary tests to validate the ontological proposal and generate the text and web versions of the ontology.
   homepage: https://opendata.aragon.es/def/ei2a/ei2a.owl
   id: lov.ei2a
-  name: "Aragon Interoperable Information Structure Ontology\nEI2A"
+  name: |-
+    Aragon Interoperable Information Structure Ontology
+    EI2A
   prefix: ei2a
   source: lov.linkeddata.es
   subjects:
@@ -2197,7 +2380,7 @@ lov.ei2a:
   uri_format: http://opendata.aragon.es/def/ei2a#$1
 lov.elec:
   authority: lov
-  description: "El objetivo de este vocabulario es la creación de un esquema que permita definir los contenidos de información relacionada con procesos electorales y sus resultados.  \t\t\tSe identifican ciertas variables en el dominio de las elecciones, que se modelan a través de ciertos tipos de datos y de propiedades relacionadas entre los recursos."
+  description: El objetivo de este vocabulario es la creación de un esquema que permita definir los contenidos de información relacionada con procesos electorales y sus resultados. Se identifican ciertas variables en el dominio de las elecciones, que se modelan a través de ciertos tipos de datos y de propiedades relacionadas entre los recursos.
   homepage: http://purl.org/ctic/sector-publico/elecciones
   id: lov.elec
   name: Vocabulario de Resultados Electorales
@@ -2230,7 +2413,7 @@ lov.emotion:
   uri_format: http://ns.inria.fr/emoca#$1
 lov.emp:
   authority: lov
-  description: "El objetivo de este vocabulario es la creación de un esquema que permita definir los contenidos de la información relacionada con la oferta de empleo público.  \t\t\tSe identifican ciertas variables en el dominio de la oferta de empleo público, que se modelan a través de ciertos tipos de datos y de propiedades relacionadas entre los recursos."
+  description: El objetivo de este vocabulario es la creación de un esquema que permita definir los contenidos de la información relacionada con la oferta de empleo público. Se identifican ciertas variables en el dominio de la oferta de empleo público, que se modelan a través de ciertos tipos de datos y de propiedades relacionadas entre los recursos.
   homepage: http://purl.org/ctic/empleo/oferta
   id: lov.emp
   name: Vocabulario de Ofertas de Empleo
@@ -2283,7 +2466,20 @@ lov.eqp:
   uri_format: https://data.nasa.gov/ontologies/atmonto/equipment#$1
 lov.era:
   authority: lov
-  description: "This is the human and machine readable Vocabulary/Ontology governed by the European Union Agency for Railways. It represents the concepts and relationships linked to the sectorial legal framework and the use cases under the Agency´s remit. Currently, this vocabulary covers the European railway infrastructure and the vehicles authorized to operate over it. It is a semantic/browsable representation of the [RINF](https://www.era.europa.eu/sites/default/files/registers/docs/rinf_application_guide_for_register_en.pdf) and [ERATV](https://www.era.europa.eu/sites/default/files/registers/docs/iu-eratv_application_guide_for_register_2016-797_en.pdf) application guides that were built by domain experts in the RINF and ERATV working parties.\nSince version 2.6.0, the ontology includes the routebook concepts described in appendix D2 \\\"Elements the infrastructure manager has to provide to the railway undertaking for the Route Book\\\" (https://eur-lex.europa.eu/eli/reg_impl/2019/773/oj) and the appendix D3 \\\"ERTMS trackside engineering information relevant to operation that the infrastructure manager shall provide to the railway undertaking\\\"."
+  description: >-
+    This is the human and machine readable Vocabulary/Ontology governed by the
+    European Union Agency for Railways. It represents the concepts and
+    relationships linked to the sectorial legal framework and the use cases
+    under the Agency´s remit. Currently, this vocabulary covers the European
+    railway infrastructure and the vehicles authorized to operate over it. It is
+    a semantic/browsable representation of the
+    [RINF](https://www.era.europa.eu/sites/default/files/registers/docs/rinf_application_guide_for_register_en.pdf)
+    and
+    [ERATV](https://www.era.europa.eu/sites/default/files/registers/docs/iu-eratv_application_guide_for_register_2016-797_en.pdf)
+    application guides that were built by domain experts in the RINF and ERATV
+    working parties.
+
+    Since version 2.6.0, the ontology includes the routebook concepts described in appendix D2 \"Elements the infrastructure manager has to provide to the railway undertaking for the Route Book\" (https://eur-lex.europa.eu/eli/reg_impl/2019/773/oj) and the appendix D3 \"ERTMS trackside engineering information relevant to operation that the infrastructure manager shall provide to the railway undertaking\".
   homepage: http://data.europa.eu/949/
   id: lov.era
   name: ERA vocabulary
@@ -2293,7 +2489,46 @@ lov.era:
   uri_format: http://data.europa.eu/949/$1
 lov.esco:
   authority: lov
-  description: "The ontology of the taxonomy \"European Skills, Competences, qualifications and Occupations\".\n\nThe ontology considers three ESCO pillars (or taxonomy) and 2 registers.\nThe three pillars are:\n- Occupation\n- Skill (and competences)\n- Qualification\n\nFor the construction and use of the ESCO pillars, the following modelling artefacts are used:\n- Facetting support to specialize ESCO pillar concepts based on bussiness relevant Concept Groups (e.g. species, languages, ...)\n- Conept Groups, Thesaurus array and Compound terms (as detailed in ISO 25964) to organize faceted concepts\n- SKOS mapping properties to relate ESCO pillar concepts to concepts in other (external) taxonomies (e.g. FoET, ISCO88 and ISCO08.  More mappings can be added in the future.)\n- Tagging ESCO pillar concepts by other (external) taxonomies (NUTS, EQF, NACE, ...)\n- Capture gender specifics on the labels of the ESCO pillar concepts\n- Rich ESCO concept relationships holding a description and other specific characteristics of the relation between two ESCO pillar concepts.\n\nESCO maintains two additional registers:\n- Awarding Body\n- Work Context\nAwarding Bodies typically are referenced by ESCO qualifications.\nOccupations can have one or more work context."
+  description: >-
+    The ontology of the taxonomy "European Skills, Competences, qualifications
+    and Occupations".
+
+
+    The ontology considers three ESCO pillars (or taxonomy) and 2 registers.
+
+    The three pillars are:
+
+    - Occupation
+
+    - Skill (and competences)
+
+    - Qualification
+
+
+    For the construction and use of the ESCO pillars, the following modelling artefacts are used:
+
+    - Facetting support to specialize ESCO pillar concepts based on bussiness relevant Concept Groups (e.g. species, languages, ...)
+
+    - Conept Groups, Thesaurus array and Compound terms (as detailed in ISO 25964) to organize faceted concepts
+
+    - SKOS mapping properties to relate ESCO pillar concepts to concepts in other (external) taxonomies (e.g. FoET, ISCO88 and ISCO08.  More mappings can be added in the future.)
+
+    - Tagging ESCO pillar concepts by other (external) taxonomies (NUTS, EQF, NACE, ...)
+
+    - Capture gender specifics on the labels of the ESCO pillar concepts
+
+    - Rich ESCO concept relationships holding a description and other specific characteristics of the relation between two ESCO pillar concepts.
+
+
+    ESCO maintains two additional registers:
+
+    - Awarding Body
+
+    - Work Context
+
+    Awarding Bodies typically are referenced by ESCO qualifications.
+
+    Occupations can have one or more work context.
   homepage: http://data.europa.eu/esco/model
   id: lov.esco
   name: The ESCO ontology
@@ -2440,7 +2675,19 @@ lov.foaf:
   uri_format: http://xmlns.com/foaf/0.1/$1
 lov.fog:
   authority: lov
-  description: "The File Ontology for Geometry formats (FOG) describes meaningful relations towards geometry snippets in RDF literals, geometry files on relative or absolute URLs and ontology-based geometry descriptions. The defined properties in this ontology are related towards each other and additional metadata is provided, such as file extension and related specifications/sources (incl. entries in dbpedia and Wikidata). \n\nThe initial version of the ontology (v0.0.1) was documented in:\n\nBonduel, Mathias, Wagner, Anna, Pauwels, Pieter, Vergauwen, Maarten, & Klein, Ralf (2019). Including Widespread Geometry Formats in Semantic Graphs Using RDF Literals. In Proceedings of the European Conference on Computing in Construction (EC3 2019). Chania, Greece."
+  description: >-
+    The File Ontology for Geometry formats (FOG) describes meaningful relations
+    towards geometry snippets in RDF literals, geometry files on relative or
+    absolute URLs and ontology-based geometry descriptions. The defined
+    properties in this ontology are related towards each other and additional
+    metadata is provided, such as file extension and related
+    specifications/sources (incl. entries in dbpedia and Wikidata).
+
+
+    The initial version of the ontology (v0.0.1) was documented in:
+
+
+    Bonduel, Mathias, Wagner, Anna, Pauwels, Pieter, Vergauwen, Maarten, & Klein, Ralf (2019). Including Widespread Geometry Formats in Semantic Graphs Using RDF Literals. In Proceedings of the European Conference on Computing in Construction (EC3 2019). Chania, Greece.
   homepage: https://w3id.org/fog
   id: lov.fog
   name: 'FOG: File Ontology for Geometry formats'
@@ -2451,7 +2698,21 @@ lov.fog:
   uri_format: https://w3id.org/fog#$1
 lov.foio:
   authority: lov
-  description: "This ontology defines feature of interest and their properties, as an extension of the core classes of the SSN ontology (https://www.w3.org/ns/ssn/).\n\nA feature of interest is an abstraction of a real world phenomena (thing, person, event, etc). A feature of interest is then defined in terms of its properties, which are qualifiable, quantifiable, observable or operable qualities of the feature of interest. \n\nAlignments to other ontologies are proposed in external documents: \n\n- [SSNAlignment](https://w3id.org/seas/SSNAlignment) proposes an alignment to the [SSN ontology](http://www.w3.org/ns/ssn/).\n- [QUDTAlignment](https://w3id.org/seas/QUDTAlignment) proposes an alignment to the [QUDT ontology](http://qudt.org/)."
+  description: >-
+    This ontology defines feature of interest and their properties, as an
+    extension of the core classes of the SSN ontology
+    (https://www.w3.org/ns/ssn/).
+
+
+    A feature of interest is an abstraction of a real world phenomena (thing, person, event, etc). A feature of interest is then defined in terms of its properties, which are qualifiable, quantifiable, observable or operable qualities of the feature of interest.
+
+
+    Alignments to other ontologies are proposed in external documents:
+
+
+    - [SSNAlignment](https://w3id.org/seas/SSNAlignment) proposes an alignment to the [SSN ontology](http://www.w3.org/ns/ssn/).
+
+    - [QUDTAlignment](https://w3id.org/seas/QUDTAlignment) proposes an alignment to the [QUDT ontology](http://qudt.org/).
   homepage: https://w3id.org/seas/FeatureOfInterestOntology
   id: lov.foio
   name: The SEAS Feature of Interest ontology.
@@ -2591,7 +2852,20 @@ lov.gc:
   uri_format: http://www.oegov.org/core/owl/gc#$1
 lov.gci:
   authority: lov
-  description: "Global City Indicator Foundation Ontology developed by the Information Engineering Group, Mechanical & Industrial Engineering, University of Toronto. Contains the foundation ontologies required to represent ISO 37120 city indicators, including Placenames, Time, Measurement, Provenance, Statistics, Validity and Trust. See: Fox, M.S., (2013), \"A Foundation Ontology for Global City Indicators\", Global City Institute Working Paper, Vol. 1, No.4, pp. 1-45. Global Cities Institute, University of Toronto. Updated 24 June 2014: http://www.eil. Based on the Global City Indicators Facility, University of Toronto: http://www.cityindicators.org/Deliverables/Core%20and%20Supporting%20Indicators%20Table%20SEPTEMBER%202011.pdf.\n\nContact: Mark S. Fox, msf@eil.utoronto.ca"
+  description: >-
+    Global City Indicator Foundation Ontology developed by the Information
+    Engineering Group, Mechanical & Industrial Engineering, University of
+    Toronto. Contains the foundation ontologies required to represent ISO 37120
+    city indicators, including Placenames, Time, Measurement, Provenance,
+    Statistics, Validity and Trust. See: Fox, M.S., (2013), "A Foundation
+    Ontology for Global City Indicators", Global City Institute Working Paper,
+    Vol. 1, No.4, pp. 1-45. Global Cities Institute, University of Toronto.
+    Updated 24 June 2014: http://www.eil. Based on the Global City Indicators
+    Facility, University of Toronto:
+    http://www.cityindicators.org/Deliverables/Core%20and%20Supporting%20Indicators%20Table%20SEPTEMBER%202011.pdf.
+
+
+    Contact: Mark S. Fox, msf@eil.utoronto.ca
   homepage: http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl
   id: lov.gci
   name: Global City Indicator Foundation Ontology
@@ -2950,7 +3224,23 @@ lov.gts:
   uri_format: http://resource.geosciml.org/ontology/timescale/gts#$1
 lov.gufo:
   authority: lov
-  description: "The objective of gUFO is to provide a lightweight implementation of the Unified Foundational Ontology (UFO) [1-5] suitable for Semantic Web OWL 2 DL applications. \n\nIntended users are those implementing UFO-based lightweight ontologies that reuse gUFO by specializing and instantiating its elements.\n\nThere are three implications of the use of the term lightweight. First of all, we have employed little expressive means in an effort to retain computational properties for the resulting OWL ontology. Second, we have selected a subset of UFO-A [1, 2] and UFO-B [3] to include here. In particular, there is minimalistic support for UFO-B (only that which is necessary to establish the participation of objects in events and to capture historical dependence between events). Third, a lightweight ontology, differently from a reference ontology, is designed with the purpose of providing an implementation artifact to structure a knowledge base (or knowledge graph). This has driven a number of pragmatic implementation choices which are discussed in comments annotated to the various elements of this implementation. \n\nThe 'g' in gUFO stands for gentle. At the same time, \"gufo\" is the Italian word for \"owl\".\n\n\nFor the source repository, see: <https://github.com/nemo-ufes/gufo>"
+  description: >-
+    The objective of gUFO is to provide a lightweight implementation of the
+    Unified Foundational Ontology (UFO) [1-5] suitable for Semantic Web OWL 2 DL
+    applications.
+
+
+    Intended users are those implementing UFO-based lightweight ontologies that reuse gUFO by specializing and instantiating its elements.
+
+
+    There are three implications of the use of the term lightweight. First of all, we have employed little expressive means in an effort to retain computational properties for the resulting OWL ontology. Second, we have selected a subset of UFO-A [1, 2] and UFO-B [3] to include here. In particular, there is minimalistic support for UFO-B (only that which is necessary to establish the participation of objects in events and to capture historical dependence between events). Third, a lightweight ontology, differently from a reference ontology, is designed with the purpose of providing an implementation artifact to structure a knowledge base (or knowledge graph). This has driven a number of pragmatic implementation choices which are discussed in comments annotated to the various elements of this implementation.
+
+
+    The 'g' in gUFO stands for gentle. At the same time, "gufo" is the Italian word for "owl".
+
+
+
+    For the source repository, see: <https://github.com/nemo-ufes/gufo>
   homepage: http://purl.org/nemo/gufo#
   id: lov.gufo
   name: 'gUFO: A Lightweight Implementation of the Unified Foundational Ontology (UFO)'
@@ -3057,7 +3347,12 @@ lov.hosp:
   uri_format: http://health.data.gov/def/hospital/$1
 lov.hpont:
   authority: lov
-  description: "The Heat Pump Ontology (HPOnt) aims to formalize and represent all the relevant information of Heat Pumps.\n\nThe HPOnt has been developed as part of the REACT project which has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 824395."
+  description: >-
+    The Heat Pump Ontology (HPOnt) aims to formalize and represent all the
+    relevant information of Heat Pumps.
+
+
+    The HPOnt has been developed as part of the REACT project which has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 824395.
   homepage: https://w3id.org/hpont
   id: lov.hpont
   name: The Heat Pump Ontology (HPOnt).
@@ -3242,7 +3537,10 @@ lov.imo:
   uri_format: http://imgpedia.dcc.uchile.cl/ontology#$1
 lov.incident:
   authority: lov
-  description: "Vocabulary to describe the response to a incident by emergency services.\nThis is NOT intended to describe the incident itself, it describes the response"
+  description: >-
+    Vocabulary to describe the response to a incident by emergency services.
+
+    This is NOT intended to describe the incident itself, it describes the response
   homepage: http://vocab.resc.info/incident
   id: lov.incident
   name: Vocabulary to describe incident response by emergency services
@@ -3316,7 +3614,19 @@ lov.iot-tta:
   uri_format: https://w3id.org/iot-tta#$1
 lov.ioto:
   authority: lov
-  description: "IoT-O is a core domain Internet of Things ontology. It is intended to model horizontal knowledge about IoT systems and applications, and to be extended with vertical, application specific knowledge.\nIt is constituted of different modules : \n - A sensing module, based on W3C's SSN (http://purl.oclc.org/NET/ssnx/ssn)\n - An acting module, based on SAN (http://www.irit.fr/recherches/MELODI/ontologies/SAN)\n - A service module, based on MSM (http://iserve.kmi.open.ac.uk/ns/msm/msm-2014-09-03.rdf) and hRest (http://www.wsmo.org/ns/hrests)\n - A lifecycle module, based on a lifecycle vocabulary (http://vocab.org/lifecycle/schema-20080603.rdf) and an iot-specific extension (http://www.irit.fr/recherches/MELODI/ontologies/IoT-Lifecycle)\n - An energy module, based on powerOnt (ttp://elite.polito.it/ontologies/poweront.owl)\n\nIoT-O developping team also contributes to the oneM2M IoT interoperability standard."
+  description: >-
+    IoT-O is a core domain Internet of Things ontology. It is intended to model
+    horizontal knowledge about IoT systems and applications, and to be extended
+    with vertical, application specific knowledge.
+
+    It is constituted of different modules :
+     - A sensing module, based on W3C's SSN (http://purl.oclc.org/NET/ssnx/ssn)
+     - An acting module, based on SAN (http://www.irit.fr/recherches/MELODI/ontologies/SAN)
+     - A service module, based on MSM (http://iserve.kmi.open.ac.uk/ns/msm/msm-2014-09-03.rdf) and hRest (http://www.wsmo.org/ns/hrests)
+     - A lifecycle module, based on a lifecycle vocabulary (http://vocab.org/lifecycle/schema-20080603.rdf) and an iot-specific extension (http://www.irit.fr/recherches/MELODI/ontologies/IoT-Lifecycle)
+     - An energy module, based on powerOnt (ttp://elite.polito.it/ontologies/poweront.owl)
+
+    IoT-O developping team also contributes to the oneM2M IoT interoperability standard.
   homepage: http://www.irit.fr/recherches/MELODI/ontologies/IoT-O
   id: lov.ioto
   name: IoT-O
@@ -3401,7 +3711,25 @@ lov.iso-thes:
   uri_format: http://purl.org/iso25964/skos-thes#$1
 lov.iso37120:
   authority: lov
-  description: "ISO 37120 – Sustainable Development and Resilience of Communities – Indicators for City Services and Quality of Life (under TC268)\n\nhttp://ontology.eil.utoronto.ca/ISO37120.html\n\nThis OWL file defines a class for each indicator defined in the ISO 37120 standard.  Names for each indicator are provided.  Text definitions are provided only for Economy, Education and Energy indicators, due to copyright restrictions imposed by ISO.  This file is meant to provide a single URI for each indicator.\n\nAn ontology for representing an indicator's supporting data plus meta information such as provenance, validity and trust can be found in:\nhttp://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl\n\nDocumentation of the ontology can be found in:\nhttp://eil.utoronto.ca/smartcities/papers/GCI-Foundation-Ontology.pdf"
+  description: >-
+    ISO 37120 – Sustainable Development and Resilience of Communities –
+    Indicators for City Services and Quality of Life (under TC268)
+
+
+    http://ontology.eil.utoronto.ca/ISO37120.html
+
+
+    This OWL file defines a class for each indicator defined in the ISO 37120 standard.  Names for each indicator are provided.  Text definitions are provided only for Economy, Education and Energy indicators, due to copyright restrictions imposed by ISO.  This file is meant to provide a single URI for each indicator.
+
+
+    An ontology for representing an indicator's supporting data plus meta information such as provenance, validity and trust can be found in:
+
+    http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl
+
+
+    Documentation of the ontology can be found in:
+
+    http://eil.utoronto.ca/smartcities/papers/GCI-Foundation-Ontology.pdf
   homepage: http://ontology.eil.utoronto.ca/ISO37120.owl
   id: lov.iso37120
   name: ISO 37120 indicator URIs
@@ -3466,7 +3794,11 @@ lov.itsmo:
   uri_format: http://ontology.it/itsmo/v1#$1
 lov.ivoam:
   authority: lov
-  description: "A vocabulary of particles used for observations in astronomy.\nThis list started its existence as the controlled vocabulary for\nVODataService's vs:Waveband type; the machine-readable identifiers are in\nupper case for backwards compatibility."
+  description: |-
+    A vocabulary of particles used for observations in astronomy.
+    This list started its existence as the controlled vocabulary for
+    VODataService's vs:Waveband type; the machine-readable identifiers are in
+    upper case for backwards compatibility.
   homepage: http://www.ivoa.net/rdf/messenger
   id: lov.ivoam
   name: Messengers
@@ -3707,7 +4039,14 @@ lov.lib:
   uri_format: http://purl.org/library/$1
 lov.lifecycle:
   authority: lov
-  description: "This ontology is a specialization of the lifecycle vocabulary (http://purl.org/vocab/lifecycle/schema) meant to be used in the context of IoT. It is used as a module in the IoT core domain ontology IoT-O (www.irit.fr/recherches/MELODI/ontologies/IoT-O). \n\nIoT-Lifecycle adds a specific state definition (ParametrizedState) and a specific transition (Update) that is useful to model actuators."
+  description: >-
+    This ontology is a specialization of the lifecycle vocabulary
+    (http://purl.org/vocab/lifecycle/schema) meant to be used in the context of
+    IoT. It is used as a module in the IoT core domain ontology IoT-O
+    (www.irit.fr/recherches/MELODI/ontologies/IoT-O).
+
+
+    IoT-Lifecycle adds a specific state definition (ParametrizedState) and a specific transition (Update) that is useful to model actuators.
   homepage: http://www.irit.fr/recherches/MELODI/ontologies/IoT-Lifecycle
   id: lov.lifecycle
   name: IoT-Lifecycle
@@ -3798,7 +4137,7 @@ lov.lmm2:
   uri_format: http://www.ontologydesignpatterns.org/ont/lmm/LMM_L2.owl#$1
 lov.loc:
   authority: lov
-  description: "Este vocabulario se utiliza para modelar las localizaciones físicas de lugares públicos.  \t\t\tUtiliza elementos de Geonames para identificar las distintas características geográficas."
+  description: Este vocabulario se utiliza para modelar las localizaciones físicas de lugares públicos. Utiliza elementos de Geonames para identificar las distintas características geográficas.
   homepage: http://purl.org/ctic/infraestructuras/localizacion
   id: lov.loc
   name: Vocabulario de Localizaciones
@@ -3852,7 +4191,11 @@ lov.log:
   uri_format: http://www.w3.org/2000/10/swap/log#$1
 lov.lom:
   authority: lov
-  description: "An ontology and vocabulary used for exposing IEEE LOM, a metadata standard for educational contents, as Linked Data. \nIt is intended as a bridge for linkage of educational metadata into Linked Open Data (LOD). In this ontology, we designed a mapping of IEEE LOM elements to RDF based on Linked Data principles."
+  description: >-
+    An ontology and vocabulary used for exposing IEEE LOM, a metadata standard
+    for educational contents, as Linked Data.
+
+    It is intended as a bridge for linkage of educational metadata into Linked Open Data (LOD). In this ontology, we designed a mapping of IEEE LOM elements to RDF based on Linked Data principles.
   homepage: http://data.opendiscoveryspace.eu/lom_ontology_ods.owl
   id: lov.lom
   name: Learning Object Metadata Ontology
@@ -3893,7 +4236,14 @@ lov.lsc:
   uri_format: http://linkedscience.org/lsc/ns#$1
 lov.lslife:
   authority: lov
-  description: "The ELSEWeb Lifemapper ontology provides classes for describing biodiversity modelling services provided by Lifemapper. This project provides  support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb Lifemapper ontology provides classes for describing biodiversity
+    modelling services provided by Lifemapper. This project provides  support
+    for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper.owl
   id: lov.lslife
   name: ELSEWeb Lifemapper Ontology
@@ -3903,7 +4253,15 @@ lov.lslife:
   uri_format: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper.owl#$1
 lov.lsmap:
   authority: lov
-  description: "The ELSEWeb mappings ontology imports related upper level ontologies and vocabularies and aligns ELSEWeb ontologies to importec classes. This ontology provides support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb mappings ontology imports related upper level ontologies and
+    vocabularies and aligns ELSEWeb ontologies to importec classes. This
+    ontology provides support for the ELSEWeb
+    project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/mappings/elseweb-mappings.owl
   id: lov.lsmap
   name: ELSEWeb Mappings Ontology
@@ -3923,7 +4281,14 @@ lov.lsq:
   uri_format: http://lsq.aksw.org/vocab#$1
 lov.lsweb:
   authority: lov
-  description: "The ELSEWeb Data ontology provides simple classes for describing datasets. This project provides foundational support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb Data ontology provides simple classes for describing datasets.
+    This project provides foundational support for the ELSEWeb
+    project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-data.owl
   id: lov.lsweb
   name: ELSEWeb Data Ontology
@@ -3933,7 +4298,14 @@ lov.lsweb:
   uri_format: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-data.owl#$1
 lov.lswmo:
   authority: lov
-  description: "The ELSEWeb Modelling ontology provides simple classes for describing data models. This project provides foundational support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb Modelling ontology provides simple classes for describing data
+    models. This project provides foundational support for the ELSEWeb
+    project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-modelling.owl
   id: lov.lswmo
   name: ELSEWeb Modelling Ontology
@@ -3943,7 +4315,15 @@ lov.lswmo:
   uri_format: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-modelling.owl#$1
 lov.lswpm:
   authority: lov
-  description: "The ELSEWeb Lifemapper parameters ontology provides auxiliary classes and instances that describe input parameters of Lifemapper modelling services. This ontology provides support for the ELSEWeb project(http://elseweb.cybershare.utep.edu/).\nwebsite: http://elseweb.cybershare.utep.edu/ontologies\nemail: nvillanuevarosales@utep.edu"
+  description: >-
+    The ELSEWeb Lifemapper parameters ontology provides auxiliary classes and
+    instances that describe input parameters of Lifemapper modelling services.
+    This ontology provides support for the ELSEWeb
+    project(http://elseweb.cybershare.utep.edu/).
+
+    website: http://elseweb.cybershare.utep.edu/ontologies
+
+    email: nvillanuevarosales@utep.edu
   homepage: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper-parameters.owl
   id: lov.lswpm
   name: ELSEWeb Lifemapper Parameters Ontology
@@ -4046,7 +4426,66 @@ lov.m3lite:
   uri_format: http://purl.org/iot/vocab/m3-lite#$1
 lov.m4i:
   authority: lov
-  description: "Metadata4Ing defines classes and properties or reuses such classes and properties from other ontologies to describe research processes and research data management in NFDI4Ing. \nNew concepts and properties are located in the namespace of Metadata4Ing.\nMetadata4Ing does not import complete ontologies for the sake of relevance, readability, understandability and usability by and for engineers.\nInstead, it tries to make re-use of existing identifiers for classes and properties by re-using all or a relevant subset of the axioms from the original ontology.\nThese statements have been extracted in different ways, e.g. by using Protégé tools importing an ontology and copying axioms of relevant items to Metadata4Ing or by download from data services or raw files of ontologies and manual copypasting.\nIn some cases there was a need to extend or modify the original set of statements about an entity, e.g. because labels and definitions were expressed with a different owl:AnnotationProperty than the rest of Metadata4Ing, or because a skos:preflabel or a skos:definition in any of the languages we would like to support was missing.\nAny editorial changes on elements from external ontologies are declared in Metadata4Ing by an annotation with skos:editorialNote at item-level.\nTo get the original set of statements we encourage to visit the original namespace of the respective item.\nMetadata4Ing reuses elements from the following ontologies:\n- BIBO = Bibliographic Ontology  \n- BIRO = Bibliographic Reference Ontology  \n- DCAT = Data Catalog  \n- DCTERMS = Dublin Core Terms  \n- FOAF = Friend of a Friend  \n- OWL = Web Ontology Language  \n- PROV = Provenance Namespace  \n- QUDT = Quantities, Units, Dimensions and Types  \n- RDF = Resource Description Framework  \n- RDFS = RDF Schema  \n- SCHEMA = schema.org  \n- SKOS = Simple Knowledge Organization System  \n- SSN = Semantic Sensor Network Ontology  \n- VANN = Vocabulary for Annotating vocabulary descriptions  \n- XSD = XML Schema Definition  \n- EMMO = European Materials and Modelling Ontology  \n- BFO = Basic Formal Ontology  \n- RO = Relation Ontology  \n- PIMS-II = PIMS Interoperability Infrastructure  \n- D-SI = Digital System of Units"
+  description: >-
+    Metadata4Ing defines classes and properties or reuses such classes and
+    properties from other ontologies to describe research processes and research
+    data management in NFDI4Ing.
+
+    New concepts and properties are located in the namespace of Metadata4Ing.
+
+    Metadata4Ing does not import complete ontologies for the sake of relevance, readability, understandability and usability by and for engineers.
+
+    Instead, it tries to make re-use of existing identifiers for classes and properties by re-using all or a relevant subset of the axioms from the original ontology.
+
+    These statements have been extracted in different ways, e.g. by using Protégé tools importing an ontology and copying axioms of relevant items to Metadata4Ing or by download from data services or raw files of ontologies and manual copypasting.
+
+    In some cases there was a need to extend or modify the original set of statements about an entity, e.g. because labels and definitions were expressed with a different owl:AnnotationProperty than the rest of Metadata4Ing, or because a skos:preflabel or a skos:definition in any of the languages we would like to support was missing.
+
+    Any editorial changes on elements from external ontologies are declared in Metadata4Ing by an annotation with skos:editorialNote at item-level.
+
+    To get the original set of statements we encourage to visit the original namespace of the respective item.
+
+    Metadata4Ing reuses elements from the following ontologies:
+
+    - BIBO = Bibliographic Ontology
+
+    - BIRO = Bibliographic Reference Ontology
+
+    - DCAT = Data Catalog
+
+    - DCTERMS = Dublin Core Terms
+
+    - FOAF = Friend of a Friend
+
+    - OWL = Web Ontology Language
+
+    - PROV = Provenance Namespace
+
+    - QUDT = Quantities, Units, Dimensions and Types
+
+    - RDF = Resource Description Framework
+
+    - RDFS = RDF Schema
+
+    - SCHEMA = schema.org
+
+    - SKOS = Simple Knowledge Organization System
+
+    - SSN = Semantic Sensor Network Ontology
+
+    - VANN = Vocabulary for Annotating vocabulary descriptions
+
+    - XSD = XML Schema Definition
+
+    - EMMO = European Materials and Modelling Ontology
+
+    - BFO = Basic Formal Ontology
+
+    - RO = Relation Ontology
+
+    - PIMS-II = PIMS Interoperability Infrastructure
+
+    - D-SI = Digital System of Units
   homepage: http://w3id.org/nfdi4ing/metadata4ing#
   id: lov.m4i
   name: 'Metadata4Ing: An ontology for describing the generation of research data within a scientific activity.'
@@ -4161,7 +4600,10 @@ lov.mdoprov:
   uri_format: https://w3id.org/mdo/provenance/$1
 lov.mdr:
   authority: lov
-  description: "An application profile of DCAT combining it with other metadata vocabularies (e.g. VoID, DCTERMS, LIME)\n to meet requirements elicited in various use cases of the Semantic Web platform Semantic Turkey"
+  description: >-
+    An application profile of DCAT combining it with other metadata vocabularies
+    (e.g. VoID, DCTERMS, LIME)
+     to meet requirements elicited in various use cases of the Semantic Web platform Semantic Turkey
   homepage: http://semanticturkey.uniroma2.it/ns/mdr
   id: lov.mdr
   name: The Semantic Turkey metadata registry ontology
@@ -4522,7 +4964,38 @@ lov.nno:
   uri_format: https://w3id.org/nno/ontology#$1
 lov.noria:
   authority: lov
-  description: "The NORIA-O project is a data model for IT networks, events and operations information.\nThe ontology is developed using web technologies (e.g. RDF, OWL, SKOS) and is intended as a structure for realizing an IT Service Management (ITSM) Knowledge Graph (KG) for Anomaly Detection (AD) and Risk Management applications.\nThe model has been developed in collaboration with operational teams, and in connection with third parties linked vocabularies.\n\nAlignment with third parties vocabularies is implemented on a per class or per property basis when relevant (e.g. with `rdfs:subClassOf`, `owl:equivalentClass`).\nDirections for direct instanciation of these vocabularies are provided for cases where implementing a class/property alignment is redundant.\nAlignment holds for the following vocabulary releases:\n- [BBO](https://hal.archives-ouvertes.fr/hal-02365012/) 1.0.0\n- [BOT](https://w3id.org/bot/) 0.3.2\n- [DevOps-Infra](https://oeg-upm.github.io/devops-infra/) 1.0.0\n- [FOLIO](https://github.com/IBCNServices/Folio-Ontology) 1.0.0\n- [ORG](https://www.w3.org/TR/vocab-org/) 0.8\n- [PEP](https://w3id.org/pep/) 1.1\n- [SEAS](https://w3id.org/seas/) 1.1\n- [SLOGERT](https://sepses.ifs.tuwien.ac.at/ns/log/index-en.html) 1.1.0\n- [UCO](https://github.com/ucoProject/uco) Release-0.8.0"
+  description: >-
+    The NORIA-O project is a data model for IT networks, events and operations
+    information.
+
+    The ontology is developed using web technologies (e.g. RDF, OWL, SKOS) and is intended as a structure for realizing an IT Service Management (ITSM) Knowledge Graph (KG) for Anomaly Detection (AD) and Risk Management applications.
+
+    The model has been developed in collaboration with operational teams, and in connection with third parties linked vocabularies.
+
+
+    Alignment with third parties vocabularies is implemented on a per class or per property basis when relevant (e.g. with `rdfs:subClassOf`, `owl:equivalentClass`).
+
+    Directions for direct instanciation of these vocabularies are provided for cases where implementing a class/property alignment is redundant.
+
+    Alignment holds for the following vocabulary releases:
+
+    - [BBO](https://hal.archives-ouvertes.fr/hal-02365012/) 1.0.0
+
+    - [BOT](https://w3id.org/bot/) 0.3.2
+
+    - [DevOps-Infra](https://oeg-upm.github.io/devops-infra/) 1.0.0
+
+    - [FOLIO](https://github.com/IBCNServices/Folio-Ontology) 1.0.0
+
+    - [ORG](https://www.w3.org/TR/vocab-org/) 0.8
+
+    - [PEP](https://w3id.org/pep/) 1.1
+
+    - [SEAS](https://w3id.org/seas/) 1.1
+
+    - [SLOGERT](https://sepses.ifs.tuwien.ac.at/ns/log/index-en.html) 1.1.0
+
+    - [UCO](https://github.com/ucoProject/uco) Release-0.8.0
   homepage: https://w3id.org/noria/ontology/
   id: lov.noria
   name: The NORIA Ontology
@@ -4855,7 +5328,20 @@ lov.om:
   uri_format: http://def.seegrid.csiro.au/isotc211/iso19156/2011/observation#$1
 lov.omg:
   authority: lov
-  description: "The Ontology for Managing Geometry (OMG) is an ontology for describing geometry descriptions of objects. It provides means to support the application of multiple geometry descriptions of the same object as well as the description of the geometry evolution over time. The OMG is based the concepts introduced in the Ontology for Property Management (OPM) ontology. \n\nThis ontology was created within the research project SCOPE, funded by the German Federal Ministry for Economic Affairs and Energy (BMWi).\n\nThe initial version of the ontology (v0.0.1) is documented in:\nWagner, Anna, Bonduel, Mathias, Pauwels, Pieter & Rüppel, Uwe(2019). Relating Geometry Descroptions to its Derivatives on the Web. In Proceedings of the European Conference on Computing in Construction (EC3 2019). Chania, Greece."
+  description: >-
+    The Ontology for Managing Geometry (OMG) is an ontology for describing
+    geometry descriptions of objects. It provides means to support the
+    application of multiple geometry descriptions of the same object as well as
+    the description of the geometry evolution over time. The OMG is based the
+    concepts introduced in the Ontology for Property Management (OPM) ontology.
+
+
+    This ontology was created within the research project SCOPE, funded by the German Federal Ministry for Economic Affairs and Energy (BMWi).
+
+
+    The initial version of the ontology (v0.0.1) is documented in:
+
+    Wagner, Anna, Bonduel, Mathias, Pauwels, Pieter & Rüppel, Uwe(2019). Relating Geometry Descroptions to its Derivatives on the Web. In Proceedings of the European Conference on Computing in Construction (EC3 2019). Chania, Greece.
   homepage: https://w3id.org/omg
   id: lov.omg
   name: 'OMG: Ontology for Managing Geometry'
@@ -4997,7 +5483,11 @@ lov.op:
   uri_format: http://environment.data.gov.au/def/op#$1
 lov.open311:
   authority: lov
-  description: "Open 311 Ontology\n\nThis ontology generalizes the concepts that appear in 311 open data files published by several cities (Toronto, New York, Chicago, Vancouver) across North America.  It provides a generis representation of 311 data that other cities can map their data onto and be used as a means of achieving interoperability."
+  description: >-
+    Open 311 Ontology
+
+
+    This ontology generalizes the concepts that appear in 311 open data files published by several cities (Toronto, New York, Chicago, Vancouver) across North America.  It provides a generis representation of 311 data that other cities can map their data onto and be used as a means of achieving interoperability.
   homepage: http://ontology.eil.utoronto.ca/open311.owl
   id: lov.open311
   name: "Open 311 Ontology: An Ontology for publishing a city's non-emergency events."
@@ -5696,7 +6186,13 @@ lov.pro:
   uri_format: http://purl.org/spar/pro/$1
 lov.prof:
   authority: lov
-  description: "This vocabulary is for describing relationships between standards/specifications, profiles of them and supporting artifacts such as validating resources.\n\nThis model starts with [http://dublincore.org/2012/06/14/dcterms#Standard](dct:Standard) entities which can either be Base Specifications (a standard not profiling any other Standard) or Profiles (Standards which do profile others). Base Specifications or Profiles can have Resource Descriptors associated with them that defines implementing rules for the it. Resource Descriptors must indicate the role they play (to guide, to validate etc.) and the formalism they adhere to (dct:format) to allow for content negotiation. A vocabulary of Resource Roles are provided alongside this vocabulary but that list is extensible."
+  description: >-
+    This vocabulary is for describing relationships between
+    standards/specifications, profiles of them and supporting artifacts such as
+    validating resources.
+
+
+    This model starts with [http://dublincore.org/2012/06/14/dcterms#Standard](dct:Standard) entities which can either be Base Specifications (a standard not profiling any other Standard) or Profiles (Standards which do profile others). Base Specifications or Profiles can have Resource Descriptors associated with them that defines implementing rules for the it. Resource Descriptors must indicate the role they play (to guide, to validate etc.) and the formalism they adhere to (dct:format) to allow for content negotiation. A vocabulary of Resource Roles are provided alongside this vocabulary but that list is extensible.
   homepage: http://www.w3.org/ns/dx/prof
   id: lov.prof
   name: Profiles Vocabulary
@@ -5841,7 +6337,13 @@ lov.qb4o:
   uri_format: http://purl.org/qb4olap/cubes#$1
 lov.qu:
   authority: lov
-  description: "This ontology is partially based on the SysML QUDV (Quantities, Units, Dimensions and Values) proposed by a working group of the SysML 1.2 Revision Task Force (RTF), working in close coordination with the OMG MARTE specification group.\nIn order to generalize its potential usage and alignment with other standardization efforts concerning quantities and units, the QU ontology has been further developed as a complement to the Agriculture Meteorology example showcasing the ontology developed by the W3C Semantic Sensor Networks incubator group (SSN-XG)."
+  description: >-
+    This ontology is partially based on the SysML QUDV (Quantities, Units,
+    Dimensions and Values) proposed by a working group of the SysML 1.2 Revision
+    Task Force (RTF), working in close coordination with the OMG MARTE
+    specification group.
+
+    In order to generalize its potential usage and alignment with other standardization efforts concerning quantities and units, the QU ontology has been further developed as a complement to the Agriculture Meteorology example showcasing the ontology developed by the W3C Semantic Sensor Networks incubator group (SSN-XG).
   homepage: http://purl.oclc.org/NET/ssnx/qu/qu
   id: lov.qu
   name: Quantity Kinds and Units
@@ -5872,7 +6374,19 @@ lov.r-arco:
   uri_format: https://w3id.org/arco/ontology/arco/$1
 lov.r4r:
   authority: lov
-  description: "R4R is a light-weight ontology for representing general relationships of resource for publication and reusing. It asserts that a certain reusing context occurred and determined by its two basic relations, namely, isPackagedWith and isCitedBy. The isPackagedWith relation declares the resource is ready to be reused by incorporating License and Provenance information. The Cites relation is an exceptional to isCitedBy which occurs only two related objects cite each other at the same time. Five resource objects including article, data, code, provenance and license are major class concepts to represent in this ontology. \n\nThe namespace for all R4R terms is http://guava.iis.sinica.edu.tw/r4r/"
+  description: >-
+    R4R is a light-weight ontology for representing general relationships of
+    resource for publication and reusing. It asserts that a certain reusing
+    context occurred and determined by its two basic relations, namely,
+    isPackagedWith and isCitedBy. The isPackagedWith relation declares the
+    resource is ready to be reused by incorporating License and Provenance
+    information. The Cites relation is an exceptional to isCitedBy which occurs
+    only two related objects cite each other at the same time. Five resource
+    objects including article, data, code, provenance and license are major
+    class concepts to represent in this ontology.
+
+
+    The namespace for all R4R terms is http://guava.iis.sinica.edu.tw/r4r/
   homepage: http://guava.iis.sinica.edu.tw/r4r
   id: lov.r4r
   name: Relations for Reusing (R4R) Ontology
@@ -6125,7 +6639,21 @@ lov.rdfg:
   uri_format: http://www.w3.org/2004/03/trix/rdfg-1/$1
 lov.rdfp:
   authority: lov
-  description: "## RDF Presentation and RDF Presentation Negotiation\n\nAn RDF graph can be presented in several ways, using different media types. Examples of RDF media types include `application/rdf+xml`, `text/turtle`, `application/json+ld`.\n\nToday, most of the content consumed/produced/published, on the Web is not presented in RDF. \n\nIn the Web of Things, HTTP servers and clients would rather exchange lightweight documents, potentially binary. \nCurrently, most existing RDF Presentations generically apply to any RDF graph, at the cost of being heavy text-based documents.\nYet, lightweight HTTP servers/clients could be better satisfied with consuming/producing/publishing lightweight documents, may its structure be application-specific."
+  description: >-
+    ## RDF Presentation and RDF Presentation Negotiation
+
+
+    An RDF graph can be presented in several ways, using different media types. Examples of RDF media types include `application/rdf+xml`, `text/turtle`, `application/json+ld`.
+
+
+    Today, most of the content consumed/produced/published, on the Web is not presented in RDF.
+
+
+    In the Web of Things, HTTP servers and clients would rather exchange lightweight documents, potentially binary.
+
+    Currently, most existing RDF Presentations generically apply to any RDF graph, at the cost of being heavy text-based documents.
+
+    Yet, lightweight HTTP servers/clients could be better satisfied with consuming/producing/publishing lightweight documents, may its structure be application-specific.
   homepage: https://w3id.org/rdfp/
   id: lov.rdfp
   name: The RDF Presentation ontology
@@ -6146,7 +6674,13 @@ lov.rdfs:
   uri_format: http://www.w3.org/2000/01/rdf-schema#$1
 lov.rdft:
   authority: lov
-  description: "This is a vocabulary document and is used to define classes and properties used in\n      RDF 1.1 Test Cases and associated test manifests.\n      The URI of the vocabulary is http://www.w3.org/ns/rdftest# (abbreviated by rdft: in this document).\n      Turtle and an JSON-LD versions of the vocabulary are also available.\n      The vocabulary is published by W3C."
+  description: >-
+    This is a vocabulary document and is used to define classes and properties
+    used in
+          RDF 1.1 Test Cases and associated test manifests.
+          The URI of the vocabulary is http://www.w3.org/ns/rdftest# (abbreviated by rdft: in this document).
+          Turtle and an JSON-LD versions of the vocabulary are also available.
+          The vocabulary is published by W3C.
   homepage: http://www.w3.org/ns/rdftest
   id: lov.rdft
   name: The RDF 1.1 Test Vocabulary
@@ -6156,7 +6690,14 @@ lov.rdft:
   uri_format: http://www.w3.org/ns/rdftest#$1
 lov.react:
   authority: lov
-  description: "The REACT ontology aims to represent all the necessary knowledge to support the achievement of island energy independence through renewable energy generation and storage, a demand response platform, and promoting user engagement in a local energy community.\n\nThe REACT ontology has been developed as part of the REACT project which has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 824395."
+  description: >-
+    The REACT ontology aims to represent all the necessary knowledge to support
+    the achievement of island energy independence through renewable energy
+    generation and storage, a demand response platform, and promoting user
+    engagement in a local energy community.
+
+
+    The REACT ontology has been developed as part of the REACT project which has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 824395.
   homepage: https://w3id.org/react
   id: lov.react
   name: The REACT Ontology
@@ -6178,7 +6719,7 @@ lov.rec:
   uri_format: http://purl.org/ontology/rec/core#$1
 lov.rec54:
   authority: lov
-  description: "This is (the start of) an event-based model of the W3C process; e.g. RECdd is the class of Recommendation Director's Decisions; \ti.e. messages to w3c-ac-members announcing a new W3C Recommendation."
+  description: This is (the start of) an event-based model of the W3C process; e.g. RECdd is the class of Recommendation Director's Decisions; i.e. messages to w3c-ac-members announcing a new W3C Recommendation.
   homepage: http://www.w3.org/2001/02pd/rec54#
   id: lov.rec54
   name: Model of the W3C Process
@@ -6240,7 +6781,20 @@ lov.rev:
   uri_format: http://purl.org/stuff/rev#$1
 lov.rico:
   authority: lov
-  description: "RiC-O (Records in Contexts-Ontology) is an OWL ontology for describing\n                    archival record resources. As the second part of Records in Contexts standard,\n                    it is a formal representation of Records in Contexts Conceptual Model (RiC-CM). \t\t\n The current official version is <html:strong>v0.2</html:strong>; it is\n                    compliant with RiC-CM v0.2 full draft, that will be published in February or\n                    March 2021, and that is slightly different from <html:a\n                        href=\"https://www.ica.org/sites/default/files/ric-cm-0.2_preview.pdf\">RiC-CM\n                        v0.2 preview, that was published in December 2019.\n RiC-O provides a generic vocabulary and formal rules for creating RDF\n                    datasets (or generating them from existing archival metadata) that describe in a\n                    consistent way any kind of archival record resource. It can support publishing\n                    RDF datasets as Linked Data, querying them using SPARQL, and making inferences\n                    using the logic of the ontology."
+  description: >-
+    RiC-O (Records in Contexts-Ontology) is an OWL ontology for describing
+                        archival record resources. As the second part of Records in Contexts standard,
+                        it is a formal representation of Records in Contexts Conceptual Model (RiC-CM).
+     The current official version is <html:strong>v0.2</html:strong>; it is
+                        compliant with RiC-CM v0.2 full draft, that will be published in February or
+                        March 2021, and that is slightly different from <html:a
+                            href="https://www.ica.org/sites/default/files/ric-cm-0.2_preview.pdf">RiC-CM
+                            v0.2 preview, that was published in December 2019.
+     RiC-O provides a generic vocabulary and formal rules for creating RDF
+                        datasets (or generating them from existing archival metadata) that describe in a
+                        consistent way any kind of archival record resource. It can support publishing
+                        RDF datasets as Linked Data, querying them using SPARQL, and making inferences
+                        using the logic of the ontology.
   homepage: https://www.ica.org/standards/RiC/ontology
   id: lov.rico
   name: International Council on Archives Records in Contexts Ontology (ICA RiC-O)
@@ -6412,7 +6966,27 @@ lov.s4city:
   uri_format: https://saref.etsi.org/saref4city/$1
 lov.s4ehaw:
   authority: lov
-  description: "The objective of SAREF4EHAW is to extend SAREF ontology for the eHealth/Ageing-well (EHAW) vertical. Clause 4.1 of the present document shortly introduces a high level view of the envisioned SAREF4EHAW semantic model and modular ontology, with the retained concepts (i.e. classes) and their relations. \nSAREF4EHAW extension has been specified and formalised by investigating EHAW domain related resources, as reported in ETSI TR 103 509, such as: potential stakeholders, standardization initiatives, alliances/associations, European projects, EC directives, existing ontologies, and data repositories. Therefore, SAREF4EHAW modular ontology shall both:\n - Allow the implementation of a limited set of typical EHAW related use cases already identified in ETSI TR 103 509, i.e.\n - Use case 1 ?elderly at home monitoring and support?,\n - Use case 2 ?monitoring and support of healthy lifestyles for citizens?,\n - Use case 3 ?Early Warning System (EWS) and Cardiovascular Accidents detection?.\n - Fulfil the eHealth Ageing Well related requirements provided in ETSI TR 103 509, mainly the ontological ones that were mostly taken as input for the ontology specification.\n\nSAREF4EHAW mainly reuses the following existing ontologies: SAREF, ETSI SmartBAN reference model, SAREF 4 Environment extension and W3C SSN System module. The following figure presents the high level view of SAREF4EHAW ontology.\n![SAREF4SYST overview](diagrams/SAREF4EHAW_Model.jpg)\nFor semantic interoperability handling purposes, an ontology based solution, combined with sensing-as-a-service and WoT strategies, is retained for SAREF4EHAW. Therefore, an upper level ontology, at service level, shall also behas been fully modelled (Service class and sub-classes depicted in the previous figure).\nFor embedded semantic analytics purposes, SAREF4EHAW shall behas been designed using the modularity principle (see ETSI TR 103 509) and can thus be mainly described by the following self-contained knowledge sub-ontologies (or modules): HealthActor, Ban, HealthDevice, Function (measured data related concepts included) and Service."
+  description: >-
+    The objective of SAREF4EHAW is to extend SAREF ontology for the
+    eHealth/Ageing-well (EHAW) vertical. Clause 4.1 of the present document
+    shortly introduces a high level view of the envisioned SAREF4EHAW semantic
+    model and modular ontology, with the retained concepts (i.e. classes) and
+    their relations.
+
+    SAREF4EHAW extension has been specified and formalised by investigating EHAW domain related resources, as reported in ETSI TR 103 509, such as: potential stakeholders, standardization initiatives, alliances/associations, European projects, EC directives, existing ontologies, and data repositories. Therefore, SAREF4EHAW modular ontology shall both:
+     - Allow the implementation of a limited set of typical EHAW related use cases already identified in ETSI TR 103 509, i.e.
+     - Use case 1 ?elderly at home monitoring and support?,
+     - Use case 2 ?monitoring and support of healthy lifestyles for citizens?,
+     - Use case 3 ?Early Warning System (EWS) and Cardiovascular Accidents detection?.
+     - Fulfil the eHealth Ageing Well related requirements provided in ETSI TR 103 509, mainly the ontological ones that were mostly taken as input for the ontology specification.
+
+    SAREF4EHAW mainly reuses the following existing ontologies: SAREF, ETSI SmartBAN reference model, SAREF 4 Environment extension and W3C SSN System module. The following figure presents the high level view of SAREF4EHAW ontology.
+
+    ![SAREF4SYST overview](diagrams/SAREF4EHAW_Model.jpg)
+
+    For semantic interoperability handling purposes, an ontology based solution, combined with sensing-as-a-service and WoT strategies, is retained for SAREF4EHAW. Therefore, an upper level ontology, at service level, shall also behas been fully modelled (Service class and sub-classes depicted in the previous figure).
+
+    For embedded semantic analytics purposes, SAREF4EHAW shall behas been designed using the modularity principle (see ETSI TR 103 509) and can thus be mainly described by the following self-contained knowledge sub-ontologies (or modules): HealthActor, Ban, HealthDevice, Function (measured data related concepts included) and Service.
   homepage: https://saref.etsi.org/saref4ehaw/
   id: lov.s4ehaw
   name: 'SAREF4EHAW: an extension of SAREF for eHealth Ageing Well domain'
@@ -6457,7 +7031,65 @@ lov.s4inma:
   uri_format: https://saref.etsi.org/saref4inma/$1
 lov.s4syst:
   authority: lov
-  description: "The present document is the technical specification of SAREF4SYST, a generic extension of [ETSI TS 103 264 SAREF](https://www.etsi.org/deliver/etsi_ts/103200_103299/103264/02.01.01_60/ts_103264v020101p.pdf) that defines an ontology pattern which can be instantiated for different domains. SAREF4SYST defines Systems, Connections between systems, and Connection Points at which systems may be connected. These core concepts can be used generically to define the topology of features of interest, and can be specialized for multiple domains. The topology of features of interest is highly important in many use cases. If a room holds a lighting device, and if it is adjacent with an open window to a room whose luminosity is low, then by turning on the lighting device in the former room one may expect that the luminosity in the latter room will rise.\n\nThe SAREF4SYST ontology pattern can be instantiated for different domains. For example to describe zones inside a building (systems), that share a frontier (connections). Properties of systems are typically state variables (e.g. agent population, temperature), whereas properties of connections are typically flows (e.g. heat flow).\n\nSAREF4SYST has two main aims: on the one hand, to extend SAREF with the capability or representing general topology of systems and how they are connected or interact and, on the other hand, to exemplify how ontology patterns may help to ensure an homogeneous structure of the overall SAREF ontology and speed up the development of extensions.\n\nSAREF4SYST consists both of a core ontology, and guidelines to create ontologies following the SAREF4SYST ontology pattern. The core ontology is a lightweight OWL-DL ontology that defines 3 classes and 9 object properties.\n\nUse cases for ontology patterns are described extensively in  [ETSI TR 103 549 Clauses 4.2 and 4.3](https://www.etsi.org/deliver/etsi_tr/103500_103599/103549/01.01.01_60/tr_103549v010101p.pdf).\n\nFor the Smart Energy domain:\n\n- Electric power systems can exchange electricity with other electric power systems. The electric energy can flow both ways in some cases (from the Public Grid to a Prosumer), or in only one way (from the Public Grid to a Load). Electric power systems can be made up of different sub-systems. Generic sub-types of electric power systems include producers, consumers, storage systems, transmission systems. \n- Electric power systems may be connected one to another through electrical connection points. An Electric power system may have multiple connection points (Multiple Winding Transformer generally have one single primary winding with two or more secondary windings). Generic sub-types of electrical connection points include plugs, sockets, direct-current, single-phase, three-phase, connection points. \n- An Electrical connection may exist between two Electric power systems at two of their respective connection points. Generic sub-types of electrical connections include Single-phase Buses, Three-phase Buses. A single-phase electric power system can be connected using different configurations at a three-phase bus (RN, SN, TN types).\n\nFor the Smart Building domain:\n\n- Buildings, Storeys, Spaces, are different sub-types of Zones. Zones can contain sub-zones. Zones can be adjacent or intersect with other zones. \n- Two zones may share one or more connections. For example some fresh air may be created inside a storey if it has two controllable openings to the exterior at different cardinal points. \n\nA graphical overview of the SAREF4SYST ontology is provided in Figure 1. In such figure:\n\n- Rectangles are used to denote Classes. The label of the rectangle is the identifier of the Class.\n- Plain arrows are used to represent Object Properties between Classes. The label of the arrow is the identifier of the Object Property. The origin of the arrow is the domain Class of the property, and the target of the arrow is the range Class of the property.\n- Dashed arrows with identifiers between stereotype signs (i.e. \"`<< >>`\") refer to OWL axioms that are applied to some property. Four pairs of properties are inverse one of the other; the property `s4syst:connectedTo` is symmetric, and properties `s4syst:hasSubSystem` and `s4syst:hasSubSystem` are transitive.\n- A symbol =1 near the target of an arrow denotes that the associated property is functional. A symbol ? denotes a local existential restriction.\n\n\n![SAREF4SYST overview](diagrams/overview.png)"
+  description: >-
+    The present document is the technical specification of SAREF4SYST, a generic
+    extension of [ETSI TS 103 264
+    SAREF](https://www.etsi.org/deliver/etsi_ts/103200_103299/103264/02.01.01_60/ts_103264v020101p.pdf)
+    that defines an ontology pattern which can be instantiated for different
+    domains. SAREF4SYST defines Systems, Connections between systems, and
+    Connection Points at which systems may be connected. These core concepts can
+    be used generically to define the topology of features of interest, and can
+    be specialized for multiple domains. The topology of features of interest is
+    highly important in many use cases. If a room holds a lighting device, and
+    if it is adjacent with an open window to a room whose luminosity is low,
+    then by turning on the lighting device in the former room one may expect
+    that the luminosity in the latter room will rise.
+
+
+    The SAREF4SYST ontology pattern can be instantiated for different domains. For example to describe zones inside a building (systems), that share a frontier (connections). Properties of systems are typically state variables (e.g. agent population, temperature), whereas properties of connections are typically flows (e.g. heat flow).
+
+
+    SAREF4SYST has two main aims: on the one hand, to extend SAREF with the capability or representing general topology of systems and how they are connected or interact and, on the other hand, to exemplify how ontology patterns may help to ensure an homogeneous structure of the overall SAREF ontology and speed up the development of extensions.
+
+
+    SAREF4SYST consists both of a core ontology, and guidelines to create ontologies following the SAREF4SYST ontology pattern. The core ontology is a lightweight OWL-DL ontology that defines 3 classes and 9 object properties.
+
+
+    Use cases for ontology patterns are described extensively in  [ETSI TR 103 549 Clauses 4.2 and 4.3](https://www.etsi.org/deliver/etsi_tr/103500_103599/103549/01.01.01_60/tr_103549v010101p.pdf).
+
+
+    For the Smart Energy domain:
+
+
+    - Electric power systems can exchange electricity with other electric power systems. The electric energy can flow both ways in some cases (from the Public Grid to a Prosumer), or in only one way (from the Public Grid to a Load). Electric power systems can be made up of different sub-systems. Generic sub-types of electric power systems include producers, consumers, storage systems, transmission systems.
+
+    - Electric power systems may be connected one to another through electrical connection points. An Electric power system may have multiple connection points (Multiple Winding Transformer generally have one single primary winding with two or more secondary windings). Generic sub-types of electrical connection points include plugs, sockets, direct-current, single-phase, three-phase, connection points.
+
+    - An Electrical connection may exist between two Electric power systems at two of their respective connection points. Generic sub-types of electrical connections include Single-phase Buses, Three-phase Buses. A single-phase electric power system can be connected using different configurations at a three-phase bus (RN, SN, TN types).
+
+
+    For the Smart Building domain:
+
+
+    - Buildings, Storeys, Spaces, are different sub-types of Zones. Zones can contain sub-zones. Zones can be adjacent or intersect with other zones.
+
+    - Two zones may share one or more connections. For example some fresh air may be created inside a storey if it has two controllable openings to the exterior at different cardinal points.
+
+
+    A graphical overview of the SAREF4SYST ontology is provided in Figure 1. In such figure:
+
+
+    - Rectangles are used to denote Classes. The label of the rectangle is the identifier of the Class.
+
+    - Plain arrows are used to represent Object Properties between Classes. The label of the arrow is the identifier of the Object Property. The origin of the arrow is the domain Class of the property, and the target of the arrow is the range Class of the property.
+
+    - Dashed arrows with identifiers between stereotype signs (i.e. "`<< >>`") refer to OWL axioms that are applied to some property. Four pairs of properties are inverse one of the other; the property `s4syst:connectedTo` is symmetric, and properties `s4syst:hasSubSystem` and `s4syst:hasSubSystem` are transitive.
+
+    - A symbol =1 near the target of an arrow denotes that the associated property is functional. A symbol ? denotes a local existential restriction.
+
+
+
+    ![SAREF4SYST overview](diagrams/overview.png)
   homepage: https://saref.etsi.org/saref4syst/
   id: lov.s4syst
   name: 'SAREF4SYST: an extension of SAREF for typology of systems and their inter-connections'
@@ -6512,7 +7144,17 @@ lov.samfl:
   uri_format: http://def.seegrid.csiro.au/ontology/om/sam-lite#$1
 lov.san:
   authority: lov
-  description: "This ontology is intended to describe Semantic Actuator Networks, as a counterpoint to SSN definition of Semantic Sensor Networks. An actuator is a physical device having an effect on the world (see Actuator for more information).\n\nIt is worth noticing that some concepts are imported from SSN, but not SSN as a whole. This is a design choice intended to separate as much as possible the definition on actuator from the definition of sensor, which are completely different concept that can be used independantly from each other.\n\nThis ontology is used as a ontological module in IoT-O ontology."
+  description: >-
+    This ontology is intended to describe Semantic Actuator Networks, as a
+    counterpoint to SSN definition of Semantic Sensor Networks. An actuator is a
+    physical device having an effect on the world (see Actuator for more
+    information).
+
+
+    It is worth noticing that some concepts are imported from SSN, but not SSN as a whole. This is a design choice intended to separate as much as possible the definition on actuator from the definition of sensor, which are completely different concept that can be used independantly from each other.
+
+
+    This ontology is used as a ontological module in IoT-O ontology.
   homepage: http://www.irit.fr/recherches/MELODI/ontologies/SAN
   id: lov.san
   name: SAN (Semantic Actuator Network)
@@ -6577,7 +7219,16 @@ lov.saws:
   uri_format: http://purl.org/saws/ontology#$1
 lov.sbeo:
   authority: lov
-  description: "Smart Building Evacuation Ontology (SBEO) is an ontology that couples the information about any building with its occupants such that it can be used in many useful ways. For example, indoor localization of people, detection of any hazard, a recommendation of normal routes such as shopping or stadium seating routes, or safe and feasible emergency evacuation routes or both of them all together.  \n\nThe core SBEO covers the concepts related to the geometry of building, devices and components of the building, route graphs correspondent to the building topology, users' characteristics and preferences, situational awareness of both building (hazard detection, status of routes in terms of availability and occupancy) and users (tracking, management of groups, status in terms of fitness), and emergency evacuation."
+  description: >-
+    Smart Building Evacuation Ontology (SBEO) is an ontology that couples the
+    information about any building with its occupants such that it can be used
+    in many useful ways. For example, indoor localization of people, detection
+    of any hazard, a recommendation of normal routes such as shopping or stadium
+    seating routes, or safe and feasible emergency evacuation routes or both of
+    them all together.
+
+
+    The core SBEO covers the concepts related to the geometry of building, devices and components of the building, route graphs correspondent to the building topology, users' characteristics and preferences, situational awareness of both building (hazard detection, status of routes in terms of availability and occupancy) and users (tracking, management of groups, status in terms of fitness), and emergency evacuation.
   homepage: https://w3id.org/sbeo
   id: lov.sbeo
   name: 'SBEO: Smart Building Evacuation Ontology'
@@ -6743,7 +7394,14 @@ lov.seas:
   uri_format: https://w3id.org/seas/$1
 lov.seas-eval:
   authority: lov
-  description: "The Evaluation ontology describes evaluation of [`seas:Property`ies](https://w3id.org/seas/Property). There may be:\n\n- direct evaluations, or\n- qualified evaluations."
+  description: >-
+    The Evaluation ontology describes evaluation of
+    [`seas:Property`ies](https://w3id.org/seas/Property). There may be:
+
+
+    - direct evaluations, or
+
+    - qualified evaluations.
   homepage: https://w3id.org/seas/EvaluationOntology
   id: lov.seas-eval
   name: The SEAS Evaluation ontology
@@ -6783,7 +7441,20 @@ lov.seas-stats:
   uri_format: https://w3id.org/seas/$1
 lov.seas-sys:
   authority: lov
-  description: "The System Ontology defines Systems, Connections between systems, and Connection Points at which systems may be connected. This ontology is then specialized for multiple domains. For example:\n\n- In electric energy: \n    - power systems consume, produce, store, and exchange electricity;\n    - power connections are where electricity flows between systems;\n    - power connection points are plugs, sockets, or power busses.\n- In the electricity market:\n    - players and markets are systems;\n    - connections are contracts or transactions between two players, or between a player and a market;\n    - connection points include offers and bids."
+  description: >-
+    The System Ontology defines Systems, Connections between systems, and
+    Connection Points at which systems may be connected. This ontology is then
+    specialized for multiple domains. For example:
+
+
+    - In electric energy:
+        - power systems consume, produce, store, and exchange electricity;
+        - power connections are where electricity flows between systems;
+        - power connection points are plugs, sockets, or power busses.
+    - In the electricity market:
+        - players and markets are systems;
+        - connections are contracts or transactions between two players, or between a player and a market;
+        - connection points include offers and bids.
   homepage: https://w3id.org/seas/SystemOntology
   id: lov.seas-sys
   name: The SEAS System ontology
@@ -6805,7 +7476,24 @@ lov.seasb:
   uri_format: https://w3id.org/seas/$1
 lov.seasbo:
   authority: lov
-  description: "The SEAS Building ontology describes a taxonomy of buildings, building spaces, and rooms.\n\nSome categorizations are based on the energy efficiency related to their insulation etc., although the actual values for classes depend the country specific regulations and geographical locations.\n\nOther categorizations are based on occupancy and activities. There is no single accepted categorization available. This taxonomy uses some types selected from:\n\n- International building occupancy based categories (USA)\n- The Classification of Types of Constructions (EU)\n- Finnish building categorization VTJ2000 (Finland)\n- Wikipedia category page for Rooms: https://en.wikipedia.org/wiki/Category:Rooms"
+  description: >-
+    The SEAS Building ontology describes a taxonomy of buildings, building
+    spaces, and rooms.
+
+
+    Some categorizations are based on the energy efficiency related to their insulation etc., although the actual values for classes depend the country specific regulations and geographical locations.
+
+
+    Other categorizations are based on occupancy and activities. There is no single accepted categorization available. This taxonomy uses some types selected from:
+
+
+    - International building occupancy based categories (USA)
+
+    - The Classification of Types of Constructions (EU)
+
+    - Finnish building categorization VTJ2000 (Finland)
+
+    - Wikipedia category page for Rooms: https://en.wikipedia.org/wiki/Category:Rooms
   homepage: https://w3id.org/seas/BuildingOntology
   id: lov.seasbo
   name: The SEAS Building Ontology
@@ -6840,7 +7528,12 @@ lov.seasfo:
   uri_format: https://w3id.org/seas/$1
 lov.seast:
   authority: lov
-  description: "This ontology defines:\n- a set of subclasses of `seas:Evaluation` to better interpret evaluations of quantifiable properties.\n- a set of sub properties of `seas:hasProperty` to qualify time-related properties."
+  description: >-
+    This ontology defines:
+
+    - a set of subclasses of `seas:Evaluation` to better interpret evaluations of quantifiable properties.
+
+    - a set of sub properties of `seas:hasProperty` to qualify time-related properties.
   homepage: https://w3id.org/seas/TimeOntology
   id: lov.seast
   name: The SEAS Time Ontology.
@@ -6852,7 +7545,24 @@ lov.seast:
   uri_format: https://w3id.org/seas/$1
 lov.seasto:
   authority: lov
-  description: "The Seas Trading Ontology defines concepts and relations to describe ownership, trading, bilateral contracts and market licenses:\n\n- players own systems and trade commodities, which have a price;\n- bilateral electricity contracts are connections between electricity traders at which they exchange\nelectricity;\n- electricity markets are connections between electricity traders at which they exchange electricity,\nusing a market license;\n- electricity markets can be cleared, and balanced;\n- evaluations can have a traded volume validity context"
+  description: >-
+    The Seas Trading Ontology defines concepts and relations to describe
+    ownership, trading, bilateral contracts and market licenses:
+
+
+    - players own systems and trade commodities, which have a price;
+
+    - bilateral electricity contracts are connections between electricity traders at which they exchange
+
+    electricity;
+
+    - electricity markets are connections between electricity traders at which they exchange electricity,
+
+    using a market license;
+
+    - electricity markets can be cleared, and balanced;
+
+    - evaluations can have a traded volume validity context
   homepage: https://w3id.org/seas/TradingOntology
   id: lov.seasto
   name: The SEAS Trading ontology
@@ -6893,7 +7603,14 @@ lov.semio:
   uri_format: http://www.lingvoj.org/semio#$1
 lov.semiotics:
   authority: lov
-  description: "A content ontology pattern that encodes a basic semiotic theory, by reusing the situation pattern. The basic classes are: Expression, Meaning, Reference (the semiotic triangle), LinguisticAct (for the pragmatics), and Agent.\nA linguistic act is said to be context for expressions, with their meanings and references, and agents involved.\nBased on this pattern, several specific linguistic acts, such as 'tagging', 'translating', 'defining', 'formalizing', etc. can be defined, so constituting a formal vocabulary for a pragmatic web."
+  description: >-
+    A content ontology pattern that encodes a basic semiotic theory, by reusing
+    the situation pattern. The basic classes are: Expression, Meaning, Reference
+    (the semiotic triangle), LinguisticAct (for the pragmatics), and Agent.
+
+    A linguistic act is said to be context for expressions, with their meanings and references, and agents involved.
+
+    Based on this pattern, several specific linguistic acts, such as 'tagging', 'translating', 'defining', 'formalizing', etc. can be defined, so constituting a formal vocabulary for a pragmatic web.
   homepage: http://www.ontologydesignpatterns.org/cp/owl/semiotics.owl
   id: lov.semiotics
   name: A content ontology pattern that encodes a basic semiotic theory, by reusing the situation pattern.
@@ -7571,7 +8288,82 @@ lov.teach:
   uri_format: http://linkedscience.org/teach/ns#$1
 lov.tempo:
   authority: lov
-  description: "In a typical (uni)temporal data model every resource's appearance (and disappearance) is being tracked.\nNumerous systems accomplish unitemporal tracking, either externally by e.g. using git to record the insertion or deletion of a resource, or internally by e.g. using prov:generatedAtTime and prov:invalidatedAtTime.\nThis axis of time is known as *system time*, and none of TempO's concern because for one there is readily available support, and moreover because unitemporal tracking is used for principally true statements, i.e. those that have always been (considered) true or will always be (considered) true.\n\nTempO addresses bitemporal and tritemporal setups: Resources which are (known or believed to be) valid and efficacious for some time.\nA second time axis orthogonal to system time is introduced, that is a resource can be valid even though it is currently not in the system, or, conversely, can be already or still invalid by the time it enters the system.\n\nEfficacy, sometimes called decision time, is yet another concept orthogonal to validity, i.e. a resource that is no longer or not yet valid can be efficacious.\nThe converse, a valid but inefficacious resource in the system, is *usually* not encountered but TempO does not impose restrictions on the shape of the time area.\n\nIn general the necessity for tracking both validity and efficacy arises in areas where concepts are assigned a code or label that is subject to reuse following invalidation.\nTracking efficacy and validity concurrently then allows for fine-grained control over how much future knowledge or how much past knowledge we tolerate in a datset.\n\nExample:\n--------\nCzechoslovakia was founded in 1918 but became part of Germany, Hungary and Poland in 1938.\nIt was reestablished in 1945 but split into two sovereign states in 1993.\nThe ISO 3166 country code for Czechoslovakia used to be 'CS', assigned in 1974, published in February 1978, and invalidated with the country's split.\nIn 2003 ISO 3166 reassigned the country code 'CS' to Serbia and Montenegro.\nThe facts were assembled in 2018 and written down as follows:\n\n    cc:CSHH\n        a cc:ISO3166-CountryCode ;\n        rdfs:label \"CS\" ;\n        cc:refersTo \"Czechoslovakia\" ;\n        prov:generatedAtTime \"2018-02-29T04:00:00Z\"^^xsd:dateTime .\n        tempo:validFrom \"1978-02\"^^xsd:gYearMonth ;\n        tempo:validTill \"1993-01-01\"^^xsd:date ;\n        tempo:efficaciousFrom \"1918\"^^xsd:gYear , \"1945\"^^xsd:gYear ;\n        tempo:efficaciousTill \"1938\"^^xsd:gYear , \"2003\"^^xsd:gYear .\n\nThe use of the country code 'CS' in a statement from 1988 can be resolved to cc:CSHH, as of today, free from ambiguity; it was valid back then after all and we know that today.\nThe same query in 2017 (point-in-time query) would have yielded no results because the information hadn't been in the system back then.\nPoint-in-time queries, however, are not TempO's major concern so only as-of-today queries are assumed from now on.\n\nFollowing the country's split it is highly likely that news reports from, say, 1994 highlighting the then-recent past would still have used 'CS' to refer to cc:CSHH.\nAccording to the resource this is possible, a query for 'CS' in 1994 would bring up cc:CSHH as it is efficacious but marked as invalidated.\n\nOn the other end of history, the use of the code 'CS' in, say, 1976 is plausible.  The code was decided on but not yet formally published.\nA query for 'CS' as used in 1976 would bring up cc:CSHH, marked as anachronistic.\nGoing back further, a statement from, say 1942, using the code 'CS' must clearly refer to something else.\nA query for 'CS' as used in 1976 would yield not yield any results.\n\n--\n\nThe ontology IRI http://purl.org/tempo/ always resolve to the latest version of TempO.  Particular versionIRIs such as http://purl.org/tempo/0.1/ can be used by clients to force the import of a particular version.\n\nThe goal of TempO is to allow for temporal constraints with control over how much future or past is permissible directly on the published resource, and as such, TempO does not restrict domain/ranges."
+  description: >-
+    In a typical (uni)temporal data model every resource's appearance (and
+    disappearance) is being tracked.
+
+    Numerous systems accomplish unitemporal tracking, either externally by e.g. using git to record the insertion or deletion of a resource, or internally by e.g. using prov:generatedAtTime and prov:invalidatedAtTime.
+
+    This axis of time is known as *system time*, and none of TempO's concern because for one there is readily available support, and moreover because unitemporal tracking is used for principally true statements, i.e. those that have always been (considered) true or will always be (considered) true.
+
+
+    TempO addresses bitemporal and tritemporal setups: Resources which are (known or believed to be) valid and efficacious for some time.
+
+    A second time axis orthogonal to system time is introduced, that is a resource can be valid even though it is currently not in the system, or, conversely, can be already or still invalid by the time it enters the system.
+
+
+    Efficacy, sometimes called decision time, is yet another concept orthogonal to validity, i.e. a resource that is no longer or not yet valid can be efficacious.
+
+    The converse, a valid but inefficacious resource in the system, is *usually* not encountered but TempO does not impose restrictions on the shape of the time area.
+
+
+    In general the necessity for tracking both validity and efficacy arises in areas where concepts are assigned a code or label that is subject to reuse following invalidation.
+
+    Tracking efficacy and validity concurrently then allows for fine-grained control over how much future knowledge or how much past knowledge we tolerate in a datset.
+
+
+    Example:
+
+    --------
+
+    Czechoslovakia was founded in 1918 but became part of Germany, Hungary and Poland in 1938.
+
+    It was reestablished in 1945 but split into two sovereign states in 1993.
+
+    The ISO 3166 country code for Czechoslovakia used to be 'CS', assigned in 1974, published in February 1978, and invalidated with the country's split.
+
+    In 2003 ISO 3166 reassigned the country code 'CS' to Serbia and Montenegro.
+
+    The facts were assembled in 2018 and written down as follows:
+
+        cc:CSHH
+            a cc:ISO3166-CountryCode ;
+            rdfs:label "CS" ;
+            cc:refersTo "Czechoslovakia" ;
+            prov:generatedAtTime "2018-02-29T04:00:00Z"^^xsd:dateTime .
+            tempo:validFrom "1978-02"^^xsd:gYearMonth ;
+            tempo:validTill "1993-01-01"^^xsd:date ;
+            tempo:efficaciousFrom "1918"^^xsd:gYear , "1945"^^xsd:gYear ;
+            tempo:efficaciousTill "1938"^^xsd:gYear , "2003"^^xsd:gYear .
+
+    The use of the country code 'CS' in a statement from 1988 can be resolved to cc:CSHH, as of today, free from ambiguity; it was valid back then after all and we know that today.
+
+    The same query in 2017 (point-in-time query) would have yielded no results because the information hadn't been in the system back then.
+
+    Point-in-time queries, however, are not TempO's major concern so only as-of-today queries are assumed from now on.
+
+
+    Following the country's split it is highly likely that news reports from, say, 1994 highlighting the then-recent past would still have used 'CS' to refer to cc:CSHH.
+
+    According to the resource this is possible, a query for 'CS' in 1994 would bring up cc:CSHH as it is efficacious but marked as invalidated.
+
+
+    On the other end of history, the use of the code 'CS' in, say, 1976 is plausible.  The code was decided on but not yet formally published.
+
+    A query for 'CS' as used in 1976 would bring up cc:CSHH, marked as anachronistic.
+
+    Going back further, a statement from, say 1942, using the code 'CS' must clearly refer to something else.
+
+    A query for 'CS' as used in 1976 would yield not yield any results.
+
+
+    --
+
+
+    The ontology IRI http://purl.org/tempo/ always resolve to the latest version of TempO.  Particular versionIRIs such as http://purl.org/tempo/0.1/ can be used by clients to force the import of a particular version.
+
+
+    The goal of TempO is to allow for temporal constraints with control over how much future or past is permissible directly on the published resource, and as such, TempO does not restrict domain/ranges.
   homepage: http://purl.org/tempo
   id: lov.tempo
   name: TempO - Temporal Ontology
@@ -7882,7 +8674,20 @@ lov.tzont:
   uri_format: http://www.w3.org/2006/timezone#$1
 lov.uby:
   authority: lov
-  description: "OLiA Annotation Model for Uby Parts of Speech (Gurevych et al, 2012)\nextracted from the Uby DTD (http://purl.org/olia/ubyCat.owl, version of Nov 21th, 2012).\n\nReferences\nIryna Gurevych, Judith Eckle-Kohler, Silvana Hartmann, Michael Matuschek, Christian M. Meyer and Christian Wirth, 2012, Uby - A Large-Scale Unified Lexical-Semantic Resource, Proceedings of the 13th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2012), Avignon, France.\n\nThe DTD is made available under a Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license which is available at http://creativecommons.org/licenses/by-sa/3.0/\nYou are free to share (copy, distribute and transmit) the work, to develop your own extensions (adapt, remix) of the work, and to make commercial use of the work."
+  description: >-
+    OLiA Annotation Model for Uby Parts of Speech (Gurevych et al, 2012)
+
+    extracted from the Uby DTD (http://purl.org/olia/ubyCat.owl, version of Nov 21th, 2012).
+
+
+    References
+
+    Iryna Gurevych, Judith Eckle-Kohler, Silvana Hartmann, Michael Matuschek, Christian M. Meyer and Christian Wirth, 2012, Uby - A Large-Scale Unified Lexical-Semantic Resource, Proceedings of the 13th Conference of the European Chapter of the Association for Computational Linguistics (EACL 2012), Avignon, France.
+
+
+    The DTD is made available under a Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license which is available at http://creativecommons.org/licenses/by-sa/3.0/
+
+    You are free to share (copy, distribute and transmit) the work, to develop your own extensions (adapt, remix) of the work, and to make commercial use of the work.
   homepage: http://purl.org/olia/ubyCat.owl
   id: lov.uby
   name: ubyCat.owl
@@ -7902,7 +8707,13 @@ lov.uco:
   uri_format: http://purl.org/uco/ns#$1
 lov.ucum:
   authority: lov
-  description: "The instances of this ontology have been automatically\n         generated from the UCUM (The Unified Code for Units of Measure).\n         See http://aurora.rg.iupui.edu/UCUM/ for more details\n         on UCUM. The members of the MyMobileWeb consortium\n         explicitly acknowledge the copyright of the data from\n         the UCUM ontology."
+  description: |-
+    The instances of this ontology have been automatically
+             generated from the UCUM (The Unified Code for Units of Measure).
+             See http://aurora.rg.iupui.edu/UCUM/ for more details
+             on UCUM. The members of the MyMobileWeb consortium
+             explicitly acknowledge the copyright of the data from
+             the UCUM ontology.
   homepage: http://purl.oclc.org/NET/muo/ucum/
   id: lov.ucum
   name: Units of measurement ontology
@@ -8110,7 +8921,16 @@ lov.vin:
   uri_format: http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#$1
 lov.vir:
   authority: lov
-  description: "This ontology, called VIR, is an extension of CIDOC-CRM created to sustain propositions on the nature of visual elements and permit these descriptions to be published on the Web.\nWith the term visual element, we refer to those signs identified in the visual space as distinct and documentable units, and subject to an analytical interpretation.\nThe scope of this ontology is to s to provide a framework to support the identification, annotation and interconnections between diverse visual elements and presents and assist their documentation and retrieval. Specifically, the model aims to clarify the identity and the relation of these visual signs, providing the necessary classes to characterise their constituent elements, reference, symbolic content and source of interpretation.\nVIR expands on key entities and properties from CIDOC-CRM, introducing new classes and relationships responding to the visual and art historical community, specifically building up on the iconographical tradition. The result is a model which differentiates between interpretation and element identified, providing a clear distinction between denotation and signification of an element. As a consequence of such distinction, the ontology allows for the definition of diverse denotative criteria for the same representation, which could change based on traditions and perspective. Visual objects can be, in fact, polysemic and ambiguous, and it is not so easy to pin down a denotative or connotative meaning because they are very much context-dependent."
+  description: >-
+    This ontology, called VIR, is an extension of CIDOC-CRM created to sustain
+    propositions on the nature of visual elements and permit these descriptions
+    to be published on the Web.
+
+    With the term visual element, we refer to those signs identified in the visual space as distinct and documentable units, and subject to an analytical interpretation.
+
+    The scope of this ontology is to s to provide a framework to support the identification, annotation and interconnections between diverse visual elements and presents and assist their documentation and retrieval. Specifically, the model aims to clarify the identity and the relation of these visual signs, providing the necessary classes to characterise their constituent elements, reference, symbolic content and source of interpretation.
+
+    VIR expands on key entities and properties from CIDOC-CRM, introducing new classes and relationships responding to the visual and art historical community, specifically building up on the iconographical tradition. The result is a model which differentiates between interpretation and element identified, providing a clear distinction between denotation and signification of an element. As a consequence of such distinction, the ontology allows for the definition of diverse denotative criteria for the same representation, which could change based on traditions and perspective. Visual objects can be, in fact, polysemic and ambiguous, and it is not so easy to pin down a denotative or connotative meaning because they are very much context-dependent.
   homepage: http://w3id.org/vir#
   id: lov.vir
   name: VIR - Visual Representation ontology

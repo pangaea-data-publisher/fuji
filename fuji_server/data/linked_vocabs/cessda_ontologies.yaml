@@ -120,7 +120,8 @@ cessda.DataType:
   uri_format: http://rdf-vocabulary.ddialliance.org/cv/DataType$1
 cessda.DateType:
   authority: cessda
-  description: "Specifies the type of date.\n"
+  description: |
+    Specifies the type of date.
   homepage: http://rdf-vocabulary.ddialliance.org/cv/DateType
   id: cessda.DateType
   name: Date Type
@@ -288,7 +289,10 @@ cessda.TopicClassification:
   uri_format: https://vocabularies.cessda.eu/vocabulary/TopicClassification$1
 cessda.TypeOfAddress:
   authority: cessda
-  description: "Identifies the type of address entered as contact information for an individual or an organization.\n\n"
+  description: >+
+    Identifies the type of address entered as contact information for an
+    individual or an organization.
+
   homepage: http://rdf-vocabulary.ddialliance.org/cv/TypeOfAddress
   id: cessda.TypeOfAddress
   name: Type of Address
@@ -312,7 +316,8 @@ cessda.TypeOfConceptGroup:
   uri_format: http://rdf-vocabulary.ddialliance.org/cv/TypeOfConceptGroup$1
 cessda.TypeOfFrequency:
   authority: cessda
-  description: "Indicates the frequency of data collection events. \n"
+  description: |
+    Indicates the frequency of data collection events.
   homepage: http://rdf-vocabulary.ddialliance.org/cv/TypeOfFrequency
   id: cessda.TypeOfFrequency
   name: Type of Frequency

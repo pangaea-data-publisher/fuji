@@ -71,7 +71,7 @@ class FAIRCheck:
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
     DEFAULT_NAMESPACES = None
-    VOCAB_NAMESPACES = None
+    # VOCAB_NAMESPACES = None
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
     SCHEMA_ORG_CONTEXT = []
@@ -242,8 +242,8 @@ class FAIRCheck:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
         if not cls.DEFAULT_NAMESPACES:
             cls.DEFAULT_NAMESPACES = Preprocessor.getDefaultNamespaces()
-        if not cls.VOCAB_NAMESPACES:
-            cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
+        # if not cls.VOCAB_NAMESPACES:
+        #    cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
         if not cls.STANDARD_PROTOCOLS:
             cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         if not cls.SCHEMA_ORG_CONTEXT:
