@@ -23,6 +23,7 @@ class LinkedVocabHelper:
     def __init__(self, linked_vocab_index={}):
         self.linked_vocab_index = linked_vocab_index
         self.linked_vocab_dict = {}
+        self.namespaces = []
         self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia", "github", "arxiv"]
         # prefixes used for identifiers only so we ignore these for terms
         self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org", "github.com", "arxiv.org"]
@@ -61,6 +62,7 @@ class LinkedVocabHelper:
         uri_regex = reg_entry.get("pattern")
         uri_format = reg_entry.get("uri_format")
         namespace = uri_format.split("$1")[0]
+        self.namespaces.append(namespace)
         subjects = reg_entry.get("subjects")
         title = reg_entry.get("name")
         uriparts = self.split_iri(uri_format)
