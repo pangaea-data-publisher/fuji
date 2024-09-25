@@ -5,6 +5,7 @@
 import enum
 import hashlib
 import io
+import json
 import logging
 import mimetypes
 import re
@@ -46,6 +47,10 @@ class MetadataHarvester:
         "author",
         "linkset",
         "cite-as",
+        "api-catalog",
+        "service-doc",
+        "service-desc",
+        "service-meta",
     ]
 
     def __init__(
@@ -357,7 +362,7 @@ class MetadataHarvester:
                         href = link.attrib.get("href")
                         rel = link.attrib.get("rel")
                         type = link.attrib.get("type")
-                        profile = link.attrib.get("format")
+                        profile = link.attrib.get("profile")
                         type = str(type).strip()
                         # handle relative paths
                         linkparts = urlparse(href)
@@ -383,6 +388,7 @@ class MetadataHarvester:
                             "cite-as",
                             "linkset",
                             "license",
+                            "api-catalog",
                         ]:
                             if rel in self.signposting_relation_types:
                                 source = MetadataOfferingMethods.SIGNPOSTING
@@ -407,23 +413,30 @@ class MetadataHarvester:
     def set_signposting_linkset_links(self):
         linksetlinks = []
         linksetlink = {}
-        if self.get_html_typed_links("linkset"):
-            linksetlinks = self.get_html_typed_links("linkset")
-        elif self.get_signposting_header_links("linkset"):
-            linksetlinks = self.get_signposting_header_links("linkset")
+        if self.get_html_typed_links(["linkset", "api-catalog"]):
+            linksetlinks = self.get_html_typed_links(["linkset", "api-catalog"])
+        elif self.get_signposting_header_links(["linkset", "api-catalog"]):
+            linksetlinks = self.get_signposting_header_links(["linkset", "api-catalog"])
         if linksetlinks:
             linksetlink = linksetlinks[0]
+        print(linksetlinks)
         try:
             if linksetlink.get("url"):
                 requestHelper = RequestHelper(linksetlink.get("url"), self.logger)
                 requestHelper.setAcceptType(AcceptTypes.linkset)
                 neg_source, linkset_data = requestHelper.content_negotiate("FsF-F1-02D")
+                print(requestHelper.request_url, requestHelper.content_type)
                 if isinstance(linkset_data, dict):
                     if isinstance(linkset_data.get("linkset"), list):
                         validlinkset = None
                         for candidatelinkset in linkset_data.get("linkset"):
                             if isinstance(candidatelinkset, dict):
-                                if candidatelinkset.get("anchor") in [self.pid_url, self.landing_url]:
+                                # usual describedby etc links must refer via anchor to the landing page or pid
+                                # but api-catalog may refer to another URL which represents an API link
+                                if (
+                                    candidatelinkset.get("anchor") in [self.pid_url, self.landing_url]
+                                    or linksetlink.get("rel") == "api-catalog"
+                                ):
                                     validlinkset = candidatelinkset
                                     break
                         if validlinkset:
@@ -445,28 +458,36 @@ class MetadataHarvester:
                             self.logger.info("FsF-F2-01M : Found valid Signposting Linkset in provided JSON file")
                         else:
                             self.logger.warning(
-                                "FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing oage or PID"
+                                "FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing page or PID"
                             )
+                    print(self.typed_links)
                 else:
                     validlinkset = False
-                    parsed_links = self.parse_signposting_http_link_format(linkset_data.decode())
-                    try:
-                        if parsed_links[0].get("anchor"):
-                            self.logger.info("FsF-F2-01M : Found valid Signposting Linkset in provided text file")
-                            for parsed_link in parsed_links:
-                                if parsed_link.get("anchor") in [self.pid_url, self.landing_url]:
-                                    self.typed_links.append(parsed_link)
-                                    validlinkset = True
-                            if not validlinkset:
-                                self.logger.warning(
-                                    "FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing page or PID"
-                                )
-                    except Exception as e:
+                    if linkset_data:
+                        parsed_links = self.parse_signposting_http_link_format(linkset_data.decode())
+                        try:
+                            if parsed_links[0].get("anchor"):
+                                self.logger.info("FsF-F2-01M : Found valid Signposting Linkset in provided text file")
+                                for parsed_link in parsed_links:
+                                    if (
+                                        parsed_link.get("anchor") in [self.pid_url, self.landing_url]
+                                        or linksetlink.get("rel") == "api-catalog"
+                                    ):
+                                        self.typed_links.append(parsed_link)
+                                        validlinkset = True
+                                if not validlinkset:
+                                    self.logger.warning(
+                                        "FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing page or PID"
+                                    )
+                        except Exception as e:
+                            self.logger.warning(
+                                "FsF-F2-01M : Found Signposting Linkset but could not correctly parse the file"
+                            )
+                            print(e)
+                    else:
                         self.logger.warning(
                             "FsF-F2-01M : Found Signposting Linkset but could not correctly parse the file"
                         )
-                        print(e)
-
         except Exception as e:
             self.logger.warning("FsF-F2-01M : Failed to parse Signposting Linkset -: " + str(e))
 
@@ -553,8 +574,8 @@ class MetadataHarvester:
                     rel_match = re.search(r'rel\s*=\s*\"?([^,;"]+)\"?', link_prop)
                 elif link_prop.startswith("type"):
                     type_match = re.search(r'type\s*=\s*\"?([^,;"]+)\"?', link_prop)
-                elif link_prop.startswith("formats"):
-                    formats_match = re.search(r'formats\s*=\s*\"?([^,;"]+)\"?', link_prop)
+                elif link_prop.startswith("profile"):
+                    formats_match = re.search(r'profile\s*=\s*\"?([^,;"]+)\"?', link_prop)
             if type_match:
                 found_type = type_match[1]
             if rel_match:
@@ -698,8 +719,6 @@ class MetadataHarvester:
                 self.redirect_url = requestHelper.redirect_url
                 response_status = requestHelper.response_status
                 self.landing_page_status = response_status
-                # if requestHelper.response_content:
-                # self.landing_url = requestHelper.redirect_url
             else:
                 self.logger.warning(
                     "FsF-F2-01M :Skipping Embedded tests, no scheme/protocol detected to be able to resolve "
@@ -761,8 +780,11 @@ class MetadataHarvester:
                     extruct_metadata = self.retrieve_metadata_embedded_extruct()
                     # if extruct_metadata:
                     ext_meta = extruct_metadata.get("json-ld")
+                    # comment the line below if jmespath handling of embedded json-ld is preferred, otherwise json-ls always will be handles as graph
+                    ext_meta = json.dumps(ext_meta)
+                    # print('EXT META',ext_meta)
                     self.logger.info("FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page")
-
+                    # TODO: actually schema.org, dcat and skos metadata is collected from a json-ld graph so this should be renamed
                     schemaorg_collector_embedded = MetaDataCollectorRdf(
                         loggerinst=self.logger, json_ld_content=ext_meta, source=MetadataSources.SCHEMAORG_EMBEDDED
                     )
@@ -789,7 +811,7 @@ class MetadataHarvester:
                         )
                         self.logger.log(
                             self.LOG_SUCCESS,
-                            "FsF-F2-01M : Found schema.org JSON-LD metadata in html page -: "
+                            "FsF-F2-01M : Found embedded (schema.org) JSON-LD metadata in html page -: "
                             + str(schemaorg_dict.keys()),
                         )
                     else:

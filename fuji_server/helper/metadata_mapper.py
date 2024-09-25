@@ -61,6 +61,7 @@ class Mapper(Enum):
         "object_size": {"label": "Object Size", "sameAs": "http://purl.org/dc/terms/extent"},
         "language": {"label": "Language", "sameAs": "http://purl.org/dc/terms/language"},
         "license_path": {"label": "License Path", "sameAs": None},
+        "metadata_service": {"label": "Metadata Service", "sameAs": None},
     }
 
     # core metadata elements (FsF-F2-01M)
@@ -192,6 +193,7 @@ class Mapper(Enum):
     # Schema.org
     # conditionsOfAccess, usageInfo?, isAccessibleForFree
     ## A license document that applies to this content, typically indicated by URL.
+    ## actually this mapping is now deprecated and replaced by RDF collector
     SCHEMAORG_MAPPING = (
         '{title: name[*]."@value" || name || headline[*]."@value" || headline, object_type: "@type", '
         'publication_date: datePublished."@value" || datePublished || dateCreated, '
@@ -203,7 +205,7 @@ class Mapper(Enum):
         "right_holder: copyrightHolder[*].name || copyrightHolder[*].familyName, "
         "publisher: [publisher.url || provider.url, publisher.name || provider.name || publisher || provider], "
         'license: license."@id" || license[?"@type" ==\'CreativeWork\'].id || license[?"@type" ==\'CreativeWork\'].url || license[?"@type" ==\'CreativeWork\'].name || license, '
-        "summary: description, keywords: keywords, "
+        "summary: description || abstract, keywords: keywords, "
         'object_identifier: [((identifier.value || identifier[*].value || identifier || "@id") || (url || url."@id")) , '
         '(sameAs."@id" || sameAs[0]."@id" || sameAs.url || sameAs[0].url || sameAs)][], '
         "access_level: conditionsOfAccess, "
@@ -216,8 +218,9 @@ class Mapper(Enum):
         '{related_resource: (isBasedOn."@id" || isBasedOn[0]."@id" || isBasedOn.url || isBasedOn[0].url || isBasedOn) , relation_type: \'isBasedOn\'} , '
         '{related_resource: "@reverse".isBasedOn[0]."@id" || "@reverse".isBasedOn."@id" || "@reverse".isBasedOn[0].url || isBasedOn , relation_type: \'isBasisFor\'},'
         '{related_resource: (citation."@id" || citation[0]."@id" || citation.url || citation[0].url || citation.name || citation[0].name  || citation), relation_type:\'references\'} ], '
-        "object_content_identifier: (distribution[*].{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || [distribution.{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}]),"
-        "object_content_service: (potentialAction[*].{url: (target || url), type: target.additionalType, desc: target.urlTemplate} ),"
+        "object_content_identifier: (distribution[*].{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion} || "
+        "[distribution.{url: (contentUrl || url), type: (encodingFormat || fileFormat), size: (contentSize || fileSize), profile: schemaVersion}] || "
+        "potentialAction[*].{url: (target || url), type: target.additionalType, service: target.urlTemplate}),"
         "language: inLanguage.name || inLanguage.alternateName || inLanguage}"
     )
     # 'related_resources: [{related_resource: isPartOf, relation_type: \'isPartOf\'}, {related_resource: isBasedOn, relation_type: \'isBasedOn\'}], ' \
@@ -312,6 +315,7 @@ class Mapper(Enum):
     #################  XML Mappings ###############
     # relations: indicate type using: related_resource_[opional relation type] alternative: define a list 'related_resource_type'
     # content identifiers: object_content_identifier_url, object_content_identifier_size, object_content_identifier_type (should have same length)
+    # otherwise take a look at the ISO/GCMD mapping
     # attributes: must be indicated like this: tag@@attribute
 
     XML_MAPPING_DUBLIN_CORE = {
@@ -634,26 +638,43 @@ class Mapper(Enum):
                 "./{*}identificationInfo//{*}spatialRepresentationType/{*}MD_SpatialRepresentationTypeCode",
             ]
         },
+        "object_content_identifier": {
+            "path": [
+                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource",
+                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource",
+            ],
+            "subpath": [
+                {
+                    "url": "{*}linkage/{*}URL",
+                    # https: // wiki.esipfed.org / Documenting_Online_Resources in INSPIRE compatible records this looks different and a controlled vocab is used
+                    "type": "{*}applicationProfile/{*}Anchor@@xlink:href",
+                    "service": "{*}protocol/{*}Anchor@@xlink:href",
+                },
+                {
+                    "url": "{*}linkage/{*}URL",
+                    "type": "{*}applicationProfile/{*}Anchor@@xlink:href",
+                    "service": "{*}protocol/{*}Anchor@@xlink:href",
+                },
+            ],
+        },
+        """
         "object_content_identifier_url": {
             "path": [
-                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL",
                 "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}linkage/{*}URL",
+                #"./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource[{*}protocol]/{*}linkage/{*}URL",
+                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL"
             ]
         },
         "object_content_identifier_type": {
             "path": [
                 "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
-                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
+                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor"
             ]
         },
-        "object_content_service_url": {
-            "path": [
-                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource[{*}protocol]/{*}linkage/{*}URL",
-            ]
-        },
-        "object_content_service_type": {
+        "object_content_identifier_service": {
             "path": "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}protocol/{*}Anchor@@xlink:href"
         },
+        """
         "measured_variable": {
             "path": [
                 "./{*}contentInfo/{*}MD_CoverageDescription/{*}attributeDescription/{*}RecordType",

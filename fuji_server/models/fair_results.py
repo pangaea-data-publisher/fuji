@@ -9,6 +9,7 @@ from datetime import date, datetime  # noqa: F401
 from fuji_server import util
 from fuji_server.models.any_of_fair_results_results_items import AnyOfFAIRResultsResultsItems
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata
 
 
 class FAIRResults(Model):
@@ -31,6 +32,7 @@ class FAIRResults(Model):
         total_metrics: int | None = None,
         summary: dict | None = None,
         results: list[AnyOfFAIRResultsResultsItems] | None = None,
+        harvested_metadata: list[HarvestResultsMetadata] | None = None,
     ):
         """FAIRResults - a model defined in Swagger
 
@@ -58,6 +60,8 @@ class FAIRResults(Model):
         :type summary: Dict
         :param results: The results of this FAIRResults.  # noqa: E501
         :type results: List[AnyOfFAIRResultsResultsItems]
+        :param harvested_metadata: The harvested_metadata of this FAIRResults.  # noqa: E501
+        :type harvested_metadata: List[HarvestResultsMetadata]
         """
         self.swagger_types = {
             "test_id": str,
@@ -72,6 +76,7 @@ class FAIRResults(Model):
             "total_metrics": int,
             "summary": dict,
             "results": list[AnyOfFAIRResultsResultsItems],
+            "harvested_metadata": list[HarvestResultsMetadata],
         }
 
         self.attribute_map = {
@@ -87,6 +92,7 @@ class FAIRResults(Model):
             "total_metrics": "total_metrics",
             "summary": "summary",
             "results": "results",
+            "harvested_metadata": "harvested_metadata",
         }
         self._test_id = test_id
         self._request = request
@@ -100,6 +106,7 @@ class FAIRResults(Model):
         self._total_metrics = total_metrics
         self._summary = summary
         self._results = results
+        self._harvested_metadata = harvested_metadata
 
     @classmethod
     def from_dict(cls, dikt) -> "FAIRResults":
@@ -363,3 +370,24 @@ class FAIRResults(Model):
         """
 
         self._results = results
+
+    @property
+    def harvested_metadata(self) -> list[HarvestResultsMetadata]:
+        """Gets the harvested_metadata of this FAIRResults.
+
+
+        :return: The harvested_metadata of this FAIRResults.
+        :rtype: List[HarvestResultsMetadata]
+        """
+        return self._harvested_metadata
+
+    @harvested_metadata.setter
+    def harvested_metadata(self, harvested_metadata: list[HarvestResultsMetadata]):
+        """Sets the harvested_metadata of this FAIRResults.
+
+
+        :param harvested_metadata: The harvested_metadata of this FAIRResults.
+        :type harvested_metadata: List[HarvestResultsMetadata]
+        """
+
+        self._harvested_metadata = harvested_metadata

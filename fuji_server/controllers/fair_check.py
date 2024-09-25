@@ -4,6 +4,7 @@
 
 import hashlib
 import io
+import json
 import logging
 import logging.handlers
 import re
@@ -50,7 +51,7 @@ from fuji_server.evaluators.fair_evaluator_version_identifier import FAIREvaluat
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metric_helper import MetricHelper
@@ -70,7 +71,7 @@ class FAIRCheck:
     LONG_TERM_FILE_FORMATS = None
     OPEN_FILE_FORMATS = None
     DEFAULT_NAMESPACES = None
-    VOCAB_NAMESPACES = None
+    # VOCAB_NAMESPACES = None
     ARCHIVE_MIMETYPES = Mapper.ARCHIVE_COMPRESS_MIMETYPES.value
     STANDARD_PROTOCOLS = None
     SCHEMA_ORG_CONTEXT = []
@@ -184,7 +185,7 @@ class FAIRCheck:
         FAIRCheck.load_predata()
         # self.extruct = None
         self.extruct_result = {}
-        self.lov_helper = linked_vocab_helper(self.LINKED_VOCAB_INDEX)
+        self.lov_helper = LinkedVocabHelper(self.LINKED_VOCAB_INDEX)
         self.auth_token = None
         self.auth_token_type = "Basic"
 
@@ -241,8 +242,8 @@ class FAIRCheck:
             cls.OPEN_FILE_FORMATS = Preprocessor.get_open_file_formats()
         if not cls.DEFAULT_NAMESPACES:
             cls.DEFAULT_NAMESPACES = Preprocessor.getDefaultNamespaces()
-        if not cls.VOCAB_NAMESPACES:
-            cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
+        # if not cls.VOCAB_NAMESPACES:
+        #    cls.VOCAB_NAMESPACES = Preprocessor.getLinkedVocabs()
         if not cls.STANDARD_PROTOCOLS:
             cls.STANDARD_PROTOCOLS = Preprocessor.get_standard_protocols()
         if not cls.SCHEMA_ORG_CONTEXT:
@@ -282,43 +283,70 @@ class FAIRCheck:
                 self.auth_token_type = "Basic"
 
     def clean_metadata(self):
+        # replace nasty "None" strings by real  None
+        try:
+            nonerepdict = json.dumps(self.metadata_merged).replace('"None"', "null")
+            self.metadata_merged = json.loads(nonerepdict)
+        except:
+            print("Nasty None replace error")
+            pass
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
             data_objects = self.metadata_merged["object_content_identifier"] = None
         if data_objects is not None:
             if not isinstance(data_objects, list):
                 self.metadata_merged["object_content_identifier"] = [data_objects]
+        # duplicate handling
+        if self.metadata_merged.get("object_content_identifier"):
+            fdci = {}
+            for dci in self.metadata_merged.get("object_content_identifier"):
+                dcurl = dci.get("url")
+                if dcurl not in fdci:
+                    fdci[dcurl] = dci
+                else:
+                    # complete size and type
+                    if not fdci[dcurl].get("type") and dci.get("type"):
+                        fdci[dcurl]["type"] = dci.get("type")
+                    if not fdci[dcurl].get("size") and dci.get("size"):
+                        fdci[dcurl]["size"] = dci.get("size")
+            self.metadata_merged["object_content_identifier"] = [di for di in fdci.values()]
 
-        # TODO quick-fix to merge size information - should do it at mapper
-        if "object_content_identifier" in self.metadata_merged:
-            if self.metadata_merged.get("object_content_identifier"):
-                oi = 0
-                for c in self.metadata_merged["object_content_identifier"]:
-                    if not c.get("size") and self.metadata_merged.get("object_size"):
-                        c["size"] = self.metadata_merged.get("object_size")
-                    # clean mime types in case these are in URI form:
-                    if c.get("type"):
-                        if isinstance(c["type"], list):
-                            c["type"] = c["type"][0]
-                            self.metadata_merged["object_content_identifier"][oi]["type"] = c["type"][0]
-                        mime_parts = str(c.get("type")).split("/")
-                        if len(mime_parts) > 2:
-                            if mime_parts[-2] in [
-                                "application",
-                                "audio",
-                                "font",
-                                "example",
-                                "image",
-                                "message",
-                                "model",
-                                "multipart",
-                                "text",
-                                "video",
-                            ]:
-                                self.metadata_merged["object_content_identifier"][oi]["type"] = (
-                                    str(mime_parts[-2]) + "/" + str(mime_parts[-1])
-                                )
-                    oi += 1
+            # if "object_content_identifier" in self.metadata_merged:
+            # if self.metadata_merged.get("object_content_identifier"):
+            oi = 0
+            for c in self.metadata_merged["object_content_identifier"]:
+                if (
+                    not c.get("size")
+                    and self.metadata_merged.get("object_size")
+                    and len(self.metadata_merged["object_content_identifier"]) == 1
+                ):
+                    # c["size"] = self.metadata_merged.get("object_size")
+                    self.metadata_merged["object_content_identifier"][oi]["size"] = self.metadata_merged.get(
+                        "object_size"
+                    )
+                # clean mime types in case these are in URI form:
+                if c.get("type"):
+                    if isinstance(c["type"], list):
+                        c["type"] = c["type"][0]
+                        self.metadata_merged["object_content_identifier"][oi]["type"] = c["type"][0]
+                    mime_parts = str(c.get("type")).split("/")
+                    if len(mime_parts) > 2:
+                        if mime_parts[-2] in [
+                            "application",
+                            "audio",
+                            "font",
+                            "example",
+                            "image",
+                            "message",
+                            "model",
+                            "multipart",
+                            "text",
+                            "video",
+                        ]:
+                            self.metadata_merged["object_content_identifier"][oi]["type"] = (
+                                str(mime_parts[-2]) + "/" + str(mime_parts[-1])
+                            )
+                oi += 1
         # clean empty entries
         for mk, mv in list(self.metadata_merged.items()):
             if mv == "" or mv is None:
@@ -328,7 +356,6 @@ class FAIRCheck:
         # ========= clean merged metadata, delete all entries which are None or ''
         self.retrieve_metadata_embedded()
         self.retrieve_metadata_external()
-        self.clean_metadata()
         self.logger.info(
             "FsF-F2-01M : Type of object described by the metadata -: {}".format(
                 self.metadata_merged.get("object_type")
@@ -374,8 +401,8 @@ class FAIRCheck:
 
     def retrieve_metadata_embedded(self):
         self.metadata_harvester.retrieve_metadata_embedded()
-        self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
-        self.metadata_merged.update(self.metadata_harvester.metadata_merged)
+        # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
+        # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
         self.namespace_uri.extend(self.metadata_harvester.namespace_uri)
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
@@ -391,8 +418,8 @@ class FAIRCheck:
 
     def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode=repeat_mode)
-        self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
-        self.metadata_merged.update(self.metadata_harvester.metadata_merged)
+        # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
+        # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
         self.namespace_uri.extend(self.metadata_harvester.namespace_uri)
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
@@ -403,35 +430,10 @@ class FAIRCheck:
         self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
 
-    """def lookup_metadatastandard_by_name(self, value):
-        found = None
-        # get standard name with the highest matching percentage using fuzzywuzzy
-        highest = process.extractOne(value, FAIRCheck.COMMUNITY_METADATA_STANDARDS_NAMES, scorer=fuzz.token_sort_ratio)
-        if highest[1] > 80:
-            found = highest[2]
-        return found
-
-    def lookup_metadatastandard_by_uri(self, value):
-        found = None
-        if value:
-            value = str(value).strip().strip('#/')
-            # try to find it as direct match using http or https as prefix
-            if value.startswith('http') or value.startswith('ftp'):
-                value = value.replace('s://', '://')
-                found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value)
-                if not found:
-                    found = FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.get(value.replace('://', 's://'))
-            if not found:
-                #fuzzy as fall back
-                try:
-                    match = process.extractOne(value,
-                                               FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.keys())
-                    if extract(str(value)).domain == extract(str(match[1]).domain):
-                        if match[1] > 90:
-                            found = list(FAIRCheck.COMMUNITY_METADATA_STANDARDS_URIS.values())[match[2]]
-                except Exception as e:
-                    pass
-        return found"""
+    def set_harvested_metadata(self):
+        self.metadata_unmerged = self.metadata_harvester.metadata_unmerged
+        self.metadata_merged = self.metadata_harvester.metadata_merged
+        self.clean_metadata()
 
     def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
@@ -450,7 +452,6 @@ class FAIRCheck:
         return persistent_identifier_check.getResult()
 
     def check_unique_persistent_metadata_identifier(self):
-        # self.metadata_harvester.get_signposting_object_identifier()
         return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
 
     def check_unique_persistent_software_identifier(self):
@@ -692,8 +693,18 @@ class FAIRCheck:
                     self.metadata_merged["publisher"] = [self.metadata_merged.get("publisher")]
                 for publisher_url in self.metadata_merged.get("publisher"):
                     if self.uri_validator(publisher_url):
-                        if self.landing_domain in publisher_url:
+                        if self.landing_domain in publisher_url and publisher_url.count("/") <= 3:
                             self.repository_urls.append(publisher_url)
         if self.repository_urls:
             self.repository_urls = list(set(self.repository_urls))
-        # print("REPOSITORY: ", self.repository_urls)
+        print("REPOSITORY URIS: ", self.repository_urls)
+
+    def set_repository_info(self):
+        self.set_repository_uris()
+        if self.repository_urls:
+            for repo_uri in self.repository_urls:
+                repoharvester = MetadataHarvester(repo_uri)
+                repoharvester.retrieve_metadata_embedded()
+                repoharvester.retrieve_metadata_external()
+                print("########################### REPO METADATA")
+                print(repoharvester.metadata_merged)

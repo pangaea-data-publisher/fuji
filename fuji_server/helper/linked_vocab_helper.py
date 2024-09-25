@@ -13,16 +13,19 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-class linked_vocab_helper:
+logger = logging.getLogger(__name__)
+
+
+class LinkedVocabHelper:
     fuji_server_dir = Path(__file__).parent.parent  # project_root
     linked_vocabs_dir = fuji_server_dir / "data/linked_vocabs"
 
     def __init__(self, linked_vocab_index={}):
         self.linked_vocab_index = linked_vocab_index
         self.linked_vocab_dict = {}
-        self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia"]
+        self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia", "github", "arxiv"]
         # prefixes used for identifiers only so we ignore these for terms
-        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org"]
+        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org", "github.com", "arxiv.org"]
 
     def set_linked_vocab_dict(self):
         logger.info("Setting up the vocab dict.........................")

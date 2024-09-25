@@ -41,67 +41,82 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
                 output_inner.resolved_url = pid_info.get("resolved_url")
                 self.output.persistent_identifiers.append(output_inner)
 
-    def testCompliesWithPIDScheme(self):
+    def testCompliesWithPIDScheme(self, pid_dict):
         test_status = False
+        remaining_pid_dict = {}
         if self.isTestDefined(self.metric_identifier + "-1"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-1")
-            for pid, pid_info in self.fuji.pid_collector.items():
-                if pid_info.get("verified"):
-                    if pid_info.get("is_persistent"):
-                        test_status = True
-                else:
-                    self.logger.warning(
-                        self.metric_identifier
-                        + " : Skipping PID syntax test since the PID seems to resolve to a different entity"
-                    )
-            if test_status:
+            for pid, pid_info in pid_dict.items():
+                if pid_info.get("is_persistent"):
+                    remaining_pid_dict[pid] = pid_info
+                    # for older versions of metric (<0.6)which do not test this separately
+                    if not self.isTestDefined(self.metric_identifier + "-3") and not pid_info.get("verified"):
+                        remaining_pid_dict.pop(pid, None)
+                        self.logger.warning(
+                            self.metric_identifier
+                            + " : Skipping PID syntax test since the PID seems to resolve to a different entity"
+                        )
+            if remaining_pid_dict:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
                 self.score.earned = test_score
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-1").metric_test_maturity_config
                 test_status = True
-        return test_status
+        return test_status, remaining_pid_dict
 
-    def testIfLandingPageResolves(self):
+    def testIfPersistentIdentifierResolves(self, pid_dict):
         test_status = False
+        remaining_pid_dict = {}
         if self.isTestDefined(self.metric_identifier + "-2"):
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
-            for pid, pid_info in self.fuji.pid_collector.items():
-                if self.fuji.verify_pids:
+            for pid, pid_info in pid_dict.items():
+                if pid_info.get("resolved_url"):
+                    remaining_pid_dict[pid] = pid_info
                     self.fuji.isLandingPageAccessible = True
-                    self.logger.info(
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
                         self.metric_identifier
-                        + " : Found PID which was not verified (if it does resolve properly) due to config settings -: "
-                        + str(pid)
+                        + " : Found PID which resolves properly to e.g. a landing page-: "
+                        + str(pid),
                     )
-                elif pid_info.get("verified"):
-                    if pid_info.get("resolved_url"):
-                        self.fuji.isLandingPageAccessible = True
-                        self.logger.info(
-                            self.metric_identifier
-                            + " : Found PID which could be verified (does resolve properly) -: "
-                            + str(pid)
-                        )
-                    else:
-                        self.logger.info(
-                            self.metric_identifier
-                            + " : Found PID which could not be verified (no landing page found) -: "
-                            + str(pid)
-                        )
                 else:
-                    self.logger.info(
+                    self.logger.warning(
                         self.metric_identifier
-                        + " : Found PID which could not be verified (does not resolve properly) -: "
+                        + " : Found PID which could not be verified (no landing page found) -: "
                         + str(pid)
                     )
             if self.fuji.isLandingPageAccessible:
                 test_status = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
-                self.score.earned = self.total_score  # idenfier should be based on a persistence scheme and resolvable
+                self.score.earned += test_score  # idenfier should be based on a persistence scheme and resolvable
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
                 self.metric_identifier + f" : Persistence identifier scheme -: {self.fuji.pid_scheme}",
             )
+        return test_status, remaining_pid_dict
+
+    def testIfPersistentIdentifierResolvestoDomain(self, pid_dict):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + "-3"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-3")
+            for pid, pid_info in pid_dict.items():
+                if pid_info.get("verified"):
+                    self.logger.log(
+                        self.fuji.LOG_SUCCESS,
+                        self.metric_identifier
+                        + " : Found PID could be verified, it resolves back to the domain of landing page-: "
+                        + str(pid),
+                    )
+                    test_status = True
+                    self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
+                    self.maturity = self.metric_tests.get(self.metric_identifier + "-3").metric_test_maturity_config
+                    self.score.earned = self.total_score
+                else:
+                    self.logger.warning(
+                        self.metric_identifier
+                        + " : Found PID could NOT be verified since it resolves to a different domain than those of the landing page-: "
+                        + str(pid)
+                    )
         return test_status
 
     def evaluate(self):
@@ -119,9 +134,15 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
 
         self.result.test_status = "fail"
         self.setPidsOutput()
-        if self.testCompliesWithPIDScheme():
+        input_pid_dict = self.fuji.pid_collector
+        rest_pid_dict = {}
+        test_status, rest_pid_dict = self.testCompliesWithPIDScheme(input_pid_dict)
+        if test_status:
             self.result.test_status = "pass"
-        if self.testIfLandingPageResolves():
+        test_status, rest_pid_dict = self.testIfPersistentIdentifierResolves(rest_pid_dict)
+        if test_status:
+            self.result.test_status = "pass"
+        if self.testIfPersistentIdentifierResolvestoDomain(rest_pid_dict):
             self.result.test_status = "pass"
 
         """else:

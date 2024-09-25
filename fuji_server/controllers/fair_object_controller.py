@@ -11,6 +11,7 @@ from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.results_exporter import FAIRResultsMapper
 from fuji_server.models.fair_results import FAIRResults
+from fuji_server.models.harvest_results_metadata import HarvestResultsMetadata
 
 
 async def assess_by_id(body):
@@ -80,9 +81,12 @@ async def assess_by_id(body):
 
         print("starting harvesting ")
         ft.harvest_all_metadata()
+        ft.set_harvested_metadata()
         uid_result, pid_result = ft.check_unique_persistent_metadata_identifier()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
+            ft.set_harvested_metadata()
+            ft.clean_metadata()
         ft.harvest_re3_data()
         ft.harvest_github()
         core_metadata_result = ft.check_minimal_metatadata()
@@ -210,6 +214,20 @@ async def assess_by_id(body):
             idhelper = IdentifierHelper(ft.pid_url)
             request["normalized_object_identifier"] = idhelper.get_normalized_id()
         results.sort(key=lambda d: d["id"])  # sort results by metric ID
+        #### metadata summary
+        harvest_result = []
+        for metadata in ft.metadata_unmerged:
+            harvest_result.append(
+                HarvestResultsMetadata(
+                    metadata.get("offering_method"),
+                    metadata.get("url"),
+                    metadata.get("format"),
+                    metadata.get("schema"),
+                    metadata.get("namespaces"),
+                    metadata.get("metadata"),
+                )
+            )
+        ###
         final_response = FAIRResults(
             request=request,
             start_timestamp=starttimestmp,
@@ -222,6 +240,7 @@ async def assess_by_id(body):
             results=results,
             summary=summary,
             resolved_url=resolved_url,
+            harvested_metadata=harvest_result,
         )
         accept_header = connexion.request.headers.get("Accept")
         print("ACCEPT HEADER ", accept_header)

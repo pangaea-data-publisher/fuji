@@ -31,7 +31,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric("FsF-F4-01M")
         self.search_mechanisms = []
-        self.search_engines_support_offering = ["json_in_html", "meta_tags", "microdata", "rdfa"]
+        self.search_engines_support_offering = ["json_in_html", "meta_tag", "microdata", "rdfa"]
         self.search_engines_support_standards = [
             "schemaorg",
             "dublin-core",
@@ -159,10 +159,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                             + "Found RDFa like metadata which however is empty thus useless for search engines"
                         )
             search_engine_support_match = list(set(search_engine_support_match))
-            # OLD WAY
             # Check search mechanisms based on sources of metadata extracted.
-            """search_engine_support_match: List[Any] = list(
-                set(dict(self.fuji.metadata_sources).keys()).intersection(self.search_engines_support))"""
             if search_engine_support_match:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
                 self.set_maturity(self.getTestConfigMaturity(self.metric_identifier + "-1"))

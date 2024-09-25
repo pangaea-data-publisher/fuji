@@ -250,6 +250,49 @@ class MetaDataCollectorXML(MetaDataCollector):
             self.logger.info("FsF-F2-01M : Could not identify metadata properties in XML")
         return source_name, xml_metadata
 
+    def get_tree_property_list(self, propcontent):
+        res = []
+        if isinstance(propcontent, list):
+            if len(propcontent) == 1:
+                if propcontent[0].get("attribute"):
+                    res = propcontent[0].get("tree").attrib.get(propcontent[0].get("attribute"))
+                elif len(propcontent[0].get("tree")) == 0:
+                    res = propcontent[0].get("tree").text
+                else:
+                    res = lxml.etree.tostring(propcontent[0].get("tree"), method="text", encoding="unicode")
+                    res = re.sub(r"\s+", " ", res)
+                    res = res.strip()
+                res = [res]
+            else:
+                for propelem in propcontent:
+                    if propelem.get("attribute"):
+                        res.append(propelem.get("tree").attrib.get(propelem.get("attribute")))
+                    elif len(propelem.get("tree")) == 0:
+                        res.append(propelem.get("tree").text)
+                    else:
+                        resprop = lxml.etree.tostring(propelem.get("tree"), method="text", encoding="unicode")
+                        resprop = re.sub(r"\s+", " ", resprop)
+                        resprop = resprop.strip()
+                        res.append(resprop)
+        return res
+
+    def path_query(self, mappath, tree):
+        pathdef = mappath.split("@@")
+        attribute = None
+        if len(pathdef) > 1:
+            attribute = pathdef[1]
+            if ":" in attribute:
+                if attribute.split(":")[0] == "xlink":
+                    attribute = "{http://www.w3.org/1999/xlink}" + attribute.split(":")[1]
+                elif attribute.split(":")[0] == "xml":
+                    attribute = "{http://www.w3.org/XML/1998/namespace}" + attribute.split(":")[1]
+        try:
+            subtrees = tree.findall(pathdef[0])
+        except Exception as e:
+            subtrees = []
+            print("XML XPATH error ", str(e), str(pathdef[0]))
+        return subtrees, attribute
+
     def get_mapped_xml_metadata(self, tree, mapping):
         """Get the mapped XML metadata.
 
@@ -278,45 +321,37 @@ class MetaDataCollectorXML(MetaDataCollector):
                 pathlist = [mapping.get(prop).get("path")]
 
             propcontent = []
+            path_no = 0
             for mappath in pathlist:
-                pathdef = mappath.split("@@")
-                attribute = None
-                if len(pathdef) > 1:
-                    attribute = pathdef[1]
-                    if ":" in attribute:
-                        if attribute.split(":")[0] == "xlink":
-                            attribute = "{http://www.w3.org/1999/xlink}" + attribute.split(":")[1]
-                        elif attribute.split(":")[0] == "xml":
-                            attribute = "{http://www.w3.org/XML/1998/namespace}" + attribute.split(":")[1]
-                try:
-                    subtrees = tree.findall(pathdef[0])
-                except Exception as e:
-                    subtrees = []
-                    print("XML XPATH error ", str(e), str(pathdef[0]))
+                subtrees, attribute = self.path_query(mappath, tree)
                 for subtree in subtrees:
-                    propcontent.append({"tree": subtree, "attribute": attribute})
-                    # propcontent.extend({'tree':tree.findall(pathdef[0]),'attribute':attribute})
-            if isinstance(propcontent, list):
-                if len(propcontent) == 1:
-                    if propcontent[0].get("attribute"):
-                        res[prop] = propcontent[0].get("tree").attrib.get(propcontent[0].get("attribute"))
-                    elif len(propcontent[0].get("tree")) == 0:
-                        res[prop] = propcontent[0].get("tree").text
-                    else:
-                        res[prop] = lxml.etree.tostring(propcontent[0].get("tree"), method="text", encoding="unicode")
-                        res[prop] = re.sub(r"\s+", " ", res[prop])
-                        res[prop] = res[prop].strip()
-                else:
-                    for propelem in propcontent:
-                        if propelem.get("attribute"):
-                            res[prop].append(propelem.get("tree").attrib.get(propelem.get("attribute")))
-                        elif len(propelem.get("tree")) == 0:
-                            res[prop].append(propelem.get("tree").text)
+                    if mapping.get(prop).get("subpath"):
+                        subpathdict = mapping.get(prop).get("subpath")
+                        if isinstance(subpathdict, list):
+                            if len(subpathdict) > path_no:
+                                subpathdict = subpathdict[path_no]
+                            else:
+                                subpathdict = subpathdict[0]
                         else:
-                            resprop = lxml.etree.tostring(propelem.get("tree"), method="text", encoding="unicode")
-                            resprop = re.sub(r"\s+", " ", resprop)
-                            resprop = resprop.strip()
-                            res[prop].append(resprop)
+                            subpathdict = subpathdict
+                        for subprop, subpath in subpathdict.items():
+                            if not res.get(prop + "_" + subprop):
+                                res[prop + "_" + subprop] = []
+                            subsubtrees, subattribute = self.path_query(subpath, subtree)
+                            if not subsubtrees:
+                                subsubtrees = [lxml.etree.Element("none")]
+                                subattribute = None
+                            # print(prop+'_'+subprop,subsubtrees[0], ' -#- ',lxml.etree.tostring(subsubtrees[0], method="text", encoding="unicode"),' -#- ', subattribute)
+                            subpropcontent = [{"tree": subsubtrees[0], "attribute": subattribute}]
+                            if subpropcontent:
+                                # print('SUBPROP: ',subprop, self.get_tree_property_list(subpropcontent))
+                                res[prop + "_" + subprop].extend(self.get_tree_property_list(subpropcontent))
+                            # print(res)
+                    else:
+                        propcontent.append({"tree": subtree, "attribute": attribute})
+                    if propcontent:
+                        res[prop] = self.get_tree_property_list(propcontent)
+                path_no += 1
 
         # related resources
         for kres, vres in res.items():
@@ -338,70 +373,6 @@ class MetaDataCollectorXML(MetaDataCollector):
                             res["related_resources"].append({"related_resource": relres, "resource_type": reltype})
                         ri += 1
         # object_content_identifiers
-        """
-        # The code below would theoretically also consider information which does not include a content identifier but only sie or type of content
-        res['object_content_identifier'] = []
-        if res.get('object_content_identifier_url'):
-        #if not isinstance(res.get('object_content_identifier_url'), list):
-        #    res['object_content_identifier_url'] = [res.get('object_content_identifier_url')]
-        if not isinstance(res.get('object_content_identifier_size'), list):
-            res['object_content_identifier_size'] = [res.get('object_content_identifier_size')]
-        if not isinstance(res.get('object_content_identifier_type'), list):
-            res['object_content_identifier_type'] = [res.get('object_content_identifier_type')]
-
-        object_content_count = max(len(res.get('object_content_identifier_url') or []),
-                                      len(res.get('object_content_identifier_type') or []),
-                                      len(res.get('object_content_identifier_size') or []))
-
-        for content_index in range(object_content_count):
-            try:
-                content_url = res['object_content_identifier_url'][content_index]
-            except:
-                content_url = None
-            try:
-                content_size = res['object_content_identifier_size'][content_index]
-            except:
-                content_size = None
-            try:
-                content_type = res['object_content_identifier_type'][content_index]
-            except:
-                content_type = None
-            res['object_content_identifier'].append({
-                'url': content_url,
-                'size': content_size,
-                'type': content_type
-            })
-        res.pop('object_content_identifier_type', None)
-        res.pop('object_content_identifier_size', None)
-        res.pop('object_content_identifier_url', None)
-        """
-        if res.get("object_content_service_url"):
-            res["object_content_service"] = []
-            if not isinstance(res["object_content_service_url"], list):
-                res["object_content_service_url"] = [res["object_content_service_url"]]
-            si = 0
-            for service_url in res["object_content_identifier_url"]:
-                service_desc = None
-                service_type = None
-                if res.get("object_content_service_type"):
-                    if si < len(res["object_content_service_type"]):
-                        service_type = res["object_content_service_type"][si]
-                if res.get("object_content_service_desc"):
-                    if si < len(res["object_content_service_desc"]):
-                        service_desc = res["object_content_service_desc"][si]
-                if (
-                    service_type
-                    and "WWW:LINK" not in str(service_type)
-                    and "www.w3.org/TR/xlink" not in str(service_type)
-                ):
-                    res["object_content_service"].append(
-                        {"url": service_url, "desc": service_desc, "type": service_type}
-                    )
-                si += 1
-        res.pop("object_content_service_url", None)
-        res.pop("object_content_service_type", None)
-        res.pop("object_content_service_desc", None)
-
         if res.get("object_content_identifier_url"):
             res["object_content_identifier"] = []
             if not isinstance(res["object_content_identifier_url"], list):
@@ -410,17 +381,25 @@ class MetaDataCollectorXML(MetaDataCollector):
             for content_url in res["object_content_identifier_url"]:
                 content_size = None
                 content_type = None
+                content_service = None
                 if res.get("object_content_identifier_size"):
                     if ci < len(res["object_content_identifier_size"]):
                         content_size = res["object_content_identifier_size"][ci]
                 if res.get("object_content_identifier_type"):
                     if ci < len(res["object_content_identifier_type"]):
                         content_type = res["object_content_identifier_type"][ci]
+                if res.get("object_content_identifier_service"):
+                    if ci < len(res["object_content_identifier_service"]):
+                        if "WWW:LINK" not in str(
+                            res["object_content_identifier_service"][ci]
+                        ) and "www.w3.org/TR/xlink" not in str(res["object_content_identifier_service"][ci]):
+                            content_service = res["object_content_identifier_service"][ci]
                 res["object_content_identifier"].append(
-                    {"url": content_url, "size": content_size, "type": content_type}
+                    {"url": content_url, "size": content_size, "type": content_type, "service": content_service}
                 )
                 ci += 1
             res.pop("object_content_identifier_type", None)
             res.pop("object_content_identifier_size", None)
             res.pop("object_content_identifier_url", None)
+            res.pop("object_content_identifier_service", None)
         return res

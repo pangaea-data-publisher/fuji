@@ -19,6 +19,7 @@ class DataHarvester:
     LOG_FAILURE = 35
 
     def __init__(self, data_links, logger, landing_page=None, auth_token=None, auth_token_type="Basic", metrics=None):
+        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
         self.logger = logger
         self.data_links = data_links
         self.auth_token = auth_token
@@ -150,7 +151,7 @@ class DataHarvester:
         return True
 
     def get_url_data_and_info(self, urldict, timeout):
-        header = {"Accept": "*/*", "User-Agent": "F-UJI"}
+        header = {"Accept": "*/*", "User-Agent": self.user_agent}
         if self.auth_token:
             header["Authorization"] = self.auth_token_type + " " + self.auth_token
         # header["Range"] = "bytes=0-" + str(self.max_download_size)
@@ -194,6 +195,8 @@ class DataHarvester:
                 "url": urldict.get("url"),
                 "claimed_size": urldict.get("size"),
                 "claimed_type": urldict.get("type"),
+                "claimed_service": urldict.get("service"),
+                "claimed_profile": urldict.get("profile"),
                 "truncated": False,
                 "is_persistent": False,
             }
@@ -223,16 +226,18 @@ class DataHarvester:
                     fileinfo["header_content_size"] = response.headers.get("content-length").split(";")[0]
                 elif response.headers.get("Content-Length"):
                     fileinfo["header_content_size"] = response.headers.get("Content-Length").split(";")[0]
-                try:
-                    fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
-                except:
-                    fileinfo["header_content_size"] = self.max_download_size
-                    pass
+                if fileinfo.get("header_content_size"):
+                    try:
+                        fileinfo["header_content_size"] = int(fileinfo["header_content_size"])
+                    except:
+                        fileinfo["header_content_size"] = self.max_download_size
+                        pass
                 content = response.read(self.max_download_size)
                 file_buffer_object.write(content)
                 fileinfo["content_size"] = file_buffer_object.getbuffer().nbytes
-                if fileinfo["content_size"] < fileinfo["header_content_size"]:
-                    fileinfo["truncated"] = True
+                if fileinfo.get("header_content_size"):
+                    if fileinfo["content_size"] < fileinfo["header_content_size"]:
+                        fileinfo["truncated"] = True
                 if fileinfo["content_size"] > 0:
                     fileinfo.update(self.tika(file_buffer_object, urldict.get("url")))
 
