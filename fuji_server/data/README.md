@@ -13,7 +13,6 @@
 - [`licenses.json`](./licenses.json): Used to populate `Preprocessor.license_names`, a list of SPDX licences. Used in evaluation of licenses, FsF-R1.1-01M.
 - [`linked_vocab.json`](./linked_vocab.json)
 - [`longterm_formats.json`](./longterm_formats.json): This isn't used any more (code is commented out). Instead, the info should be pulled from [`file_formats.json`](./file_formats.json).
-- [`metadata_standards_uris.json`](./metadata_standards_uris.json)
 - [`metadata_standards.json`](./metadata_standards.json): Used in evaluation of community metadata, FsF-R1.3-01M.
 - [`open_formats.json`](./open_formats.json): This isn't used any more (code is commented out). Instead, the info should be pulled from [`file_formats.json`](./file_formats.json).
 - [`repodois.yaml`](./repodois.yaml): DOIs from re3data (Datacite).
