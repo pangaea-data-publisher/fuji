@@ -1,0 +1,4188 @@
+- namespace: http://www.irit.fr/recherches/MELODI/ontologies/SAN#
+  prefix: SAN
+  title: SAN (Semantic Actuator Network)
+  uri: http://www.irit.fr/recherches/MELODI/ontologies/SAN
+- namespace: https://w3id.org/arco/ontology/location/
+  prefix: a-loc
+  title: Location Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/location
+- namespace: http://purl.org/acco/ns#
+  prefix: acco
+  title: Accomodation Ontology
+  uri: http://purl.org/acco/ns
+- namespace: http://www.w3.org/ns/auth/acl#
+  prefix: acl
+  title: Basic Access Control ontology
+  uri: http://www.w3.org/ns/auth/acl
+- namespace: http://acm.rkbexplorer.com/ontologies/acm#
+  prefix: acm
+  title: ACM Classification Ontology
+  uri: http://www.rkbexplorer.com/ontologies/acm
+- namespace: http://privatealpha.com/ontology/certification/1#
+  prefix: acrt
+  title: Agent Certification Ontology
+  uri: http://privatealpha.com/ontology/certification/1#
+- namespace: http://www.w3.org/ns/adms#
+  prefix: adms
+  title: Asset Description Metadata Schema
+  uri: http://www.w3.org/ns/adms
+- namespace: http://purl.org/ontology/af/
+  prefix: af
+  title: Audio Features Ontology
+  uri: http://purl.org/ontology/af/
+- namespace: http://www.agls.gov.au/agls/terms/
+  prefix: agls
+  title: AGLS Metadata Terms
+  uri: http://www.agls.gov.au/agls/terms
+- namespace: http://promsns.org/def/agr#
+  prefix: agr
+  title: Agreements ontology
+  uri: http://promsns.org/def/agr
+- namespace: http://d-nb.info/standards/elementset/agrelon#
+  prefix: agrelon
+  title: Agent Relationship Ontology
+  uri: http://d-nb.info/standards/elementset/agrelon
+- namespace: http://purl.org/vocab/aiiso/schema#
+  prefix: aiiso
+  title: Academic Institution Internal Structure Ontology
+  uri: http://purl.org/vocab/aiiso/schema
+- namespace: https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#
+  prefix: airs
+  title: Alliance of Information and Referral Services (AIRS) Vocabulary
+  uri: https://raw.githubusercontent.com/airs-linked-data/lov/latest/src/airs_vocabulary.ttl#
+- namespace: http://securitytoolbox.appspot.com/securityAlgorithms#
+  prefix: algo
+  title: Algorithms Ontology
+  uri: http://securitytoolbox.appspot.com/securityAlgorithms#
+- namespace: http://open-services.net/ns/asset#
+  prefix: am
+  title: OSLC Asset Management Vocabulary
+  uri: http://open-services.net/ns/asset#
+- namespace: https://w3id.org/i40/aml#
+  prefix: aml
+  title: AutomationML Ontology
+  uri: https://w3id.org/i40/aml
+- namespace: http://w3id.org/amlo/core#
+  prefix: amlo-core
+  title: AMLO-core vocabulary
+  uri: http://w3id.org/amlo/core
+- namespace: http://purl.org/ontology/ao/core#
+  prefix: ao
+  title: Association Ontology
+  uri: http://purl.org/ontology/ao/core#
+- namespace: http://purl.org/linked-data/api/vocab#
+  prefix: api
+  title: Linked Data API Vocabulary
+  uri: http://purl.org/linked-data/api/vocab#
+- namespace: http://semweb.mmlab.be/ns/apps4X#
+  prefix: apps4X
+  title: The vocabulary for Co-creation Events based on Open Data
+  uri: http://semweb.mmlab.be/ns/apps4X
+- namespace: http://purl.org/archival/vocab/arch#
+  prefix: arch
+  title: Archival collections ontology
+  uri: http://purl.org/archival/vocab/arch
+- namespace: https://w3id.org/arco/ontology/core/
+  prefix: arco
+  title: Core Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/core
+- namespace: http://www.arpenteur.org/ontology/Arpenteur.owl#
+  prefix: arp
+  title: Arpenteur Ontology
+  uri: http://www.arpenteur.org/ontology/Arpenteur.owl
+- namespace: http://bblfish.net/work/atom-owl/2006-06-06/#
+  prefix: awol
+  title: Atom Syndication Ontology
+  uri: http://bblfish.net/work/atom-owl/2006-06-06/
+- namespace: http://purl.oclc.org/NET/ssnx/meteo/aws#
+  prefix: aws
+  title: Ontology for Meteorological sensors
+  uri: http://purl.oclc.org/NET/ssnx/meteo/aws
+- namespace: http://bag.basisregistraties.overheid.nl/def/bag#
+  prefix: bag
+  title: Vocabulary for the Dutch base registration of buildings and addresses (BAG)
+  uri: http://bag.basisregistraties.overheid.nl/def/bag
+- namespace: http://www.bbc.co.uk/ontologies/bbc/
+  prefix: bbc
+  title: BBC Ontology
+  uri: http://www.bbc.co.uk/ontologies/bbc
+- namespace: http://www.bbc.co.uk/ontologies/cms/
+  prefix: bbccms
+  title: BBC CMS Ontology
+  uri: http://www.bbc.co.uk/ontologies/cms
+- namespace: http://www.bbc.co.uk/ontologies/coreconcepts/
+  prefix: bbccore
+  title: BBC Core Concepts
+  uri: http://www.bbc.co.uk/ontologies/coreconcepts
+- namespace: http://www.bbc.co.uk/ontologies/provenance/
+  prefix: bbcprov
+  title: BBC Provenance Ontology
+  uri: http://www.bbc.co.uk/ontologies/provenance
+- namespace: https://w3id.org/BCI-ontology#
+  prefix: bci
+  title: Brain Computing Interface (BCI) Ontology
+  uri: https://w3id.org/BCI-ontology
+- namespace: http://rdfs.co/bevon/
+  prefix: bevon
+  title: 'BEVON: Beverage Ontology'
+  uri: http://rdfs.co/bevon/
+- namespace: http://id.loc.gov/ontologies/bibframe/
+  prefix: bf
+  title: BIBFRAME Vocabulary
+  uri: http://id.loc.gov/ontologies/bibframe/
+- namespace: http://purl.org/ontology/bibo/
+  prefix: bibo
+  title: The Bibliographic Ontology
+  uri: http://purl.org/ontology/bibo/
+- namespace: http://purl.org/net/nknouf/ns/bibtex#
+  prefix: bibtex
+  title: BibTeX ontology
+  uri: http://purl.org/net/nknouf/ns/bibtex
+- namespace: http://bimerr.iot.linkeddata.es/def/occupancy-profile#
+  prefix: bimerr-op
+  title: Occupancy Profile ontology
+  uri: http://bimerr.iot.linkeddata.es/def/occupancy-profile#
+- namespace: http://purl.org/vocab/bio/0.1/
+  prefix: bio
+  title: 'BIO: A vocabulary for biographical information'
+  uri: http://purl.org/vocab/bio/0.1/
+- namespace: http://purl.org/NET/biol/ns#
+  prefix: biol
+  title: Biological Taxonomy Vocabulary 0.2 (Core)
+  uri: http://purl.org/NET/biol/ns#
+- namespace: http://www.biopax.org/release/biopax-level3.owl#
+  prefix: biopax
+  title: BioPAX Level 3 ontology
+  uri: http://www.biopax.org/release/biopax-level3.owl
+- namespace: http://purl.org/biotop/biotop.owl#
+  prefix: biotop
+  title: BioTop
+  uri: http://purl.org/biotop/biotop.owl
+- namespace: http://purl.org/spar/biro/
+  prefix: biro
+  title: The Bibliographic Reference Ontology
+  uri: http://purl.org/spar/biro
+- namespace: http://www.bl.uk/schemas/bibliographic/blterms#
+  prefix: blt
+  title: British Library Terms RDF schema
+  uri: http://www.bl.uk/schemas/bibliographic/blterms
+- namespace: http://swa.cefriel.it/ontologies/botdcat-ap#
+  prefix: bot
+  title: BotDCAT-AP - Data Catalogue vocabulary Application Profile for chatbots
+  uri: http://swa.cefriel.it/ontologies/botdcat-ap
+- namespace: http://purl.org/NET/biol/botany#
+  prefix: botany
+  title: Biological Taxonomy Vocabulary 0.2 (Botany)
+  uri: http://purl.org/NET/biol/botany#
+- namespace: http://data.vlaanderen.be/ns/persoon#
+  prefix: bperson
+  title: Person
+  uri: http://data.vlaanderen.be/ns/persoon
+- namespace: http://vocab.deri.ie/br#
+  prefix: br
+  title: Brainstorm Ontology
+  uri: http://vocab.deri.ie/br
+- namespace: http://brk.basisregistraties.overheid.nl/def/brk#
+  prefix: brk
+  title: Key Register Cadastre (BRK) vocabulary
+  uri: http://brk.basisregistraties.overheid.nl/def/brk
+- namespace: http://brt.basisregistraties.overheid.nl/def/top10nl#
+  prefix: brt
+  title: Key Register Topography (BRT) vocabulary
+  uri: http://brt.basisregistraties.overheid.nl/def/top10nl
+- namespace: https://w3id.org/bot#
+  prefix: bto
+  title: 'BOT: Building Topology Ontology'
+  uri: https://w3id.org/bot
+- namespace: http://vocab.deri.ie/c4n#
+  prefix: c4n
+  title: Call for Anything vocabulary
+  uri: http://vocab.deri.ie/c4n
+- namespace: http://purl.org/spar/c4o/
+  prefix: c4o
+  title: C4O, the Citation Counting and Context Characterization Ontology
+  uri: http://purl.org/spar/c4o
+- namespace: http://www.w3.org/2002/12/cal/ical#
+  prefix: cal
+  title: Internet Calendaring and Scheduling Core Object Specification
+  uri: http://www.w3.org/2002/12/cal/ical
+- namespace: http://caressesrobot.org/ontology#
+  prefix: caresses
+  title: CARESSES Ontology
+  uri: http://caressesrobot.org/ontology
+- namespace: http://purl.org/net/cartCoord#
+  prefix: cart
+  title: cartCoordOnt
+  uri: http://purl.org/net/cartCoord#
+- namespace: http://comicmeta.org/cbo/
+  prefix: cbo
+  title: Comic Book Ontology
+  uri: http://comicmeta.org/cbo/
+- namespace: http://creativecommons.org/ns#
+  prefix: cc
+  title: Creative Commons Rights Expression Language
+  uri: http://creativecommons.org/ns
+- namespace: http://cookingbigdata.com/linkeddata/ccinstances#
+  prefix: cci
+  title: Ontology for Cloud Computing instances
+  uri: http://cookingbigdata.com/linkeddata/ccinstances
+- namespace: http://purl.org/ontology/cco/core#
+  prefix: cco
+  title: Cognitive Characteristics Ontology
+  uri: http://purl.org/ontology/cco/core#
+- namespace: http://cookingbigdata.com/linkeddata/ccpricing#
+  prefix: ccp
+  title: Vocabulary for prices options in Cloud Computing Services
+  uri: http://cookingbigdata.com/linkeddata/ccpricing
+- namespace: http://cookingbigdata.com/linkeddata/ccregions#
+  prefix: ccr
+  title: Vocabulary for Regions and Zones on Cloud Computing
+  uri: http://cookingbigdata.com/linkeddata/ccregions
+- namespace: http://cookingbigdata.com/linkeddata/ccsla#
+  prefix: ccsla
+  title: Service Level Agreement for Cloud Computing
+  uri: http://cookingbigdata.com/linkeddata/ccsla
+- namespace: https://w3id.org/arco/ontology/context-description/
+  prefix: cdesc
+  title: Context Description Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/context-description
+- namespace: http://purl.org/twc/ontology/cdm.owl#
+  prefix: cdm
+  title: Conceptual Depth and Momentum
+  uri: http://purl.org/twc/ontology/cdm.owl#
+- namespace: http://purl.org/cld/cdtype/
+  prefix: cdtype
+  title: The Collection Description Type Namespace
+  uri: http://purl.org/cld/cdtype/
+- namespace: http://www.ebusiness-unibw.org/ontologies/consumerelectronics/v1#
+  prefix: ceo
+  title: Consumer Electronics Ontology
+  uri: http://www.ebusiness-unibw.org/ontologies/consumerelectronics/v1
+- namespace: http://www.eurocris.org/ontologies/cerif/1.3#
+  prefix: cerif
+  title: CERIF Ontology 1.3
+  uri: http://www.eurocris.org/ontologies/cerif/1.3
+- namespace: http://www.w3.org/ns/auth/cert#
+  prefix: cert
+  title: The Cert Ontology
+  uri: http://www.w3.org/ns/auth/cert#
+- namespace: https://w3id.org/arco/ontology/cultural-event/
+  prefix: cevent
+  title: Cultural Event Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/cultural-event
+- namespace: http://purl.oclc.org/NET/ssnx/cf/cf-feature#
+  prefix: cff
+  title: Climate and Forecast (CF) features
+  uri: http://purl.oclc.org/NET/ssnx/cf/cf-feature
+- namespace: http://purl.oclc.org/NET/ssnx/cf/cf-property#
+  prefix: cfp
+  title: Climate and Forecast (CF) standard names parameter vocabulary
+  uri: http://purl.oclc.org/NET/ssnx/cf/cf-property
+- namespace: http://linkeddata.finki.ukim.mk/lod/ontology/cfrl#
+  prefix: cfrl
+  title: Corporate Financial Reports and Loans Ontology
+  uri: http://linkeddata.finki.ukim.mk/lod/ontology/cfrl#
+- namespace: http://reference.data.gov.uk/def/central-government/
+  prefix: cgov
+  title: Central Government Ontology
+  uri: http://reference.data.gov.uk/def/central-government
+- namespace: http://purl.org/ontology/chord/
+  prefix: chord
+  title: The OMRAS2 Chord Ontology
+  uri: http://purl.org/ontology/chord/
+- namespace: https://privatealpha.com/ontology/content-inventory/1#
+  prefix: ci
+  title: A Content Inventory Vocabulary
+  uri: https://privatealpha.com/ontology/content-inventory/1#
+- namespace: http://dati.beniculturali.it/cis/
+  prefix: cis
+  title: 'Cultural-ON (Cultural ONtology): Cultural Institute/Site and Cultural Event Ontology'
+  uri: http://dati.beniculturali.it/cultural-ON/cultural-ON.owl
+- namespace: http://purl.org/spar/cito/
+  prefix: cito
+  title: CiTO, the Citation Typing Ontology
+  uri: http://purl.org/spar/cito
+- namespace: http://www.essepuntato.it/2013/03/cito-functions/
+  prefix: citof
+  title: Functions of Citations
+  uri: http://www.essepuntato.it/2013/03/cito-functions
+- namespace: http://advene.org/ns/cinelab/ld#
+  prefix: cl
+  title: Cinelab ontology
+  uri: http://advene.org/ns/cinelab/ld
+- namespace: http://purl.org/cld/terms/
+  prefix: cld
+  title: The Collection Description Terms
+  uri: http://purl.org/cld/terms/
+- namespace: http://purl.org/twc/ontologies/cmo.owl#
+  prefix: cmo
+  title: Conceptual Model Ontology
+  uri: http://purl.org/twc/ontologies/cmo.owl
+- namespace: http://www.w3.org/2011/content#
+  prefix: cnt
+  title: Representing Content in RDF
+  uri: http://www.w3.org/2011/content
+- namespace: http://purl.org/ontology/co/core#
+  prefix: co
+  title: Counter Ontology
+  uri: http://purl.org/ontology/co/core#
+- namespace: http://data.cochrane.org/ontologies/core/
+  prefix: cochrane
+  title: Cochrane Core Vocabulary Ontology
+  uri: http://data.cochrane.org/ontologies/core/
+- namespace: https://w3id.org/cocoon/v1.0#
+  prefix: cocoon
+  title: Cloud Computing Services Ontology
+  uri: https://w3id.org/cocoon/v1.0
+- namespace: http://vocab.deri.ie/cogs#
+  prefix: cogs
+  title: COGS Vocabulary
+  uri: http://vocab.deri.ie/cogs
+- namespace: http://purl.org/configurationontology#
+  prefix: cold
+  title: "'Configuration as Linked Data' ontology"
+  uri: http://purl.org/configurationontology
+- namespace: http://purl.org/co/
+  prefix: coll
+  title: Collections Ontology
+  uri: http://purl.org/co
+- namespace: http://vocab.resc.info/communication#
+  prefix: comm
+  title: Vocabulary related to incident communication
+  uri: http://vocab.resc.info/communication
+- namespace: http://www.w3.org/2007/uwa/context/common.owl#
+  prefix: common
+  title: The Delivery Context Ontology
+  uri: http://www.w3.org/2007/uwa/context/deliverycontext.owl
+- namespace: http://www.w3.org/2000/10/swap/pim/contact#
+  prefix: con
+  title: Contact
+  uri: http://www.w3.org/2000/10/swap/pim/contact
+- namespace: http://purl.org/twc/vocab/conversion/
+  prefix: conversion
+  title: Conversion Ontology
+  uri: http://purl.org/twc/vocab/conversion/
+- namespace: http://purl.org/coo/ns#
+  prefix: coo
+  title: Car Options Ontology
+  uri: http://purl.org/coo/ns#
+- namespace: http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#
+  prefix: cpa
+  title: Content Pattern Annotations
+  uri: http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl
+- namespace: http://www.cidoc-crm.org/cidoc-crm/
+  prefix: crm
+  title: CIDOC Conceptual Reference Model
+  uri: http://www.cidoc-crm.org/cidoc-crm/
+- namespace: http://rhizomik.net/ontologies/copyrightonto.owl#
+  prefix: cro
+  title: Copyright Ontology
+  uri: http://rhizomik.net/ontologies/copyrightonto.owl
+- namespace: http://purl.org/vocab/changeset/schema#
+  prefix: cs
+  title: Changeset
+  uri: http://purl.org/vocab/changeset/schema
+- namespace: http://vocab.deri.ie/csp#
+  prefix: csp
+  title: Constraint Satisfaction Problems Vocabulary
+  uri: http://vocab.deri.ie/csp
+- namespace: http://www.w3.org/ns/csvw#
+  prefix: csvw
+  title: CSV on the Web Vocabulary
+  uri: http://www.w3.org/ns/csvw#
+- namespace: http://www.tele.pw.edu.pl/~sims-onto/ConnectivityType.owl#
+  prefix: ct
+  title: Connectivity types
+  uri: http://www.tele.pw.edu.pl/~sims-onto/ConnectivityType.owl
+- namespace: https://w3id.org/arco/ontology/catalogue/
+  prefix: ctlog
+  title: Catalogue Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/catalogue
+- namespace: http://purl.org/ctic/infraestructuras/organizacion#
+  prefix: ctorg
+  title: Vocabulary for the structure of the public organizations
+  uri: http://purl.org/ctic/infraestructuras/organizacion
+- namespace: https://w3id.org/ibp/CTRLont#
+  prefix: ctrl
+  title: CTRLont - An ontology to formally specify the control domain
+  uri: https://w3id.org/ibp/CTRLont
+- namespace: http://www.demcare.eu/ontologies/contextdescriptor.owl#
+  prefix: ctxdesc
+  title: Context Descriptor Pattern
+  uri: http://www.demcare.eu/ontologies/contextdescriptor.owl
+- namespace: http://purl.org/cwmo/#
+  prefix: cwmo
+  title: Creative Workshop Management Ontology (CWMO)
+  uri: http://purl.org/cwmo/#
+- namespace: http://www.bbc.co.uk/ontologies/creativework/
+  prefix: cwork
+  title: Creative Work Ontology
+  uri: http://www.bbc.co.uk/ontologies/creativework
+- namespace: http://sparql.cwrc.ca/ontologies/cwrc#
+  prefix: cwrc
+  title: The CWRC Ontology
+  uri: http://sparql.cwrc.ca/ontologies/cwrc
+- namespace: http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#
+  prefix: d2rq
+  title: D2RQ - Language Specification
+  uri: http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1
+- namespace: http://purl.org/NET/dady#
+  prefix: dady
+  title: Dataset Dynamics (dady) vocabulary
+  uri: http://vocab.deri.ie/dady
+- namespace: http://purl.org/eis/vocab/daq#
+  prefix: daq
+  title: Dataset Quality Vocabulary
+  uri: http://purl.org/eis/vocab/daq#
+- namespace: http://dataid.dbpedia.org/ns/core#
+  prefix: dataid
+  title: DataID
+  uri: http://dataid.dbpedia.org/ns/core#
+- namespace: http://vocab.datex.org/terms#
+  prefix: datex
+  title: Linked Datex II
+  uri: http://vocab.datex.org/terms#
+- namespace: http://theme-e.adaptcentre.ie/dave#
+  prefix: dave
+  title: Data Value Vocabulary (DaVe)
+  uri: http://theme-e.adaptcentre.ie/dave/dave.ttl
+- namespace: http://purl.org/net/dbm/ontology#
+  prefix: dbm
+  title: DBM Ontology
+  uri: http://purl.org/net/dbm/ontology#
+- namespace: http://ontology.cybershare.utep.edu/dbowl/relational-to-ontology-mapping-primitive.owl#
+  prefix: dbowl
+  title: Relational to Ontology Mapping Primitive
+  uri: http://ontology.cybershare.utep.edu/dbowl
+- namespace: http://dbpedia.org/ontology/
+  prefix: dbpedia-owl
+  title: The DBpedia Ontology
+  uri: http://dbpedia.org/ontology/
+- namespace: http://ontologi.es/doap-bugs#
+  prefix: dbug
+  title: DOAP Bugs
+  uri: http://ontologi.es/doap-bugs#
+- namespace: http://purl.org/dc/dcam/
+  prefix: dcam
+  title: DCMI Abstract Model
+  uri: http://purl.org/dc/dcam/
+- namespace: http://www.w3.org/ns/dcat#
+  prefix: dcat
+  title: Data Catalog Vocabulary
+  uri: http://www.w3.org/ns/dcat
+- namespace: http://purl.org/dc/elements/1.1/
+  prefix: dce
+  title: Dublin Core Metadata Element Set
+  uri: http://purl.org/dc/elements/1.1/
+- namespace: http://purl.org/spar/datacite/
+  prefix: dcite
+  title: The DataCite Ontology
+  uri: http://purl.org/spar/datacite
+- namespace: http://ndl.go.jp/dcndl/terms/
+  prefix: dcndl
+  title: NDL Metadata Terms
+  uri: http://ndl.go.jp/dcndl/terms/
+- namespace: http://purl.org/dc/terms/
+  prefix: dcterms
+  title: DCMI Metadata Terms
+  uri: http://purl.org/dc/terms/
+- namespace: http://purl.org/dc/dcmitype/
+  prefix: dctype
+  title: DCMI Type Vocabulary
+  uri: http://purl.org/dc/dcmitype/
+- namespace: https://w3id.org/arco/ontology/denotative-description/
+  prefix: ddesc
+  title: Denotative Description Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/denotative-description
+- namespace: http://www.demcare.eu/ontologies/demlab.owl#
+  prefix: demlab
+  title: Dem@Care Lab Ontology for Dementia Assessment
+  uri: http://www.demcare.eu/ontologies/demlab.owl
+- namespace: http://purl.org/spar/deo/
+  prefix: deo
+  title: The Discourse Elements Ontology
+  uri: http://purl.org/spar/deo
+- namespace: http://ontologi.es/doap-deps#
+  prefix: deps
+  title: DOAP Dependencies
+  uri: http://ontologi.es/doap-deps#
+- namespace: http://datafoodconsortium.org/ontologies/DFC_FullModel.owl#
+  prefix: dfc
+  title: Data Food Consortium Ontology
+  uri: http://datafoodconsortium.org/ontologies/DFC_FullModel.owl
+- namespace: http://datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl#
+  prefix: dfcb
+  title: DFC Business Ontology
+  uri: http://datafoodconsortium.org/ontologies/DFC_BusinessOntology.owl
+- namespace: https://w3id.org/dingo#
+  prefix: dg
+  title: DINGO Ontology
+  uri: https://w3id.org/dingo/
+- namespace: http://purl.org/healthcarevocab/v1#
+  prefix: dicom
+  title: Healthcare metadata - DICOM ontology
+  uri: http://purl.org/healthcarevocab/v1
+- namespace: https://w3id.org/dio#
+  prefix: dio
+  title: The Design Intent Ontology
+  uri: https://w3id.org/dio
+- namespace: http://purl.org/dita/ns#
+  prefix: dita
+  title: DITA RDF ontology
+  uri: http://purl.org/dita/ns#
+- namespace: http://www.data-knowledge.org/dk/
+  prefix: dk
+  title: The Data Knowledge Vocabulary
+  uri: http://www.data-knowledge.org/dk/
+- namespace: http://d-nb.info/standards/elementset/dnb#
+  prefix: dnbt
+  title: DNB Metadata Terms
+  uri: http://d-nb.info/standards/elementset/dnb
+- namespace: http://usefulinc.com/ns/doap#
+  prefix: doap
+  title: Description of a Project vocabulary
+  uri: http://usefulinc.com/ns/doap#
+- namespace: http://www.w3.org/2000/10/swap/pim/doc#
+  prefix: doc
+  title: Works, licences, derivatives and dependencies
+  uri: http://www.w3.org/2000/10/swap/pim/doc
+- namespace: http://purl.org/spar/doco/
+  prefix: doco
+  title: DoCO, the Document Components Ontology
+  uri: http://purl.org/spar/doco
+- namespace: http://purl.org/ontology/dso#
+  prefix: docso
+  title: Document Service Ontology
+  uri: http://purl.org/ontology/dso
+- namespace: http://elite.polito.it/ontologies/dogont
+  prefix: dogont
+  title: Ontology Modeling for Intelligent Domotic Environments
+  uri: http://elite.polito.it/ontologies/dogont.owl
+- namespace: http://reference.data.gov.au/def/ont/dataset#
+  prefix: donto
+  title: Dataset Ontology
+  uri: http://reference.data.gov.au/def/ont/dataset
+- namespace: http://purl.org/dpn#
+  prefix: dpn
+  title: Data Provider Node ontology
+  uri: http://purl.org/dpn
+- namespace: http://promsns.org/def/do#
+  prefix: dprov
+  title: Decision Provenance ontology (DecPROV)
+  uri: http://promsns.org/def/decprov
+- namespace: http://semwebquality.org/ontologies/dq-constraints#
+  prefix: dqc
+  title: The Data Quality Constraints Library
+  uri: http://semwebquality.org/ontologies/dq-constraints
+- namespace: http://purl.org/dqm-vocabulary/v1/dqm#
+  prefix: dqm
+  title: The Data Quality Management Vocabulary
+  uri: http://purl.org/dqm-vocabulary/v1/dqm
+- namespace: http://www.w3.org/ns/dqv#
+  prefix: dqv
+  title: Data Quality Vocabulary
+  uri: http://www.w3.org/ns/dqv
+- namespace: http://purl.org/swan/2.0/discourse-relationships/
+  prefix: dr
+  title: Discourse relationships vocabulary
+  uri: http://purl.org/swan/2.0/discourse-relationships/
+- namespace: http://www.purl.org/drammar#
+  prefix: drama
+  title: 'Drammar: a comprehensive ontology of drama'
+  uri: http://www.purl.org/drammar
+- namespace: http://vocab.data.gov/def/drm#
+  prefix: drm
+  title: Data Reference Model
+  uri: http://vocab.data.gov/def/drm
+- namespace: http://purl.org/ctic/dcat#
+  prefix: ds
+  title: Dataset Catalog Vocabulary
+  uri: http://purl.org/ctic/dcat#
+- namespace: http://purl.org/dsnotify/vocab/eventset/
+  prefix: dsn
+  title: 'DSNotify Eventsets: A vocabulary for change events in linked data sources'
+  uri: http://purl.org/dsnotify/vocab/eventset/
+- namespace: http://www.linkedmodel.org/schema/dtype#
+  prefix: dtype
+  title: Datatype Ontology
+  uri: http://www.linkedmodel.org/schema/dtype
+- namespace: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#
+  prefix: dul
+  title: DOLCE+DnS Ultralite
+  uri: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl
+- namespace: http://www.w3.org/ns/duv#
+  prefix: duv
+  title: Dataset Usage Vocabulary
+  uri: http://www.w3.org/ns/duv
+- namespace: http://purl.org/ontology/dvia#
+  prefix: dvia
+  title: The visualization vocabulary for LOD applications
+  uri: http://purl.org/ontology/dvia
+- namespace: http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/
+  prefix: eac-cpf
+  title: 'EAC-CPF Descriptions Ontology for Linked Archival Data:'
+  uri: http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/
+- namespace: http://www.w3.org/ns/earl#
+  prefix: earl
+  title: Evaluation and Report Language
+  uri: http://www.w3.org/ns/earl
+- namespace: http://linked.earth/ontology#
+  prefix: earth
+  title: The Linked Earth Ontology
+  uri: http://linked.earth/ontology#
+- namespace: http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#
+  prefix: ebucore
+  title: EBU Ontology
+  uri: http://www.ebu.ch/metadata/ontologies/ebucore/ebucore
+- namespace: https://vocab.eccenca.com/revision/
+  prefix: eccrev
+  title: RDF changes and revisions vocabulary
+  uri: https://vocab.eccenca.com/revision/
+- namespace: http://purl.org/ontology/ecpo#
+  prefix: ecpo
+  title: Enumeration and Chronology of Periodicals Ontology
+  uri: http://purl.org/ontology/ecpo
+- namespace: http://erlangen-crm.org/current/
+  prefix: ecrm
+  title: Erlangen CRM / OWL
+  uri: http://erlangen-crm.org/current/
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-edac.owl#
+  prefix: edac
+  title: ELSEWeb EDAC Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-edac.owl
+- namespace: http://www.europeana.eu/schemas/edm/
+  prefix: edm
+  title: Europeana Data Model vocabulary
+  uri: http://www.europeana.eu/schemas/edm/
+- namespace: https://schema.edu.ee/
+  prefix: edu
+  title: Education Ontology
+  uri: https://schema.edu.ee/
+- namespace: http://ns.inria.fr/semed/eduprogression#
+  prefix: edupro
+  title: EduProgression Ontology
+  uri: http://ns.inria.fr/semed/eduprogression/
+- namespace: http://purl.org/eem#
+  prefix: eem
+  title: The EPCIS Event Model
+  uri: http://purl.org/eem
+- namespace: https://w3id.org/eepsa#
+  prefix: eepsa
+  title: EEPSA (Energy Efficiency Prediction Semantic Assistant) Ontology
+  uri: https://w3id.org/eepsa
+- namespace: http://opendata.aragon.es/def/ei2a#
+  prefix: ei2a
+  title: "Aragon Interoperable Information Structure Ontology\nEI2A"
+  uri: https://opendata.aragon.es/def/ei2a/ei2a.owl
+- namespace: http://purl.org/ctic/sector-publico/elecciones#
+  prefix: elec
+  title: Vocabulary for Vote Results
+  uri: http://purl.org/ctic/sector-publico/elecciones
+- namespace: http://data.europa.eu/eli/ontology#
+  prefix: eli
+  title: The European Legislation Identifier
+  uri: http://data.europa.eu/eli/ontology
+- namespace: http://ns.inria.fr/emoca#
+  prefix: emotion
+  title: Emotion Ontology for Context Awareness
+  uri: http://ns.inria.fr/emoca
+- namespace: http://purl.org/ctic/empleo/oferta#
+  prefix: emp
+  title: A vocabulary for jobs
+  uri: http://purl.org/ctic/empleo/oferta
+- namespace: http://labs.mondeca.com/vocab/endpointStatus#
+  prefix: ends
+  title: Vocabulary of endpoint status (availability, responseTime)
+  uri: http://labs.mondeca.com/vocab/endpointStatus
+- namespace: http://eprints.org/ontology/
+  prefix: ep
+  title: EPrints Ontology
+  uri: http://eprints.org/ontology/
+- namespace: https://w3id.org/ep-plan#
+  prefix: eppl
+  title: The EP-Plan ontology
+  uri: https://w3id.org/ep-plan
+- namespace: http://data.europa.eu/esco/model#
+  prefix: esco
+  title: The ESCO ontology
+  uri: http://data.europa.eu/esco/model
+- namespace: http://purl.org/essglobal/vocab/
+  prefix: essglobal
+  title: ESSGlobal Vocabulary
+  uri: http://purl.org/essglobal/vocab/
+- namespace: http://elite.polito.it/ontologies/eupont.owl#
+  prefix: eupont
+  title: 'EUPont: an ontology for End User Programming of the IoT'
+  uri: http://elite.polito.it/ontologies/eupont.owl
+- namespace: http://purl.org/NET/c4dm/event.owl#
+  prefix: event
+  title: The Event Ontology
+  uri: http://purl.org/NET/c4dm/event.owl
+- namespace: http://purl.org/net/ns/ex#
+  prefix: ex
+  title: Example vocabulary
+  uri: http://purl.org/net/ns/ex
+- namespace: http://www.w3.org/2003/12/exif/ns#
+  prefix: exif
+  title: Exif data description vocabulary
+  uri: http://www.w3.org/2003/12/exif/ns
+- namespace: http://purl.org/spar/fabio/
+  prefix: fabio
+  title: FRBR-aligned Bibliographic Ontology
+  uri: http://purl.org/spar/fabio
+- namespace: http://biohackathon.org/resource/faldo#
+  prefix: faldo
+  title: Feature Annotation Location Description Ontology
+  uri: http://biohackathon.org/resource/faldo
+- namespace: http://vocab.data.gov/def/fea#
+  prefix: fea
+  title: Federal Enterprise Architecture Vocabulary
+  uri: http://vocab.data.gov/def/fea
+- namespace: http://w3id.org/vcb/fel#
+  prefix: fel
+  title: A Fine-grained Entity Linking vocabulary
+  uri: http://w3id.org/vcb/fel#
+- namespace: http://purl.org/iot/ontology/fiesta-iot#
+  prefix: fiesta-iot
+  title: FIESTA-IoT Ontology
+  uri: http://purl.org/iot/ontology/fiesta-iot
+- namespace: http://purl.org/iot/ontology/fiesta-iot#
+  prefix: fiesta-priv
+  title: FIESTA-Priv Ontology
+  uri: http://purl.org/iot/ontology/fiesta-priv#
+- namespace: http://xmlns.com/foaf/0.1/
+  prefix: foaf
+  title: Friend of a Friend vocabulary
+  uri: http://xmlns.com/foaf/0.1/
+- namespace: https://w3id.org/fog#
+  prefix: fog
+  title: 'FOG: File Ontology for Geometry formats'
+  uri: https://w3id.org/fog
+- namespace: https://w3id.org/seas/FeatureOfInterestOntology/
+  prefix: foio
+  title: The SEAS Feature of Interest ontology.
+  uri: https://w3id.org/seas/FeatureOfInterestOntology
+- namespace: http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#
+  prefix: fowl
+  title: Food Ontology in OWL
+  uri: http://www.w3.org/TR/2003/PR-owl-guide-20031215/food
+- namespace: http://purl.org/cerif/frapo/
+  prefix: frapo
+  title: Funding, Research Administration and Projects Ontology
+  uri: http://purl.org/cerif/frapo/
+- namespace: http://streamreasoning.org/ontologies/frappe#
+  prefix: frappe
+  title: 'FraPPE: Frame, Pixel, Place, Event vocabulary'
+  uri: http://streamreasoning.org/ontologies/frappe#
+- namespace: http://purl.org/vocab/frbr/core#
+  prefix: frbr
+  title: Expression of Core FRBR Concepts in RDF
+  uri: http://purl.org/vocab/frbr/core
+- namespace: http://purl.org/vocab/frbr/extended#
+  prefix: frbre
+  title: Extended FRBR
+  uri: http://purl.org/vocab/frbr/extended
+- namespace: http://www.w3.org/2004/09/fresnel#
+  prefix: fresnel
+  title: Fresnel Lens and Format Core Vocabulary
+  uri: http://www.w3.org/2004/09/fresnel
+- namespace: http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/
+  prefix: g50k
+  title: 50K Gazetteer Vocabulary
+  uri: http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/
+- namespace: http://data.totl.net/game/
+  prefix: game
+  title: TotL Game Ontology
+  uri: http://data.totl.net/game/
+- namespace: http://www.oegov.org/core/owl/gc#
+  prefix: gc
+  title: oeGOV Government Core Ontology
+  uri: http://www.oegov.org/core/owl/gc
+- namespace: http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl#
+  prefix: gci
+  title: Global City Indicator Foundation Ontology
+  uri: http://ontology.eil.utoronto.ca/GCI/Foundation/GCI-Foundation.owl
+- namespace: https://w3id.org/GConsent#
+  prefix: gcon
+  title: GConsent - a consent ontology based on the GDPR
+  uri: https://w3id.org/GConsent
+- namespace: http://reference.data.gov/def/govdata/
+  prefix: gd
+  title: Government Data Vocabulary
+  uri: http://vocab.data.gov/gd
+- namespace: https://w3id.org/GDPRov#
+  prefix: gdprov
+  title: The GDPR Provenance ontology
+  uri: https://w3id.org/GDPRov
+- namespace: https://w3id.org/GDPRtEXT#
+  prefix: gdprt
+  title: GDPR text EXTensions
+  uri: https://w3id.org/GDPRtEXT
+- namespace: http://purl.org/gen/0.1#
+  prefix: gen
+  title: Vocabulary for Linked Genealogical Data
+  uri: http://purl.org/gen/0.1#
+- namespace: http://www.w3.org/2003/01/geo/wgs84_pos#
+  prefix: geo
+  title: WGS84 Geo Positioning
+  uri: http://www.w3.org/2003/01/geo/wgs84_pos
+- namespace: http://vocab.lenka.no/geo-deling#
+  prefix: geod
+  title: Administrative vocabulary for Norway
+  uri: http://vocab.lenka.no/geo-deling
+- namespace: http://data.ign.fr/def/geofla#
+  prefix: geofla
+  title: Ontology of administrative units at IGN-France
+  uri: http://data.ign.fr/def/geofla
+- namespace: http://data.ign.fr/def/geometrie#
+  prefix: geom
+  title: Ontology for geometry
+  uri: http://data.ign.fr/def/geometrie
+- namespace: https://www.gleif.org/ontology/L1/
+  prefix: gleif-L1
+  title: Global Legal Entity Identifier Foundation Level 1 Ontology - Who Is Who
+  uri: https://www.gleif.org/ontology/L1/
+- namespace: https://www.gleif.org/ontology/L2/
+  prefix: gleif-L2
+  title: Global Legal Entity Identifier Foundation Level 2 Ontology - Who Owns Whom
+  uri: https://www.gleif.org/ontology/L2/
+- namespace: https://www.gleif.org/ontology/Base/
+  prefix: gleif-base
+  title: Global Legal Entity Identifier Foundation Base Ontology
+  uri: https://www.gleif.org/ontology/Base/
+- namespace: https://www.gleif.org/ontology/EntityLegalForm/
+  prefix: gleif-elf
+  title: Entity Legal Form Ontology
+  uri: https://www.gleif.org/ontology/EntityLegalForm/
+- namespace: https://www.gleif.org/ontology/Geocoding/
+  prefix: gleif-geo
+  title: Global Legal Entity Identifier Foundation Geocoding Ontology
+  uri: https://www.gleif.org/ontology/Geocoding/
+- namespace: https://www.gleif.org/ontology/RegistrationAuthority/
+  prefix: gleif-ra
+  title: Global Legal Entity Identifier Foundation Registration Authority Ontology
+  uri: https://www.gleif.org/ontology/RegistrationAuthority/
+- namespace: https://www.gleif.org/ontology/ReportingException/
+  prefix: gleif-repex
+  title: Global Legal Entity Identifier Foundation Reporting Exception Ontology
+  uri: https://www.gleif.org/ontology/ReportingException/
+- namespace: http://www.opengis.net/ont/gml#
+  prefix: gml
+  title: OGC Geometry
+  uri: http://www.opengis.net/ont/gml
+- namespace: http://www.geonames.org/ontology#
+  prefix: gn
+  title: The Geonames ontology
+  uri: http://www.geonames.org/ontology
+- namespace: http://d-nb.info/standards/elementset/gnd#
+  prefix: gndo
+  title: GND Ontology
+  uri: http://d-nb.info/standards/elementset/gnd#
+- namespace: http://purl.org/linguistics/gold/
+  prefix: gold
+  title: General Ontology for Linguistic Description
+  uri: http://purl.org/linguistics/gold
+- namespace: https://w3id.org/gom#
+  prefix: gom
+  title: 'GOM: Geometry Metadata Ontology'
+  uri: https://w3id.org/gom
+- namespace: http://gov.genealogy.net/ontology.owl#
+  prefix: gov
+  title: Ontology for modelling historic administrative information.
+  uri: http://gov.genealogy.net/ontology.owl
+- namespace: http://purl.org/goodrelations/v1#
+  prefix: gr
+  title: The GoodRelations Ontology for Semantic Web-based E-Commerce
+  uri: http://purl.org/goodrelations/v1
+- namespace: http://www.w3.org/2003/g/data-view#
+  prefix: grddl
+  title: Gleaning Resource Descriptions from Dialects of Languages Vocabulary
+  uri: http://www.w3.org/2003/g/data-view
+- namespace: http://www.w3.org/2006/gen/ont#
+  prefix: gso
+  title: Generic Specific Ontology
+  uri: http://www.w3.org/2006/gen/ont
+- namespace: http://www.opengis.net/ont/geosparql#
+  prefix: gsp
+  title: OGC GeoSPARQL
+  uri: http://www.opengis.net/ont/geosparql
+- namespace: http://vocab.gtfs.org/terms#
+  prefix: gtfs
+  title: General Transit Feed Specification
+  uri: http://vocab.gtfs.org/terms#
+- namespace: http://resource.geosciml.org/ontology/timescale/gts#
+  prefix: gts
+  title: Geologic Timescale model
+  uri: http://resource.geosciml.org/ontology/timescale/gts
+- namespace: http://vocab.getty.edu/ontology#
+  prefix: gvp
+  title: Getty Vocabulary Program ontology
+  uri: http://vocab.getty.edu/ontology
+- namespace: http://sensormeasurement.appspot.com/ont/home/homeActivity#
+  prefix: ha
+  title: Home Activity
+  uri: http://sensormeasurement.appspot.com/ont/home/homeActivity#
+- namespace: https://www.w3.org/2019/wot/hypermedia#
+  prefix: hctl
+  title: Hypermedia Controls Ontology
+  uri: https://www.w3.org/2019/wot/hypermedia#
+- namespace: http://purl.org/net/hifm/ontology#
+  prefix: hifm
+  title: HIFM Ontology
+  uri: http://purl.org/net/hifm/ontology#
+- namespace: http://purl.org/ontology/holding#
+  prefix: holding
+  title: Holding Ontology
+  uri: http://purl.org/ontology/holding
+- namespace: http://health.data.gov/def/hospital/
+  prefix: hosp
+  title: Hospital Vocabulary
+  uri: http://vocab.data.gov/hosp
+- namespace: http://vcharpenay.github.io/hto/hto.xml#
+  prefix: hto
+  title: Haystack Tagging Ontology
+  uri: http://vcharpenay.github.io/hto/hto.xml
+- namespace: http://www.w3.org/2011/http#
+  prefix: http
+  title: HTTP in RDF
+  uri: http://www.w3.org/2011/http
+- namespace: https://privatealpha.com/ontology/ibis/1#
+  prefix: ibis
+  title: IBIS Vocabulary
+  uri: https://privatealpha.com/ontology/ibis/1#
+- namespace: http://ontology.eil.utoronto.ca/icontact.owl#
+  prefix: ic
+  title: 'International Contact Ontology: Addresses, phone numbers and emails.'
+  uri: http://ontology.eil.utoronto.ca/icontact.owl
+- namespace: http://rdf.insee.fr/def/demo#
+  prefix: idemo
+  title: Demographic ontology from the French Statistics Institute
+  uri: http://rdf.insee.fr/def/demo
+- namespace: http://www.identity.org/ontologies/identity.owl#
+  prefix: identity
+  title: Ontology of digital identity.
+  uri: http://www.identity.org/ontologies/identity.owl
+- namespace: https://w3id.org/ifc/IFC4_ADD1#
+  prefix: ifc
+  title: IFC4_ADD1
+  uri: https://w3id.org/ifc/IFC4_ADD1
+- namespace: http://rdf.insee.fr/def/geo#
+  prefix: igeo
+  title: French Statistical ontology for geolocation
+  uri: http://rdf.insee.fr/def/geo
+- namespace: http://data.ign.fr/def/ignf#
+  prefix: ignf
+  title: Ontology of coordinates reference systems
+  uri: http://data.ign.fr/def/ignf
+- namespace: http://imgpedia.dcc.uchile.cl/ontology#
+  prefix: imo
+  title: The IMGpedia Ontology
+  uri: http://imgpedia.dcc.uchile.cl/ontology
+- namespace: http://vocab.resc.info/incident#
+  prefix: incident
+  title: Vocabulary to describe incident response by emergency services
+  uri: http://vocab.resc.info/incident
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl#
+  prefix: infor
+  title: Information Realization
+  uri: http://www.ontologydesignpatterns.org/cp/owl/informationrealization.owl
+- namespace: http://purl.org/innovation/ns#
+  prefix: inno
+  title: Ontology for Innovation
+  uri: http://purl.org/innovation/ns
+- namespace: http://reference.data.gov.uk/def/intervals/
+  prefix: interval
+  title: Intervals Ontology
+  uri: http://reference.data.gov.uk/def/intervals
+- namespace: http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl#
+  prefix: iol
+  title: Information Objects ontology
+  uri: http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl
+- namespace: http://purl.oclc.org/NET/UNIS/fiware/iot-lite#
+  prefix: iot-lite
+  title: Iot-lite ontology
+  uri: http://purl.oclc.org/NET/UNIS/fiware/iot-lite#
+- namespace: http://www.irit.fr/recherches/MELODI/ontologies/IoT-O#
+  prefix: ioto
+  title: IoT-O
+  uri: http://www.irit.fr/recherches/MELODI/ontologies/IoT-O
+- namespace: http://purl.org/iot/vocab/iot-taxonomy-lite#
+  prefix: iottaxolite
+  title: The IoTTaxonomy-lite Taxonomy
+  uri: http://purl.org/iot/vocab/iot-taxonomy-lite#
+- namespace: http://purl.org/ipo/core#
+  prefix: ipo
+  title: IPO - Issue Procedure Ontology
+  uri: http://purl.org/ipo/core
+- namespace: http://www.ontologydesignpatterns.org/ont/web/irw.owl#
+  prefix: irw
+  title: The Identity of Resources on the Web ontology
+  uri: http://www.ontologydesignpatterns.org/ont/web/irw.owl
+- namespace: http://purl.org/ontology/is/core#
+  prefix: is
+  title: Info Service Ontology
+  uri: http://purl.org/ontology/is/core#
+- namespace: http://purl.org/iso25964/skos-thes#
+  prefix: iso-thes
+  title: ISO 25964 SKOS extension
+  uri: http://purl.org/iso25964/skos-thes
+- namespace: http://ontology.eil.utoronto.ca/ISO37120.owl#
+  prefix: iso37120
+  title: ISO 37120 indicator URIs
+  uri: http://ontology.eil.utoronto.ca/ISO37120.owl
+- namespace: http://reference.data.gov.au/def/ont/iso19160-1-address#
+  prefix: isoadr
+  title: ISO19160-1:2015 Address ontology
+  uri: http://reference.data.gov.au/def/ont/iso19160-1-address
+- namespace: http://dati.isprambiente.it/ontology/core#
+  prefix: ispra
+  title: Ispra Ontology
+  uri: http://dati.isprambiente.it/ontology/core#
+- namespace: https://data.istex.fr/ontology/istex#
+  prefix: istex
+  title: Istex ontology for scholarly documents and extracted entities
+  uri: https://data.istex.fr/ontology/istex#
+- namespace: http://ontology.it/itsmo/v1#
+  prefix: itsmo
+  title: IT Service Management Ontology
+  uri: http://ontology.it/itsmo/v1
+- namespace: https://www.w3.org/2019/wot/json-schema#
+  prefix: jsonsc
+  title: JSON Schema in RDF
+  uri: https://www.w3.org/2019/wot/json-schema#
+- namespace: http://w3id.org/charta77/jup/
+  prefix: jup
+  title: Ontology of Building Accessibility
+  uri: http://w3id.org/charta77/jup
+- namespace: http://rdfs.co/juso/
+  prefix: juso
+  title: Juso Ontology
+  uri: http://rdfs.co/juso/
+- namespace: http://rdfs.co/juso/kr/
+  prefix: juso.kr
+  title: South Korea Extension to Juso Ontology
+  uri: http://rdfs.co/juso/kr/
+- namespace: http://linkeddata.center/kees/v1#
+  prefix: kees
+  title: KEES Ontology
+  uri: http://linkeddata.center/kees/v1
+- namespace: http://purl.org/NET/c4dm/keys.owl#
+  prefix: keys
+  title: Keys Ontology
+  uri: http://purl.org/NET/c4dm/keys.owl
+- namespace: http://www.disit.org/km4city/schema#
+  prefix: km4c
+  title: km4city, the DISIT Knowledge Model for City and Mobility
+  uri: http://www.disit.org/km4city/schema
+- namespace: http://purl.org/net/vocab/2004/03/label#
+  prefix: label
+  title: label
+  uri: http://purl.org/net/vocab/2004/03/label
+- namespace: http://lawd.info/ontology/
+  prefix: lawd
+  title: Linking Ancient World Data Ontology
+  uri: http://lawd.info/ontology/
+- namespace: http://purl.org/vocab/lifecycle/schema#
+  prefix: lcy
+  title: Lifecycle Schema
+  uri: http://purl.org/vocab/lifecycle/schema
+- namespace: http://www.w3.org/ns/ldp#
+  prefix: ldp
+  title: Linked Data Platform
+  uri: http://www.w3.org/ns/ldp#
+- namespace: http://purl.oclc.org/NET/ldr/ns#
+  prefix: ldr
+  title: Linked Data Rights (LDR)
+  uri: http://purl.oclc.org/NET/ldr/ns#
+- namespace: http://linked.opendata.cz/ontology/ldvm/
+  prefix: ldvm
+  title: Vocabulary for Linked Data Visualization Model
+  uri: http://linked.opendata.cz/ontology/ldvm/
+- namespace: http://lemon-model.net/lemon#
+  prefix: lemon
+  title: LExicon Model for ONtologies
+  uri: http://lemon-model.net/lemon
+- namespace: http://www.lexinfo.net/ontology/2.0/lexinfo#
+  prefix: lexinfo
+  title: LexInfo Ontology
+  uri: http://www.lexinfo.net/ontology/2.0/lexinfo
+- namespace: http://purl.org/library/
+  prefix: lib
+  title: Library extension of schema.org
+  uri: http://purl.org/library/
+- namespace: http://purl.org/vocab/lifecycle/schema#
+  prefix: lifecycle
+  title: IoT-Lifecycle
+  uri: http://www.irit.fr/recherches/MELODI/ontologies/IoT-Lifecycle
+- namespace: http://purl.org/limo-ontology/limo#
+  prefix: limo
+  title: Linked Statistical Models Vocabulary
+  uri: http://purl.org/limo-ontology/limo/
+- namespace: http://purl.org/LiMo/0.1#
+  prefix: limoo
+  title: License Model Ontology
+  uri: http://purl.org/LiMo/0.1#
+- namespace: https://w3id.org/vocab/lingvoj#
+  prefix: lingvo
+  title: The Lingvoj Ontology
+  uri: https://w3id.org/vocab/lingvoj
+- namespace: http://purl.org/net/lio#
+  prefix: lio
+  title: Lightweight Image Ontology
+  uri: http://purl.org/net/lio
+- namespace: http://www.linklion.org/ontology#
+  prefix: llont
+  title: LinkLion - the Link Discovery Portal
+  uri: http://www.linklion.org/ontology
+- namespace: http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl#
+  prefix: lmm1
+  title: Lexical MetaModel Level 1
+  uri: http://www.ontologydesignpatterns.org/ont/lmm/LMM_L1.owl
+- namespace: http://www.ontologydesignpatterns.org/ont/lmm/LMM_L2.owl#
+  prefix: lmm2
+  title: Lexical MetaModel Level 2
+  uri: http://www.ontologydesignpatterns.org/ont/lmm/LMM_L2.owl
+- namespace: http://purl.org/ctic/infraestructuras/localizacion#
+  prefix: loc
+  title: Location Vocabulary
+  uri: http://purl.org/ctic/infraestructuras/localizacion
+- namespace: http://data.archiveshub.ac.uk/def/
+  prefix: locah
+  title: The LOCAH RDF Vocabulary
+  uri: http://data.archiveshub.ac.uk/def/
+- namespace: http://www.w3.org/ns/locn#
+  prefix: locn
+  title: ISA Programme Location Core Vocabulary
+  uri: http://www.w3.org/ns/locn
+- namespace: http://linkedevents.org/ontology/
+  prefix: lode
+  title: Linking Open Descriptions of Events
+  uri: http://linkedevents.org/ontology/
+- namespace: http://www.w3.org/2000/10/swap/log#
+  prefix: log
+  title: SWAP Logic Ontology
+  uri: http://www.w3.org/2000/10/swap/log
+- namespace: http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#
+  prefix: lom
+  title: Learning Object Metadata Ontology
+  uri: http://data.opendiscoveryspace.eu/lom_ontology_ods.owl
+- namespace: http://sparql.sstu.ru:3030/speciality/
+  prefix: losp
+  title: Linked open specialities RF
+  uri: http://sparql.sstu.ru:3030/speciality/
+- namespace: http://linkedscience.org/lsc/ns#
+  prefix: lsc
+  title: Linked Science Core Vocabulary
+  uri: http://linkedscience.org/lsc/ns#
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper.owl#
+  prefix: lslife
+  title: ELSEWeb Lifemapper Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper.owl
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-data.owl#
+  prefix: lsmap
+  title: ELSEWeb Mappings Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/mappings/elseweb-mappings.owl
+- namespace: http://lsq.aksw.org/vocab#
+  prefix: lsq
+  title: The Linked SPARQL Queries Vocabulary (LSQ(V))
+  uri: http://lsq.aksw.org/vocab
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-data.owl#
+  prefix: lsweb
+  title: ELSEWeb Data Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-data.owl
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-modelling.owl#
+  prefix: lswmo
+  title: ELSEWeb Modelling Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-modelling.owl
+- namespace: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper-parameters.owl#
+  prefix: lswpm
+  title: ELSEWeb Lifemapper Parameters Ontology
+  uri: http://ontology.cybershare.utep.edu/ELSEWeb/elseweb-lifemapper-parameters.owl
+- namespace: http://ns.inria.fr/ludo
+  prefix: ludo
+  title: Ludo Ontology
+  uri: http://ns.inria.fr/ludo
+- namespace: http://purl.org/lobid/lv#
+  prefix: lv
+  title: lobid vocab
+  uri: http://purl.org/lobid/lv
+- namespace: http://purl.org/linkingyou/
+  prefix: lyou
+  title: Linking-you vocabulary
+  uri: http://purl.org/linkingyou/
+- namespace: http://purl.org/iot/vocab/m3-lite#
+  prefix: m3lite
+  title: The Machine-to-Machine Measurement (M3) Lite Ontology
+  uri: http://purl.org/iot/vocab/m3-lite#
+- namespace: http://www.w3.org/ns/ma-ont#
+  prefix: ma-ont
+  title: Ontology for Media Resources
+  uri: http://www.w3.org/ns/ma-ont
+- namespace: http://www.loc.gov/mads/rdf/v1#
+  prefix: mads
+  title: Metadata Authority Description Schema
+  uri: http://www.loc.gov/mads/rdf/v1
+- namespace: http://www.gsi.dit.upm.es/ontologies/marl/ns#
+  prefix: marl
+  title: Marl Ontology Specification
+  uri: http://www.gsi.dit.upm.es/ontologies/marl/ns
+- namespace: http://securitytoolbox.appspot.com/MASO#
+  prefix: maso
+  title: Mobile Agents Security
+  uri: http://securitytoolbox.appspot.com/MASO
+- namespace: https://w3id.org/multidimensional-interface/ontology#
+  prefix: mdi
+  title: RDF vocabulary to describe a Multidimensional Interface.
+  uri: https://w3id.org/multidimensional-interface/ontology
+- namespace: http://purl.org/media#
+  prefix: media
+  title: The Media RDF Vocabulary
+  uri: http://purl.org/media
+- namespace: http://w3id.org/medred/medred#
+  prefix: medred
+  title: 'MedRed ontology: clinical data acquisition model'
+  uri: http://w3id.org/medred/medred#
+- namespace: http://mex.aksw.org/mex-algo#
+  prefix: mexalgo
+  title: MEX Algorithm Ontology
+  uri: http://mex.aksw.org/mex-algo
+- namespace: http://mex.aksw.org/mex-core#
+  prefix: mexcore
+  title: MEX Core Vocabulary
+  uri: http://mex.aksw.org/mex-core
+- namespace: http://mex.aksw.org/mex-perf#
+  prefix: mexperf
+  title: MEX Performance Ontology
+  uri: http://mex.aksw.org/mex-perf
+- namespace: http://www.w3.org/ns/mls#
+  prefix: mls
+  title: Machine Learning Schema
+  uri: http://www.w3.org/ns/mls
+- namespace: http://purl.org/ontology/mo/
+  prefix: mo
+  title: Music Ontology
+  uri: http://purl.org/ontology/mo/
+- namespace: http://observedchange.com/moac/ns#
+  prefix: moac
+  title: Management of a Crisis Vocabulary
+  uri: http://www.observedchange.com/moac/ns#
+- namespace: http://www.isibang.ac.in/ns/mod#
+  prefix: mod
+  title: 'MOD: Metadata for Ontology Description and publication'
+  uri: http://www.isibang.ac.in/ns/mod
+- namespace: https://w3id.org/skgo/modsci#
+  prefix: modsci
+  title: ModSci, Modern Science Ontology.
+  uri: https://w3id.org/skgo/modsci#
+- namespace: http://id.loc.gov/vocabulary/relators/
+  prefix: mrel
+  title: MARC Code List for Relators
+  uri: http://id.loc.gov/vocabulary/relators
+- namespace: http://iserve.kmi.open.ac.uk/ns/msm#
+  prefix: msm
+  title: Minimal Service Model
+  uri: http://iserve.kmi.open.ac.uk/ns/msm
+- namespace: http://www.ics.forth.gr/isl/MarineTLO/v4/marinetlo.owl#
+  prefix: mtlo
+  title: MarineTLO Ontology
+  uri: http://www.ics.forth.gr/isl/MarineTLO/v4/marinetlo.owl
+- namespace: http://ns.inria.fr/munc#
+  prefix: munc
+  title: Meta-Uncertainty
+  uri: http://ns.inria.fr/munc/
+- namespace: http://data.doremus.org/ontology#
+  prefix: mus
+  title: DOREMUS is an extension of the FRBRoo model for describing the music.
+  uri: http://data.doremus.org/ontology#
+- namespace: http://www.kanzaki.com/ns/music#
+  prefix: music
+  title: Music Vocabulary
+  uri: http://www.kanzaki.com/ns/music
+- namespace: http://purl.org/muto/core#
+  prefix: muto
+  title: Modular Unified Tagging Ontology (MUTO)
+  uri: http://purl.org/muto/core
+- namespace: http://schema.mobivoc.org/
+  prefix: mv
+  title: 'MobiVoc: Open Mobility Vocabulary'
+  uri: http://schema.mobivoc.org/
+- namespace: http://purl.oclc.org/NET/mvco.owl#
+  prefix: mvco
+  title: Media Value Chain Ontology
+  uri: http://purl.oclc.org/NET/mvco.owl
+- namespace: http://www.semanticdesktop.org/ontologies/2007/08/15/nao#
+  prefix: nao
+  title: NEPOMUK Annotation Ontology
+  uri: http://www.semanticdesktop.org/ontologies/2007/08/15/nao
+- namespace: http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#
+  prefix: ncal
+  title: NEPOMUK Calendar Ontology
+  uri: http://www.semanticdesktop.org/ontologies/2007/04/02/ncal
+- namespace: http://www.semanticdesktop.org/ontologies/2007/03/22/nco#
+  prefix: nco
+  title: NEPOMUK Contact Ontology
+  uri: http://www.semanticdesktop.org/ontologies/2007/03/22/nco
+- namespace: http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
+  prefix: nfo
+  title: NEPOMUK File Ontology
+  uri: http://www.semanticdesktop.org/ontologies/2007/03/22/nfo
+- namespace: http://geovocab.org/geometry#
+  prefix: ngeo
+  title: NeoGeo Geometry Ontology
+  uri: http://geovocab.org/geometry
+- namespace: http://www.semanticdesktop.org/ontologies/2007/01/19/nie#
+  prefix: nie
+  title: NEPOMUK Information Element Core Ontology
+  uri: http://www.semanticdesktop.org/ontologies/2007/01/19/nie
+- namespace: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#
+  prefix: nif
+  title: NLP Interchange Format
+  uri: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#
+- namespace: http://lod.nl.go.kr/ontology/
+  prefix: nlon
+  title: National Library of Korea Ontology
+  uri: http://lod.nl.go.kr/ontology/
+- namespace: https://w3id.org/nno/ontology#
+  prefix: nno
+  title: The Neural Network Ontology
+  uri: https://w3id.org/nno/ontology
+- namespace: http://ns.nature.com/terms/
+  prefix: npg
+  title: Nature.com Core Ontology
+  uri: http://ns.nature.com/terms/
+- namespace: http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#
+  prefix: nrl
+  title: NEPOMUK Representational Language
+  uri: http://www.semanticdesktop.org/ontologies/2007/08/15/nrl
+- namespace: http://ns.inria.fr/nrv#
+  prefix: nrv
+  title: Normative Requirements Vocabulary
+  uri: http://ns.inria.fr/nrv
+- namespace: http://purl.org/ontology/storyline/
+  prefix: nsl
+  title: A News Storyline Ontology
+  uri: http://purl.org/ontology/storyline
+- namespace: http://ns.inria.fr/nicetag/2010/09/09/voc#
+  prefix: ntag
+  title: Nice Tag Ontology
+  uri: http://ns.inria.fr/nicetag/2010/09/09/voc
+- namespace: http://www.w3.org/ns/oa#
+  prefix: oa
+  title: Open Annotation Data Model
+  uri: http://www.w3.org/ns/oa#
+- namespace: http://culturalis.org/oad#
+  prefix: oad
+  title: Ontology for archival description
+  uri: http://culturalis.org/oad#
+- namespace: http://www.ics.forth.gr/isl/oae/core#
+  prefix: oae
+  title: Open NEE Model
+  uri: http://www.ics.forth.gr/isl/oae/core
+- namespace: http://purl.obolibrary.org/obo/
+  prefix: obo
+  title: Ontology for Biomedical Investigation
+  uri: http://purl.obolibrary.org/obo/obi.owl
+- namespace: http://delicias.dia.fi.upm.es/ontologies/ObjectWithStates.owl#
+  prefix: obws
+  title: Object with states ontology
+  uri: http://delicias.dia.fi.upm.es/ontologies/ObjectWithStates.owl
+- namespace: http://dati.camera.it/ocd/
+  prefix: ocd
+  title: Ontology of Italian Deputy Chamber
+  uri: http://dati.camera.it/ocd/
+- namespace: http://purl.org/onto-ocds/ocds#
+  prefix: ocds
+  title: Schema for an Open Contracting Release (OCDS)
+  uri: http://purl.org/onto-ocds/ocds
+- namespace: http://vocab.deri.ie/odapp#
+  prefix: odapp
+  title: Open Data Applications Vocabulary
+  uri: http://vocab.deri.ie/odapp
+- namespace: http://semweb.mmlab.be/ns/odapps#
+  prefix: odapps
+  title: The vocabulary for (L)OD ideas and applications
+  uri: http://semweb.mmlab.be/ns/odapps
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/participation.owl#
+  prefix: odpart
+  title: Ontology Design Pattern Participation
+  uri: http://www.ontologydesignpatterns.org/cp/owl/participation.owl
+- namespace: http://www.w3.org/ns/odrl/2/
+  prefix: odrl
+  title: The Open Digital Rights Language (ODRL) Ontology
+  uri: http://www.w3.org/ns/odrl/2/
+- namespace: http://schema.theodi.org/odrs#
+  prefix: odrs
+  title: Open Data Rights Statement Vocabulary
+  uri: http://schema.theodi.org/odrs
+- namespace: http://www.oegov.org/core/owl/cc#
+  prefix: oecc
+  title: Extended Creative Commons Ontology
+  uri: http://www.oegov.org/core/owl/cc
+- namespace: http://owlrep.eu01.aws.af.cm/fridge#
+  prefix: of
+  title: Open Fridge vocabulary
+  uri: http://owlrep.eu01.aws.af.cm/fridge
+- namespace: http://purl.org/opdm/refrigerator#
+  prefix: ofrd
+  title: Fridge and Freezer Vocabulary
+  uri: http://purl.org/opdm/refrigerator#
+- namespace: http://ogp.me/ns#
+  prefix: og
+  title: Open Graph Protocol Vocabulary
+  uri: http://ogp.me/ns
+- namespace: http://semweb.mmlab.be/ns/oh#
+  prefix: oh
+  title: The Opening Hours vocabulary
+  uri: http://semweb.mmlab.be/ns/oh
+- namespace: https://w3id.org/vocab/olca#
+  prefix: olca
+  title: Ontology Loose Coupling Annotation
+  uri: https://w3id.org/vocab/olca
+- namespace: http://purl.org/ontology/olo/core#
+  prefix: olo
+  title: Ordered List Ontology
+  uri: http://purl.org/ontology/olo/core#
+- namespace: https://w3id.org/omg#
+  prefix: omg
+  title: 'OMG: Ontology for Managing Geometry'
+  uri: https://w3id.org/omg
+- namespace: http://open-multinet.info/ontology/omn#
+  prefix: omn
+  title: Open-Multinet Upper Ontology
+  uri: http://open-multinet.info/ontology/omn
+- namespace: http://open-multinet.info/ontology/omn-federation#
+  prefix: omnfed
+  title: Open-Multinet Upper Federation Ontology
+  uri: http://open-multinet.info/ontology/omn-federation
+- namespace: http://open-multinet.info/ontology/omn-lifecycle#
+  prefix: omnlc
+  title: Open-Multinet Upper Lifecycle Ontology
+  uri: http://open-multinet.info/ontology/omn-lifecycle
+- namespace: http://www.ics.forth.gr/isl/oncm/core#
+  prefix: onc
+  title: Open NEE Configuration Model
+  uri: http://www.ics.forth.gr/isl/oncm/core
+- namespace: http://purl.org/net/ns/ontology-annot#
+  prefix: ont
+  title: Ontology annotation DLiser vocabulary
+  uri: http://purl.org/net/ns/ontology-annot
+- namespace: http://www.ontologydesignpatterns.org/ont/dul/ontopic.owl#
+  prefix: ontopic
+  title: Ontopic Ontology
+  uri: http://www.ontologydesignpatterns.org/ont/dul/ontopic.owl
+- namespace: http://www.semanticweb.org/ontologies/2008/11/OntologySecurity.owl#
+  prefix: ontosec
+  title: Ontology Security
+  uri: http://www.semanticweb.org/ontologies/2008/11/OntologySecurity.owl
+- namespace: http://www.gsi.dit.upm.es/ontologies/onyx/ns#
+  prefix: onyx
+  title: Onyx Emotion Ontology
+  uri: http://www.gsi.dit.upm.es/ontologies/onyx/ns
+- namespace: http://environment.data.gov.au/def/op#
+  prefix: op
+  title: Observable properties
+  uri: http://environment.data.gov.au/def/op
+- namespace: http://ontology.eil.utoronto.ca/open311#
+  prefix: open311
+  title: "Open 311 Ontology: An Ontology for publishing a city's non-emergency events."
+  uri: http://ontology.eil.utoronto.ca/open311.owl
+- namespace: https://w3id.org/opm#
+  prefix: opm
+  title: 'OPM: Ontology for Property Management'
+  uri: https://w3id.org/opm
+- namespace: http://openprovenance.org/model/opmo#
+  prefix: opmo
+  title: Open Provenance Model
+  uri: http://openprovenance.org/model/opmo
+- namespace: http://purl.org/net/opmv/ns#
+  prefix: opmv
+  title: Open Provenance Model Vocabulary
+  uri: http://purl.org/net/opmv/ns#
+- namespace: http://www.opmw.org/ontology/
+  prefix: opmw
+  title: The OPMW Ontology
+  uri: http://www.opmw.org/ontology/
+- namespace: http://vocab.deri.ie/orca#
+  prefix: orca
+  title: orca, the Ontology of Reasoning, Certainty and Attribution
+  uri: http://vocab.deri.ie/orca
+- namespace: http://www.openarchives.org/ore/terms/
+  prefix: ore
+  title: The OAI ORE terms vocabulary
+  uri: http://www.openarchives.org/ore/terms/
+- namespace: http://www.w3.org/ns/org#
+  prefix: org
+  title: Core organization ontology
+  uri: http://www.w3.org/ns/org#
+- namespace: http://datos.gob.es/def/sector-publico/organizacion#
+  prefix: orges
+  title: Ontology about Spanish public organizations
+  uri: http://datos.gob.es/def/sector-publico/organizacion#
+- namespace: http://data.ordnancesurvey.co.uk/ontology/admingeo/
+  prefix: osadm
+  title: The administrative geography and civil voting area ontology
+  uri: http://data.ordnancesurvey.co.uk/ontology/admingeo/
+- namespace: http://data.ordnancesurvey.co.uk/ontology/geometry/
+  prefix: osgeom
+  title: Ordnance Survey Geometry Ontology
+  uri: http://data.ordnancesurvey.co.uk/ontology/geometry/
+- namespace: http://open-services.net/ns/core#
+  prefix: oslc
+  title: OSLC Core Vocabulary
+  uri: http://open-services.net/ns/core#
+- namespace: http://purl.org/oslo/ns/localgov#
+  prefix: oslo
+  title: OSLO Exchange Standard
+  uri: http://purl.org/oslo/ns/localgov
+- namespace: http://data.ordnancesurvey.co.uk/ontology/spatialrelations/
+  prefix: osspr
+  title: Spatial Relations Ontology
+  uri: http://data.ordnancesurvey.co.uk/ontology/spatialrelations/
+- namespace: http://www.ordnancesurvey.co.uk/ontology/Topography/v0.1/Topography.owl#
+  prefix: ostop
+  title: Ordnance Survey Topography Ontology
+  uri: http://www.ordnancesurvey.co.uk/ontology/Topography/v0.1/Topography.owl
+- namespace: https://w3id.org/opentrafficlights#
+  prefix: otl
+  title: The Open Traffic Lights ontology
+  uri: https://w3id.org/opentrafficlights
+- namespace: http://open.vocab.org/terms/
+  prefix: ov
+  title: OpenVocab
+  uri: http://open.vocab.org/terms
+- namespace: http://www.w3.org/2002/07/owl#
+  prefix: owl
+  title: The OWL 2 Schema vocabulary
+  uri: http://www.w3.org/2002/07/owl
+- namespace: http://purl.org/net/p-plan#
+  prefix: p-plan
+  title: The P-PLAN Ontology
+  uri: http://purl.org/net/p-plan#
+- namespace: http://purl.org/vocab/participation/schema#
+  prefix: part
+  title: Participation Schema
+  uri: http://purl.org/vocab/participation/schema
+- namespace: http://purl.org/hpi/patchr#
+  prefix: pat
+  title: Patch Request Ontology
+  uri: http://purl.org/hpi/patchr#
+- namespace: http://www.essepuntato.it/2008/12/pattern#
+  prefix: pattern
+  title: The Pattern Ontology
+  uri: http://www.essepuntato.it/2008/12/pattern
+- namespace: http://purl.org/pav/
+  prefix: pav
+  title: Provenance, Authoring and Versioning
+  uri: http://purl.org/pav/
+- namespace: http://purl.org/ontology/pbo/core#
+  prefix: pbo
+  title: Play Back Ontology
+  uri: http://purl.org/ontology/pbo/core#
+- namespace: http://purl.org/procurement/public-contracts#
+  prefix: pc
+  title: Public Contracts Ontology
+  uri: http://purl.org/procurement/public-contracts
+- namespace: http://ontologies.smile.deri.ie/pdo#
+  prefix: pdo
+  title: Project Documents Ontology
+  uri: http://vocab.deri.ie/pdo
+- namespace: https://w3id.org/pep/
+  prefix: pep
+  title: Process Execution ontology.
+  uri: https://w3id.org/pep/
+- namespace: http://www.w3.org/ns/person#
+  prefix: person
+  title: ISA Programme Person Core Vocabulary
+  uri: http://www.w3.org/ns/person
+- namespace: http://www.ontotext.com/proton/protonext#
+  prefix: pext
+  title: PROTON Extent module
+  uri: http://www.ontotext.com/proton/protonext
+- namespace: https://w3id.org/pfeepsa#
+  prefix: pfeepsa
+  title: The PFEEPSA Ontology.
+  uri: https://w3id.org/pfeepsa#
+- namespace: http://data.cochrane.org/ontologies/pico/
+  prefix: pico
+  title: Cochrane PICO Ontology
+  uri: http://data.cochrane.org/ontologies/pico/
+- namespace: http://purl.org/ontology/places#
+  prefix: place
+  title: The Places Ontology
+  uri: http://purl.org/ontology/places
+- namespace: http://cedric.cnam.fr/isid/ontologies/PersonLink.owl#
+  prefix: plink
+  title: PersonLink Ontology
+  uri: http://cedric.cnam.fr/isid/ontologies/PersonLink.owl
+- namespace: http://purl.org/net/po#
+  prefix: plo
+  title: Playlist Ontology
+  uri: http://purl.org/net/po#
+- namespace: http://premon.fbk.eu/ontology/fn#
+  prefix: pmofn
+  title: Predicate Model for Ontologies (PreMOn) - FrameNet ontology module
+  uri: http://premon.fbk.eu/ontology/fn
+- namespace: http://premon.fbk.eu/ontology/nb#
+  prefix: pmonb
+  title: Predicate Model for Ontologies (PreMOn) - NomBank ontology module
+  uri: http://premon.fbk.eu/ontology/nb
+- namespace: http://premon.fbk.eu/ontology/pb#
+  prefix: pmopb
+  title: Predicate Model for Ontologies (PreMOn) - PropBank ontology module
+  uri: http://premon.fbk.eu/ontology/pb
+- namespace: http://premon.fbk.eu/ontology/vn#
+  prefix: pmovn
+  title: Predicate Model for Ontologies (PreMOn) - VerbNet ontology module
+  uri: http://premon.fbk.eu/ontology/vn
+- namespace: http://purl.org/ontology/po/
+  prefix: po
+  title: Programmes ontology
+  uri: http://purl.org/ontology/po/
+- namespace: http://dev.poderopedia.com/vocab/
+  prefix: poder
+  title: Poder Vocabulary
+  uri: http://dev.poderopedia.com/vocab/schema
+- namespace: http://data.ordnancesurvey.co.uk/ontology/postcode/
+  prefix: postcode
+  title: Postcode Ontology
+  uri: http://data.ordnancesurvey.co.uk/ontology/postcode/
+- namespace: http://vocab.deri.ie/ppo#
+  prefix: ppo
+  title: Privacy Preference Ontology
+  uri: http://vocab.deri.ie/ppo
+- namespace: http://contsem.unizar.es/def/sector-publico/pproc#
+  prefix: pproc
+  title: PPROC ontology
+  uri: http://contsem.unizar.es/def/sector-publico/pproc
+- namespace: http://purl.org/ontology/prv/core#
+  prefix: pr
+  title: Property Reification Vocabulary
+  uri: http://purl.org/ontology/prv/core#
+- namespace: http://www.loc.gov/premis/rdf/v1#
+  prefix: premis
+  title: PREMIS Ontology
+  uri: http://www.loc.gov/premis/rdf/v1
+- namespace: http://ns.inria.fr/prissma/v2#
+  prefix: prissma
+  title: Presentation of Resources for Interoperable Semantic and Shareable Mobile Adaptability
+  uri: http://ns.inria.fr/prissma/v2#
+- namespace: http://purl.org/spar/pro/
+  prefix: pro
+  title: The Publishing Roles Ontology
+  uri: http://purl.org/spar/pro
+- namespace: http://www.w3.org/ns/dx/prof/
+  prefix: prof
+  title: Profiles Vocabulary
+  uri: http://www.w3.org/ns/dx/prof
+- namespace: http://www.w3.org/ns/prov#
+  prefix: prov
+  title: W3C PROVenance Interchange
+  uri: http://www.w3.org/ns/prov#
+- namespace: http://ns.inria.fr/provoc#
+  prefix: provoc
+  title: Product Vocabulary
+  uri: http://ns.inria.fr/provoc
+- namespace: http://purl.org/net/provenance/ns#
+  prefix: prv
+  title: Provenance Vocabulary Core Ontology
+  uri: http://purl.org/net/provenance/ns#
+- namespace: http://purl.org/net/provenance/types#
+  prefix: prvt
+  title: Provenance Vocabulary types
+  uri: http://purl.org/net/provenance/types#
+- namespace: http://purl.org/spar/pso/
+  prefix: pso
+  title: The Publishing Status Ontology
+  uri: http://purl.org/spar/pso
+- namespace: http://www.ontotext.com/proton/protontop#
+  prefix: ptop
+  title: PROTON (Proto Ontology), Top Module
+  uri: http://www.ontotext.com/proton/protontop
+- namespace: https://vocab.eccenca.com/pubsub/
+  prefix: pubsub
+  title: Eccenca Publish-Subscribe Vocabulary
+  uri: https://vocab.eccenca.com/pubsub/
+- namespace: http://purl.org/spar/pwo/
+  prefix: pwo
+  title: The Publishing Workflow Ontology
+  uri: http://purl.org/spar/pwo
+- namespace: http://purl.org/linked-data/cube#
+  prefix: qb
+  title: The data cube vocabulary
+  uri: http://purl.org/linked-data/cube
+- namespace: http://purl.org/qb4olap/cubes#
+  prefix: qb4o
+  title: Vocabulary for publishing OLAP data cubes
+  uri: http://purl.org/qb4olap/cubes
+- namespace: http://purl.oclc.org/NET/ssnx/qu/qu#
+  prefix: qu
+  title: Quantity Kinds and Units
+  uri: http://purl.oclc.org/NET/ssnx/qu/qu
+- namespace: http://qudt.org/schema/qudt/
+  prefix: qudt
+  title: Quantities, Units, Dimensions and Types
+  uri: http://qudt.org/schema/qudt
+- namespace: https://w3id.org/arco/ontology/arco/
+  prefix: r-arco
+  title: ArCo Ontology (ArCo network)
+  uri: https://w3id.org/arco/ontology/arco
+- namespace: http://guava.iis.sinica.edu.tw/r4r/
+  prefix: r4r
+  title: Relations for Reusing (R4R) Ontology
+  uri: http://guava.iis.sinica.edu.tw/r4r
+- namespace: http://www.w3.org/ns/radion#
+  prefix: radion
+  title: Repository Asset Distribution
+  uri: http://www.w3.org/ns/radion#
+- namespace: http://iais.fraunhofer.de/vocabs/rami#
+  prefix: rami
+  title: rami - Reference Architecture Model
+  uri: https://w3id.org/i40/rami/
+- namespace: http://purl.org/NET/raul#
+  prefix: raul
+  title: RAUL Vocabulary
+  uri: http://vocab.deri.ie/raul
+- namespace: http://rdvocab.info/uri/schema/FRBRentitiesRDA/
+  prefix: rdafrbr
+  title: FRBR Entities for RDA
+  uri: http://rdvocab.info/uri/schema/FRBRentitiesRDA
+- namespace: http://rdvocab.info/Elements/
+  prefix: rdag1
+  title: RDA Group 1 Elements
+  uri: http://rdvocab.info/Elements
+- namespace: http://rdvocab.info/ElementsGr2/
+  prefix: rdag2
+  title: RDA Group 2 Elements
+  uri: http://rdvocab.info/ElementsGr2
+- namespace: http://rdvocab.info/ElementsGr3/
+  prefix: rdag3
+  title: RDA Group 3 Elements
+  uri: http://rdvocab.info/ElementsGr3
+- namespace: http://rdvocab.info/RDARelationshipsWEMI/
+  prefix: rdarel
+  title: RDA Relationships for Works, Expressions, Manifestations, Items
+  uri: http://rdvocab.info/RDARelationshipsWEMI
+- namespace: http://metadataregistry.org/uri/schema/RDARelationshipsGR2/
+  prefix: rdarel2
+  title: RDA Relationships GR2
+  uri: http://metadataregistry.org/uri/schema/RDARelationshipsGR2
+- namespace: http://rdvocab.info/roles/
+  prefix: rdarole
+  title: RDA Roles
+  uri: http://rdvocab.info/roles
+- namespace: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  prefix: rdf
+  title: The RDF Concepts Vocabulary
+  uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+- namespace: http://www.w3.org/ns/rdfa#
+  prefix: rdfa
+  title: RDFa Vocabulary for Term and Prefix Assignment, and for Processor Graph Reporting
+  uri: http://www.w3.org/ns/rdfa#
+- namespace: http://www.w3.org/2004/03/trix/rdfg-1/
+  prefix: rdfg
+  title: Graph
+  uri: http://www.w3.org/2004/03/trix/rdfg-1/
+- namespace: https://w3id.org/rdfp/
+  prefix: rdfp
+  title: The RDF Presentation ontology
+  uri: https://w3id.org/rdfp/
+- namespace: http://www.w3.org/2000/01/rdf-schema#
+  prefix: rdfs
+  title: The RDF Schema vocabulary
+  uri: http://www.w3.org/2000/01/rdf-schema#
+- namespace: http://purl.org/ontology/rec/core#
+  prefix: rec
+  title: Recommendation Ontology
+  uri: http://purl.org/ontology/rec/core#
+- namespace: http://www.w3.org/2001/02pd/rec54#
+  prefix: rec54
+  title: Model of the W3C Process
+  uri: http://www.w3.org/2001/02pd/rec54#
+- namespace: http://purl.org/reco#
+  prefix: reco
+  title: RECommendations Ontology
+  uri: http://purl.org/reco#
+- namespace: http://reegle.info/schema#
+  prefix: reegle
+  title: Renewable Energy and Energy Efficiency
+  uri: http://reegle.info/schema
+- namespace: http://purl.org/vocab/relationship/
+  prefix: rel
+  title: Relationship
+  uri: http://purl.org/vocab/relationship/
+- namespace: http://www.purl.org/net/remetca#
+  prefix: remetca
+  title: ReMetCa Ontology
+  uri: http://www.purl.org/net/remetca#
+- namespace: http://purl.org/stuff/rev#
+  prefix: rev
+  title: Review Vocabulary
+  uri: http://purl.org/stuff/rev#
+- namespace: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#
+  prefix: rlog
+  title: RDF Logging Ontology
+  uri: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#
+- namespace: http://purl.org/wf4ever/ro#
+  prefix: ro
+  title: The Research Object Ontology
+  uri: http://purl.org/wf4ever/ro
+- namespace: http://vocab.deri.ie/rooms#
+  prefix: rooms
+  title: Buildings and Rooms Vocabulary
+  uri: http://vocab.deri.ie/rooms
+- namespace: http://www.w3.org/ns/regorg#
+  prefix: rov
+  title: Registered Organization Vocabulary
+  uri: http://www.w3.org/ns/regorg
+- namespace: http://www.w3.org/ns/r2rml#
+  prefix: rr
+  title: RDB to RDF Mapping Language Schema
+  uri: http://www.w3.org/ns/r2rml#
+- namespace: http://softeng.polito.it/rsctx#
+  prefix: rsctx
+  title: Recommender System Context
+  uri: http://softeng.polito.it/rsctx
+- namespace: http://purl.org/rss/1.0/
+  prefix: rss
+  title: Vocabulary for Rich Site Summary (RSS) 1.0
+  uri: http://purl.org/rss/1.0
+- namespace: http://purl.org/imbi/ru-meta.owl#
+  prefix: ru
+  title: Representational Units Metadata Ontology
+  uri: http://purl.org/imbi/ru-meta.owl
+- namespace: http://rdfunit.aksw.org/ns/core#
+  prefix: ruto
+  title: Test-Driven Data Debugging Ontology
+  uri: http://rdfunit.aksw.org/ns/core#
+- namespace: http://ns.inria.fr/s4ac/v2#
+  prefix: s4ac
+  title: Social Semantic SPARQL Security For Access Control Ontology
+  uri: http://ns.inria.fr/s4ac/v2
+- namespace: https://w3id.org/def/saref4bldg#
+  prefix: s4bldg
+  title: SAREF extension for building devices
+  uri: https://w3id.org/def/saref4bldg
+- namespace: https://w3id.org/saref4ee#
+  prefix: s4ee
+  title: 'SAREF4EE: the EEbus/Energy@home extension of SAREF'
+  uri: https://w3id.org/saref4ee
+- namespace: http://dati.san.beniculturali.it/SAN/
+  prefix: san-lod
+  title: SAN Ontologia
+  uri: http://dati.san.beniculturali.it/SAN/
+- namespace: https://w3id.org/saref#
+  prefix: saref
+  title: 'SAREF: the Smart Appliances REFerence ontology'
+  uri: https://w3id.org/saref
+- namespace: https://w3id.org/def/saref4agri#
+  prefix: saref4agri
+  title: SAREF extension for Agriculture
+  uri: https://w3id.org/def/saref4agri
+- namespace: http://purl.org/saws/ontology#
+  prefix: saws
+  title: Sharing Ancient Wisdoms Ontology
+  uri: http://purl.org/saws/ontology
+- namespace: http://schema.org/
+  prefix: schema
+  title: Schema.org vocabulary
+  uri: http://schema.org/
+- namespace: http://lod.taxonconcept.org/ontology/sci_people.owl#
+  prefix: scip
+  title: Scientific People Ontology
+  uri: http://lod.taxonconcept.org/ontology/sci_people.owl
+- namespace: http://purl.org/spar/scoro/
+  prefix: scoro
+  title: Scholarly Contributions and Roles Ontology
+  uri: http://purl.org/spar/scoro/
+- namespace: http://rdfs.org/scot/ns#
+  prefix: scot
+  title: Social Semantic Cloud of Tags
+  uri: http://rdfs.org/scot/ns#
+- namespace: http://purl.org/NET/scovo#
+  prefix: scovo
+  title: The Statistical Core Vocabulary
+  uri: http://vocab.deri.ie/scovo
+- namespace: http://purl.org/NET/schema-org-csv#
+  prefix: scsv
+  title: Schema.org CSV
+  uri: http://vocab.deri.ie/scsv
+- namespace: http://www.w3.org/ns/sparql-service-description#
+  prefix: sd
+  title: SPARQL 1.1 Service Description
+  uri: http://www.w3.org/ns/sparql-service-description
+- namespace: https://w3id.org/vocab/sdm#
+  prefix: sdm
+  title: SPARQL endpoint metadata
+  uri: https://w3id.org/vocab/sdm
+- namespace: http://purl.org/linked-data/sdmx#
+  prefix: sdmx
+  title: SDMX-RDF vocabulary
+  uri: http://purl.org/linked-data/sdmx
+- namespace: http://purl.org/linked-data/sdmx/2009/code#
+  prefix: sdmx-code
+  title: SDMX Code
+  uri: http://purl.org/linked-data/sdmx/2009/code
+- namespace: http://purl.org/linked-data/sdmx/2009/dimension#
+  prefix: sdmx-dimension
+  title: SDMX Dimension
+  uri: http://purl.org/linked-data/sdmx/2009/dimension
+- namespace: http://sindice.com/vocab/search#
+  prefix: search
+  title: Sindice Search Vocabulary
+  uri: http://vocab.deri.ie/search
+- namespace: https://w3id.org/seas/
+  prefix: seas
+  title: SEAS ontology
+  uri: https://w3id.org/seas/
+- namespace: https://w3id.org/seas/
+  prefix: seas-eval
+  title: The SEAS Evaluation ontology
+  uri: https://w3id.org/seas/EvaluationOntology
+- namespace: https://w3id.org/seas/
+  prefix: seas-op
+  title: The SEAS Failable System ontology
+  uri: https://w3id.org/seas/OperatingOntology
+- namespace: https://w3id.org/seas/
+  prefix: seas-qudt
+  title: QUDT Alignment.
+  uri: https://w3id.org/seas/QUDTAlignment
+- namespace: https://w3id.org/seas/
+  prefix: seas-stats
+  title: The SEAS Statistics ontology.
+  uri: https://w3id.org/seas/StatisticsOntology
+- namespace: https://w3id.org/seas/
+  prefix: seas-sys
+  title: The SEAS System ontology
+  uri: https://w3id.org/seas/SystemOntology
+- namespace: https://w3id.org/seas/
+  prefix: seasb
+  title: The SEAS Battery ontology.
+  uri: https://w3id.org/seas/BatteryOntology
+- namespace: https://w3id.org/seas/
+  prefix: seasbo
+  title: The SEAS Building Ontology
+  uri: https://w3id.org/seas/BuildingOntology
+- namespace: https://w3id.org/seas/
+  prefix: seasd
+  title: The SEAS Device ontology
+  uri: https://w3id.org/seas/DeviceOntology
+- namespace: https://w3id.org/seas/
+  prefix: seasfo
+  title: The SEAS Forecasting ontology
+  uri: https://w3id.org/seas/ForecastingOntology
+- namespace: https://w3id.org/seas/
+  prefix: seast
+  title: The SEAS Time Ontology.
+  uri: https://w3id.org/seas/TimeOntology
+- namespace: https://w3id.org/seas/
+  prefix: seasto
+  title: The SEAS Trading ontology
+  uri: https://w3id.org/seas/TradingOntology
+- namespace: http://securitytoolbox.appspot.com/securityMain#
+  prefix: security
+  title: Security Ontology
+  uri: http://securitytoolbox.appspot.com/securityMain
+- namespace: http://semanticweb.cs.vu.nl/2009/11/sem/
+  prefix: sem
+  title: The SEM Ontology
+  uri: http://semanticweb.cs.vu.nl/2009/11/sem/
+- namespace: http://purl.org/SemSur/
+  prefix: semsur
+  title: The Semantic Survey Ontology (semsur)
+  uri: http://purl.org/SemSur/
+- namespace: http://purl.org/seo/
+  prefix: seo
+  title: The Scientific Events Ontology
+  uri: http://purl.org/seo/
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/sequence.owl#
+  prefix: seq
+  title: Sequence Pattern
+  uri: http://www.ontologydesignpatterns.org/cp/owl/sequence.owl
+- namespace: http://purl.org/ontology/service#
+  prefix: service
+  title: The Service Ontology
+  uri: http://purl.org/ontology/service
+- namespace: http://www.opengis.net/ont/sf#
+  prefix: sf
+  title: Simplified Features Geometry
+  uri: http://www.opengis.net/ont/sf
+- namespace: http://www.w3.org/ns/shacl#
+  prefix: sh
+  title: W3C Shapes Constraint Language (SHACL) Vocabulary
+  uri: http://www.w3.org/ns/shacl#
+- namespace: http://dati.cdec.it/lod/shoah/
+  prefix: shoah
+  title: Shoah Vocabulary Specification
+  uri: http://dati.cdec.it/lod/shoah/
+- namespace: http://paul.staroch.name/thesis/SmartHomeWeather.owl#
+  prefix: shw
+  title: Smart Home Weather
+  uri: http://paul.staroch.name/thesis/SmartHomeWeather.owl#
+- namespace: http://purl.org/ontology/similarity/
+  prefix: sim
+  title: The Similarity Ontology
+  uri: http://purl.org/ontology/similarity/
+- namespace: http://semanticscience.org/resource/
+  prefix: sio
+  title: Semanticscience Integrated Ontology
+  uri: http://semanticscience.org/ontology/sio.owl
+- namespace: http://rdfs.org/sioc/ns#
+  prefix: sioc
+  title: Semantically-Interlinked Online Communities
+  uri: http://rdfs.org/sioc/ns#
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/situation.owl#
+  prefix: situ
+  title: Situation Pattern
+  uri: http://www.ontologydesignpatterns.org/cp/owl/situation.owl
+- namespace: http://www.w3.org/2004/02/skos/core#
+  prefix: skos
+  title: Simple Knowledge Organization System
+  uri: http://www.w3.org/2004/02/skos/core
+- namespace: http://www.w3.org/2008/05/skos-xl#
+  prefix: skosxl
+  title: SKOS eXtension for Labels
+  uri: http://www.w3.org/2008/05/skos-xl
+- namespace: http://www.w3.org/ns/solid/terms#
+  prefix: solid
+  title: Solid terms
+  uri: http://www.w3.org/ns/solid/terms
+- namespace: http://purl.org/net/soron/
+  prefix: sor
+  title: 'SORON: Social Relationships ONtology'
+  uri: http://purl.org/net/soron
+- namespace: http://www.w3.org/ns/sosa/
+  prefix: sosa
+  title: Sensor, Observation, Sample, and Actuator (SOSA) Ontology
+  uri: http://www.w3.org/ns/sosa/
+- namespace: http://spinrdf.org/sp#
+  prefix: sp
+  title: SPIN SPARQL Syntax
+  uri: http://spinrdf.org/sp
+- namespace: http://geovocab.org/spatial#
+  prefix: spatial
+  title: NeoGeo Spatial Ontology
+  uri: http://geovocab.org/spatial
+- namespace: http://kmi.open.ac.uk/projects/smartproducts/ontologies/food.owl#
+  prefix: spfood
+  title: SmartProducts Food Domain Model
+  uri: http://kmi.open.ac.uk/projects/smartproducts/ontologies/food.owl
+- namespace: http://spinrdf.org/spin#
+  prefix: spin
+  title: SPIN Inferencing Vocabulary
+  uri: http://spinrdf.org/spin
+- namespace: http://www.bbc.co.uk/ontologies/sport/
+  prefix: sport
+  title: BBC Sport Ontology
+  uri: http://www.bbc.co.uk/ontologies/sport
+- namespace: http://spitfire-project.eu/ontology/ns/
+  prefix: spt
+  title: SPITFIRE Ontology
+  uri: http://spitfire-project.eu/ontology/ns
+- namespace: http://ns.inria.fr/ast/sql#
+  prefix: sql
+  title: SQL Abstract Syntax Trees Vocabulary
+  uri: http://ns.inria.fr/ast/sql#
+- namespace: http://purl.oclc.org/NET/ssnx/ssn#
+  prefix: ssn
+  title: Semantic Sensor Network Ontology
+  uri: http://www.w3.org/2005/Incubator/ssn/ssnx/ssn
+- namespace: http://www.w3.org/ns/ssn/
+  prefix: ssno
+  title: Semantic Sensor Network Ontology
+  uri: http://www.w3.org/ns/ssn/
+- namespace: http://purl.org/ontology/ssso#
+  prefix: ssso
+  title: Simple Service Status Ontology
+  uri: http://purl.org/ontology/ssso
+- namespace: http://semweb.mmlab.be/ns/stoptimes#
+  prefix: st
+  title: The Stop Times ontology
+  uri: http://semweb.mmlab.be/ns/stoptimes#Ontology
+- namespace: http://securitytoolbox.appspot.com/stac#
+  prefix: stac
+  title: 'Security Toolbox : Attacks and Countermeasures'
+  uri: http://securitytoolbox.appspot.com/stac
+- namespace: http://purl.org/net/step#
+  prefix: step
+  title: Semantic Trajectory Episodes
+  uri: http://purl.org/net/step
+- namespace: https://w3id.org/i40/sto#
+  prefix: sto
+  title: i40 Standards Lanscape Vocabulary
+  uri: https://w3id.org/i40/sto#
+- namespace: https://w3id.org/survey-ontology#
+  prefix: sur
+  title: The Survey Ontology
+  uri: https://www.w3id.org/survey-ontology
+- namespace: https://w3id.org/squap/SoftwareQuality/
+  prefix: sw-quality
+  title: SQuAP Ontology
+  uri: https://w3id.org/squap/
+- namespace: http://www.w3.org/2004/03/trix/swp-1/
+  prefix: swp
+  title: Graph Authority
+  uri: http://www.w3.org/2004/03/trix/swp-1
+- namespace: http://swrc.ontoware.org/ontology#
+  prefix: swrc
+  title: Semantic Web for Research Communities
+  uri: http://swrc.ontoware.org/ontology-07
+- namespace: http://www.w3.org/2003/11/swrl#
+  prefix: swrl
+  title: Semantic Web Rule Language
+  uri: http://www.w3.org/2003/11/swrl
+- namespace: http://ns.bergnet.org/tac/0.1/triple-access-control#
+  prefix: tac
+  title: TripleAccessControl Ontology
+  uri: http://ns.bergnet.org/tac/0.1/triple-access-control
+- namespace: http://vocab.deri.ie/tao#
+  prefix: tao
+  title: Trust Assertion Ontology
+  uri: http://vocab.deri.ie/tao
+- namespace: http://purl.org/biodiversity/taxon/
+  prefix: taxon
+  title: TaxonMap Ontology
+  uri: http://purl.org/biodiversity/taxon/
+- namespace: https://w3id.org/timebank#
+  prefix: tb
+  title: Timebank Ontology
+  uri: https://w3id.org/timebank
+- namespace: http://www.w3.org/2006/time-entry#
+  prefix: te
+  title: Time Entry
+  uri: http://www.w3.org/2006/time-entry
+- namespace: http://linkedscience.org/teach/ns#
+  prefix: teach
+  title: Teaching Core Vocabulary Specification
+  uri: http://linkedscience.org/teach/ns#
+- namespace: http://www.w3.org/2006/03/test-description#
+  prefix: test
+  title: Test Metadata
+  uri: http://www.w3.org/2006/03/test-description
+- namespace: https://privatealpha.com/ontology/transformation/1#
+  prefix: tfo
+  title: Transformation Functions Ontology
+  uri: https://privatealpha.com/ontology/transformation/1#
+- namespace: http://purl.org/theatre#
+  prefix: theatre
+  title: Theatre Ontology
+  uri: http://purl.org/theatre#
+- namespace: http://resource.geosciml.org/ontology/timescale/thors#
+  prefix: thors
+  title: The Temporal Ordinal Reference Systems
+  uri: http://resource.geosciml.org/ontology/timescale/thors
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl#
+  prefix: ti
+  title: The Time Interval Pattern
+  uri: http://www.ontologydesignpatterns.org/cp/owl/timeinterval.owl
+- namespace: http://www.w3.org/2006/time#
+  prefix: time
+  title: Time Ontology
+  uri: http://www.w3.org/2006/time
+- namespace: http://purl.org/tio/ns#
+  prefix: tio
+  title: The Tickets Ontology
+  uri: http://purl.org/tio/ns#
+- namespace: http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl
+  prefix: tis
+  title: Time Indexed Situation
+  uri: http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl
+- namespace: http://observedchange.com/tisc/ns#
+  prefix: tisc
+  title: Open Time and Space Core Vocabulary
+  uri: http://www.observedchange.com/tisc/ns#
+- namespace: http://purl.org/NET/c4dm/timeline.owl#
+  prefix: tl
+  title: The Timeline Ontology
+  uri: http://purl.org/NET/c4dm/timeline.owl
+- namespace: http://www.w3.org/2001/sw/hcls/ns/transmed/
+  prefix: tmo
+  title: Translational Medicine Ontology
+  uri: http://www.w3.org/2001/sw/hcls/ns/transmed/
+- namespace: http://purl.org/toco/
+  prefix: toco
+  title: Toucan Ontology
+  uri: http://purl.org/toco/
+- namespace: http://data.ign.fr/def/topo#
+  prefix: topo
+  title: An ontology for describing territory elements an infrastructure at French Mapping Agency.
+  uri: http://data.ign.fr/def/topo
+- namespace: http://tour-pedia.org/download/tp.owl#
+  prefix: tp
+  title: Tourpedia Ontology
+  uri: http://tour-pedia.org/download/tp.owl
+- namespace: http://www.sensormeasurement.appspot.com/ont/transport/traffic#
+  prefix: traffic
+  title: Road Traffic Management
+  uri: http://www.sensormeasurement.appspot.com/ont/transport/traffic
+- namespace: http://vocab.org/transit/terms/
+  prefix: transit
+  title: TRANSIT
+  uri: http://vocab.org/transit/terms/
+- namespace: http://linkeddata.finki.ukim.mk/lod/ontology/tao#
+  prefix: trao
+  title: Transport Administration Ontology
+  uri: http://linkeddata.finki.ukim.mk/lod/ontology/tao#
+- namespace: http://rdfs.org/sioc/types#
+  prefix: tsioc
+  title: SIOC Types Ontology Module
+  uri: http://rdfs.org/sioc/types#
+- namespace: http://purl.org/net/tsn#
+  prefix: tsn
+  title: Territorial Statistical Nomenclature Ontology
+  uri: http://purl.org/net/tsn#
+- namespace: http://purl.org/net/tsnchange#
+  prefix: tsnc
+  title: Territorial Statistical Nomenclature Change Ontology
+  uri: http://purl.org/net/tsnchange#
+- namespace: http://www.essepuntato.it/2012/04/tvc/
+  prefix: tvc
+  title: The Time-indexed Value in Context
+  uri: http://www.essepuntato.it/2012/04/tvc
+- namespace: http://lod.taxonconcept.org/ontology/txn.owl#
+  prefix: txn
+  title: TaxonConcept Ontology
+  uri: http://lod.taxonconcept.org/ontology/txn.owl
+- namespace: http://www.w3.org/2006/timezone#
+  prefix: tzont
+  title: Time Zone Ontology
+  uri: http://www.w3.org/2006/timezone
+- namespace: http://purl.org/olia/ubyCat.owl#
+  prefix: uby
+  title: ubyCat.owl
+  uri: http://purl.org/olia/ubyCat.owl
+- namespace: http://purl.org/uco/ns#
+  prefix: uco
+  title: Used Cars Ontology
+  uri: http://purl.org/uco/ns#
+- namespace: http://purl.oclc.org/NET/muo/ucum/
+  prefix: ucum
+  title: Units of measurement ontology
+  uri: http://purl.oclc.org/NET/muo/ucum/
+- namespace: http://www.w3.org/ns/ui#
+  prefix: ui
+  title: A user interface ontology
+  uri: http://www.w3.org/ns/ui
+- namespace: http://purl.org/umu/uneskos#
+  prefix: uneskos
+  title: UNESKOS Vocabulary
+  uri: http://purl.org/umu/uneskos
+- namespace: http://purl.uniprot.org/core/
+  prefix: uniprot
+  title: Uniprot Core Ontology
+  uri: http://purl.uniprot.org/core/
+- namespace: http://uri4uri.net/vocab#
+  prefix: uri4uri
+  title: URI Vocabulary
+  uri: http://uri4uri.net/vocab
+- namespace: https://w3id.org/usability#
+  prefix: usability
+  title: Usability
+  uri: https://w3id.org/usability
+- namespace: http://www.linkedmodel.org/schema/vaem#
+  prefix: vaem
+  title: Vocabulary for Attaching Essential Metadata
+  uri: http://www.linkedmodel.org/schema/vaem
+- namespace: http://www.essepuntato.it/2013/10/vagueness/
+  prefix: vag
+  title: The Vagueness Ontology
+  uri: http://www.essepuntato.it/2013/10/vagueness
+- namespace: http://purl.org/vocab/vann/
+  prefix: vann
+  title: 'VANN: A vocabulary for annotating vocabulary descriptions'
+  uri: http://purl.org/vocab/vann/
+- namespace: http://www.w3.org/2006/vcard/ns#
+  prefix: vcard
+  title: An Ontology for vCards
+  uri: http://www.w3.org/2006/vcard/ns
+- namespace: http://linkeddata.finki.ukim.mk/lod/ontology/veo#
+  prefix: veo
+  title: Vehicle Emissions Ontology
+  uri: http://linkeddata.finki.ukim.mk/lod/ontology/veo#
+- namespace: http://purl.org/net/VideoGameOntology#
+  prefix: vgo
+  title: The Video Game Ontology
+  uri: http://purl.org/net/VideoGameOntology
+- namespace: http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#
+  prefix: vin
+  title: Wine Ontology
+  uri: http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine
+- namespace: http://w3id.org/vir#
+  prefix: vir
+  title: VIR - Visual Representation ontology
+  uri: http://w3id.org/vir#
+- namespace: http://vivoweb.org/ontology/core#
+  prefix: vivo
+  title: VIVO Core Ontology
+  uri: http://vivoweb.org/ontology/core
+- namespace: http://purl.org/vocommons/voaf#
+  prefix: voaf
+  title: Vocabulary of a Friend
+  uri: http://purl.org/vocommons/voaf
+- namespace: http://w3id.org/rsp/vocals#
+  prefix: vocals
+  title: 'VoCaLS: A Vocabulary and Catalog for Linked Streams'
+  uri: http://w3id.org/rsp/vocals#
+- namespace: http://rdfs.org/ns/void#
+  prefix: void
+  title: Vocabulary of Interlinked Datasets
+  uri: http://vocab.deri.ie/void
+- namespace: http://purl.org/query/voidext#
+  prefix: voidext
+  title: Extended Vocabulary of Interlinked Datasets (VoIDext)
+  uri: http://purl.org/query/voidext
+- namespace: http://www.ics.forth.gr/isl/VoIDWarehouse/VoID_Extension_Schema.owl
+  prefix: voidwh
+  title: Void Warehouse Ontology
+  uri: http://www.ics.forth.gr/isl/VoIDWarehouse/VoID_Extension_Schema.owl
+- namespace: http://purl.org/voc/vrank#
+  prefix: vrank
+  title: Vocabulary for Ranking
+  uri: http://vocab.sti2.at/vrank
+- namespace: http://www.w3.org/2003/06/sw-vocab-status/ns#
+  prefix: vs
+  title: SemWeb Vocab Status ontology
+  uri: http://www.w3.org/2003/06/sw-vocab-status/ns
+- namespace: http://purl.org/vso/ns#
+  prefix: vso
+  title: Vehicle Sales Ontology
+  uri: http://purl.org/vso/ns
+- namespace: http://purl.org/vvo/ns#
+  prefix: vvo
+  title: Volkswagen Vehicles Ontology
+  uri: http://purl.org/vvo/ns#
+- namespace: https://www.w3.org/ns/ssn/
+  prefix: w3c-ssn
+  title: Semantic Sensor Network Ontology
+  uri: https://www.w3.org/ns/ssn
+- namespace: http://purl.org/wai#
+  prefix: wai
+  title: Roles and Profiles Ontology
+  uri: http://purl.org/wai#
+- namespace: http://www.w3.org/2007/05/powder-s#
+  prefix: wdrs
+  title: Protocol for Web Description Resources
+  uri: http://www.w3.org/2007/05/powder-s
+- namespace: http://purl.org/net/wf-invocation#
+  prefix: wf-invoc
+  title: Workflow Invocation Ontology
+  uri: http://purl.org/net/wf-invocation
+- namespace: http://purl.org/wf4ever/wfdesc#
+  prefix: wfdesc
+  title: The Wfdesc ontology
+  uri: http://purl.org/wf4ever/wfdesc
+- namespace: http://purl.org/net/wf-motifs#
+  prefix: wfm
+  title: The Workflow Motif Ontology
+  uri: http://purl.org/net/wf-motifs
+- namespace: http://purl.org/wf4ever/wfprov#
+  prefix: wfprov
+  title: The Wfprov Ontology
+  uri: http://purl.org/wf4ever/wfprov
+- namespace: http://vocab.org/whisky/terms/
+  prefix: whisky
+  title: Whisky Ontology
+  uri: http://vocab.org/whisky/terms
+- namespace: http://www.kanzaki.com/ns/whois#
+  prefix: whois
+  title: Who's who description vocabulary
+  uri: http://www.kanzaki.com/ns/whois
+- namespace: http://purl.org/ontology/wi/core#
+  prefix: wi
+  title: The Weighted Interests Vocabulary
+  uri: http://purl.org/ontology/wi/core#
+- namespace: http://www.wsmo.org/ns/wsmo-lite#
+  prefix: wl
+  title: WSMO-Lite Ontology
+  uri: http://www.wsmo.org/ns/wsmo-lite#
+- namespace: http://purl.org/ontology/wo/
+  prefix: wlo
+  title: BBC Wildlife Ontology
+  uri: http://purl.org/ontology/wo/
+- namespace: http://purl.org/ontology/wo/core#
+  prefix: wo
+  title: Weighting Ontology
+  uri: http://purl.org/ontology/wo/core#
+- namespace: http://xmlns.com/wot/0.1/
+  prefix: wot
+  title: Web Of Trust
+  uri: http://xmlns.com/wot/0.1/
+- namespace: https://www.w3.org/2019/wot/security#
+  prefix: wotsec
+  title: Security mechanisms for the Web of Things
+  uri: https://www.w3.org/2019/wot/security#
+- namespace: http://purl.org/xapi/ontology#
+  prefix: xapi
+  title: xAPI Controlled Vocabulary Ontology
+  uri: http://purl.org/xapi/ontology#
+- namespace: https://w3id.org/vocab/xbrll#
+  prefix: xbrll
+  title: A lightweight XBRL vocabulary
+  uri: https://w3id.org/vocab/xbrll
+- namespace: http://www.w3.org/1999/xhtml/vocab#
+  prefix: xhv
+  title: XHTML Vocabulary
+  uri: http://www.w3.org/1999/xhtml/vocab
+- namespace: http://www.w3.org/2001/XMLSchema#
+  prefix: xsd
+  title: XML Schema
+  uri: http://www.w3.org/2001/XMLSchema
+- namespace: http://zbw.eu/namespaces/zbw-extensions/
+  prefix: zbwext
+  title: ZBW Extensions
+  uri: http://zbw.eu/namespaces/zbw-extensions
+- namespace: http://www4.wiwiss.fu-berlin.de/gutendata/resource/
+  prefix: fu-berlin-project-gutenberg
+  title: Project Gutenberg in RDF (FU Berlin)
+  uri: http://www4.wiwiss.fu-berlin.de/gutendata/
+- namespace: http://colinda.org/resource/
+  prefix: colinda
+  title: COLINDA - Conference Linked Data
+  uri: http://colinda.org
+- namespace: http://datos.eurohelp.es/PruebasFinales/
+  prefix: gipuzkoademografia
+  title: Gipuzkoa Demografia
+  uri: http://datahub.io/dataset/GipuzkoaDemografia
+- namespace: http://data.totl.net/
+  prefix: temple-ov-thee-lemur-datasets
+  title: Temple ov thee Lemur
+  uri: http://data.totl.net/
+- namespace: http://curriculum.rkbexplorer.com/id/
+  prefix: rkb-explorer-curriculum
+  title: ReSIST MSc in Resilient Computing Curriculum (RKBExplorer)
+  uri: http://curriculum.rkbexplorer.com
+- namespace: http://linked.opendata.cz/resource/domain/coi.cz/confiscation/
+  prefix: cz-ctia-confiscations
+  title: Confiscations of the Czech Trade Inspection Authority
+  uri: http://linked.opendata.cz/resource/dataset/coi.cz/zajisteni
+- namespace: http://comsode.eu/resource/
+  prefix: comsode-d3-2
+  title: Requirements on the COMSODE project based on selected datasets
+  uri: http://comsode.eu/resource/dataset/COMSODE_D3.2
+- namespace: http://diavgeia.math.auth.gr/resource/
+  prefix: diavgeia
+  title: Diavgeia
+  uri: http://opendata.diavgeia.gov.gr/?lang=en
+- namespace: http://purl.org/vocabularies/cornetto/
+  prefix: cornetto
+  title: Cornetto1.2
+  uri: http://www2.let.vu.nl/oz/cltl/cornetto/
+- namespace: http://ft.rkbexplorer.com/id/
+  prefix: rkb-explorer-ft
+  title: France Telecom Recherche et Développement (RKBExplorer)
+  uri: http://ft.rkbexplorer.com
+- namespace: http://collection.britishmuseum.org/id/
+  prefix: british-museum-collection
+  title: British Museum Collection
+  uri: http://collection.britishmuseum.org
+- namespace: http://data.bib.uni-mannheim.de/data/
+  prefix: ub-mannheim-linked-data
+  title: Linked Data Service der Universitätsbibliothek Mannheim
+  uri: http://data.bib.uni-mannheim.de/
+- namespace: http://yago-knowledge.org/resource/
+  prefix: yago
+  title: YAGO
+  uri: http://yago-knowledge.org
+- namespace: http://www.rdfabout.com/rdf/usgov/sec/id/
+  prefix: sec-rdfabout
+  title: U.S. Securities and Exchange Commission Corporate Ownership RDF Data (rdfabout)
+  uri: http://www.rdfabout.com/demo/sec/
+- namespace: http://crime.rkbexplorer.com/id/
+  prefix: rkb-explorer-crime
+  title: Street level crime reports for England and Wales
+  uri: http://crime.rkbexplorer.com/
+- namespace: http://ld.panlex.org/plx/
+  prefix: panlex
+  title: PanLex
+  uri: http://panlex.org
+- namespace: http://data.open.ac.uk/resource/
+  prefix: data-open-ac-uk
+  title: data.open.ac.uk, Linked Data from the Open University
+  uri: http://data.open.ac.uk/
+- namespace: http://www.theses.fr/
+  prefix: thesesfr
+  title: theses.fr
+  uri: http://www.theses.fr
+- namespace: http://rdf.farmbio.uu.se/chembl/
+  prefix: farmbio-chembl
+  title: ChEMBL-RDF (@ Uppsala University)
+  uri: https://github.com/egonw/chembl.rdf
+- namespace: http://eur-lex.publicdata.eu/ontology/
+  prefix: eur-lex-rdf
+  title: EUR-Lex as Linked Data
+  uri: http://eur-lex.publicdata.eu/
+- namespace: https://linkedsoftwaredependencies.org/
+  prefix: npm
+  title: NPM
+  uri: https://github.com/LinkedSoftwareDependencies/npm-extraction-server
+- namespace: http://www.kanzaki.com/works/2011/stat/ra/
+  prefix: japan-radioactivity-stat
+  title: National Radioactivity Stat as Linked Data
+  uri: http://www.kanzaki.com/works/2011/stat/ra/
+- namespace: http://www.bedlamtheatre.co.uk/
+  prefix: eutc-productions
+  title: Edinburgh University Theatre Company Productions
+  uri: http://www.bedlamtheatre.co.uk/
+- namespace: http://zhishi.me/
+  prefix: zhishi-me
+  title: Zhishi.me
+  uri: http://zhishi.me
+- namespace: http://chronos.org/janusamp/
+  prefix: oceandrilling-janusamp
+  title: Ocean Drilling - Janus Age Models
+  uri: http://chronos.org/janusAmp/
+- namespace: http://nl.dbpedia.org/resource/
+  prefix: dbpedia-nl
+  title: DBpedia in Dutch
+  uri: http://nl.dbpedia.org
+- namespace: http://w3id.org/foodie/atlas/
+  prefix: Urban Atlas Dataset
+  title: Urban Atlas dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://ruian.linked.opendata.cz/resource/
+  prefix: cz-cuzk-cadastre-offices
+  title: Cadastre offices from Czech land registry
+  uri: http://ruian.linked.opendata.cz/resource/dataset/cuzk/pracoviste-resortu
+- namespace: http://id.sgcb.mcu.es/
+  prefix: lista-encabezamientos-materia
+  title: Lista de  Encabezamientos de Materia as Linked Open Data
+  uri: http://id.sgcb.mcu.es
+- namespace: http://ineverycrea.net/en/community/ineverycreaargentina
+  prefix: ineverycrea-argentina
+  title: IneveryCREA Argentina, la comunidad de la creatividad educativa
+  uri: http://ineverycrea.net/en/community/ineverycreaargentina
+- namespace: Americka Foka
+  prefix: Uros Susa
+  title: Legija
+  uri: http://www.facebook.com
+- namespace: http://www.snik.eu/ontology/
+  prefix: snik
+  title: SNIK
+  uri: https://www.snik.eu
+- namespace: http://eumida.publicdata.eu/data/
+  prefix: eumida-linked-data
+  title: EUMIDA as Linked Data
+  uri: http://eumida.publicdata.eu/
+- namespace: http://www4.wiwiss.fu-berlin.de/drugbank/resource/
+  prefix: fu-berlin-drugbank
+  title: DrugBank
+  uri: http://www4.wiwiss.fu-berlin.de/drugbank/
+- namespace: http://dartmouth.eagle-i.net/i/
+  prefix: eagle-i-dartmouth
+  title: eagle-i @ Dartmouth College
+  uri: http://dartmouth.eagle-i.net
+- namespace: http://www.yovisto.com/resource
+  prefix: yovisto
+  title: Yovisto - academic video search
+  uri: http://www.yovisto.com/ontology/
+- namespace: http://gnoss.com/comunidad/nextweb
+  prefix: nextweb-gnoss
+  title: Next Web, a global knowledge network of semantic technology and Web 3.0 (GNOSS)
+  uri: http://gnoss.com/comunidad/nextweb
+- namespace: http://w3id.org/foodie/open/cz/Soil_maps_BPEJ_WGSc/
+  prefix: Soil maps
+  title: Erosion-endangered soil zones dataset from Czech Republic
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://www.yso.fi/onto/kunnat/
+  prefix: finnish-municipalities
+  title: Finnish municipalities and regional classifications
+  uri: http://onki.fi/en/browser/overview/kunnat
+- namespace: http://mismuseos.net/
+  prefix: mismuseos-gnoss
+  title: Mis Museos, índice semántico de museos, artistas y obras de arte (GNOSS)
+  uri: http://mismuseos.net/
+- namespace: http://rae2001.rkbexplorer.com/id/
+  prefix: rkb-explorer-rae2001
+  title: Research Assessment Exercise 2001 (RKBExplorer)
+  uri: http://rae2001.rkbexplorer.com
+- namespace: http://id.ndl.go.jp/auth/ndlsh/
+  prefix: national-diet-library-subject-headings
+  title: National Diet Library of Japan subject headings
+  uri: http://id.ndl.go.jp/auth/ndlsh
+- namespace: http://linked.opendata.cz/resource/domain/coi.cz/check-action/
+  prefix: cz-ctia-inspections
+  title: Inspections of the Czech Trade Inspection Authority
+  uri: http://linked.opendata.cz/resource/dataset/coi.cz/kontroly
+- namespace: https://linked.opendata.cz/zdroj/datová-schránka/
+  prefix: cz-list-of-databoxes
+  title: List of Czech data boxes
+  uri: https://linked.opendata.cz/zdroj/datová-sada/datové-schránky
+- namespace: http://www.gutenberg.org/
+  prefix: gutenberg
+  title: Project Gutenberg
+  uri: http://www.gutenberg.org/
+- namespace: http://data.nku.cz/resource/
+  prefix: cz-sao-audited-subjects
+  title: Audited subjects of Supreme Audit Office of the Czech Republic
+  uri: http://data.nku.cz/resource/dataset/audited-subjects
+- namespace: http://dbtune.org/bbc/peel/
+  prefix: dbtune-john-peel-sessions
+  title: DBTune.org John Peel sessions RDF server
+  uri: http://dbtune.org/bbc/peel/
+- namespace: http://data.kasabi.com/dataset/un-hazardous-material-numbers
+  prefix: un-hazardous-numbers
+  title: UN Hazardous Materials Numbers
+  uri: http://kasabi.com/dataset/un-hazardous-material-numbers
+- namespace: http://red.gnoss.com/en/community/greencompetitiveness
+  prefix: green-competitiveness-gnoss
+  title: Green Competitiveness (GNOSS)
+  uri: http://red.gnoss.com/en/community/greencompetitiveness
+- namespace: http://lod.gesis.org/thesoz/
+  prefix: gesis-thesoz
+  title: TheSoz Thesaurus for the Social Sciences (GESIS)
+  uri: http://lod.gesis.org/thesoz/
+- namespace: http://www.fao.org/aims/aos/fi/taxonomic/
+  prefix: FAO species
+  title: FAO ASFIS classification of biological entities
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://aims.fao.org/aos/jita/
+  prefix: jita
+  title: JITA Classification System of Library and Information Science
+  uri: http://www.destin-informatique.com/ASKOSI/Wiki.jsp?page=JITA%20Maintenance
+- namespace: http://red.gnoss.com/comunidad/buscaempresas
+  prefix: aegp-spanish-textile-and-clothing-association
+  title: AEGP, Spanish Textile and Clothing Association
+  uri: http://red.gnoss.com/comunidad/buscaempresas
+- namespace: http://www.yso.fi/onto/yso/
+  prefix: yso
+  title: YSO - General Finnish Ontology
+  uri: http://finto.fi/yso/
+- namespace: http://opencorporates.com/companies
+  prefix: opencorporates
+  title: OpenCorporates - The Open Database Of The Corporate World
+  uri: http://opencorporates.com/
+- namespace: http://msm.eagle-i.net/i/
+  prefix: eagle-i-msm
+  title: eagle-i @ Morehouse School of Medicine
+  uri: http://msm.eagle-i.net
+- namespace: http://core.kmi.open.ac.uk/data/
+  prefix: core
+  title: CORE - Semantic Similarity of Open Access publications
+  uri: http://core-project.kmi.open.ac.uk/
+- namespace: http://ja.dbpedia.org/resource/
+  prefix: dbpedia-ja
+  title: DBpedia in Japanese
+  uri: http://ja.dbpedia.org/
+- namespace: http://rod.eionet.europa.eu
+  prefix: eea-rod
+  title: EEA Reporting Obligations Database
+  uri: http://rod.eionet.europa.eu/
+- namespace: http://d-nb.info/
+  prefix: deutsche-nationalbibliografie-dnb
+  title: Deutsche Nationalbibliografie (DNB)
+  uri: http://www.dnb.de/EN/lds
+- namespace: http://linkeddata.uriburner.com/
+  prefix: uriburner
+  title: URIBurner
+  uri: http://uriburner.com/
+- namespace: http://linkeddata.ge.imati.cnr.it/resource/ThIST/
+  prefix: thist
+  title: ThIST
+  uri: http://purl.org/NET/ThISTWebPage
+- namespace: http://datos.bcn.cl/recurso/
+  prefix: datos-bcn-cl
+  title: Datos.bcn.cl
+  uri: https://datos.bcn.cl/es/
+- namespace: pm
+  prefix: premon
+  title: PreMOn
+  uri: http://premon.fbk.eu
+- namespace: http://purl.org/science/plasmid/addgene/
+  prefix: addgene
+  title: Addgene
+  uri: http://www.addgene.org/
+- namespace: http://museos.gnoss.com/comunidad/mismuseos/
+  prefix: museosespania-gnoss
+  title: Museos de España, colección de museos públicos y privados españoles (GNOSS)
+  uri: http://museos.gnoss.com/comunidad/mismuseos/
+- namespace: http://institutions.publicdata.eu/#
+  prefix: eu-institutions
+  title: Institutions and Bodies of the European Union
+  uri: http://institutions.publicdata.eu/
+- namespace: http://uccaribe.eagle-i.net/i/
+  prefix: eagle-i-uccaribe
+  title: eagle-i @ Universidad Central del Caribe
+  uri: http://uccaribe.eagle-i.net
+- namespace: http://purl.org/weso/pscs/naics/2007/resource
+  prefix: naics-2007
+  title: NAICS 2007
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: https://linked.opendata.cz/zdroj/ovm/
+  prefix: cz-ovm
+  title: Institutions of public power of the Czech Republic
+  uri: https://linked.opendata.cz/zdroj/datová-sada/ovm
+- namespace: http://data.kasabi.com/dataset/pali-english-lexicon
+  prefix: pali-english-lexicon
+  title: Pali English Lexicon
+  uri: http://kasabi.com/dataset/pali-english-lexicon
+- namespace: http://statistics.data.gov.uk/id/
+  prefix: statistics-data-gov-uk
+  title: statistics.data.gov.uk
+  uri: http://statistics.data.gov.uk/
+- namespace: http://purl.org/ASN/schema/core/
+  prefix: asn-us
+  title: ASN:US
+  uri: http://asn.jesandco.org
+- namespace: http://ibm.rkbexplorer.com/id/
+  prefix: rkb-explorer-ibm
+  title: IBM Research GmbH (RKBExplorer)
+  uri: http://ibm.rkbexplorer.com
+- namespace: https://w3id.org/framester
+  prefix: framester
+  title: Framester
+  uri: https://w3id.org/framester
+- namespace: http://eprints.rkbexplorer.com/id/
+  prefix: rkb-explorer-eprints
+  title: ePrints3 Institutional Archive Collection (RKBExplorer)
+  uri: http://eprints.rkbexplorer.com/
+- namespace: http://purl.org/weso/pscs/cpa/2008/resource
+  prefix: cpa-2008
+  title: CPA 2008
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://www.icane.es
+  prefix: icane
+  title: ICANE
+  uri: http://www.icane.es/semantic-web
+- namespace: http://irit.rkbexplorer.com/id/
+  prefix: rkb-explorer-irit
+  title: Université Paul Sabatier - Toulouse 3 (RKB Explorer)
+  uri: http://irit.rkbexplorer.com
+- namespace: http://lod.taxonconcept.org/
+  prefix: taxonconcept
+  title: TaxonConcept Knowledge Base
+  uri: http://lod.taxonconcept.org/
+- namespace: http://n-lex.publicdata.eu/ontology
+  prefix: n-lex-as-linked-data
+  title: N-Lex as Linked Data
+  uri: http://n-lex.publicdata.eu/
+- namespace: http://utep.eagle-i.net/i/
+  prefix: eagle-i-utep
+  title: eagle-i @ University of Texas at El Paso
+  uri: http://utep.eagle-i.net
+- namespace: https://bibsonomy.org/
+  prefix: BibSonomy
+  title: BibSonomy - The blue social bookmark and publication sharing system.
+  uri: https://www.bibsonomy.org/
+- namespace: http://budapest.rkbexplorer.com/id/
+  prefix: rkb-explorer-budapest
+  title: Budapest University of Technology and Economics (RKBExplorer)
+  uri: http://budapest.rkbexplorer.com/
+- namespace: http://data.nku.cz/resource/
+  prefix: cz-sao-check-actions-law
+  title: List of laws used in inspection reports of SAO
+  uri: http://data.nku.cz/resource/dataset/check-actions-law
+- namespace: http://slod.fiz-karlsruhe.de
+  prefix: slod
+  title: Linked Stage Graph
+  uri: http://slod.fiz-karlsruhe.de/
+- namespace: http://data.linkededucation.org/resource/
+  prefix: lak-dataset
+  title: Learning Analytics and Knowledge (LAK) Dataset
+  uri: http://www.solaresearch.org/resources/lak-dataset/
+- namespace: Moje Ime je Legija
+  prefix: Uros Legija Susa
+  title: Legija Stranaca
+  uri: http://www.legion-etrangere.com
+- namespace: https://data.muziekweb.nl/Link/
+  prefix: muziekweb
+  title: Muziekweb
+  uri: https://data.muziekweb.nl/
+- namespace: http://data.kasabi.com/dataset/sanskrit-english-lexicon
+  prefix: sanskrit-english-lexicon
+  title: Sanskrit English Lexicon
+  uri: http://kasabi.com/dataset/sanskrit-english-lexicon
+- namespace: http://www4.wiwiss.fu-berlin.de/factbook/resource/
+  prefix: world-factbook-fu-berlin
+  title: World Factbook (FU Berlin)
+  uri: http://www4.wiwiss.fu-berlin.de/factbook/
+- namespace: http://nlg.okfn.gr/resource/authority/
+  prefix: national-library-of-greece-authority-records
+  title: National Library of Greece Authority Records
+  uri: http://nlg.okfn.gr
+- namespace: http://linked.opendata.cz/resource/sukl/medicinal-product-packaging/
+  prefix: cz-sidc-drug-prices
+  title: List of prices of reimbursed medicinal products marketed in Czech republic
+  uri: http://linked.opendata.cz/resource/dataset/sukl/drug-prices
+- namespace: http://purl.org/weso/pscs/cpv/2008/resource
+  prefix: cpv-2008
+  title: CPV 2008
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://howard.eagle-i.net/i/
+  prefix: eagle-i-howard
+  title: eagle-i @ Howard University
+  uri: http://howard.eagle-i.net
+- namespace: http://psi.oasis-open.org/iso/639/
+  prefix: iso-639-oasis
+  title: Published subjects for languages in ISO 639
+  uri: http://psi.oasis-open.org/iso/639/
+- namespace: http://resex.rkbexplorer.com/id/
+  prefix: rkb-explorer-resex
+  title: ReSIST Resilience Mechanisms (RKBExplorer.com)
+  uri: http://resex.rkbexplorer.com
+- namespace: http://stitch.cs.vu.nl/vocabularies/rameau/
+  prefix: stitch-rameau
+  title: RAMEAU subject headings (STITCH)
+  uri: http://stitch.cs.vu.nl/rameau/
+- namespace: http://finance.data.gov.uk/def/coins/
+  prefix: coins-openuplabs
+  title: OpenUpLabs COINS
+  uri: http://data.gov.uk/resources/coins
+- namespace: http://w3id.org/foodie/olu/
+  prefix: Open Land Use
+  title: Open Land Use
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://id.ndl.go.jp/auth/ndlna/
+  prefix: national-diet-library-authorities
+  title: Web NDL Authorities - National Diet Library of Japan
+  uri: http://id.ndl.go.jp/auth/ndla
+- namespace: http://os.rkbexplorer.com/id/
+  prefix: rkb-explorer-os
+  title: Ordnance Survey (RKBExplorer)
+  uri: http://os.rkbexplorer.com
+- namespace: http://purl.org/collections/nl/am/
+  prefix: amsterdam-museum-as-edm-lod
+  title: Amsterdam Museum as Linked Open Data in the Europeana Data Model
+  uri: http://semanticweb.cs.vu.nl/lod/am/
+- namespace: http://linked.opendata.cz/resource/domain/irz/
+  prefix: cz-cenia-irz-chemicals
+  title: Chemicals reported to the Integrated register of pollution
+  uri: http://linked.opendata.cz/resource/dataset/cenia-irz-chemicals
+- namespace: http://linked.opendata.cz/resource/es/msssi
+  prefix: es-msssi-drug-prices
+  title: List of prices of medicinal products marketed in Kingdom of Spain
+  uri: http://linked.opendata.cz/resource/dataset/es/msssi/drug-prices
+- namespace: http://utsa.eagle-i.net/i/
+  prefix: eagle-i-utsa
+  title: eagle-i @ University of Texas at San Antonio
+  uri: http://utsa.eagle-i.net
+- namespace: http://data.nobelprize.org/resource/
+  prefix: nobelprizes
+  title: Nobel Prizes
+  uri: http://www.nobelprize.org/nobel_organizations/nobelmedia/nobelprize_org/developer/manual-linkeddata/terms.html
+- namespace: http://www4.wiwiss.fu-berlin.de/eccompetition/resource/
+  prefix: fu-berlin-ec-competition
+  title: European Commission Competition data set (FU Berlin)
+  uri: http://www4.wiwiss.fu-berlin.de/eccompetition/
+- namespace: http://data.linkedopendata.it/scuole/resource/
+  prefix: italian-public-schools-linkedopendata-it
+  title: Italian public schools (LinkedOpenData.it)
+  uri: http://www.linkedopendata.it/datasets/scuole
+- namespace: http:miuras.inf.um.es/ogolod/resource/Gene/67440
+  prefix: ogolod
+  title: Orthology and Diseases Information - OGO
+  uri: http://miuras.inf.um.es/~ogo/ogolod.html
+- namespace: http://sws.geonames.org/
+  prefix: geonames-semantic-web
+  title: GeoNames Semantic Web
+  uri: http://www.geonames.org/ontology/
+- namespace: http://viaf.org/viaf/
+  prefix: viaf
+  title: 'VIAF: The Virtual International Authority File'
+  uri: http://viaf.org/viaf/data/
+- namespace: http://bibliotecaescolardigital.es
+  prefix: biblioteca-escolar-digital-cita
+  title: Biblioteca Escolar Digital CITA
+  uri: http://red.gnoss.com/comunidad/Biblioteca-Escolar-Digital
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-projects
+  title: R&D Projects
+  uri: http://linked.opendata.cz/resource/dataset/vavai/projects
+- namespace: http://deusto.gnoss.com/en/community/deustoEntrepreneurship
+  prefix: deustoentrepreneurship
+  title: 'Deusto Entrepreneurship: sharing business knowledge'
+  uri: http://deusto.gnoss.com/en/community/deustoEntrepreneurship
+- namespace: http://linkedlifedata.com/resource/
+  prefix: linked-life-data
+  title: Linked Life Data
+  uri: http://linkedlifedata.com/
+- namespace: http://lov.okfn.org/dataset/lov/lov#
+  prefix: linked-open-vocabularies-lov
+  title: Linked Open Vocabularies (LOV)
+  uri: http://lov.okfn.org/dataset/lov/index.html
+- namespace: http://webisa.webdatacommons.org/
+  prefix: webisalod
+  title: WebIsALOD
+  uri: http://webisa.webdatacommons.org
+- namespace: https://betweenourworlds.org/
+  prefix: betweenourworlds
+  title: Between Our Worlds
+  uri: https://betweenourworlds.org
+- namespace: http://linked.opendata.cz/resource/sukl/medicinal-product-packaging/
+  prefix: cz-sidc-drugs
+  title: Medicinal products marketed in Czech Republic
+  uri: http://linked.opendata.cz/resource/dataset/sukl/drugs
+- namespace: https://w3id.org/jp-textbook/
+  prefix: jp-textbook
+  title: Japanese Textbook LOD
+  uri: https://w3id.org/jp-textbook/
+- namespace: http://www.surgeradio.co.uk/
+  prefix: surge-radio
+  title: Surge Radio
+  uri: http://www.surgeradio.co.uk/
+- namespace: http://www4.wiwiss.fu-berlin.de/bookmashup/
+  prefix: rdf-book-mashup
+  title: RDF Book Mashup
+  uri: http://www4.wiwiss.fu-berlin.de/bizer/bookmashup/
+- namespace: http://citeseer.rkbexplorer.com/id/
+  prefix: rkb-explorer-citeseer
+  title: CiteSeer (Research Index) (RKBExplorer)
+  uri: http://citeseer.rkbexplorer.com/
+- namespace: http://data.bnf.fr/
+  prefix: data-bnf-fr
+  title: data.bnf.fr - Bibliothèque nationale de France
+  uri: http://data.bnf.fr
+- namespace: http://fr.dbpedia.org/resource/
+  prefix: dbpedia-fr
+  title: DBpedia in French
+  uri: http://fr.dbpedia.org
+- namespace: http://linked.opendata.cz/resource/sukl/active-ingredient/
+  prefix: cz-sidc-drug-ingredients
+  title: Active ingredients of medicinal products available in Czech Republic
+  uri: http://linked.opendata.cz/resource/dataset/sukl/drug-ingredients
+- namespace: http://smartlink.open.ac.uk/smartlink/resource/
+  prefix: smartlink
+  title: 'SmartLink: Linked Services Non-Functional Properties'
+  uri: http://purl.org/smartlink
+- namespace: http://purl.org/allie/
+  prefix: allie-abbreviation-and-long-form-database-in-life-science
+  title: Allie Abbreviation And Long Form Database in Life Science
+  uri: http://allie.dbcls.jp/
+- namespace: http://digitaleconomy.rkbexplorer.com/id/
+  prefix: rkb-explorer-digitaleconomy
+  title: digitaleconomy
+  uri: http://digitaleconomy.rkbexplorer.com
+- namespace: http://gnoss.com/
+  prefix: gnoss-com-a-social-and-semantic-platform
+  title: GNOSS.com, a Social and Semantic Platform
+  uri: http://gnoss.com/en/home
+- namespace: http://w3id.org/foodie/open/pl/LPIS/
+  prefix: LPIS (Poland)
+  title: Polish Land Parcel Information System (LPIS) dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://keithalexander.co.uk/pbac
+  prefix: printed-book-auction-catalogues
+  title: English Language Books listed in Printed Book Auction Catalogues from 17th Century Holland
+  uri: http://keithalexander.co.uk/pbac
+- namespace: http://www4.wiwiss.fu-berlin.de/diseasome/resource/
+  prefix: fu-berlin-diseasome
+  title: Diseasome
+  uri: http://www4.wiwiss.fu-berlin.de/diseasome/
+- namespace: http://gnoss.com/comunidad/MPV-APADRINA
+  prefix: proyectoapadrina
+  title: Proyecto Apadrina,  Marketing Punto de Venta
+  uri: http://gnoss.com/comunidad/MPV-APADRINA
+- namespace: http://ec.europa.eu/eurostat/
+  prefix: eurostat-rdf
+  title: Eurostat RDF datasets
+  uri: http://ec.europa.eu/eurostat/ramon/rdfdata/
+- namespace: http://theviewfrom.org/things/
+  prefix: the-view-from
+  title: The View From
+  uri: http://theviewfrom.org/
+- namespace: https://linked.opendata.cz/zdroj/ovm/
+  prefix: cz-souhrnne-typy-ovm
+  title: Summary types of Czech institutions of public power
+  uri: https://linked.opendata.cz/zdroj/datová-sada/souhrnné-typy-ovm
+- namespace: http://purl.org/weso/nomenclator/
+  prefix: nomenclator-asturias
+  title: Nomenclator Asturias
+  uri: http://www.josemalvarez.es/web/2011/11/01/nomenclator-asturias-2010/
+- namespace: http://unodc.publicdata.eu/r/
+  prefix: unodc
+  title: UNODC - Statistics on criminal justice
+  uri: http://unodc.publicdata.eu/
+- namespace: http://resource.geolba.ac.at/
+  prefix: geological-survey-of-austria-thesaurus
+  title: Geological Survey of Austria (GBA) - Thesaurus
+  uri: http://resource.geolba.ac.at/
+- namespace: http://dbtune.org/classical/resource/
+  prefix: dbtune-classical
+  title: DBTune.org/classical
+  uri: http://dbtune.org/classical/
+- namespace: https://data.cultureelerfgoed.nl/term/id/cht/
+  prefix: cht
+  title: Cultural Heritage Thesaurus
+  uri: https://data.cultureelerfgoed.nl/
+- namespace: http://ohsu.eagle-i.net/i/
+  prefix: eagle-i-ohsu
+  title: eagle-i @ Oregon Health and Science University
+  uri: http://ohsu.eagle-i.net
+- namespace: http://www.data.gov/semantic/data/
+  prefix: data-gov
+  title: Data.gov
+  uri: http://data.gov/
+- namespace: http://jisc.rkbexplorer.com/id/
+  prefix: rkb-explorer-jisc
+  title: UK JISC (RKBExplorer)
+  uri: http://jisc.rkbexplorer.com
+- namespace: http://zitgist.com/music
+  prefix: zitgist-musicbrainz
+  title: MusicBrainz (zitgist.com)
+  uri: http://fgiasson.com/blog/index.php/2007/05/22/browsing-musicbrainzs-dataset-via-uri-dereferencing/
+- namespace: http://rhizomik.net/semanticxbrl/
+  prefix: semantic-xbrl
+  title: Semantic XBRL Financial Data
+  uri: http://rhizomik.net/semanticxbrl/
+- namespace: http://es.dbpedia.org/resource/
+  prefix: dbpedia-es
+  title: DBpedia in Spanish
+  uri: http://es.dbpedia.org
+- namespace: http://linkedgeodata.org/
+  prefix: linkedgeodata
+  title: LinkedGeoData
+  uri: http://linkedgeodata.org/
+- namespace: http://business.data.gov.uk/id/company/
+  prefix: business-data-gov-uk
+  title: business.data.gov.uk
+  uri: http://business.data.gov.uk/
+- namespace: http://dbtune.org/myspace/
+  prefix: dbtune-myspace
+  title: DBTune.org MySpace RDF Service
+  uri: http://dbtune.org/myspace/
+- namespace: http://psh.ntkcz.cz/
+  prefix: psh-subject-headings
+  title: Polythematic Structured Subject Heading System
+  uri: http://psh.ntkcz.cz/skos/home/html/en
+- namespace: http://bnb.bibliographica.org/
+  prefix: jiscopenbib-bl_bnb-1
+  title: JISC Open Bibliography British National Bibliography dataset
+  uri: http://openbiblio.net/2010/11/17/jisc-openbibliography-british-library-data-release/
+- namespace: http://dotac.rkbexplorer.com/id/
+  prefix: rkb-explorer-dotac
+  title: dotAC (RKBExplorer)
+  uri: http://dotac.rkbexplorer.com
+- namespace: http://www.openmobilenetwork.org/resource/
+  prefix: openmobilenetwork
+  title: OpenMobileNetwork
+  uri: http://www.openmobilenetwork.org
+- namespace: http://sociallink.futuro.media/ontology
+  prefix: SocialLink
+  title: SocialLink
+  uri: http://sociallink.futuro.media
+- namespace: http://standardgraphs.ices.dk/stocks/
+  prefix: Fishery Stock Dataset
+  title: Norway fishery stocks dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://data.linkedevents.org/
+  prefix: event-media
+  title: EventMedia
+  uri: http://eventmedia.eurecom.fr/
+- namespace: http://micka.lesprojekt.cz/catalog/dataset/
+  prefix: EO metadata
+  title: Micka (EO metadata)
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://pisa.rkbexplorer.com/id/
+  prefix: rkb-explorer-pisa
+  title: Università di Pisa (RKBExplorer)
+  uri: http://pisa.rkbexplorer.com
+- namespace: http://data.odw.tw/record
+  prefix: ' data.odw.tw'
+  title: Open Data Web
+  uri: http://data.odw.tw/
+- namespace: http://nsf.rkbexplorer.com/id/
+  prefix: rkb-explorer-nsf
+  title: National Science Foundation (RKBExplorer)
+  uri: http://nsf.rkbexplorer.com
+- namespace: http://data.hnm.hu/id/colls/lib/bib/Instance/
+  prefix: data-hnm-hu
+  title: data-hnm-hu - Hungarian National Museum Datasets
+  uri: http://hnm.hu
+- namespace: http://www.cnr.it/ontology/cnr/individuo/
+  prefix: data-cnr-it
+  title: Open Data from the Italian National Research Council
+  uri: http://data.cnr.it/site/
+- namespace: http://www.legislation.gov.uk/
+  prefix: uk-legislation-api
+  title: UK Legislation
+  uri: http://www.legislation.gov.uk/
+- namespace: http://www.london-gazette.co.uk/
+  prefix: london-gazette
+  title: The London Gazette - Gazettes Data
+  uri: http://www.london-gazette.co.uk/mashup/gazettesdata.htm
+- namespace: http://data.szepmuveszeti.hu/id/collections/
+  prefix: data-szepmuveszeti-hu
+  title: data-szepmuveszeti-hu
+  uri: http://www.szepmuveszeti.hu
+- namespace: http://onto.fel.cvut.cz/ontologies/ufo/
+  prefix: ufo
+  title: Unified Foundational Ontology
+  uri: http://onto.fel.cvut.cz/ontologies/ufo/current/index-en.html
+- namespace: http://nuts.psi.enakting.org/id/
+  prefix: linked-nuts
+  title: Linked NUTS
+  uri: http://nuts.psi.enakting.org/
+- namespace: http://dbtune.org/jamendo/
+  prefix: jamendo-dbtune
+  title: DBTune.org Jamendo RDF Server
+  uri: http://dbtune.org/jamendo/
+- namespace: http://www4.wiwiss.fu-berlin.de/cordis/resource/
+  prefix: fu-berlin-cordis
+  title: Community Research and Development Information Service (CORDIS)
+  uri: http://www4.wiwiss.fu-berlin.de/cordis/
+- namespace: http://vocabulary.semantic-web.at/OpenData/
+  prefix: open-data-thesaurus
+  title: Open Data Thesaurus
+  uri: http://vocabulary.semantic-web.at/PoolParty/wiki/OpenData
+- namespace: http://www.archivesdefrance.culture.gouv.fr/thesaurus/resource/
+  prefix: thesaurus-w
+  title: Thesaurus W for Local Archives
+  uri: http://www.archivesdefrance.culture.gouv.fr/thesaurus/
+- namespace: http://zbw.eu/beta/p20/
+  prefix: zbw-pressemappe20
+  title: 20th Century Press Archives
+  uri: http://zbw.eu/beta/p20
+- namespace: ' http://linked.opendata.cz/resource/business-entity/'
+  prefix: cz-ares-or
+  title: Data about business entities from the ARES system - business registry of the Czech Republic
+  uri: http://linked.opendata.cz/resource/dataset/ares/or
+- namespace: http://italy.rkbexplorer.com/id/
+  prefix: rkb-explorer-italy
+  title: Diverse Italian ReSIST Partner Institutions (RKBExplorer)
+  uri: http://italy.rkbexplorer.com
+- namespace: http://cau.eagle-i.net/i/
+  prefix: eagle-i-cau
+  title: eagle-i @ Clark Atlanta University
+  uri: http://cau.eagle-i.net/
+- namespace: http://linked.opendata.cz/resource/domain/seznam.gov.cz/agendy/
+  prefix: cz-ovm-agendas
+  title: Agendas of institutions of public power of the Czech Republic
+  uri: http://linked.opendata.cz/resource/dataset/seznam.gov.cz/agendy
+- namespace: http://www.rdfabout.com/rdf/usgov/
+  prefix: govtrack
+  title: GovTrack.us U.S Congress Legislative Data
+  uri: http://www.govtrack.us
+- namespace: http://era.rkbexplorer.com/id/
+  prefix: rkb-explorer-era
+  title: ERA - Australian Research Council publication ratings (RKBExplorer)
+  uri: http://era.rkbexplorer.com
+- namespace: http://www4.wiwiss.fu-berlin.de/dailymed/resource/
+  prefix: fu-berlin-dailymed
+  title: DailyMed
+  uri: http://www4.wiwiss.fu-berlin.de/dailymed/
+- namespace: http://newcastle.rkbexplorer.com/id/
+  prefix: rkb-explorer-newcastle
+  title: University of Newcastle upon Tyne (RKBExplorer)
+  uri: http://newcastle.rkbexplorer.com
+- namespace: http://lobid.org/resource/
+  prefix: lobid-resources
+  title: lobid-Bibliographic Resources
+  uri: http://lobid.org/resource
+- namespace: http://data.kasabi.com/dataset/bricklink/
+  prefix: bricklink
+  title: Bricklink
+  uri: http://kasabi.com/dataset/bricklink
+- namespace: http://purl.org/lu/uni/alma/swift
+  prefix: Swift
+  title: Swift Vocabulary
+  uri: http://purl.org/lu/uni/alma/swift
+- namespace: http://transport.data.gov.uk/id/
+  prefix: transport-data-gov-uk
+  title: transport.data.gov.uk
+  uri: http://transport.data.gov.uk/
+- namespace: http://umbel.org/umbel/
+  prefix: umbel
+  title: UMBEL (Upper Mapping and Binding Exchange Layer)
+  uri: http://umbel.org
+- namespace: http://www4.wiwiss.fu-berlin.de/medicare/resource/
+  prefix: fu-berlin-medicare
+  title: MediCare
+  uri: http://www4.wiwiss.fu-berlin.de/medicare/
+- namespace: http://www.ntnu.no/ub/data/nvd/2003/
+  prefix: nvd
+  title: Norsk inndeling av vitenskapsdisipliner
+  uri: http://www.ntnu.no/ub/data/nvd/about
+- namespace: http://tsu.eagle-i.net/i/
+  prefix: eagle-i-tsu
+  title: eagle-i @ Texas Southern University
+  uri: http://tsu.eagle-i.net
+- namespace: http://ulm.rkbexplorer.com/id/
+  prefix: rkb-explorer-ulm
+  title: Universität Ulm (RKBExplorer)
+  uri: http://ulm.rkbexplorer.com
+- namespace: open data
+  prefix: The Respublic of Uzbekistan
+  title: Open data of Uzbekistan
+  uri: https://data.gov.uz/en
+- namespace: http://organogram.data.gov.uk/data/thurrocktgdc
+  prefix: staff-organograms-and-pay-thurrock-thames-gateway-development-corporation
+  title: Organogram and staff pay data for Thurrock Thames Gateway Development Corporation
+  uri: http://data.gov.uk/dataset/staff-organograms-and-pay-thurrock-thames-gateway-development-corporation
+- namespace: http://upr.eagle-i.net/i/
+  prefix: eagle-i-upr
+  title: eagle-i@ University of Puerto Rico - Medical Sciences Campus
+  uri: http://upr.eagle-i.net
+- namespace: http://telegraphis.net/
+  prefix: telegraphis
+  title: Telegraphis Linked Data
+  uri: http://telegraphis.net/data/
+- namespace: http://linked.opendata.cz/resource/domain/coi.cz/check-action/
+  prefix: cz-ctia-focus
+  title: Focus of the Czech Trade Inspection Authority's inspections
+  uri: http://linked.opendata.cz/resource/dataset/coi.cz/zamereni
+- namespace: http://xula.eagle-i.net/i/
+  prefix: eagle-i-xula
+  title: eagle-i @ Xavier University of Louisiana
+  uri: http://xula.eagle-i.net
+- namespace: http://linked.opendata.cz/resource/domain/coi.cz/sanction/
+  prefix: cz-ctia-sanctions
+  title: Sanctions of the Czech Trade Inspection Authority
+  uri: http://linked.opendata.cz/resource/dataset/coi.cz/sankce
+- namespace: http://purl.org/weso/pscs/sitc/v4/resource
+  prefix: sitc-v4
+  title: SITC-V4
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://ruian.linked.opendata.cz/resource/
+  prefix: cz-cuzk-legal-relationships-documents
+  title: Code lists of the legal relationships and documents
+  uri: http://ruian.linked.opendata.cz/resource/dataset/cuzk/pravni-vztahy-listiny
+- namespace: http://rdf.freebase.com/
+  prefix: freebase
+  title: Freebase
+  uri: http://freebase.com/
+- namespace: http://education.data.gov.uk/doc/institution
+  prefix: education-data-gov-uk
+  title: education.data.gov.uk
+  uri: http://education.data.gov.uk/
+- namespace: http://zbw.eu/stw/
+  prefix: stw-thesaurus-for-economics
+  title: STW Thesaurus for Economics
+  uri: http://zbw.eu/stw
+- namespace: http://pleiades.stoa.org/places/ http://pleiades.stoa.org/places/vocab# http://atlantides.org/capgrids/
+  prefix: pleiades
+  title: Pleiades
+  uri: http://pleiades.stoa.org/
+- namespace: http://www.rdfabout.com/rdf/usgov/geo/
+  prefix: 2000-us-census-rdf
+  title: 2000 U.S. Census in RDF (rdfabout.com)
+  uri: http://www.rdfabout.com/demo/census/
+- namespace: http://purl.uniprot.org/uniprot/
+  prefix: uniprotkb
+  title: UniProtKB
+  uri: https://www.uniprot.org/uniprot/
+- namespace: http://kasabi.com/dataset/discogs
+  prefix: data-incubator-discogs
+  title: Discogs in RDF
+  uri: http://kasabi.com/dataset/discogs
+- namespace: http://resourcelists.st-andrews.ac.uk/
+  prefix: st-andrews-resource-lists
+  title: St. Andrews University Resource Lists
+  uri: http://resourcelists.st-andrews.ac.uk/
+- namespace: http://schemapedia.com/
+  prefix: schemapedia
+  title: 'Schemapedia: RDF schema compendium'
+  uri: http://schemapedia.com/
+- namespace: http://purl.uniprot.org/
+  prefix: uniprot
+  title: UniProt
+  uri: http://www.uniprot.org/
+- namespace: http://linked.opendata.cz/resource/domain/seznam.gov.cz/rejstriky/plneni/
+  prefix: cz-fulfillments
+  title: Registry of contracts of the Czech Republic - Financial fulfillments
+  uri: http://linked.opendata.cz/resource/dataset/seznam.gov.cz/rejstriky/plneni
+- namespace: http://id.loc.gov/
+  prefix: lcsh
+  title: Library of Congress Subject Headings
+  uri: http://id.loc.gov/authorities/
+- namespace: http://data.odw.tw/record/
+  prefix: data.odw.tw
+  title: Open Data Web
+  uri: http://data.odw.tw/
+- namespace: http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/
+  prefix: fao-geopolitical-ontology
+  title: FAO geopolitical ontology
+  uri: http://www.fao.org/countryprofiles/geoinfo.asp?lang=en
+- namespace: http://lisbon.rkbexplorer.com/id/
+  prefix: rkb-explorer-lisbon
+  title: Fundação da Faculdade de Ciencas da Universidade de Lisboa (RKBExplorer)
+  uri: http://lisbon.rkbexplorer.com
+- namespace: http://purl.org/weso/pscs/resource
+  prefix: pscs-catalogue
+  title: Product Scheme Classifications Catalogue
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://www.eea.europa.eu/publications
+  prefix: eea
+  title: European Environment Agency Published Products
+  uri: http://www.eea.europa.eu/
+- namespace: http://www.eionet.europa.eu/gemet/
+  prefix: gemet
+  title: GEneral Multilingual Environmental Thesaurus
+  uri: http://www.eionet.europa.eu/gemet/
+- namespace: http://www.wikidata.org/entity/
+  prefix: wikidata
+  title: Wikidata
+  uri: https://www.wikidata.org/
+- namespace: http://my-family-lineage.com/wiki/
+  prefix: my-family-lineage
+  title: My Family Lineage
+  uri: http://my-family-lineage.com/wiki/Main_Page
+- namespace: id.agrisemantics.org/gacs
+  prefix: GACS
+  title: Global Agricultural Concept Space
+  uri: https://agrisemantics.org/#GACShome/
+- namespace: http://taxref.mnhn.fr/lod/
+  prefix: taxref-ld
+  title: 'TAXREF-LD: Linked Data French Taxonomic Register'
+  uri: https://inpn.mnhn.fr/programme/referentiel-taxonomique-taxref?lg=en
+- namespace: http://whoiswho.publicdata.eu/data/
+  prefix: eu-who-is-who
+  title: EU Who Is Who
+  uri: http://whoiswho.publicdata.eu/
+- namespace: http://www.sudoc.fr/
+  prefix: sudocfr
+  title: Sudoc bibliographic data
+  uri: http://punktokomo.abes.fr/2011/07/04/le-sudoc-sur-le-web-de-donnees/
+- namespace: http://linked.opendata.cz/resource/domain/coi.cz/ban/
+  prefix: cz-ctia-bans
+  title: Bans of the Czech Trade Inspection Authority
+  uri: http://linked.opendata.cz/resource/dataset/coi.cz/zakazy
+- namespace: http://data.kasabi.com/dataset/yahoo-geoplanet
+  prefix: yahoo_geoplanet
+  title: Yahoo Geoplanet RDF
+  uri: http://kasabi.com/dataset/yahoo-geoplanet
+- namespace: http://www.ntnu.no/ub/data/tekord
+  prefix: tekord
+  title: TEKORD
+  uri: http://www.ntnu.no/ub/data/tekord/about
+- namespace: http://unlocode.rkbexplorer.com/id/
+  prefix: rkb-explorer-unlocode
+  title: UN/LOCODE (RKBExplorer)
+  uri: http://unlocode.rkbexplorer.com
+- namespace: http://purl.org/net7/vocab/locs/v1#
+  prefix: linked-open-camera
+  title: Linked Open Camera (LinkedOpenData.it)
+  uri: http://www.linkedopendata.it/datasets/loc
+- namespace: http://population.psi.enakting.org/id/
+  prefix: enakting-population
+  title: EnAKTing Population Dataset
+  uri: http://population.psi.enakting.org/
+- namespace: http://semanticscience.org/resource/
+  prefix: bioportal-sio
+  title: SemanticScience Integrated Ontology
+  uri: http://bioportal.bioontology.org/ontologies/1532
+- namespace: http://ec.europa.eu/agriculture/FADN/
+  prefix: FADN (2019)
+  title: Farm Accountancy Data Network (FADN) linked dataset from 2019
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://dbtune.org/magnatune/artist/
+  prefix: dbtune-magnatune
+  title: DBTune.org Magnatune RDF server
+  uri: http://dbtune.org/magnatune/
+- namespace: http://chroniclingamerica.loc.gov/
+  prefix: chronicling-america
+  title: Chronicling America
+  uri: http://chroniclingamerica.loc.gov/about/api/
+- namespace: http://purl.org/vocabularies/princeton/wn30
+  prefix: vu-wordnet
+  title: WordNet 3.0 (VU Amsterdam)
+  uri: http://semanticweb.cs.vu.nl/lod/wn30/
+- namespace: http://deusto.gnoss.com
+  prefix: deustotech
+  title: DeustoTech (Deusto Institute of Technology)
+  uri: http://deusto.gnoss.com
+- namespace: http://purl.org/weso/pscs/cn/2012/resource
+  prefix: combined-nomenclature-2012
+  title: CN  2012
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://pt.dbpedia.org/resource/
+  prefix: dbpedia-pt
+  title: DBpedia in Portuguese
+  uri: http://pt.dbpedia.org
+- namespace: http://cordis.rkbexplorer.com/id/
+  prefix: rkb-explorer-cordis
+  title: Community R&D Information Service (CORDIS) (RKBExplorer)
+  uri: http://cordis.rkbexplorer.com
+- namespace: http://ns.inria.fr/covid19/
+  prefix: Covid-on-the-Web
+  title: Covid-on-the-Web Dataset
+  uri: https://github.com/Wimmics/CovidOnTheWeb
+- namespace: http://www.pokepedia.fr/
+  prefix: pokepedia-fr
+  title: Poképédia
+  uri: http://www.pokepedia.fr
+- namespace: http://santillana.linkeddata.es/elviajero/resource
+  prefix: santillana_guide_dataset
+  title: Santillana Guide Dataset
+  uri: http://webenemasuno.linkeddata.es/
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-results
+  title: Results of R&D
+  uri: http://linked.opendata.cz/resource/dataset/vavai/results
+- namespace: http://kaunas.rkbexplorer.com/id/
+  prefix: rkb-explorer-kaunas
+  title: Vytautas Magnus University, Kaunas (RKBExplorer)
+  uri: http://kaunas.rkbexplorer.com
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-evaluation-2013
+  title: Evaluation of VaVaI results for 2013
+  uri: http://linked.opendata.cz/resource/dataset/vavai/evaluation/2013
+- namespace: http://lod.hebis.de/resource/
+  prefix: hebis-bibliographic-resources
+  title: HeBIS - Bibliographic Resources of the Library Union Catalogues of Hessen and parts of the Rhineland Palatinate
+  uri: http://www.hebis.de
+- namespace: http://harvard.eagle-i.net/i/
+  prefix: eagle-i-harvard
+  title: eagle-i @ Harvard University
+  uri: http://harvard.eagle-i.net
+- namespace: http://psm.eagle-i.net/i/
+  prefix: eagle-i-psm
+  title: eagle-i @ Ponce School of Medicine
+  uri: http://psm.eagle-i.net/
+- namespace: http://packages.qa.debian.org/
+  prefix: debian-package-tracking-system
+  title: Debian Package Tracking System
+  uri: http://packages.qa.debian.org/common/RDF.html
+- namespace: http://ecs.rkbexplorer.com/id/
+  prefix: rkb-explorer-ecs
+  title: School of Electronics and Computer Science, University of Southampton
+  uri: http://ecs.rkbexplorer.com
+- namespace: http://www.idref.fr/
+  prefix: idreffr
+  title: 'IdRef: Sudoc authority data'
+  uri: http://punktokomo.abes.fr/2011/07/05/idref-des-pages-html-et-rdf-plus-riches/
+- namespace: ttp://opendatacommunities.org/id/IMD/2010/IMD-rank/LSOA/
+  prefix: english-index-of-multiple-deprivation-ranking-2010
+  title: English Index of Multiple Deprivation Ranking 2010
+  uri: http://opendatacommunities.org/data/imd-rank-2010
+- namespace: http://www4.wiwiss.fu-berlin.de/dblp/resource/
+  prefix: fu-berlin-dblp
+  title: DBLP Bibliography Database in RDF (FU Berlin)
+  uri: http://www4.wiwiss.fu-berlin.de/dblp/
+- namespace: http://us.patents.aksw.org
+  prefix: linked-uspto-patent-data
+  title: USPTO Patent data
+  uri: http://aksw.org/Projects/USPatents.html
+- namespace: http://data.kasabi.com/dataset/global-hunger-index
+  prefix: global-hunger-index-2011
+  title: Global Hunger Index (2011)
+  uri: http://www.ifpri.org/publication/2011-global-hunger-index
+- namespace: http://w3id.org/foodie/open/catchrecord/norway/
+  prefix: Catch Record (2014- 2019)
+  title: Norway catch records dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://w3id.org/foodie/open/cz/water_buffer25/
+  prefix: Water Buffer
+  title: Water buffer dataset from Czech Republic
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://corporateexcellence.net/en/community/patronato
+  prefix: ce4r
+  title: CE4R Knowledge Centre Corporate Excellence – Centre for Reputation Leadership
+  uri: http://corporateexcellence.net/en/community/patronato
+- namespace: http://elections.publicdata.eu/data/
+  prefix: european-election-results
+  title: European Election Results
+  uri: http://elections.publicdata.eu
+- namespace: 'http://msc2010.org/resources/MSC/2010/msc2010/ '
+  prefix: msc
+  title: Mathematics Subject Classification
+  uri: http://msc2010.org/mscwork/
+- namespace: http://www.morelab.deusto.es/resource/
+  prefix: morelab
+  title: MORElab
+  uri: http://www.morelab.deusto.es
+- namespace: http://nomisma.org/
+  prefix: nomisma_org
+  title: 'Nomisma.org '
+  uri: http://nomisma.org
+- namespace: http://linked.opendata.cz/resource/domain/seznam.gov.cz/rejstriky/smlouvy/
+  prefix: cz-contracts
+  title: Registry of contracts of the Czech Republic - Contracts
+  uri: http://linked.opendata.cz/resource/dataset/seznam.gov.cz/rejstriky/smlouvy
+- namespace: http://mortality.psi.enakting.org/id/
+  prefix: enakting-mortality
+  title: EnAKTing Mortality Dataset
+  uri: http://mortality.psi.enakting.org/
+- namespace: http://reference.data.gov.uk/id/
+  prefix: reference-data-gov-uk
+  title: reference.data.gov.uk
+  uri: http://reference.data.gov.uk/
+- namespace: http://data.europeana.eu
+  prefix: europeana-lod-v1
+  title: Europeana Linked Open Data V1.0
+  uri: http://data.europeana.eu/
+- namespace: http://dbtropes.org/resource/
+  prefix: dbtropes
+  title: DBTropes
+  uri: http://dbtropes.org/
+- namespace: http://logd.tw.rpi.edu/source/congress-gov/dataset/biographical-directory-of-the-united-states-congress/version/2012-Jan-04/
+  prefix: biographical-directory-of-the-united-states-congress
+  title: Biographical Directory of the United States Congress
+  uri: http://bioguide.congress.gov/biosearch/biosearch.asp
+- namespace: http://data.ordnancesurvey.co.uk/doc/postcodeunit/
+  prefix: ordnance-survey-linked-data
+  title: Ordnance Survey Linked Data
+  uri: http://data.ordnancesurvey.co.uk/
+- namespace: http://www.lotico.com/resource/
+  prefix: lotico
+  title: Lotico
+  uri: http://www.lotico.com/
+- namespace: http://ineverycrea.net/
+  prefix: ineverycrea
+  title: IneveryCREA, la comunidad de la creatividad educativa
+  uri: http://ineverycrea.net/
+- namespace: http://www4.wiwiss.fu-berlin.de/eures/resource/
+  prefix: fu-berlin-eures
+  title: European Employment Services (EURES)
+  uri: http://www4.wiwiss.fu-berlin.de/eures/
+- namespace: http://wordnet.rkbexplorer.com/id/
+  prefix: rkb-explorer-wordnet
+  title: WordNet (RKBExplorer)
+  uri: http://wordnet.rkbexplorer.com
+- namespace: http://reegle.info
+  prefix: clean-energy-data-reegle
+  title: Linked Clean Energy Data (reegle.info)
+  uri: http://data.reegle.info/
+- namespace: http://fun.rkbexplorer.com/id/
+  prefix: rkb-explorer-fun
+  title: fun
+  uri: http://fun.rkbexplorer.com
+- namespace: http://kulturarvsdata.se/
+  prefix: swedish-open-cultural-heritage
+  title: Swedish Open Cultural Heritage
+  uri: http://www.ksamsok.se/in-english/
+- namespace: Legija Stranaca
+  prefix: LEGIJA STRANACA
+  title: U ime Legije
+  uri: http://www.legion-etrangere.com
+- namespace: https://linkeddata.cultureelerfgoed.nl/def/ceo
+  prefix: ceo
+  title: Linked Data Cultural Heritage Agency of the Netherlands
+  uri: https://linkeddata.cultureelerfgoed.nl/
+- namespace: http://ccny-cuny.eagle-i.net/i/
+  prefix: eagle-i-ccny-cuny
+  title: eagle-i @ The City College of New York
+  uri: http://ccny-cuny.eagle-i.net
+- namespace: ttp://rdfohloh.wikier.org/
+  prefix: rdfohloh
+  title: RDFohloh
+  uri: http://rdfohloh.wikier.org
+- namespace: http://darmstadt.rkbexplorer.com/id/
+  prefix: rkb-explorer-darmstadt
+  title: Technische Universität Darmstadt (RKBExplorer)
+  uri: http://darmstadt.rkbexplorer.com
+- namespace: http://prelex.publicdata.eu/r/
+  prefix: prelex
+  title: PreLex
+  uri: http://prelex.publicdata.eu/
+- namespace: http://libris.kb.se/bib/
+  prefix: libris
+  title: LIBRIS
+  uri: http://libris.kb.se
+- namespace: http://www.yso.fi/onto/ysa/
+  prefix: ysa
+  title: YSA - General Finnish Thesaurus
+  uri: http://finto.fi/ysa/
+- namespace: http://logd.tw.rpi.edu/source/contactingthecongress/dataset/directory-for-the-112th-congress/
+  prefix: congresspeople
+  title: 2011 US Congress People
+  uri: http://www.contactingthecongress.org/
+- namespace: http://dbtune.org/last-fm/
+  prefix: dbtune-audioscrobbler
+  title: DBTune.org AudioScrobbler RDF Service
+  uri: http://dbtune.org/last-fm/
+- namespace: http://data.nku.cz/resource/
+  prefix: cz-sao-check-actions
+  title: Inspections of the Supreme Audit Office of the Czech Republic
+  uri: http://data.nku.cz/resource/dataset/check-actions
+- namespace: http://roma.rkbexplorer.com/id/
+  prefix: rkb-explorer-roma
+  title: Università degli studi di Roma "La Sapienza" (RKBExplorer)
+  uri: http://roma.rkbexplorer.com
+- namespace: http://lobid.org/organisation/
+  prefix: lobid-organisations
+  title: lobid-organisations
+  uri: http://lobid.org/organisation
+- namespace: http://hawaii.eagle-i.net/i/
+  prefix: eagle-i-hawaii
+  title: eagle-i @ University of Hawai’i at Mānoa
+  uri: http://hawaii.eagle-i.net
+- namespace: http://linked.opendata.cz/resource/domain/seznam.gov.cz/rejstriky/objednavky/
+  prefix: cz-orders
+  title: Registry of contracts of the Czech Republic - Orders
+  uri: http://linked.opendata.cz/resource/dataset/seznam.gov.cz/rejstriky/objednavky
+- namespace: http://opendatacommunities.org/id/geography/lsoa/
+  prefix: odc-lsoa
+  title: Open Data Communities - Lower layer Super Output Areas
+  uri: http://opendatacommunities.org/datasets/geography
+- namespace: http://geo.linkeddata.es/resource/
+  prefix: geolinkeddata
+  title: GeoLinkedData
+  uri: http://geo.linkeddata.es/
+- namespace: http://linked.opendata.cz/resource/es/msssi
+  prefix: it-aifa-drug-prices
+  title: List of prices of medicinal products marketed in Italian Republic
+  uri: http://linked.opendata.cz/resource/dataset/it/aifa/drug-prices
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-funding-providers
+  title: State funding providers
+  uri: http://linked.opendata.cz/resource/dataset/vavai/funding-providers
+- namespace: http://researchgroups.gnoss.com
+  prefix: dblp-deusto-gnoss
+  title: DBLP Research Groups (University of Deusto-GNOSS)
+  uri: http://researchgroups.gnoss.com
+- namespace: http://aemet.linkeddata.es/resource/
+  prefix: aemet
+  title: AEMET metereological dataset
+  uri: http://aemet.linkeddata.es/
+- namespace: http://d-nb.info/gnd/
+  prefix: dnb-gemeinsame-normdatei
+  title: Gemeinsame Normdatei (GND)
+  uri: http://www.dnb.de/EN/lds
+- namespace: http://dblp.rkbexplorer.com/id/
+  prefix: rkb-explorer-dblp
+  title: DBLP Computer Science Bibliography (RKBExplorer)
+  uri: http://dblp.rkbexplorer.com
+- namespace: http://data.kasabi.com/dataset/nasa
+  prefix: data-incubator-nasa
+  title: NASA Space Flight & Astronaut data in RDF
+  uri: http://kasabi.com/dataset/nasa
+- namespace: http://cdrewu.eagle-i.net/i/
+  prefix: eagle-i-cdrewu
+  title: eagle-i @ Charles R. Drew University
+  uri: http://cdrewu.eagle-i.net
+- namespace: cv.iptc.org
+  prefix: iptc-newscodes
+  title: IPTC NewsCodes
+  uri: http://newscodes.org
+- namespace: http://oai.rkbexplorer.com/id/
+  prefix: rkb-explorer-oai
+  title: Open Archive Initiative Harvest over OAI-PMH (RKBExplorer)
+  uri: http://oai.rkbexplorer.com
+- namespace: http://eunis.eea.europa.eu/
+  prefix: eunis
+  title: European Nature Information System
+  uri: http://eunis.eea.europa.eu
+- namespace: http://deepblue.rkbexplorer.com/id/
+  prefix: rkb-explorer-deepblue
+  title: Deep Blue (RKBExplorer)
+  uri: http://deepblue.rkbexplorer.com
+- namespace: http://wiki.rkbexplorer.com/id/
+  prefix: rkb-explorer-wiki
+  title: ReSIST Project Wiki (RKBExplorer)
+  uri: http://wiki.rkbexplorer.com
+- namespace: http://ibl.mdanderson.org/TCGA/
+  prefix: tcga
+  title: The Cancer Genome Atlas
+  uri: http://tcga.s3db.org/
+- namespace: http://dbkwik.webdatacommons.org
+  prefix: dbkwik
+  title: DBkWik
+  uri: http://dbkwik.webdatacommons.org
+- namespace: http://southampton.rkbexplorer.com/id/
+  prefix: rkb-explorer-southampton
+  title: School of Electronics and Computer Science, University of Southampton (RKBExplorer)
+  uri: http://southampton.rkbexplorer.com
+- namespace: http://aliada.scanbit.net:8891/id/collections/
+  prefix: aliada-scanbit-net
+  title: aliada-scanbit-net
+  uri: http://biblioteca.artium.org
+- namespace: http://webscience.rkbexplorer.com/id/
+  prefix: rkb-explorer-webscience
+  title: Web Science Conference (RKBExplorer)
+  uri: http://webscience.rkbexplorer.com
+- namespace: http://data.theeuropeanlibrary.org/BibliographicResource/
+  prefix: the-european-library-open-dataset
+  title: The European Library Open Dataset
+  uri: https://lod-cloud.net/edit-dataset/the-european-library-open-dataset
+- namespace: http://data.cervantesvirtual.com/
+  prefix: BVMC
+  title: Biblioteca Virtual Miguel de Cervantes
+  uri: http://data.cervantesvirtual.com
+- namespace: http://liblists.sussex.ac.uk/items/
+  prefix: university-sussex-reading-lists
+  title: University of Sussex Reading Lists
+  uri: http://liblists.sussex.ac.uk
+- namespace: ' http://linked.opendata.cz/resource/business-entity/'
+  prefix: cz-ares-rzp
+  title: Data about Czech business entities from the ARES system - Trade Licensing Register
+  uri: http://linked.opendata.cz/resource/dataset/ares/rzp
+- namespace: http://chem2bio2rdf.org/bindingdb/
+  prefix: chem2bio2rdf
+  title: Chem2Bio2RDF
+  uri: http://chem2bio2rdf.org
+- namespace: http://photos.rkbexplorer.com/id/
+  prefix: rkb-explorer-photos
+  title: photos
+  uri: http://photos.rkbexplorer.com
+- namespace: http://thes.bncf.firenze.sbn.it
+  prefix: bncf-ns
+  title: Thesaurus BNCF
+  uri: http://thes.bncf.firenze.sbn.it/
+- namespace: http://www4.wiwiss.fu-berlin.de/eurostat/resource/
+  prefix: fu-berlin-eurostat
+  title: Eurostat in RDF (FU Berlin)
+  uri: http://www4.wiwiss.fu-berlin.de/eurostat/
+- namespace: http://vocab.nerc.ac.uk/
+  prefix: nvs
+  title: NERC Vocabulary Server 2.0
+  uri: http://vocab.nerc.ac.uk/
+- namespace: http://dbtune.org/musicbrainz/
+  prefix: dbtune-musicbrainz
+  title: DBTune.org Musicbrainz D2R Server
+  uri: http://dbtune.org/musicbrainz/
+- namespace: http://w3id.org/foodie/otm/
+  prefix: OTM
+  title: Open Transport Map
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://didactalia.net
+  prefix: didactalia
+  title: Didactalia, índice de recursos educativos para profesores, padres y alumnos (GNOSS)
+  uri: http://didactalia.net
+- namespace: http://purl.org/tcga/core#
+  prefix: tcga-roadmap
+  title: TCGA Roadmap
+  uri: http://tcga.github.com/Roadmap/
+- namespace: http://vivo.cornell.edu/
+  prefix: vivo-cornell-university
+  title: VIVO Cornell
+  uri: http://vivo.cornell.edu/
+- namespace: http://data.linkedopendata.it/data/musei/resource/
+  prefix: museums-in-italy
+  title: Italian Museums
+  uri: http://www.linkedopendata.it/datasets/musei
+- namespace: http://lod.ac/bdls/
+  prefix: lodac-bdls
+  title: LODAC BDLS
+  uri: http://lod.ac/wiki/LODAC_BDLS
+- namespace: http://www4.wiwiss.fu-berlin.de/stitch/resource/
+  prefix: fu-berlin-stitch
+  title: 'STITCH: Chemical-Protein Interactions'
+  uri: http://www4.wiwiss.fu-berlin.de/stitch/
+- namespace: http://www.calames.abes.fr/pub/ms/
+  prefix: calames
+  title: Calames
+  uri: http://www.calames.abes.fr/
+- namespace: http://alaska.eagle-i.net/i/
+  prefix: eagle-i-alaska
+  title: eagle-i @ University of Alaska Fairbanks
+  uri: http://alaska.eagle-i.net
+- namespace: http://www.bbc.co.uk/music/artist/
+  prefix: bbc-music
+  title: BBC Music
+  uri: http://www.bbc.co.uk/music
+- namespace: http://lod.geospecies.org/
+  prefix: geospecies
+  title: GeoSpecies Knowledge Base
+  uri: http://lod.geospecies.org/
+- namespace: http://www.bbc.co.uk/programmes
+  prefix: bbc-programmes
+  title: BBC Programmes
+  uri: http://www.bbc.co.uk/programmes
+- namespace: http://id.esd.org.uk/
+  prefix: esd-standards
+  title: 'ESD Standards: Controlled lists for the UK public sector'
+  uri: http://standards.esd.org.uk/
+- namespace: http://rdfdata.eionet.europa.eu/
+  prefix: eionet-rdf
+  title: EIONET RDF Data
+  uri: http://rdfdata.eionet.europa.eu/
+- namespace: http://onto.beef.org.pl/domain/
+  prefix: ontobeef-domain
+  title: OntoBeef Domain
+  uri: http://onto.beef.org.pl/ontobeef
+- namespace: http://km.aifb.kit.edu/projects/numbers/web/
+  prefix: linked-open-numbers
+  title: Linked Open Numbers
+  uri: http://km.aifb.kit.edu/projects/numbers/
+- namespace: http://prefix.cc/
+  prefix: prefix-cc
+  title: prefix.cc
+  uri: http://prefix.cc/
+- namespace: http://purl.org/NET/lccn/
+  prefix: linkedlccn
+  title: LinkedLCCN
+  uri: http://purl.org/NET/lccn/
+- namespace: http://data.archiveshub.ac.uk/
+  prefix: archiveshub-linkeddata
+  title: Archives Hub Linked Data
+  uri: http://data.archiveshub.ac.uk
+- namespace: http://w3id.org/foodie/olu/
+  prefix: 'OLU '
+  title: Open Land Use
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://aims.fao.org/aos/agrovoc/
+  prefix: agrovoc
+  title: AGROVOC
+  uri: http://aims.fao.org/vest-registry/vocabularies/agrovoc
+- namespace: http://data.kasabi.com/dataset/foodista
+  prefix: foodista
+  title: Foodista
+  uri: http://kasabi.com/dataset/foodista
+- namespace: http://www.rubensworks.net/
+  prefix: rubentaelman
+  title: Ruben Taelman's Data
+  uri: https://github.com/rubensworks/rubensworks.net
+- namespace: ei2a
+  prefix: ei2a
+  title: Aragon Interoperable Information Structure EI2A - aragon open data
+  uri: https://opendata.aragon.es
+- namespace: http://rdf.corpora.uni-leipzig.de/resources/xho/inventory/
+  prefix: open-bantu-isixhosa-lexicon
+  title: Open Bantu isiXhosa Lexicon
+  uri: https://github.com/MMoOn-Project/OpenBantu/tree/master/xho
+- namespace: http://crime.psi.enakting.org/id/
+  prefix: enakting-crime
+  title: EnAKTing Crime Dataset
+  uri: http://crime.psi.enakting.org/
+- namespace: http://agencies.publicdata.eu/r/
+  prefix: eu-agencies-bodies
+  title: EU Agencies and decentralized bodies (Agencies)
+  uri: http://agencies.publicdata.eu/
+- namespace: http://linkeddata.few.vu.nl/rechtspraak/
+  prefix: rechtspraak
+  title: Rechtspraak.nl
+  uri: http://www.best-project.nl
+- namespace: http://spatial.ucd.ie/lod/osn
+  prefix: osm-semantic-network
+  title: OSM Semantic Network
+  uri: http://wiki.openstreetmap.org/wiki/OSM_Semantic_Network
+- namespace: http://gnoss.com/comunidad/Arthroscopy
+  prefix: arthroscopy
+  title: Arthroscopy community
+  uri: http://gnoss.com/comunidad/Arthroscopy
+- namespace: http://purl.org/net/tcm/
+  prefix: tcmgenedit_dataset
+  title: TCMGeneDIT Dataset
+  uri: http://code.google.com/p/junsbriefcase/wiki/TGDdataset
+- namespace: http://www.zaragoza.es/datosabiertos/id/
+  prefix: zaragoza-datosabiertos
+  title: Datos Abiertos de Zaragoza
+  uri: http://www.zaragoza.es/ciudad/risp/presentacion.htm
+- namespace: http://edgarwrap.ontologycentral.com/
+  prefix: linked-edgar
+  title: Linked EDGAR (OntologyCentral)
+  uri: http://edgarwrap.ontologycentral.com/
+- namespace: https://linked.opendata.cz/zdroj/ekonomický-subjekt/
+  prefix: cz-ic
+  title: Czech Business Entity identification numbers and names
+  uri: https://linked.opendata.cz/zdroj/datová-sada/seznam-ič
+- namespace: http://eurecom.rkbexplorer.com/id/
+  prefix: rkb-explorer-eurecom
+  title: Institut Eurécom (RKBExplorer)
+  uri: http://eurecom.rkbexplorer.com
+- namespace: http://data.kasabi.com/dataset/ecco-tcp-eighteenth-century-collections-online-texts/
+  prefix: ecco-tcp-linked-data
+  title: ECCO-TCP Eighteenth Century Texts Linked Data
+  uri: http://kasabi.com/dataset/ecco-tcp-eighteenth-century-collections-online-texts
+- namespace: http://publications.europa.eu/resource/authority/language
+  prefix: language-authority-list
+  title: ' Language Name Authority List '
+  uri: https://op.europa.eu/en/web/eu-vocabularies/at-dataset/-/resource/dataset/language
+- namespace: https://linked.opendata.cz/zdroje
+  prefix: cz-nace
+  title: Czech statistical classification of economic activities in the European Community (CZ-NACE)
+  uri: https://linked.opendata.cz/zdroje/datové-sady/čsú/číselníky/cz-nace
+- namespace: http://miguiadeviajes.net
+  prefix: miguiadeviajes-gnoss
+  title: Mi Guía de Viajes, colección de guías de viaje para viajeros (GNOSS)
+  uri: http://miguiadeviajes.net
+- namespace: http://jsu.eagle-i.net/i/
+  prefix: eagle-i-jsu
+  title: eagle-i @ Jackson State University
+  uri: http://jsu.eagle-i.net
+- namespace: http://pgxlod.loria.fr/resource/
+  prefix: PGxLOD
+  title: PGxLOD
+  uri: https://pgxlod.loria.fr/
+- namespace: http://eprints.ecs.soton.ac.uk/id/eprint/
+  prefix: southampton-ecs-eprints
+  title: ECS Southampton EPrints
+  uri: http://eprints.ecs.soton.ac.uk/
+- namespace: http://data.kasabi.com/dataset/prelinger-archives
+  prefix: prelinger_archives
+  title: Prelinger Archives
+  uri: http://kasabi.com/dataset/prelinger-archives
+- namespace: http://energy.psi.enakting.org/def/
+  prefix: enakting-energy
+  title: EnAKTing Energy Dataset
+  uri: http://energy.psi.enakting.org/
+- namespace: http://vivo.cornell.edu/individual/
+  prefix: vivo
+  title: VIVO
+  uri: http://vivoweb.org/
+- namespace: http://en.openei.org/
+  prefix: open-energy-info-wiki
+  title: OpenEI - Open Energy Info
+  uri: http://en.openei.org/
+- namespace: http://kisti.rkbexplorer.com/id/
+  prefix: rkb-explorer-kisti
+  title: Korean Institute of Science Technology and Information (RKBExplorer)
+  uri: http://kisti.rkbexplorer.com
+- namespace: http://fintrans.publicdata.eu/ec/resource/
+  prefix: beneficiaries-of-the-european-commission
+  title: 'EU: fintrans.publicdata.eu'
+  uri: http://fintrans.publicdata.eu/
+- namespace: http://bnb.data.bl.uk/id/
+  prefix: bluk-bnb
+  title: British National Bibliography (BNB) - Linked Open Data
+  uri: http://bnb.data.bl.uk
+- namespace: http://id.worldcat.org/fast/
+  prefix: oclc-fast
+  title: Faceted Application of Subject Terminology
+  uri: http://id.worldcat.org/fast/
+- namespace: http://www.sdi4apps.eu/poi.rdf
+  prefix: Smart POI dataset
+  title: Smart Point Of Interest
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://lod.b3kat.de/title/
+  prefix: b3kat
+  title: B3Kat - Library Union Catalogues of Bavaria, Berlin and Brandenburg
+  uri: http://lod.b3kat.de
+- namespace: https://w3id.org/associations/
+  prefix: associations
+  title: associations
+  uri: https://w3id.org/associations
+- namespace: http://www.w3.org/2006/03/wn/wn20/
+  prefix: w3c-wordnet
+  title: WordNet 2.0 (W3C)
+  uri: http://www.w3.org/TR/wordnet-rdf
+- namespace: http://hunter-cuny.eagle-i.net/i/
+  prefix: eagle-i-hunter-cuny
+  title: eagle-i @ Hunter College
+  uri: http://hunter-cuny.eagle-i.net
+- namespace: http://risks.rkbexplorer.com/id/
+  prefix: rkb-explorer-risks
+  title: RISKS Digest (RKBExplorer)
+  uri: http://risks.rkbexplorer.com
+- namespace: http://ecb.publicdata.eu/
+  prefix: ecb-statistics-linked-data
+  title: European Central Bank Statistics (PublicData.eu)
+  uri: http://ecb.publicdata.eu
+- namespace: http://mapasinteractivos.didactalia.net/comunidad/mapasflashinteractivos
+  prefix: interactivemaps-gnoss
+  title: Interactive Maps, a collection of interactive flash maps (GNOSS)
+  uri: http://mapasinteractivos.didactalia.net/comunidad/mapasflashinteractivos
+- namespace: http://www.bbc.co.uk/nature/
+  prefix: bbc-wildlife-finder
+  title: BBC Wildlife Finder
+  uri: http://www.bbc.co.uk/wildlifefinder/
+- namespace: http://purl.org/weso/pscs/cpa/2008/resource
+  prefix: cpc-2008
+  title: CPC 2008
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-organizations
+  title: Organizations active in R&D
+  uri: http://linked.opendata.cz/resource/dataset/vavai/organizations
+- namespace: http://purl.org/NET/marccodes/
+  prefix: marc-codes
+  title: MARC Codes List
+  uri: http://purl.org/NET/marccodes/
+- namespace: http://data.linkedmdb.org/resource/
+  prefix: linkedmdb
+  title: Linked Movie DataBase
+  uri: http://linkedmdb.org/
+- namespace: http://www.t4gm.info/
+  prefix: t4gm-info
+  title: Thesaurus for Graphic Materials (t4gm.info)
+  uri: http://www.t4gm.info/
+- namespace: http://nektar.oszk.hu/
+  prefix: hungarian-national-library-catalog
+  title: Hungarian National Library (NSZL) catalog
+  uri: http://nektar.oszk.hu/wiki/Semantic_web
+- namespace: http://famu.eagle-i.net/i/
+  prefix: eagle-i-famu
+  title: eagle-i @ Florida Agricultural and Mechanical University
+  uri: http://famu.eagle-i.net
+- namespace: http://w3id.org/foodie/corine/
+  prefix: Corine linked dataset
+  title: Corine linked dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://ieee.rkbexplorer.com/id/
+  prefix: rkb-explorer-ieee
+  title: IEEE Papers (RKBExplorer)
+  uri: http://ieee.rkbexplorer.com
+- namespace: http://acm.rkbexplorer.com/id/
+  prefix: rkb-explorer-acm
+  title: Association for Computing Machinery (ACM) (RKBExplorer)
+  uri: http://acm.rkbexplorer.com/
+- namespace: http://red.gnoss.com/comunidad/OpenData
+  prefix: open-data-risp
+  title: Open Data RISP, the Spanish Open Data community
+  uri: http://red.gnoss.com/comunidad/OpenData
+- namespace: http://dbpedia.org/resource/
+  prefix: dbpedia
+  title: DBpedia
+  uri: http://dbpedia.org/
+- namespace: http://standardgraphs.ices.dk/stocks/
+  prefix: 'Norway Fishery '
+  title: Norway fishery stocks dataset
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://eurobarometer.publicdata.eu/data/
+  prefix: eurobarometer-standard
+  title: Standard Eurobarometer
+  uri: http://eurobarometer.publicdata.eu
+- namespace: http://webconf.rkbexplorer.com/id/
+  prefix: rkb-explorer-webconf
+  title: webconf
+  uri: http://webconf.rkbexplorer.com
+- namespace: http://laas.rkbexplorer.com/id/
+  prefix: rkb-explorer-laas
+  title: LAAS-CNRS (RKBExplorer)
+  uri: http://laas.rkbexplorer.com
+- namespace: http://gnoss.com/comunidad/prospectivatecnologica
+  prefix: prospects-and-trends-gnoss
+  title: Prospects and Trends (GNOSS)
+  uri: http://gnoss.com/comunidad/prospectivatecnologica
+- namespace: http://purl.org/weso/pscs/isic/v4/resource
+  prefix: isic-v4
+  title: ISIC V4
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-programmes
+  title: R&D Programmes
+  uri: http://linked.opendata.cz/resource/dataset/vavai/programmes
+- namespace: http://data.kasabi.com/dataset/renewable-energy-generators
+  prefix: renewable_energy_generators
+  title: Renewable Energy Generators
+  uri: http://kasabi.com/dataset/renewable-energy-generators
+- namespace: http://purl.org/weso/pscs/cpv/2003/resource
+  prefix: cpv-2003
+  title: CPV  2003
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://el.dbpedia.org/resource/
+  prefix: dbpedia-el
+  title: DBpedia in Greek
+  uri: http://wiki.el.dbpedia.org
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-tenders
+  title: Tenders in R&D
+  uri: http://linked.opendata.cz/resource/dataset/vavai/tenders
+- namespace: http://data.linkedopendata.it/grrt/resource/
+  prefix: grrt
+  title: Accommodations in Tuscany (LinkedOpenData.it)
+  uri: http://www.linkedopendata.it/datasets/grrt
+- namespace: http://datos.bne.es/resource/
+  prefix: datos-bne-es
+  title: datos.bne.es
+  uri: http://datos.bne.es
+- namespace: http://estatwrap.ontologycentral.com/id/
+  prefix: linked-eurostat
+  title: Linked Eurostat (OntologyCentral)
+  uri: http://ontologycentral.com/2009/01/eurostat/
+- namespace: http://eupmedia.publicdata.eu/data/
+  prefix: eu-parliament-media
+  title: EU Parliament Media Library
+  uri: http://eupmedia.publicdata.eu/
+- namespace: http://nhs.psi.enakting.org/id/nhs/
+  prefix: enakting-nhs
+  title: EnAKTing NHS Dataset
+  uri: http://nhs.psi.enakting.org/
+- namespace: http://linked.opendata.cz/resource/domain/vavai/
+  prefix: cz-vavai-research-plans
+  title: Institutional research plans
+  uri: http://linked.opendata.cz/resource/dataset/vavai/research-plans
+- namespace: http://courseware.rkbexplorer.com/id/
+  prefix: rkb-explorer-courseware
+  title: Resilient Computing Courseware (RKBExplorer)
+  uri: http://courseware.rkbexplorer.com
+- namespace: http://webenemasuno.linkeddata.es/elviajero/resource/
+  prefix: elviajero
+  title: El Viajero's tourism dataset
+  uri: http://webenemasuno.linkeddata.es/
+- namespace: http://scholarometer.indiana.edu/namespaces/
+  prefix: scholarometer
+  title: Scholarometer
+  uri: http://scholarometer.indiana.edu/data.html
+- namespace: http://www.fao.org/aims/aos/fi/water_FAO_areas/
+  prefix: Water Areas Classification
+  title: FAO water areas classification as linked data
+  uri: https://www.foodie-cloud.org/fct/
+- namespace: http://www.dbacademic.tech/resource
+  prefix: dbacademic
+  title: dbacademic
+  uri: http://sparql.dbacademic.tech/
+- namespace: http://www.readinglists.manchester.ac.uk/
+  prefix: manchester-university-reading-lists
+  title: Manchester University Reading Lists
+  uri: http://www.readinglists.manchester.ac.uk/
+- namespace: http://gnoss.com/comunidad/Interactivos
+  prefix: artenuevosmedios-gnoss
+  title: Entornos interactivos. Arte en los nuevos medios (GNOSS)
+  uri: http://gnoss.com/comunidad/Interactivos
+- namespace: http://caligraph.org
+  prefix: CaLiGraph
+  title: CaLiGraph
+  uri: http://caligraph.org
+- namespace: http://logd.tw.rpi.edu/
+  prefix: twc-logd
+  title: 'TWC: Linking Open Government Data'
+  uri: http://logd.tw.rpi.edu
+- namespace: http://www.johngoodwin.me.uk/family/
+  prefix: john-goodwins-family-tree
+  title: John Goodwin's Family Tree
+  uri: http://www.johngoodwin.me.uk/family/
+- namespace: http://openlibrary.org/
+  prefix: open-library
+  title: Open Library
+  uri: http://openlibrary.org/
+- namespace: http://datos.artium.org/id/collections/
+  prefix: datos-artium-org
+  title: datos-artium-org
+  uri: http://biblioteca.artium.org
+- namespace: http://eurovoc.europa.eu
+  prefix: eurovoc
+  title: EuroVoc
+  uri: https://op.europa.eu/en/web/eu-vocabularies/th-dataset/-/resource/dataset/eurovoc
+- namespace: http://linked.opendata.cz/resource/atc/
+  prefix: cz-eh-1-atc
+  title: ATC groups
+  uri: http://linked.opendata.cz/resource/dataset/atc
+- namespace: http://data.kasabi.com/dataset/chempedia-rdf/
+  prefix: chempedia-rdf
+  title: ChemPedia RDF
+  uri: http://figshare.com/articles/ChemPedia_as_RDF/681678
+- namespace: http://co2emission.psi.enakting.org/id/
+  prefix: enakting-co2emission
+  title: EnAKTing CO2 Emission Dataset
+  uri: http://co2emission.psi.enakting.org/
+- namespace: http://www4.wiwiss.fu-berlin.de/flickrwrappr/photos/
+  prefix: flickr-wrappr
+  title: flickr? wrappr
+  uri: http://www4.wiwiss.fu-berlin.de/flickrwrappr
+- namespace: http://deploy.rkbexplorer.com/id/
+  prefix: rkb-explorer-deploy
+  title: DEPLOY (RKBExplorer)
+  uri: http://deploy.rkbexplorer.com
+- namespace: http://purl.org/weso/pscs/naics/2012/resource
+  prefix: naics-2012
+  title: NAICS 2012
+  uri: http://www.josemalvarez.es/web/2011/11/16/product-scheme-classifications/
+- namespace: http://epsrc.rkbexplorer.com/id/
+  prefix: rkb-explorer-epsrc
+  title: epsrc
+  uri: http://epsrc.rkbexplorer.com
+- namespace: http://vocabulary.semantic-web.at/semweb/
+  prefix: socialsemweb-thesaurus
+  title: Social Semantic Web Thesaurus
+  uri: http://vocabulary.semantic-web.at/PoolParty/wiki/semweb
+- namespace: http://www4.wiwiss.fu-berlin.de/sider/resource/
+  prefix: fu-berlin-sider
+  title: 'SIDER: Side Effect Resource'
+  uri: http://www4.wiwiss.fu-berlin.de/sider/
+- namespace: http://opendatacommunities.org/id/IMD/2010/IMD-score/LSOA/
+  prefix: english-index-of-multiple-deprivation-score-2010
+  title: English Index of Multiple Deprivation Score 2010
+  uri: http://opendatacommunities.org/datasets/imd-score-2010
+- namespace: http://linked.opendata.cz/resource/domain/cenia.cz/
+  prefix: cz-cenia-pollution
+  title: Integrated pollution registry
+  uri: http://linked.opendata.cz/resource/dataset/cenia.cz/irz
+- namespace: http://iserve.kmi.open.ac.uk/iserve/
+  prefix: iserve
+  title: 'iServe: Linked Services Registry'
+  uri: http://iserve.kmi.open.ac.uk/
+- namespace: http://www4.wiwiss.fu-berlin.de/euraxess/resource/
+  prefix: fu-berlin-euraxess
+  title: EURAXESS - Researchers in Motion
+  uri: http://www4.wiwiss.fu-berlin.de/euraxess/
+- namespace: http://tuskegee.eagle-i.net/i/
+  prefix: eagle-i-tuskegee
+  title: eagle-i @ Tuskegee University
+  uri: http://tuskegee.eagle-i.net
+- namespace: http://eudbpedia.deusto.es/resource/
+  prefix: dbpedia-eu
+  title: DBpedia in Basque
+  uri: http://eudbpedia.deusto.es
+- namespace: https://w3id.org/foodie/open/cz/pLPIS_180616_WGS/
+  prefix: LPIS Czech Republic
+  title: Land parcel dataset (LPIS) from Czech Republic
+  uri: https://www.foodie-cloud.org/fct/
