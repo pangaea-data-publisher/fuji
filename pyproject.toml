@@ -12,7 +12,7 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
 dependencies = [
@@ -59,7 +59,7 @@ keywords = [
 license = "MIT"
 name = "fuji"
 readme = "README.md"
-requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
+requires-python = "~=3.12"  # at the moment only Python 3.12 is supported
 version = "3.3.0"
 
 [project.optional-dependencies]
