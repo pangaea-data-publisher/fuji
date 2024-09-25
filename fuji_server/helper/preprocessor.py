@@ -414,9 +414,10 @@ class Preprocessor:
     def retrieve_linked_vocab_index(cls):
         lov_helper = LinkedVocabHelper()
         lov_helper.set_linked_vocab_index()
+        cls.linked_vocabs = list(set(lov_helper.namespaces))
         cls.linked_vocab_index = lov_helper.linked_vocab_index
 
-    @classmethod
+    """@classmethod
     def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
         # def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
         # may take around 20 minutes to test and import all vocabs
@@ -513,6 +514,7 @@ class Preprocessor:
             except OSError:
                 cls.logger.error(f"Couldn't write to file {ld_path}.")
         # for vocab in vocabs.items():
+    """
 
     @staticmethod
     def uri_validator(u):
@@ -550,9 +552,9 @@ class Preprocessor:
 
     @classmethod
     def getLinkedVocabs(cls):
-        if not cls.linked_vocabs:
-            # cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, cls.BIOPORTAL_API, cls.BIOPORTAL_KEY, True)
-            cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, True)
+        # if not cls.linked_vocabs:
+        # cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, cls.BIOPORTAL_API, cls.BIOPORTAL_KEY, True)
+        # cls.retrieve_linkedvocabs(cls.LOV_API, cls.LOD_CLOUDNET, True)
         return cls.linked_vocabs
 
     @classmethod
