@@ -51,7 +51,7 @@ from fuji_server.evaluators.fair_evaluator_version_identifier import FAIREvaluat
 from fuji_server.harvester.data_harvester import DataHarvester
 from fuji_server.harvester.github_harvester import GithubHarvester
 from fuji_server.harvester.metadata_harvester import MetadataHarvester
-from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 from fuji_server.helper.metadata_collector import MetadataOfferingMethods
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metric_helper import MetricHelper

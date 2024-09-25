@@ -8,7 +8,7 @@ import logging
 from urlextract import URLExtract
 
 from fuji_server.helper import metadata_mapper
-from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 

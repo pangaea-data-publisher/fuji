@@ -5,7 +5,7 @@
 import fnmatch
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
-from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 from fuji_server.models.semantic_vocabulary import SemanticVocabulary
 from fuji_server.models.semantic_vocabulary_output_inner import SemanticVocabularyOutputInner
 

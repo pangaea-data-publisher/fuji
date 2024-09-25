@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 import requests
 
 import yaml
-from fuji_server.helper.linkedvocabhelper import LinkedVocabHelper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 
 
 class Preprocessor:
