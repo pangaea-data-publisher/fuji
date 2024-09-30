@@ -107,7 +107,7 @@ class MetadataHarvester:
         logging.addLevelName(self.LOG_SUCCESS, "SUCCESS")
         logging.addLevelName(self.LOG_FAILURE, "FAILURE")
         # set allowed methods for metadata harvesting
-        self.allowed_harvesting_methods = [i for i in MetaDataCollector.getEnumMethodNames()]
+        self.allowed_harvesting_methods = [i.acronym() for i in MetaDataCollector.getEnumMethodNames()]
         if allowed_harvesting_methods:
             if all(isinstance(x, enum.Enum) for x in allowed_harvesting_methods):
                 self.allowed_harvesting_methods = allowed_harvesting_methods
@@ -124,6 +124,8 @@ class MetadataHarvester:
         }
 
     def is_harvesting_method_allowed(self, method):
+        if isinstance(method, MetadataOfferingMethods):
+            method = method.value.get("acronym")
         if method in self.allowed_harvesting_methods:
             return True
         else:
@@ -245,7 +247,6 @@ class MetadataHarvester:
                     "metadata": metadict,
                     "namespaces": namespaces,
                 }
-
                 if mdict not in self.metadata_unmerged:
                     self.metadata_unmerged.append(mdict)
         except Exception as e:
@@ -419,13 +420,13 @@ class MetadataHarvester:
             linksetlinks = self.get_signposting_header_links(["linkset", "api-catalog"])
         if linksetlinks:
             linksetlink = linksetlinks[0]
-        print(linksetlinks)
+        # (linksetlinks)
         try:
             if linksetlink.get("url"):
                 requestHelper = RequestHelper(linksetlink.get("url"), self.logger)
                 requestHelper.setAcceptType(AcceptTypes.linkset)
                 neg_source, linkset_data = requestHelper.content_negotiate("FsF-F1-02D")
-                print(requestHelper.request_url, requestHelper.content_type)
+                # print(requestHelper.request_url, requestHelper.content_type)
                 if isinstance(linkset_data, dict):
                     if isinstance(linkset_data.get("linkset"), list):
                         validlinkset = None
@@ -460,7 +461,7 @@ class MetadataHarvester:
                             self.logger.warning(
                                 "FsF-F2-01M : Found Signposting Linkset but none of the given anchors matches landing page or PID"
                             )
-                    print(self.typed_links)
+                    # print(self.typed_links)
                 else:
                     validlinkset = False
                     if linkset_data:
@@ -674,6 +675,7 @@ class MetadataHarvester:
         return extracted
 
     def retrieve_metadata_embedded(self):
+        # print('EMBEDDED #############')
         # ======= RETRIEVE METADATA FROM LANDING PAGE =======
         response_status = None
         try:
@@ -771,6 +773,7 @@ class MetadataHarvester:
                 self.is_harvesting_method_allowed(MetadataOfferingMethods.RDFA)
                 or self.is_harvesting_method_allowed(MetadataOfferingMethods.MICRODATA)
                 or self.is_harvesting_method_allowed(MetadataOfferingMethods.META_TAGS)
+                or self.is_harvesting_method_allowed(MetadataOfferingMethods.JSON_IN_HTML)
             ):
                 self.logger.info("FsF-F2-01M : Starting to analyse EMBEDDED metadata at -: " + str(self.landing_url))
                 # test if content is html otherwise skip embedded tests
@@ -1062,6 +1065,7 @@ class MetadataHarvester:
             #    targeturl = self.pid_url
             # else:
             #    targeturl = self.landing_url
+            # print('TARGET URLS:',target_url_list)
 
             for targeturl in target_url_list:
                 self.logger.info(
@@ -1149,6 +1153,7 @@ class MetadataHarvester:
 
     def retrieve_metadata_external_xml_negotiated(self, target_url_list=[]):
         if self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION):
+            # print('TARGET URLS:',target_url_list)
             for target_url in target_url_list:
                 self.logger.info(
                     "FsF-F2-01M : Trying to retrieve XML metadata through content negotiation from URL -: "
@@ -1156,7 +1161,7 @@ class MetadataHarvester:
                 )
                 negotiated_xml_collector = MetaDataCollectorXML(
                     loggerinst=self.logger,
-                    target_url=self.landing_url,
+                    target_url=target_url,
                     link_type=MetadataOfferingMethods.CONTENT_NEGOTIATION,
                 )
                 negotiated_xml_collector.set_auth_token(self.auth_token, self.auth_token_type)
@@ -1287,17 +1292,16 @@ class MetadataHarvester:
             )
 
     def get_connected_metadata_links(self):
+        connected_metadata_links = []
         # get all links which lead to metadata are given by signposting, typed links, guessing or in html href
-        if (
-            MetadataOfferingMethods.SIGNPOSTING in self.allowed_harvesting_methods
-            or MetadataOfferingMethods.TYPED_LINKS in self.allowed_harvesting_methods
+        if self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING) or self.is_harvesting_method_allowed(
+            MetadataOfferingMethods.TYPED_LINKS
         ):
-            connected_metadata_links = []
             signposting_header_links = []
             # signposting html links
             signposting_html_links = self.get_html_typed_links(["describedby"])
             # signposting header links
-            if MetadataOfferingMethods.SIGNPOSTING in self.allowed_harvesting_methods:
+            if self.is_harvesting_method_allowed(MetadataOfferingMethods.SIGNPOSTING):
                 if self.get_signposting_header_links("describedby"):
                     signposting_header_links = self.get_signposting_header_links("describedby", False)
                     self.logger.info(
@@ -1310,7 +1314,7 @@ class MetadataHarvester:
                 connected_metadata_links.extend(signposting_html_links)
             # if signposting_typeset_links:
             #    connected_metadata_links.extend(signposting_typeset_links)
-            if MetadataOfferingMethods.TYPED_LINKS in self.allowed_harvesting_methods:
+            if self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS):
                 html_typed_links = self.get_html_typed_links(["meta", "alternate meta", "metadata", "alternate"], False)
                 if html_typed_links:
                     connected_metadata_links.extend(html_typed_links)
@@ -1479,7 +1483,7 @@ class MetadataHarvester:
                     else:
                         target_url_list = [target_url]
                 if target_url_list:
-                    target_url_list = set(tu for tu in target_url_list if tu is not None)
+                    target_url_list = set(tu.split("#")[0] for tu in target_url_list if tu is not None)
                     self.retrieve_metadata_external_xml_negotiated(target_url_list)
                     self.retrieve_metadata_external_schemaorg_negotiated(target_url_list)
                     self.retrieve_metadata_external_rdf_negotiated(target_url_list)
