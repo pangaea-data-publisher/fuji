@@ -165,7 +165,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements")
                     skos_metadata = self.get_ontology_metadata(rdf_response_graph)
                 # merging metadata dicts
-                rdf_metadata = skos_metadata | dcat_metadata | schema_metadata
+                try:
+                    rdf_metadata = (
+                        self.exclude_null(skos_metadata)
+                        | self.exclude_null(dcat_metadata)
+                        | self.exclude_null(schema_metadata)
+                    )
+                except:
+                    print("RDF METADICT MERGE ERROR !")
                 # else:
                 if not rdf_metadata:
                     self.logger.info(
@@ -1026,8 +1033,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 if not durl:
                     if isinstance(dist, rdflib.term.URIRef):
                         durl = str(dist)
-                dtype = graph.value(dist, SMA.encodingFormat) or graph.value(dist, SDO.encodingFormat)
-                dsize = graph.value(dist, SMA.contentSize) or graph.value(dist, SDO.contentSize)
+                dtype = (
+                    graph.value(dist, SMA.encodingFormat)
+                    or graph.value(dist, SDO.encodingFormat)
+                    or graph.value(dist, SMA.fileFormat)
+                    or graph.value(dist, SDO.fileFormat)
+                )
+                dsize = (
+                    graph.value(dist, SMA.contentSize)
+                    or graph.value(dist, SDO.contentSize)
+                    or graph.value(dist, SMA.fileSize)
+                    or graph.value(dist, SDO.fileSize)
+                )
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
                         if dtype:
@@ -1125,7 +1142,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         dcat_root_type = "Dataset"
         datasets = []
         cand_roots, object_types_dict = self.find_root_candidates(graph, ["Dataset", "Catalog"])
-        print("CAND ROOTS DCAT: ", cand_roots, object_types_dict)
+        # print("CAND ROOTS DCAT: ", cand_roots, object_types_dict)
         if cand_roots:
             # prioritize Dataset type
             if "Dataset" not in cand_roots:
@@ -1184,6 +1201,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         dservice = graph.value(dcat_service, DCAT.endpointDescription)
                 else:
                     durl = graph.value(dist, DCAT.accessURL) or graph.value(dist, DCAT.downloadURL)
+
                     # taking only one just to check if licence is available and not yet set
                     if not dcat_metadata.get("license"):
                         dcat_metadata["license"] = graph.value(dist, DCTERMS.license)
