@@ -89,10 +89,11 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
                 self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
                 self.score.earned += test_score  # idenfier should be based on a persistence scheme and resolvable
-            self.logger.log(
-                self.fuji.LOG_SUCCESS,
-                self.metric_identifier + f" : Persistence identifier scheme -: {self.fuji.pid_scheme}",
-            )
+            if self.fuji.pid_scheme:
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier + f" : Found persistence identifier scheme -: {self.fuji.pid_scheme}",
+                )
         return test_status, remaining_pid_dict
 
     def testIfPersistentIdentifierResolvestoDomain(self, pid_dict):
