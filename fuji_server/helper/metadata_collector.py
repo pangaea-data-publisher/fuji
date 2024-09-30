@@ -315,3 +315,16 @@ class MetaDataCollector:
     def set_auth_token(self, authtoken, authtokentype):
         self.auth_token = authtoken
         self.auth_token_type = authtokentype
+
+    def exclude_null(self, dt):
+        if isinstance(dt, dict):
+            return dict((k, self.exclude_null(v)) for k, v in dt.items() if v and self.exclude_null(v))
+        elif isinstance(dt, list):
+            try:
+                return list(set([self.exclude_null(v) for v in dt if v and self.exclude_null(v)]))
+            except Exception:
+                return [self.exclude_null(v) for v in dt if v and self.exclude_null(v)]
+        elif isinstance(dt, str):
+            return dt.strip()
+        else:
+            return dt
