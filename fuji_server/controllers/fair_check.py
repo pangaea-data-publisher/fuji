@@ -57,6 +57,7 @@ from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.metric_helper import MetricHelper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.repository_helper import RepositoryHelper
+from fuji_server.helper.request_helper import RequestHelper
 
 
 class FAIRCheck:
@@ -176,11 +177,11 @@ class FAIRCheck:
                     method="POST",
                 )
                 self.webformatter = logging.Formatter("%(levelname)s - %(message)s \r\n")
-        self.verify_pids = Preprocessor.verify_pids
+        """self.verify_pids = Preprocessor.verify_pids
         if not self.verify_pids:
             self.logger.warning(
                 "FsF-F1-02D : Verification of PIDs is disabled in the config file, the evaluation result may be misleading"
-            )
+            )"""
         self.count = 0
         FAIRCheck.load_predata()
         # self.extruct = None
@@ -224,6 +225,7 @@ class FAIRCheck:
             allowed_metadata_standards=allowed_metadata_standards,
         )
         self.repo_helper = None
+        RequestHelper.reset_cache()
 
     @classmethod
     def load_predata(cls):
@@ -234,6 +236,7 @@ class FAIRCheck:
             cls.COMMUNITY_METADATA_STANDARDS = Preprocessor.get_metadata_standards()
             cls.COMMUNITY_METADATA_STANDARDS_URIS = {u.strip().strip('#/') : k for k, v in cls.COMMUNITY_METADATA_STANDARDS.items() for u in v.get('urls')}
             cls.COMMUNITY_METADATA_STANDARDS_NAMES = {k: v.get('title') for k,v in cls.COMMUNITY_METADATA_STANDARDS.items()}"""
+
         if not cls.SCIENCE_FILE_FORMATS:
             cls.SCIENCE_FILE_FORMATS = Preprocessor.get_science_file_formats()
         if not cls.LONG_TERM_FILE_FORMATS:
@@ -697,13 +700,14 @@ class FAIRCheck:
                             self.repository_urls.append(publisher_url)
         if self.repository_urls:
             self.repository_urls = list(set(self.repository_urls))
-        print("REPOSITORY URIS: ", self.repository_urls)
+        # print("REPOSITORY URIS: ", self.repository_urls)
 
     def set_repository_info(self):
         self.set_repository_uris()
         if self.repository_urls:
             for repo_uri in self.repository_urls:
                 repoharvester = MetadataHarvester(repo_uri)
+                repoharvester.allowed_harvesting_methods = ["json_in_html", "rdfa", "signposting", "typed_links"]
                 repoharvester.retrieve_metadata_embedded()
                 repoharvester.retrieve_metadata_external()
                 print("########################### REPO METADATA")
