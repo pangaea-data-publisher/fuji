@@ -1,14 +1,12 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
-
+import json
 import logging
 import re
 from pathlib import Path
 
 from tldextract import extract
-
-import yaml
 
 logger = logging.getLogger(__name__)
 
@@ -32,9 +30,9 @@ class LinkedVocabHelper:
         logger.info("Setting up the vocab dict.........................")
         # a new implementation based on bioportal etc..
 
-        for ont_reg_file in self.linked_vocabs_dir.glob("*.yaml"):
+        for ont_reg_file in self.linked_vocabs_dir.glob("*.json"):
             with open(ont_reg_file, encoding="utf-8") as reg_file:
-                reg_ontologies = yaml.safe_load(reg_file)
+                reg_ontologies = json.load(reg_file)
                 self.linked_vocab_dict.update(reg_ontologies)
 
     def split_iri(self, iri):

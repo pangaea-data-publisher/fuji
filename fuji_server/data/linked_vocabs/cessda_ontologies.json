@@ -1,0 +1,538 @@
+{
+  "cessda.AggregationMethod": {
+    "authority": "cessda",
+    "description": "Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/AggregationMethod",
+    "id": "cessda.AggregationMethod",
+    "name": "Aggregation Method",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "AggregationMethod",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/AggregationMethod$1"
+  },
+  "cessda.AnalysisUnit": {
+    "authority": "cessda",
+    "description": "Describes the entity being analyzed in the study or variable. This vocabulary can also be used to describe the unit of observation, which is the unit being observed, or from which data are collected. The unit of observation can be the same as, or different from the unit of analysis. ",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/AnalysisUnit",
+    "id": "cessda.AnalysisUnit",
+    "name": "Analysis Unit",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "AnalysisUnit",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/AnalysisUnit$1"
+  },
+  "cessda.CdcPublisherNames": {
+    "authority": "cessda",
+    "description": "Names of organisations providing metadata for CESSDA Data Catalogue.",
+    "homepage": "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames/6.0.0",
+    "id": "cessda.CdcPublisherNames",
+    "name": "CDC Publisher Names",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CdcPublisherNames",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames/6.0.0$1"
+  },
+  "cessda.CessdaPersistentIdentifierTypes": {
+    "authority": "cessda",
+    "description": "Lists the types of persistent identifiers that CESSDA accepts as study level PIDs in its data catalogue.",
+    "homepage": "https://vocabularies.cessda.eu/vocabulary/CessdaPersistentIdentifierTypes",
+    "id": "cessda.CessdaPersistentIdentifierTypes",
+    "name": "CESSDA Persistent Identifier Types",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CessdaPersistentIdentifierTypes",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CessdaPersistentIdentifierTypes$1"
+  },
+  "cessda.CharacterSet": {
+    "authority": "cessda",
+    "description": "Standard set of characters upon which many character encodings are based (Wikipedia).",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/CharacterSet",
+    "id": "cessda.CharacterSet",
+    "name": "Character Set",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CharacterSet",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/CharacterSet$1"
+  },
+  "cessda.CommonalityType": {
+    "authority": "cessda",
+    "description": "Describes the degree of similarity between two items or schemes (collections of items).",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/CommonalityType",
+    "id": "cessda.CommonalityType",
+    "name": "Commonality Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CommonalityType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/CommonalityType$1"
+  },
+  "cessda.ContributorRole": {
+    "authority": "cessda",
+    "description": "A classification of contributor roles.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/ContributorRole",
+    "id": "cessda.ContributorRole",
+    "name": "Contributor Role",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "ContributorRole",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/ContributorRole$1"
+  },
+  "cessda.CountryNamesAndCodes": {
+    "authority": "cessda",
+    "description": "ISO 3166-1 alpha-2 country codes and names.",
+    "homepage": "https://vocabularies.cessda.eu/vocabulary/CountryNamesAndCodes",
+    "id": "cessda.CountryNamesAndCodes",
+    "name": "Country Names and Codes",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CountryNamesAndCodes",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CountryNamesAndCodes$1"
+  },
+  "cessda.DataSourceType": {
+    "authority": "cessda",
+    "description": "Includes a typology of data sources.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/DataSourceType",
+    "id": "cessda.DataSourceType",
+    "name": "Data Source Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "DataSourceType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/DataSourceType$1"
+  },
+  "cessda.DataType": {
+    "authority": "cessda",
+    "description": "Identifies the type of data, which has a bearing on the acceptable data values, the operations that can be performed with the data, and the ways in which the data are stored.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/DataType",
+    "id": "cessda.DataType",
+    "name": "Data Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "DataType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/DataType$1"
+  },
+  "cessda.DateType": {
+    "authority": "cessda",
+    "description": "Specifies the type of date.\n",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/DateType",
+    "id": "cessda.DateType",
+    "name": "Date Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "DateType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/DateType$1"
+  },
+  "cessda.GeneralDataFormat": {
+    "authority": "cessda",
+    "description": "Describes the physical format(s) of the data documented in the logical product(s) of a study unit.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/GeneralDataFormat",
+    "id": "cessda.GeneralDataFormat",
+    "name": "General Data Format",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "GeneralDataFormat",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/GeneralDataFormat$1"
+  },
+  "cessda.KategorienschemaWahlstudien": {
+    "authority": "cessda",
+    "description": "The Category Scheme Election Studies provides the ability to categorize election studies at the question and/or variable level.",
+    "homepage": "https://www.gesis.org/vocabulary/KategorienschemaWahlstudien/1.0",
+    "id": "cessda.KategorienschemaWahlstudien",
+    "name": "Category Scheme Election Studies ",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "KategorienschemaWahlstudien",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://www.gesis.org/vocabulary/KategorienschemaWahlstudien/1.0$1"
+  },
+  "cessda.LanguageProficiency": {
+    "authority": "cessda",
+    "description": "Describes the level of proficiency of an individual in a natural language.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/LanguageProficiency",
+    "id": "cessda.LanguageProficiency",
+    "name": "Language Proficiency",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "LanguageProficiency",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/LanguageProficiency$1"
+  },
+  "cessda.LifecycleEventType": {
+    "authority": "cessda",
+    "description": "Specifies the event happening over the data life cycle that is considered significant enough to document.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/LifecycleEventType",
+    "id": "cessda.LifecycleEventType",
+    "name": "Lifecycle Event Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "LifecycleEventType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/LifecycleEventType$1"
+  },
+  "cessda.ModeOfCollection": {
+    "authority": "cessda",
+    "description": "The procedure, technique, or mode of inquiry used to attain the data.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/ModeOfCollection",
+    "id": "cessda.ModeOfCollection",
+    "name": "Mode Of Collection",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "ModeOfCollection",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/ModeOfCollection$1"
+  },
+  "cessda.NumericType": {
+    "authority": "cessda",
+    "description": "Specifies the type of numeric data.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/NumericType",
+    "id": "cessda.NumericType",
+    "name": "Numeric Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "NumericType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/NumericType$1"
+  },
+  "cessda.ResponseUnit": {
+    "authority": "cessda",
+    "description": "Indicates the entity that provided the information carried by the variable.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/ResponseUnit",
+    "id": "cessda.ResponseUnit",
+    "name": "Response Unit",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "ResponseUnit",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/ResponseUnit$1"
+  },
+  "cessda.SamplingProcedure": {
+    "authority": "cessda",
+    "description": "A typology of sampling methods.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/SamplingProcedure",
+    "id": "cessda.SamplingProcedure",
+    "name": "Sampling Procedure",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "SamplingProcedure",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/SamplingProcedure$1"
+  },
+  "cessda.SoftwarePackage": {
+    "authority": "cessda",
+    "description": "Indicates the statistical software package used in the production/processing/dissemination of the data. Data collection software is not covered in this list.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/SoftwarePackage",
+    "id": "cessda.SoftwarePackage",
+    "name": "Software Package",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "SoftwarePackage",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/SoftwarePackage$1"
+  },
+  "cessda.SummaryStatisticType": {
+    "authority": "cessda",
+    "description": "Specifies the type of summary statistic. Summary statistics are a single number representation of the characteristics of a set of values.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType",
+    "id": "cessda.SummaryStatisticType",
+    "name": "Summary Statistic Type",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "SummaryStatisticType",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/SummaryStatisticType$1"
+  },
+  "cessda.TimeMethod": {
+    "authority": "cessda",
+    "description": "Describes the time dimension of the data collection.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TimeMethod",
+    "id": "cessda.TimeMethod",
+    "name": "Time Method",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TimeMethod",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TimeMethod$1"
+  },
+  "cessda.TimeZone": {
+    "authority": "cessda",
+    "description": "Time zone specification as an offset from UTC (Coordinated Universal Time) in terms of hours and minutes.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TimeZone",
+    "id": "cessda.TimeZone",
+    "name": "Time Zone",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TimeZone",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TimeZone$1"
+  },
+  "cessda.TopicClassification": {
+    "authority": "cessda",
+    "description": "A typology of main themes or subjects of data.",
+    "homepage": "https://vocabularies.cessda.eu/vocabulary/TopicClassification",
+    "id": "cessda.TopicClassification",
+    "name": "CESSDA Topic Classification",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TopicClassification",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TopicClassification$1"
+  },
+  "cessda.TypeOfAddress": {
+    "authority": "cessda",
+    "description": "Identifies the type of address entered as contact information for an individual or an organization.\n\n",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfAddress",
+    "id": "cessda.TypeOfAddress",
+    "name": "Type of Address",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfAddress",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfAddress$1"
+  },
+  "cessda.TypeOfConceptGroup": {
+    "authority": "cessda",
+    "description": "Specifies the rationale for creating a concept group.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfConceptGroup",
+    "id": "cessda.TypeOfConceptGroup",
+    "name": "Type of Concept Group",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfConceptGroup",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfConceptGroup$1"
+  },
+  "cessda.TypeOfFrequency": {
+    "authority": "cessda",
+    "description": "Indicates the frequency of data collection events. \n",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfFrequency",
+    "id": "cessda.TypeOfFrequency",
+    "name": "Type of Frequency",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfFrequency",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfFrequency$1"
+  },
+  "cessda.TypeOfInstrument": {
+    "authority": "cessda",
+    "description": "Includes a typology of data collection instruments.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfInstrument",
+    "id": "cessda.TypeOfInstrument",
+    "name": "Type of Instrument",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfInstrument",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfInstrument$1"
+  },
+  "cessda.TypeOfNote": {
+    "authority": "cessda",
+    "description": "Includes a typology of notes.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfNote",
+    "id": "cessda.TypeOfNote",
+    "name": "Type of Note",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfNote",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfNote$1"
+  },
+  "cessda.TypeOfTelephone": {
+    "authority": "cessda",
+    "description": "Identifies the type of telephone entered as contact information for an individual or an organization.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfTelephone",
+    "id": "cessda.TypeOfTelephone",
+    "name": "Type of Telephone",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfTelephone",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfTelephone$1"
+  },
+  "cessda.TypeOfTranslationMethod": {
+    "authority": "cessda",
+    "description": "A typology of methods used to translate data collection instruments, including questionnaires, individual questions, measurements, data capture flows, etc.",
+    "homepage": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfTranslationMethod",
+    "id": "cessda.TypeOfTranslationMethod",
+    "name": "Type of Translation Method",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TypeOfTranslationMethod",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "http://rdf-vocabulary.ddialliance.org/cv/TypeOfTranslationMethod$1"
+  },
+  "cessda.Variables-Relations": {
+    "authority": "cessda",
+    "description": "As the variable is one of the most relevant entities to enhance data reuse in the Social Sciences, we provide a framework design to better semantics the variables' relations descriptions. These explicit relations between variables enable comparability and facilitate harmonization across waves. We provide a brief textual identification of the relation type, supported by a controlled vocabulary (CV) and an extended description of the relationship. These relations within variables include but are not limited to different versions, derived formats in new waves, new labels and name wording, and alternative response schema through questionnaires and surveys. For instance, a given variable label is changed from one wave to another, even though its concept remains the same. Their values also are subject to change, such as new cardinalities settings, their categorization, or response scheme and scale measurement. They change based on different conditions, e.g., values are updated by any constraints or modified to comply with the study evolution requirements or a new sociological approach. In the Social Sciences, Economics, and Behaviour Sciences, which investigate, for instance, the social structure of the population, political attitudes of voters and candidates, opinions on family, work, religion, politics and society or competencies of adults, those topics are highly subject to change to fit the empirical reality in a constantly changing world. Thus, we propose widening relations descriptions for Social Sciences variables within datasets beginning from the BasedOnObjectType DDI as a first approach. ",
+    "homepage": "null/1.0.0",
+    "id": "cessda.Variables-Relations",
+    "name": "Variables relations for Social Sciences research data",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "Variables-Relations",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "null/1.0.0$1"
+  },
+  "cessda.rexconcepts": {
+    "authority": "cessda",
+    "description": "This CV, developed within the framework of the DP-R|EX joint project, maps the central concepts and theoretical approaches in research on racism and right-wing extremism. The compilation is based on a systematic evaluation of the relevant national and international empirical research literature. The CV equally takes into account the different thematic (racism, right-wing extremism, discrimination) as well as methodological (qualitative research, standardised surveys, data from social media and messaging services) research strands. ",
+    "homepage": "null/1.0.0/1.1.0/1.2.0",
+    "id": "cessda.rexconcepts",
+    "name": " Central concepts of R|EX research ",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "rexconcepts",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "null/1.0.0/1.1.0/1.2.0$1"
+  },
+  "cessda.rexgroups": {
+    "authority": "cessda",
+    "description": null,
+    "homepage": "null/1.0.0",
+    "id": "cessda.rexgroups",
+    "name": "rexgroups",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "rexgroups",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "null/1.0.0$1"
+  },
+  "cessda:CdcPublisherNames.v2": {
+    "authority": "cessda",
+    "description": "Names of organisations providing metadata for CESSDA Data Catalogue.",
+    "homepage": "https://vocabularies.cessda.eu/v2/vocabularies/CdcPublisherNames/6.0.0",
+    "id": "cessda:CdcPublisherNames.v2",
+    "name": "CDC Publisher Names",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CdcPublisherNames",
+    "sameas": "cessda:CdcPublisherNames",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/v2/vocabularies/CdcPublisherNames/6.0.0$1"
+  },
+  "cessda:CessdaPersistentIdentifierTypes.v2": {
+    "authority": "cessda",
+    "description": "Lists the types of persistent identifiers that CESSDA accepts as study level PIDs in its data catalogue.",
+    "homepage": "https://vocabularies.cessda.eu/v2/vocabularies/CessdaPersistentIdentifierTypes",
+    "id": "cessda:CessdaPersistentIdentifierTypes.v2",
+    "name": "CESSDA Persistent Identifier Types",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CessdaPersistentIdentifierTypes",
+    "sameas": "cessda:CessdaPersistentIdentifierTypes",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/v2/vocabularies/CessdaPersistentIdentifierTypes$1"
+  },
+  "cessda:CountryNamesAndCodes.v2": {
+    "authority": "cessda",
+    "description": "ISO 3166-1 alpha-2 country codes and names.",
+    "homepage": "https://vocabularies.cessda.eu/v2/vocabularies/CountryNamesAndCodes",
+    "id": "cessda:CountryNamesAndCodes.v2",
+    "name": "Country Names and Codes",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "CountryNamesAndCodes",
+    "sameas": "cessda:CountryNamesAndCodes",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/v2/vocabularies/CountryNamesAndCodes$1"
+  },
+  "cessda:TopicClassification.v2": {
+    "authority": "cessda",
+    "description": "A typology of main themes or subjects of data.",
+    "homepage": "https://vocabularies.cessda.eu/v2/vocabularies/TopicClassification",
+    "id": "cessda:TopicClassification.v2",
+    "name": "CESSDA Topic Classification",
+    "pattern": "\\/?(v\\=)?([0-9]\\.?)+",
+    "prefix": "TopicClassification",
+    "sameas": "cessda:TopicClassification",
+    "source": "https://vocabularies.cessda.eu/",
+    "subjects": [
+      "social sciences"
+    ],
+    "uri_format": "https://vocabularies.cessda.eu/v2/vocabularies/TopicClassification$1"
+  }
+}

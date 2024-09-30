@@ -79,7 +79,7 @@ class Preprocessor:
                     for ext in mime_data.get("extensions"):
                         # if '.' + ext not in mimetypes.types_map:
                         mimetypes.add_type(mime_type, "." + ext, strict=True)
-            print(len(mimetypes.types_map))
+            print("MIME TYPES: ", len(mimetypes.types_map))
         except Exception:
             cls.logger.warning("Loading additional mime types failed, will continue with standard set")
 
@@ -416,105 +416,6 @@ class Preprocessor:
         lov_helper.set_linked_vocab_index()
         cls.linked_vocabs = list(set(lov_helper.namespaces))
         cls.linked_vocab_index = lov_helper.linked_vocab_index
-
-    """@classmethod
-    def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, isDebugMode):
-        # def retrieve_linkedvocabs(cls, lov_api, lodcloud_api, bioportal_api, bioportal_key, isDebugMode):
-        # may take around 20 minutes to test and import all vocabs
-        cls.LOV_API = lov_api
-        cls.LOD_CLOUDNET = lodcloud_api
-        # cls.BIOPORTAL_API = bioportal_api
-        # cls.BIOPORTAL_KEY = bioportal_key
-        ld_path = cls.data_dir / "linked_vocab.yaml"
-        vocabs = []
-        if isDebugMode:
-            with open(ld_path) as f:
-                cls.linked_vocabs = yaml.safe_load(f)
-        else:
-            # 1. retrieve records from https://lov.linkeddata.es/dataset/lov/api
-            # 714 vocabs, of which 104 vocabs uri specified are broken (02072020)
-            try:
-                req = requests.get(lov_api, headers=cls.header)
-                raw_lov = req.json()
-                broken = []
-                cls.logger.info(f"{len(raw_lov)} vocabs specified at {lov_api}")
-                for lov in raw_lov:
-                    title = next(i.get("value") for i in lov.get("titles") if i.get("lang") == "en")
-                    uri = lov.get("uri")
-                    nsp = lov.get("nsp")
-                    if uri and nsp:
-                        if cls.isURIActive(uri):
-                            vocabs.append({"title": title, "namespace": nsp, "uri": uri, "prefix": lov.get("prefix")})
-                        else:
-                            broken.append(uri)
-                    else:
-                        broken.append(uri)
-                cls.logger.info(f"{len(broken)} vocabs uri specified are broken")
-            except requests.exceptions.RequestException as e:
-                cls.logger.error(e)
-            except requests.exceptions.ConnectionError as e1:
-                cls.logger.error(e1)
-
-            all_uris = [d["uri"] for d in vocabs if "uri" in d]
-            # 2a. retrieve vocabs from https://lod-cloud.net/lod-data.json
-            # 1440 vocabs specified of which 1008 broken, so this source may be excluded in future
-            try:
-                r = requests.get(lodcloud_api, headers=cls.header)
-                raw = r.json()
-                cls.logger.info(f"{len(raw)} vocabs specified at {lodcloud_api}")
-                broken_lod = []
-                for r in raw:
-                    d = raw.get(r)
-                    website = d.get("website")
-                    ns = d.get("namespace")
-                    if website and ns:
-                        if cls.isURIActive(website):
-                            if website not in all_uris:
-                                temp = {
-                                    "title": d["title"],
-                                    "namespace": ns,
-                                    "uri": website,
-                                    "prefix": d.get("identifier"),
-                                }
-                                vocabs.append(temp)
-                        else:
-                            broken_lod.append(website)
-                    else:
-                        broken_lod.append(website)
-                cls.logger.info(f"{len(broken_lod)} vocabs uri specified are broken")
-            except requests.exceptions.RequestException as e:
-                cls.logger.error(e)
-            except requests.exceptions.ConnectionError as e1:
-                cls.logger.error(e1)
-
-            # 2b retrieve from BioPortal (excluded for now as the namespace in the ontology not necessarily use bioportal uri)
-            # try:
-            #     params = dict()
-            #     params["apikey"] = bioportal_key
-            #     r = requests.get(bioportal_api, params=params)
-            #     onto_path = r.json()["links"]["ontologies"]
-            #     resp = requests.get(onto_path, params=params)
-            #     ontologies = resp.json()
-            #     cls.logger.info('{0} vocabs specified at {1}'.format(len(ontologies), bioportal_api))
-            #     broken_lod = []
-            #     for onto in ontologies:
-            #         title_onto = onto['name']
-            #         prefix_onto = onto['acronym']
-            #         uri_onto = onto['ui']
-            # except requests.exceptions.RequestException as e:
-            #     cls.logger.exception(e)
-            # except requests.exceptions.ConnectionError as e1:
-            #     cls.logger.exception(e1)
-
-            # 3. write to a local file
-            try:
-                with open(ld_path, "w") as f:
-                    yaml.safe_dump(vocabs, f)
-                    cls.linked_vocabs = vocabs
-            except OSError:
-                cls.logger.error(f"Couldn't write to file {ld_path}.")
-        # for vocab in vocabs.items():
-    """
 
     @staticmethod
     def uri_validator(u):

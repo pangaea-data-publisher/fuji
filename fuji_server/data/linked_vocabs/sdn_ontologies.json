@@ -1,0 +1,4160 @@
+{
+  "seadatanet.a01": {
+    "authority": "seadatanet",
+    "description": "Terms used at all hierarchical levels in the ICAN global thesaurus for coastal erosion.  Terms used to populate drop-down lists in discovery portals.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/A01/current/",
+    "id": "seadatanet.a01",
+    "name": "International Coastal Atlas Network Coastal Erosion Global Thesaurus",
+    "prefix": "a01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/A01/current/$1"
+  },
+  "seadatanet.a02": {
+    "authority": "seadatanet",
+    "description": "Terms used at all hierarchical levels in the Oregon Coastal Atlas for coastal erosion layers, datasets and discovery.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/A02/current/",
+    "id": "seadatanet.a02",
+    "name": "Oregon Coastal Atlas Coastal Erosion Thesaurus markup terms",
+    "prefix": "a02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/A02/current/$1"
+  },
+  "seadatanet.a03": {
+    "authority": "seadatanet",
+    "description": "Terms used at all hierarchical levels in the Oregon Coastal Atlas for categorisation and discovery, but not for layer or dataset markup.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/A03/current/",
+    "id": "seadatanet.a03",
+    "name": "Oregon Coastal Atlas Coastal Erosion Thesaurus discovery terms",
+    "prefix": "a03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/A03/current/$1"
+  },
+  "seadatanet.a04": {
+    "authority": "seadatanet",
+    "description": "A collection of terms used by the Irish Marine Data Atlas in association with the topic of coastal erosion",
+    "homepage": "http://vocab.nerc.ac.uk/collection/A04/current/",
+    "id": "seadatanet.a04",
+    "name": "MIDA Coastal Erosion Thesaurus",
+    "prefix": "a04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/A04/current/$1"
+  },
+  "seadatanet.a05": {
+    "authority": "seadatanet",
+    "description": "Collection of terms used to group key measurements into a set of Essential Variables (EV) and their associated units as part of the AtlantOS Atlantic Ocean dataset",
+    "homepage": "http://vocab.nerc.ac.uk/collection/A05/current/",
+    "id": "seadatanet.a05",
+    "name": "AtlantOS Essential Variables",
+    "prefix": "a05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/A05/current/$1"
+  },
+  "seadatanet.b02": {
+    "authority": "seadatanet",
+    "description": "Internationally registered materials used to assess the accuracy of analyses and for laboratory intercomparability studies with unique identifiers assigned by BODC.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B02/current/",
+    "id": "seadatanet.b02",
+    "name": "BODC-annotated certified reference materials",
+    "prefix": "b02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B02/current/$1"
+  },
+  "seadatanet.b03": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify the type of reference material used by laboratories in the verification of analytical techniques in terms of consistency, accuracy and precision",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B03/current/",
+    "id": "seadatanet.b03",
+    "name": "BODC-annotated reference material classifiers",
+    "prefix": "b03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B03/current/$1"
+  },
+  "seadatanet.b04": {
+    "authority": "seadatanet",
+    "description": "Terms used to populate the title field in the BODC address book.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B04/current/",
+    "id": "seadatanet.b04",
+    "name": "BODC people titles",
+    "prefix": "b04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B04/current/$1"
+  },
+  "seadatanet.b05": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to describe roles that may be given to people within a governance structure.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B05/current/",
+    "id": "seadatanet.b05",
+    "name": "BODC governance roles",
+    "prefix": "b05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B05/current/$1"
+  },
+  "seadatanet.b06": {
+    "authority": "seadatanet",
+    "description": "Terms describing automated integrity checks applied to data and metadata during BODC quality control.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B06/current/",
+    "id": "seadatanet.b06",
+    "name": "BODC data and metadata integrity checks",
+    "prefix": "b06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B06/current/$1"
+  },
+  "seadatanet.b07": {
+    "authority": "seadatanet",
+    "description": "A catalogue of deployment methods of sampling net gears for the collection of mainly plankton, micronekton, and neuston organisms based on Wiebe P.H. et al. (2014)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B07/current/",
+    "id": "seadatanet.b07",
+    "name": "Sampling net gear deployment vocabulary",
+    "prefix": "b07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B07/current/$1"
+  },
+  "seadatanet.b09": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe single and multiple nations who own datasets (and are part of the Celtic Seas Partnership) bounding the Celtic Seas Marine Region as designated by the Marine Strategy Framework Directive (MSFD)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B09/current/",
+    "id": "seadatanet.b09",
+    "name": "Celtic Seas Partnership data owner nations bordering MSFD Celtic Seas Marine Region",
+    "prefix": "b09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B09/current/$1"
+  },
+  "seadatanet.b11": {
+    "authority": "seadatanet",
+    "description": "Procedures or protocols that have been adopted by communities to ensure consistent and comparable methods are used when making observations from the environment. This also includes derivation and quality assurance practices.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B11/current/",
+    "id": "seadatanet.b11",
+    "name": "BODC Standard Operating Procedures and Protocols for environmental observations",
+    "prefix": "b11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B11/current/$1"
+  },
+  "seadatanet.b12": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to define measurement attributes described by numbers associated with data held in its repositories.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B12/current/",
+    "id": "seadatanet.b12",
+    "name": "BODC measurement numeric attribute types",
+    "prefix": "b12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B12/current/$1"
+  },
+  "seadatanet.b20": {
+    "authority": "seadatanet",
+    "description": "Terms used by the Celtic Seas Partnership to categorise stakeholders according to the marine areas within which they operate.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B20/current/",
+    "id": "seadatanet.b20",
+    "name": "Celtic Seas Partnership stakeholder sectors",
+    "prefix": "b20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B20/current/$1"
+  },
+  "seadatanet.b21": {
+    "authority": "seadatanet",
+    "description": "Terms used by the Celtic Seas Partnership to broadly describe the spatial area of influence of a project, programme or initiative.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B21/current/",
+    "id": "seadatanet.b21",
+    "name": "Celtic Seas Partnership scale",
+    "prefix": "b21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B21/current/$1"
+  },
+  "seadatanet.b22": {
+    "authority": "seadatanet",
+    "description": "Terms used by the Celtic Seas Partnership to describe the transboundary nature of a project, programme or initiative.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B22/current/",
+    "id": "seadatanet.b22",
+    "name": "Celtic Seas Partnership governance mechanisms",
+    "prefix": "b22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B22/current/$1"
+  },
+  "seadatanet.b39": {
+    "authority": "seadatanet",
+    "description": "Names of variables recorded into NetCDF files by the underway monitoring system on National Marine Facilities Sea Systems (NMF-SS) research vessels such as the RRS James Cook and RRS Discovery. Variables are from meteorological, hydrographic and navigational instruments.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B39/current/",
+    "id": "seadatanet.b39",
+    "name": "NMF-SS Research Vessel underway variable NetCDF vocabulary",
+    "prefix": "b39",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B39/current/$1"
+  },
+  "seadatanet.b75": {
+    "authority": "seadatanet",
+    "description": "Up-to-date names and addresses for organisational entities referenced in BODC systems.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B75/current/",
+    "id": "seadatanet.b75",
+    "name": "BODC Organisations",
+    "prefix": "b75",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B75/current/$1"
+  },
+  "seadatanet.b76": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe designs or versions of platforms.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/B76/current/",
+    "id": "seadatanet.b76",
+    "name": "BODC Platform Models",
+    "prefix": "b76",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/B76/current/$1"
+  },
+  "seadatanet.bq1": {
+    "authority": "seadatanet",
+    "description": "Terms used by the EMODnet Bathymetry Lot to define the estimated horizontal accuracy of bathymetric data (QI_Horizontal).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/BQ1/current/",
+    "id": "seadatanet.bq1",
+    "name": "EMODnet Bathymetry Quality Indicators of horizontal accuracy (QI_Horizontal)",
+    "prefix": "bq1",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/BQ1/current/$1"
+  },
+  "seadatanet.bq2": {
+    "authority": "seadatanet",
+    "description": "Terms used by the EMODnet Bathymetry Lot to define the estimated vertical accuracy of bathymetric data (QI_Vertical).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/BQ2/current/",
+    "id": "seadatanet.bq2",
+    "name": "EMODnet Bathymetry Quality Indicators of vertical accuracy (QI_Vertical)",
+    "prefix": "bq2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/BQ2/current/$1"
+  },
+  "seadatanet.bq3": {
+    "authority": "seadatanet",
+    "description": "Terms used by the EMODnet Bathymetry Lot to define the purpose of the bathymetry survey (QI_Purpose).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/BQ3/current/",
+    "id": "seadatanet.bq3",
+    "name": "EMODnet Bathymetry Quality Indicators of survey purpose (QI_Purpose)",
+    "prefix": "bq3",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/BQ3/current/$1"
+  },
+  "seadatanet.c00": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the provenance of a water depth included in BODC metadata",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C00/current/",
+    "id": "seadatanet.c00",
+    "name": "BODC Seafloor Depth Data Sources",
+    "prefix": "c00",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C00/current/$1"
+  },
+  "seadatanet.c10": {
+    "authority": "seadatanet",
+    "description": "Terms that describe groups of BODC series with common independent variable characteristics.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C10/current/",
+    "id": "seadatanet.c10",
+    "name": "BODC series feature types",
+    "prefix": "c10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C10/current/$1"
+  },
+  "seadatanet.c16": {
+    "authority": "seadatanet",
+    "description": "Sea area terms from the IHB(1953) list plus additional terms added under SeaDataNet governance.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C16/current/",
+    "id": "seadatanet.c16",
+    "name": "SeaDataNet sea areas",
+    "prefix": "c16",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C16/current/$1"
+  },
+  "seadatanet.c17": {
+    "authority": "seadatanet",
+    "description": "Identifiers and metadata for platform instances (combinations of names and physical entities such as hulls or airframes).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C17/current/",
+    "id": "seadatanet.c17",
+    "name": "ICES Platform Codes",
+    "prefix": "c17",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C17/current/$1"
+  },
+  "seadatanet.c18": {
+    "authority": "seadatanet",
+    "description": "Country names published by ICES on behalf of IOC as part of their RNODC (formats) responsibility.  Maintained until 2003.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C18/current/",
+    "id": "seadatanet.c18",
+    "name": "Intergovernmental Oceanographic Commission countries",
+    "prefix": "c18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C18/current/$1"
+  },
+  "seadatanet.c19": {
+    "authority": "seadatanet",
+    "description": "Terms specified by the SeaVoX vocabulary governance to describe coherent regions of the hydrosphere. Includes land masses enclosing freshwater bodies.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C19/current/",
+    "id": "seadatanet.c19",
+    "name": "SeaVoX salt and fresh water body gazetteer",
+    "prefix": "c19",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C19/current/$1"
+  },
+  "seadatanet.c30": {
+    "authority": "seadatanet",
+    "description": "Bodies responsible for the intellectual control of vocabularies served by the NDG/SeaDataNet vocabulary server.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C30/current/",
+    "id": "seadatanet.c30",
+    "name": "Active vocabulary content governance authorities",
+    "prefix": "c30",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C30/current/$1"
+  },
+  "seadatanet.c31": {
+    "authority": "seadatanet",
+    "description": "WMO ship type codes used to classify voluntary observing ships. Source: [WMO No.47 - International List of Selected, Supplementary and Auxiliary Ships](http://www.wmo.int/pages/prog/www/ois/pub47/pub47-home.htm).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C31/current/",
+    "id": "seadatanet.c31",
+    "name": "World Meteorological Organisation voluntary observing ship category",
+    "prefix": "c31",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C31/current/$1"
+  },
+  "seadatanet.c32": {
+    "authority": "seadatanet",
+    "description": "ISO country codes from ISO3166-1 and ISO3166-3 lists taken from www.iso.org on 16/08/2011 plus OGC terms for missing values and the ISO 3166 Maintenance Agency (ISO3166/MA) Exceptionally Reserved code for the European Union.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C32/current/",
+    "id": "seadatanet.c32",
+    "name": "International Standards Organisation countries",
+    "prefix": "c32",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C32/current/$1"
+  },
+  "seadatanet.c33": {
+    "authority": "seadatanet",
+    "description": "Abbreviated terms used to specify categories of data production tools in the NERC DataGrid MOLES metadata schema.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C33/current/",
+    "id": "seadatanet.c33",
+    "name": "NERC DataGrid data production tool category",
+    "prefix": "c33",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C33/current/$1"
+  },
+  "seadatanet.c34": {
+    "authority": "seadatanet",
+    "description": "Terms used to specify why an activity was undertaken.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C34/current/",
+    "id": "seadatanet.c34",
+    "name": "Activity purpose categories",
+    "prefix": "c34",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C34/current/$1"
+  },
+  "seadatanet.c35": {
+    "authority": "seadatanet",
+    "description": "Medium-granularity (hierarchical level 3 of 5) terms  describing the environment associated with an activity from a biological perspective.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C35/current/",
+    "id": "seadatanet.c35",
+    "name": "European Nature Information System Level 3 Habitats",
+    "prefix": "c35",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C35/current/$1"
+  },
+  "seadatanet.c36": {
+    "authority": "seadatanet",
+    "description": "Legislative acts, agreements and treaties that have provided the impetus for monitoring activities to be undertaken.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C36/current/",
+    "id": "seadatanet.c36",
+    "name": "Monitoring activity legislative drivers",
+    "prefix": "c36",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C36/current/$1"
+  },
+  "seadatanet.c37": {
+    "authority": "seadatanet",
+    "description": "Labels applied to areas of ten degrees latitude by ten degrees longitude in the Marsden Square system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C37/current/",
+    "id": "seadatanet.c37",
+    "name": "Ten-degree Marsden Squares",
+    "prefix": "c37",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C37/current/$1"
+  },
+  "seadatanet.c38": {
+    "authority": "seadatanet",
+    "description": "Names of a geographic location at which a cruise may begin or end. Used by SeaDataNet to populate Cruise Summary Report metadata.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C38/current/",
+    "id": "seadatanet.c38",
+    "name": "SeaDataNet Ports Gazetteer",
+    "prefix": "c38",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C38/current/$1"
+  },
+  "seadatanet.c39": {
+    "authority": "seadatanet",
+    "description": "Codes and terms developed from the Douglas wind sea states to describe the general condition of the surface of a large water body.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C39/current/",
+    "id": "seadatanet.c39",
+    "name": "World Meteorological Organisation sea states",
+    "prefix": "c39",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C39/current/$1"
+  },
+  "seadatanet.c40": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify the accuracy and reliablity of pollution reports filed under the Bonn Agreement.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C40/current/",
+    "id": "seadatanet.c40",
+    "name": "Bonn Agreement pollution report accuracy",
+    "prefix": "c40",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C40/current/$1"
+  },
+  "seadatanet.c41": {
+    "authority": "seadatanet",
+    "description": "Terms developed by BODC to provide a standard classification of pollution sources to be used in UK pollution reports filed under the Bonn Agreement.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C41/current/",
+    "id": "seadatanet.c41",
+    "name": "BODC marine pollution sources",
+    "prefix": "c41",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C41/current/$1"
+  },
+  "seadatanet.c43": {
+    "authority": "seadatanet",
+    "description": "Terms developed by BODC to classify the magnitude of a discharge of oil into the marine environment",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C43/current/",
+    "id": "seadatanet.c43",
+    "name": "BODC oilspill quantity",
+    "prefix": "c43",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C43/current/$1"
+  },
+  "seadatanet.c45": {
+    "authority": "seadatanet",
+    "description": "Concepts specified as descriptors of good environmental status as defined by the Marine Strategy Framework Directive as published in 2010/477/EU: Commission Decision of 1 September 2010 on criteria and methodological standards on good environmental status of marine waters (notified under document C(2010) 5956).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C45/current/",
+    "id": "seadatanet.c45",
+    "name": "Marine Strategy Framework Directive descriptors 2010/477/EU",
+    "prefix": "c45",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C45/current/$1"
+  },
+  "seadatanet.c46": {
+    "authority": "seadatanet",
+    "description": "Concepts specified as criteria to be used to measure good environmental status as defined by the Marine Strategy Framework Directive as published in 2010/477/EU: Commission Decision of 1 September 2010 on criteria and methodological standards on good environmental status of marine waters (notified under document C(2010) 5956).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C46/current/",
+    "id": "seadatanet.c46",
+    "name": "Marine Strategy Framework Directive criteria 2010/477/EU",
+    "prefix": "c46",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C46/current/$1"
+  },
+  "seadatanet.c47": {
+    "authority": "seadatanet",
+    "description": "Concepts specified as indicators to be used to measure good environmental status as defined by the Marine Strategy Framework Directive as published in 2010/477/EU: Commission Decision of 1 September 2010 on criteria and methodological standards on good environmental status of marine waters (notified under document C(2010) 5956).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C47/current/",
+    "id": "seadatanet.c47",
+    "name": "Marine Strategy Framework Directive indicators 2010/477/EU",
+    "prefix": "c47",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C47/current/$1"
+  },
+  "seadatanet.c48": {
+    "authority": "seadatanet",
+    "description": "Documents produced by the Marine Environmental Data and Information Network specifying information content standards for the collection of specific types of marine data",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C48/current/",
+    "id": "seadatanet.c48",
+    "name": "MEDIN Data Guidelines",
+    "prefix": "c48",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C48/current/$1"
+  },
+  "seadatanet.c59": {
+    "authority": "seadatanet",
+    "description": "Generic terms used by BODC to describe the relationship between organisations and projects or data collection activities such as cruises",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C59/current/",
+    "id": "seadatanet.c59",
+    "name": "BODC organisation roles within activities and projects",
+    "prefix": "c59",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C59/current/$1"
+  },
+  "seadatanet.c60": {
+    "authority": "seadatanet",
+    "description": "Terms used in the NDG project to describe the relationship between subjects and objects in RDF triples, including vocabulary term mappings.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C60/current/",
+    "id": "seadatanet.c60",
+    "name": "NERC DataGrid vocabulary term relationships",
+    "prefix": "c60",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C60/current/$1"
+  },
+  "seadatanet.c61": {
+    "authority": "seadatanet",
+    "description": "Labels used by BODC to populate 'city' or 'post town' metadata fields.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C61/current/",
+    "id": "seadatanet.c61",
+    "name": "BODC post town names",
+    "prefix": "c61",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C61/current/$1"
+  },
+  "seadatanet.c62": {
+    "authority": "seadatanet",
+    "description": "Labels used by BODC to populate 'county' metadata fields.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C62/current/",
+    "id": "seadatanet.c62",
+    "name": "BODC administrative region names",
+    "prefix": "c62",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C62/current/$1"
+  },
+  "seadatanet.c64": {
+    "authority": "seadatanet",
+    "description": "Terms used specify regions of the seas around the UK based on bio-geographical features rather than administrative boundaries",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C64/current/",
+    "id": "seadatanet.c64",
+    "name": "United Kingdom Charting Progress 2 sea regions",
+    "prefix": "c64",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C64/current/$1"
+  },
+  "seadatanet.c67": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to describe groups of related parameters brought together to form a series from the sample schema. Each term maps to multiple BODC parameter sets.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C67/current/",
+    "id": "seadatanet.c67",
+    "name": "BODC series parameter collection names",
+    "prefix": "c67",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C67/current/$1"
+  },
+  "seadatanet.c71": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to classify the organisation entities with which it deals.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C71/current/",
+    "id": "seadatanet.c71",
+    "name": "BODC organisation categories",
+    "prefix": "c71",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C71/current/$1"
+  },
+  "seadatanet.c72": {
+    "authority": "seadatanet",
+    "description": "Concepts that describe sediment corer deployment operational issues.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C72/current/",
+    "id": "seadatanet.c72",
+    "name": "BODC core failure codes",
+    "prefix": "c72",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C72/current/$1"
+  },
+  "seadatanet.c75": {
+    "authority": "seadatanet",
+    "description": "Concepts used to populate 'organisation' fields in BODC metadata schemas. When used in conjunction with the C75PK group of functions (NMNOW, NMTHEN, NMALL)they provide access to past organisation names. For example, the C75 code 'ISB' translates to 'Proudman Oceanographic Laboratory' for a date in 1995, but to 'National Oceanography Centre, Liverpool' for a date in 2015.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C75/current/",
+    "id": "seadatanet.c75",
+    "name": "BODC Organisation Histories",
+    "prefix": "c75",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C75/current/$1"
+  },
+  "seadatanet.c77": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe shipboard activities (sometimes inaccurately described as parameters) by SeaDataNet in Cruise Summary Report (formerly known as ROSCOP) metadata.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C77/current/",
+    "id": "seadatanet.c77",
+    "name": "SeaDataNet Cruise Summary Report data categories",
+    "prefix": "c77",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C77/current/$1"
+  },
+  "seadatanet.c86": {
+    "authority": "seadatanet",
+    "description": "SeaDataNet terms to describe roles associated with access rights to data, metadata and project information or the responsibilities for a contact within an activity, project or dataset.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C86/current/",
+    "id": "seadatanet.c86",
+    "name": "SeaDataNet contact and security access roles",
+    "prefix": "c86",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C86/current/$1"
+  },
+  "seadatanet.c87": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to describe roles associated with scientific projects.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C87/current/",
+    "id": "seadatanet.c87",
+    "name": "BODC project roles",
+    "prefix": "c87",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C87/current/$1"
+  },
+  "seadatanet.c88": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC to describe roles specifying access rights to assets, which include data objects, web pages, services and vocabulary lists.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C88/current/",
+    "id": "seadatanet.c88",
+    "name": "BODC asset access right roles",
+    "prefix": "c88",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C88/current/$1"
+  },
+  "seadatanet.c89": {
+    "authority": "seadatanet",
+    "description": "Terms used by BODC for roles that describe the relationship between a person or organisation with a specific dataset.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C89/current/",
+    "id": "seadatanet.c89",
+    "name": "BODC dataset roles",
+    "prefix": "c89",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C89/current/$1"
+  },
+  "seadatanet.c96": {
+    "authority": "seadatanet",
+    "description": "Entities in the BODC data model that may be associated with a spatial coverage in the real world",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C96/current/",
+    "id": "seadatanet.c96",
+    "name": "BODC data model spatial objects",
+    "prefix": "c96",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C96/current/$1"
+  },
+  "seadatanet.c98": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify the lists held in the Vocabulary Server (formerly known as code tables) by the subject of their contents.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/C98/current/",
+    "id": "seadatanet.c98",
+    "name": "Vocabulary Server list subject categories",
+    "prefix": "c98",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/C98/current/$1"
+  },
+  "seadatanet.d01": {
+    "authority": "seadatanet",
+    "description": "A vocabulary of SKOS top concepts for use as entry points to a SKOS scheme defining the DCAT theme keywords for use in linked data representations of the SeaDataNet EDMED catalogue.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/D01/current/",
+    "id": "seadatanet.d01",
+    "name": "DCAT Themes for Linked Data Representation of the SeaDataNet EDMED Catalogue",
+    "prefix": "d01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/D01/current/$1"
+  },
+  "seadatanet.e01": {
+    "authority": "seadatanet",
+    "description": "Names of stations providing sea level data into the ESEAS network.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/E01/current/",
+    "id": "seadatanet.e01",
+    "name": "ESEAS active tide gauge sites",
+    "prefix": "e01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/E01/current/$1"
+  },
+  "seadatanet.e02": {
+    "authority": "seadatanet",
+    "description": "The standard states of processed data defined by the Earth Observing System Data and Information Ssytem (EOSDIS) Data Panel, which are also consistent with the Committee on Data Management, Archiving,\nand Computing (CODMAC) definitions.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/E02/current/",
+    "id": "seadatanet.e02",
+    "name": "Processing Levels for Earth Observing System Standard Data Products",
+    "prefix": "e02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/E02/current/$1"
+  },
+  "seadatanet.el1": {
+    "authority": "seadatanet",
+    "description": "Terms used to identify actions performed on sampling and observation platforms. This vocabulary is the result of an harmonisation exercise between the Eurofleets Automatic Reporting System (EARS) ontology and the Rolling Deck to Repository (R2R) project, for research vessel event logs. The terms it contains should be applicable to any sampling or observation platforms.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/EL1/current/",
+    "id": "seadatanet.el1",
+    "name": "SeaVoX Sampling and Observation Platform Event Actions",
+    "prefix": "el1",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/EL1/current/$1"
+  },
+  "seadatanet.el2": {
+    "authority": "seadatanet",
+    "description": "Terms used to identify processes performed on sampling and observation platforms. This vocabulary is the result of an harmonisation exercise between the Eurofleets Automatic Reporting System (EARS) ontology and the Rolling Deck to Repository (R2R) project, for research vessel event logs. The terms it contains should be applicable to any sampling or observation platforms.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/EL2/current/",
+    "id": "seadatanet.el2",
+    "name": "SeaVoX Sampling and Observation Platform Event Processes",
+    "prefix": "el2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/EL2/current/$1"
+  },
+  "seadatanet.f02": {
+    "authority": "seadatanet",
+    "description": "Terms recommended by an international consortium of marine microbial flow cytometry experts to standardise the naming and definition of groups derived from flow cytometry analysis of marine samples.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/F02/current/",
+    "id": "seadatanet.f02",
+    "name": "Marine Microbial Flow Cytometry Standardised Group Names",
+    "prefix": "f02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/F02/current/$1"
+  },
+  "seadatanet.g01": {
+    "authority": "seadatanet",
+    "description": "Identification of when a given event occurred",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G01/current/",
+    "id": "seadatanet.g01",
+    "name": "CI_DateTypeCode",
+    "prefix": "g01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G01/current/$1"
+  },
+  "seadatanet.g02": {
+    "authority": "seadatanet",
+    "description": "Function performed by the resource",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G02/current/",
+    "id": "seadatanet.g02",
+    "name": "CI_OnlineFunctionCode",
+    "prefix": "g02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G02/current/$1"
+  },
+  "seadatanet.g03": {
+    "authority": "seadatanet",
+    "description": "Mode in which the data are represented",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G03/current/",
+    "id": "seadatanet.g03",
+    "name": "CI_PresentationFormCode",
+    "prefix": "g03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G03/current/$1"
+  },
+  "seadatanet.g04": {
+    "authority": "seadatanet",
+    "description": "Function performed by the responsible party",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G04/current/",
+    "id": "seadatanet.g04",
+    "name": "CI_RoleCode",
+    "prefix": "g04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G04/current/$1"
+  },
+  "seadatanet.g05": {
+    "authority": "seadatanet",
+    "description": "Type or method for evaluating an identified data quality measure",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G05/current/",
+    "id": "seadatanet.g05",
+    "name": "DQ_EvaluationMethodTypeCode",
+    "prefix": "g05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G05/current/$1"
+  },
+  "seadatanet.g06": {
+    "authority": "seadatanet",
+    "description": "Justification for the correlation of two datasets",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G06/current/",
+    "id": "seadatanet.g06",
+    "name": "DS_AssociationTypeCode",
+    "prefix": "g06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G06/current/$1"
+  },
+  "seadatanet.g07": {
+    "authority": "seadatanet",
+    "description": "Type of aggregation activity in which datasets are related",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G07/current/",
+    "id": "seadatanet.g07",
+    "name": "DS_InitiativeTypeCode",
+    "prefix": "g07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G07/current/$1"
+  },
+  "seadatanet.g08": {
+    "authority": "seadatanet",
+    "description": "Code indicating whether grid data are points or area",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G08/current/",
+    "id": "seadatanet.g08",
+    "name": "MD_CellGeometryCode",
+    "prefix": "g08",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G08/current/$1"
+  },
+  "seadatanet.g09": {
+    "authority": "seadatanet",
+    "description": "Name of the character coding standard used in the resource",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G09/current/",
+    "id": "seadatanet.g09",
+    "name": "MD_CharacterSetCode",
+    "prefix": "g09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G09/current/$1"
+  },
+  "seadatanet.g10": {
+    "authority": "seadatanet",
+    "description": "Name of the handling restrictions on the dataset",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G10/current/",
+    "id": "seadatanet.g10",
+    "name": "MD_ClassificationCode",
+    "prefix": "g10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G10/current/$1"
+  },
+  "seadatanet.g11": {
+    "authority": "seadatanet",
+    "description": "Specific type of information represented in the cell",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G11/current/",
+    "id": "seadatanet.g11",
+    "name": "MD_CoverageContentTypeCode",
+    "prefix": "g11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G11/current/$1"
+  },
+  "seadatanet.g12": {
+    "authority": "seadatanet",
+    "description": "Datatype of element or entity",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G12/current/",
+    "id": "seadatanet.g12",
+    "name": "MD_DatatypeCode",
+    "prefix": "g12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G12/current/$1"
+  },
+  "seadatanet.g13": {
+    "authority": "seadatanet",
+    "description": "Name of the dimension",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G13/current/",
+    "id": "seadatanet.g13",
+    "name": "MD_DimensionNameTypeCode ",
+    "prefix": "g13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G13/current/$1"
+  },
+  "seadatanet.g14": {
+    "authority": "seadatanet",
+    "description": "Name of point or vector objects used to locate zero-, one-, two-, or three-dimensional spatial locations in the dataset",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G14/current/",
+    "id": "seadatanet.g14",
+    "name": "MD_GeometricObjectTypeCode",
+    "prefix": "g14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G14/current/$1"
+  },
+  "seadatanet.g15": {
+    "authority": "seadatanet",
+    "description": "Code which indicates conditions which may affect the image",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G15/current/",
+    "id": "seadatanet.g15",
+    "name": "MD_ImagingConditionCode ",
+    "prefix": "g15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G15/current/$1"
+  },
+  "seadatanet.g17": {
+    "authority": "seadatanet",
+    "description": "Frequency with which modifications and deletions are made to the data after they are first produced",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G17/current/",
+    "id": "seadatanet.g17",
+    "name": "MD_MaintenanceFrequencyCode",
+    "prefix": "g17",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G17/current/$1"
+  },
+  "seadatanet.g18": {
+    "authority": "seadatanet",
+    "description": "Method used to write to the medium",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G18/current/",
+    "id": "seadatanet.g18",
+    "name": "MD_MediumFormatCode",
+    "prefix": "g18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G18/current/$1"
+  },
+  "seadatanet.g20": {
+    "authority": "seadatanet",
+    "description": "Obligation of the element or entity",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G20/current/",
+    "id": "seadatanet.g20",
+    "name": "MD_ObligationCode",
+    "prefix": "g20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G20/current/$1"
+  },
+  "seadatanet.g21": {
+    "authority": "seadatanet",
+    "description": "Point in a pixel corresponding to the Earth location of the pixel",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G21/current/",
+    "id": "seadatanet.g21",
+    "name": "MD_PixelOrientationCode",
+    "prefix": "g21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G21/current/$1"
+  },
+  "seadatanet.g22": {
+    "authority": "seadatanet",
+    "description": "Status of the dataset or progress of a review",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G22/current/",
+    "id": "seadatanet.g22",
+    "name": "MD_ProgressCode",
+    "prefix": "g22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G22/current/$1"
+  },
+  "seadatanet.g23": {
+    "authority": "seadatanet",
+    "description": "Limitation(s) placed upon the access or use of the data",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G23/current/",
+    "id": "seadatanet.g23",
+    "name": "MD_RestrictionCode",
+    "prefix": "g23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G23/current/$1"
+  },
+  "seadatanet.g25": {
+    "authority": "seadatanet",
+    "description": "Class of information to which the referencing entity applies",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G25/current/",
+    "id": "seadatanet.g25",
+    "name": "MD_ScopeCode",
+    "prefix": "g25",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G25/current/$1"
+  },
+  "seadatanet.g26": {
+    "authority": "seadatanet",
+    "description": "Terms used to represent geographic information in a dataset; \nISO codelist extracted from 'Codelists for description of metadata datasets compliant with ISO/TC 211 19115:2003 and 19139' at http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml; last checked on 24Sep2018.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G26/current/",
+    "id": "seadatanet.g26",
+    "name": "MD_SpatialRepresentationTypeCode",
+    "prefix": "g26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G26/current/$1"
+  },
+  "seadatanet.g28": {
+    "authority": "seadatanet",
+    "description": "Degree of complexity of the spatial relationships",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G28/current/",
+    "id": "seadatanet.g28",
+    "name": "MD_TopologyLevelCode",
+    "prefix": "g28",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G28/current/$1"
+  },
+  "seadatanet.g29": {
+    "authority": "seadatanet",
+    "description": "Extension of MD_ScopeCode for the needs of GMX application schemas and in the context of a transfer",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G29/current/",
+    "id": "seadatanet.g29",
+    "name": "MX_ScopeCode",
+    "prefix": "g29",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G29/current/$1"
+  },
+  "seadatanet.g30": {
+    "authority": "seadatanet",
+    "description": "Terms used to represent geographic information in a dataset; ISO codelist extracted from 'Codelists for description of metadata datasets compliant with ISO/TC 211 19115:2003 and 19139' at http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml. on 24Sep2018.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/G30/current/",
+    "id": "seadatanet.g30",
+    "name": "MD_SpatialRepresentationTypeCode (DO NOT USE - use G26 instead)",
+    "prefix": "g30",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/G30/current/$1"
+  },
+  "seadatanet.gbx": {
+    "authority": "seadatanet",
+    "description": "System used to control text displayed on BODC web pages on dynamic applications.  The text stored in the description field is displayed in response to a CODVAL instance in the application code.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GBX/current/",
+    "id": "seadatanet.gbx",
+    "name": "I18n system English (UK) language terms",
+    "prefix": "gbx",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GBX/current/$1"
+  },
+  "seadatanet.ggb": {
+    "authority": "seadatanet",
+    "description": "Source data type information for the data sets used in the generation of the GEBCO_2019 Grid.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GGB/current/",
+    "id": "seadatanet.ggb",
+    "name": "GEBCO_2019 Grid source data types",
+    "prefix": "ggb",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GGB/current/$1"
+  },
+  "seadatanet.ggs": {
+    "authority": "seadatanet",
+    "description": "Provenance attributes of data source files used in the production of the GEBCO 30-second grid.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GGS/current/",
+    "id": "seadatanet.ggs",
+    "name": "GEBCO 30-second grid data sources",
+    "prefix": "ggs",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GGS/current/$1"
+  },
+  "seadatanet.ggt": {
+    "authority": "seadatanet",
+    "description": "Source data type information for the data sets used in the generation of the GEBCO Global Grid.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GGT/current/",
+    "id": "seadatanet.ggt",
+    "name": "GEBCO Grid Source Data Type Identifier",
+    "prefix": "ggt",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GGT/current/$1"
+  },
+  "seadatanet.gs1": {
+    "authority": "seadatanet",
+    "description": "Terms used to populate the featureOfInterest name field in the Geo-Seas data object Observations and Measurments documents.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS1/current/",
+    "id": "seadatanet.gs1",
+    "name": "Geo-Seas features of interest",
+    "prefix": "gs1",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS1/current/$1"
+  },
+  "seadatanet.gs2": {
+    "authority": "seadatanet",
+    "description": "Terms used to populate the observedProperty name field in the Geo-Seas data object Observations and Measurments documents.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS2/current/",
+    "id": "seadatanet.gs2",
+    "name": "Geo-Seas observed properties",
+    "prefix": "gs2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS2/current/$1"
+  },
+  "seadatanet.gs3": {
+    "authority": "seadatanet",
+    "description": "Terms used to categorise sedimentary rocks and sediments in terms of the proportion of gravel, sand and mud.  Initial terms proposed by Folk (1954) but subsequently revised by BGS and Flemming (2000).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS3/current/",
+    "id": "seadatanet.gs3",
+    "name": "Geo-Seas adjusted Folk sediment lithology classes",
+    "prefix": "gs3",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS3/current/$1"
+  },
+  "seadatanet.gs4": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe rock and sediment colour in Geo-Seas based on the CGI GeologicUnitExposureColorTerms (https://www.seegrid.csiro.au/wiki/pub/CGIModel/GeologicUnitExposureColorTerms/Color.xls).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS4/current/",
+    "id": "seadatanet.gs4",
+    "name": "Geo-Seas geological sample colours",
+    "prefix": "gs4",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS4/current/$1"
+  },
+  "seadatanet.gs5": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe sediment grain-size skewness coefficients in the Geo-Seas project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS5/current/",
+    "id": "seadatanet.gs5",
+    "name": "Geo-Seas sediment grain-size skewness descriptors",
+    "prefix": "gs5",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS5/current/$1"
+  },
+  "seadatanet.gs6": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe sediment grain-size kurtosis coefficients in the Geo-Seas project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS6/current/",
+    "id": "seadatanet.gs6",
+    "name": "Geo-Seas sediment grain-size kurtosis descriptors",
+    "prefix": "gs6",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS6/current/$1"
+  },
+  "seadatanet.gs8": {
+    "authority": "seadatanet",
+    "description": "Concepts that describe techniques used in fieldwork in the geophysical discipline of seismics",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS8/current/",
+    "id": "seadatanet.gs8",
+    "name": "Geo-Seas Seismic Methods",
+    "prefix": "gs8",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS8/current/$1"
+  },
+  "seadatanet.gs9": {
+    "authority": "seadatanet",
+    "description": "Concepts that describe dimensionality of field surveys in the geophysical discipline of seismics",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GS9/current/",
+    "id": "seadatanet.gs9",
+    "name": "Geo-Seas Seismic Survey Dimensionality",
+    "prefix": "gs9",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GS9/current/$1"
+  },
+  "seadatanet.gsa": {
+    "authority": "seadatanet",
+    "description": "Concepts that describe standard types of data product produced in the geophysical discipline of seismics",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GSA/current/",
+    "id": "seadatanet.gsa",
+    "name": "Geo-Seas Seismic Data Product Types",
+    "prefix": "gsa",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GSA/current/$1"
+  },
+  "seadatanet.gsb": {
+    "authority": "seadatanet",
+    "description": "Concepts that describe instrument types used to measure reflected and refracted acoustic signals in the geophysical discipline of seismics",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GSB/current/",
+    "id": "seadatanet.gsb",
+    "name": "Geo-Seas Seismic Receiver Types",
+    "prefix": "gsb",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GSB/current/$1"
+  },
+  "seadatanet.gsc": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe sound velocity correction applied to bathymetric data in the MGD77 format",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GSC/current/",
+    "id": "seadatanet.gsc",
+    "name": "MGD77 Bathymetry Sound Velocity Correction Codes",
+    "prefix": "gsc",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GSC/current/$1"
+  },
+  "seadatanet.gxm": {
+    "authority": "seadatanet",
+    "description": "The purpose, such as an application, for which a given BODC I18n term in the GBX controlled vocabulary is used.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/GXM/current/",
+    "id": "seadatanet.gxm",
+    "name": "BODC I18n term usage",
+    "prefix": "gxm",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/GXM/current/$1"
+  },
+  "seadatanet.h01": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle types in the EMODnet Chemistry data reporting system. The categories only reflect types based on morphological criteria (e.g. pellets, fragments, etc.) and all reference to the material they were made of was removed from this vocabulary as agreed in https://nvs-vocabs/EMODnetChemVocabs#19.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H01/current/",
+    "id": "seadatanet.h01",
+    "name": "EMODnet micro-litter types",
+    "prefix": "h01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H01/current/$1"
+  },
+  "seadatanet.h02": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle shapes in the EMODnet Chemistry data reporting system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H02/current/",
+    "id": "seadatanet.h02",
+    "name": "EMODnet micro-litter shapes",
+    "prefix": "h02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H02/current/$1"
+  },
+  "seadatanet.h03": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle size classes in the EMODnet Chemistry data reporting system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H03/current/",
+    "id": "seadatanet.h03",
+    "name": "EMODnet micro-litter size classes",
+    "prefix": "h03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H03/current/$1"
+  },
+  "seadatanet.h04": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle colour classes in the EMODnet Chemistry data reporting system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H04/current/",
+    "id": "seadatanet.h04",
+    "name": "EMODnet micro-litter colour classes",
+    "prefix": "h04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H04/current/$1"
+  },
+  "seadatanet.h05": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle characterisation according to the type of non-plastic material or the type of plastic polymer in the EMODnet Chemistry data reporting system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H05/current/",
+    "id": "seadatanet.h05",
+    "name": "EMODnet micro-litter material or polymer type",
+    "prefix": "h05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H05/current/$1"
+  },
+  "seadatanet.h06": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for micro-litter particle transparency categories in the EMODnet Chemistry data reporting format.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/H06/current/",
+    "id": "seadatanet.h06",
+    "name": "EMODnet micro-litter transparency classes",
+    "prefix": "h06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/H06/current/$1"
+  },
+  "seadatanet.ha2": {
+    "authority": "seadatanet",
+    "description": "Terms agreed within the EU EMODnet Human Activities community to describe categories of human activities, structures or organisational boundaries in or near the marine environment.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/HA2/current/",
+    "id": "seadatanet.ha2",
+    "name": "EMODnet human activity categories",
+    "prefix": "ha2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/HA2/current/$1"
+  },
+  "seadatanet.i01": {
+    "authority": "seadatanet",
+    "description": "Extract of definitions from World Meteorological Organisation GRIB2 Table 4.2: meteorological parameter number by product discipline and parameter category.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I01/current/",
+    "id": "seadatanet.i01",
+    "name": "Subset of GRIB Table 4.2 - Parameter number by product discipline and parameter category",
+    "prefix": "i01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I01/current/$1"
+  },
+  "seadatanet.i02": {
+    "authority": "seadatanet",
+    "description": "World Meteorological Organisation GRIB2 Table 4.201: precipitation type.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I02/current/",
+    "id": "seadatanet.i02",
+    "name": "GRIB Table 4.201 (Precipitation type)",
+    "prefix": "i02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I02/current/$1"
+  },
+  "seadatanet.i03": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary terms used within the Wisconsin Coastal Atlas.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I03/current/",
+    "id": "seadatanet.i03",
+    "name": "Wisconsin Coastal Atlas Vocabulary",
+    "prefix": "i03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I03/current/$1"
+  },
+  "seadatanet.i10": {
+    "authority": "seadatanet",
+    "description": "Terms used in the INSPIRE infrastructure to tell a client what type of service to expect at the other end of a URL.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I10/current/",
+    "id": "seadatanet.i10",
+    "name": "INSPIRE service types",
+    "prefix": "i10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I10/current/$1"
+  },
+  "seadatanet.i11": {
+    "authority": "seadatanet",
+    "description": "Types of control used to manage activities within a Management Area, Restriction or Regulation Zone.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I11/current/",
+    "id": "seadatanet.i11",
+    "name": "INSPIRE Management and Reporting Control Type",
+    "prefix": "i11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I11/current/$1"
+  },
+  "seadatanet.i12": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe temporal periods within which an activity is scheduled to be controlled.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I12/current/",
+    "id": "seadatanet.i12",
+    "name": "INSPIRE Management and Reporting Day Type",
+    "prefix": "i12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I12/current/$1"
+  },
+  "seadatanet.i13": {
+    "authority": "seadatanet",
+    "description": "Environmental domain area within which a Management Area, Restriction or Regulation Zone was established.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I13/current/",
+    "id": "seadatanet.i13",
+    "name": "INSPIRE Management and Reporting Environmental Domain Area",
+    "prefix": "i13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I13/current/$1"
+  },
+  "seadatanet.i14": {
+    "authority": "seadatanet",
+    "description": "Classification of the types of activities controlled within a Management Area, Restriction or Regulation Zone.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I14/current/",
+    "id": "seadatanet.i14",
+    "name": "INSPIRE Management and Reporting Controlled Activity Type",
+    "prefix": "i14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I14/current/$1"
+  },
+  "seadatanet.i15": {
+    "authority": "seadatanet",
+    "description": "High-level classification defining the type of Management Area, Restriction or Regulation Zone.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/I15/current/",
+    "id": "seadatanet.i15",
+    "name": "INSPIRE Management and Reporting Zone Type",
+    "prefix": "i15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/I15/current/$1"
+  },
+  "seadatanet.l02": {
+    "authority": "seadatanet",
+    "description": "SeaDataNet profile of ISO MD_GeometricObjectTypeCodeTerms code list.  Known in SEA-SEARCH as 'Library 2'  or cdi_measurement_codes.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L02/current/",
+    "id": "seadatanet.l02",
+    "name": "SeaDataNet Geospatial Feature Types",
+    "prefix": "l02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L02/current/$1"
+  },
+  "seadatanet.l03": {
+    "authority": "seadatanet",
+    "description": "Terms used to express a classification of measurement periodicity in the SeaDataNet project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L03/current/",
+    "id": "seadatanet.l03",
+    "name": "SeaDataNet Measurement Periodicity Categories",
+    "prefix": "l03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L03/current/$1"
+  },
+  "seadatanet.l04": {
+    "authority": "seadatanet",
+    "description": "Terms used to group features or objects (sometimes called features of interest) in which measurements or observations may be made or of which samples may be collected.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L04/current/",
+    "id": "seadatanet.l04",
+    "name": "Matrix Categories",
+    "prefix": "l04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L04/current/$1"
+  },
+  "seadatanet.l05": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify groups of sensors, instruments, sources of algorithmically computed data (numerical models) or samplers (collectors of water, SPM, sediment, rock, air or biota samples).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L05/current/",
+    "id": "seadatanet.l05",
+    "name": "SeaDataNet device categories",
+    "prefix": "l05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L05/current/$1"
+  },
+  "seadatanet.l06": {
+    "authority": "seadatanet",
+    "description": "2-level grouping term hierarchy used for vehicles, structures or organisms capable of bearing instruments or tools for the collection of physical, chemical, geological or biological samples or data.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L06/current/",
+    "id": "seadatanet.l06",
+    "name": "SeaVoX Platform Categories",
+    "prefix": "l06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L06/current/$1"
+  },
+  "seadatanet.l07": {
+    "authority": "seadatanet",
+    "description": "Terms for mechanisms by which data objects described by SeaDataNet Central Data Index (CDI) records may be obtained before SeaDataNet is fully implemented.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L07/current/",
+    "id": "seadatanet.l07",
+    "name": "SeaDataNet data access mechanisms",
+    "prefix": "l07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L07/current/$1"
+  },
+  "seadatanet.l08": {
+    "authority": "seadatanet",
+    "description": "Terms used to represent and classify data access policies in operation in the SeaDataNet project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L08/current/",
+    "id": "seadatanet.l08",
+    "name": "SeaDataNet Data Access Restriction Policies",
+    "prefix": "l08",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L08/current/$1"
+  },
+  "seadatanet.l10": {
+    "authority": "seadatanet",
+    "description": "Co-ordinate reference systems used for positions (latitude/longitude or grid references) in SeaDataNet metadata. May include 3D co-ordinate systems, but not vertical elevation datums like OD Newlyn.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L10/current/",
+    "id": "seadatanet.l10",
+    "name": "SeaDataNet geographic co-ordinate reference frames",
+    "prefix": "l10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L10/current/$1"
+  },
+  "seadatanet.l11": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the zero point for vertical co-ordinate reference systems (datums).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L11/current/",
+    "id": "seadatanet.l11",
+    "name": "SeaDataNet depth measurement reference planes",
+    "prefix": "l11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L11/current/$1"
+  },
+  "seadatanet.l12": {
+    "authority": "seadatanet",
+    "description": "Terms that are used to describe quality control procedures applied to data parameters.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L12/current/",
+    "id": "seadatanet.l12",
+    "name": "SeaDataNet parameter quality control procedures",
+    "prefix": "l12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L12/current/$1"
+  },
+  "seadatanet.l13": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe data coverage over the vertical (z) co-ordinate.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L13/current/",
+    "id": "seadatanet.l13",
+    "name": "SeaVoX Vertical Co-ordinate Coverages",
+    "prefix": "l13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L13/current/$1"
+  },
+  "seadatanet.l14": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the operational status of data collection activities within the SeaDataNet project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L14/current/",
+    "id": "seadatanet.l14",
+    "name": "SeaDataNet Activity Operational Stati",
+    "prefix": "l14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L14/current/$1"
+  },
+  "seadatanet.l15": {
+    "authority": "seadatanet",
+    "description": "Terms used to by SeaDataNet to describe formally recognised standards for data acquisition and handling procedures.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L15/current/",
+    "id": "seadatanet.l15",
+    "name": "SeaDataNet quality management system accreditations",
+    "prefix": "l15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L15/current/$1"
+  },
+  "seadatanet.l18": {
+    "authority": "seadatanet",
+    "description": "Terms used as units in the quantification of what was collected or measured in a Cruise Summary Report (ROSCOP) record.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L18/current/",
+    "id": "seadatanet.l18",
+    "name": "SeaDataNet Cruise Summary Report quantification units",
+    "prefix": "l18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L18/current/$1"
+  },
+  "seadatanet.l19": {
+    "authority": "seadatanet",
+    "description": "Terms used in SeaDataNet metadata to describe the purpose of a keyword.  An extension of the ISO19115 KeywordTypeCode codelist.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L19/current/",
+    "id": "seadatanet.l19",
+    "name": "SeaDataNet keyword types",
+    "prefix": "l19",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L19/current/$1"
+  },
+  "seadatanet.l20": {
+    "authority": "seadatanet",
+    "description": "Flags used to provide additional information, usually referring to data quality, about data values in SeaDataNet data files.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L20/current/",
+    "id": "seadatanet.l20",
+    "name": "SeaDataNet measurand qualifier flags",
+    "prefix": "l20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L20/current/$1"
+  },
+  "seadatanet.l21": {
+    "authority": "seadatanet",
+    "description": "High-level classification of devices based on function and mode of deployment.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L21/current/",
+    "id": "seadatanet.l21",
+    "name": "SeaDataNet device category types",
+    "prefix": "l21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L21/current/$1"
+  },
+  "seadatanet.l22": {
+    "authority": "seadatanet",
+    "description": "Terms for distinct sampling or measuring devices that may be identified in the real world in terms of manufacturer and model number.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L22/current/",
+    "id": "seadatanet.l22",
+    "name": "SeaVoX Device Catalogue",
+    "prefix": "l22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L22/current/$1"
+  },
+  "seadatanet.l23": {
+    "authority": "seadatanet",
+    "description": "Types of metadata record in the SeaDataNet metadata catalogue repositories",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L23/current/",
+    "id": "seadatanet.l23",
+    "name": "SeaDataNet metadata entities",
+    "prefix": "l23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L23/current/$1"
+  },
+  "seadatanet.l24": {
+    "authority": "seadatanet",
+    "description": "Formats used for data delivery by SeaDataNet.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L24/current/",
+    "id": "seadatanet.l24",
+    "name": "SeaDataNet data transport formats",
+    "prefix": "l24",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L24/current/$1"
+  },
+  "seadatanet.l26": {
+    "authority": "seadatanet",
+    "description": "Units of measure (P06 subset) that may be used for sampling intervals in the EDIOS metadata schema. Required to prevent times with units of kilograms!",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L26/current/",
+    "id": "seadatanet.l26",
+    "name": "EDIOS permitted sampling interval units",
+    "prefix": "l26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L26/current/$1"
+  },
+  "seadatanet.l27": {
+    "authority": "seadatanet",
+    "description": "A catalogue including standardised labels of encoding schemes used for data value qualifying information such as data quality ",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L27/current/",
+    "id": "seadatanet.l27",
+    "name": "SeaVoX data quality control flagging conventions",
+    "prefix": "l27",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L27/current/$1"
+  },
+  "seadatanet.l30": {
+    "authority": "seadatanet",
+    "description": "Organisations supplying or holding data concerned with the EU MEDATLAS project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L30/current/",
+    "id": "seadatanet.l30",
+    "name": "MEDATLAS Data Centres",
+    "prefix": "l30",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L30/current/$1"
+  },
+  "seadatanet.l31": {
+    "authority": "seadatanet",
+    "description": "Flags representing concepts used to specify quality of Geo-Seas data objects. These are a subset of SeaDataNet measurand qualifier flags.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L31/current/",
+    "id": "seadatanet.l31",
+    "name": "Geo-Seas data object quality flags",
+    "prefix": "l31",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L31/current/$1"
+  },
+  "seadatanet.l33": {
+    "authority": "seadatanet",
+    "description": "Terms specified by WMO to label XBT data with the type of probe used and the algorithm used to compute depth.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L33/current/",
+    "id": "seadatanet.l33",
+    "name": "WMO C3 vocabulary of XBT data types",
+    "prefix": "l33",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L33/current/$1"
+  },
+  "seadatanet.l34": {
+    "authority": "seadatanet",
+    "description": "Quality flags used for the primary level of the IODE Quality Flag Scheme for the Exchange of Oceanographic and Marine Meteorological Data, IODE Manuals and Guides 54, Vol. 3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L34/current/",
+    "id": "seadatanet.l34",
+    "name": "IODE Primary Level quality flags",
+    "prefix": "l34",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L34/current/$1"
+  },
+  "seadatanet.l35": {
+    "authority": "seadatanet",
+    "description": "A collection of terms which denote the manufacturers or developers of devices (includes manufacturer and/or developer collaborations).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L35/current/",
+    "id": "seadatanet.l35",
+    "name": "SenseOcean device developers and manufacturers",
+    "prefix": "l35",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L35/current/$1"
+  },
+  "seadatanet.m01": {
+    "authority": "seadatanet",
+    "description": "Terms describing what types of data formats exist in a data set so a human can identify if the data is likely to be of use and select a tool to interrogate that data.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M01/current/",
+    "id": "seadatanet.m01",
+    "name": "MEDIN data format categories",
+    "prefix": "m01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M01/current/$1"
+  },
+  "seadatanet.m03": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe different areas within an offshore renewable energy development.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M03/current/",
+    "id": "seadatanet.m03",
+    "name": "The Crown Estate Renewable Energy Development Areas",
+    "prefix": "m03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M03/current/$1"
+  },
+  "seadatanet.m04": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe different development phases of an offshore renewable energy development.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M04/current/",
+    "id": "seadatanet.m04",
+    "name": "The Crown Estate Renewable Energy Development Phases",
+    "prefix": "m04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M04/current/$1"
+  },
+  "seadatanet.m05": {
+    "authority": "seadatanet",
+    "description": "Categories in a classification of the purpose and anticipated outcome of activities by governing bodies.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M05/current/",
+    "id": "seadatanet.m05",
+    "name": "MEDIN socio-economic governance objective categories",
+    "prefix": "m05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M05/current/$1"
+  },
+  "seadatanet.m06": {
+    "authority": "seadatanet",
+    "description": "Categories in a classification of the purpose of activities in which the state of something at different times is determined.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M06/current/",
+    "id": "seadatanet.m06",
+    "name": "MEDIN monitoring activity categories",
+    "prefix": "m06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M06/current/$1"
+  },
+  "seadatanet.m09": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify techniques used to assess the socio-economic value of an ecosystem.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M09/current/",
+    "id": "seadatanet.m09",
+    "name": "MEDIN ecosystem valuation method types",
+    "prefix": "m09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M09/current/$1"
+  },
+  "seadatanet.m10": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe techniques used to assess the socio-economic value of an ecosystem.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M10/current/",
+    "id": "seadatanet.m10",
+    "name": "MEDIN ecosystem valuation methods",
+    "prefix": "m10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M10/current/$1"
+  },
+  "seadatanet.m11": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify the conditions and processes through which natural ecosystems sustain and fulfil human life.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M11/current/",
+    "id": "seadatanet.m11",
+    "name": "MEDIN ecosystem service types",
+    "prefix": "m11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M11/current/$1"
+  },
+  "seadatanet.m12": {
+    "authority": "seadatanet",
+    "description": "Categories of activity carried out by humans which exert an impact on the marine environment, as defined by the Joint Nature Conservation Committee (JNCC) ",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M12/current/",
+    "id": "seadatanet.m12",
+    "name": "JNCC categories of human activity in the marine environment",
+    "prefix": "m12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M12/current/$1"
+  },
+  "seadatanet.m13": {
+    "authority": "seadatanet",
+    "description": "The standard list activities carried out by humans to manage the coastal environment, as defined by the Joint Nature Conservation Committee  (JNCC)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M13/current/",
+    "id": "seadatanet.m13",
+    "name": "JNCC standard list of human activities in the marine environment",
+    "prefix": "m13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M13/current/$1"
+  },
+  "seadatanet.m14": {
+    "authority": "seadatanet",
+    "description": "List of defined pressures (stated by the Joint Nature Conservation Committee (JNCC) to be the mechanisms through which activities impact the marine environment) as specified by the Convention for the Protection of the Marine Environment for the North-East Atlantic (OSPAR) International Correspondence Group on Cumulative Effects (ICG-C) and distributed by the Joint Nature Conservation Committee ",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M14/current/",
+    "id": "seadatanet.m14",
+    "name": "OSPAR list of defined pressures on the marine environment",
+    "prefix": "m14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M14/current/$1"
+  },
+  "seadatanet.m15": {
+    "authority": "seadatanet",
+    "description": "Themes under which defined pressures in M14 are categorised by the Convention for the Protection of the Marine Environment for the North-East Atlantic (OSPAR) International Correspondence Group on Cumulative Effects (ICG-C) and distributed by the Joint Nature Conservation Committee (JNCC) ",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M15/current/",
+    "id": "seadatanet.m15",
+    "name": "OSPAR list of themes of defined pressures on the marine environment",
+    "prefix": "m15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M15/current/$1"
+  },
+  "seadatanet.m16": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe techniques used by marine engineers to investigate marine earth materials. Used in the MEDIN Geotechnical Data Guideline to categorise what type of investigations are carried out at a particular location of interest.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M16/current/",
+    "id": "seadatanet.m16",
+    "name": "Type of geotechnical investigation carried out at a site",
+    "prefix": "m16",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M16/current/$1"
+  },
+  "seadatanet.m17": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify types of samples collected by marine engineers during geotechnical site investigations in the marine environment.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M17/current/",
+    "id": "seadatanet.m17",
+    "name": "Type of sample collected during a geotechnical investigation",
+    "prefix": "m17",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M17/current/$1"
+  },
+  "seadatanet.m18": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify types of container used by marine engineers to store physical specimens collected during marine geotechnical site investigations.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M18/current/",
+    "id": "seadatanet.m18",
+    "name": "Type of container used to hold a physical sample collected during a geotechnical site investigation",
+    "prefix": "m18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M18/current/$1"
+  },
+  "seadatanet.m20": {
+    "authority": "seadatanet",
+    "description": "Version 04.05 of the Marine Habitat Classification for Britain and Ireland (Connor et al. 2004), a hierarchical standard list of seabed habitats occurring within the marine, coastal and estuarine waters of Britain and Ireland. Connor, D.W., J.H. Allen, N.Golding, K.L.Howell, L.M. Lieberknecht, K.O. Northen And J.B. Reker (2004) The Marine Habitat Classification for Britain and Ireland Version 04.05. ISBN 1 861 07561 8.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M20/current/",
+    "id": "seadatanet.m20",
+    "name": "Marine Habitat Classification for Britain and Ireland Version 04.05",
+    "prefix": "m20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M20/current/$1"
+  },
+  "seadatanet.m21": {
+    "authority": "seadatanet",
+    "description": "Version 15.03 of the Marine Habitat Classification for Britain and Ireland (JNCC 2015), a hierarchical standard list of seabed habitats occurring within the marine, coastal and estuarine waters of Britain and Ireland. JNCC (2015) The Marine Habitat Classification for Britain and Ireland Version 15.03 [Online].",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M21/current/",
+    "id": "seadatanet.m21",
+    "name": "Marine Habitat Classification for Britain and Ireland Version 15.03",
+    "prefix": "m21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M21/current/$1"
+  },
+  "seadatanet.m22": {
+    "authority": "seadatanet",
+    "description": "List of species and habitats that are considered to be priorities for protection by the OSPAR Commission (see https://www.ospar.org/work-areas/bdc/species-habitats/list-of-threatened-declining-species-habitats)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M22/current/",
+    "id": "seadatanet.m22",
+    "name": "OSPAR List of Threatened and/or Declining Species and Habitats",
+    "prefix": "m22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M22/current/$1"
+  },
+  "seadatanet.m23": {
+    "authority": "seadatanet",
+    "description": "The HELCOM Underwater biotope and habitat classification system (HELCOM HUB) provides a framework for defining biotopes in the whole Baltic Sea. Defining biotopes by the same split-rules, enables comparison of the biotopes in different regions of the Baltic Sea (see http://www.helcom.fi/baltic-sea-trends/biodiversity/helcom-hub).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M23/current/",
+    "id": "seadatanet.m23",
+    "name": "HELCOM 'HUB' Underwater Biotope and Habitat Classification System",
+    "prefix": "m23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M23/current/$1"
+  },
+  "seadatanet.m24": {
+    "authority": "seadatanet",
+    "description": "Version 97.07 of the Marine Habitat Classification for Britain and Ireland (Connor et al, 1997), a hierarchical standard list of seabed habitats occurring within the marine, coastal and estuarine waters of Britain and Ireland. Volume 1 (JNCC Report No 229) and Volume 2 (JNCC Report No 230).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M24/current/",
+    "id": "seadatanet.m24",
+    "name": "Marine Habitat Classification for Britain and Ireland Version 97.06",
+    "prefix": "m24",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M24/current/$1"
+  },
+  "seadatanet.m25": {
+    "authority": "seadatanet",
+    "description": "Terms that define standards recognised by MEDIN as being used to generate metadata records with the aim of enabling the discovery of geospatial data through online resources such as portals. Standard in this definition also covers specifications and profiles. Terms include both international and UK standards.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M25/current/",
+    "id": "seadatanet.m25",
+    "name": "Geospatial discovery metadata standards, specifications and profiles recognised by MEDIN",
+    "prefix": "m25",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M25/current/$1"
+  },
+  "seadatanet.m26": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe different phases within an offshore development or seabed activity.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M26/current/",
+    "id": "seadatanet.m26",
+    "name": "The Crown Estate Seabed Development Phases",
+    "prefix": "m26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M26/current/$1"
+  },
+  "seadatanet.m27": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe different areas within an offshore development or seabed activity site.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M27/current/",
+    "id": "seadatanet.m27",
+    "name": "The Crown Estate Seabed Development Areas",
+    "prefix": "m27",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M27/current/$1"
+  },
+  "seadatanet.m28": {
+    "authority": "seadatanet",
+    "description": "A collection of terms used to group wetland habitats into three upper-category types, as specified by the Ramsar Convention's (Ramsar, Iran, 1971) Classification System for Wetland Type, approved by Recommendation 4.7 and amended by Resolutions VI.5 and VII.11 of the Conference of the Contracting Parties.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M28/current/",
+    "id": "seadatanet.m28",
+    "name": "Ramsar Classification System for Wetland Type upper categories",
+    "prefix": "m28",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M28/current/$1"
+  },
+  "seadatanet.m29": {
+    "authority": "seadatanet",
+    "description": "A collection of terms used to classify wetland habitat types, as specified by the Ramsar Convention's (Ramsar, Iran, 1971) Classification System for Wetland Type, approved by Recommendation 4.7 and amended by Resolutions VI.5 and VII.11 of the Conference of the Contracting Parties.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/M29/current/",
+    "id": "seadatanet.m29",
+    "name": "Ramsar Classification System for Wetland Type",
+    "prefix": "m29",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/M29/current/$1"
+  },
+  "seadatanet.mvb": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe on-animal sensor data stored in the Movebank database (movebank.org), including individual measurements (events), reference data (animals, tags, deployments) and studies.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/MVB/current/",
+    "id": "seadatanet.mvb",
+    "name": "Movebank Attribute Dictionary",
+    "prefix": "mvb",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/MVB/current/$1"
+  },
+  "seadatanet.n01": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe portals to which a MEDIN discovery metadata record carrying the keyword should be made available.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N01/current/",
+    "id": "seadatanet.n01",
+    "name": "MEDIN metadata record availability",
+    "prefix": "n01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N01/current/$1"
+  },
+  "seadatanet.n02": {
+    "authority": "seadatanet",
+    "description": "Formats recognised by NDG, where this may allow conditional treatment. See also http://proj.badc.rl.ac.uk/ndg/browser/TI07-MOLES/trunk/Documents/NDG_MOLES_Instructions_for_Creation.doc",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N02/current/",
+    "id": "seadatanet.n02",
+    "name": "NERC DataGrid Recognised Formats",
+    "prefix": "n02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N02/current/$1"
+  },
+  "seadatanet.n03": {
+    "authority": "seadatanet",
+    "description": "Terms used to specify the feature types available for coverages in the Climate Science Modelling Language (CSML).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N03/current/",
+    "id": "seadatanet.n03",
+    "name": "Climate Science Modelling Language supported feature types",
+    "prefix": "n03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N03/current/$1"
+  },
+  "seadatanet.n04": {
+    "authority": "seadatanet",
+    "description": "Terms describing types of on-line references in NERC DataGrid service bindings",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N04/current/",
+    "id": "seadatanet.n04",
+    "name": "NERC DataGrid on-line reference types",
+    "prefix": "n04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N04/current/$1"
+  },
+  "seadatanet.n05": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the standard, profile and version number of XML documents that may be uploaded to the NERC DDS.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N05/current/",
+    "id": "seadatanet.n05",
+    "name": "NERC data discovery service input metadata document standards",
+    "prefix": "n05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N05/current/$1"
+  },
+  "seadatanet.n06": {
+    "authority": "seadatanet",
+    "description": "Controlled list of terms used by the NERC Environmnetal Data Centres for submission of DOI metadata records to DataCite. The list is used to populate \nhttp://purl.org/spar/datacite/hasGeneralResourceType from the EDC's GEMINI profiles.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/N06/current/",
+    "id": "seadatanet.n06",
+    "name": "NERC Environmental Data Centres DataCite General Resource Types",
+    "prefix": "n06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/N06/current/$1"
+  },
+  "seadatanet.od1": {
+    "authority": "seadatanet",
+    "description": "Collection of terms used within the French Ocean Data and Services Cluster ODATIS for data discovery and product or dataset aggregation. Whenever applicable, Essential Variable terms are linked to the authoritative source of Essential Climate Ocean and Biodiversity Variable definitions maintained by the Global Observing System for Climate (GCOS), the Global Ocean Observing System (GOOS) and the Group on Earth Observations Biodiversity Observation Network (GEO BON).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/OD1/current/",
+    "id": "seadatanet.od1",
+    "name": "ODATIS aggregation parameters and Essential Variable names",
+    "prefix": "od1",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/OD1/current/$1"
+  },
+  "seadatanet.og1": {
+    "authority": "seadatanet",
+    "description": "Terms in this vocabulary are under the content governance of the OceanGliders Data Management Task Team (OGDMTT) on behalf of the OceanGliders community and Everyone's Gliding Observatories (EGO). Terms describe measured phenomena within the OG/EGO format.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/OG1/current/",
+    "id": "seadatanet.og1",
+    "name": "OceanGliders Parameter Usage Vocabulary",
+    "prefix": "og1",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/OG1/current/$1"
+  },
+  "seadatanet.p01": {
+    "authority": "seadatanet",
+    "description": "Terms built using the BODC parameter semantic model designed to describe individual measured phenomena. May be used to mark up sets of data such as a NetCDF array or spreadsheet column. Units must be specified when using a P01 code. The P06 unit that is linked to individual P01 in the NVS is the one used in BODC's systems but external users can use any appropriate units.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P01/current/",
+    "id": "seadatanet.p01",
+    "name": "BODC Parameter Usage Vocabulary",
+    "prefix": "p01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P01/current/$1"
+  },
+  "seadatanet.p02": {
+    "authority": "seadatanet",
+    "description": "Terms describing fine-grained related groups of measurement phenomena designed to be used in dataset discovery interfaces.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P02/current/",
+    "id": "seadatanet.p02",
+    "name": "SeaDataNet Parameter Discovery Vocabulary",
+    "prefix": "p02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P02/current/$1"
+  },
+  "seadatanet.p03": {
+    "authority": "seadatanet",
+    "description": "Terms agreed within the EU SeaDataNet community to describe coarse-grained groupings of related measurement phenomena.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P03/current/",
+    "id": "seadatanet.p03",
+    "name": "SeaDataNet Agreed Parameter Groups",
+    "prefix": "p03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P03/current/$1"
+  },
+  "seadatanet.p04": {
+    "authority": "seadatanet",
+    "description": "Concatenated category, topic, term and variable separated by '>'. From Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P04/current/",
+    "id": "seadatanet.p04",
+    "name": "Global Change Master Directory Science Keywords V5",
+    "prefix": "p04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P04/current/$1"
+  },
+  "seadatanet.p05": {
+    "authority": "seadatanet",
+    "description": "Terms defined by ISO describing data themes.  Used to populate the mandatory ISO19115 topic category field.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P05/current/",
+    "id": "seadatanet.p05",
+    "name": "International Standards Organisation ISO19115 Topic Categories",
+    "prefix": "p05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P05/current/$1"
+  },
+  "seadatanet.p06": {
+    "authority": "seadatanet",
+    "description": "Terms approved for use by BODC to describe the measurement units for data held in its repositories.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P06/current/",
+    "id": "seadatanet.p06",
+    "name": "BODC-approved data storage units",
+    "prefix": "p06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P06/current/$1"
+  },
+  "seadatanet.p07": {
+    "authority": "seadatanet",
+    "description": "Terms used for definitive but not necessarily comprehensive descriptions of measured phenomena in the CF conventions (a content standard for data stored in NetCDF).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P07/current/",
+    "id": "seadatanet.p07",
+    "name": "Climate and Forecast Standard Names",
+    "prefix": "p07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P07/current/$1"
+  },
+  "seadatanet.p08": {
+    "authority": "seadatanet",
+    "description": "Terms used to classify SeaDataNet Agreed Parameter Groups to provide topic/theme level terms in a hierarchical parameter discovery interface.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P08/current/",
+    "id": "seadatanet.p08",
+    "name": "SeaDataNet Parameter Disciplines",
+    "prefix": "p08",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P08/current/$1"
+  },
+  "seadatanet.p09": {
+    "authority": "seadatanet",
+    "description": "Terms under the content governance of SISMER used to describe measured phenomena within the MEDATLAS project.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P09/current/",
+    "id": "seadatanet.p09",
+    "name": "MEDATLAS Parameter Usage Vocabulary",
+    "prefix": "p09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P09/current/$1"
+  },
+  "seadatanet.p10": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe sensors, instruments and other pieces of scientific equipment in the NASA Global Change Master Directory metadatabase.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P10/current/",
+    "id": "seadatanet.p10",
+    "name": "Global Change Master Directory Instrument Keywords",
+    "prefix": "p10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P10/current/$1"
+  },
+  "seadatanet.p11": {
+    "authority": "seadatanet",
+    "description": "Category level terms from the Science Keywords from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P11/current/",
+    "id": "seadatanet.p11",
+    "name": "Global Change Master Directory Science Keyword categories",
+    "prefix": "p11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P11/current/$1"
+  },
+  "seadatanet.p12": {
+    "authority": "seadatanet",
+    "description": "Topic level terms from the Science Keywords from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P12/current/",
+    "id": "seadatanet.p12",
+    "name": "Global Change Master Directory Science Keyword topics",
+    "prefix": "p12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P12/current/$1"
+  },
+  "seadatanet.p13": {
+    "authority": "seadatanet",
+    "description": "Term level terms from the Science Keywords from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P13/current/",
+    "id": "seadatanet.p13",
+    "name": "Global Change Master Directory Science Keyword terms",
+    "prefix": "p13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P13/current/$1"
+  },
+  "seadatanet.p14": {
+    "authority": "seadatanet",
+    "description": "Variable level terms from the Science Keywords from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P14/current/",
+    "id": "seadatanet.p14",
+    "name": "Global Change Master Directory Science Keyword variables",
+    "prefix": "p14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P14/current/$1"
+  },
+  "seadatanet.p15": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe measured phenomena derivation algorithms in the CF conventions (a content standard for data stored in NetCDF), primarily targeted at statistical parameters.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P15/current/",
+    "id": "seadatanet.p15",
+    "name": "Climate and Forecast Cell Methods",
+    "prefix": "p15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P15/current/$1"
+  },
+  "seadatanet.p17": {
+    "authority": "seadatanet",
+    "description": "Research vessels deemed to be of interest to POGO.  'Of interest' is defined as active ocean-going research vessels greater than 60m in length",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P17/current/",
+    "id": "seadatanet.p17",
+    "name": "Partnership for Observation of the Global Ocean ships of interest",
+    "prefix": "p17",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P17/current/$1"
+  },
+  "seadatanet.p18": {
+    "authority": "seadatanet",
+    "description": "Chronostratigraphic unit terms from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P18/current/",
+    "id": "seadatanet.p18",
+    "name": "Global Change Master Directory Chronostratigraphic Units",
+    "prefix": "p18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P18/current/$1"
+  },
+  "seadatanet.p19": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe sensor-bearing platforms from Olsen L.M. et. al (2006) NASA/GCMD Earth Science Keywords Version 5.3.3.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P19/current/",
+    "id": "seadatanet.p19",
+    "name": "Global Change Master Directory platforms",
+    "prefix": "p19",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P19/current/$1"
+  },
+  "seadatanet.p20": {
+    "authority": "seadatanet",
+    "description": "Terms used in NASA's GCMD to describe the function of related URLs embedded in DIF metadata records.  Also used for NERC DataGrid service bindings.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P20/current/",
+    "id": "seadatanet.p20",
+    "name": "Global Change Master Directory URL content types",
+    "prefix": "p20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P20/current/$1"
+  },
+  "seadatanet.p21": {
+    "authority": "seadatanet",
+    "description": "Base terms (all hierarchical levels) interlinked by a relationship network to build the Marisaurus thesaurus.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P21/current/",
+    "id": "seadatanet.p21",
+    "name": "Marisaurus Thesaurus",
+    "prefix": "p21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P21/current/$1"
+  },
+  "seadatanet.p22": {
+    "authority": "seadatanet",
+    "description": "Groupings of spatial data according to Annex I, II and III of the INSPIRE Directive [DS-D2.5]",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P22/current/",
+    "id": "seadatanet.p22",
+    "name": "GEMET - INSPIRE themes, version 1.0",
+    "prefix": "p22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P22/current/$1"
+  },
+  "seadatanet.p23": {
+    "authority": "seadatanet",
+    "description": "Coarse grained grouping terms designed by MEDIN to provide the top level for a parameter discovery thesaurus.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P23/current/",
+    "id": "seadatanet.p23",
+    "name": "MEDIN Parameter Discipline Keywords",
+    "prefix": "p23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P23/current/$1"
+  },
+  "seadatanet.p24": {
+    "authority": "seadatanet",
+    "description": "Classification concepts for units of measure based upon the fundamental SI quantities upon which they are based.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P24/current/",
+    "id": "seadatanet.p24",
+    "name": "Units of measure dimensions",
+    "prefix": "p24",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P24/current/$1"
+  },
+  "seadatanet.p25": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe phenomena within the NETMAR project at a granularity level suitable for labelling data aggregations or assessing whether the parameter is appropriate as an input to a given WPS.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P25/current/",
+    "id": "seadatanet.p25",
+    "name": "NETMAR aggregation parameters",
+    "prefix": "p25",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P25/current/$1"
+  },
+  "seadatanet.p26": {
+    "authority": "seadatanet",
+    "description": "A collection of categories and sub-categories developed by ISO to classify services that display or process spatial data",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P26/current/",
+    "id": "seadatanet.p26",
+    "name": "ISO19119 geographic services taxonomy",
+    "prefix": "p26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P26/current/$1"
+  },
+  "seadatanet.p27": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the environmental spatial location of an aliquot of a simulated oil spill by the METEO France MOTHY model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P27/current/",
+    "id": "seadatanet.p27",
+    "name": "Oil spill spillet location",
+    "prefix": "p27",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P27/current/$1"
+  },
+  "seadatanet.p28": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the operational stati of pollution cleanup sites in the Cedre cleanup site service.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P28/current/",
+    "id": "seadatanet.p28",
+    "name": "Cedre pollution site cleanup operational stati",
+    "prefix": "p28",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P28/current/$1"
+  },
+  "seadatanet.p29": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the characteristics of regions of the Earth's Surface or their representation in a numerical simulation in the CF metadata conventions for data stored in NetCDF.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P29/current/",
+    "id": "seadatanet.p29",
+    "name": "Climate and Forecast Area Types",
+    "prefix": "p29",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P29/current/$1"
+  },
+  "seadatanet.p30": {
+    "authority": "seadatanet",
+    "description": "Terms used to label regions of the Earth's Surface or their representation in a numerical simulation in the CF metadata conventions for data stored in NetCDF.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P30/current/",
+    "id": "seadatanet.p30",
+    "name": "Climate and Forecast Standardized Region Names",
+    "prefix": "p30",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P30/current/$1"
+  },
+  "seadatanet.p31": {
+    "authority": "seadatanet",
+    "description": "Terms used to define the recognised metadata attributes for the description of CF-compliant data stored in NetCDF files.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P31/current/",
+    "id": "seadatanet.p31",
+    "name": "Climate and Forecast Attribute Names",
+    "prefix": "p31",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P31/current/$1"
+  },
+  "seadatanet.p35": {
+    "authority": "seadatanet",
+    "description": "Labels used for aggregated parameters in the EMODNET chemistry lot",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P35/current/",
+    "id": "seadatanet.p35",
+    "name": "EMODnet Chemistry aggregated parameter names",
+    "prefix": "p35",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P35/current/$1"
+  },
+  "seadatanet.p36": {
+    "authority": "seadatanet",
+    "description": "Terms based on the EU MSFD used by the EMODNET chemistry lot to provide coarse granularity groupings of the chemical parameters it covers.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P36/current/",
+    "id": "seadatanet.p36",
+    "name": "EMODnet Chemistry chemical groups",
+    "prefix": "p36",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P36/current/$1"
+  },
+  "seadatanet.p37": {
+    "authority": "seadatanet",
+    "description": "Terms used by the CF community to describe the calendar systems used for time co-ordinates in CF-compliant data files",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P37/current/",
+    "id": "seadatanet.p37",
+    "name": "Climate and Forecast Calendars",
+    "prefix": "p37",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P37/current/$1"
+  },
+  "seadatanet.p38": {
+    "authority": "seadatanet",
+    "description": "Terms used by the CF community to describe the data coverage over the vertical (z) co-ordinate. This is used to describe the Earth Realm in the CF Standard Name semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P38/current/",
+    "id": "seadatanet.p38",
+    "name": "Climate and Forecast Vertical Co-ordinate Coverages",
+    "prefix": "p38",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P38/current/$1"
+  },
+  "seadatanet.p64": {
+    "authority": "seadatanet",
+    "description": "Concatenated category, topic, term and variable separated by '>'. From Olsen L.M. et. al (2007) NASA/GCMD Earth Science Keywords Version 6.0.0.0",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P64/current/",
+    "id": "seadatanet.p64",
+    "name": "Global Change Master Directory Science Keywords V6",
+    "prefix": "p64",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P64/current/$1"
+  },
+  "seadatanet.q01": {
+    "authority": "seadatanet",
+    "description": "Collection of terms used by the Ocean Biogeographic Information System to standardise attributes related to sampling instruments and methods.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/Q01/current/",
+    "id": "seadatanet.q01",
+    "name": "OBIS sampling instruments and methods attributes",
+    "prefix": "q01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/Q01/current/$1"
+  },
+  "seadatanet.r01": {
+    "authority": "seadatanet",
+    "description": "Terms describing the type of data contained in an Argo netCDF file. Argo netCDF variable DATA_TYPE is populated by R01 prefLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R01/current/",
+    "id": "seadatanet.r01",
+    "name": "Argo data type",
+    "prefix": "r01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R01/current/$1"
+  },
+  "seadatanet.r03": {
+    "authority": "seadatanet",
+    "description": "Terms describing individual measured phenomena, used to mark up sets of data in Argo netCDF arrays. Argo netCDF variables PARAMETER and TRAJECTORY_PARAMETERS are populated by R03 altLabel; R03 altLabel is also used to name netCDF profile files parameter variables <PARAMETER>.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R03/current/",
+    "id": "seadatanet.r03",
+    "name": "Argo parameter codes",
+    "prefix": "r03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R03/current/$1"
+  },
+  "seadatanet.r04": {
+    "authority": "seadatanet",
+    "description": "Codes for data centres and institutions handling or managing Argo data. Argo netCDF variable DATA_CENTRE is populated by R04 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R04/current/",
+    "id": "seadatanet.r04",
+    "name": "Argo data centres and institutions",
+    "prefix": "r04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R04/current/$1"
+  },
+  "seadatanet.r05": {
+    "authority": "seadatanet",
+    "description": "Accuracy in latitude and longitude measurements received from the positioning system, grouped by location accuracy classes.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R05/current/",
+    "id": "seadatanet.r05",
+    "name": "Argo position accuracy",
+    "prefix": "r05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R05/current/$1"
+  },
+  "seadatanet.r06": {
+    "authority": "seadatanet",
+    "description": "Processing stage of the data based on the concatenation of processing level and class indicators. Argo netCDF variable DATA_STATE_INDICATOR is populated by R06 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R06/current/",
+    "id": "seadatanet.r06",
+    "name": "Argo data state indicators",
+    "prefix": "r06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R06/current/$1"
+  },
+  "seadatanet.r07": {
+    "authority": "seadatanet",
+    "description": "Coded history information for each action performed on each profile by a data centre. Argo netCDF variable HISTORY_ACTION is populated by R07 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R07/current/",
+    "id": "seadatanet.r07",
+    "name": "Argo history action codes",
+    "prefix": "r07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R07/current/$1"
+  },
+  "seadatanet.r08": {
+    "authority": "seadatanet",
+    "description": "Subset of instrument type codes from the World Meteorological Organization (WMO) Common Code Table C-3 (CCT C-3) 1770, named 'Instrument make and type for water temperature profile measurement with fall rate equation coefficients' and available here: https://library.wmo.int/doc_num.php?explnum_id=11283. Argo netCDF variable WMO_INST_TYPE is populated by R08 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R08/current/",
+    "id": "seadatanet.r08",
+    "name": "Argo instrument types",
+    "prefix": "r08",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R08/current/$1"
+  },
+  "seadatanet.r09": {
+    "authority": "seadatanet",
+    "description": "List of float location measuring systems. Argo netCDF variable POSITIONING_SYSTEM is populated by R09 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R09/current/",
+    "id": "seadatanet.r09",
+    "name": "Argo positioning system",
+    "prefix": "r09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R09/current/$1"
+  },
+  "seadatanet.r10": {
+    "authority": "seadatanet",
+    "description": "List of telecommunication systems. Argo netCDF variable TRANS_SYSTEM is populated by R10 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R10/current/",
+    "id": "seadatanet.r10",
+    "name": "Argo transmission systems",
+    "prefix": "r10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R10/current/$1"
+  },
+  "seadatanet.r11": {
+    "authority": "seadatanet",
+    "description": "List of real-time quality-control tests and corresponding binary identifiers, used as reference to populate the Argo netCDF HISTORY_QCTEST variable.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R11/current/",
+    "id": "seadatanet.r11",
+    "name": "Argo real-time quality-control test identifiers",
+    "prefix": "r11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R11/current/$1"
+  },
+  "seadatanet.r12": {
+    "authority": "seadatanet",
+    "description": "Data processing step codes for history record. Argo netCDF variable TRANS_SYSTEM is populated by R12 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R12/current/",
+    "id": "seadatanet.r12",
+    "name": "Argo history processing step codes",
+    "prefix": "r12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R12/current/$1"
+  },
+  "seadatanet.r13": {
+    "authority": "seadatanet",
+    "description": "Ocean area codes assigned to each profile in the Metadata directory (index) file of the Argo Global Assembly Centre.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R13/current/",
+    "id": "seadatanet.r13",
+    "name": "Argo ocean area codes and boundary definitions",
+    "prefix": "r13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R13/current/$1"
+  },
+  "seadatanet.r14": {
+    "authority": "seadatanet",
+    "description": "List of technical parameters reported by a float at every cycle. Technical parameter names follow a naming convention to indicate what is being reported (category), where or when (descriptor), and in what units, delimited by an underscore. They are stored in the float 'tech.nc' file, under TECHNICAL_PARAMETER_NAME. Each technical parameter name has an associated value, stored in TECHNICAL_PARAMTER_VALUE. Argo netCDF variable TECHNICAL_PARAMETER_NAME is populated by R14 prefLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R14/current/",
+    "id": "seadatanet.r14",
+    "name": "Argo technical parameter names",
+    "prefix": "r14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R14/current/$1"
+  },
+  "seadatanet.r15": {
+    "authority": "seadatanet",
+    "description": "Measurement code IDs used in Argo Trajectory netCDF files. Argo netCDF variable MEASUREMENT_CODE is populated by R15 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R15/current/",
+    "id": "seadatanet.r15",
+    "name": "Argo trajectory measurement code identifiers",
+    "prefix": "r15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R15/current/$1"
+  },
+  "seadatanet.r16": {
+    "authority": "seadatanet",
+    "description": "Profile sampling schemes and sampling methods. Argo netCDF variable VERTICAL_SAMPLING_SCHEME is populated by R16 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R16/current/",
+    "id": "seadatanet.r16",
+    "name": "Argo vertical sampling schemes",
+    "prefix": "r16",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R16/current/$1"
+  },
+  "seadatanet.r18": {
+    "authority": "seadatanet",
+    "description": "List of float configuration settings selected by the float Principal Investigator (PI). Configuration parameters may or may not be reported by the float, and do not constitute float measurements. Configuration parameters selected for a float are stored in the float 'meta.nc' file, under CONFIG_PARAMETER_NAME. Each configuration parameter name has an associated value, stored in CONFIG_PARAMETER_VALUE. Argo netCDF variable CONFIG_PARAMETER_NAME is populated by R18 prefLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R18/current/",
+    "id": "seadatanet.r18",
+    "name": "Argo configuration parameter names",
+    "prefix": "r18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R18/current/$1"
+  },
+  "seadatanet.r19": {
+    "authority": "seadatanet",
+    "description": "Flag scale for values in all Argo netCDF cycle timing variables. Argo netCDF cycle timing variables JULD_<RTV>_STATUS are populated by R19 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R19/current/",
+    "id": "seadatanet.r19",
+    "name": "Argo STATUS flags",
+    "prefix": "r19",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R19/current/$1"
+  },
+  "seadatanet.r20": {
+    "authority": "seadatanet",
+    "description": "Codes to indicate the best estimate of whether the float touched the ground during a specific cycle. Argo netCDF variable GROUNDED in the Trajectory file is populated by R20 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R20/current/",
+    "id": "seadatanet.r20",
+    "name": "Argo GROUNDED flags",
+    "prefix": "r20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R20/current/$1"
+  },
+  "seadatanet.r21": {
+    "authority": "seadatanet",
+    "description": "Argo status flag on the Representative Park Pressure (RPP). Argo netCDF variable REPRESENTATIVE_PARK_PRESSURE_STATUS in the Trajectory file is populated by R21 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R21/current/",
+    "id": "seadatanet.r21",
+    "name": "Argo status flag on the Representative Park Pressure (RPP)",
+    "prefix": "r21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R21/current/$1"
+  },
+  "seadatanet.r22": {
+    "authority": "seadatanet",
+    "description": "List of platform family/category of Argo floats. Argo netCDF variable PLATFORM_FAMILY is populated by R22 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R22/current/",
+    "id": "seadatanet.r22",
+    "name": "Argo platform family",
+    "prefix": "r22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R22/current/$1"
+  },
+  "seadatanet.r23": {
+    "authority": "seadatanet",
+    "description": "List of Argo float types. Argo netCDF variable PLATFORM_TYPE is populated by R23 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R23/current/",
+    "id": "seadatanet.r23",
+    "name": "Argo platform type",
+    "prefix": "r23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R23/current/$1"
+  },
+  "seadatanet.r24": {
+    "authority": "seadatanet",
+    "description": "List of Argo float manufacturers. Argo netCDF variable PLATFORM_MAKER is populated by R24 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R24/current/",
+    "id": "seadatanet.r24",
+    "name": "Argo platform maker",
+    "prefix": "r24",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R24/current/$1"
+  },
+  "seadatanet.r25": {
+    "authority": "seadatanet",
+    "description": "Terms describing sensor types mounted on Argo floats. Argo netCDF variable SENSOR is populated by R25 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R25/current/",
+    "id": "seadatanet.r25",
+    "name": "Argo sensor types",
+    "prefix": "r25",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R25/current/$1"
+  },
+  "seadatanet.r26": {
+    "authority": "seadatanet",
+    "description": "Terms describing developers and manufacturers of sensors mounted on Argo floats. Argo netCDF variable SENSOR_MAKER is populated by R26 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R26/current/",
+    "id": "seadatanet.r26",
+    "name": "Argo sensor manufacturers",
+    "prefix": "r26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R26/current/$1"
+  },
+  "seadatanet.r27": {
+    "authority": "seadatanet",
+    "description": "Terms listing models of sensors mounted on Argo floats. Note: avoid using the manufacturer name and sensor firmware version in new entries when possible. Argo netCDF variable SENSOR_MODEL is populated by R27 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R27/current/",
+    "id": "seadatanet.r27",
+    "name": "Argo sensor models",
+    "prefix": "r27",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R27/current/$1"
+  },
+  "seadatanet.r28": {
+    "authority": "seadatanet",
+    "description": "List of Argo floats controller board types and generations. Argo netCDF variables CONTROLLER_BOARD_TYPE_PRIMARY and, when needed, CONTROLLER_BOARD_TYPE_SECONDARY, are populated by R28 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R28/current/",
+    "id": "seadatanet.r28",
+    "name": "Argo controller board types and generations",
+    "prefix": "r28",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R28/current/$1"
+  },
+  "seadatanet.r40": {
+    "authority": "seadatanet",
+    "description": "List of Principal Investigator (PI) names in charge of Argo floats. Argo netCDF variable PI_NAME is populated by R40 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/R40/current/",
+    "id": "seadatanet.r40",
+    "name": "Argo Principal Investigator (PI) names",
+    "prefix": "r40",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/R40/current/$1"
+  },
+  "seadatanet.rd2": {
+    "authority": "seadatanet",
+    "description": "Quality flag scale for delayed-mode measurements. Argo netCDF variables <PARAMETER>_ADJUSTED_QC in 'D' mode are populated by RD2 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/RD2/current/",
+    "id": "seadatanet.rd2",
+    "name": "Argo delayed-mode quality control measurement flags",
+    "prefix": "rd2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/RD2/current/$1"
+  },
+  "seadatanet.rmc": {
+    "authority": "seadatanet",
+    "description": "Categories of trajectory measurement codes listed in NVS collection 'R15'",
+    "homepage": "http://vocab.nerc.ac.uk/collection/RMC/current/",
+    "id": "seadatanet.rmc",
+    "name": "Argo measurement code categories",
+    "prefix": "rmc",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/RMC/current/$1"
+  },
+  "seadatanet.rp2": {
+    "authority": "seadatanet",
+    "description": "Quality control flag scale for whole profiles. Argo netCDF variables PROFILE_<PARAMETER>_QC are populated by RP2 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/RP2/current/",
+    "id": "seadatanet.rp2",
+    "name": "Argo profile quality control flags",
+    "prefix": "rp2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/RP2/current/$1"
+  },
+  "seadatanet.rr2": {
+    "authority": "seadatanet",
+    "description": "Quality flag scale for real-time measurements. Argo netCDF variables <PARAMETER>_QC in 'R' mode and <PARAMETER>_ADJUSTED_QC in 'A' mode are populated by RR2 altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/RR2/current/",
+    "id": "seadatanet.rr2",
+    "name": "Argo real-time quality control measurement flags",
+    "prefix": "rr2",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/RR2/current/$1"
+  },
+  "seadatanet.rtv": {
+    "authority": "seadatanet",
+    "description": "Timing variables representing stages of an Argo float profiling cycle, most of which are associated with a trajectory measurement code ID listed in NVS collection 'R15'. Argo netCDF cycle timing variable names JULD_<RTV>_STATUS are constructed by RTV altLabel.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/RTV/current/",
+    "id": "seadatanet.rtv",
+    "name": "Argo float cycle timing variables",
+    "prefix": "rtv",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/RTV/current/$1"
+  },
+  "seadatanet.s01": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the information entities that are combined in the BODC semantic model to produce a phenomenon description.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S01/current/",
+    "id": "seadatanet.s01",
+    "name": "BODC parameter semantic model component names",
+    "prefix": "s01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S01/current/$1"
+  },
+  "seadatanet.s02": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the relationship between the 'where theme' and the 'what theme' in the BODC semantic model for measured phenomena descriptions.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S02/current/",
+    "id": "seadatanet.s02",
+    "name": "BODC parameter semantic model relationships between what theme and where theme",
+    "prefix": "s02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S02/current/$1"
+  },
+  "seadatanet.s03": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for a sample preparation entity (part of the how theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S03/current/",
+    "id": "seadatanet.s03",
+    "name": "BODC parameter semantic model sample preparation entity descriptions",
+    "prefix": "s03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S03/current/$1"
+  },
+  "seadatanet.s04": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for an analytical method entity (part of the how theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S04/current/",
+    "id": "seadatanet.s04",
+    "name": "BODC parameter semantic model analytical method entity descriptions",
+    "prefix": "s04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S04/current/$1"
+  },
+  "seadatanet.s05": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for data processing description (part of the how theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S05/current/",
+    "id": "seadatanet.s05",
+    "name": "BODC parameter semantic model data processing entity descriptions",
+    "prefix": "s05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S05/current/$1"
+  },
+  "seadatanet.s06": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to specify the property element of a parameter (part of the 'what' theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S06/current/",
+    "id": "seadatanet.s06",
+    "name": "BODC parameter semantic model parameter entity names",
+    "prefix": "s06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S06/current/$1"
+  },
+  "seadatanet.s07": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for a parameter statistic (part of the what theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S07/current/",
+    "id": "seadatanet.s07",
+    "name": "BODC parameter semantic model parameter statistic",
+    "prefix": "s07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S07/current/$1"
+  },
+  "seadatanet.s09": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for biological entity size (part of the what theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S09/current/",
+    "id": "seadatanet.s09",
+    "name": "BODC parameter semantic model biological entity size terms",
+    "prefix": "s09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S09/current/$1"
+  },
+  "seadatanet.s10": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining terms used to refer to a biological entity sex category (part of the what theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S10/current/",
+    "id": "seadatanet.s10",
+    "name": "BODC parameter semantic model biological entity sex category terms",
+    "prefix": "s10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S10/current/$1"
+  },
+  "seadatanet.s11": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to specify the development or life cycle stage of a biological entity (part of the 'what' theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S11/current/",
+    "id": "seadatanet.s11",
+    "name": "BODC parameter semantic model biological entity development stage terms",
+    "prefix": "s11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S11/current/$1"
+  },
+  "seadatanet.s12": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for biological entity (component of the what theme) plant or animal parts in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S12/current/",
+    "id": "seadatanet.s12",
+    "name": "BODC parameter semantic model biological entity subcomponent terms",
+    "prefix": "s12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S12/current/$1"
+  },
+  "seadatanet.s13": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for ad-hoc qualification of a biological entity (component of the what theme)  in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S13/current/",
+    "id": "seadatanet.s13",
+    "name": "BODC parameter semantic model biological entity subgroup terms",
+    "prefix": "s13",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S13/current/$1"
+  },
+  "seadatanet.s14": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for morphology of a biological entity (component of the what theme)  in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S14/current/",
+    "id": "seadatanet.s14",
+    "name": "BODC parameter semantic model biological entity morphology terms",
+    "prefix": "s14",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S14/current/$1"
+  },
+  "seadatanet.s15": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for colour or optical appearance of a biological entity (component of the what theme)  in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S15/current/",
+    "id": "seadatanet.s15",
+    "name": "BODC parameter semantic model biological entity colour terms",
+    "prefix": "s15",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S15/current/$1"
+  },
+  "seadatanet.s18": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used for a physical entity (part of the what theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S18/current/",
+    "id": "seadatanet.s18",
+    "name": "BODC parameter semantic model physical entity names",
+    "prefix": "s18",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S18/current/$1"
+  },
+  "seadatanet.s19": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to qualify a generic physical entity (part of the what theme) in the BODC parameter semantic model.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S19/current/",
+    "id": "seadatanet.s19",
+    "name": "BODC parameter semantic model physical entity subgroup names",
+    "prefix": "s19",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S19/current/$1"
+  },
+  "seadatanet.s20": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to describe the reference with respect to which a physical entity (part of the what theme) in the BODC parameter. semantic model is specified.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S20/current/",
+    "id": "seadatanet.s20",
+    "name": "BODC parameter semantic model physical entity datum names",
+    "prefix": "s20",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S20/current/$1"
+  },
+  "seadatanet.s21": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to describe the sphere (SWEET EarthRealm) in the BODC parameter semantic model. Part of the where theme.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S21/current/",
+    "id": "seadatanet.s21",
+    "name": "BODC parameter semantic model sphere names",
+    "prefix": "s21",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S21/current/$1"
+  },
+  "seadatanet.s22": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms that may be used to describe subgroupings of the sphere (SWEET EarthRealm) in the BODC parameter semantic model. Part of the where theme.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S22/current/",
+    "id": "seadatanet.s22",
+    "name": "BODC parameter semantic model sphere subgroup names",
+    "prefix": "s22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S22/current/$1"
+  },
+  "seadatanet.s23": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the terms for phase (dissolved, particulate etc.) within a sphere (SWEET EarthRealm) in the BODC parameter semantic model. Part of the where theme.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S23/current/",
+    "id": "seadatanet.s23",
+    "name": "BODC semantic model sphere phase names",
+    "prefix": "s23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S23/current/$1"
+  },
+  "seadatanet.s24": {
+    "authority": "seadatanet",
+    "description": "Concepts describing physical or logical (i.e. categories) subdivisions of a phase (i.e. subcomponent) of a sphere (SWEET EarthRealm) in the BODC parameter semantic model. Part of the where theme.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S24/current/",
+    "id": "seadatanet.s24",
+    "name": "BODC semantic model sphere phase subgroup names",
+    "prefix": "s24",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S24/current/$1"
+  },
+  "seadatanet.s25": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe biological entities (organisms or parts thereof) in the BODC Parameter Usage Vocabulary",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S25/current/",
+    "id": "seadatanet.s25",
+    "name": "BODC parameter semantic model biological entity names",
+    "prefix": "s25",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S25/current/$1"
+  },
+  "seadatanet.s26": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe the medium in which a measurement was made in the semantic model that underpins the BODC parameter discovery vocabulary",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S26/current/",
+    "id": "seadatanet.s26",
+    "name": "BODC parameter semantic model matrices",
+    "prefix": "s26",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S26/current/$1"
+  },
+  "seadatanet.s27": {
+    "authority": "seadatanet",
+    "description": "Terms for chemicals whose quantity in a matrix is determined to generate measurements in the BODC parameter usage vocabulary semantic model. Includes elements, compounds, isotopes and mixtures.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S27/current/",
+    "id": "seadatanet.s27",
+    "name": "BODC parameter semantic model chemical substances",
+    "prefix": "s27",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S27/current/$1"
+  },
+  "seadatanet.s28": {
+    "authority": "seadatanet",
+    "description": "The six encoded modes of operation for a deployed Seaglider.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S28/current/",
+    "id": "seadatanet.s28",
+    "name": "Seaglider Guidance and Control Phase Settings",
+    "prefix": "s28",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S28/current/$1"
+  },
+  "seadatanet.s29": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe physical entities in the BODC Parameter Usage Vocabulary",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S29/current/",
+    "id": "seadatanet.s29",
+    "name": "BODC parameter semantic model physical entity compound names",
+    "prefix": "s29",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S29/current/$1"
+  },
+  "seadatanet.s30": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabulary defining the relationship between two biological entities in the BODC parameter semantic model for biological parameters related to e.g. predator-prey interactions.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/S30/current/",
+    "id": "seadatanet.s30",
+    "name": "BODC parameter semantic model relationships between biological entities",
+    "prefix": "s30",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/S30/current/$1"
+  },
+  "seadatanet.t01": {
+    "authority": "seadatanet",
+    "description": "Standardised list of major research areas within the British Antarctic Survey for classifying materials and activities.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/T01/current/",
+    "id": "seadatanet.t01",
+    "name": "British Antarctic Survey research topics",
+    "prefix": "t01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/T01/current/$1"
+  },
+  "seadatanet.v12": {
+    "authority": "seadatanet",
+    "description": "Controlled vocabularies deemed to be of interest to the SeaDataNet project or users of its standards",
+    "homepage": "http://vocab.nerc.ac.uk/collection/V12/current/",
+    "id": "seadatanet.v12",
+    "name": "SeaDataNet Vocabularies",
+    "prefix": "v12",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/V12/current/$1"
+  },
+  "seadatanet.v22": {
+    "authority": "seadatanet",
+    "description": "Concept collections used within ISO Code List representations for ISO19139 encoding of SeaDataNet CDIs and CSRs",
+    "homepage": "http://vocab.nerc.ac.uk/collection/V22/current/",
+    "id": "seadatanet.v22",
+    "name": "SeaDataNet CDI/CSR ISO Code List collections",
+    "prefix": "v22",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/V22/current/$1"
+  },
+  "seadatanet.v23": {
+    "authority": "seadatanet",
+    "description": "Concept collections used within ISOTC211/19115 namespace of ISO Code List representations for ISO19139 encoding of SeaDataNet CDIs and CSRs",
+    "homepage": "http://vocab.nerc.ac.uk/collection/V23/current/",
+    "id": "seadatanet.v23",
+    "name": "SeaDataNet GMX and imported ISO Code List collections",
+    "prefix": "v23",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/V23/current/$1"
+  },
+  "seadatanet.w01": {
+    "authority": "seadatanet",
+    "description": "Vocabulary in support of SeaDataNet's implementation of OGC Sensor Web Enablement. This is the top level vocabulary with many narrower concepts from other vocabularies.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W01/current/",
+    "id": "seadatanet.w01",
+    "name": "SeaDataNet Sensor Web Enablement and SensorML type vocabulary",
+    "prefix": "w01",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W01/current/$1"
+  },
+  "seadatanet.w02": {
+    "authority": "seadatanet",
+    "description": "Vocabulary in support of SeaDataNet's (SDN) implementation of OGC Sensor Web Enablement (SWE). This is the lower level SDN SEW specific vocabulary.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W02/current/",
+    "id": "seadatanet.w02",
+    "name": "SeaDataNet Sensor Web Enablement and SensorML sub-type vocabulary",
+    "prefix": "w02",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W02/current/$1"
+  },
+  "seadatanet.w03": {
+    "authority": "seadatanet",
+    "description": "Terms used to describe events or operations that have taken place during the life of an observation system (e.g. a sensor, a platform, an instrument, a network).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W03/current/",
+    "id": "seadatanet.w03",
+    "name": "SensorML History Event Types",
+    "prefix": "w03",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W03/current/$1"
+  },
+  "seadatanet.w04": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe properties of an observation system that further qualify or quantify its output values.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W04/current/",
+    "id": "seadatanet.w04",
+    "name": "SensorML Capability Section Terms",
+    "prefix": "w04",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W04/current/$1"
+  },
+  "seadatanet.w05": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe properties of an observation system that do not further qualify or quantify its output values.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W05/current/",
+    "id": "seadatanet.w05",
+    "name": "SensorML Characteristic Section Terms",
+    "prefix": "w05",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W05/current/$1"
+  },
+  "seadatanet.w06": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe aspects of an observation system (e.g. the type of process, the type of sensor, or its intended applications).",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W06/current/",
+    "id": "seadatanet.w06",
+    "name": "SensorML Classification Section Terms",
+    "prefix": "w06",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W06/current/$1"
+  },
+  "seadatanet.w07": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to identify an observation system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W07/current/",
+    "id": "seadatanet.w07",
+    "name": "SensorML Identification Section Terms",
+    "prefix": "w07",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W07/current/$1"
+  },
+  "seadatanet.w08": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe the role and contact information for an observation system.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W08/current/",
+    "id": "seadatanet.w08",
+    "name": "SensorML Contact Section Terms",
+    "prefix": "w08",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W08/current/$1"
+  },
+  "seadatanet.w09": {
+    "authority": "seadatanet",
+    "description": "Terms used in SWE Observations and Measurements that describe the measurements made by an observing system and the features involved in this process.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W09/current/",
+    "id": "seadatanet.w09",
+    "name": "Sensor Web Enablement Observations and Measurements Section Terms",
+    "prefix": "w09",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W09/current/$1"
+  },
+  "seadatanet.w10": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe the software interactions with an observing system. The terms are typically used in the SensorML Outputs section.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W10/current/",
+    "id": "seadatanet.w10",
+    "name": "SensorML Output Section Data Interface Terms",
+    "prefix": "w10",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W10/current/$1"
+  },
+  "seadatanet.w11": {
+    "authority": "seadatanet",
+    "description": "Terms used in SensorML to describe aspects of an Event.",
+    "homepage": "http://vocab.nerc.ac.uk/collection/W11/current/",
+    "id": "seadatanet.w11",
+    "name": "SensorML Event Classification Terms",
+    "prefix": "w11",
+    "source": "http://vocab.nerc.ac.uk",
+    "subjects": [
+      "earth and related environmental sciences",
+      "oceanography"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/W11/current/$1"
+  }
+}
