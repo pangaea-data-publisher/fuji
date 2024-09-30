@@ -78,7 +78,7 @@ async def assess_by_id(body):
             print("Remote logging disabled...")
             if ft.weblogger:
                 ft.logger.removeHandler(ft.weblogger)
-
+        print("F-UJI Version: ", ft.FUJI_VERSION)
         print("starting harvesting ")
         ft.harvest_all_metadata()
         ft.set_harvested_metadata()
