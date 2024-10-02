@@ -716,7 +716,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             creative_work_subjects = []
                         # give Datasets always a try
                         if root_name.lower() == "dataset":
-                            creative_work_subjects = []
+                            # but should have some props
+                            if len(list(graph.objects(subject=creative_works[0]))) > 2:
+                                creative_work_subjects = []
                         if len(creative_work_subjects) == 0:
                             cand_creative_work[root_name] = creative_works[0]
                             if object_types_dict.get(str(creative_works[0])):
