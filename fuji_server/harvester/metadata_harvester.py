@@ -9,6 +9,7 @@ import json
 import logging
 import mimetypes
 import re
+import urllib
 from urllib.parse import urljoin, urlparse
 
 import extruct
@@ -785,11 +786,23 @@ class MetadataHarvester:
                     ext_meta = extruct_metadata.get("json-ld")
                     # comment the line below if jmespath handling of embedded json-ld is preferred, otherwise json-ls always will be handles as graph
                     ext_meta = json.dumps(ext_meta)
+                    # shallow @id cleaning https://metadata.bgs.ac.uk/geonetwork/srv/api/records/6abc401d-250a-5469-e054-002128a47908 has  "@id":"not available":
+                    try:
+                        juris = re.findall(r'"@id"\s?:\s?"(.*?)"', ext_meta)
+                        for juri in juris:
+                            if " " in juri:
+                                rjuri = urllib.parse.quote(juri)
+                                ext_meta = ext_meta.replace(juri, rjuri)
+                    except:
+                        pass
                     # print('EXT META',ext_meta)
                     self.logger.info("FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page")
                     # TODO: actually schema.org, dcat and skos metadata is collected from a json-ld graph so this should be renamed
                     schemaorg_collector_embedded = MetaDataCollectorRdf(
-                        loggerinst=self.logger, json_ld_content=ext_meta, source=MetadataSources.SCHEMAORG_EMBEDDED
+                        loggerinst=self.logger,
+                        target_url=(self.pid_url or self.landing_url),
+                        json_ld_content=ext_meta,
+                        source=MetadataSources.SCHEMAORG_EMBEDDED,
                     )
                     source_schemaorg, schemaorg_dict = schemaorg_collector_embedded.parse_metadata()
                     metaformat = schemaorg_collector_embedded.metadata_format
