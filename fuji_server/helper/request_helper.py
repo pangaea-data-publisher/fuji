@@ -142,7 +142,7 @@ class RequestHelper:
 
                 cookiejar = http.cookiejar.MozillaCookieJar()
                 context = ssl._create_unverified_context()
-                context.set_ciphers("DEFAULT@SECLEVEL=1")
+                context.set_ciphers("DEFAULT@SECLEVEL=0")
                 redirect_handler = FUJIHTTPRedirectHandler()
                 opener = urllib.request.build_opener(
                     urllib.request.HTTPCookieProcessor(cookiejar),
