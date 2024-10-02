@@ -290,8 +290,8 @@ class FAIRCheck:
         try:
             nonerepdict = json.dumps(self.metadata_merged).replace('"None"', "null")
             self.metadata_merged = json.loads(nonerepdict)
-        except:
-            print("Nasty None replace error")
+        except Exception as e:
+            print("Nasty None replace error: ", e)
             pass
         data_objects = self.metadata_merged.get("object_content_identifier")
         if data_objects == {"url": None} or data_objects == [None]:
@@ -310,6 +310,9 @@ class FAIRCheck:
                     # complete size and type
                     if not fdci[dcurl].get("type") and dci.get("type"):
                         fdci[dcurl]["type"] = dci.get("type")
+                    elif dci.get("type") and fdci[dcurl].get("type"):
+                        if "/" in dci.get("type") and "/" not in fdci[dcurl].get("type"):
+                            fdci[dcurl]["type"] = dci.get("type")
                     if not fdci[dcurl].get("size") and dci.get("size"):
                         fdci[dcurl]["size"] = dci.get("size")
             self.metadata_merged["object_content_identifier"] = [di for di in fdci.values()]
