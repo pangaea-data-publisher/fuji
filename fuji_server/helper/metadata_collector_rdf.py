@@ -7,10 +7,8 @@ import re
 import urllib
 
 import idutils
-import jmespath
 import rdflib
 import requests
-from pyld import jsonld
 from rdflib import Namespace
 from rdflib.namespace import (
     DC,
@@ -178,20 +176,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     self.logger.info(
                         "FsF-F2-01M : Could not find DCAT, schema.org or SKOS/OWL metadata, continuing with generic SPARQL"
                     )
-                    # try to find root node
-                    """
-                    typed_objects = list(rdf_response_graph.objects(predicate=RDF.type))
-                    if typed_objects:
-                        typed_nodes = list(rdf_response_graph[:RDF.type:typed_objects[0]])
-                        if typed_nodes:
-                            rdf_metadata = self.get_metadata(rdf_response_graph, typed_nodes[0], str(typed_objects[0]))
-                    """
-                    # if not rdf_metadata or len(list(rdf_metadata)) <= 1:
                     rdf_metadata = self.get_sparqled_metadata(rdf_response_graph)
-
-                # add found namespaces URIs to namespace
-                # for ns in graph_namespaces.values():
-                #    self.namespaces.append(ns)
             else:
                 self.logger.info(f"FsF-F2-01M : Expected RDF Graph but received -: {self.content_type}")
         return rdf_metadata
@@ -258,74 +243,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             pass
                     if isinstance(rdf_response, dict) or isinstance(rdf_response, list):
                         self.logger.info(
-                            "FsF-F2-01M : Try to parse JSON-LD using JMESPath retrieved as dict from -: %s"
+                            "FsF-F2-01M : Try to parse JSON-LD retrieved as dict or list like structure from -: %s"
                             % (jsonld_source_url)
                         )
-                        # in case two or more JSON-LD strings are embedded
-                        if isinstance(rdf_response, list):
-                            json_dict = None
-                            if len(rdf_response) > 1:
-                                self.logger.info(
-                                    "FsF-F2-01M : Found more than one JSON-LD embedded in landing page try to identify Dataset or CreativeWork type"
-                                )
-                                for meta_rec in rdf_response:
-                                    meta_rec_type = str(meta_rec.get("@type")).lower().lstrip("schema:")
-                                    if meta_rec_type in ["dataset"]:
-                                        json_dict = meta_rec
-                                        break
-                                    if meta_rec_type in self.SCHEMA_ORG_CREATIVEWORKS:
-                                        json_dict = meta_rec
-                            if not json_dict:
-                                rdf_response = rdf_response[0]
-                            else:
-                                rdf_response = json_dict
-                        # else:
-                        #    rdf_response_dict = rdf_response
+                        # JSON string from  dict delivered by extruct
                         try:
-                            # rdf_response_json = json.dumps(rdf_response_dict)
-                            # rdf_metadata = self.get_schemorg_metadata_from_dict(rdf_response_dict)
-                            # rdf_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_json)
-                            # if rdf_metadata:
-                            #    self.setLinkedNamespaces(str(rdf_response))
-                            # else:
-                            #    self.logger.info(
-                            #        "FsF-F2-01M : Could not identify schema.org JSON-LD metadata using JMESPath, continuing with RDF graph processing"
-                            #    )
-                            # quick fix for https://github.com/RDFLib/rdflib/issues/1484
-                            # needs to be done before dict is converted to string
-                            # print(rdf_response)
-                            if 1 == 1:
-                                if isinstance(rdf_response, dict):
-                                    if rdf_response.get("@context"):
-                                        if rdf_response.get("@graph"):
-                                            try:
-                                                # drop duplicate context in graph
-                                                if isinstance(rdf_response.get("@graph"), list):
-                                                    for grph in rdf_response.get("@graph"):
-                                                        if grph.get("@context"):
-                                                            del grph["@context"]
-                                                else:
-                                                    if rdf_response.get("@graph").get("@context"):
-                                                        del rdf_response["@graph"]["@context"]
-                                            except Exception:
-                                                print("Failed drop duplicate JSON-LD context in graph")
-                                                pass
-                                        # Fixing Dereferencing issues: https://github.com/json-ld/json-ld.org/issues/747
-                                        if isinstance(rdf_response.get("@context"), list):
-                                            for ctxi, ctxt in enumerate(rdf_response.get("@context")):
-                                                if "schema.org" in ctxt:
-                                                    rdf_response["@context"][ctxi] = (
-                                                        "https://schema.org/docs/jsonldcontext.json"
-                                                    )
-                                        if isinstance(rdf_response.get("@context"), str):
-                                            if "schema.org" in rdf_response.get("@context"):
-                                                rdf_response["@context"] = "https://schema.org/docs/jsonldcontext.json"
-                                    # expand graph
-                                    rdf_response = jsonld.expand(rdf_response)
-                                # convert dict to json string again for RDF graph parsing
-                                rdf_response = json.dumps(rdf_response)
+                            rdf_response = json.dumps(rdf_response)
                         except Exception as e:
-                            print("RDF Collector Error: ", e)
+                            print("RDF Collector Error (JSON DUMPS): ", e)
                             pass
                     # try to make graph from JSON-LD string
                     if isinstance(rdf_response, str) and rdf_response not in ["null", "None"]:
@@ -353,7 +278,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             rdf_response_graph = jsonldgraph.parse(
                                 data=rdf_response, format="json-ld", publicID=self.resolved_url
                             )
-
                             # rdf_response_graph = jsonldgraph
                             self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                         except Exception as e:
@@ -533,7 +457,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 )
         return meta
 
-    # TODO rename to: get_core_metadata
     def get_core_metadata(self, g, item, type="Dataset"):
         """Get the core (domain agnostic, DCAT, DC, schema.org) metadata given in RDF graph.
 
@@ -642,8 +565,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 list(g.objects(item, DCAT.keyword))
                 + list(g.objects(item, DCTERMS.subject))
                 + list(g.objects(item, DC.subject))
-                or list(g.objects(item, SMA.keywords))
-                or list(g.objects(item, SDO.keywords))
+                + list(g.objects(item, SMA.keywords))
+                + list(g.objects(item, SDO.keywords))
             ):
                 meta["keywords"].append(str(keyword))
         # TODO creators, contributors
@@ -651,11 +574,16 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta["creator"] = []
             for creator in (
                 list(g.objects(item, DCTERMS.creator))
-                or list(g.objects(item, DC.creator))
-                or list(g.objects(item, SMA.author))
+                + list(g.objects(item, DC.creator))
+                + list(g.objects(item, SMA.creator))
+                + list(g.objects(item, SDO.creator))
+                + list(g.objects(item, SMA.author))
+                + list(g.objects(item, SDO.author))
             ):
                 if g.value(creator, FOAF.name):
                     meta["creator"].append(str(g.value(creator, FOAF.name)))
+                elif g.value(creator, SMA.name):
+                    meta["creator"].append(str(g.value(creator, SMA.name)))
                 else:
                     meta["creator"].append(str(creator))
 
@@ -663,8 +591,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
             meta["contributor"] = []
             for contributor in (
                 list(g.objects(item, DCTERMS.contributor))
-                or list(g.objects(item, DC.contributor))
-                or list(g.objects(item, SMA.contributor))
+                + list(g.objects(item, DC.contributor))
+                + list(g.objects(item, SMA.contributor))
+                + list(g.objects(item, SDO.contributor))
             ):
                 meta["contributor"].append(str(contributor))
 
@@ -762,157 +691,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info("FsF-F2-01M : Could not parse Ontology RDF")
         return ont_metadata
 
-    def get_schemorg_metadata_from_dict(self, json_dict):
-        jsnld_metadata = {}
-        trusted = True
-        if isinstance(json_dict, dict):
-            self.logger.info(
-                f"FsF-F2-01M : Trying to extract schema.org JSON-LD metadata from -: {self.source_name.name}"
-            )
-            # TODO check syntax - not ending with /, type and @type
-            # TODO (important) extend mapping to detect other pids (link to related entities)?
-            try:
-                jsoncontext = []
-                # if ext_meta['@context'] in check_context_type['@context'] and ext_meta['@type'] in check_context_type["@type"]:
-                if str(json_dict.get("@context")).find("://schema.org") > -1:
-                    schemaorgns = "schema"
-                    if isinstance(json_dict.get("@context"), dict):
-                        for contextname, contexturi in json_dict.get("@context").items():
-                            if contexturi.endswith("schema.org/"):
-                                schemaorgns = contextname
-                            else:
-                                jsoncontext.append(contexturi)
-                    elif isinstance(json_dict.get("@context"), list):
-                        for lcontext in json_dict.get("@context"):
-                            if isinstance(lcontext, str):
-                                jsoncontext.append(lcontext)
-                            elif isinstance(lcontext, dict):
-                                for lck, lcuri in lcontext.items():
-                                    jsoncontext.append(lcuri)
-                    json_dict = json.loads(json.dumps(json_dict).replace('"' + schemaorgns + ":", '"'))
-                    # special case #1
-                    if json_dict.get("mainEntity"):
-                        self.logger.info(
-                            "FsF-F2-01M : 'MainEntity' detected in JSON-LD, trying to identify its properties"
-                        )
-                        for mainEntityprop in json_dict.get("mainEntity"):
-                            if isinstance(json_dict.get("mainEntity"), dict):
-                                json_dict[mainEntityprop] = json_dict.get("mainEntity").get(mainEntityprop)
-                    # special case #2
-                    # if json_dict.get('@graph'):
-                    #    self.logger.info('FsF-F2-01M : Seems to be a JSON-LD graph, trying to compact')
-                    # ext_meta = self.compact_jsonld(ext_meta)
-
-                    if not isinstance(json_dict.get("@type"), list):
-                        json_dict["@type"] = [json_dict.get("@type")]
-
-                    if not json_dict.get("@type"):
-                        self.logger.info(
-                            "FsF-F2-01M : Found JSON-LD which seems to be a schema.org object but has no context type"
-                        )
-                    elif not any(tt.lower().split("/")[-1] in self.SCHEMA_ORG_CONTEXT for tt in json_dict.get("@type")):
-                        # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CONTEXT:
-                        trusted = False
-                        self.logger.info(
-                            "FsF-F2-01M : Found JSON-LD but will not use it since it seems not to be a schema.org object based on the given context type -:"
-                            + str(json_dict.get("@type"))
-                        )
-                    elif not any(
-                        tt.lower().split("/")[-1] in self.SCHEMA_ORG_CREATIVEWORKS for tt in json_dict.get("@type")
-                    ):
-                        # elif str(json_dict.get('@type')).lower() not in self.SCHEMA_ORG_CREATIVEWORKS:
-                        trusted = False
-                        self.logger.info(
-                            "FsF-F2-01M : Found schema.org JSON-LD but will not use it since it seems not to be a CreativeWork like research data object -:"
-                            + str(json_dict.get("@type"))
-                        )
-                    else:
-                        self.logger.info(
-                            "FsF-F2-01M : Found schema.org JSON-LD which seems to be valid, based on the given context type -:"
-                            + str(json_dict.get("@type"))
-                        )
-                        self.namespaces.append("http://schema.org/")
-                        if jsoncontext:
-                            self.namespaces.extend(jsoncontext)
-                        self.namespaces = list(set(self.namespaces))
-
-                        jsnld_metadata = jmespath.search(Mapper.SCHEMAORG_MAPPING.value, json_dict)
-                    if jsnld_metadata.get("creator") is None:
-                        first = jsnld_metadata.get("creator_first")
-                        last = jsnld_metadata.get("creator_last")
-                        if last:
-                            if isinstance(first, list) and isinstance(last, list):
-                                if len(first) == len(last):
-                                    names = [str(i) + " " + str(j) for i, j in zip(first, last)]
-                                    jsnld_metadata["creator"] = names
-                            else:
-                                jsnld_metadata["creator"] = [str(first) + " " + str(last)]
-
-                    invalid_license = False
-                    if jsnld_metadata.get("license"):
-                        self.logger.info(
-                            "FsF-R1.1-01M : License metadata found (schema.org) -: {}".format(
-                                jsnld_metadata.get("license")
-                            )
-                        )
-                        if not isinstance(jsnld_metadata.get("license"), list):
-                            jsnld_metadata["license"] = [jsnld_metadata["license"]]
-                        lk = 0
-                        for licence in jsnld_metadata.get("license"):
-                            if isinstance(licence, dict):
-                                ls_type = licence.get("@type")
-                                # license can be of type URL or CreativeWork
-                                if ls_type == "CreativeWork":
-                                    ls = licence.get("url")
-                                    if not ls:
-                                        ls = licence.get("name")
-                                    if ls:
-                                        jsnld_metadata["license"][lk] = ls
-                                    else:
-                                        invalid_license = True
-                                else:
-                                    invalid_license = True
-                                if invalid_license:
-                                    self.logger.warning(
-                                        "FsF-R1.1-01M : Looks like schema.org representation of license is incorrect."
-                                    )
-                                    jsnld_metadata["license"][lk] = None
-                            lk += 1
-
-                    # filter out None values of related_resources
-
-                    if jsnld_metadata.get("related_resources"):
-                        relateds = [d for d in jsnld_metadata["related_resources"] if d["related_resource"] is not None]
-                        if relateds:
-                            jsnld_metadata["related_resources"] = relateds
-                            self.logger.info(
-                                "FsF-I3-01M : {} related resource(s) extracted from -: {}".format(
-                                    len(jsnld_metadata["related_resources"]), self.source_name.name
-                                )
-                            )
-                        else:
-                            del jsnld_metadata["related_resources"]
-                            self.logger.info("FsF-I3-01M : No related resource(s) found in Schema.org metadata")
-
-                    if jsnld_metadata.get("object_size"):
-                        if isinstance(jsnld_metadata["object_size"], dict):
-                            jsnld_metadata["object_size"] = str(jsnld_metadata["object_size"].get("value"))
-                else:
-                    self.logger.info(
-                        "FsF-F2-01M : Found JSON-LD but record is not of type schema.org based on context -: "
-                        + str(json_dict.get("@context"))
-                    )
-
-            except Exception as err:
-                # print(err.with_traceback())
-                self.logger.info(f"FsF-F2-01M : Failed to parse JSON-LD schema.org -: {err}")
-        else:
-            self.logger.info("FsF-F2-01M : Could not identify JSON-LD schema.org metadata from ingested JSON dict")
-
-        if not trusted:
-            jsnld_metadata = {}
-        return jsnld_metadata
-
     def find_root_candidates(self, graph, allowed_types=["Dataset"]):
         allowed_types = [at.lower() for at in allowed_types if isinstance(at, str)]
         cand_creative_work = {}
@@ -920,7 +698,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
         try:
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
-
                 if "schema.org" in str(root):
                     root_name = str(root).rsplit("/")[-1].strip()
                 elif "dcat" in str(root):
@@ -934,6 +711,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         creative_work_subjects = list(graph.subjects(object=creative_works[0]))
                         # don't list yourself...
                         creative_work_subjects = [crs for crs in creative_work_subjects if crs != creative_works[0]]
+                        # if type belongs to target URL there is no doubt this is the root
+                        if str(creative_works[0]) == graph.identifier:
+                            creative_work_subjects = []
+                        # give Datasets always a try
+                        if root_name.lower() == "dataset":
+                            creative_work_subjects = []
                         if len(creative_work_subjects) == 0:
                             cand_creative_work[root_name] = creative_works[0]
                             if object_types_dict.get(str(creative_works[0])):
@@ -1141,8 +924,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         CSVW = Namespace("http://www.w3.org/ns/csvw#")
         dcat_root_type = "Dataset"
         datasets = []
-        cand_roots, object_types_dict = self.find_root_candidates(graph, ["Dataset", "Catalog"])
-        # print("CAND ROOTS DCAT: ", cand_roots, object_types_dict)
+        cand_roots, object_types_dict = self.find_root_candidates(graph, ["Dataset"])
         if cand_roots:
             # prioritize Dataset type
             if "Dataset" not in cand_roots:
