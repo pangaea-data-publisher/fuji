@@ -24,7 +24,16 @@ class LinkedVocabHelper:
         self.namespaces = []
         self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia", "github", "arxiv"]
         # prefixes used for identifiers only so we ignore these for terms
-        self.ignore_domain = ["orcid.org", "doi.org", "ror.org", "zenodo.org", "isni.org", "github.com", "arxiv.org"]
+        self.ignore_domain = [
+            "orcid.org",
+            "doi.org",
+            "ror.org",
+            "zenodo.org",
+            "isni.org",
+            "github.com",
+            "arxiv.org",
+            "fairsharing.org",
+        ]
 
     def set_linked_vocab_dict(self):
         logger.info("Setting up the vocab dict.........................")
