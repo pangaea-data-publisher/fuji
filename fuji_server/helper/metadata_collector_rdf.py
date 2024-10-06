@@ -691,10 +691,55 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info("FsF-F2-01M : Could not parse Ontology RDF")
         return ont_metadata
 
-    def find_root_candidates(self, graph, allowed_types=["Dataset"]):
+    def get_main_entity(self, graph):
+        # Finding the main entity of the graph
+        graph_entity_list = []
+        main_entity = {}
+        creative_work_detected = False
+        # we aim to only test creative works and subtypes
+        creative_work_types = Preprocessor.get_schema_org_creativeworks()
+        try:
+            for cw in list(graph.subjects(predicate=RDF.type)):
+                types = list(graph.objects(predicate=RDF.type, subject=cw))
+                types_names = []
+                for tp in types:
+                    type_name = re.split(r"/|#", str(tp))[-1]
+                    if type_name.lower in creative_work_types:
+                        creative_work_detected = True
+                    types_names.append(type_name)
+                nsbj = len(list(graph.subjects(object=cw)))
+                nprp = len(list(graph.objects(subject=cw)))
+                graph_entity_list.append({"item": cw, "nosbj": nsbj, "noprp": nprp, "types": types_names, "score": 0})
+            # score
+            max_prp = max(graph_entity_list, key=lambda x: x["noprp"])["noprp"]
+            max_sbj = max(graph_entity_list, key=lambda x: x["nosbj"])["nosbj"]
+            gk = 0
+            for gel in graph_entity_list:
+                prp_score, sbj_score = 0, 0
+                if max_prp:
+                    # better : more props
+                    prp_score = 1 * gel["noprp"] / max_prp
+                if max_sbj:
+                    # better : less props
+                    sbj_score = 0.5 * (1 - gel["nosbj"] / max_sbj)
+                score = prp_score + sbj_score / 2
+                graph_entity_list[gk]["score"] = score
+                gk += 1
+                main_entity = (sorted(graph_entity_list, key=lambda d: d["score"], reverse=True))[0]
+                if not creative_work_detected:
+                    self.logger.info(
+                        "FsF-F2-01M : Detected main entity found in RDF graph seems not to be a creative work type"
+                    )
+            return main_entity.get("item"), main_entity.get("types")
+        except Exception as ee:
+            self.logger.warning("FsF-F2-01M : Failed to detect main entity in metadata given as RDF Graph")
+            print("MAIN ENTITY IDENTIFICATION ERROR: ", ee)
+
+    """def find_root_candidates(self, graph, allowed_types=["Dataset"]):
         allowed_types = [at.lower() for at in allowed_types if isinstance(at, str)]
         cand_creative_work = {}
         object_types_dict = {}
+        graph_entity_list = []
         try:
             for root in rdflib.util.find_roots(graph, RDF.type):
                 # we have https and http as allowed schema.org namespace protocols
@@ -731,35 +776,22 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             cand_creative_work[root_name] = creative_works[0]
         except Exception as ee:
             print("ROOT IDENTIFICATION ERROR: ", ee)
-        return cand_creative_work, object_types_dict
+
+        return cand_creative_work, object_types_dict"""
 
     def get_schemaorg_metadata_from_graph(self, graph):
-        # we will only test creative works and subtypes
-        creative_work_types = Preprocessor.get_schema_org_creativeworks()
-        creative_work = None
+        main_entity_id, main_entity_type = self.get_main_entity(graph)
+        creative_work_type = "Dataset"
+        if main_entity_id:
+            creative_work = main_entity_id
+            creative_work_type = main_entity_type
         schema_metadata = {}
         SMA = Namespace("http://schema.org/")
         # use only schema.org properties and create graph using these.
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
-        creative_work_type = "Dataset"
-        try:
-            cand_creative_work, object_types_dict = self.find_root_candidates(graph, creative_work_types)
-            if cand_creative_work:
-                # prioritize Dataset type
-                if "Dataset" in cand_creative_work:
-                    creative_work = cand_creative_work["Dataset"]
-                else:
-                    creative_work = cand_creative_work[next(iter(cand_creative_work))]
-                    creative_work_type = next(iter(cand_creative_work))
-
-        except Exception as e:
-            self.logger.info("FsF-F2-01M : Schema.org RDF graph parsing failed -: " + str(e))
-            print("Cand Creative work identification Error", e)
+        # this is tested by namepace elsewhere
         if creative_work:
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
-            # object type (in case there are more than one
-            if isinstance(object_types_dict.get(str(creative_work)), list):
-                schema_metadata["object_type"] = object_types_dict.get(str(creative_work))
             # "access_free"
             access_free = graph.value(creative_work, SMA.isAccessibleForFree) or graph.value(
                 creative_work, SDO.isAccessibleForFree
@@ -767,7 +799,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
             if access_free:
                 schema_metadata["access_free"] = access_free
             # object size (total)
-
             object_size = graph.value(creative_work, SMA.size) or graph.value(creative_work, SDO.size)
             if object_size:
                 size_value = graph.value(object_size, SMA.value) or graph.value(object_size, SDO.value)
@@ -926,11 +957,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
         CSVW = Namespace("http://www.w3.org/ns/csvw#")
         dcat_root_type = "Dataset"
         datasets = []
-        cand_roots, object_types_dict = self.find_root_candidates(graph, ["Dataset"])
-        if cand_roots:
+        main_entity_id, main_entity_type = self.get_main_entity(graph)
+        if main_entity_id:
             # prioritize Dataset type
-            if "Dataset" not in cand_roots:
-                dcat_root_type = next(iter(cand_roots))
+            if "Dataset" not in main_entity_type:
+                dcat_root_type = next(iter(main_entity_type))
         if dcat_root_type:
             datasets = list(graph[: RDF.type : DCAT[dcat_root_type]])
         table = list(graph[: RDF.type : CSVW.Column])
