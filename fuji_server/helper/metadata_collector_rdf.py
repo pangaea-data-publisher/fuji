@@ -82,6 +82,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         self.resolved_url = target_url
         self.content_type = None
         self.source_name = source
+        self.main_entity_format = str(RDF)  # the main enties format e.g. dcat:Dataset => DCAT etc..
         self.metadata_format = MetadataFormats.RDF
         if self.source_name == MetadataSources.RDFA_EMBEDDED:
             self.metadata_format = MetadataFormats.RDFA
@@ -158,7 +159,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     or rdflib.term.URIRef("https://schema.org/") in graph_namespaces.values()
                 ):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain schema.org metadata elements")
-                    schema_metadata = self.get_schemaorg_metadata_from_graph(rdf_response_graph)
+                    schema_metadata = self.get_schemaorg_metadata(rdf_response_graph)
                 if bool(set(ontology_indicator) & set(graph_namespaces.values())):
                     self.logger.info("FsF-F2-01M : RDF Graph seems to contain SKOS/OWL metadata elements")
                     skos_metadata = self.get_ontology_metadata(rdf_response_graph)
@@ -692,24 +693,29 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return ont_metadata
 
     def get_main_entity(self, graph):
+        main_entity_item, main_entity_type, main_entity_namespace = None, None, None
         # Finding the main entity of the graph
         graph_entity_list = []
         main_entity = {}
         creative_work_detected = False
-        # we aim to only test creative works and subtypes
+        # we aim to only test creative works and subtypes taking the terms (names) from schema.org
         creative_work_types = Preprocessor.get_schema_org_creativeworks()
         try:
             for cw in list(graph.subjects(predicate=RDF.type)):
                 types = list(graph.objects(predicate=RDF.type, subject=cw))
                 types_names = []
+                namespaces = []
                 for tp in types:
                     type_name = re.split(r"/|#", str(tp))[-1]
                     if type_name.lower in creative_work_types:
                         creative_work_detected = True
                     types_names.append(type_name)
+                    namespaces.append(tp)
                 nsbj = len(list(graph.subjects(object=cw)))
                 nprp = len(list(graph.objects(subject=cw)))
-                graph_entity_list.append({"item": cw, "nosbj": nsbj, "noprp": nprp, "types": types_names, "score": 0})
+                graph_entity_list.append(
+                    {"item": cw, "nosbj": nsbj, "noprp": nprp, "types": types_names, "ns": namespaces, "score": 0}
+                )
             # score
             max_prp = max(graph_entity_list, key=lambda x: x["noprp"])["noprp"]
             max_sbj = max(graph_entity_list, key=lambda x: x["nosbj"])["nosbj"]
@@ -725,15 +731,20 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 score = prp_score + sbj_score / 2
                 graph_entity_list[gk]["score"] = score
                 gk += 1
-                main_entity = (sorted(graph_entity_list, key=lambda d: d["score"], reverse=True))[0]
-                if not creative_work_detected:
-                    self.logger.info(
-                        "FsF-F2-01M : Detected main entity found in RDF graph seems not to be a creative work type"
-                    )
-            return main_entity.get("item"), main_entity.get("types")
+            main_entity = (sorted(graph_entity_list, key=lambda d: d["score"], reverse=True))[0]
+            if not creative_work_detected:
+                self.logger.info(
+                    "FsF-F2-01M : Detected main entity found in RDF graph seems not to be a creative work type"
+                )
+            main_entity_item, main_entity_type, main_entity_namespace = (
+                main_entity.get("item"),
+                main_entity.get("types"),
+                main_entity.get("ns"),
+            )
         except Exception as ee:
             self.logger.warning("FsF-F2-01M : Failed to detect main entity in metadata given as RDF Graph")
             print("MAIN ENTITY IDENTIFICATION ERROR: ", ee)
+        return main_entity_item, main_entity_type, main_entity_namespace
 
     """def find_root_candidates(self, graph, allowed_types=["Dataset"]):
         allowed_types = [at.lower() for at in allowed_types if isinstance(at, str)]
@@ -779,8 +790,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
         return cand_creative_work, object_types_dict"""
 
-    def get_schemaorg_metadata_from_graph(self, graph):
-        main_entity_id, main_entity_type = self.get_main_entity(graph)
+    def get_schemaorg_metadata(self, graph):
+        main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
         creative_work_type = "Dataset"
         if main_entity_id:
             creative_work = main_entity_id
@@ -791,6 +802,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
         # this is tested by namepace elsewhere
         if creative_work:
+            self.main_entity_format = str(SDO)
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
             # "access_free"
             access_free = graph.value(creative_work, SMA.isAccessibleForFree) or graph.value(
@@ -891,6 +903,42 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     schema_metadata["object_content_identifier"].append(
                         {"url": service_url, "type": service_type, "service": service_desc}
                     )
+            # spatialCoverage
+            schema_metadata["coverage_spatial"] = []
+            for spatial in (
+                list(graph.objects(creative_work, SMA.spatialCoverage))
+                + list(graph.objects(creative_work, SDO.spatialCoverage))
+                + list(graph.objects(creative_work, SMA.spatial))
+                + list(graph.objects(creative_work, SDO.spatial))
+            ):
+                spatial_info = {}
+                if graph.value(spatial, SMA.name) or graph.value(spatial, SDO.name):
+                    # Place name
+                    spatial_info["name"] = graph.value(spatial, SMA.name) or graph.value(spatial, SDO.name)
+                if graph.value(spatial, SMA.latitude) or graph.value(spatial, SDO.latitude):
+                    spatial_info["coordinates"] = [
+                        (graph.value(spatial, SMA.latitude) or graph.value(spatial, SDO.latitude)),
+                        (graph.value(spatial, SMA.longitude) or graph.value(spatial, SDO.longitude)),
+                    ]
+                elif graph.value(spatial, SMA.geo) or graph.value(spatial, SDO.geo):
+                    spatial_geo = graph.value(spatial, SMA.geo) or graph.value(spatial, SDO.geo)
+                    if graph.value(spatial_geo, SMA.latitude) or graph.value(spatial_geo, SDO.longitude):
+                        spatial_info["coordinates"] = [
+                            (graph.value(spatial_geo, SMA.latitude) or graph.value(spatial_geo, SDO.latitude)),
+                            (graph.value(spatial_geo, SMA.longitude) or graph.value(spatial_geo, SDO.longitude)),
+                        ]
+                    else:
+                        spatial_extent = (
+                            graph.value(spatial_geo, SMA.box)
+                            or graph.value(spatial_geo, SDO.box)
+                            or graph.value(spatial_geo, SMA.polygon)
+                            or graph.value(spatial_geo, SDO.polygon)
+                            or graph.value(spatial_geo, SMA.line)
+                            or graph.value(spatial_geo, SDO.line)
+                        )
+                        spatial_info["coordinates"] = re.split(r"[\s,]+", str(spatial_extent))
+                if spatial_info:
+                    schema_metadata["coverage_spatial"].append(spatial_info)
 
             schema_metadata["measured_variable"] = []
             for variable in list(graph.objects(creative_work, SMA.variableMeasured)) + list(
@@ -957,7 +1005,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         CSVW = Namespace("http://www.w3.org/ns/csvw#")
         dcat_root_type = "Dataset"
         datasets = []
-        main_entity_id, main_entity_type = self.get_main_entity(graph)
+        main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
         if main_entity_id:
             # prioritize Dataset type
             if "Dataset" not in main_entity_type:
@@ -969,6 +1017,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
+            self.main_entity_format = str(DCAT)
             dcat_metadata = self.get_core_metadata(graph, datasets[0], type="Dataset")
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)

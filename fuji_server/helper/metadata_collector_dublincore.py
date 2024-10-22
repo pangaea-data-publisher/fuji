@@ -38,6 +38,32 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
         """
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
+    def parse_coverage(self, coverage, type):
+        type = type.split(".")[-1]  # DCT.Period
+        cov = {"type": None, "value": [], "name": None}
+        coordinate_keys = ["east", "north", "northlimit", "eastlimit", "southlimit", "westlimit"]
+        period_keys = ["start", "end"]
+        try:
+            cpts = coverage.split(";")
+            for cpt in cpts:
+                cvi = cpt.split("=")
+                if len(cvi) == 2:
+                    if type in ["Point", "Box", "Location"]:
+                        cov["type"] = "spatial"
+                        if cvi[0].strip() == "name":
+                            cov["name"] = cvi[1]
+                        if cvi[0].strip() in coordinate_keys:
+                            cov["value"].append(cvi[1])
+                    elif type in ["Period", "PeriodOfTime"]:
+                        cov["type"] = "temporal"
+                        if cvi[0].strip() == "name":
+                            cov["name"] = cvi[1]
+                        if cvi[0].strip() in period_keys:
+                            cov["value"].append(cvi[1])
+        except Exception as e:
+            print("ERROR: ", e)
+        return cov
+
     def parse_metadata(self):
         """Parse the Dublin Core metadata from the data
 
@@ -96,7 +122,9 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             dc_t = None
                             if len(dc_name_parts) == 3:
                                 dc_t = dc_name_parts[2]
-                            meta_dc_matches.append([dc_name_parts[1], dc_t, meta_tag.get("content")])
+                            meta_dc_matches.append(
+                                [dc_name_parts[1], dc_t, meta_tag.get("content"), meta_tag.get("scheme")]
+                            )
                     # meta_dc_matches = re.findall(exp, self.source_metadata)
                 except Exception as e:
                     self.logger.exception(f"Parsing error, failed to extract DublinCore -: {e}")
@@ -120,7 +148,8 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                         t = dc_meta[1]  # 3
                         # value
                         v = dc_meta[2]  # 5
-
+                        # ccheme
+                        s = dc_meta[3]
                         if k.lower() == "date":
                             if t == "dateAccepted":
                                 dc_core_metadata["accepted_date"] = v
@@ -140,6 +169,18 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                             except Exception:
                                 # nothing found so just continue
                                 pass
+                            if elem in ["coverage_spatial", "coverage_temporal"]:
+                                coverage_info = self.parse_coverage(v, s)
+                                v = {"name": coverage_info.get("name"), "reference": coverage_info.get("reference")}
+                                if coverage_info.get("type") == "spatial":
+                                    v["coordinates"] = coverage_info.get("value")
+                                    elem = "coverage_spatial"
+                                    print("DC Spatial Coverage: ", v)
+                                else:
+                                    elem = "coverage_temporal"
+                                    v["dates"] = coverage_info.get("value")
+                                    print("DC Temporal Coverage: ", v)
+                                v = [v]
                             if elem == "related_resources":
                                 # dc_core_metadata['related_resources'] = []
                                 # tuple of type and relation

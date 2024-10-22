@@ -44,9 +44,11 @@ class Mapper(Enum):
         "publication_date": {"label": "Publication Date", "sameAs": "http://purl.org/dc/terms/date"},
         "summary": {"label": "Summary", "sameAs": "http://purl.org/dc/terms/abstract"},
         "keywords": {"label": "Keywords", "sameAs": "http://purl.org/dc/terms/subject"},
+        # object_content_identifier (list) subproperties: 'url', 'type', 'size'
         "object_content_identifier": {"label": "Content (Data) Identifier", "sameAs": "https://schema.org/contentUrl"},
         "access_level": {"label": "Access Level", "sameAs": "http://purl.org/dc/terms/accessRights"},
         "access_free": {"label": "Free Access", "sameAs": "https://schema.org/isAccessibleForFree"},
+        # related_resources (list) subproperties: 'relation_type', 'related_resource'
         "related_resources": {"label": "Related resources", "sameAs": "http://purl.org/dc/terms/related"},
         "provenance_general": {"label": "Provenance", "sameAs": "http://purl.org/dc/terms/provenance"},
         "measured_variable": {"label": "Measured Variable", "sameAs": "https://schema.org/variableMeasured"},
@@ -60,8 +62,13 @@ class Mapper(Enum):
         "right_holder": {"label": "License", "sameAs": "http://purl.org/dc/terms/rightsHolder"},
         "object_size": {"label": "Object Size", "sameAs": "http://purl.org/dc/terms/extent"},
         "language": {"label": "Language", "sameAs": "http://purl.org/dc/terms/language"},
+        # required for Github etc. software FAIR assessment
         "license_path": {"label": "License Path", "sameAs": None},
         "metadata_service": {"label": "Metadata Service", "sameAs": None},
+        # spatial coverage (list): subproperties: 'name' (string or URI), 'coordinates' (list), 'reference' (string or URI). Either name or coordinates MUST be there
+        "coverage_spatial": {"label": "Geographical Coverage", "sameAs": "http://purl.org/dc/terms/Location"},
+        # temporal coverage (list): subproperties: 'name', 'date'
+        "coverage_temporal": {"label": "Temporal Coverage", "sameAs": None},
     }
 
     # core metadata elements (FsF-F2-01M)
@@ -177,6 +184,8 @@ class Mapper(Enum):
             "isRequiredBy",
         ],
         "language": "language",
+        "coverage_spatial": ["coverage", "Location", "spatial"],
+        "coverage_temporal": ["coverage", "PeriodOfTime", "Period", "temporal"],
     }
 
     # https://ogp.me/

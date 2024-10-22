@@ -146,7 +146,7 @@ class MetadataHarvester:
                 namespaces = [namespaces]
             test_uris = namespaces
             if schema != "":
-                test_uris.append(schema)
+                test_uris.insert(0, schema)
             metadata_standard = self.get_metadata_standard_by_uris(test_uris)
             allow_merge = True
             if self.allowed_metadata_standards:
@@ -797,7 +797,6 @@ class MetadataHarvester:
                         pass
                     # print('EXT META',ext_meta)
                     self.logger.info("FsF-F2-01M : Trying to retrieve schema.org JSON-LD metadata from html page")
-                    # TODO: actually schema.org, dcat and skos metadata is collected from a json-ld graph so this should be renamed
                     schemaorg_collector_embedded = MetaDataCollectorRdf(
                         loggerinst=self.logger,
                         target_url=(self.pid_url or self.landing_url),
@@ -1109,7 +1108,7 @@ class MetadataHarvester:
                             source_rdf,
                             neg_rdf_collector.metadata_format,
                             neg_rdf_collector.getContentType(),
-                            "http://www.w3.org/1999/02/22-rdf-syntax-ns",
+                            neg_rdf_collector.main_entity_format,
                             neg_rdf_collector.getNamespaces(),
                         )
 
