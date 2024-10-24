@@ -262,7 +262,8 @@ class Mapper(Enum):
         "submitted_date: dates[?dateType == 'Submitted'].date,"
         "object_content_identifier:  {url: contentUrl} , "
         "access_level: rightsList[*].rightsUri || rightsList[*].rights, "
-        "language: language }"
+        "language: language,"
+        "coverage_spatial: geoLocations[*].{coordinates: geoLocationBox.*[] || geoLocationPoint.*[] || geoLocationPolygons[*].polygonPoints[].*[],name: geoLocationPlace }}"
     )
     #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
 
@@ -378,6 +379,20 @@ class Mapper(Enum):
         "license": {"path": ["./{*}rightsList/{*}rights", "./{*}rightsList/{*}rights@@rightsURI"]},
         "access_level": {"path": ["./{*}rightsList/{*}rights", "./{*}rightsList/{*}rights@@rightsURI"]},
         "language": {"path": "./{*}language"},
+        "coverage_spatial_coordinates": {
+            "path": [
+                "./{*}geoLocations/{*}geoLocation/{*}geoLocationPoint",
+                "./{*}geoLocations/{*}geoLocation/{*}geoLocationBox",
+                "./{*}geoLocations/{*}geoLocation/{*}geoLocationPolygon",
+            ]
+        },
+        "coverage_spatial_name": {
+            "path": [
+                "./{*}geoLocations/{*}geoLocationPlace",
+                "./{*}geoLocations/{*}geoLocationPlace",
+                "./{*}geoLocations/{*}geoLocationPlace",
+            ]
+        },
     }
 
     XML_MAPPING_METS = {
@@ -442,6 +457,10 @@ class Mapper(Enum):
             "path": "./{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size"
         },
         "language": {"path": "./{*}dataset/{*}language"},
+        "coverage_spatial_coordinates": {
+            "path": "./{*}dataset/{*}coverage/{*}geographicCoverage/{*}boundingCoordinates"
+        },
+        "coverage_spatial_name": {"path": "./{*}dataset/{*}coverage/{*}geographicCoverage/{*}geographicDescription"},
     }
     # CLARIN CMDI
     XML_MAPPING_CMD = {
@@ -562,6 +581,9 @@ class Mapper(Enum):
         "object_content_identifier_type": {"path": ".//{*}fileDscr/{*}fileTxt/{*}fileType"},
         "measured_variable": {"path": "./{*}dataDscr/{*}var@@name"},
         "language": {"path": ["./{*}codeBook@@lang", "./{*}stdyDscr/{*}citation/{*}titlStmt/{*}titl@@xml:lang"]},
+        # https://ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/version2-1-all.html#2.0
+        # spatial_coverage_name: geogCover
+        # spatial_coverage_coordinates:geoBndBox
     }
     XML_MAPPING_DIF = {
         "object_identifier": {"path": "./{*}Dataset_Citation/{*}Persistent_Identifier"},
@@ -666,24 +688,6 @@ class Mapper(Enum):
                 },
             ],
         },
-        """
-        "object_content_identifier_url": {
-            "path": [
-                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}linkage/{*}URL",
-                #"./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource[{*}protocol]/{*}linkage/{*}URL",
-                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}linkage/{*}URL"
-            ]
-        },
-        "object_content_identifier_type": {
-            "path": [
-                "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor",
-                "./{*}distributionInfo/{*}MD_Distribution/{*}transferOptions/{*}MD_DigitalTransferOptions/{*}onLine/{*}CI_OnlineResource/{*}applicationProfile/{*}Anchor"
-            ]
-        },
-        "object_content_identifier_service": {
-            "path": "./{*}distributionInfo/{*}MD_Distribution//{*}CI_OnlineResource/{*}protocol/{*}Anchor@@xlink:href"
-        },
-        """
         "measured_variable": {
             "path": [
                 "./{*}contentInfo/{*}MD_CoverageDescription/{*}attributeDescription/{*}RecordType",
@@ -720,4 +724,17 @@ class Mapper(Enum):
             ]
         },
         "language": {"path": "./{*}language/{*}LanguageCode@@codeListValue"},
+        "coverage_spatial_coordinates": {
+            "path": [
+                "./{*}identificationInfo//{*}geographicElement/{*}EX_GeographicBoundingBox",
+                "./{*}identificationInfo//{*}geographicElement/{*}gmd:EX_BoundingPolygon",
+            ]
+        },
+        "coverage_spatial_name": {
+            "path": [
+                "./{*}identificationInfo//{*}geographicElement/{*}geographicIdentifier/{*}MD_Identifier/{*}code",
+                "./{*}identificationInfo//{*}geographicElement/{*}geographicIdentifier/{*}MD_Identifier/{*}code",
+            ]
+        },
+        # "./{*}identificationInfo//{*}geographicElement//{*}posList"]
     }
