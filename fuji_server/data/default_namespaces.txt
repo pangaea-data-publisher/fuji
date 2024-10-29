@@ -20,6 +20,7 @@ http://www.w3.org/2007/05/powder-s#
 http://www.w3.org/TR/WD-xsl
 http://www.w3.org/XML/1998/namespace
 http://www.w3.org/XSL/Transform/1.0
+http://www.w3.org/ns/dcat
 http://www.w3.org/ns/rdfa
 http://xmlns.com/foaf/0.1/
 https://schema.org/

@@ -1384,13 +1384,15 @@ class MetadataHarvester:
                                 )
                                 # self.metadata_sources.append((source_rdf, metadata_link['source']))
                                 self.add_metadata_source(source_rdf)
+
                                 self.merge_metadata(
                                     rdf_dict,
                                     metadata_link["url"],
                                     source_rdf,
                                     typed_rdf_collector.metadata_format,
                                     typed_rdf_collector.getContentType(),
-                                    "http://www.w3.org/1999/02/22-rdf-syntax-ns",
+                                    typed_rdf_collector.main_entity_format,
+                                    # "http://www.w3.org/1999/02/22-rdf-syntax-ns",
                                     typed_rdf_collector.getNamespaces(),
                                 )
 

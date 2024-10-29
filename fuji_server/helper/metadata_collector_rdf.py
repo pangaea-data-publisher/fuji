@@ -129,12 +129,17 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if namespace_candidate != uri:
                                     self.namespaces.append(namespace_candidate)
             # defined namespaces
+            namespacedict = {}
             for predicate in possible:
                 prefix, namespace, local = nm.compute_qname(predicate)
+                if namespace in namespacedict:
+                    namespacedict[namespace] += 1
+                else:
+                    namespacedict[namespace] = 1
                 namespaces[prefix] = namespace
                 self.namespaces.append(str(namespace))
-            self.namespaces = list(set(self.namespaces))
-
+            # self.namespaces = list(set(self.namespaces))
+            self.namespaces = sorted(namespacedict, key=lambda x: namespacedict[x], reverse=True)
         except Exception as e:
             self.logger.info(f"FsF-F2-01M : RDF Namespace detection error -: {e}")
         return namespaces
@@ -802,7 +807,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         # use only schema.org properties and create graph using these.
         # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
         # this is tested by namepace elsewhere
-        if creative_work:
+        if "schema.org" in str(main_entity_namespace):
             self.main_entity_format = str(SDO)
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
             # "access_free"
