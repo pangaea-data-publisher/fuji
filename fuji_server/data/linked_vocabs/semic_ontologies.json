@@ -1,0 +1,58 @@
+{
+  "semic.core": {
+    "id": "semic.core",
+    "name": "SEMIC Core Vocabulary",
+    "prefix": "cv",
+    "subjects": [],
+    "uri_format": "http://data.europa.eu/m8g/$1"
+  },
+  "semic.dcatap": {
+    "id": "semic.dcatap",
+    "name": "DCAT-AP",
+    "prefix": "dcatap",
+    "subjects": [],
+    "uri_format": "http://data.europa.eu/r5r/$1"
+  },
+  "semic.geodcat": {
+    "id": "semic.geodcat",
+    "name": "GeoDCAT-AP vocabulary",
+    "prefix": "geodcat",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://data.europa.eu/930/$1"
+  },
+  "semic.it6": {
+    "id": "semic.it6",
+    "name": "Machine Learning DCAT-AP (MLDCAT-AP)",
+    "prefix": "it6",
+    "subjects": [
+      "computer and information sciences",
+      "machine learning"
+    ],
+    "uri_format": "http://data.europa.eu/it6/$1"
+  },
+  "semic.ldes": {
+    "id": "semic.ldes",
+    "name": "Linked Data Event Streams",
+    "prefix": "ldes",
+    "subjects": [],
+    "uri_format": "https://w3id.org/ldes#$1"
+  },
+  "semic.s1n": {
+    "id": "semic.s1n",
+    "name": "StatDCAT-AP",
+    "prefix": "s1n",
+    "subjects": [
+      "statistics and probability"
+    ],
+    "uri_format": "http://data.europa.eu/s1n/$1"
+  },
+  "semic.w21": {
+    "id": "semic.",
+    "name": "ADMS-AP for Joinup",
+    "prefix": "w21",
+    "subjects": [],
+    "uri_format": "http://data.europa.eu/w21/$1"
+  }
+}
