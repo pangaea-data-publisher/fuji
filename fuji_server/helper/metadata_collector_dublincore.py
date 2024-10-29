@@ -175,11 +175,9 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                                 if coverage_info.get("type") == "spatial":
                                     v["coordinates"] = coverage_info.get("value")
                                     elem = "coverage_spatial"
-                                    print("DC Spatial Coverage: ", v)
                                 else:
                                     elem = "coverage_temporal"
                                     v["dates"] = coverage_info.get("value")
-                                    print("DC Temporal Coverage: ", v)
                                 v = [v]
                             if elem == "related_resources":
                                 # dc_core_metadata['related_resources'] = []

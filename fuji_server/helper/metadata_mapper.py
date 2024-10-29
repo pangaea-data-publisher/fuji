@@ -65,9 +65,9 @@ class Mapper(Enum):
         # required for Github etc. software FAIR assessment
         "license_path": {"label": "License Path", "sameAs": None},
         "metadata_service": {"label": "Metadata Service", "sameAs": None},
-        # spatial coverage (list): subproperties: 'name' (string or URI), 'coordinates' (list), 'reference' (string or URI). Either name or coordinates MUST be there
+        # spatial coverage (list of text or dict): potential subproperties: 'name' (string or URI), 'coordinates' (list), 'reference' (string or URI). Either name or coordinates MUST be there
         "coverage_spatial": {"label": "Geographical Coverage", "sameAs": "http://purl.org/dc/terms/Location"},
-        # temporal coverage (list): subproperties: 'name', 'date'
+        # temporal coverage (list of text or dict): potential subproperties: 'name', 'date'
         "coverage_temporal": {"label": "Temporal Coverage", "sameAs": None},
     }
 
@@ -263,7 +263,8 @@ class Mapper(Enum):
         "object_content_identifier:  {url: contentUrl} , "
         "access_level: rightsList[*].rightsUri || rightsList[*].rights, "
         "language: language,"
-        "coverage_spatial: geoLocations[*].{coordinates: geoLocationBox.*[] || geoLocationPoint.*[] || geoLocationPolygons[*].polygonPoints[].*[],name: geoLocationPlace }}"
+        "coverage_spatial: geoLocations[*].{coordinates: geoLocationBox.*[] || geoLocationPoint.*[] || geoLocationPolygons[*].polygonPoints[].*[],name: geoLocationPlace }"
+        "coverage_temporal: {dates: dates[?dateType == 'Collected'].date, name: dates[?dateType == 'Collected'].dateInformation}}"
     )
     #'related_resources: relatedIdentifiers[*].[relatedIdentifier,relationType]}'
 
@@ -393,6 +394,7 @@ class Mapper(Enum):
                 "./{*}geoLocations/{*}geoLocationPlace",
             ]
         },
+        "coverage_temporal": {"path": "./{*}dates/{*}date[@dateType='Collected']"},
     }
 
     XML_MAPPING_METS = {
@@ -449,18 +451,24 @@ class Mapper(Enum):
         },
         "object_content_identifier_url": {
             "path": [
-                "./{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}url",
+                "./{*}dataset//{*}physical/{*}distribution/{*}online/{*}url",
                 ".//{*}dataset/{*}distribution/{*}online/{*}url",
             ]
         },
         "object_content_identifier_size": {
-            "path": "./{*}dataset/{*}dataTable/{*}physical/{*}distribution/{*}online/{*}size"
+            "path": ["./{*}dataset//{*}physical/{*}distribution/{*}online/{*}size", "./{*}dataset//{*}physical/{*}size"]
         },
         "language": {"path": "./{*}dataset/{*}language"},
         "coverage_spatial_coordinates": {
             "path": "./{*}dataset/{*}coverage/{*}geographicCoverage/{*}boundingCoordinates"
         },
         "coverage_spatial_name": {"path": "./{*}dataset/{*}coverage/{*}geographicCoverage/{*}geographicDescription"},
+        "coverage_temporal": {
+            "path": [
+                "./{*}dataset/{*}coverage/{*}temporalCoverage/{*}singleDateTime/",
+                "./{*}dataset/{*}coverage/{*}temporalCoverage/{*}rangeOfDates",
+            ]
+        },
     }
     # CLARIN CMDI
     XML_MAPPING_CMD = {

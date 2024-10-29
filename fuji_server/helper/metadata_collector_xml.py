@@ -401,6 +401,24 @@ class MetaDataCollectorXML(MetaDataCollector):
             res.pop("object_content_identifier_size", None)
             res.pop("object_content_identifier_url", None)
             res.pop("object_content_identifier_service", None)
+        if res.get("coverage_temporal_dates") or res.get("coverage_temporal_names"):
+            res["coverage_temporal"] = []
+            if not isinstance(res["coverage_temporal_dates"], list):
+                res["coverage_temporal_dates"] = [res["coverage_temporal_dates"]]
+            ci = 0
+            for temporal_info in res["coverage_temporal_dates"] or res.get("coverage_temporal_names"):
+                temporal_dates = None
+                temporal_name = None
+            if res.get("coverage_temporal_dates"):
+                if ci < len(res["coverage_temporal_dates"]):
+                    temporal_dates = res["coverage_temporal_dates"][ci]
+            if res.get("coverage_temporal_name"):
+                if ci < len(res["coverage_temporal_name"]):
+                    temporal_name = res["coverage_temporal_name"][ci]
+            res["coverage_temporal"].append({"dates": temporal_dates, "name": temporal_name})
+            ci += 1
+        res.pop("coverage_temporal_dates", None)
+        res.pop("coverage_temporal_name", None)
         if res.get("coverage_spatial_coordinates") or res.get("coverage_spatial_names"):
             res["coverage_spatial"] = []
             if not isinstance(res["coverage_spatial_coordinates"], list):

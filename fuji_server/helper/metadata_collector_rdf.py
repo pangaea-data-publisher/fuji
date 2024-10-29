@@ -6,10 +6,11 @@ import json
 import re
 import urllib
 
+import dateutil
 import idutils
 import rdflib
 import requests
-from rdflib import Namespace
+from rdflib import RDFS, SKOS, Namespace
 from rdflib.namespace import (
     DC,
     DCTERMS,
@@ -903,6 +904,18 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     schema_metadata["object_content_identifier"].append(
                         {"url": service_url, "type": service_type, "service": service_desc}
                     )
+            # temporalCoverage
+            schema_metadata["coverage_temporal"] = []
+            for temporal_info in list(graph.objects(creative_work, SMA.temporalCoverage)) + list(
+                graph.objects(creative_work, SDO.temporalCoverage)
+            ):
+                temp_dates = []
+                for temp_part in str(temporal_info).split(" "):
+                    try:
+                        temp_dates.append(str(dateutil.parser.parse(temp_part)))
+                    except:
+                        pass
+                schema_metadata["coverage_temporal"].append({"dates": temp_dates, "name": str(temporal_info)})
             # spatialCoverage
             schema_metadata["coverage_spatial"] = []
             for spatial in (
@@ -1003,6 +1016,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         dcat_metadata = dict()
         DCAT = Namespace("http://www.w3.org/ns/dcat#")
         CSVW = Namespace("http://www.w3.org/ns/csvw#")
+        LOCN = Namespace("http://www.w3.org/ns/locn#")
         dcat_root_type = "Dataset"
         datasets = []
         main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
@@ -1095,7 +1109,31 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 service_url = graph.value(data_service, DCAT.endpointURL)
                 service_type = graph.value(data_service, DCTERMS.conformsTo)
                 dcat_metadata["metadata_service"].append({"url": str(service_url), "type": str(service_type)})
+            # spatial coverage
+            spatial_coverages = graph.objects(datasets[0], DCTERMS.spatial)
+            dcat_metadata["coverage_spatial"] = []
+            for spatial in spatial_coverages:
+                spatial_name = graph.value(spatial, RDFS.label) or graph.value(spatial, SKOS.prefLabel)
+                spatial_coordinate_data = (
+                    graph.value(spatial, LOCN.geometry)
+                    or graph.value(spatial, DCAT.bbox)
+                    or graph.value(spatial, DCAT.centroid)
+                )
+                spatial_coordinates = spatial_coordinate_data
+                # TODO: finalize parse_dcat_spatial and replace above with: spatial_coordinates = parse_dcat_spatial(spatial_coordinate_data)
+                dcat_metadata["coverage_spatial"].append({"name": spatial_name, "coordinates": spatial_coordinates})
         return dcat_metadata
+
+    def parse_dcat_spatial(self, spatial_text):
+        """Parse the spatial info provided in DCAT e.g as WKT.
+
+        Returns
+        ------
+        dict
+            a dict containing coordinates, named places
+        """
+
+        return True
 
     def get_content_type(self):
         """Get the content type.
