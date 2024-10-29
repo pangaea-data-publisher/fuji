@@ -1,1 +1,3460 @@
-{}
+{
+  "mmisw. bcodmo": {
+    "authority": "mmisw",
+    "description": "The Biological and Chemical Oceanography Data Management Office (BCO-DMO) is funded by the US National Science Foundation Division of Ocean Sciences to work with ocean biogeochemistry researchers in the US to improve access to data resulting from their respective programs.  In an effort to improve data access, BCO-DMO staff members are collaborating with researchers from the Tetherless World Constellation (TWC) at Rensselaer Polytechnic Institute (RPI) to develop an ontology that formally describes the concepts and relationships in the data managed by the BCO-DMO.  Version 2.0 (February 2011) of the BCO Ontology is still a work in progress.  Development is ongoing, with much work still remaining to be done on the parameter class.\n\nVersion 2.0 is being shared in it's current state in hopes that community members may find the work done thus far to be useful for their projects.  We welcome feedback and comments on the content.\n\nDevelopment of the ontology has been guided by a use case based approach.  The use cases were derived from data access related requests received from members of the research community served by the BCO-DMO.  The resultant BCO Ontology represents the information stored in the metadata database and satisfies the requirements of the use cases.  The BCO-DMO metadata database currently contains information that powers several different user and machine-to-machine interfaces to the BCO-DMO data repositories.  One goal of the ontology development project is to enable subsequent development of semantically-enabled components (e.g. faceted search) to enhance the power of those interfaces and improve data access through enhanced data discovery.",
+    "homepage": "http://escience.rpi.edu/ontology/BCO-DMO/bcodmo/2/0",
+    "id": "mmisw. bcodmo",
+    "name": "Biological and Chemical Oceanography",
+    "prefix": "mmisw. bcodmo",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://escience.rpi.edu/ontology/BCO-DMO/bcodmo/2/0$1"
+  },
+  "mmisw.1009785704": {
+    "authority": "mmisw",
+    "description": "Ontology for B2B web agregation",
+    "homepage": "http://mmisw.org/ont/ontoProdukt/op1",
+    "id": "mmisw.1009785704",
+    "name": "Ontology for B2B web agregation",
+    "prefix": "mmisw.1009785704",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ontoProdukt/op1$1"
+  },
+  "mmisw.1034724460": {
+    "authority": "mmisw",
+    "description": "This is an ontology representation for the Climate and Forecast (CF) area types vocabulary, which is intended for use with climate and forecast data in the  atmosphere, surface and ocean domains. The registered version at the ORR captures every area type parameter as a SKOS concept. This version of the ontology corresponds to version_number 2 of the original vocabulary (last modified 2013-07-10).",
+    "homepage": "http://mmisw.org/ont/cf/areatype",
+    "id": "mmisw.1034724460",
+    "name": "Climate and Forecast (CF) area types vocabulary",
+    "prefix": "mmisw.1034724460",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cf/areatype$1"
+  },
+  "mmisw.104173394": {
+    "authority": "mmisw",
+    "description": "WHOI Cruise ID prototype vocabulary",
+    "homepage": "http://mmisw.org/ont/WHOI/whoiCruiseID",
+    "id": "mmisw.104173394",
+    "name": "WHOI Cruise IDs",
+    "prefix": "mmisw.104173394",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/WHOI/whoiCruiseID$1"
+  },
+  "mmisw.1042417625": {
+    "authority": "mmisw",
+    "description": "udunits2-accepted",
+    "homepage": "http://mmisw.org/ont/mmi/udunits2-accepted",
+    "id": "mmisw.1042417625",
+    "name": "udunits2-accepted",
+    "prefix": "mmisw.1042417625",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/udunits2-accepted$1"
+  },
+  "mmisw.1055346193": {
+    "authority": "mmisw",
+    "description": "Definitions of WOCE quality control flags.",
+    "homepage": "http://mmisw.org/ont/woce/qcFlag",
+    "id": "mmisw.1055346193",
+    "name": "WOCE Quality Control Flags",
+    "prefix": "mmisw.1055346193",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/woce/qcFlag$1"
+  },
+  "mmisw.1063375533": {
+    "authority": "mmisw",
+    "description": "Mapping from IOOS to SECOORA",
+    "homepage": "http://mmisw.org/ont/drdc/MIOOSSEC",
+    "id": "mmisw.1063375533",
+    "name": "Mapping IOOS and SECOORA",
+    "prefix": "mmisw.1063375533",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/drdc/MIOOSSEC$1"
+  },
+  "mmisw.1117608813": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/pathogen",
+    "id": "mmisw.1117608813",
+    "name": "SECOORA Pathogen Data",
+    "prefix": "mmisw.1117608813",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/pathogen$1"
+  },
+  "mmisw.1136473883": {
+    "authority": "mmisw",
+    "description": "Ontology copied for safe-keeping; reference original rather than this copy",
+    "homepage": "http://mmisw.org/ont/univmemphis/sensor",
+    "id": "mmisw.1136473883",
+    "name": "OntoSensor Device Ontology",
+    "prefix": "mmisw.1136473883",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/univmemphis/sensor$1"
+  },
+  "mmisw.114067216": {
+    "authority": "mmisw",
+    "description": "This ontology defines concepts and relationships related with groups, users, organizations, and permissions on the ontologies registered at the MM ORR.",
+    "homepage": "http://mmisw.org/ont/mmi/mmiorr",
+    "id": "mmisw.114067216",
+    "name": "MMI ORR Ontology",
+    "prefix": "mmisw.114067216",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/mmiorr$1"
+  },
+  "mmisw.1166629238": {
+    "authority": "mmisw",
+    "description": "EOSDIS data products are processed at various levels ranging from Level 0 to Level 4. Level 0 products are raw data at full instrument resolution. At higher levels, the data are converted into more useful parameters and formats. This ontology captures the on-line description of the data processing levels, in order to provide unique URIs for those terms.",
+    "homepage": "http://mmisw.org/ont/nasa/datalevel",
+    "id": "mmisw.1166629238",
+    "name": "NASA EOSDIS Data Processing Levels",
+    "prefix": "mmisw.1166629238",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa/datalevel$1"
+  },
+  "mmisw.1186599661": {
+    "authority": "mmisw",
+    "description": "platform descriptions of MVCO",
+    "homepage": "http://mmisw.org/ont/mvco/platform",
+    "id": "mmisw.1186599661",
+    "name": "platform",
+    "prefix": "mmisw.1186599661",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/platform$1"
+  },
+  "mmisw.1206693933": {
+    "authority": "mmisw",
+    "description": "Semantic resource types created for the OOI program. These resource types can be used to classify other OOI semantic resources.",
+    "homepage": "http://mmisw.org/ont/ooici/resourceType",
+    "id": "mmisw.1206693933",
+    "name": "Semantic resource types created for the OOI program",
+    "prefix": "mmisw.1206693933",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/resourceType$1"
+  },
+  "mmisw.1241626580": {
+    "authority": "mmisw",
+    "description": "These are registered OGC URNs as listed on http://urn.opengis.net/ on 2009-05-19",
+    "homepage": "http://mmisw.org/ont/ogc/def",
+    "id": "mmisw.1241626580",
+    "name": "OGC Def Resource (as of 2009-05-19)",
+    "prefix": "mmisw.1241626580",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ogc/def$1"
+  },
+  "mmisw.1257649098": {
+    "authority": "mmisw",
+    "description": "Parameters used in the system databases and primary documents. Largely adapted from the posted SECOORA data dictionary",
+    "homepage": "http://mmisw.org/ont/gcoos/parameter",
+    "id": "mmisw.1257649098",
+    "name": "GCOOS Vocabulary",
+    "prefix": "mmisw.1257649098",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/gcoos/parameter$1"
+  },
+  "mmisw.127485380": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is Bottle Nutrient Data information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/nutrient",
+    "id": "mmisw.127485380",
+    "name": "CalCOFI Bottle Nutrient Data",
+    "prefix": "mmisw.127485380",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/nutrient$1"
+  },
+  "mmisw.1324252547": {
+    "authority": "mmisw",
+    "description": "Mapping of observation terms",
+    "homepage": "http://mmisw.org/ont/nasa_pace/observation_mapping",
+    "id": "mmisw.1324252547",
+    "name": "Observation Mapping",
+    "prefix": "mmisw.1324252547",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/observation_mapping$1"
+  },
+  "mmisw.1356187252": {
+    "authority": "mmisw",
+    "description": "Map of ECS Device to MMI Sensor",
+    "homepage": "http://mmisw.org/ont/ecs/device_map",
+    "id": "mmisw.1356187252",
+    "name": "Map of ECS Device to MMI Sensor",
+    "prefix": "mmisw.1356187252",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ecs/device_map$1"
+  },
+  "mmisw.1367564714": {
+    "authority": "mmisw",
+    "description": "Types of platforms from which ADCPs are commonly deployed",
+    "homepage": "http://mmisw.org/ont/trdi/platforms",
+    "id": "mmisw.1367564714",
+    "name": "Host Platforms",
+    "prefix": "mmisw.1367564714",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/trdi/platforms$1"
+  },
+  "mmisw.1367636237": {
+    "authority": "mmisw",
+    "description": "ODM2 RelationshipTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2test/relationshiptype",
+    "id": "mmisw.1367636237",
+    "name": "ODM2 RelationshipTypeCV vocabulary",
+    "prefix": "mmisw.1367636237",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2test/relationshiptype$1"
+  },
+  "mmisw.1369235614": {
+    "authority": "mmisw",
+    "description": "The study footprint concept is used to describe the scope, scope description, name of measure, and measure description of how a study footprint is created.  This can be the basis to verify the conceptual consistency of a physical GIS feature for QA/QC purposes.",
+    "homepage": "http://mmisw.org/ont/BOEM/studyFootprinting",
+    "id": "mmisw.1369235614",
+    "name": "Study Footprint Concept",
+    "prefix": "mmisw.1369235614",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/BOEM/studyFootprinting$1"
+  },
+  "mmisw.137446435": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://www.semanticweb.org/yasen/ontologies/2024/3/cn-medo",
+    "id": "mmisw.137446435",
+    "name": "Chinese Medicine Knowledge Graph",
+    "prefix": "mmisw.137446435",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.semanticweb.org/yasen/ontologies/2024/3/cn-medo$1"
+  },
+  "mmisw.1378873237": {
+    "authority": "mmisw",
+    "description": "(Re-registered by Carlos R. after fix to issue #213)",
+    "homepage": "http://mmisw.org/ont/ooi-ci/cdm",
+    "id": "mmisw.1378873237",
+    "name": "CDM",
+    "prefix": "mmisw.1378873237",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi-ci/cdm$1"
+  },
+  "mmisw.1418915091": {
+    "authority": "mmisw",
+    "description": "an upper ontology for the device ontology",
+    "homepage": "http://mmisw.org/ont/mmi/om",
+    "id": "mmisw.1418915091",
+    "name": "Observations & Measurements (subset)",
+    "prefix": "mmisw.1418915091",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/om$1"
+  },
+  "mmisw.1435694644": {
+    "authority": "mmisw",
+    "description": "INSAT3D Data Product Vocabulary describes ISRO INSAT3D data products",
+    "homepage": "http://mmisw.org/ont/isro/INSAT3DDPV",
+    "id": "mmisw.1435694644",
+    "name": "INSAT3D Data Product Vocabulary",
+    "prefix": "mmisw.1435694644",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isro/INSAT3DDPV$1"
+  },
+  "mmisw.1440440731": {
+    "authority": "mmisw",
+    "description": "Soft QA/QC flags used in National Data Buoy Center, from NDBC, 2003: NDBC Technical Document 03-02, Handbook of Automated Data Quality Control Checks and Procedures of the National Data Buoy Center",
+    "homepage": "http://mmisw.org/ont/ndbc/qualityFlag_soft",
+    "id": "mmisw.1440440731",
+    "name": "NDBC Soft QA/QC Flags",
+    "prefix": "mmisw.1440440731",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ndbc/qualityFlag_soft$1"
+  },
+  "mmisw.1453344365": {
+    "authority": "mmisw",
+    "description": "An ontology of ANZRC Field of Research (FoR) and Socio-Economic Objective (SEO) codes. Written for classification via OWL",
+    "homepage": "http://mmisw.org/ont/ANZRC/ANZRC_Codes",
+    "id": "mmisw.1453344365",
+    "name": "Australia-New Zealand Reference Centre (ANZRC) research codes",
+    "prefix": "mmisw.1453344365",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ANZRC/ANZRC_Codes$1"
+  },
+  "mmisw.1461565246": {
+    "authority": "mmisw",
+    "description": "ODM2 MethodTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2/MethodType",
+    "id": "mmisw.1461565246",
+    "name": "ODM2 MethodTypeCV vocabulary",
+    "prefix": "mmisw.1461565246",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/MethodType$1"
+  },
+  "mmisw.1473752060": {
+    "authority": "mmisw",
+    "description": "QA/QC Flags used by IRD",
+    "homepage": "http://mmisw.org/ont/ird/qualityFlag",
+    "id": "mmisw.1473752060",
+    "name": "IRD QA/QC Flags",
+    "prefix": "mmisw.1473752060",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ird/qualityFlag$1"
+  },
+  "mmisw.149441886": {
+    "authority": "mmisw",
+    "description": "A vocabulary describing the array of instruments used in the Ocean Observatories Initiative",
+    "homepage": "http://mmisw.org/ont/ooi_epe/instruments",
+    "id": "mmisw.149441886",
+    "name": "OOI EPE Instrument Vocabulary",
+    "prefix": "mmisw.149441886",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/instruments$1"
+  },
+  "mmisw.1512909646": {
+    "authority": "mmisw",
+    "description": "Instrument names from US GLOBEC Data Thesaurus: http://globec.whoi.edu/globec-dir/thesaurus.html.",
+    "homepage": "http://mmisw.org/ont/usglobec/instrument",
+    "id": "mmisw.1512909646",
+    "name": "US GLOBEC Instrument Names",
+    "prefix": "mmisw.1512909646",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/usglobec/instrument$1"
+  },
+  "mmisw.151328287": {
+    "authority": "mmisw",
+    "description": "The aim of a World Register of Marine Species (WoRMS) is to provide an authoritative and comprehensive list of names of marine organisms, including information on synonymy.",
+    "homepage": "http://mmisw.org/ont/WoRMS/WoRMS",
+    "id": "mmisw.151328287",
+    "name": "World Register of Marine Species",
+    "prefix": "mmisw.151328287",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/WoRMS/WoRMS$1"
+  },
+  "mmisw.152775109": {
+    "authority": "mmisw",
+    "description": "Map of terms relating to pigments and storage products",
+    "homepage": "http://mmisw.org/ont/nasa_pace/pigment_mapping",
+    "id": "mmisw.152775109",
+    "name": "Pigment Mapping",
+    "prefix": "mmisw.152775109",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/pigment_mapping$1"
+  },
+  "mmisw.1547811018": {
+    "authority": "mmisw",
+    "description": "Mapping between ICAN and OCA concepts",
+    "homepage": "http://mmisw.org/ont/oca/ocaican",
+    "id": "mmisw.1547811018",
+    "name": "OCA-ICAN Matting (demo)",
+    "prefix": "mmisw.1547811018",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/oca/ocaican$1"
+  },
+  "mmisw.1563692361": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "https://mmisw.org/ont/~antahia/GAE",
+    "id": "mmisw.1563692361",
+    "name": "GAE-vahicle-safety",
+    "prefix": "mmisw.1563692361",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://mmisw.org/ont/~antahia/GAE$1"
+  },
+  "mmisw.1575060261": {
+    "authority": "mmisw",
+    "description": "Names and descriptions of various Teledyne RD Instruments Sensor Models",
+    "homepage": "http://mmisw.org/ont/trdi/models",
+    "id": "mmisw.1575060261",
+    "name": "Teledyne RD Instruments Model Names",
+    "prefix": "mmisw.1575060261",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/trdi/models$1"
+  },
+  "mmisw.1599542533": {
+    "authority": "mmisw",
+    "description": "The classification is a framework for organizing knowledge about coasts and oceans and their living systems. It provides a structure for synthesizing data so that habitats can be characterized and reported in a standard way, and information can be aggregated and evaluated across the national landscape and seascape. Building on existing classification efforts and informed by a series of technical meetings and workshops, the CMECS framework integrates the current state of knowledge about ecological and habitat classification. The result is an ecosystem-oriented, science-based framework for the identification, inventory, and description of coastal and marine habitats and biodiversity.",
+    "homepage": "http://mmisw.org/ont/noaa/cmecs",
+    "id": "mmisw.1599542533",
+    "name": "Coastal Marine Ecological Classification Standard:  A Habitat Classification Framework",
+    "prefix": "mmisw.1599542533",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/cmecs$1"
+  },
+  "mmisw.1632024031": {
+    "authority": "mmisw",
+    "description": "OOI CI Common Executing Infrastructure concepts",
+    "homepage": "http://mmisw.org/ont/ooici/ceiConcept",
+    "id": "mmisw.1632024031",
+    "name": "OOI CI Common Executing Infrastructure concepts",
+    "prefix": "mmisw.1632024031",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/ceiConcept$1"
+  },
+  "mmisw.1685323719": {
+    "authority": "mmisw",
+    "description": "A mapping exercise",
+    "homepage": "http://mmisw.org/ont/oca/map-oca",
+    "id": "mmisw.1685323719",
+    "name": "Mapping test terms",
+    "prefix": "mmisw.1685323719",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/oca/map-oca$1"
+  },
+  "mmisw.169559365": {
+    "authority": "mmisw",
+    "description": "system type -- demo",
+    "homepage": "http://mmisw.org/ont/mmi/systemtype",
+    "id": "mmisw.169559365",
+    "name": "System Type",
+    "prefix": "mmisw.169559365",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/systemtype$1"
+  },
+  "mmisw.1703878080": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. These are Bottle Data Precision-Quality codes.",
+    "homepage": "http://mmisw.org/ont/calcofi/bottleqc",
+    "id": "mmisw.1703878080",
+    "name": "CalCOFI Bottle Data Precision-Quality Codes",
+    "prefix": "mmisw.1703878080",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/bottleqc$1"
+  },
+  "mmisw.1731855605": {
+    "authority": "mmisw",
+    "description": "Terms associated with the NOAA National Marine Fisheries Service, Pacific Fisheries Environmental Laboratory's monthly averages of the FNMOC (Fleet Numerical Meteorology and Oceanography Center) 6-hourly analyzed pressure fields interpolated where necessary to a 360 by 181 global spherical grid (1-degree), and Air/Ocean indices computed from the interpolated pressure.",
+    "homepage": "http://mmisw.org/ont/fnmoc/fnmoc",
+    "id": "mmisw.1731855605",
+    "name": "FNMOC - Fleet Numerical Meteorology and Oceanography Center- Interpolated Sea Level Pressure",
+    "prefix": "mmisw.1731855605",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/fnmoc/fnmoc$1"
+  },
+  "mmisw.1737613359": {
+    "authority": "mmisw",
+    "description": "A mapping of science concepts and keywords with other keywords, sites, and data products.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/science_mapping",
+    "id": "mmisw.1737613359",
+    "name": "OOI EPE Science Mapping",
+    "prefix": "mmisw.1737613359",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/science_mapping$1"
+  },
+  "mmisw.1739688126": {
+    "authority": "mmisw",
+    "description": "ICAN theasurus (top ontology)",
+    "homepage": "http://mmisw.org/ont/ican/thesaurus",
+    "id": "mmisw.1739688126",
+    "name": "ICAN thesaurus (demo)",
+    "prefix": "mmisw.1739688126",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ican/thesaurus$1"
+  },
+  "mmisw.1747912303": {
+    "authority": "mmisw",
+    "description": "This marine instrument and paramter ontology has been created as part of the JISC-funded COMPASS project. The COastal Marine Perception Application Profile for Scientific Scholarship project (December 2007 - June 2009) demonstrated how the inclusion of semantic information within discovery services in the form of ontologies enables more intelligent and sophisticated discovery of semantic resources. This was demonstrated in a prototype discovery interface developed for coastal marine researchers and scientists.",
+    "homepage": "http://mmisw.org/ont/compass/instruments_v3.owl",
+    "id": "mmisw.1747912303",
+    "name": "A Marine Instrument and Parameter Ontology",
+    "prefix": "mmisw.1747912303",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/compass/instruments_v3.owl$1"
+  },
+  "mmisw.1773975483": {
+    "authority": "mmisw",
+    "description": "QARTOD Currents QA/QC Flags, focusing on Teledyne RD recommended tests.",
+    "homepage": "http://mmisw.org/ont/qartod/qualityFlag",
+    "id": "mmisw.1773975483",
+    "name": "QARTOD Currents QA/QC Flags",
+    "prefix": "mmisw.1773975483",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/qartod/qualityFlag$1"
+  },
+  "mmisw.1778166562": {
+    "authority": "mmisw",
+    "description": "The Object terms from the CSDMS project, represented as an OWL resource.  The Object part of the Standard Name is a feature, in the sense of OGC 19109; it is a thing being observed (see http://en.wikipedia.org/wiki/Object_(philosophy) ). The Object is a required part of a CSDMS Standard Name. The CSDMS semantic work has a goal of automated semantic mediation, matching or reconciliation. While the focus is on a \"lingua franca\", the standard names are often built from a hierarchical set of concepts, and may eventually be used to construct a type of ontology.",
+    "homepage": "http://mmisw.org/ont/csdms/object",
+    "id": "mmisw.1778166562",
+    "name": "CSDMS Object Terms",
+    "prefix": "mmisw.1778166562",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/csdms/object$1"
+  },
+  "mmisw.1781243338": {
+    "authority": "mmisw",
+    "description": "Mapping of parameter terms to categories.  Some terms can be included in several categories and some categories can be a subset to another category.",
+    "homepage": "http://mmisw.org/ont/secoora/atmospheric",
+    "id": "mmisw.1781243338",
+    "name": "SECOORA Atmospheric Category Map",
+    "prefix": "mmisw.1781243338",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/atmospheric$1"
+  },
+  "mmisw.1787275005": {
+    "authority": "mmisw",
+    "description": "This is a test for demo of the VINE tool at a Q2O workshop.",
+    "homepage": "http://mmisw.org/ont/q2o/testQ2ODemo",
+    "id": "mmisw.1787275005",
+    "name": "test Q2O Demo for VINE Tool",
+    "prefix": "mmisw.1787275005",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/q2o/testQ2ODemo$1"
+  },
+  "mmisw.1789580839": {
+    "authority": "mmisw",
+    "description": "A more precise code (than data_type) to describe the instrument used in the collection of the data from Integrated Science Data Management, Fisheries and Oceans Canada.",
+    "homepage": "http://mmisw.org/ont/isdm/instruments",
+    "id": "mmisw.1789580839",
+    "name": "Instrument type codes",
+    "prefix": "mmisw.1789580839",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isdm/instruments$1"
+  },
+  "mmisw.1790484071": {
+    "authority": "mmisw",
+    "description": "A mapping of some terms between DRDC NADAS ontology and the CF ontology.",
+    "homepage": "http://mmisw.org/ont/drdc/_map",
+    "id": "mmisw.1790484071",
+    "name": "DRDC and CF Mapping",
+    "prefix": "mmisw.1790484071",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/drdc/_map$1"
+  },
+  "mmisw.1798596328": {
+    "authority": "mmisw",
+    "description": "Mapping between the SeaVox Device Catalogue, served from the NERC Vocabulary Server (NVS2.0) to the TRDI Ontology devices and glossary served from the MMI-ORR.",
+    "homepage": "http://mmisw.org/ont/bodc/NVSDevicesToTRDIOntology",
+    "id": "mmisw.1798596328",
+    "name": "NERC Vocabulary Server 2.0 Devices / Categories to",
+    "prefix": "mmisw.1798596328",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/bodc/NVSDevicesToTRDIOntology$1"
+  },
+  "mmisw.1800644846": {
+    "authority": "mmisw",
+    "description": "More information: ftp://www.epic.noaa.gov/epic/epic.key",
+    "homepage": "http://mmisw.org/ont/pmel/unit",
+    "id": "mmisw.1800644846",
+    "name": "EPIC Key File (Units)",
+    "prefix": "mmisw.1800644846",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/pmel/unit$1"
+  },
+  "mmisw.1818442801": {
+    "authority": "mmisw",
+    "description": "udunits2-base",
+    "homepage": "http://mmisw.org/ont/mmi/udunits2-base",
+    "id": "mmisw.1818442801",
+    "name": "udunits2-base",
+    "prefix": "mmisw.1818442801",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/udunits2-base$1"
+  },
+  "mmisw.1833925132": {
+    "authority": "mmisw",
+    "description": "Aqua Biological measurements compound",
+    "homepage": "http://mmisw.org/ont/CUAHSI/AquaBiologicalCompound",
+    "id": "mmisw.1833925132",
+    "name": "Aqua Biological Compound",
+    "prefix": "mmisw.1833925132",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/AquaBiologicalCompound$1"
+  },
+  "mmisw.1859194751": {
+    "authority": "mmisw",
+    "description": "NODC has developed 8 feature type descriptions and 14 representations, based on fundamental relationships among the spatiotemporal coordinates. This vocabulary builds upon the original information, to provide URIs for these types, extended information, and application notes.",
+    "homepage": "http://mmisw.org/ont/mx/featuretype",
+    "id": "mmisw.1859194751",
+    "name": "Feature Types and Representations Extended",
+    "prefix": "mmisw.1859194751",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mx/featuretype$1"
+  },
+  "mmisw.1884536969": {
+    "authority": "mmisw",
+    "description": "This vocabulary provides the top level (parent) vocab term that the rest of the OOI vocabularies build off of.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/parent",
+    "id": "mmisw.1884536969",
+    "name": "OOI EPE Top Level Vocabulary",
+    "prefix": "mmisw.1884536969",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/parent$1"
+  },
+  "mmisw.1907801295": {
+    "authority": "mmisw",
+    "description": "Test: general terms in use in the OceanSITES project",
+    "homepage": "http://mmisw.org/ont/ODMT/ODMTT",
+    "id": "mmisw.1907801295",
+    "name": "OceanSITES Data Management Team Thesaurus",
+    "prefix": "mmisw.1907801295",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ODMT/ODMTT$1"
+  },
+  "mmisw.1957218187": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. These are Weather data parameters for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/weatherData",
+    "id": "mmisw.1957218187",
+    "name": "CalCOFI Weather Data (uses WMO Weather codes)",
+    "prefix": "mmisw.1957218187",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/weatherData$1"
+  },
+  "mmisw.1964469670": {
+    "authority": "mmisw",
+    "description": "Individual terms from the OOI EPE Platform and Site Vocabularies are mapped together in this ontology.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/platform_mapping",
+    "id": "mmisw.1964469670",
+    "name": "OOI EPE Platform Mapping",
+    "prefix": "mmisw.1964469670",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/platform_mapping$1"
+  },
+  "mmisw.2006181478": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "https://mmisw.org/ont//~urmph/OntoMarine2",
+    "id": "mmisw.2006181478",
+    "name": "Ontology on Climate Change and Marine Life",
+    "prefix": "mmisw.2006181478",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://mmisw.org/ont//~urmph/OntoMarine2$1"
+  },
+  "mmisw.2008375706": {
+    "authority": "mmisw",
+    "description": "Samples from the Profiling CTD (down cast), productivity and physical parameters (sensor data). One record for each meter in depth. Profiling data are averaged into 1 meter depth bins. Data in these data tables are primarily from Monterey Bay, CA cruises.  Also see BOG Projects: http://www.mbari.org/bog/Projects/projects.htm.",
+    "homepage": "http://mmisw.org/ont/mbari/pctd",
+    "id": "mmisw.2008375706",
+    "name": "MBARI BOG Profiling CTD",
+    "prefix": "mmisw.2008375706",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbari/pctd$1"
+  },
+  "mmisw.2024919584": {
+    "authority": "mmisw",
+    "description": "These describe the codes used for various Institutes, from Integrated Science Data Management, Fisheries and Oceans Canada.",
+    "homepage": "http://mmisw.org/ont/isdm/instituteCodes",
+    "id": "mmisw.2024919584",
+    "name": "ISDM Institute Codes",
+    "prefix": "mmisw.2024919584",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isdm/instituteCodes$1"
+  },
+  "mmisw.2028446091": {
+    "authority": "mmisw",
+    "description": "Marine device types",
+    "homepage": "http://mmisw.org/ont/mmi/sensor",
+    "id": "mmisw.2028446091",
+    "name": "MMI Device Ontology (deprecated)",
+    "prefix": "mmisw.2028446091",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/sensor$1"
+  },
+  "mmisw.2039252021": {
+    "authority": "mmisw",
+    "description": "historyEventType for the MVCO",
+    "homepage": "http://mmisw.org/ont/mvco/historyEventType",
+    "id": "mmisw.2039252021",
+    "name": "historyEventType",
+    "prefix": "mmisw.2039252021",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/historyEventType$1"
+  },
+  "mmisw.2042322029": {
+    "authority": "mmisw",
+    "description": "udunits2-prefixes",
+    "homepage": "http://mmisw.org/ont/mmi/udunits2-prefixes",
+    "id": "mmisw.2042322029",
+    "name": "udunits2-prefixes",
+    "prefix": "mmisw.2042322029",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/udunits2-prefixes$1"
+  },
+  "mmisw.204265771": {
+    "authority": "mmisw",
+    "description": "Descriptions of the quality control tests.",
+    "homepage": "http://mmisw.org/ont/q2o/test",
+    "id": "mmisw.204265771",
+    "name": "Q2O Quality Control Tests",
+    "prefix": "mmisw.204265771",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/q2o/test$1"
+  },
+  "mmisw.2059644558": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is Chlorophyll data information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/chladata",
+    "id": "mmisw.2059644558",
+    "name": "CalCOFI Chlorophyll Data Table",
+    "prefix": "mmisw.2059644558",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/chladata$1"
+  },
+  "mmisw.2062968577": {
+    "authority": "mmisw",
+    "description": "a test ontology",
+    "homepage": "http://mmisw.org/ont/coa/coa",
+    "id": "mmisw.2062968577",
+    "name": "Oregon Test",
+    "prefix": "mmisw.2062968577",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/coa/coa$1"
+  },
+  "mmisw.2064393210": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. Standard genus, species code and descriptions for CalCOFI marine mammal observation program.",
+    "homepage": "http://mmisw.org/ont/calcofi/species",
+    "id": "mmisw.2064393210",
+    "name": "CalCOFI Marine Mammal Species Code List",
+    "prefix": "mmisw.2064393210",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/species$1"
+  },
+  "mmisw.206904633": {
+    "authority": "mmisw",
+    "description": "The Ocean Observatories Initiative manages resource access by policy based on user roles. These are the user roles to enable the policy creation.",
+    "homepage": "http://mmisw.org/ont/ooici/ooiionroles",
+    "id": "mmisw.206904633",
+    "name": "OOI User Roles for Applying Policy",
+    "prefix": "mmisw.206904633",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/ooiionroles$1"
+  },
+  "mmisw.2124452243": {
+    "authority": "mmisw",
+    "description": "Study footprints are polygon features that represent a scientific concept from a study.  This mapping indicates the level of specificity of the geographic reference where the study is applicable.",
+    "homepage": "http://mmisw.org/ont/BOEM/SFH",
+    "id": "mmisw.2124452243",
+    "name": "Mapping of study footprint conceptual scope hierarchy",
+    "prefix": "mmisw.2124452243",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/BOEM/SFH$1"
+  },
+  "mmisw.2133548183": {
+    "authority": "mmisw",
+    "description": "Fields for data collected by a CTD or similar profiling instrument,lowered from a single location and sampling temperature, conductivity and perhaps other variables. \nMore information: http://ioc.unesco.org/oceanteacher/resourcekit/M3/Formats/Integrated/GF3/ctd.pdf",
+    "homepage": "http://mmisw.org/ont/ioc/ctdfield",
+    "id": "mmisw.2133548183",
+    "name": "IOC Standard GF3 Subset for CTD Data",
+    "prefix": "mmisw.2133548183",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ioc/ctdfield$1"
+  },
+  "mmisw.2145828568": {
+    "authority": "mmisw",
+    "description": "Models an observation and systems and listed URIs that are needed to create responses for getObservation request in SOS",
+    "homepage": "http://mmisw.org/ont/mmi/general",
+    "id": "mmisw.2145828568",
+    "name": "Observation Model for OOSTethys",
+    "prefix": "mmisw.2145828568",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/general$1"
+  },
+  "mmisw.219231593": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://www.semanticweb.org/soumaya/ontologies/soumaya_library_ontology",
+    "id": "mmisw.219231593",
+    "name": "library management system ontology",
+    "prefix": "mmisw.219231593",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.semanticweb.org/soumaya/ontologies/soumaya_library_ontology$1"
+  },
+  "mmisw.2195692560": {
+    "authority": "mmisw",
+    "description": "The Operator (or Operation) terms from the CSDMS project, represented as an OWL resource. An Operation can optionally be given as a prefix to the quantity part of an existing standard name. Operations are applied to the quantity part of the name instead of to the entire name (object + quantity). Applying an operation to a quantity results in a new quantity that frequently has different units than the original quantity. The CSDMS semantic work has a goal of automated semantic mediation, matching or reconciliation. While the focus is on a 'lingua franca', the standard names are often built from a hierarchical set of concepts, and may eventually be used to construct a type of ontology.",
+    "homepage": "http://mmisw.org/ont/csdms/operator",
+    "id": "mmisw.2195692560",
+    "name": "CSDMS Operator Terms",
+    "prefix": "mmisw.2195692560",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/csdms/operator$1"
+  },
+  "mmisw.2198046676": {
+    "authority": "mmisw",
+    "description": "A description of ecological roles that phytoplankton can play in the ocean ecosystem.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/ecology",
+    "id": "mmisw.2198046676",
+    "name": "Ecological Roles and the Carbon Cycle",
+    "prefix": "mmisw.2198046676",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/ecology$1"
+  },
+  "mmisw.2242885748": {
+    "authority": "mmisw",
+    "description": "Contains standard names for parameters that are unlikely to be put in CF, but are not yet in a formal SSDS vocabulary. Most SSDS standard names are registered first in this vocabulary, and may be re-registered later in another vocabulary (at which time use the term herein will be deprecated).",
+    "homepage": "http://mmisw.org/ont/mbari/parameter_provisional",
+    "id": "mmisw.2242885748",
+    "name": "SSDS Provisional Standard Names",
+    "prefix": "mmisw.2242885748",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbari/parameter_provisional$1"
+  },
+  "mmisw.2247262912": {
+    "authority": "mmisw",
+    "description": "ODM2 SamplingFeatureGeotypeCV vocabulary repository. Describes the geographic geometry type stored in FeatureGeometry, represented in most cases in 2D coordinates. Z information is described elsewhere in the SamplingFeature.",
+    "homepage": "http://mmisw.org/ont/odm2/SamplingFeatureGeotype",
+    "id": "mmisw.2247262912",
+    "name": "ODM2 SamplingFeatureGeotypeCV vocabulary",
+    "prefix": "mmisw.2247262912",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/SamplingFeatureGeotype$1"
+  },
+  "mmisw.2253050723": {
+    "authority": "mmisw",
+    "description": "physical relationship of device to other devices or environment",
+    "homepage": "http://mmisw.org/ont/mbarissds/eqtorientation",
+    "id": "mmisw.2253050723",
+    "name": "SSDS Equipment Orientation Vocabulary",
+    "prefix": "mmisw.2253050723",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbarissds/eqtorientation$1"
+  },
+  "mmisw.2253392713": {
+    "authority": "mmisw",
+    "description": "List of references used in the Q2O Vocabulary tests, flags, and parameters.",
+    "homepage": "http://mmisw.org/ont/q2o/reference",
+    "id": "mmisw.2253392713",
+    "name": "Q2O References",
+    "prefix": "mmisw.2253392713",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/q2o/reference$1"
+  },
+  "mmisw.2272952596": {
+    "authority": "mmisw",
+    "description": "Water quality instruments and parameters",
+    "homepage": "http://mmisw.org/ont/CUAHSI/WaterQualityCompound",
+    "id": "mmisw.2272952596",
+    "name": "Water Quality Compound",
+    "prefix": "mmisw.2272952596",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/WaterQualityCompound$1"
+  },
+  "mmisw.2275362763": {
+    "authority": "mmisw",
+    "description": "Multibeam subclass of Device",
+    "homepage": "http://mmisw.org/ont/r2r/multibeam",
+    "id": "mmisw.2275362763",
+    "name": "Multibeam",
+    "prefix": "mmisw.2275362763",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/r2r/multibeam$1"
+  },
+  "mmisw.2317251635": {
+    "authority": "mmisw",
+    "description": "Waves glossary of NOAA with synonyms of NDBC, MEDS and others.",
+    "homepage": "http://mmisw.org/ont/noaa/noaa-waves",
+    "id": "mmisw.2317251635",
+    "name": "NOAA Wave Terms Compiled By Richard Bouchard",
+    "prefix": "mmisw.2317251635",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/noaa-waves$1"
+  },
+  "mmisw.2372374635": {
+    "authority": "mmisw",
+    "description": "ODM2 SiteTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2/SiteType",
+    "id": "mmisw.2372374635",
+    "name": "ODM2 SiteTypeCV vocabulary",
+    "prefix": "mmisw.2372374635",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/SiteType$1"
+  },
+  "mmisw.2376466062": {
+    "authority": "mmisw",
+    "description": "CTD bottle data (up cast), productivity, physical, and chemical data. One record for each CTD rosette bottle. The bottle samples are taken at 11 discrete depths, usually 0, 5, 10, 20, 30, 40, 60, 80, 100, 150, and 200m. Data in these data tables are primarily from Monterey Bay, CA cruises.  Also see BOG Projects: http://www.mbari.org/bog/Projects/projects.htm.",
+    "homepage": "http://mmisw.org/ont/mbari/bctd",
+    "id": "mmisw.2376466062",
+    "name": "MBARI BOG CTD Bottle Data",
+    "prefix": "mmisw.2376466062",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbari/bctd$1"
+  },
+  "mmisw.2399516024": {
+    "authority": "mmisw",
+    "description": "A list of 2-character codes to describe the instrumentation origins of the data, from Integrated Science Data Management, Fisheries and Oceans Canada.",
+    "homepage": "http://mmisw.org/ont/isdm/datatype",
+    "id": "mmisw.2399516024",
+    "name": "ISDM Data Type Codes",
+    "prefix": "mmisw.2399516024",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isdm/datatype$1"
+  },
+  "mmisw.2412601116": {
+    "authority": "mmisw",
+    "description": "Land Measurements compound",
+    "homepage": "http://mmisw.org/ont/CUAHSI/LandCompound",
+    "id": "mmisw.2412601116",
+    "name": "Land Compound",
+    "prefix": "mmisw.2412601116",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/LandCompound$1"
+  },
+  "mmisw.2427326985": {
+    "authority": "mmisw",
+    "description": "Remote sensing observations of phytoplankton.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/observations",
+    "id": "mmisw.2427326985",
+    "name": "Observations",
+    "prefix": "mmisw.2427326985",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/observations$1"
+  },
+  "mmisw.2429123570": {
+    "authority": "mmisw",
+    "description": "Vocabulary of water time-series data.  It is a subset of the CF vocabulary that is extended where the CF vocabulary is insufficient",
+    "homepage": "http://mmisw.org/ont/cencoos/parameter",
+    "id": "mmisw.2429123570",
+    "name": "CeNCOOS water monitoring subset and extension of CF parameter vocabulary",
+    "prefix": "mmisw.2429123570",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cencoos/parameter$1"
+  },
+  "mmisw.245696390": {
+    "authority": "mmisw",
+    "description": "Common surface hydrologic measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SurfaceHydrologicCore",
+    "id": "mmisw.245696390",
+    "name": "Surface Hydrologic Core",
+    "prefix": "mmisw.245696390",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SurfaceHydrologicCore$1"
+  },
+  "mmisw.2473799302": {
+    "authority": "mmisw",
+    "description": "Example of sensor instantiations including measurement range capability, accuracy.",
+    "homepage": "http://mmisw.org/ont/mmi/devontssn",
+    "id": "mmisw.2473799302",
+    "name": "Instrument instantiation example",
+    "prefix": "mmisw.2473799302",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/devontssn$1"
+  },
+  "mmisw.248145180": {
+    "authority": "mmisw",
+    "description": "A study footprint indicates the geographic area where a study was performed or where study information applies.  The footprint is geographically referenced using one of the accepted methodologies listed in this vocabulary. It is necessary to capture the name of measure as part of a quality assessment of the conceptual consistency of the study footprint with the study activities or findings.",
+    "homepage": "http://mmisw.org/ont/BOEM/SFM",
+    "id": "mmisw.248145180",
+    "name": "Controlled vocabulary for the name of measure and associated measure description of how a study footprint was created",
+    "prefix": "mmisw.248145180",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/BOEM/SFM$1"
+  },
+  "mmisw.2499728199": {
+    "authority": "mmisw",
+    "description": "All the SSDS parameter terms that may be entered into CF",
+    "homepage": "http://mmisw.org/ont/mbari/parameter",
+    "id": "mmisw.2499728199",
+    "name": "SSDS-Derived CF-Candidate Standard Names",
+    "prefix": "mmisw.2499728199",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbari/parameter$1"
+  },
+  "mmisw.250197051": {
+    "authority": "mmisw",
+    "description": "Terms describing pigments and storage products used by marine phytoplaknton and phytoplankton functional groups.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/pigments",
+    "id": "mmisw.250197051",
+    "name": "Pigments",
+    "prefix": "mmisw.250197051",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/pigments$1"
+  },
+  "mmisw.2506241474": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "https://mmisw.org/ont//~dprettcampagna/gdpr-provm",
+    "id": "mmisw.2506241474",
+    "name": "A Provenance Model for the European Union General Data Protection Regulation",
+    "prefix": "mmisw.2506241474",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://mmisw.org/ont//~dprettcampagna/gdpr-provm$1"
+  },
+  "mmisw.2525515039": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is Primary Productivity-C14 uptake information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/prododata",
+    "id": "mmisw.2525515039",
+    "name": "CalCOFI Primary Productivity-C14 Uptake",
+    "prefix": "mmisw.2525515039",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/prododata$1"
+  },
+  "mmisw.253124443": {
+    "authority": "mmisw",
+    "description": "INSAT-3D Mappings maps INSAT-3D vocabulary with CF-standard parameter ontology",
+    "homepage": "http://mmisw.org/ont/SunithaAbburu/INSAT3DM",
+    "id": "mmisw.253124443",
+    "name": "INSAT-3D Mappings",
+    "prefix": "mmisw.253124443",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/SunithaAbburu/INSAT3DM$1"
+  },
+  "mmisw.2534203338": {
+    "authority": "mmisw",
+    "description": "An ontology of ANZRC Field of Research (FoR) and Socio-Economic Objective (SEO) codes. Written for classification via OWL",
+    "homepage": "http://mmisw.org/ont/ANZRC/ANZRC_Codes.owl",
+    "id": "mmisw.2534203338",
+    "name": "Australia-New Zealand Reference Centre (ANZRC) research codes",
+    "prefix": "mmisw.2534203338",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ANZRC/ANZRC_Codes.owl$1"
+  },
+  "mmisw.254507768": {
+    "authority": "mmisw",
+    "description": "pizza",
+    "homepage": "http://mmisw.org/ont/woce/pizza.owl",
+    "id": "mmisw.254507768",
+    "name": "pizza",
+    "prefix": "mmisw.254507768",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/woce/pizza.owl$1"
+  },
+  "mmisw.2566376330": {
+    "authority": "mmisw",
+    "description": "QC flags generated by http://mmisw.org/ont/mvco/test or http://mmisw.org/ont/mvco/process qc tests for adcp in situ current and wave data",
+    "homepage": "http://mmisw.org/ont/mvco/qcflag",
+    "id": "mmisw.2566376330",
+    "name": "MVCO ADCP QUALITY FLAGS",
+    "prefix": "mmisw.2566376330",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/qcflag$1"
+  },
+  "mmisw.2590600441": {
+    "authority": "mmisw",
+    "description": "Description of COMPS Currents and Waves process chain",
+    "homepage": "http://mmisw.org/ont/comps/COMPSPC",
+    "id": "mmisw.2590600441",
+    "name": "COMPS Currents and Waves Process Chain",
+    "prefix": "mmisw.2590600441",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/comps/COMPSPC$1"
+  },
+  "mmisw.261806855": {
+    "authority": "mmisw",
+    "description": "An ontology describing the platform types used in the OOI.",
+    "homepage": "http://mmisw.org/ont/ooiplatform1/OOI_Platform",
+    "id": "mmisw.261806855",
+    "name": "OOI Education and Public Engagement Ontology P1",
+    "prefix": "mmisw.261806855",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooiplatform1/OOI_Platform$1"
+  },
+  "mmisw.2618997432": {
+    "authority": "mmisw",
+    "description": "Species and Classes of phytoplankton.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/taxonomy",
+    "id": "mmisw.2618997432",
+    "name": "Species and Taxonomy",
+    "prefix": "mmisw.2618997432",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/taxonomy$1"
+  },
+  "mmisw.2632270224": {
+    "authority": "mmisw",
+    "description": "Atmospheric Hydrologic common measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicCore",
+    "id": "mmisw.2632270224",
+    "name": "Atmospheric Hydrologic Core",
+    "prefix": "mmisw.2632270224",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicCore$1"
+  },
+  "mmisw.2649100152": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://www.semanticweb.org/soumaya/ontologies/2023/9/library_ontology",
+    "id": "mmisw.2649100152",
+    "name": "an library management system ontology",
+    "prefix": "mmisw.2649100152",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.semanticweb.org/soumaya/ontologies/2023/9/library_ontology$1"
+  },
+  "mmisw.2748216197": {
+    "authority": "mmisw",
+    "description": "processing and qc tests for mvco adcp",
+    "homepage": "http://mmisw.org/ont/process/mvco_processing",
+    "id": "mmisw.2748216197",
+    "name": "mvco processing descriptions",
+    "prefix": "mmisw.2748216197",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/process/mvco_processing$1"
+  },
+  "mmisw.2752505632": {
+    "authority": "mmisw",
+    "description": "ODM2 OrganizationTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2/OrganizationType",
+    "id": "mmisw.2752505632",
+    "name": "ODM2 OrganizationTypeCV vocabulary",
+    "prefix": "mmisw.2752505632",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/OrganizationType$1"
+  },
+  "mmisw.2759540082": {
+    "authority": "mmisw",
+    "description": "This is the parameter list for data stored in Marinexplore's data storage.",
+    "homepage": "http://mmisw.org/ont/mmi/MXP",
+    "id": "mmisw.2759540082",
+    "name": "Marinexplore standard names parameter vocabulary",
+    "prefix": "mmisw.2759540082",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/MXP$1"
+  },
+  "mmisw.2778305477": {
+    "authority": "mmisw",
+    "description": "QA/QC flags used in SeaDataNet",
+    "homepage": "http://mmisw.org/ont/seadatanet/qualityFlag",
+    "id": "mmisw.2778305477",
+    "name": "SeaDataNet QA/QC Flags",
+    "prefix": "mmisw.2778305477",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/seadatanet/qualityFlag$1"
+  },
+  "mmisw.2805783179": {
+    "authority": "mmisw",
+    "description": "testing mapping",
+    "homepage": "http://mmisw.org/ont/cwi/dm",
+    "id": "mmisw.2805783179",
+    "name": "demo_mapping",
+    "prefix": "mmisw.2805783179",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cwi/dm$1"
+  },
+  "mmisw.2808544937": {
+    "authority": "mmisw",
+    "description": "Water quality variables",
+    "homepage": "http://mmisw.org/ont/CUAHSI/WaterQualityCore2",
+    "id": "mmisw.2808544937",
+    "name": "Water Quality Core2",
+    "prefix": "mmisw.2808544937",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/WaterQualityCore2$1"
+  },
+  "mmisw.2828476607": {
+    "authority": "mmisw",
+    "description": "Mapping of individual species to their characteristics.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/phytopia_species_mapping",
+    "id": "mmisw.2828476607",
+    "name": "Phytopia Species Mapping",
+    "prefix": "mmisw.2828476607",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/phytopia_species_mapping$1"
+  },
+  "mmisw.2832204971": {
+    "authority": "mmisw",
+    "description": "These are oceanographic or meteorological parameters that are observed by MVCO sensors",
+    "homepage": "http://mmisw.org/ont/mvco/observableProperty",
+    "id": "mmisw.2832204971",
+    "name": "MVCO Observable Properties",
+    "prefix": "mmisw.2832204971",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/observableProperty$1"
+  },
+  "mmisw.283487051": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "https://w3id.org/CMECS/",
+    "id": "mmisw.283487051",
+    "name": "The Coastal and Marine Ecological Classification Standard Catalog of Units",
+    "prefix": "mmisw.283487051",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://w3id.org/CMECS/$1"
+  },
+  "mmisw.2868532972": {
+    "authority": "mmisw",
+    "description": "The data processing levels applicable to NOAA satellite data. These definitions were published on a wiki page at the links below, derived from the FGDC CSDGM - Extensions for Remote Sensing Metadata (FGDC-STD-012-2002), as an informative appendix.",
+    "homepage": "http://mmisw.org/ont/noaa/noaadatalevels",
+    "id": "mmisw.2868532972",
+    "name": "Processing Levels of NOAA Satellite Data Sets",
+    "prefix": "mmisw.2868532972",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/noaadatalevels$1"
+  },
+  "mmisw.287560647": {
+    "authority": "mmisw",
+    "description": "RDI wave and current glossary relevant to ADCP.  NOTE: This vocabulary is obsolete. See reference for new vocabulary.  ",
+    "homepage": "http://mmisw.org/ont/rdi/rdi",
+    "id": "mmisw.287560647",
+    "name": "RDI Current and Wave Glossary (OBSOLETE)",
+    "prefix": "mmisw.287560647",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/rdi/rdi$1"
+  },
+  "mmisw.2882584221": {
+    "authority": "mmisw",
+    "description": "Pigments vocabulary re-do.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/pigments2",
+    "id": "mmisw.2882584221",
+    "name": "Pigments2",
+    "prefix": "mmisw.2882584221",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/pigments2$1"
+  },
+  "mmisw.2899622208": {
+    "authority": "mmisw",
+    "description": "Describes the multibeam echosounder. A hydroacoustic sensor used to map and characterize the sea floor.",
+    "homepage": "https://mmisw.org/ont/~dwehner/multibeam",
+    "id": "mmisw.2899622208",
+    "name": "multibeamEchosounder",
+    "prefix": "mmisw.2899622208",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://mmisw.org/ont/~dwehner/multibeam$1"
+  },
+  "mmisw.2906143829": {
+    "authority": "mmisw",
+    "description": "Mapping of IOOS Core Variables to Climate Forecast (CF) Standard Names (v27)",
+    "homepage": "http://mmisw.org/ont/ioos/ioos_core_cf_map",
+    "id": "mmisw.2906143829",
+    "name": "IOOS Core Variables to Climate Forecast Standard Name Map",
+    "prefix": "mmisw.2906143829",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ioos/ioos_core_cf_map$1"
+  },
+  "mmisw.296697067": {
+    "authority": "mmisw",
+    "description": "Parameters and valids.\n More information: http://www.ifremer.fr/coriolis/cdc/argo/argo-dm-user-manual.pdf",
+    "homepage": "http://mmisw.org/ont/argo/parameter",
+    "id": "mmisw.296697067",
+    "name": "ARGO Parameters",
+    "prefix": "mmisw.296697067",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/argo/parameter$1"
+  },
+  "mmisw.2973941558": {
+    "authority": "mmisw",
+    "description": "OOI data products are broken down into levels depending on the level of processing of the data that occurred. This vocabulary documents both the defined levels (as 'description', from http://oceanobservatories.org/data/ooi-data-products/) and the 'technical details' (from https://confluence.oceanobservatories.org/display/CIDev/Data+Processing).",
+    "homepage": "http://mmisw.org/ont/mmi/ooidatalevel",
+    "id": "mmisw.2973941558",
+    "name": "Ocean Observatories Initiative Data Product Levels",
+    "prefix": "mmisw.2973941558",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/ooidatalevel$1"
+  },
+  "mmisw.2979670788": {
+    "authority": "mmisw",
+    "description": "List of Events that can occur in the history event list",
+    "homepage": "http://mmisw.org/ont/mvco/historyEventList",
+    "id": "mmisw.2979670788",
+    "name": "MVCO History Event List",
+    "prefix": "mmisw.2979670788",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/historyEventList$1"
+  },
+  "mmisw.3007561759": {
+    "authority": "mmisw",
+    "description": "QC tests for MVCO ADCP",
+    "homepage": "http://mmisw.org/ont/mvco/qcCategory",
+    "id": "mmisw.3007561759",
+    "name": "MVCOqcTests",
+    "prefix": "mmisw.3007561759",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/qcCategory$1"
+  },
+  "mmisw.3009391909": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is Report Data information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/rptdata",
+    "id": "mmisw.3009391909",
+    "name": "CalCOFI Data Report Data",
+    "prefix": "mmisw.3009391909",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/rptdata$1"
+  },
+  "mmisw.3017510975": {
+    "authority": "mmisw",
+    "description": "Describes the side scan sonar. A hydroacoustic sensor used to map and characterize the sea floor.",
+    "homepage": "https://mmisw.org/ont/~dwehner/sidescansonar",
+    "id": "mmisw.3017510975",
+    "name": "sideScanSonar",
+    "prefix": "mmisw.3017510975",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://mmisw.org/ont/~dwehner/sidescansonar$1"
+  },
+  "mmisw.3018852856": {
+    "authority": "mmisw",
+    "description": "Ontology representation of the Climate and Forecast (CF) standard names parameter vocabulary, which is intended for use with climate and forecast data in the atmosphere, surface and ocean domains. Every CF parameter is captured as a SKOS concept.",
+    "homepage": "http://mmisw.org/ont/cf/parameter",
+    "id": "mmisw.3018852856",
+    "name": "Climate and Forecast (CF) Standard Names (v.81)",
+    "prefix": "mmisw.3018852856",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cf/parameter$1"
+  },
+  "mmisw.3022894289": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://purl.org/biotrak/2021/11/biotrak_ontology",
+    "id": "mmisw.3022894289",
+    "name": "biotrak",
+    "prefix": "mmisw.3022894289",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://purl.org/biotrak/2021/11/biotrak_ontology$1"
+  },
+  "mmisw.304975018": {
+    "authority": "mmisw",
+    "description": "A mapping between CF parameters and the SECOORA parameters",
+    "homepage": "http://mmisw.org/ont/mapcfsecoora/MCFS",
+    "id": "mmisw.304975018",
+    "name": "Mapping between CF and SECOORA",
+    "prefix": "mmisw.304975018",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mapcfsecoora/MCFS$1"
+  },
+  "mmisw.3051045857": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is cast data information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/castdata",
+    "id": "mmisw.3051045857",
+    "name": "CalCOFI Station Cast Observed Information",
+    "prefix": "mmisw.3051045857",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/castdata$1"
+  },
+  "mmisw.305396237": {
+    "authority": "mmisw",
+    "description": "The VINE vocabulary defines semantic elements and properties for the mappings created with the VINE module in the MMI Ontology Registry and Repository.",
+    "homepage": "http://mmisw.org/ont/mmi/vine",
+    "id": "mmisw.305396237",
+    "name": "VINE Vocabulary",
+    "prefix": "mmisw.305396237",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/vine$1"
+  },
+  "mmisw.3055628941": {
+    "authority": "mmisw",
+    "description": "Terms describing the physical characteristics of phytoplankton and phytoplankton functional groups.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/physical",
+    "id": "mmisw.3055628941",
+    "name": "Physical Characteristics",
+    "prefix": "mmisw.3055628941",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/physical$1"
+  },
+  "mmisw.3062855821": {
+    "authority": "mmisw",
+    "description": "Atmospheric hydrologic measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicSynthesis",
+    "id": "mmisw.3062855821",
+    "name": "Atmospheric Hydrologic Synthesis",
+    "prefix": "mmisw.3062855821",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicSynthesis$1"
+  },
+  "mmisw.3080862837": {
+    "authority": "mmisw",
+    "description": "Interagency Crosscutting Group on Climate Change and Human Health (CCHHG) Product Type Terms",
+    "homepage": "http://mmisw.org/ont/cchhg/cchhg_product_type",
+    "id": "mmisw.3080862837",
+    "name": "USGCRP CCHHG Product Type Terms",
+    "prefix": "mmisw.3080862837",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cchhg/cchhg_product_type$1"
+  },
+  "mmisw.3110849010": {
+    "authority": "mmisw",
+    "description": "Ground water measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicCompound",
+    "id": "mmisw.3110849010",
+    "name": "Substrate Hydrologic Compound",
+    "prefix": "mmisw.3110849010",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicCompound$1"
+  },
+  "mmisw.312343314": {
+    "authority": "mmisw",
+    "description": "Land measurements common",
+    "homepage": "http://mmisw.org/ont/CUAHSI/LandCore",
+    "id": "mmisw.312343314",
+    "name": "Land Core",
+    "prefix": "mmisw.312343314",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/LandCore$1"
+  },
+  "mmisw.3142118233": {
+    "authority": "mmisw",
+    "description": "OCA thesaurus for demo",
+    "homepage": "http://mmisw.org/ont/oca/thesaurus",
+    "id": "mmisw.3142118233",
+    "name": "OCA thesaurus",
+    "prefix": "mmisw.3142118233",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/oca/thesaurus$1"
+  },
+  "mmisw.3160209183": {
+    "authority": "mmisw",
+    "description": "Demo of mapping between ICAN and COA thesaurus",
+    "homepage": "http://mmisw.org/ont/coa/icancoa",
+    "id": "mmisw.3160209183",
+    "name": "ICAN-COA Mapping (demo)",
+    "prefix": "mmisw.3160209183",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/coa/icancoa$1"
+  },
+  "mmisw.3205371077": {
+    "authority": "mmisw",
+    "description": "Ocean measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/OceanSynthesis",
+    "id": "mmisw.3205371077",
+    "name": "Ocean Synthesis",
+    "prefix": "mmisw.3205371077",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/OceanSynthesis$1"
+  },
+  "mmisw.3245995480": {
+    "authority": "mmisw",
+    "description": "Ground water measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicCore",
+    "id": "mmisw.3245995480",
+    "name": "Substrate Hydrologic Core",
+    "prefix": "mmisw.3245995480",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicCore$1"
+  },
+  "mmisw.3271519535": {
+    "authority": "mmisw",
+    "description": "This resource has been deprecated as of April 24, 2024. This means it has been marked as no longer suitable for use, although past uses may still exist.",
+    "homepage": "http://mmisw.org/ont/ioos/identifier_parameter_program",
+    "id": "mmisw.3271519535",
+    "name": "IOOS Vocabulary Version 1",
+    "prefix": "mmisw.3271519535",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ioos/identifier_parameter_program$1"
+  },
+  "mmisw.3287011918": {
+    "authority": "mmisw",
+    "description": "Maps platforms from the SeaVoX Platform Categories (served by the NERC Vocabulary Server version 2.0 - NVS 2.0) to the IOOS Platforms & TRDI Host Platforms served by the MMI-ORR.",
+    "homepage": "http://mmisw.org/ont/bodc/MapSeaVoxPlatforms2IOOSandRDIPlatforms",
+    "id": "mmisw.3287011918",
+    "name": "Mappings: NERC Vocabulary Server 2.0 SeaVoX Platforms to IOOS & RDI Host platforms",
+    "prefix": "mmisw.3287011918",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/bodc/MapSeaVoxPlatforms2IOOSandRDIPlatforms$1"
+  },
+  "mmisw.3289935310": {
+    "authority": "mmisw",
+    "description": "US JGOFS CTD and Bottle Sample Vocabulary",
+    "homepage": "http://mmisw.org/ont/mmi/usjgofs_hydro",
+    "id": "mmisw.3289935310",
+    "name": "US JGOFS CTD and Bottle Sample Vocabulary",
+    "prefix": "mmisw.3289935310",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/usjgofs_hydro$1"
+  },
+  "mmisw.3314903692": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. These are Station ID parameters for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/CalCOFI_stationid",
+    "id": "mmisw.3314903692",
+    "name": "CalCOFI Station ID and Desired Positions",
+    "prefix": "mmisw.3314903692",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/CalCOFI_stationid$1"
+  },
+  "mmisw.3333550324": {
+    "authority": "mmisw",
+    "description": "OOI terms in the OOI Reference Model",
+    "homepage": "http://mmisw.org/ont/ooici/ooiReferenceConcept",
+    "id": "mmisw.3333550324",
+    "name": "OOI terms in the OOI Reference Model",
+    "prefix": "mmisw.3333550324",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/ooiReferenceConcept$1"
+  },
+  "mmisw.3348698867": {
+    "authority": "mmisw",
+    "description": "A list of the roles performed for OOI and their descriptions.",
+    "homepage": "http://mmisw.org/ont/ooi/ionrole",
+    "id": "mmisw.3348698867",
+    "name": "OOI Integrated Observatory Network Roles",
+    "prefix": "mmisw.3348698867",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi/ionrole$1"
+  },
+  "mmisw.3398053287": {
+    "authority": "mmisw",
+    "description": "The Quantity terms from the CSDMS project, represented as an OWL resource. The Quantity is a required part of a CSDMS Standard Name. The Quantity part of the Standard Name is an attribute of a thing representing the thing's magnitude or multidude (see http://en.wikipedia.org/wiki/Quantity). The Quantity has units, possibly dimensionless units like m/m. The CSDMS semantic work has a goal of automated semantic mediation, matching or reconciliation. While the focus is on a 'lingua franca', the standard names are often built from a hierarchical set of concepts, and may eventually be used to construct a type of ontology.",
+    "homepage": "http://mmisw.org/ont/csdms/quantity",
+    "id": "mmisw.3398053287",
+    "name": "CSDMS Quantity Terms",
+    "prefix": "mmisw.3398053287",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/csdms/quantity$1"
+  },
+  "mmisw.3436328920": {
+    "authority": "mmisw",
+    "description": "Test QA/QC flags used in SEACOOS (vocabulary documentation is pending)",
+    "homepage": "http://mmisw.org/ont/seacoos/qualityFlag_tq",
+    "id": "mmisw.3436328920",
+    "name": "SEACOOS Test QA/QC Flags",
+    "prefix": "mmisw.3436328920",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/seacoos/qualityFlag_tq$1"
+  },
+  "mmisw.3444441269": {
+    "authority": "mmisw",
+    "description": "Device Ontology developed by the Marine Metadata Project, http://marinemetadata.org",
+    "homepage": "http://mmisw.org/ont/mmi/device",
+    "id": "mmisw.3444441269",
+    "name": "MMI Device Ontology",
+    "prefix": "mmisw.3444441269",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/device$1"
+  },
+  "mmisw.3455361419": {
+    "authority": "mmisw",
+    "description": "Index terms are a key part of AGU's strategy for categorizing and electronic distribution of journal articles, books, meeting abstracts, and e-mail alerts. They are used in database searches, in subject indices, and in identifying articles for inclusion in AGU Personal Choice journals.",
+    "homepage": "http://mmisw.org/ont/agu/indexterm",
+    "id": "mmisw.3455361419",
+    "name": "AGU Index Terms",
+    "prefix": "mmisw.3455361419",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/agu/indexterm$1"
+  },
+  "mmisw.3457111579": {
+    "authority": "mmisw",
+    "description": "This mapping provides the top level (parent) mapping of terms that the rest of the OOI vocabularies/mappings build off of.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/parent_mapping",
+    "id": "mmisw.3457111579",
+    "name": "OOI EPE Top Level Mapping",
+    "prefix": "mmisw.3457111579",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/parent_mapping$1"
+  },
+  "mmisw.3462381598": {
+    "authority": "mmisw",
+    "description": "QC tests for MVCO ADCP",
+    "homepage": "http://mmisw.org/ont/mvco/qcTests",
+    "id": "mmisw.3462381598",
+    "name": "MVCO QC Tests",
+    "prefix": "mmisw.3462381598",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/qcTests$1"
+  },
+  "mmisw.3488610508": {
+    "authority": "mmisw",
+    "description": "Wave data quality control hard flags for real-time data from the National Data Buoy Center, National Weather Service.",
+    "homepage": "http://mmisw.org/ont/ndbc/waveQChard",
+    "id": "mmisw.3488610508",
+    "name": "NDBC Real-time Wave Data QA/QC",
+    "prefix": "mmisw.3488610508",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ndbc/waveQChard$1"
+  },
+  "mmisw.3539746095": {
+    "authority": "mmisw",
+    "description": "ODM2 ActionTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2/ActionType",
+    "id": "mmisw.3539746095",
+    "name": "ODM2 ActionTypeCV vocabulary",
+    "prefix": "mmisw.3539746095",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/ActionType$1"
+  },
+  "mmisw.3552654339": {
+    "authority": "mmisw",
+    "description": "A vocabulary describing the array of sites that make up the Ocean Observatories Initiative.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/sites",
+    "id": "mmisw.3552654339",
+    "name": "OOI EPE Site Vocabulary",
+    "prefix": "mmisw.3552654339",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/sites$1"
+  },
+  "mmisw.3553395432": {
+    "authority": "mmisw",
+    "description": "QA/QC flags used in WOCE Hydrographic Programme",
+    "homepage": "http://mmisw.org/ont/woce/qualityFlag",
+    "id": "mmisw.3553395432",
+    "name": "World Ocean Circulation Experiment Hydrographic Programme's QA/QC Flags",
+    "prefix": "mmisw.3553395432",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/woce/qualityFlag$1"
+  },
+  "mmisw.3558885129": {
+    "authority": "mmisw",
+    "description": "INSAT3D Data Product Vocabulary describes ISRO INSAT3D data products",
+    "homepage": "http://mmisw.org/ont/SunithaAbburu/INSAT3DDPV",
+    "id": "mmisw.3558885129",
+    "name": "INSAT3D Data Product Vocabulary",
+    "prefix": "mmisw.3558885129",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/SunithaAbburu/INSAT3DDPV$1"
+  },
+  "mmisw.3569778396": {
+    "authority": "mmisw",
+    "description": "A vocabulary describing types of platforms that make up the Ocean Observatories Initiative.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/platforms",
+    "id": "mmisw.3569778396",
+    "name": "OOI EPE Platform Vocabulary",
+    "prefix": "mmisw.3569778396",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/platforms$1"
+  },
+  "mmisw.358452109": {
+    "authority": "mmisw",
+    "description": "A vocabulary describing the science concepts related to the Ocean Observatories Initiative",
+    "homepage": "http://mmisw.org/ont/ooi_epe/science",
+    "id": "mmisw.358452109",
+    "name": "OOI EPE Science Vocabulary",
+    "prefix": "mmisw.358452109",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/science$1"
+  },
+  "mmisw.3586776167": {
+    "authority": "mmisw",
+    "description": "Test of VARS terms",
+    "homepage": "http://mmisw.org/ont/mbari/keyword",
+    "id": "mmisw.3586776167",
+    "name": "VARS User's Guide Concepts Vocabulary",
+    "prefix": "mmisw.3586776167",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mbari/keyword$1"
+  },
+  "mmisw.3590160250": {
+    "authority": "mmisw",
+    "description": "This Ontology provides knowledge in computer network domain on various perspectives like scope, scale, topology, communication media, OSI model, TCP/ IP model, protocol, security, network operating system, network hardware and performance.",
+    "homepage": "http://mmisw.org/ont/Technology/ComputerNetworks",
+    "id": "mmisw.3590160250",
+    "name": "Computer Networks",
+    "prefix": "mmisw.3590160250",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/Technology/ComputerNetworks$1"
+  },
+  "mmisw.3618509777": {
+    "authority": "mmisw",
+    "description": "A vocabulary describing the array of data products generated in the Ocean Observatories Initiative",
+    "homepage": "http://mmisw.org/ont/ooi_epe/data_products",
+    "id": "mmisw.3618509777",
+    "name": "OOI EPE Data Product Vocabulary",
+    "prefix": "mmisw.3618509777",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/data_products$1"
+  },
+  "mmisw.3640471656": {
+    "authority": "mmisw",
+    "description": "The European Nature Information System (EUNIS) classification is a pan-European system, which was developed between 1996 and2001 by the European Environment Agency in collaboration with experts from throughout Europe. It covers all types of natural and artificial habitats, both aquatic and terrestrial. The National Marine Habitat Classification for Britain and Ireland was fully incorporated into the EUNIS classification system. The marine section of the EUNIS classification is currently undergoing revision through the Osloand Paris Convention (OSPAR).",
+    "homepage": "http://mmisw.org/ont/fao/habitatclassification",
+    "id": "mmisw.3640471656",
+    "name": "European Nature Information System (EUNIS)",
+    "prefix": "mmisw.3640471656",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/fao/habitatclassification$1"
+  },
+  "mmisw.36488028": {
+    "authority": "mmisw",
+    "description": "Water Quality from CUAHSI",
+    "homepage": "http://mmisw.org/ont/CUAHSI/WaterQuality",
+    "id": "mmisw.36488028",
+    "name": "Water Quality",
+    "prefix": "mmisw.36488028",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/WaterQuality$1"
+  },
+  "mmisw.3667027135": {
+    "authority": "mmisw",
+    "description": "Ocean measurements compound",
+    "homepage": "http://mmisw.org/ont/CUAHSI/OceanCompound",
+    "id": "mmisw.3667027135",
+    "name": "Ocean Compound",
+    "prefix": "mmisw.3667027135",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/OceanCompound$1"
+  },
+  "mmisw.3688643564": {
+    "authority": "mmisw",
+    "description": "Definitions of common terms associated with TRDI ADCPs",
+    "homepage": "http://mmisw.org/ont/trdi/glossary",
+    "id": "mmisw.3688643564",
+    "name": "TRDI Glossary",
+    "prefix": "mmisw.3688643564",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/trdi/glossary$1"
+  },
+  "mmisw.3698378705": {
+    "authority": "mmisw",
+    "description": "MMI Tools",
+    "homepage": "http://mmisw.org/ont/mmi/tool",
+    "id": "mmisw.3698378705",
+    "name": "MMI tools",
+    "prefix": "mmisw.3698378705",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/tool$1"
+  },
+  "mmisw.3717921681": {
+    "authority": "mmisw",
+    "description": "ODM2 SamplingFeatureTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2/SamplingFeatureType",
+    "id": "mmisw.3717921681",
+    "name": "ODM2 SamplingFeatureTypeCV vocabulary",
+    "prefix": "mmisw.3717921681",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2/SamplingFeatureType$1"
+  },
+  "mmisw.3730448478": {
+    "authority": "mmisw",
+    "description": "Platform Names and Their Abbreviations, from US GLOBEC Data Thesaurus: http://globec.whoi.edu/globec-dir/thesaurus.html.",
+    "homepage": "http://mmisw.org/ont/usglobec/platformCodes",
+    "id": "mmisw.3730448478",
+    "name": "US GLOBEC Platform Codes",
+    "prefix": "mmisw.3730448478",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/usglobec/platformCodes$1"
+  },
+  "mmisw.3738788977": {
+    "authority": "mmisw",
+    "description": "Mapping terms between several phytoplankton-related vocabularies.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/phytopia_mapping",
+    "id": "mmisw.3738788977",
+    "name": "Physical Mapping",
+    "prefix": "mmisw.3738788977",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/phytopia_mapping$1"
+  },
+  "mmisw.3806897027": {
+    "authority": "mmisw",
+    "description": "one simple term to show mapping to an upper ICAN ontology",
+    "homepage": "http://mmisw.org/ont/lb/ti",
+    "id": "mmisw.3806897027",
+    "name": "Test Theme for ICAN",
+    "prefix": "mmisw.3806897027",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/lb/ti$1"
+  },
+  "mmisw.3827826390": {
+    "authority": "mmisw",
+    "description": "Uses skos:exactMatch to link the IRIs of the CF standard names between the RDF versions at the MMI ORR and NERC NVS repositories.",
+    "homepage": "http://mmisw.org/ont/mmi/cfonmap",
+    "id": "mmisw.3827826390",
+    "name": "ORR-NVS CF standard name mapping (v.81)",
+    "prefix": "mmisw.3827826390",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/cfonmap$1"
+  },
+  "mmisw.3834497866": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/wave",
+    "id": "mmisw.3834497866",
+    "name": "SECOORA Wave Data",
+    "prefix": "mmisw.3834497866",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/wave$1"
+  },
+  "mmisw.384531172": {
+    "authority": "mmisw",
+    "description": "Instrument types\n More information: http://www.ifremer.fr/coriolis/cdc/argo/argo-dm-user-manual.pdf",
+    "homepage": "http://mmisw.org/ont/argo/instrument",
+    "id": "mmisw.384531172",
+    "name": "ARGO Instruments",
+    "prefix": "mmisw.384531172",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/argo/instrument$1"
+  },
+  "mmisw.3864695447": {
+    "authority": "mmisw",
+    "description": "OOI CI Architecture General Design Concepts",
+    "homepage": "http://mmisw.org/ont/ooici/architectureConcept",
+    "id": "mmisw.3864695447",
+    "name": "OOI CI Architecture General Design Concepts",
+    "prefix": "mmisw.3864695447",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/architectureConcept$1"
+  },
+  "mmisw.3885354331": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/optical",
+    "id": "mmisw.3885354331",
+    "name": "SECOORA Optical Property Data",
+    "prefix": "mmisw.3885354331",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/optical$1"
+  },
+  "mmisw.3901231793": {
+    "authority": "mmisw",
+    "description": "Parameter codes used by the QUEST Non acoustic data acquisition system (NADAS).  All codes used in NADAS are numeric (e.g., 013).  The alpha codes (e.g., WTSS) have been added to support the descriptions of the numeric codes.  The alpha codes are not actually part of the data stream.",
+    "homepage": "http://mmisw.org/ont/drdc/parameter",
+    "id": "mmisw.3901231793",
+    "name": "DRDC Atlantic NADAS Parameter Codes",
+    "prefix": "mmisw.3901231793",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/drdc/parameter$1"
+  },
+  "mmisw.3906595721": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/current",
+    "id": "mmisw.3906595721",
+    "name": "SECOORA Ocean Current Data",
+    "prefix": "mmisw.3906595721",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/current$1"
+  },
+  "mmisw.3941415097": {
+    "authority": "mmisw",
+    "description": "List of authorities for the ontologies registered in the MMI Ontology Repository",
+    "homepage": "http://mmisw.org/ont/mmi/authority",
+    "id": "mmisw.3941415097",
+    "name": "Authority Vocabulary",
+    "prefix": "mmisw.3941415097",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/authority$1"
+  },
+  "mmisw.3947125566": {
+    "authority": "mmisw",
+    "description": "Hard QA/QC flags used in National Data Buoy Center, from NDBC, 2003: NDBC Technical Document 03-02, Handbook of Automated Data Quality Control Checks and Procedures of the National Data Buoy Center",
+    "homepage": "http://mmisw.org/ont/ndbc/qualityFlag_hard",
+    "id": "mmisw.3947125566",
+    "name": "NDBC Hard QA/QC Flags",
+    "prefix": "mmisw.3947125566",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ndbc/qualityFlag_hard$1"
+  },
+  "mmisw.3956895490": {
+    "authority": "mmisw",
+    "description": "ODM2 SamplingFeatureTypeCV vocabulary repository",
+    "homepage": "http://mmisw.org/ont/odm2test/samplingfeaturetype",
+    "id": "mmisw.3956895490",
+    "name": "ODM2 SamplingFeatureTypeCV vocabulary",
+    "prefix": "mmisw.3956895490",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/odm2test/samplingfeaturetype$1"
+  },
+  "mmisw.3980580582": {
+    "authority": "mmisw",
+    "description": "A mapping for environmental terms",
+    "homepage": "http://mmisw.org/ont/nasa_pace/enivronmental_mapping",
+    "id": "mmisw.3980580582",
+    "name": "Environmental Mapping",
+    "prefix": "mmisw.3980580582",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/enivronmental_mapping$1"
+  },
+  "mmisw.3987867571": {
+    "authority": "mmisw",
+    "description": "Atmospheric Hydrologic Compound measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicCompound",
+    "id": "mmisw.3987867571",
+    "name": "Atmospheric Hydrologic Compound",
+    "prefix": "mmisw.3987867571",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/AtmosphericHydrologicCompound$1"
+  },
+  "mmisw.40162122": {
+    "authority": "mmisw",
+    "description": "Descriptions of the parameters used in quality control tests.",
+    "homepage": "http://mmisw.org/ont/q2o/parameter",
+    "id": "mmisw.40162122",
+    "name": "Q2O Parameter Vocabulary",
+    "prefix": "mmisw.40162122",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/q2o/parameter$1"
+  },
+  "mmisw.4021699966": {
+    "authority": "mmisw",
+    "description": "USGLOBEC thesaurus 19 Nov 2008",
+    "homepage": "http://mmisw.org/ont/mmi/usglobec",
+    "id": "mmisw.4021699966",
+    "name": "usglobec vocabulary",
+    "prefix": "mmisw.4021699966",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/usglobec$1"
+  },
+  "mmisw.4032222161": {
+    "authority": "mmisw",
+    "description": "First version of the Marinexplore data processing levels vocabulary.",
+    "homepage": "http://mmisw.org/ont/mx/datalevel",
+    "id": "mmisw.4032222161",
+    "name": "Marinexplore Data Processing Levels Vocabulary",
+    "prefix": "mmisw.4032222161",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mx/datalevel$1"
+  },
+  "mmisw.4034842785": {
+    "authority": "mmisw",
+    "description": "udunits2-derived",
+    "homepage": "http://mmisw.org/ont/mmi/udunits2-derived",
+    "id": "mmisw.4034842785",
+    "name": "udunits2-derived",
+    "prefix": "mmisw.4034842785",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/udunits2-derived$1"
+  },
+  "mmisw.4035230124": {
+    "authority": "mmisw",
+    "description": "Land measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/LandSynthesis",
+    "id": "mmisw.4035230124",
+    "name": "Land Synthesis",
+    "prefix": "mmisw.4035230124",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/LandSynthesis$1"
+  },
+  "mmisw.4037030450": {
+    "authority": "mmisw",
+    "description": "This marine instrument and paramter ontology has been created as part of the JISC-funded COMPASS project. The COastal Marine Perception Application Profile for Scientific Scholarship project (December 2007 - June 2009) demonstrated how the inclusion of semantic information within discovery services in the form of ontologies enables more intelligent and sophisticated discovery of semantic resources. This was demonstrated in a prototype discovery interface developed for coastal marine researchers and scientists.",
+    "homepage": "http://mmisw.org/ont/compass/instruments_v3",
+    "id": "mmisw.4037030450",
+    "name": "A Marine Instrument and Parameter Ontology",
+    "prefix": "mmisw.4037030450",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/compass/instruments_v3$1"
+  },
+  "mmisw.4057793893": {
+    "authority": "mmisw",
+    "description": "Equipment vocabulary extracted from the VARS external database.",
+    "homepage": "http://mmisw.org/ont/mmi/Equipment",
+    "id": "mmisw.4057793893",
+    "name": "VARS Equipment Vocabulary",
+    "prefix": "mmisw.4057793893",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/Equipment$1"
+  },
+  "mmisw.4097205707": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/coordinate",
+    "id": "mmisw.4097205707",
+    "name": "SECOORA Sampling Coordinate Terms",
+    "prefix": "mmisw.4097205707",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/coordinate$1"
+  },
+  "mmisw.412127303": {
+    "authority": "mmisw",
+    "description": "Ontology for B2B web agregation",
+    "homepage": "http://mmisw.org/ont/ontoProdukt/op1.owl",
+    "id": "mmisw.412127303",
+    "name": "Ontology for B2B web agregation",
+    "prefix": "mmisw.412127303",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ontoProdukt/op1.owl$1"
+  },
+  "mmisw.414701314": {
+    "authority": "mmisw",
+    "description": "Relating the MVCO vocabularies for swell terms to the CF terms",
+    "homepage": "http://mmisw.org/ont/mvco/MVCOtoCFswell",
+    "id": "mmisw.414701314",
+    "name": "MVCOtoCFswell",
+    "prefix": "mmisw.414701314",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/MVCOtoCFswell$1"
+  },
+  "mmisw.4157839049": {
+    "authority": "mmisw",
+    "description": "The Assumption terms from the CSDMS project, represented as an OWL resource. An Assumption is not a  part of a CSDMS Standard Name; rather, it is used to describe a model or its parameters in detail. (Hence, an assumption should not be used to evaluate parameter matches in a simplistic way.) An Assumption is a broad term that can include things like conditions, simplifications, approximations, limitations, conventions, provisos and other forms of clarification. CSDMS encourages model developers to include as many <assume> tags in their Model Coupling Metadata (MCM) file as they feel apply to their model or its particular input or output variable; XML tag nesting determines the scope of an <assume> tag. The CSDMS semantic work has a goal of automated semantic mediation, matching or reconciliation. While the focus is on a 'lingua franca', the standard names are often built from a hierarchical set of concepts, and may eventually be used to construct a type of ontology.",
+    "homepage": "http://mmisw.org/ont/csdms/assumption",
+    "id": "mmisw.4157839049",
+    "name": "CSDMS Assumption Terms",
+    "prefix": "mmisw.4157839049",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/csdms/assumption$1"
+  },
+  "mmisw.4158334878": {
+    "authority": "mmisw",
+    "description": "Oceanic measurements common",
+    "homepage": "http://mmisw.org/ont/CUAHSI/OceanCore",
+    "id": "mmisw.4158334878",
+    "name": "Ocean Core",
+    "prefix": "mmisw.4158334878",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/OceanCore$1"
+  },
+  "mmisw.4159861353": {
+    "authority": "mmisw",
+    "description": "Testing VINE map capabilities",
+    "homepage": "http://mmisw.org/ont/secoora/param2cat",
+    "id": "mmisw.4159861353",
+    "name": "SECOORA Testing Mapping (deprecated)",
+    "prefix": "mmisw.4159861353",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/param2cat$1"
+  },
+  "mmisw.4169165273": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/sensor",
+    "id": "mmisw.4169165273",
+    "name": "SECOORA Sensor Terms",
+    "prefix": "mmisw.4169165273",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/sensor$1"
+  },
+  "mmisw.4174490154": {
+    "authority": "mmisw",
+    "description": "Terms describing plots developed by NOAA NMFS PFEL. The plots in this data group are of monthly means in 1-degree lat/lon squares of sea surface temperature and anomalies. They were computed from GTS surface observations received twice a day by PFEL from FNMOC (Fleet Numerical Meteorology and Oceanography Center). These are global real-time surface observations from platforms such as ships and buoys (both fixed and drifting). They are a subset of the data which will be included in an update to COADS (Comprehensive Ocean-Atmosphere Data Set, also see COADS on CD-ROM) .",
+    "homepage": "http://mmisw.org/ont/noaa/gts",
+    "id": "mmisw.4174490154",
+    "name": "Sea Surface Temperature (Global Telecommunications Systems, GTS)",
+    "prefix": "mmisw.4174490154",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/gts$1"
+  },
+  "mmisw.4185531306": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is cast information for primary productivity samples on CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/Prodo_Cast",
+    "id": "mmisw.4185531306",
+    "name": "CalCOFI Primary Productivity Cast Information",
+    "prefix": "mmisw.4185531306",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/Prodo_Cast$1"
+  },
+  "mmisw.4189752333": {
+    "authority": "mmisw",
+    "description": "Definitions developed in the context of the MMI Device Ontology group. (Preliminary version.)",
+    "homepage": "http://mmisw.org/ont/mmi/devterm",
+    "id": "mmisw.4189752333",
+    "name": "MMI Device Ontology Terms",
+    "prefix": "mmisw.4189752333",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/devterm$1"
+  },
+  "mmisw.4194530362": {
+    "authority": "mmisw",
+    "description": "Individual terms from the OOI EPE Instrument and Data Product Vocabularies are mapped together in this ontology.  Instruments are also mapped to platforms and sites.",
+    "homepage": "http://mmisw.org/ont/ooi_epe/instrument_mapping",
+    "id": "mmisw.4194530362",
+    "name": "OOI EPE Instrument Mapping",
+    "prefix": "mmisw.4194530362",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooi_epe/instrument_mapping$1"
+  },
+  "mmisw.4194901286": {
+    "authority": "mmisw",
+    "description": "Classifications of level of success for term mapping",
+    "homepage": "http://mmisw.org/ont/graybealski/mappingcategory",
+    "id": "mmisw.4194901286",
+    "name": "Mapping Success Category",
+    "prefix": "mmisw.4194901286",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/graybealski/mappingcategory$1"
+  },
+  "mmisw.4213225008": {
+    "authority": "mmisw",
+    "description": "Device vocabulary for the ECS project at NOAA/NGDC.",
+    "homepage": "http://mmisw.org/ont/ecs/device",
+    "id": "mmisw.4213225008",
+    "name": "Extended Contintental Shelf (ECS) Device Vocabulary",
+    "prefix": "mmisw.4213225008",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ecs/device$1"
+  },
+  "mmisw.4217885132": {
+    "authority": "mmisw",
+    "description": "Aggregate Quality QA/QC flags used in SEACOOS (can't locate recent documentation on these flags)",
+    "homepage": "http://mmisw.org/ont/seacoos/qualityFlag_aq",
+    "id": "mmisw.4217885132",
+    "name": "SEACOOS Aggregate Quality QA/QC Flags",
+    "prefix": "mmisw.4217885132",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/seacoos/qualityFlag_aq$1"
+  },
+  "mmisw.4222194872": {
+    "authority": "mmisw",
+    "description": "Describes the COMPS Waves and Currents properties",
+    "homepage": "http://mmisw.org/ont/COMPS/properties",
+    "id": "mmisw.4222194872",
+    "name": "COMPS Currents and Waves Properties",
+    "prefix": "mmisw.4222194872",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/COMPS/properties$1"
+  },
+  "mmisw.4236268056": {
+    "authority": "mmisw",
+    "description": "The California Cooperative Oceanic Fisheries Investigations (CalCOFI) are a unique partnership of the California Department of Fish and Game, NOAA Fisheries Service, and Scripps Institution of Oceanography. They conduct quarterly cruises off southern & central California, collecting a suite of hydrographic and biological data on station and underway. This is Bottle Data information for CalCOFI cruises.",
+    "homepage": "http://mmisw.org/ont/calcofi/bottledata",
+    "id": "mmisw.4236268056",
+    "name": "CalCOFI Hydrographic Bottle Data",
+    "prefix": "mmisw.4236268056",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/calcofi/bottledata$1"
+  },
+  "mmisw.4259697132": {
+    "authority": "mmisw",
+    "description": "QA/QC flags used in Argo",
+    "homepage": "http://mmisw.org/ont/argo/qualityFlag",
+    "id": "mmisw.4259697132",
+    "name": "Argo QA/QC Flags",
+    "prefix": "mmisw.4259697132",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/argo/qualityFlag$1"
+  },
+  "mmisw.427455752": {
+    "authority": "mmisw",
+    "description": "Surface Hydrologic measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SurfHydrosyn",
+    "id": "mmisw.427455752",
+    "name": "Surface Hydrology Synthesis",
+    "prefix": "mmisw.427455752",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SurfHydrosyn$1"
+  },
+  "mmisw.4278616296": {
+    "authority": "mmisw",
+    "description": "QC flags used in MVCO QC tests",
+    "homepage": "http://mmisw.org/ont/mvco/flag",
+    "id": "mmisw.4278616296",
+    "name": "MVCO QC Flag definitions",
+    "prefix": "mmisw.4278616296",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/flag$1"
+  },
+  "mmisw.428129619": {
+    "authority": "mmisw",
+    "description": "Terms describing the environments in which plankton can be found, as well as interactions with other organisms.",
+    "homepage": "http://mmisw.org/ont/nasa_pace/environmental_interactions",
+    "id": "mmisw.428129619",
+    "name": "Environmental Interactions",
+    "prefix": "mmisw.428129619",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/environmental_interactions$1"
+  },
+  "mmisw.45040623": {
+    "authority": "mmisw",
+    "description": "Surface hydrologic compound measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SurfaceHydrologicCompound",
+    "id": "mmisw.45040623",
+    "name": "Surface Hydrologic Compound",
+    "prefix": "mmisw.45040623",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SurfaceHydrologicCompound$1"
+  },
+  "mmisw.462891534": {
+    "authority": "mmisw",
+    "description": "Marine Organism vocabulary extracted from the VARS external database",
+    "homepage": "http://mmisw.org/ont/mmi/MarineOrganism",
+    "id": "mmisw.462891534",
+    "name": "MarineOrganism Vocabulary",
+    "prefix": "mmisw.462891534",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/MarineOrganism$1"
+  },
+  "mmisw.478763104": {
+    "authority": "mmisw",
+    "description": "Teledyne RD Instruments software programs",
+    "homepage": "http://mmisw.org/ont/trdi/software",
+    "id": "mmisw.478763104",
+    "name": "Teledyne RD Instruments Software",
+    "prefix": "mmisw.478763104",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/trdi/software$1"
+  },
+  "mmisw.487009904": {
+    "authority": "mmisw",
+    "description": "Aqua Biological common measurements",
+    "homepage": "http://mmisw.org/ont/CUAHSI/AquaBioCore",
+    "id": "mmisw.487009904",
+    "name": "Aqua Biological Core",
+    "prefix": "mmisw.487009904",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/AquaBioCore$1"
+  },
+  "mmisw.489983946": {
+    "authority": "mmisw",
+    "description": "These are the quality flags used to describe the validity of a measurement, code list from Integrated Science Data Management, Fisheries and Oceans Canada",
+    "homepage": "http://mmisw.org/ont/isdm/qvalue",
+    "id": "mmisw.489983946",
+    "name": "ISDM Q Value Codes",
+    "prefix": "mmisw.489983946",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isdm/qvalue$1"
+  },
+  "mmisw.519943056": {
+    "authority": "mmisw",
+    "description": "INSAT-3D Mappings maps INSAT-3D vocabulary with CF-standard parameter ontology",
+    "homepage": "http://mmisw.org/ont/isro/INSAT3DM",
+    "id": "mmisw.519943056",
+    "name": "INSAT-3D Mappings",
+    "prefix": "mmisw.519943056",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/isro/INSAT3DM$1"
+  },
+  "mmisw.54348181": {
+    "authority": "mmisw",
+    "description": "Ground Water",
+    "homepage": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicSyn",
+    "id": "mmisw.54348181",
+    "name": "Substrate Hydrologic Syn",
+    "prefix": "mmisw.54348181",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/CUAHSI/SubstrateHydrologicSyn$1"
+  },
+  "mmisw.550035105": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/weather_climate",
+    "id": "mmisw.550035105",
+    "name": "SECOORA Weather and Climate Data Map",
+    "prefix": "mmisw.550035105",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/weather_climate$1"
+  },
+  "mmisw.585227595": {
+    "authority": "mmisw",
+    "description": "OOI CI concepts used throughout the cyberinfrastructure",
+    "homepage": "http://mmisw.org/ont/ooici/cyberinfrastructureConcept",
+    "id": "mmisw.585227595",
+    "name": "OOI CI concepts used throughout the cyberinfrastructure",
+    "prefix": "mmisw.585227595",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/cyberinfrastructureConcept$1"
+  },
+  "mmisw.586450967": {
+    "authority": "mmisw",
+    "description": "More information: http://www.pfeg.noaa.gov/products/las/docs/wind_from_pressure.nc.html",
+    "homepage": "http://mmisw.org/ont/noaa/general",
+    "id": "mmisw.586450967",
+    "name": "Interpolated Sea Level Pressure",
+    "prefix": "mmisw.586450967",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/general$1"
+  },
+  "mmisw.620240675": {
+    "authority": "mmisw",
+    "description": "a subset of the COA thesaurus",
+    "homepage": "http://mmisw.org/ont/coa/thesaurus",
+    "id": "mmisw.620240675",
+    "name": "COA thesaurus (demo)",
+    "prefix": "mmisw.620240675",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/coa/thesaurus$1"
+  },
+  "mmisw.620523383": {
+    "authority": "mmisw",
+    "description": "Ontology from Juvenile Rockfish Survey - Data Manager Keith Sakuma, Keith.sakuma@noaa.gov",
+    "homepage": "http://mmisw.org/ont/noaa/juvenilerockfish",
+    "id": "mmisw.620523383",
+    "name": "NOAA Juvenile Rockfish Survey Parameters",
+    "prefix": "mmisw.620523383",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/juvenilerockfish$1"
+  },
+  "mmisw.643119163": {
+    "authority": "mmisw",
+    "description": "Glossary of tide and current terms by the NOAA Center for Operational Oceanographic Products and Services, January 2000.",
+    "homepage": "http://mmisw.org/ont/noaa/noaa-tide-current",
+    "id": "mmisw.643119163",
+    "name": "Tide and Current Glossary",
+    "prefix": "mmisw.643119163",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/noaa/noaa-tide-current$1"
+  },
+  "mmisw.669183275": {
+    "authority": "mmisw",
+    "description": "Marine platform types",
+    "homepage": "http://mmisw.org/ont/mmi/platform",
+    "id": "mmisw.669183275",
+    "name": "MMI Platform Ontology",
+    "prefix": "mmisw.669183275",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/platform$1"
+  },
+  "mmisw.708649550": {
+    "authority": "mmisw",
+    "description": "udunits2-common",
+    "homepage": "http://mmisw.org/ont/mmi/udunits2-common",
+    "id": "mmisw.708649550",
+    "name": "udunits2-common",
+    "prefix": "mmisw.708649550",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/udunits2-common$1"
+  },
+  "mmisw.719088437": {
+    "authority": "mmisw",
+    "description": "QC Flags Description",
+    "homepage": "http://mmisw.org/ont/comps/flag",
+    "id": "mmisw.719088437",
+    "name": "COMPS Quality Flags Vocabulary",
+    "prefix": "mmisw.719088437",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/comps/flag$1"
+  },
+  "mmisw.726765115": {
+    "authority": "mmisw",
+    "description": "CDIP list of terms\nhttp://cdip.ucsd.edu",
+    "homepage": "http://mmisw.org/ont/cdip/term",
+    "id": "mmisw.726765115",
+    "name": "CDIP Term Vocabulary",
+    "prefix": "mmisw.726765115",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/cdip/term$1"
+  },
+  "mmisw.737513264": {
+    "authority": "mmisw",
+    "description": "NOTE: Only a few rows from the original table for testing purposes",
+    "homepage": "http://mmisw.org/ont/griidc_test/octr",
+    "id": "mmisw.737513264",
+    "name": "Oceanographic and Chemical Term Reconciliation Table",
+    "prefix": "mmisw.737513264",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/griidc_test/octr$1"
+  },
+  "mmisw.754082381": {
+    "authority": "mmisw",
+    "description": "OOI CI information resources (information objects in the system)",
+    "homepage": "http://mmisw.org/ont/ooici/informationResource",
+    "id": "mmisw.754082381",
+    "name": "OOI CI information resources (information objects in the system)",
+    "prefix": "mmisw.754082381",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/ooici/informationResource$1"
+  },
+  "mmisw.758224116": {
+    "authority": "mmisw",
+    "description": "A mapping of ecological terms",
+    "homepage": "http://mmisw.org/ont/nasa_pace/ecological_mapping",
+    "id": "mmisw.758224116",
+    "name": "Ecological Mapping",
+    "prefix": "mmisw.758224116",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/nasa_pace/ecological_mapping$1"
+  },
+  "mmisw.797860081": {
+    "authority": "mmisw",
+    "description": "QA/QC flags used in World Ocean Database WOD05",
+    "homepage": "http://mmisw.org/ont/wod/qualityFlag",
+    "id": "mmisw.797860081",
+    "name": "World Ocean Database QA/QC",
+    "prefix": "mmisw.797860081",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/wod/qualityFlag$1"
+  },
+  "mmisw.80905690": {
+    "authority": "mmisw",
+    "description": "processing and qc for mvco adcp/waves",
+    "homepage": "http://mmisw.org/ont/mvco/process",
+    "id": "mmisw.80905690",
+    "name": "mvco_processing description",
+    "prefix": "mmisw.80905690",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/process$1"
+  },
+  "mmisw.829910679": {
+    "authority": "mmisw",
+    "description": "Description of properties output by the MVCO ADCP Waves system",
+    "homepage": "http://mmisw.org/ont/mvco/properties",
+    "id": "mmisw.829910679",
+    "name": "MVCO Waves Property Descriptions",
+    "prefix": "mmisw.829910679",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/properties$1"
+  },
+  "mmisw.854455983": {
+    "authority": "mmisw",
+    "description": "TO BE COMPLETED",
+    "homepage": "http://mmisw.org/ont/secoora/water_property",
+    "id": "mmisw.854455983",
+    "name": "SECOORA Water Property Data",
+    "prefix": "mmisw.854455983",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/water_property$1"
+  },
+  "mmisw.868068109": {
+    "authority": "mmisw",
+    "description": "The study footprint concept is used to describe the scope, scope description, name of measure, and measure description of how a study footprint is created.  This can be the basis to verify the conceptual consistency of a physical GIS feature for QA/QC purposes.",
+    "homepage": "http://mmisw.org/ont/BOEM/studyFootprinting.owl",
+    "id": "mmisw.868068109",
+    "name": "Study Footprint Concept",
+    "prefix": "mmisw.868068109",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/BOEM/studyFootprinting.owl$1"
+  },
+  "mmisw.894341302": {
+    "authority": "mmisw",
+    "description": "The SECOORA Vocabulary, now expanded to nearly 200 terms, is based on the IOOS Parameter Vocabulary (130 terms). All terms were given unique definitions and researched for consistency and continuity. All term names and definitions were reviewed and references and units provided in most cases. However, terms on fish and zooplankton species and abundance were not included in this version.",
+    "homepage": "http://mmisw.org/ont/secoora/parameter",
+    "id": "mmisw.894341302",
+    "name": "SECOORA Parameter Vocabulary",
+    "prefix": "mmisw.894341302",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/parameter$1"
+  },
+  "mmisw.89902079": {
+    "authority": "mmisw",
+    "description": "mvco description of qc tests, velocity/pressure clean-up and computation of wave parameters",
+    "homepage": "http://mmisw.org/ont/mvco/mvco",
+    "id": "mmisw.89902079",
+    "name": "mvco processing descriptions",
+    "prefix": "mmisw.89902079",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mvco/mvco$1"
+  },
+  "mmisw.93090662": {
+    "authority": "mmisw",
+    "description": "to be completed",
+    "homepage": "http://mmisw.org/ont/secoora/water_quality",
+    "id": "mmisw.93090662",
+    "name": "SECOORA Water Quality Data",
+    "prefix": "mmisw.93090662",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/water_quality$1"
+  },
+  "mmisw.94850237": {
+    "authority": "mmisw",
+    "description": "Description of flags returned by quality control tests.",
+    "homepage": "http://mmisw.org/ont/q2o/flag",
+    "id": "mmisw.94850237",
+    "name": "Q2O Quality Flag Vocabulary",
+    "prefix": "mmisw.94850237",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/q2o/flag$1"
+  },
+  "mmisw.949459863": {
+    "authority": "mmisw",
+    "description": "QA/QC flags used in Integrated Global Ocean Services System (IGOSS)",
+    "homepage": "http://mmisw.org/ont/igoss/qualityFlag",
+    "id": "mmisw.949459863",
+    "name": "Integrated Global Ocean Services System (IGOSS) QA/QC Flags",
+    "prefix": "mmisw.949459863",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/igoss/qualityFlag$1"
+  },
+  "mmisw.97440018": {
+    "authority": "mmisw",
+    "description": "Categories of core variables and areas of societal benefit.",
+    "homepage": "http://mmisw.org/ont/secoora/category",
+    "id": "mmisw.97440018",
+    "name": "SECOORA Parameter Category Vocabulary",
+    "prefix": "mmisw.97440018",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/secoora/category$1"
+  },
+  "mmisw.99247290": {
+    "authority": "mmisw",
+    "description": "This vocabulary defines a list of resource types that can be used to drive the corresponding drop-down in the ontology metadata editor. (The actual drop-down may not have all these in the list.)",
+    "homepage": "http://mmisw.org/ont/mmi/resourcetype",
+    "id": "mmisw.99247290",
+    "name": "Resource Type Vocabulary",
+    "prefix": "mmisw.99247290",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://mmisw.org/ont/mmi/resourcetype$1"
+  },
+  "mmisw.biomar": {
+    "authority": "mmisw",
+    "description": "BioMar classification of marine biotopes by Joint Nature Conservation Committee in Britain",
+    "homepage": "http://marinemetadata.org/2005/08/biomar",
+    "id": "mmisw.biomar",
+    "name": "BIOMAR Classification of Marine Biotopes",
+    "prefix": "mmisw.biomar",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://marinemetadata.org/2005/08/biomar$1"
+  },
+  "mmisw.bmonto": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "https://w3id.org/bmontology",
+    "id": "mmisw.bmonto",
+    "name": "IT Benchmarking Ontology",
+    "prefix": "mmisw.bmonto",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "https://w3id.org/bmontology$1"
+  },
+  "mmisw.coaer": {
+    "authority": "mmisw",
+    "description": "Top ontology for coastal erosion related topics. Replaces http://marinemetadata.org/mmiws/ont/20070912/coastal_erosion.owl",
+    "homepage": "http://www.coastalatlas.net/ont/coastal_erosion.owl",
+    "id": "mmisw.coaer",
+    "name": "Coastal Erosion Topics",
+    "prefix": "mmisw.coaer",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.coastalatlas.net/ont/coastal_erosion.owl$1"
+  },
+  "mmisw.coath": {
+    "authority": "mmisw",
+    "description": "Oregon Coastal Atlas ontology focused on Coastal Erosion Hazard related topics for now. Edited down to display terms for existing or potential data. Integrates top ontology developed by USGS. Replaces: http://www.coastalatlas.net/ont/20080618/coastalatlas",
+    "homepage": "http://www.coastalatlas.net/ont/20080701/theme/theme.owl",
+    "id": "mmisw.coath",
+    "name": "Oregon Coastal Atlas Draft Erosion Ontology",
+    "prefix": "mmisw.coath",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.coastalatlas.net/ont/20080701/theme/theme.owl$1"
+  },
+  "mmisw.csiro.sen": {
+    "authority": "mmisw",
+    "description": "A sensor ontology developed by the W3C Semantic Sensor Network Incubator Group. Derived from CSIRO device ontology and other sources. It is currently uploaded to the MMI site as a test.",
+    "homepage": "http://www.csiro.au/Ontologies/2009/SensorOntology.owl",
+    "id": "mmisw.csiro.sen",
+    "name": "W3C XG Semantic Sensor Network Sensor Ontology (TEST)",
+    "prefix": "mmisw.csiro.sen",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.csiro.au/Ontologies/2009/SensorOntology.owl$1"
+  },
+  "mmisw.digoi": {
+    "authority": "mmisw",
+    "description": "The University of Trento is conducting a study for the European Commission on the relevant initiatives in the area of digital object and author identifiers (short name: DIGOIDUNA). One of the key tool provided to the community is this ontology.\n\nThe aim of providing this model is twofold. First of all, the model captures the relevant entities in the domain under investigation and the relationships between these entities according to the proposed dimensions of analysis (i.e. feature matrices and themes).  In this respect, the model helps to understand the complexity of the dynamics that are in play in our domain of study by representing the entire spectrum of features, interdependencies and dimensions that we considered relevant in our analysis. \nSecondly, it represents a useful working instrument which allows policy makers to use the proposed dimensions of analysis to assess the impact of adopting a particular scheme or system by crossing multiple dimensions  (both at the system and the schema level) and considering their effect on different stakeholders. Moreover, the ontology may become a flexible collaborative framework that can be extended during the course of the present investigation but that can also be improved as result of external contributions in future.",
+    "homepage": "http://www.digoiduna.eu/digoiduna_ontology.owl",
+    "id": "mmisw.digoi",
+    "name": "digoiduna",
+    "prefix": "mmisw.digoi",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.digoiduna.eu/digoiduna_ontology.owl$1"
+  },
+  "mmisw.hls": {
+    "authority": "mmisw",
+    "description": "Human Localization Sensor Ontology (HLS) is OWL2 DL ontology, based on SSN ontology, describing knowledge in human localization sensing patterns using description logics (SROIQ) as defined classes, allowing automatic classification (i.e. semantic sensor search) of sensors that can be used to find human location.",
+    "homepage": "http://www.dadfha.com/ont/hls",
+    "id": "mmisw.hls",
+    "name": "Human Localization Sensor Ontology",
+    "prefix": "mmisw.hls",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.dadfha.com/ont/hls$1"
+  },
+  "mmisw.inspgl": {
+    "authority": "mmisw",
+    "description": "INSPIRE Glossary",
+    "homepage": "http://inspire-registry.jrc.ec.europa.eu/registers/GLOSSARY",
+    "id": "mmisw.inspgl",
+    "name": "INSPIRE Glossary",
+    "prefix": "mmisw.inspgl",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://inspire-registry.jrc.ec.europa.eu/registers/GLOSSARY$1"
+  },
+  "mmisw.mtloco": {
+    "authority": "mmisw",
+    "description": "A top-level ontology for the marine domain (also applicable to the terrestrial domain).",
+    "homepage": "http://ics.forth.gr/Ontology/MarineTLO/core",
+    "id": "mmisw.mtloco",
+    "name": "Marine Top Level Ontology",
+    "prefix": "mmisw.mtloco",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://ics.forth.gr/Ontology/MarineTLO/core$1"
+  },
+  "mmisw.mtloim": {
+    "authority": "mmisw",
+    "description": "MarineTLO is a top-level ontology for the marine domain (also applicable to the terrestrial domain).",
+    "homepage": "http://ics.forth.gr/Ontology/MarineTLO/imarine",
+    "id": "mmisw.mtloim",
+    "name": "Marine Top Level Ontology",
+    "prefix": "mmisw.mtloim",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://ics.forth.gr/Ontology/MarineTLO/imarine$1"
+  },
+  "mmisw.oboe": {
+    "authority": "mmisw",
+    "description": "Observation Model ontology",
+    "homepage": "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl",
+    "id": "mmisw.oboe",
+    "name": "OBOE Observation Model",
+    "prefix": "mmisw.oboe",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://ecoinformatics.org/oboe/oboe.1.0/oboe.owl$1"
+  },
+  "mmisw.sdn.CF": {
+    "authority": "mmisw",
+    "description": "Terms used for definitive but not necessarily comprehensive descriptions of measured phenomena in the CF conventions (a content standard for data stored in NetCDF).",
+    "homepage": "http://vocab.nerc.ac.uk/standard_name",
+    "id": "mmisw.sdn.CF",
+    "name": "BODC Climate and Forecast Standard Names (v.34)",
+    "prefix": "mmisw.sdn.CF",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/standard_name$1"
+  },
+  "mmisw.sdn.L22": {
+    "authority": "mmisw",
+    "description": "Terms for distinct sampling or measuring devices that may be identified in the real world in terms of manufacturer and model number.\n\nGroup set up under the joint auspices of the SeaDataNet project and the Intergovernmental Oceanographic Commission MarineXML Steering Group for controlled vocabulary governance in the marine domain\n\n(Re-hosted original vocabulary as of 2012-08-17 02:00:03.0)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/L22/current",
+    "id": "mmisw.sdn.L22",
+    "name": "SeaVoX Device Catalogue",
+    "prefix": "mmisw.sdn.L22",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/L22/current$1"
+  },
+  "mmisw.sdn.L221": {
+    "authority": "mmisw",
+    "description": "BODC Instruments List (DEPRECATED: use http://vocab.nerc.ac.uk/collection/L22/current)",
+    "homepage": "http://vocab.ndg.nerc.ac.uk/list/L221/current",
+    "id": "mmisw.sdn.L221",
+    "name": "BODC Instruments List (DEPRECATED: use http://vocab.nerc.ac.uk/collection/L22/current)",
+    "prefix": "mmisw.sdn.L221",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.ndg.nerc.ac.uk/list/L221/current$1"
+  },
+  "mmisw.sdn.P02": {
+    "authority": "mmisw",
+    "description": "Terms describing fine-grained related groups of measurement phenomena designed to be used in dataset discovery interfaces.\nGovernance for vocabularies used in the EU SeaDataNet project implemented as consultation between BODC and the members of the SeaDataNet Technical Task Team.\n(Re-hosted original vocabulary as of 2012-07-18 02:00:02.0)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P02/current",
+    "id": "mmisw.sdn.P02",
+    "name": "SeaDataNet Parameter Discovery Vocabulary",
+    "prefix": "mmisw.sdn.P02",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P02/current$1"
+  },
+  "mmisw.sdn.P021": {
+    "authority": "mmisw",
+    "description": "BODC Parameter- Group Dictionary",
+    "homepage": "http://vocab.ndg.nerc.ac.uk/list/P021/current",
+    "id": "mmisw.sdn.P021",
+    "name": "BODC Parameter- Group Dictionary (DEPRECATED: use http://vocab.nerc.ac.uk/collection/P02/current)",
+    "prefix": "mmisw.sdn.P021",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.ndg.nerc.ac.uk/list/P021/current$1"
+  },
+  "mmisw.sdn.P06": {
+    "authority": "mmisw",
+    "description": "Terms used by BODC to describe the measurement units for data held in its repositories.\n(Re-hosted original vocabulary as of 2012-07-26 02:00:03.0)",
+    "homepage": "http://vocab.nerc.ac.uk/collection/P06/current",
+    "id": "mmisw.sdn.P06",
+    "name": "BODC data storage units",
+    "prefix": "mmisw.sdn.P06",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.nerc.ac.uk/collection/P06/current$1"
+  },
+  "mmisw.sdn.P061": {
+    "authority": "mmisw",
+    "description": "Unit codes",
+    "homepage": "http://vocab.ndg.nerc.ac.uk/list/P061/current",
+    "id": "mmisw.sdn.P061",
+    "name": "BODC Units (DEPRECATED: use http://vocab.nerc.ac.uk/collection/P06/current)",
+    "prefix": "mmisw.sdn.P061",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://vocab.ndg.nerc.ac.uk/list/P061/current$1"
+  },
+  "mmisw.sosa": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://www.w3.org/ns/sosa/",
+    "id": "mmisw.sosa",
+    "name": "Sensor, Observation, Sample, and Actuator (SOSA) Ontology",
+    "prefix": "mmisw.sosa",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.w3.org/ns/sosa/$1"
+  },
+  "mmisw.ssn": {
+    "authority": "mmisw",
+    "description": null,
+    "homepage": "http://www.w3.org/ns/ssn/",
+    "id": "mmisw.ssn",
+    "name": "Semantic Sensor Network Ontology",
+    "prefix": "mmisw.ssn",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.w3.org/ns/ssn/$1"
+  },
+  "mmisw.ssnx": {
+    "authority": "mmisw",
+    "description": "This ontology describes sensors and observations, and related concepts. It does not describe domain concepts, time, locations, etc. these are intended to be included from other ontologies via OWL imports.\nThis ontology is developed by the W3C Semantic Sensor Networks Incubator Group (SSN-XG). The concepts and structure of the ontology were discussed in the group's meetings and on the mailing list. For more information on the group's activities see: http://www.w3.org/2005/Incubator/ssn/\nPlease report any errors to the Semantic Sensor Network Incubator Activity via the public W3C list public-xg-ssn@w3.org",
+    "homepage": "http://purl.oclc.org/NET/ssnx/ssn",
+    "id": "mmisw.ssnx",
+    "name": "Semantic Sensor Network Ontology",
+    "prefix": "mmisw.ssnx",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://purl.oclc.org/NET/ssnx/ssn$1"
+  },
+  "mmisw.ssnxg": {
+    "authority": "mmisw",
+    "description": "Ontology developed by the W3C Semantic Sensor Network Incubator Group",
+    "homepage": "http://www.w3.org/2009/SSN-XG/Ontologies",
+    "id": "mmisw.ssnxg",
+    "name": "Sensor Ontology",
+    "prefix": "mmisw.ssnxg",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://www.w3.org/2009/SSN-XG/Ontologies$1"
+  },
+  "mmisw.sweet.human": {
+    "authority": "mmisw",
+    "description": "Ontology imported from NASA's SWEET ontologies. This is a test for 'import' to MMI repository",
+    "homepage": "http://sweet.jpl.nasa.gov/2.3/human.owl",
+    "id": "mmisw.sweet.human",
+    "name": "Human Ontology from SWEET",
+    "prefix": "mmisw.sweet.human",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://sweet.jpl.nasa.gov/2.3/human.owl$1"
+  },
+  "mmisw.sweet.matr": {
+    "authority": "mmisw",
+    "description": "Ontology imported from NASA's SWEET ontologies. This is a test for 'import' to MMI repository",
+    "homepage": "http://sweet.jpl.nasa.gov/2.3/matr.owl",
+    "id": "mmisw.sweet.matr",
+    "name": "Matter Ontology from SWEET",
+    "prefix": "mmisw.sweet.matr",
+    "source": "mmisw.org",
+    "subjects": [
+      "earth and related environmental sciences"
+    ],
+    "uri_format": "http://sweet.jpl.nasa.gov/2.3/matr.owl$1"
+  }
+}
