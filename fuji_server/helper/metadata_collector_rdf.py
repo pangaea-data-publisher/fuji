@@ -115,7 +115,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         kpm = re.match(known_pattern, uri)
                         if kpm:
                             uri = kpm[0]
-                            self.namespaces.append(uri)
+                            self.namespaces.append(str(uri))
                         else:
                             uri = str(uri).strip().rstrip("/#")
                             if "#" in uri:
@@ -133,11 +133,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
             for predicate in possible:
                 prefix, namespace, local = nm.compute_qname(predicate)
                 if namespace in namespacedict:
-                    namespacedict[namespace] += 1
+                    namespacedict[str(namespace)] += 1
                 else:
-                    namespacedict[namespace] = 1
+                    namespacedict[str(namespace)] = 1
                 namespaces[prefix] = namespace
-                self.namespaces.append(str(namespace))
+                # self.namespaces.append(str(namespace))
             # self.namespaces = list(set(self.namespaces))
             self.namespaces = sorted(namespacedict, key=lambda x: namespacedict[x], reverse=True)
         except Exception as e:
