@@ -172,7 +172,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         return test_status
 
     def testMinimumMetadataAvailable(self):
-        """The software includes the software title and description. Considers different sources (e.g. README, Zenodo) depending on metric definition.
+        """FAIR4Software specific... The software includes the software title and description. Considers different sources (e.g. README, Zenodo) depending on metric definition.
 
         Returns:
             bool: True if the test was defined and passed. False otherwise.
