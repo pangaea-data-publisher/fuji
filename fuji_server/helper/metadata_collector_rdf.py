@@ -726,32 +726,37 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     {"item": cw, "nosbj": nsbj, "noprp": nprp, "types": types_names, "ns": namespaces, "score": 0}
                 )
             # score
-            max_prp = max(graph_entity_list, key=lambda x: x["noprp"])["noprp"]
-            max_sbj = max(graph_entity_list, key=lambda x: x["nosbj"])["nosbj"]
-            gk = 0
-            for gel in graph_entity_list:
-                prp_score, sbj_score = 0, 0
-                if max_prp:
-                    # better : more props
-                    prp_score = 1 * gel["noprp"] / max_prp
-                if max_sbj:
-                    # better : less props
-                    sbj_score = 0.5 * (1 - gel["nosbj"] / max_sbj)
-                score = prp_score + sbj_score / 2
-                graph_entity_list[gk]["score"] = score
-                gk += 1
-            main_entity = (sorted(graph_entity_list, key=lambda d: d["score"], reverse=True))[0]
-            if not creative_work_detected:
-                self.logger.info(
-                    "FsF-F2-01M : Detected main entity found in RDF graph seems not to be a creative work type"
-                )
+            if graph_entity_list:
+                max_prp = max(graph_entity_list, key=lambda x: x["noprp"])["noprp"]
+                max_sbj = max(graph_entity_list, key=lambda x: x["nosbj"])["nosbj"]
+                gk = 0
+                for gel in graph_entity_list:
+                    prp_score, sbj_score = 0, 0
+                    if max_prp:
+                        # better : more props
+                        prp_score = 1 * gel["noprp"] / max_prp
+                    if max_sbj:
+                        # better : less props
+                        sbj_score = 0.5 * (1 - gel["nosbj"] / max_sbj)
+                    score = prp_score + sbj_score / 2
+                    graph_entity_list[gk]["score"] = score
+                    gk += 1
+                main_entity = (sorted(graph_entity_list, key=lambda d: d["score"], reverse=True))[0]
+                if not creative_work_detected:
+                    self.logger.info(
+                        "FsF-F2-01M : Detected main entity found in RDF graph seems not to be a creative work type"
+                    )
+                else:
+                    self.logger.info("FsF-F2-01M : Detected main entity in RDF -: " + str(main_entity))
             main_entity_item, main_entity_type, main_entity_namespace = (
                 main_entity.get("item"),
                 main_entity.get("types"),
                 main_entity.get("ns"),
             )
         except Exception as ee:
-            self.logger.warning("FsF-F2-01M : Failed to detect main entity in metadata given as RDF Graph")
+            self.logger.info(
+                "FsF-F2-01M : Failed to detect main entity in metadata given as RDF Graph due to error -:" + str(ee)
+            )
             print("MAIN ENTITY IDENTIFICATION ERROR: ", ee)
         return main_entity_item, main_entity_type, main_entity_namespace
 
@@ -1075,8 +1080,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 extdist[0], DCAT.downloadURL
                             )
                             dsize = distgraph.value(extdist[0], DCAT.byteSize)
-                            dtype = distgraph.value(extdist[0], DCAT.mediaType) or distgraph.value(
-                                extdist[0], DC.format
+                            dtype = (
+                                distgraph.value(extdist[0], DCAT.mediaType)
+                                or distgraph.value(extdist[0], DC.format)
+                                or distgraph.value(extdist[0], DCTERMS.format)
                             )
                             self.logger.info(
                                 "FsF-F2-01M : Found DCAT distribution URL info from remote location -:" + str(durl)
@@ -1103,7 +1110,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                         dcat_metadata["access_rights"] = graph.value(dist, DCTERMS.accessRights) or graph.value(
                             dist, DCTERMS.rights
                         )
-                    dtype = graph.value(dist, DCAT.mediaType)
+                    dtype = (
+                        graph.value(dist, DCAT.mediaType)
+                        or graph.value(dist, DC.format)
+                        or graph.value(dist, DCTERMS.format)
+                    )
                     dsize = graph.value(dist, DCAT.byteSize)
                 if durl or dtype or dsize:
                     if idutils.is_url(str(durl)):
