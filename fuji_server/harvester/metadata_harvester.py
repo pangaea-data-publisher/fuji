@@ -940,8 +940,8 @@ class MetadataHarvester:
                                 self.landing_url,
                                 rdfasource,
                                 rdfa_collector.metadata_format,
-                                "application/xhtml+xml",
-                                "http://www.w3.org/ns/rdfa#",
+                                rdfa_collector.getContentType(),
+                                rdfa_collector.main_entity_format,
                                 rdfa_collector.getNamespaces(),
                             )
 
