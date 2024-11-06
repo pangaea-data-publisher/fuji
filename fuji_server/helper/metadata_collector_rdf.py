@@ -110,6 +110,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             alluris = set(graph.objects()).union(set(graph.subjects()))
             # namespaces from mentioned objects and subjects uris (best try)
             for uri in alluris:
+                uri = str(uri)
                 if idutils.is_url(uri):
                     for known_pattern in known_namespace_regex:
                         kpm = re.match(known_pattern, uri)
@@ -130,6 +131,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     self.namespaces.append(namespace_candidate)
             # defined namespaces
             namespacedict = {}
+            sortedns = {}
             for predicate in possible:
                 prefix, namespace, local = nm.compute_qname(predicate)
                 if namespace in namespacedict:
@@ -137,9 +139,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     namespacedict[str(namespace)] = 1
                 namespaces[prefix] = namespace
-                # self.namespaces.append(str(namespace))
-            # self.namespaces = list(set(self.namespaces))
-            self.namespaces = sorted(namespacedict, key=lambda x: namespacedict[x], reverse=True)
+            sortedns = sorted(namespacedict, key=lambda x: namespacedict[x], reverse=True)
+            if sortedns:
+                self.namespaces.extend(sortedns)
+            self.namespaces = list(set(self.namespaces))
         except Exception as e:
             self.logger.info(f"FsF-F2-01M : RDF Namespace detection error -: {e}")
         return namespaces
@@ -1026,18 +1029,25 @@ class MetaDataCollectorRdf(MetaDataCollector):
         datasets = []
         main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
         if main_entity_id:
-            # prioritize Dataset type
-            if "Dataset" not in main_entity_type:
-                dcat_root_type = next(iter(main_entity_type))
-        if dcat_root_type:
-            datasets = list(graph[: RDF.type : DCAT[dcat_root_type]])
+            if dcat_root_type == "Catalog":
+                self.logger.info(
+                    "FsF-F2-01M : Main entity type seems to be a DCAT Catalog, checking for associated Datasets"
+                )
+                datasets = list(graph.objects(main_entity_id, DCAT.Dataset))
+                if len(datasets) > 0:
+                    self.logger.info(
+                        "FsF-F2-01M : Found at least one DCAT Dataset enclosed in the DCAT Catalog, will take the first one for the analysis"
+                    )
+                    dcat_root_type = "Dataset"
+            if not datasets:
+                datasets = list(graph[: RDF.type : DCAT[dcat_root_type]])
         table = list(graph[: RDF.type : CSVW.Column])
         # print("TABLE", len(table))
         if len(datasets) > 1:
             self.logger.info("FsF-F2-01M : Found more than one DCAT Dataset description, will use first one")
         if len(datasets) > 0:
             self.main_entity_format = str(DCAT)
-            dcat_metadata = self.get_core_metadata(graph, datasets[0], type="Dataset")
+            dcat_metadata = self.get_core_metadata(graph, datasets[0], type=dcat_root_type)
             # distribution
             distribution = graph.objects(datasets[0], DCAT.distribution)
             # do something (check for table headers) with the table here..
