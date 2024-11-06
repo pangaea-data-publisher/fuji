@@ -163,7 +163,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                             f"{self.metric_identifier} : NO RDF metadata retrieved through the sparql endpoint"
                         )
                 else:
-                    self.logger.warning(
+                    self.logger.info(
                         "{} : NO SPARQL endpoint found through re3data based on the object URI provided".format(
                             self.metric_identifier
                         )
