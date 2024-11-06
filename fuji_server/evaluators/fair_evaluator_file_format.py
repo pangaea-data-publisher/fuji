@@ -61,7 +61,9 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                 mime_type = data_file.get("claimed_type")
                 # print(data_file)
                 if data_file.get("url") is not None:
-                    if (mime_type is None or "/" not in mime_type) and data_file.get("header_content_type"):
+                    if (mime_type is None or not re.match(r"[a-z]+\/", mime_type)) and data_file.get(
+                        "header_content_type"
+                    ):
                         self.logger.info(
                             "{} : No mime type given in metadata, therefore the mime type given in HTTP header is used -: {}".format(
                                 self.metric_identifier, data_file.get("header_content_type")
@@ -70,7 +72,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         mime_type = data_file.get("header_content_type")
                     if (
                         mime_type is None
-                        or "/" not in mime_type
+                        or not re.match(r"[a-z]+\/", mime_type)
                         or mime_type in ["application/octet-stream", "binary/octet-stream"]
                     ):
                         self.logger.info(
