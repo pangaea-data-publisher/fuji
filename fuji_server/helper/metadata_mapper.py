@@ -469,6 +469,10 @@ class Mapper(Enum):
                 "./{*}dataset/{*}coverage/{*}temporalCoverage/{*}rangeOfDates",
             ]
         },
+        "related_resource_isReferencedBy": {"path": ["./{*}dataset/{*}usageCitation@@id"]},
+        "related_resource_references": {
+            "path": ["./{*}dataset/{*}literatureCited@@id", "./{*}dataset/{*}referencePublication@@id"]
+        },
     }
     # CLARIN CMDI
     XML_MAPPING_CMD = {
