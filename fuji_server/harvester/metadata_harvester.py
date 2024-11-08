@@ -604,8 +604,14 @@ class MetadataHarvester:
             script_content = soup.findAll("script")
             for script in soup(["script", "style", "title", "noscript"]):
                 script.extract()
-
             text_content = soup.get_text(strip=True)
+            if "recaptcha" in str(script_content):
+                self.logger.warning(
+                    "FsF-F1-02D : Landing page seems to be CAPTCHA protected, probably could not detect enough content"
+                )
+                self.logger.warning(
+                    "FsF-F2-01M : Landing page seems to be CAPTCHA protected, probably could not detect enough content"
+                )
             if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
                 self.logger.warning(
                     "FsF-F1-02D : Landing page seems to be JavaScript generated, could not detect enough content"
@@ -713,12 +719,16 @@ class MetadataHarvester:
                     )
                 else:
                     self.is_html_page = True
-                if requestHelper.redirect_url and requestHelper.response_status == 200:
+                if requestHelper.redirect_url and requestHelper.response_status in [200, 202, 203]:
                     self.isLandingPageAccessible = True
                     self.landing_url = requestHelper.redirect_url
                     if self.pid_url in self.pid_collector:
                         self.pid_collector[self.pid_url]["verified"] = True
                         self.pid_collector[self.pid_url]["resolved_url"] = self.landing_url
+                else:
+                    self.logger.warning(
+                        "FsF-F2-01M : Could not resolve input URL, status -: " + (str(requestHelper.response_status))
+                    )
                 self.redirect_url = requestHelper.redirect_url
                 response_status = requestHelper.response_status
                 self.landing_page_status = response_status

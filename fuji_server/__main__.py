@@ -28,8 +28,6 @@ def main():
     DATACITE_API_REPO = config['EXTERNAL']['datacite_api_repo']
     RE3DATA_API = config['EXTERNAL']['re3data_api']
     METADATACATALOG_API = config['EXTERNAL']['metadata_catalog']"""
-    LOV_API = config["EXTERNAL"]["lov_api"]
-    LOD_CLOUDNET = config["EXTERNAL"]["lod_cloudnet"]
     # BIOPORTAL_REST = config['EXTERNAL']['bioportal_rest']
     # BIOPORTAL_APIKEY = config['EXTERNAL']['bioportal_apikey']
     data_files_limit = int(config["SERVICE"]["data_files_limit"])
@@ -46,7 +44,7 @@ def main():
 
     preproc.retrieve_metadata_standards()
     # preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
-    preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
+    # preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
     preproc.set_remote_log_info(config["SERVICE"].get("remote_log_host"), config["SERVICE"].get("remote_log_path"))
     preproc.set_max_content_size(config["SERVICE"]["max_content_size"])
 
