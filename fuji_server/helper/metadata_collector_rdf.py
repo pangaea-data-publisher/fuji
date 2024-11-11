@@ -105,11 +105,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
             r"https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/",
             r"https?:\/\/purl\.obolibrary\.org\/obo\/[a-z]+(\.owl|#)",
         ]
-        print(type(graph))
-
-        if isinstance(graph, rdflib.ConjunctiveGraph):
-            for c in graph.contexts():
-                print("CONTEXT: ", c)
         try:
             nm = graph.namespace_manager
             possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
@@ -293,7 +288,6 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             % (jsonld_source_url)
                         )
                         try:
-                            print("#####################################", type(rdf_response))
                             # pre-check for valid json
                             json_valid = False
                             try:
@@ -301,8 +295,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                 if isinstance(json_, dict):
                                     # add @context URIs to namespaces which are otherwise lost
                                     if isinstance(json_.get("@context"), list):
-                                        self.namespaces.extend(json_.get("@context"))
-                                    elif json_.get("@context"):
+                                        for j_ctx in json_.get("@context"):
+                                            if isinstance(j_ctx, str):
+                                                self.namespaces.append(str(j_ctx))
+                                            elif isinstance(j_ctx, dict):
+                                                self.namespaces.extend(j_ctx.values())
+                                    elif isinstance(json_.get("@context"), str):
                                         self.namespaces.append(str(json_.get("@context")))
                                 json_valid = True
                             except Exception:

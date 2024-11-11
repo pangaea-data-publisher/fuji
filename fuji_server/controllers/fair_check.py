@@ -371,6 +371,9 @@ class FAIRCheck:
         # self.retrieve_apis_standards()
         # remove duplicates
         if self.namespace_uri:
+            self.namespace_uri = [
+                ns for ns in self.namespace_uri if not isinstance(ns, list) and not isinstance(ns, dict)
+            ]
             self.namespace_uri = list(set(self.namespace_uri))
 
     def harvest_re3_data(self):
