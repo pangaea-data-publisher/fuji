@@ -105,6 +105,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
             r"https?:\/\/vocab\.nerc\.ac\.uk\/collection\/[A-Z][0-9]+\/current\/",
             r"https?:\/\/purl\.obolibrary\.org\/obo\/[a-z]+(\.owl|#)",
         ]
+        print(type(graph))
+
+        if isinstance(graph, rdflib.ConjunctiveGraph):
+            for c in graph.contexts():
+                print("CONTEXT: ", c)
         try:
             nm = graph.namespace_manager
             possible = set(graph.predicates()).union(graph.objects(None, RDF.type))
@@ -288,12 +293,29 @@ class MetaDataCollectorRdf(MetaDataCollector):
                             % (jsonld_source_url)
                         )
                         try:
-                            jsonldgraph = rdflib.ConjunctiveGraph(identifier=self.resolved_url)
-                            rdf_response_graph = jsonldgraph.parse(
-                                data=rdf_response, format="json-ld", publicID=self.resolved_url
-                            )
-                            # rdf_response_graph = jsonldgraph
-                            self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
+                            print("#####################################", type(rdf_response))
+                            # pre-check for valid json
+                            json_valid = False
+                            try:
+                                json_ = json.loads(rdf_response)
+                                if isinstance(json_, dict):
+                                    # add @context URIs to namespaces which are otherwise lost
+                                    if isinstance(json_.get("@context"), list):
+                                        self.namespaces.extend(json_.get("@context"))
+                                    elif json_.get("@context"):
+                                        self.namespaces.append(str(json_.get("@context")))
+                                json_valid = True
+                            except Exception:
+                                self.logger.warning("FsF-F2-01M : Given JSON-LD seems to be invalid JSON")
+                            if json_valid:
+                                jsonldgraph = rdflib.ConjunctiveGraph(identifier=self.resolved_url)
+
+                                rdf_response_graph = jsonldgraph.parse(
+                                    data=rdf_response, format="json-ld", publicID=self.resolved_url
+                                )
+
+                                # rdf_response_graph = jsonldgraph
+                                self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
                         except Exception as e:
                             print("JSON-LD parsing error", e, rdf_response[:100])
                             self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
