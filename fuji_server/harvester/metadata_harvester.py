@@ -1381,7 +1381,10 @@ class MetadataHarvester:
                         else:
                             source = MetadataSources.RDF_TYPED_LINKS
                         typed_rdf_collector = MetaDataCollectorRdf(
-                            loggerinst=self.logger, target_url=metadata_link["url"], source=source
+                            loggerinst=self.logger,
+                            target_url=metadata_link["url"],
+                            source=source,
+                            pref_mime_type=metadata_link["type"],
                         )
                         if typed_rdf_collector is not None:
                             source_rdf, rdf_dict = typed_rdf_collector.parse_metadata()

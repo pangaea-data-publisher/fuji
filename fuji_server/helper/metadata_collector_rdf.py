@@ -64,7 +64,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
     SCHEMA_ORG_CONTEXT = Preprocessor.get_schema_org_context()
     SCHEMA_ORG_CREATIVEWORKS = Preprocessor.get_schema_org_creativeworks()
 
-    def __init__(self, loggerinst, target_url=None, source=None, json_ld_content=None):
+    def __init__(self, loggerinst, target_url=None, source=None, json_ld_content=None, pref_mime_type=None):
         """
         Parameters
         ----------
@@ -90,6 +90,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         self.json_ld_content = json_ld_content
         # self.rdf_graph = rdf_graph
         self.accept_type = AcceptTypes.rdf
+        self.pref_mime_type = pref_mime_type
 
     def getAllURIS(self, graph):
         founduris = []
@@ -212,6 +213,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
             requestHelper: RequestHelper = RequestHelper(self.target_url, self.logger)
             requestHelper.setAcceptType(self.accept_type)
             requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
+            if self.pref_mime_type:
+                requestHelper.addAcceptType(self.pref_mime_type)
             neg_format, rdf_response = requestHelper.content_negotiate("FsF-F2-01M")
             self.metadata_format = neg_format
             if requestHelper.checked_content_hash:
@@ -230,7 +233,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
         if self.content_type is not None:
             self.content_type = self.content_type.split(";", 1)[0]
             # handle JSON-LD
-            if self.content_type in ["application/ld+json", "application/json", "application/vnd.schemaorg.ld+json"]:
+            json_types = ["application/ld+json", "application/json", "application/vnd.schemaorg.ld+json"]
+            if self.content_type in json_types or self.pref_mime_type in json_types:
                 if self.target_url:
                     jsonld_source_url = self.resolved_url
                 else:
