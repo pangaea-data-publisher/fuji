@@ -22,7 +22,11 @@ class FAIREvaluatorPersistentIdentifierData(FAIREvaluator):
     def __init__(self, fuji_instance):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
-        self.set_metric("FsF-F1-02DD")
+        if self.fuji.metric_helper.get_metric_version() > 0.5:
+            metric = "FsF-F1-02D"
+        else:
+            metric = "FsF-F1-02DD"
+        self.set_metric(metric)
 
     def setPidsOutput(self):
         self.output.persistent_identifiers = []

@@ -54,7 +54,7 @@ class FAIREvaluator:
         self.isDebug = self.fuji.isDebug
         self.fuji.count = self.fuji.count + 1
         self.logger = self.fuji.logger
-        self.metric_regex = r"^FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?|^FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?(-[0-9]+)?"  # match FsF or FAIR4RS metric identifiers
+        # self.metric_regex = r"^FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)?|^FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?(-[0-9]+)?"  # match FsF or FAIR4RS metric identifiers
 
     def set_maturity(self, maturity):
         if self.maturity < maturity:

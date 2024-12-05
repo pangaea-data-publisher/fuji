@@ -22,14 +22,14 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() != "0.5":
+        if self.fuji.metric_helper.get_metric_version() > 0.5:
             metric = "FsF-F1-01M"
         else:
             metric = "FsF-F1-01D"
             # after 0.5 seperate metrics for metadata and data
         self.set_metric(metric)
 
-    def testMetadataIdentifierCompliesWithIdutilsScheme(self, validschemes=[]):
+    def testMetadataIdentifierCompliesWithIdutilsScheme(self):
         test_status = False
         if self.isTestDefined(self.metric_identifier + "-1"):
             self.logger.info(
@@ -86,6 +86,39 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
                 self.score.earned = test_score
         return test_status
 
+    # merged test for 0.6
+    def testMetadataIdentifierCompliesWithUUIDorHASHorIdutilsScheme(self):
+        test_status = False
+        if self.isTestDefined(self.metric_identifier + "-1+2"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-1+2")
+            self.logger.info(
+                self.metric_identifier
+                + " : Using idutils schemes to identify unique or persistent identifiers for metadata"
+            )
+            idhelper = IdentifierHelper(self.fuji.id)
+            found_ids = idhelper.identifier_schemes
+            if idhelper.preferred_schema in ["uuid", "hash"]:
+                found_ids.append(idhelper.preferred_schema)
+            self.logger.info(self.metric_identifier + f" :Starting assessment on identifier: {self.fuji.id}")
+            if len(found_ids) > 0:
+                self.logger.log(
+                    self.fuji.LOG_SUCCESS,
+                    self.metric_identifier + f" : Unique identifier schemes found {found_ids}",
+                )
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-1+2", self.total_score, "pass")
+                self.maturity = self.metric_tests.get(self.metric_identifier + "-1+2").metric_test_maturity_config
+                self.output.guid = self.fuji.id
+                self.score.earned = test_score
+                found_id = idhelper.preferred_schema
+                self.fuji.id_scheme = idhelper.identifier_schemes[0]
+                if idhelper.is_persistent:
+                    self.fuji.pid_scheme = found_id
+                    self.fuji.pid_url = idhelper.identifier_url
+                self.logger.info(self.metric_identifier + f" : Finalized unique identifier scheme - {found_id}")
+                self.output.guid_scheme = found_id
+                test_status = True
+        return test_status
+
     def evaluate(self):
         # ======= CHECK IDENTIFIER UNIQUENESS =======
         if self.metric_identifier in self.metrics:
@@ -97,6 +130,8 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             if self.testMetadataIdentifierCompliesWithUUIDorHASH():
                 self.result.test_status = "pass"
             if self.testMetadataIdentifierCompliesWithIdutilsScheme():
+                self.result.test_status = "pass"
+            if self.testMetadataIdentifierCompliesWithUUIDorHASHorIdutilsScheme():
                 self.result.test_status = "pass"
             else:
                 self.result.test_status = "fail"

@@ -23,7 +23,7 @@ class FAIREvaluatorPersistentIdentifierMetadata(FAIREvaluator):
     def __init__(self, fuji_instance):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() != "0.5":
+        if self.fuji.metric_helper.get_metric_version() > 0.5:
             metric = "FsF-F1-02M"
         else:
             metric = "FsF-F1-02D"

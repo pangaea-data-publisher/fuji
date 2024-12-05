@@ -19,8 +19,8 @@ class MetricHelper:
         self.total_metrics = 0
         self.all_metrics_list = None
         # match FsF or FAIR4RS metric (test) identifiers
-        self.metric_regex = r"^FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+|FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?"
-        self.metric_test_regex = r"FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9]+[a-z]?)|^FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?(?:-[a-zA-Z]+)?(-[0-9]+)?"
+        self.metric_regex = r"^FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+?|FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?"
+        self.metric_test_regex = r"FsF-[FAIR][0-9]?(\.[0-9])?-[0-9]+[MD]+(-[0-9\+]+[a-z]?)|^FRSM-[0-9]+-[FAIR][0-9]?(\.[0-9])?(?:-[a-zA-Z]+)?(-[0-9]+)?"
         self.config = {}
         if logger:
             self.logger = logger
@@ -106,7 +106,12 @@ class MetricHelper:
         return new_dict
 
     def get_metric_version(self):
-        return self.metric_version
+        try:
+            metric_version = float(self.metric_version)
+        except:
+            metric_version = self.metric_version
+            pass
+        return metric_version
 
     def get_metric(self, metric_id):
         metric = {}
