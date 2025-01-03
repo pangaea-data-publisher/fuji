@@ -83,7 +83,7 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
                             pass
                     if not value:
                         value = meta_tag.get("content")
-                    if elem == "related_resources":
+                    if elem == "related_resources" and value:
                         value = {"related_resource": value, "relation_type": "isRelatedTo"}
                     if not hw_core_metadata.get(elem):
                         if elem == "related_resources":
