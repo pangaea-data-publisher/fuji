@@ -24,6 +24,7 @@ class LinkedVocabHelper:
         self.namespaces = []
         self.ignore_prefixes = ["orcid", "doi", "isni", "ror", "wikipedia", "github", "arxiv"]
         # prefixes used for identifiers only so we ignore these for terms
+        # unfortunately some registries include also these so they have to be ignored
         self.ignore_domain = [
             "orcid.org",
             "doi.org",
@@ -33,6 +34,7 @@ class LinkedVocabHelper:
             "github.com",
             "arxiv.org",
             "fairsharing.org",
+            "nbn-resolving.org",
         ]
 
     def set_linked_vocab_dict(self):
@@ -47,7 +49,10 @@ class LinkedVocabHelper:
     def split_iri(self, iri):
         ret = {}
         domainparts = extract(iri)
-        if domainparts.suffix:
+        if domainparts.domain == "urn" and len(iri.split(":")) > 2 and domainparts.suffix == "":
+            ret["domain"] = domainparts.domain
+            ret["subdomain"] = iri.split(":")[1]
+        elif domainparts.suffix:
             ret["domain"] = domainparts.domain + "." + domainparts.suffix
             if domainparts.domain:
                 if domainparts.subdomain:
@@ -58,7 +63,9 @@ class LinkedVocabHelper:
             ret["domain"], ret["subdomain"] = None, None
 
         ret["iri"] = iri
-        if domainparts.domain and domainparts.suffix:
+        if domainparts.domain == "urn" and ret.get("subdomain") and domainparts.suffix == "":
+            ret["path"] = iri.split("urn:" + ret.get("subdomain") + ":")[1]
+        elif domainparts.domain and domainparts.suffix:
             ret["path"] = iri.split(domainparts.domain + "." + domainparts.suffix)[1]
         else:
             ret["path"] = None
@@ -131,7 +138,7 @@ class LinkedVocabHelper:
     def get_linked_vocab_by_iri(self, IRI, isnamespaceIRI=False, firstonly=True):
         IRI = IRI.strip()
         if isnamespaceIRI:
-            IRI = IRI.rstrip("/#")
+            IRI = IRI.rstrip("/#/:")
         iri_parts = self.split_iri(IRI)
         onto_match = []
         final_onto_match = None
