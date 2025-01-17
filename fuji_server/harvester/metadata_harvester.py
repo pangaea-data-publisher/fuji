@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+import copy
 import enum
 import hashlib
 import io
@@ -81,6 +82,7 @@ class MetadataHarvester:
         self.landing_origin = None
         self.landing_domain = None
         self.landing_page_status = None
+        self.isLandingPageAccessible = False
         self.landing_redirect_list = []  # urlsvisited during redirects
         self.landing_redirect_status_list = []  # list with stati
         self.landing_content_type = None
@@ -161,7 +163,7 @@ class MetadataHarvester:
             if isinstance(metadict, dict) and allow_merge is True:
                 # self.metadata_sources.append((method_source, 'negotiated'))
                 for r in metadict.keys():
-                    if r in self.reference_elements:
+                    if r in self.reference_elements or r == "datacite_client":
                         # enforce lists
                         if r in ["keywords", "access_level", "license", "object_type"]:
                             if isinstance(metadict[r], str):
@@ -169,6 +171,7 @@ class MetadataHarvester:
                                     metadict[r] = metadict[r].split(",")
                                 else:
                                     metadict[r] = [metadict[r]]
+
                         if self.metadata_merged.get(r):
                             msimilarity = 0
                             if isinstance(self.metadata_merged[r], str) and self.metadata_merged[r] != metadict[r]:
@@ -183,11 +186,13 @@ class MetadataHarvester:
                                         + " vs. "
                                         + str(metadict[r])[:50]
                                     )
+
                             if isinstance(self.metadata_merged[r], list):
-                                if isinstance(metadict[r], list):
-                                    self.metadata_merged[r].extend(metadict[r])
+                                metaprop = metadict[r]
+                                if isinstance(metaprop, list):
+                                    self.metadata_merged[r].extend(metaprop)
                                 else:
-                                    self.metadata_merged[r].append(metadict[r])
+                                    self.metadata_merged[r].append(metaprop)
                                 # make list unique
                                 unique_merged = []
                                 for e in self.metadata_merged[r]:
@@ -223,6 +228,20 @@ class MetadataHarvester:
                             self.pid_collector[pid_helper.identifier_url]["verified"] = resolves_to_landing_domain
                 if metadict.get("related_resources"):
                     self.related_resources.extend(metadict.get("related_resources"))
+                # uniquify
+
+                empty_related = [v for v in self.related_resources if not v.get("related_resource")]
+                if empty_related:
+                    self.logger.warning(
+                        "FsF-I3-01M : Found missing link(s) to related resource(s) -: " + str(empty_related)
+                    )
+                try:
+                    self.related_resources = list(
+                        {v["related_resource"]: v for v in self.related_resources if v.get("related_resource")}.values()
+                    )
+                except Exception as e:
+                    print("Relation uniquifiy ERROR: ", e, format, mimetype, schema, metadict.get("related_resources"))
+                    pass
                 if metadict.get("object_content_identifier"):
                     self.logger.info(
                         "FsF-F3-01M : Found data links in "
@@ -236,18 +255,20 @@ class MetadataHarvester:
                     if isinstance(method.value, dict):
                         offering_method = method.value.get("method").acronym()
                     method = method.name
-
-                mdict = {
-                    "method": method,
-                    "offering_method": offering_method,
-                    "url": url,
-                    "format": format.acronym(),
-                    "metadata_standard": metadata_standard,
-                    "mime": mimetype,
-                    "schema": schema,
-                    "metadata": metadict,
-                    "namespaces": namespaces,
-                }
+                metadict2 = copy.deepcopy(metadict)
+                mdict = dict(
+                    {
+                        "method": method,
+                        "offering_method": offering_method,
+                        "url": url,
+                        "format": format.acronym(),
+                        "metadata_standard": metadata_standard,
+                        "mime": mimetype,
+                        "schema": schema,
+                        "metadata": metadict2,
+                        "namespaces": namespaces,
+                    }
+                )
                 if mdict not in self.metadata_unmerged:
                     self.metadata_unmerged.append(mdict)
         except Exception as e:
@@ -725,6 +746,7 @@ class MetadataHarvester:
                     if self.pid_url in self.pid_collector:
                         self.pid_collector[self.pid_url]["verified"] = True
                         self.pid_collector[self.pid_url]["resolved_url"] = self.landing_url
+                        self.pid_collector[self.pid_url]["status_list"] = requestHelper.status_list
                 else:
                     self.logger.warning(
                         "FsF-F2-01M : Could not resolve input URL, status -: " + (str(requestHelper.response_status))
@@ -794,6 +816,7 @@ class MetadataHarvester:
                     extruct_metadata = self.retrieve_metadata_embedded_extruct()
                     # if extruct_metadata:
                     ext_meta = extruct_metadata.get("json-ld")
+                    # print('EXT META:  ',ext_meta)
                     # comment the line below if jmespath handling of embedded json-ld is preferred, otherwise json-ls always will be handles as graph
                     ext_meta = json.dumps(ext_meta)
                     # shallow @id cleaning https://metadata.bgs.ac.uk/geonetwork/srv/api/records/6abc401d-250a-5469-e054-002128a47908 has  "@id":"not available":
@@ -821,9 +844,8 @@ class MetadataHarvester:
                         self.linked_namespace_uri.update(schemaorg_collector_embedded.getLinkedNamespaces())
                         # self.metadata_sources.append((source_schemaorg.name, source_schemaorg.value.get('method')))
                         self.add_metadata_source(source_schemaorg)
-                        if schemaorg_dict.get("related_resources"):
-                            self.related_resources.extend(schemaorg_dict.get("related_resources"))
-
+                        # if schemaorg_dict.get("related_resources"):
+                        #    self.related_resources.extend(schemaorg_dict.get("related_resources"))
                         # add object type for future reference
                         self.merge_metadata(
                             schemaorg_dict,
@@ -854,8 +876,8 @@ class MetadataHarvester:
                         # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                         # self.metadata_sources.append((source_dc, 'embedded'))
                         self.add_metadata_source(source_dc)
-                        if dc_dict.get("related_resources"):
-                            self.related_resources.extend(dc_dict.get("related_resources"))
+                        # if dc_dict.get("related_resources"):
+                        #    self.related_resources.extend(dc_dict.get("related_resources"))
                         self.merge_metadata(
                             dc_dict,
                             self.landing_url,
@@ -977,8 +999,8 @@ class MetadataHarvester:
                         # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
                         self.add_metadata_source(source_hw)
                         # self.metadata_sources.append((source_hw, 'embedded'))
-                        if hw_dict.get("related_resources"):
-                            self.related_resources.extend(hw_dict.get("related_resources"))
+                        # if hw_dict.get("related_resources"):
+                        #    self.related_resources.extend(hw_dict.get("related_resources"))
                         self.merge_metadata(
                             hw_dict,
                             self.landing_url,
