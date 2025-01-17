@@ -68,7 +68,8 @@ class MetaDataCollectorDatacite(MetaDataCollector):
             self.content_type = requestHelper.content_type
             if ext_meta:
                 try:
-                    dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
+                    if ext_meta.get("agency"):  # should be datacite => DataCite JSON
+                        dcite_metadata = jmespath.search(self.metadata_mapping.value, ext_meta)
                     if dcite_metadata:
                         self.setLinkedNamespaces(str(ext_meta))
                         self.namespaces.append("http://datacite.org/schema/")
