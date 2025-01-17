@@ -53,7 +53,9 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                 self.score.earned = self.total_score
                 self.maturity = self.getTestConfigMaturity(test_id)
             else:
-                self.logger.warning(self.metric_identifier + " : Could not identify related resources in metadata")
+                self.logger.warning(
+                    self.metric_identifier + " : Could not identify qualified related resources in metadata"
+                )
         return test_status
 
     def testRelatedResourcesMachineReadable(self):
