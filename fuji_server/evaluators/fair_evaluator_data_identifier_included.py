@@ -45,7 +45,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                 test_defined = True
                 break
         test_result = False
-        if test_defined:
+        if test_defined and self.fuji.metric_helper.get_metric_version() < 0.6:
             test_score = self.getTestConfigScore(test_id)
             if datainfolist:
                 for datainfo in datainfolist:
@@ -63,7 +63,11 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                             self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                             self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
                             did_output_content = IdentifierIncludedOutputInner()
-                            did_output_content.content_identifier_included = datainfo
+                            did_output_content.content_identifier_included = {
+                                "type": datainfo.get("type"),
+                                "size": datainfo.get("size"),
+                                "url": datainfo.get("url"),
+                            }
                             self.content_list.append(did_output_content)
                             # self.fuji.content_identifier.append(datainfo)
             if test_result:
@@ -84,12 +88,19 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                 for datainfo in datainfolist:
                     if isinstance(datainfo, dict):
                         if datainfo.get("url"):
+                            did_output_content = IdentifierIncludedOutputInner()
+                            did_output_content.content_identifier_included = {
+                                "url": datainfo.get("url"),
+                                "scheme": datainfo.get("scheme"),
+                            }
+                            self.content_list.append(did_output_content)
                             test_result = True
                             self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                             self.maturity = self.metric_tests.get(test_id).metric_test_maturity_config
                         else:
                             self.logger.warning(
-                                self.metric_identifier + f" : Object (content) url is empty -: {datainfo}"
+                                self.metric_identifier
+                                + f" : Object (content) url is empty or not identied as GUID -: {datainfo}"
                             )
             if test_result:
                 self.score.earned += test_score
@@ -160,23 +171,11 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
         # if id_object is not None:
         #    self.logger.info('FsF-F3-01M : Object identifier specified -: {}'.format(id_object))
         if contents:
-            # print(contents)
             if isinstance(contents, dict):
                 contents = [contents]
             # ignore empty?
             contents = [c for c in contents if c]
-            # keep unique only -
-            # contents = list({cv['url']:cv for cv in contents}.values())
-            # print(contents)
             number_of_contents = len(contents)
-            """if number_of_contents >= self.fuji.FILES_LIMIT:
-                self.logger.info(
-                    self.metric_identifier
-                    + " : The total number of object (content) identifiers specified is above threshold, will use the first -: {} content identifiers for the tests".format(
-                        self.fuji.FILES_LIMIT
-                    )
-                )
-                contents = contents[: self.fuji.FILES_LIMIT]"""
             self.result.test_status = "fail"
             if self.testDataSizeTypeNameAvailable(contents):
                 self.result.test_status = "pass"
