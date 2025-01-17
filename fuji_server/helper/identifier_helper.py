@@ -142,9 +142,11 @@ class IdentifierHelper:
                             if re.search(self.IDENTIFIERS_ORG_DATA[found_prefix]["pattern"], found_suffix):
                                 self.identifier_schemes = ["identifiers.org", found_prefix]
                                 self.preferred_schema = found_prefix
-                                self.identifier_url = str(
+                                self.identifier_url = "https://identifiers.org/" + str(self.identifier)
+
+                                """self.identifier_url = str(
                                     self.IDENTIFIERS_ORG_DATA[found_prefix]["url_pattern"]
-                                ).replace("{$id}", found_suffix)
+                                ).replace("{$id}", found_suffix)"""
                                 self.normalized_id = found_prefix.lower() + ":" + found_suffix
 
                 # idutils check
@@ -257,9 +259,9 @@ class IdentifierHelper:
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
                 if requestHelper.response_content:
-                    return requestHelper.redirect_url
+                    return requestHelper.redirect_url, requestHelper.status_list
                 else:
-                    return None
+                    return None, requestHelper.status_list
             except Exception as e:
                 print("PID resolve test error", e)
                 return None
@@ -280,9 +282,9 @@ class IdentifierHelper:
 
     def get_identifier_info(self, pidcollector={}, resolve=True):
         if resolve:
-            resolved_url = self.get_resolved_url(pidcollector)
+            resolved_url, status_list = self.get_resolved_url(pidcollector)
         else:
-            resolved_url = None
+            resolved_url, status_list = None, None
         return {
             "pid": self.identifier,
             "normalized": self.normalized_id,
@@ -290,4 +292,5 @@ class IdentifierHelper:
             "scheme": self.preferred_schema,
             "is_persistent": self.is_persistent,
             "resolved_url": resolved_url,
+            "status_list": status_list,
         }
