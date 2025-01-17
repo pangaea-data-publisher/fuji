@@ -5,6 +5,7 @@
 import json
 import os
 
+import yaml
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 from fuji_server.helper.metadata_collector import (
@@ -66,8 +67,8 @@ class fuji_knowledge_base:
     def add_transport_protocol(self):
         parentkey = "transport_protocol"
         prdict = {}
-        with open(os.path.join(self.fuji_data_path, "standard_uri_protocols.json"), encoding="utf-8") as acf:
-            protocol_dict = json.load(acf)
+        with open(os.path.join(self.fuji_data_path, "standard_uri_protocols.yaml"), encoding="utf-8") as acf:
+            protocol_dict = yaml.safe_load(acf)
         for protocolid, protocol in protocol_dict.items():
             prdict[self.namespace + "/" + parentkey + "/" + protocolid] = {
                 "label": protocol.get("name"),
@@ -87,8 +88,8 @@ class fuji_knowledge_base:
     def add_access_rights(self):
         parentkey = "access_condition"
         ac_dict = {}
-        with open(os.path.join(self.fuji_data_path, "access_rights.json"), encoding="utf-8") as acf:
-            access_rights_dict = json.load(acf)
+        with open(os.path.join(self.fuji_data_path, "access_rights.yaml"), encoding="utf-8") as acf:
+            access_rights_dict = yaml.safe_load(acf)
         for access_source in access_rights_dict.values():
             ac_dict[self.namespace + "/" + parentkey + "/" + access_source.get("id")] = {
                 "label": access_source.get("label"),
@@ -124,8 +125,30 @@ class fuji_knowledge_base:
 
     # serialisation: html, json, json-ld, rdf (ttl, n3), xml
     def add_identifiers(self):
-        parentkey = "identifier/persistent"
         id_dict = {}
+        parentkey = "identifier/unique"
+        identifiers = {
+            "url": {"label": "Uniform Resource Locator", "source": "datacite.org"},
+            "iri": {"label": "Internationalized Resource Identifier", "source": ""},
+            "uuid": {"label": "Universally Unique Identifier", "source": ""},
+            "hash": {"label": "Hash Code", "source": ""},
+        }
+        for idk, idv in identifiers.items():
+            id_dict[self.namespace + "/" + parentkey + "/" + idk] = {
+                "label": idv.get("label"),
+                "uri": self.namespace + "/" + parentkey + "/" + idk,
+                "broader": self.namespace + "/" + parentkey,
+                "source": idv.get("source"),
+            }
+        self.vocabdict[self.namespace + "/" + parentkey] = {
+            "uri": self.namespace + "/" + parentkey,
+            "label": "Unique Identifier",
+            "broader": self.namespace + "/identifier",
+            "source": "f-uji.net",
+        }
+        self.vocabdict.update(id_dict)
+
+        parentkey = "identifier/persistent"
         identifiers = IdentifierHelper.VALID_PIDS
         for idk, idv in identifiers.items():
             id_dict[self.namespace + "/" + parentkey + "/" + idk] = {
@@ -163,6 +186,13 @@ class fuji_knowledge_base:
             "label": "Data Type (Mime Type)",
             "broader": self.namespace + "/data",
             "narrower": self.namespace + "/data/format",
+            "source": "f-uji.net",
+        }
+        self.vocabdict[self.namespace + "/" + parentkey + "/service"] = {
+            "uri": self.namespace + "/" + "/data",
+            "alias": "service",
+            "label": "Data Service",
+            "broader": self.namespace + "/data",
             "source": "f-uji.net",
         }
 
@@ -246,8 +276,8 @@ class fuji_knowledge_base:
     def add_metadata_standards(self):
         parentkey = "metadata/standard"
         metastandards_dict = {}
-        with open(os.path.join(self.fuji_data_path, "metadata_standards.json")) as mdf:
-            mddict = json.load(mdf)
+        with open(os.path.join(self.fuji_data_path, "metadata_standards.yaml")) as mdf:
+            mddict = yaml.safe_load(mdf)
             for mk, mv in mddict.items():
                 mk = mk.replace(".yml", "")
                 sources = []
@@ -312,8 +342,8 @@ class fuji_knowledge_base:
     def add_licenses(self):
         parentkey = "license"
         license_dict = {}
-        with open(os.path.join(self.fuji_data_path, "licenses.json")) as lcd:
-            license_list = json.load(lcd)
+        with open(os.path.join(self.fuji_data_path, "licenses.yaml")) as lcd:
+            license_list = yaml.safe_load(lcd)
             for lic in license_list:
                 license_dict[self.namespace + "/" + parentkey + "/" + lic.get("licenseId")] = {
                     "uri": self.namespace + "/" + parentkey + "/" + lic.get("licenseId"),
@@ -371,8 +401,8 @@ class fuji_knowledge_base:
     def add_file_types(self):
         parentkey = "data/format"
         filedict = {}
-        with open(os.path.join(self.fuji_data_path, "file_formats.json")) as lcd:
-            file_format_list = json.load(lcd)
+        with open(os.path.join(self.fuji_data_path, "file_formats.yaml")) as lcd:
+            file_format_list = yaml.safe_load(lcd)
             for ffk, ffv in file_format_list.items():
                 identifiers = []
                 for mime in ffv.get("mime"):
