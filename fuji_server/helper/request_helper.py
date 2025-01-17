@@ -26,11 +26,13 @@ class FUJIHTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
         self.redirect_list = []
         self.redirect_url = None
         self.redirect_status_list = []
+        self.status_list = []
 
     def redirect_request(self, req, fp, code, msg, hdrs, newurl):
         self.redirect_url = newurl
         self.redirect_list.append(newurl)
         self.redirect_status_list.append((newurl, code))
+        self.status_list.append(code)
         return super().redirect_request(req, fp, code, msg, hdrs, newurl)
 
 
@@ -75,6 +77,7 @@ class RequestHelper:
         self.redirect_url = None
         self.redirect_list = []
         self.redirect_status_list = []
+        self.status_list = []
         self.accept_type = AcceptTypes.default.value
         self.http_response = None
         self.parse_response = None
@@ -159,6 +162,7 @@ class RequestHelper:
                     tp_response = opener.open(tp_request, timeout=10)
                     self.redirect_list = redirect_handler.redirect_list
                     self.redirect_status_list = redirect_handler.redirect_status_list
+                    self.status_list = redirect_handler.status_list
                     self.redirect_url = redirect_handler.redirect_url
                 except urllib.error.HTTPError as e:
                     self.response_status = int(e.code)
@@ -166,6 +170,7 @@ class RequestHelper:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
                         self.redirect_status_list = redirect_handler.redirect_status_list
+                        self.status_list = redirect_handler.status_list
                     except:
                         pass
                     if e.code == 308:
@@ -175,7 +180,7 @@ class RequestHelper:
                         )
                     elif e.code == 405 or e.code == 403:
                         self.logger.error(
-                            "%s : Received a 405 or 403 HTTP error, most likely because the host denied the User-Agent (web scraping detection), retrying..."
+                            "%s : Received a 405 or 403 HTTP error, either a 'method not allowed' error or the host denied the User-Agent used (web scraping detection), retrying..."
                             % metric_id
                         )
                         try:
@@ -241,6 +246,7 @@ class RequestHelper:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
                         self.redirect_status_list = redirect_handler.redirect_status_list
+                        self.status_list = redirect_handler.status_list
                     except:
                         pass
                 except Exception as e:
@@ -255,6 +261,7 @@ class RequestHelper:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
                         self.redirect_status_list = redirect_handler.redirect_status_list
+                        self.status_list = redirect_handler.status_list
                     except:
                         pass
                     if "NewConnectionError" in str(e):
