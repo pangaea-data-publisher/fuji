@@ -105,7 +105,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def testAccessRightsStandardTerms(self, access_rights):
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-3"):
+        if self.isTestDefined(self.metric_identifier + "-3") or self.fuji.metric_helper.get_metric_version() > 0.5:
             test_score = self.getTestConfigScore(self.metric_identifier + "-3")
             if access_rights:
                 for access_right in access_rights:
@@ -115,11 +115,14 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                             + " : Non-actionable (term only) standard access level recognized as -:"
                             + str(self.lower_case_access_dict.get(access_right.lower()))
                         )
-                        self.maturity = self.metric_tests.get(self.metric_identifier + "-3").metric_test_maturity_config
-                        self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
+                        if test_score:
+                            self.maturity = self.metric_tests.get(
+                                self.metric_identifier + "-3"
+                            ).metric_test_maturity_config
+                            self.setEvaluationCriteriumScore(self.metric_identifier + "-3", test_score, "pass")
+                            self.score.earned = test_score
                         self.access_level = self.lower_case_access_dict.get(access_right.lower())
                         self.access_details["access_condition"] = access_right
-                        self.score.earned = test_score
                         break
             else:
                 self.logger.info(
@@ -149,7 +152,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def testAccessRightsMachineReadable(self, access_rights):
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-2"):
+        if self.isTestDefined(self.metric_identifier + "-2") or self.fuji.metric_helper.get_metric_version() > 0.5:
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             # Hier stimmt was nicht!!!
             rights_regex = r"((info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))"
@@ -176,11 +179,12 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                                     + " : Standardized actionable access level recognized as -:"
                                     + str(right_status)
                                 )
-                                self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
-                                self.score.earned = test_score
-                                self.maturity = self.metric_tests.get(
-                                    self.metric_identifier + "-2"
-                                ).metric_test_maturity_config
+                                if test_score:
+                                    self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+                                    self.score.earned = test_score
+                                    self.maturity = self.metric_tests.get(
+                                        self.metric_identifier + "-2"
+                                    ).metric_test_maturity_config
                                 break
                         break
             else:
