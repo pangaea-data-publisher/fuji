@@ -55,6 +55,17 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                 self.logger.info(
                     "{} : RDFa serialization found in the data page - {}".format(self.metric_identifier, "RDFa")
                 )
+            if MetadataSources.OPENGRAPH_EMBEDDED.name in dict(self.fuji.metadata_sources):
+                self.outputs.append(
+                    FormalMetadataOutputInner(
+                        serialization_format="RDFa", source="structured_data", is_metadata_found=True
+                    )
+                )
+                self.logger.info(
+                    "{} : RDFa like (OpenGraph) serialization found in the data page - {}".format(
+                        self.metric_identifier, "RDFa"
+                    )
+                )
 
             if len(self.outputs) == 0:
                 self.logger.info(
