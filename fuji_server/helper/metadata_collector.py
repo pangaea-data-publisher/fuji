@@ -27,6 +27,9 @@ class MetadataFormats(enum.Enum):
     def acronym(self):
         return self.value.get("acronym")
 
+    def label(self):
+        return self.value.get("label")
+
 
 class MetadataOfferingMethods(enum.Enum):
     # HTML_EMBEDDING = {"label": "HTML Embedding", "acronym": "html_embedding"}
@@ -41,6 +44,9 @@ class MetadataOfferingMethods(enum.Enum):
 
     def acronym(self):
         return self.value.get("acronym")
+
+    def label(self):
+        return self.value.get("label")
 
 
 # Using enum class create enumerations of metadata sources
@@ -112,7 +118,7 @@ class MetadataSources(enum.Enum):
         "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
         "label": "Datacite Search",
         "acronym": "datacite-negotiated",
-        "format": "JSON",
+        "format": MetadataFormats.JSON,
     }
     RDF_NEGOTIATED = {
         "method": MetadataOfferingMethods.CONTENT_NEGOTIATION,
@@ -171,6 +177,12 @@ class MetadataSources(enum.Enum):
 
     def format(self):
         return self.value.get("format")
+
+    def method(self):
+        return self.value.get("method")
+
+    def label(self):
+        return self.value.get("label")
 
 
 class MetaDataCollector:
