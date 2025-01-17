@@ -28,17 +28,20 @@ from fuji_server.evaluators.fair_evaluator_license_file import FAIREvaluatorLice
 from fuji_server.evaluators.fair_evaluator_metadata_identifier_included import FAIREvaluatorMetadataIdentifierIncluded
 from fuji_server.evaluators.fair_evaluator_metadata_preservation import FAIREvaluatorMetadataPreserved
 from fuji_server.evaluators.fair_evaluator_minimal_metadata import FAIREvaluatorCoreMetadata
-from fuji_server.evaluators.fair_evaluator_persistent_identifier_data import FAIREvaluatorPersistentIdentifierData
-from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata import (
-    FAIREvaluatorPersistentIdentifierMetadata,
+from fuji_server.evaluators.fair_evaluator_persistent_identifier_metadata_data import (
+    FAIREvaluatorPersistentIdentifierMetadataData,
 )
 from fuji_server.evaluators.fair_evaluator_related_resources import FAIREvaluatorRelatedResources
 from fuji_server.evaluators.fair_evaluator_requirements import FAIREvaluatorRequirements
+from fuji_server.evaluators.fair_evaluator_retrievable_metadata_data import FAIREvaluatorMetadataDataRetrievable
 from fuji_server.evaluators.fair_evaluator_searchable import FAIREvaluatorSearchable
 from fuji_server.evaluators.fair_evaluator_semantic_vocabulary import FAIREvaluatorSemanticVocabulary
 from fuji_server.evaluators.fair_evaluator_software_component_identifier import FAIREvaluatorSoftwareComponentIdentifier
+from fuji_server.evaluators.fair_evaluator_standardised_protocol_auth_metadata_data import (
+    FAIREvaluatorStandardisedProtocolAuthentication,
+)
 from fuji_server.evaluators.fair_evaluator_standardised_protocol_data import FAIREvaluatorStandardisedProtocolData
-from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata import (
+from fuji_server.evaluators.fair_evaluator_standardised_protocol_metadata_data import (
     FAIREvaluatorStandardisedProtocolMetadata,
 )
 from fuji_server.evaluators.fair_evaluator_test_cases import FAIREvaluatorTestCases
@@ -417,6 +420,7 @@ class FAIRCheck:
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
         self.linked_namespace_uri.update(self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend(self.metadata_harvester.related_resources)
+        self.related_resources = list({v["related_resource"]: v for v in self.related_resources}.values())
         self.landing_url = self.metadata_harvester.landing_url
         self.landing_origin = self.metadata_harvester.landing_origin
         self.landing_domain = self.metadata_harvester.landing_domain
@@ -424,6 +428,7 @@ class FAIRCheck:
         self.pid_url = self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
         self.pid_collector.update(self.metadata_harvester.pid_collector)
+        self.isLandingPageAccessible = self.metadata_harvester.isLandingPageAccessible
 
     def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
         self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode=repeat_mode)
@@ -434,6 +439,9 @@ class FAIRCheck:
         self.metadata_sources.extend(self.metadata_harvester.metadata_sources)
         self.linked_namespace_uri.update(self.metadata_harvester.linked_namespace_uri)
         self.related_resources.extend(self.metadata_harvester.related_resources)
+        self.related_resources = list(
+            {v["related_resource"]: v for v in self.related_resources if v.get("related_resource")}.values()
+        )
         self.metadata_harvester.get_signposting_object_identifier()
         self.pid_url = self.metadata_harvester.pid_url
         self.pid_scheme = self.metadata_harvester.pid_scheme
@@ -453,12 +461,12 @@ class FAIRCheck:
         return unique_identifier_check.getResult()
 
     def check_persistent_metadata_identifier(self):
-        persistent_identifier_check = FAIREvaluatorPersistentIdentifierMetadata(self)
+        persistent_identifier_check = FAIREvaluatorPersistentIdentifierMetadataData(self)
         return persistent_identifier_check.getResult()
 
-    def check_persistent_data_identifier(self):
+    """def check_persistent_data_identifier(self):
         persistent_identifier_check = FAIREvaluatorPersistentIdentifierData(self)
-        return persistent_identifier_check.getResult()
+        return persistent_identifier_check.getResult()"""
 
     def check_unique_persistent_metadata_identifier(self):
         return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
@@ -506,6 +514,10 @@ class FAIRCheck:
     def check_data_access_level(self):
         data_access_level_check = FAIREvaluatorDataAccessLevel(self)
         return data_access_level_check.getResult()
+
+    def check_metadata_data_retrievable(self):
+        data_retrieve_check = FAIREvaluatorMetadataDataRetrievable(self)
+        return data_retrieve_check.getResult()
 
     def check_license(self):
         license_check = FAIREvaluatorLicense(self)
@@ -555,6 +567,7 @@ class FAIRCheck:
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
         return metadata_preserved_check.getResult()
 
+    # keep for pre 0.6 versions
     def check_standardised_protocol_data(self):
         standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
         return standardised_protocol_check.getResult()
@@ -562,6 +575,10 @@ class FAIRCheck:
     def check_standardised_protocol_metadata(self):
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
         return standardised_protocol_metadata_check.getResult()
+
+    def check_standardised_protocol_authentication(self):
+        standardised_protocol_has_auth = FAIREvaluatorStandardisedProtocolAuthentication(self)
+        return standardised_protocol_has_auth.getResult()
 
     """def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
