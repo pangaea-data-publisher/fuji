@@ -145,6 +145,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         test_status = False
         if test_defined:  # the below code expects metric FsF-R1.3-02D-1 to be defined
             test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+            test_maturity = self.getTestConfigMaturity("FsF-R1.3-02D-1")
             if mime_url_pair:
                 for mimetype, url in mime_url_pair.items():
                     data_file_output = DataFileFormatOutputInner()
@@ -192,6 +193,8 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
                         preferance_reason = []
 
                     if preferance_reason:
+                        if not self.maturity:
+                            self.maturity = test_maturity
                         preferred_mimetype = mimetype
                         self.logger.log(
                             self.fuji.LOG_SUCCESS,
@@ -312,6 +315,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         )
         self.output = DataFileFormatOutput()
         mime_url_dict = self.setFileFormatDict()
+        self.result.test_status = "fail"
         if self.testCommunityFileFormatUsed(mime_url_dict):
             self.result.test_status = "pass"
         if self.testFormatDocumented():
@@ -324,11 +328,11 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             self.result.test_status = "pass"
         if self.testApiCompliance():
             self.result.test_status = "pass"
-        else:
+
+        if not mime_url_dict:
             self.logger.warning(
                 f"{self.metric_identifier} : Could not perform file format checks as data content identifier(s) unavailable/inaccesible"
             )
-            self.result.test_status = "fail"
 
         self.output = self.data_file_list
         self.result.output = self.output
