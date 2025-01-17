@@ -22,6 +22,7 @@ class PersistenceOutputInner(Model):
         pid_scheme: str | None = None,
         resolvable_status: bool = False,
         resolved_url: str | None = None,
+        target: str | None = None,
     ):
         """PersistenceOutputInner - a model defined in Swagger
 
@@ -33,19 +34,29 @@ class PersistenceOutputInner(Model):
         :type resolvable_status: bool
         :param resolved_url: The resolved_url of this PersistenceOutputInner.  # noqa: E501
         :type resolved_url: str
+        :param target: The target of this PersistenceOutputInner.  # noqa: E501
+        :type target: str
         """
-        self.swagger_types = {"pid": str, "pid_scheme": str, "resolvable_status": bool, "resolved_url": str}
+        self.swagger_types = {
+            "pid": str,
+            "pid_scheme": str,
+            "resolvable_status": bool,
+            "resolved_url": str,
+            "target": str,
+        }
 
         self.attribute_map = {
             "pid": "pid",
             "pid_scheme": "pid_scheme",
             "resolvable_status": "resolvable_status",
             "resolved_url": "resolved_url",
+            "target": "target",
         }
         self._pid = pid
         self._pid_scheme = pid_scheme
         self._resolvable_status = resolvable_status
         self._resolved_url = resolved_url
+        self._target = target
 
     @classmethod
     def from_dict(cls, dikt) -> "PersistenceOutputInner":
@@ -141,3 +152,24 @@ class PersistenceOutputInner(Model):
         """
 
         self._resolved_url = resolved_url
+
+    @property
+    def target(self) -> str:
+        """Gets the target of this PersistenceOutputInner.
+
+
+        :return: The target of this PersistenceOutputInner.
+        :rtype: str
+        """
+        return self._target
+
+    @target.setter
+    def target(self, target: str):
+        """Sets the target of this PersistenceOutputInner.
+
+
+        :param target: The target of this PersistenceOutputInner.
+        :type target: str
+        """
+
+        self._target = target

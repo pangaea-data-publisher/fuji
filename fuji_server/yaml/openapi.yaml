@@ -8,7 +8,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 3.3.0
+  version: 3.5.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -275,6 +275,7 @@ components:
             - $ref: '#/components/schemas/Requirements'
             - $ref: '#/components/schemas/StandardisedProtocolData'
             - $ref: '#/components/schemas/StandardisedProtocolMetadata'
+            - $ref: '#/components/schemas/Retrievable'
     FAIRResultCommon:
       required:
       - id
@@ -368,6 +369,15 @@ components:
         properties:
           output:
             $ref: '#/components/schemas/DataAccess_output'
+          test_debug:
+            $ref: '#/components/schemas/Debug'
+    Retrievable:
+      allOf:
+      - $ref: '#/components/schemas/FAIRResultCommon'
+      - type: object
+        properties:
+          output:
+            $ref: '#/components/schemas/Retrievable_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     RelatedResource:
@@ -521,7 +531,7 @@ components:
       - type: object
         properties:
           output:
-            $ref: '#/components/schemas/StandardisedProtocolData_output'
+            $ref: '#/components/schemas/StandardisedProtocol_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     StandardisedProtocolMetadata:
@@ -530,7 +540,7 @@ components:
       - type: object
         properties:
           output:
-            $ref: '#/components/schemas/StandardisedProtocolMetadata_output'
+            $ref: '#/components/schemas/StandardisedProtocol_output'
           test_debug:
             $ref: '#/components/schemas/Debug'
     FAIRResultEvaluationCriterium:
@@ -566,10 +576,25 @@ components:
     Uniqueness_output:
       type: object
       properties:
+        unique_identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Uniqueness_output_inner'
         guid:
           type: string
         guid_scheme:
           type: string
+
+    Uniqueness_output_inner:
+      type: object
+      properties:
+        guid:
+          type: string
+        guid_scheme:
+          type: string
+        target:
+          type: string
+
     Persistence_output:
       type: object
       properties:
@@ -589,6 +614,8 @@ components:
           type: boolean
           default: false
         resolved_url:
+          type: string
+        target:
           type: string
 
     output_core_metadata_found:
@@ -655,6 +682,24 @@ components:
           - metadataonly
         access_details:
           type: object
+    Retrievable_output:
+      type: object
+      properties:
+        retrievable_objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Retrievable_output_inner'
+    Retrievable_output_inner:
+      type: object
+      properties:
+        format:
+          type: string
+        method:
+          type: string
+        resolved_url:
+          type: string
+        target:
+          type: string
     RelatedResource_output:
       type: array
       items:
@@ -915,15 +960,23 @@ components:
         is_namespace_active:
           type: boolean
           default: false
-    StandardisedProtocolData_output:
+    StandardisedProtocol_output:
       type: object
       properties:
-        standard_data_protocol:
+        standard_protocol:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardisedProtocol_output_inner'
+    StandardisedProtocol_output_inner:
+      type: object
+      properties:
+        protocol_type:
           type: string
-    StandardisedProtocolMetadata_output:
-      type: object
-      properties:
-        standard_metadata_protocol:
+        auth_method:
+          type: string
+        found_in:
+          type: string
+        target:
           type: string
   responses:
     UnauthorizedError:

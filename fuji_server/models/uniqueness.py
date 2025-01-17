@@ -23,18 +23,22 @@ class Uniqueness(Model):
 
     def __init__(
         self,
+        output: UniquenessOutput | None = None,
+        test_debug: Debug | None = None,
         id: int | None = None,
         metric_identifier: str | None = None,
         metric_name: str | None = None,
         metric_tests: dict[str, FAIRResultEvaluationCriterium] | None = None,
         test_status: str = "fail",
-        score: FAIRResultCommonScore = None,
+        score: FAIRResultCommonScore | None = None,
         maturity: int = 0,
-        output: UniquenessOutput = None,
-        test_debug: Debug = None,
     ):
         """Uniqueness - a model defined in Swagger
 
+        :param output: The output of this Uniqueness.  # noqa: E501
+        :type output: UniquenessOutput
+        :param test_debug: The test_debug of this Uniqueness.  # noqa: E501
+        :type test_debug: Debug
         :param id: The id of this Uniqueness.  # noqa: E501
         :type id: int
         :param metric_identifier: The metric_identifier of this Uniqueness.  # noqa: E501
@@ -49,12 +53,10 @@ class Uniqueness(Model):
         :type score: FAIRResultCommonScore
         :param maturity: The maturity of this Uniqueness.  # noqa: E501
         :type maturity: int
-        :param output: The output of this Uniqueness.  # noqa: E501
-        :type output: UniquenessOutput
-        :param test_debug: The test_debug of this Uniqueness.  # noqa: E501
-        :type test_debug: Debug
         """
         self.swagger_types = {
+            "output": UniquenessOutput,
+            "test_debug": Debug,
             "id": int,
             "metric_identifier": str,
             "metric_name": str,
@@ -62,11 +64,11 @@ class Uniqueness(Model):
             "test_status": str,
             "score": FAIRResultCommonScore,
             "maturity": int,
-            "output": UniquenessOutput,
-            "test_debug": Debug,
         }
 
         self.attribute_map = {
+            "output": "output",
+            "test_debug": "test_debug",
             "id": "id",
             "metric_identifier": "metric_identifier",
             "metric_name": "metric_name",
@@ -74,9 +76,9 @@ class Uniqueness(Model):
             "test_status": "test_status",
             "score": "score",
             "maturity": "maturity",
-            "output": "output",
-            "test_debug": "test_debug",
         }
+        self._output = output
+        self._test_debug = test_debug
         self._id = id
         self._metric_identifier = metric_identifier
         self._metric_name = metric_name
@@ -84,8 +86,6 @@ class Uniqueness(Model):
         self._test_status = test_status
         self._score = score
         self._maturity = maturity
-        self._output = output
-        self._test_debug = test_debug
 
     @classmethod
     def from_dict(cls, dikt) -> "Uniqueness":
@@ -97,6 +97,48 @@ class Uniqueness(Model):
         :rtype: Uniqueness
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def output(self) -> UniquenessOutput:
+        """Gets the output of this Uniqueness.
+
+
+        :return: The output of this Uniqueness.
+        :rtype: UniquenessOutput
+        """
+        return self._output
+
+    @output.setter
+    def output(self, output: UniquenessOutput):
+        """Sets the output of this Uniqueness.
+
+
+        :param output: The output of this Uniqueness.
+        :type output: UniquenessOutput
+        """
+
+        self._output = output
+
+    @property
+    def test_debug(self) -> Debug:
+        """Gets the test_debug of this Uniqueness.
+
+
+        :return: The test_debug of this Uniqueness.
+        :rtype: Debug
+        """
+        return self._test_debug
+
+    @test_debug.setter
+    def test_debug(self, test_debug: Debug):
+        """Sets the test_debug of this Uniqueness.
+
+
+        :param test_debug: The test_debug of this Uniqueness.
+        :type test_debug: Debug
+        """
+
+        self._test_debug = test_debug
 
     @property
     def id(self) -> int:
@@ -255,45 +297,3 @@ class Uniqueness(Model):
         """
 
         self._maturity = maturity
-
-    @property
-    def output(self) -> UniquenessOutput:
-        """Gets the output of this Uniqueness.
-
-
-        :return: The output of this Uniqueness.
-        :rtype: UniquenessOutput
-        """
-        return self._output
-
-    @output.setter
-    def output(self, output: UniquenessOutput):
-        """Sets the output of this Uniqueness.
-
-
-        :param output: The output of this Uniqueness.
-        :type output: UniquenessOutput
-        """
-
-        self._output = output
-
-    @property
-    def test_debug(self) -> Debug:
-        """Gets the test_debug of this Uniqueness.
-
-
-        :return: The test_debug of this Uniqueness.
-        :rtype: Debug
-        """
-        return self._test_debug
-
-    @test_debug.setter
-    def test_debug(self, test_debug: Debug):
-        """Sets the test_debug of this Uniqueness.
-
-
-        :param test_debug: The test_debug of this Uniqueness.
-        :type test_debug: Debug
-        """
-
-        self._test_debug = test_debug

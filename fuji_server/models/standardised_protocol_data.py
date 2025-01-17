@@ -12,7 +12,7 @@ from fuji_server.models.debug import Debug
 from fuji_server.models.fair_result_common import FAIRResultCommon  # noqa: F401
 from fuji_server.models.fair_result_common_score import FAIRResultCommonScore
 from fuji_server.models.fair_result_evaluation_criterium import FAIRResultEvaluationCriterium
-from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
+from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
 
 
 class StandardisedProtocolData(Model):
@@ -23,18 +23,22 @@ class StandardisedProtocolData(Model):
 
     def __init__(
         self,
+        output: StandardisedProtocolOutput | None = None,
+        test_debug: Debug | None = None,
         id: int | None = None,
         metric_identifier: str | None = None,
         metric_name: str | None = None,
         metric_tests: dict[str, FAIRResultEvaluationCriterium] | None = None,
         test_status: str = "fail",
-        score: FAIRResultCommonScore = None,
+        score: FAIRResultCommonScore | None = None,
         maturity: int = 0,
-        output: StandardisedProtocolDataOutput = None,
-        test_debug: Debug = None,
     ):
         """StandardisedProtocolData - a model defined in Swagger
 
+        :param output: The output of this StandardisedProtocolData.  # noqa: E501
+        :type output: StandardisedProtocolOutput
+        :param test_debug: The test_debug of this StandardisedProtocolData.  # noqa: E501
+        :type test_debug: Debug
         :param id: The id of this StandardisedProtocolData.  # noqa: E501
         :type id: int
         :param metric_identifier: The metric_identifier of this StandardisedProtocolData.  # noqa: E501
@@ -49,12 +53,10 @@ class StandardisedProtocolData(Model):
         :type score: FAIRResultCommonScore
         :param maturity: The maturity of this StandardisedProtocolData.  # noqa: E501
         :type maturity: int
-        :param output: The output of this StandardisedProtocolData.  # noqa: E501
-        :type output: StandardisedProtocolDataOutput
-        :param test_debug: The test_debug of this StandardisedProtocolData.  # noqa: E501
-        :type test_debug: Debug
         """
         self.swagger_types = {
+            "output": StandardisedProtocolOutput,
+            "test_debug": Debug,
             "id": int,
             "metric_identifier": str,
             "metric_name": str,
@@ -62,11 +64,11 @@ class StandardisedProtocolData(Model):
             "test_status": str,
             "score": FAIRResultCommonScore,
             "maturity": int,
-            "output": StandardisedProtocolDataOutput,
-            "test_debug": Debug,
         }
 
         self.attribute_map = {
+            "output": "output",
+            "test_debug": "test_debug",
             "id": "id",
             "metric_identifier": "metric_identifier",
             "metric_name": "metric_name",
@@ -74,9 +76,9 @@ class StandardisedProtocolData(Model):
             "test_status": "test_status",
             "score": "score",
             "maturity": "maturity",
-            "output": "output",
-            "test_debug": "test_debug",
         }
+        self._output = output
+        self._test_debug = test_debug
         self._id = id
         self._metric_identifier = metric_identifier
         self._metric_name = metric_name
@@ -84,8 +86,6 @@ class StandardisedProtocolData(Model):
         self._test_status = test_status
         self._score = score
         self._maturity = maturity
-        self._output = output
-        self._test_debug = test_debug
 
     @classmethod
     def from_dict(cls, dikt) -> "StandardisedProtocolData":
@@ -97,6 +97,48 @@ class StandardisedProtocolData(Model):
         :rtype: StandardisedProtocolData
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def output(self) -> StandardisedProtocolOutput:
+        """Gets the output of this StandardisedProtocolData.
+
+
+        :return: The output of this StandardisedProtocolData.
+        :rtype: StandardisedProtocolOutput
+        """
+        return self._output
+
+    @output.setter
+    def output(self, output: StandardisedProtocolOutput):
+        """Sets the output of this StandardisedProtocolData.
+
+
+        :param output: The output of this StandardisedProtocolData.
+        :type output: StandardisedProtocolOutput
+        """
+
+        self._output = output
+
+    @property
+    def test_debug(self) -> Debug:
+        """Gets the test_debug of this StandardisedProtocolData.
+
+
+        :return: The test_debug of this StandardisedProtocolData.
+        :rtype: Debug
+        """
+        return self._test_debug
+
+    @test_debug.setter
+    def test_debug(self, test_debug: Debug):
+        """Sets the test_debug of this StandardisedProtocolData.
+
+
+        :param test_debug: The test_debug of this StandardisedProtocolData.
+        :type test_debug: Debug
+        """
+
+        self._test_debug = test_debug
 
     @property
     def id(self) -> int:
@@ -255,45 +297,3 @@ class StandardisedProtocolData(Model):
         """
 
         self._maturity = maturity
-
-    @property
-    def output(self) -> StandardisedProtocolDataOutput:
-        """Gets the output of this StandardisedProtocolData.
-
-
-        :return: The output of this StandardisedProtocolData.
-        :rtype: StandardisedProtocolDataOutput
-        """
-        return self._output
-
-    @output.setter
-    def output(self, output: StandardisedProtocolDataOutput):
-        """Sets the output of this StandardisedProtocolData.
-
-
-        :param output: The output of this StandardisedProtocolData.
-        :type output: StandardisedProtocolDataOutput
-        """
-
-        self._output = output
-
-    @property
-    def test_debug(self) -> Debug:
-        """Gets the test_debug of this StandardisedProtocolData.
-
-
-        :return: The test_debug of this StandardisedProtocolData.
-        :rtype: Debug
-        """
-        return self._test_debug
-
-    @test_debug.setter
-    def test_debug(self, test_debug: Debug):
-        """Sets the test_debug of this StandardisedProtocolData.
-
-
-        :param test_debug: The test_debug of this StandardisedProtocolData.
-        :type test_debug: Debug
-        """
-
-        self._test_debug = test_debug
