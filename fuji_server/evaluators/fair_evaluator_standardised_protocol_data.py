@@ -6,7 +6,8 @@ from urllib.parse import urlparse
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.standardised_protocol_data import StandardisedProtocolData
-from fuji_server.models.standardised_protocol_data_output import StandardisedProtocolDataOutput
+from fuji_server.models.standardised_protocol_output import StandardisedProtocolOutput
+from fuji_server.models.standardised_protocol_output_inner import StandardisedProtocolOutputInner
 
 
 class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
@@ -25,10 +26,11 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         self.set_metric(["FsF-A1-03D", "FRSM-09-A1"])
-        self.data_output = {}
+
+        self.data_output = []
 
         self.metric_test_map = {  # overall map
-            "testStandardProtocolDataUsed": ["FsF-A1-03D-1", "FRSM-09-A1-1", "FRSM-09-A1-CESSDA-1"],
+            "testStandardProtocolDataUsed": ["FsF-A1-03D-1", "FsF-A1.1-03D-1", "FRSM-09-A1-1", "FRSM-09-A1-CESSDA-1"],
             "testAuth": ["FRSM-09-A1-2", "FRSM-09-A1-CESSDA-2"],
             "testPRs": ["FRSM-09-A1-CESSDA-3"],
         }
@@ -62,7 +64,12 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
                                     + " : Standard protocol for access to data object found -: "
                                     + data_url_scheme,
                                 )
-                                self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
+                                output_inner = StandardisedProtocolOutputInner()
+                                output_inner.protocol_type = data_url_scheme
+                                output_inner.found_in = data_url
+                                output_inner.target = "data"
+                                self.data_output.append(output_inner)
+                                # self.data_output = {data_url_scheme: self.fuji.STANDARD_PROTOCOLS.get(data_url_scheme)}
                                 self.setEvaluationCriteriumScore(test_id, test_score, "pass")
                                 self.maturity = self.getTestConfigMaturity(test_id)
                                 test_status = True
@@ -114,14 +121,17 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
 
     def evaluate(self):
         self.result = StandardisedProtocolData(
-            id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
+            id=self.metric_number,
+            metric_identifier=self.metric_identifier,
+            metric_name=self.metric_name,
+            output=StandardisedProtocolOutput(),
         )
 
         test_status = "fail"
         if self.testStandardProtocolDataUsed():
             test_status = "pass"
         self.result.score = self.score
-        self.result.output = StandardisedProtocolDataOutput(standard_data_protocol=self.data_output)
+        self.result.output.standard_protocol = self.data_output
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
