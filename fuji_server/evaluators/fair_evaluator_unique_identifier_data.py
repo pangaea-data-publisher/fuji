@@ -5,6 +5,7 @@
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.uniqueness import Uniqueness
 from fuji_server.models.uniqueness_output import UniquenessOutput
+from fuji_server.models.uniqueness_output_inner import UniquenessOutputInner
 
 
 class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
@@ -22,28 +23,34 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         if self.fuji.metric_helper.get_metric_version() > 0.5:
-            metric = "FsF-F1-01D"
+            metric = "FsF-F1-01MD"
         else:
             metric = "FsF-F1-01DD"
         self.set_metric(metric)
 
-    def testMetadataIdentifierCompliesWithUUIDorHASHorIdutilsScheme(self):
+    def testDataIdentifierCompliesWithUUIDorHASHorIdutilsScheme(self):
         test_status = False
-        if self.isTestDefined(self.metric_identifier + "-1"):
-            test_score = self.getTestConfigScore(self.metric_identifier + "-1")
+        if self.isTestDefined(self.metric_identifier + "-2"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             self.logger.info(
                 self.metric_identifier
-                + " : Using idutils schemes to identify unique or persistent identifiers for metadata"
+                + " : Using idutils schemes to identify unique or persistent identifiers for data"
             )
             found_ids = []
             content_identifiers = self.fuji.content_identifier.values()
             if content_identifiers:
                 for data_identifier in content_identifiers:
-                    data_id_scheme = data_identifier.get("schema")
+                    data_id_scheme = data_identifier.get("scheme")
+                    content_url = data_identifier.get("url")
                     self.logger.info(
-                        self.metric_identifier + f" :Starting assessment on data identifier: {self.fuji.id}"
+                        self.metric_identifier + f" :Starting assessment on data identifier: {content_url}"
                     )
                     if data_id_scheme:
+                        output_data_inner = UniquenessOutputInner()
+                        output_data_inner.guid = content_url
+                        output_data_inner.guid_scheme = data_id_scheme
+                        output_data_inner.target = "data"
+                        self.output.unique_identifiers.append(output_data_inner)
                         found_ids.append(data_id_scheme)
             else:
                 self.logger.warning(
@@ -51,8 +58,9 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
                     + " : Could NOT find any data identifier in metadata, therefore skipping uniqueness test"
                 )
             if found_ids:
-                self.setEvaluationCriteriumScore(self.metric_identifier + "-1", self.total_score, "pass")
-                self.maturity = self.metric_tests.get(self.metric_identifier + "-1").metric_test_maturity_config
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-2", self.total_score, "pass")
+                self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
+
                 self.output.guid = self.fuji.id
                 self.score.earned = test_score
                 self.logger.log(
@@ -73,8 +81,9 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
             )
             self.output = UniquenessOutput()
+            self.output.unique_identifiers = []
             self.result.test_status = "fail"
-            if self.testMetadataIdentifierCompliesWithUUIDorHASHorIdutilsScheme():
+            if self.testDataIdentifierCompliesWithUUIDorHASHorIdutilsScheme():
                 self.result.test_status = "pass"
             else:
                 self.result.test_status = "fail"
