@@ -72,5 +72,14 @@
     "name": "Wikidata",
     "prefix": "wikidata",
     "uri_format": "https://www.wikidata.org/wiki/$1"
+  },
+  "fuji:worms": {
+    "id": "fuji.worms",
+    "name": "World Register of Marine Species (Worms)",
+    "prefix": "worms",
+    "subjects": [
+      "biological sciences"
+    ],
+    "uri_format": "urn:lsid:marinespecies.org:taxname:$1"
   }
 }
