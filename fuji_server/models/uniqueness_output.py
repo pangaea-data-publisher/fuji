@@ -19,9 +19,9 @@ class UniquenessOutput(Model):
 
     def __init__(
         self,
-        unique_identifiers: list[UniquenessOutputInner] = None | None,
-        guid: str = None | None,
-        guid_scheme: str = None | None,
+        unique_identifiers: list[UniquenessOutputInner] | None = None,
+        guid: str | None = None,
+        guid_scheme: str | None = None,
     ):
         """UniquenessOutput - a model defined in Swagger
 
