@@ -1,14 +1,14 @@
 abcd-access-biological-collection-data:
   acronym: ABCD
   field_of_science:
+  - zoology
   - genetics
   - earth and related environmental sciences
-  - zoology
   - botany
-  - biological sciences
-  - palaeontology
   - geology
   - natural sciences
+  - biological sciences
+  - palaeontology
   identifier:
   - type: local
     value: msc:m1
@@ -83,8 +83,8 @@ abcddna:
 abcdefg-access-biological-collection-databases-extended-geosciences:
   acronym: ABCDEFG
   field_of_science:
-  - mineralogy
   - palaeontology
+  - mineralogy
   - earth and related environmental sciences
   - natural sciences
   identifier:
@@ -135,9 +135,9 @@ agls-metadata-profile:
 agmes-agricultural-metadata-element-set:
   acronym: AgMES
   field_of_science:
+  - agriculture
   - agricultural sciences
   - animal and dairy science
-  - agriculture
   - fisheries
   identifier:
   - type: local
@@ -168,9 +168,9 @@ agmes-agricultural-metadata-element-set:
 agris-application-profile:
   acronym: AGRIS
   field_of_science:
+  - agriculture
   - agricultural sciences
   - animal and dairy science
-  - agriculture
   - fisheries
   identifier:
   - type: local
@@ -412,10 +412,10 @@ bibtex-format:
 carare-metadata-schema:
   acronym: CARARE
   field_of_science:
-  - architectural design
-  - humanities
-  - archaeology
   - history
+  - humanities
+  - architectural design
+  - archaeology
   identifier:
   - type: local
     value: msc:m49
@@ -473,16 +473,16 @@ cdwa-lite-schema:
 cedar-template-model:
   acronym: CEDAR
   field_of_science:
-  - social sciences
-  - earth and related environmental sciences
-  - agriculture
-  - engineering and technology
-  - public administration
-  - clinical medicine
   - medical and health sciences
+  - social sciences
+  - engineering and technology
   - medical engineering
-  - agricultural sciences
+  - earth and related environmental sciences
+  - clinical medicine
+  - agriculture
+  - public administration
   - natural sciences
+  - agricultural sciences
   identifier:
   - type: local
     value: msc:m94
@@ -552,10 +552,10 @@ cessda-mli-council-european-social-science-data-archives-minimum-level-inf:
   acronym:
   field_of_science:
   - social sciences
+  - sociology
+  - economics
   - demography
   - social geography
-  - economics
-  - sociology
   identifier:
   - type: local
     value: msc:m50
@@ -577,10 +577,10 @@ cessda-mli-council-european-social-science-data-archives-minimum-level-inf:
 cf-climate-and-forecast-metadata-conventions:
   acronym: CF
   field_of_science:
-  - oceanography
   - climatology
   - meteorology
   - natural sciences
+  - oceanography
   identifier:
   - type: local
     value: msc:m5
@@ -631,10 +631,10 @@ cif-crystallographic-information-framework:
   acronym: CIF
   field_of_science:
   - chemical sciences
-  - crystallography
   - engineering and technology
-  - materials engineering
   - natural sciences
+  - crystallography
+  - materials engineering
   identifier:
   - type: local
     value: msc:m6
@@ -710,9 +710,9 @@ clarivate-data-citation-index-schema:
 cmd-component-metadata:
   acronym: CMDI
   field_of_science:
-  - humanities
-  - languages and literature
   - linguistics
+  - languages and literature
+  - humanities
   identifier:
   - type: local
     value: fuji:m6
@@ -756,10 +756,10 @@ cmd-component-metadata:
 coards-conventions:
   acronym:
   field_of_science:
-  - oceanography
   - climatology
   - meteorology
   - natural sciences
+  - oceanography
   identifier:
   - type: local
     value: msc:m51
@@ -834,13 +834,13 @@ crossref-schema:
 cruise-summary-reports:
   acronym: CSR
   field_of_science:
-  - glaciology
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
   - meteorology
-  - oceanography
+  - earth and related environmental sciences
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
   identifier:
   - type: local
     value: msc:m52
@@ -873,11 +873,11 @@ cruise-summary-reports:
 csdgm-extensions-remote-sensing-metadata:
   acronym: CSDGM
   field_of_science:
-  - hydrology
-  - climatology
   - meteorology
-  - oceanography
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
   identifier:
   - type: local
     value: msc:m53
@@ -900,11 +900,11 @@ csmd-cclrc-core-scientific-metadata-model:
   acronym: CSMD
   field_of_science:
   - chemical sciences
-  - crystallography
-  - biochemistry
   - engineering and technology
-  - materials engineering
+  - biochemistry
   - natural sciences
+  - crystallography
+  - materials engineering
   identifier:
   - type: local
     value: msc:m8
@@ -1003,17 +1003,17 @@ dara-metadata-schema:
 darwin-core:
   acronym: DwC
   field_of_science:
-  - ecology
-  - earth and related environmental sciences
   - zoology
-  - botany
-  - biological sciences
-  - cartography
-  - marine biology
-  - palaeontology
-  - oceanography
   - physical geography
+  - earth and related environmental sciences
+  - ecology
+  - botany
+  - marine biology
   - natural sciences
+  - cartography
+  - biological sciences
+  - oceanography
+  - palaeontology
   identifier:
   - type: local
     value: msc:m9
@@ -1060,10 +1060,10 @@ darwin-core:
 darwin-core-geospatial-extension:
   acronym: DwC-S
   field_of_science:
-  - cartography
-  - physical geography
   - biological sciences
+  - physical geography
   - natural sciences
+  - cartography
   identifier:
   - type: local
     value: msc:m54
@@ -1117,6 +1117,8 @@ datacite-metadata-schema:
     value: http://schema.datacite.org
   - type: namespace
     value: http://datacite.org/schema/kernel
+  - type: namespace
+    value: http://datacite.org/schema
   subject_areas:
   - Multidisciplinary
   title: DataCite Metadata Schema
@@ -1126,6 +1128,7 @@ datacite-metadata-schema:
   - http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema
   - http://schema.datacite.org
   - http://datacite.org/schema/kernel
+  - http://datacite.org/schema
   - msc:g18
   - msc:g37
   - msc:g64
@@ -1212,19 +1215,19 @@ dcat-data-catalog-vocabulary:
 ddi-data-documentation-initiative:
   acronym: DDI
   field_of_science:
+  - medical and health sciences
   - social sciences
+  - humanities
+  - law
+  - sociology
+  - public health
+  - natural sciences
+  - statistics and probability
+  - economics
+  - political sciences
   - demography
   - history
-  - law
-  - public health
-  - statistics and probability
   - social geography
-  - humanities
-  - medical and health sciences
-  - economics
-  - sociology
-  - political sciences
-  - natural sciences
   identifier:
   - type: local
     value: msc:m13
@@ -1272,6 +1275,12 @@ ddi-data-documentation-initiative:
     value: https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd
   - type: schema
     value: https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd
+  - type: namespace
+    value: http://ddialliance.org/Specification/DDI-CDI/1.0/XMLSchema/
+  - type: namespace
+    value: urn:ddi.org:4
+  - type: schema
+    value: https://ddi-cdi-resources.bitbucket.io/2024-03-12/encoding/xml-schema/ddi-cdi.xsd
   subject_areas:
   - Demography
   - Economics
@@ -1310,6 +1319,9 @@ ddi-data-documentation-initiative:
   - https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/instance.xsd
   - https://ddialliance.org/Specification/DDI-Lifecycle/3.1/XMLSchema/instance.xsd
   - https://ddialliance.org/Specification/DDI-Lifecycle/3.0/XMLSchema/instance.xsd
+  - http://ddialliance.org/Specification/DDI-CDI/1.0/XMLSchema/
+  - urn:ddi.org:4
+  - https://ddi-cdi-resources.bitbucket.io/2024-03-12/encoding/xml-schema/ddi-cdi.xsd
   - msc:g20
   - msc:g31
   - msc:g32
@@ -1342,17 +1354,17 @@ didl-digital-item-declaration-language:
 dif-directory-interchange-format:
   acronym: DIF
   field_of_science:
-  - glaciology
-  - ecology
-  - hydrology
-  - biochemistry
-  - agriculture
-  - climatology
   - meteorology
-  - marine biology
-  - agricultural sciences
-  - oceanography
+  - biochemistry
+  - ecology
+  - agriculture
+  - glaciology
+  - hydrology
   - natural sciences
+  - marine biology
+  - climatology
+  - oceanography
+  - agricultural sciences
   identifier:
   - type: local
     value: msc:m14
@@ -1591,8 +1603,8 @@ dwc-germplasm:
 ead-encoded-archival-description:
   acronym: ead
   field_of_science:
-  - humanities
   - history
+  - humanities
   identifier:
   - type: local
     value: msc:m96
@@ -1684,16 +1696,16 @@ edm-europeana-data-model:
 edmed-metadata-profile:
   acronym:
   field_of_science:
-  - glaciology
-  - ecology
-  - soil sciences
-  - hydrology
-  - environmental sciences
-  - climatology
   - meteorology
+  - soil sciences
+  - ecology
   - hydrogeology
-  - oceanography
+  - environmental sciences
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
   identifier:
   - type: local
     value: msc:m58
@@ -1750,11 +1762,11 @@ emblem-metadata-schema:
 eml-ecological-metadata-language:
   acronym: EML
   field_of_science:
-  - ecology
   - zoology
+  - ecology
   - botany
-  - biological sciences
   - natural sciences
+  - biological sciences
   identifier:
   - type: local
     value: msc:m16
@@ -1902,8 +1914,8 @@ eurisco-descriptors:
 fdsn-seismograph:
   acronym:
   field_of_science:
-  - earth and related environmental sciences
   - geophysics
+  - earth and related environmental sciences
   - natural sciences
   identifier:
   - type: local
@@ -1945,16 +1957,16 @@ fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge:
   acronym: fgdc
   field_of_science:
   - social sciences
-  - hydrology
-  - climatology
-  - biochemistry
-  - social geography
-  - cartography
-  - meteorology
-  - marine biology
-  - oceanography
   - physical geography
+  - meteorology
+  - biochemistry
+  - hydrology
   - natural sciences
+  - marine biology
+  - climatology
+  - cartography
+  - oceanography
+  - social geography
   identifier:
   - type: local
     value: msc:m17
@@ -1999,8 +2011,8 @@ fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge:
 fhir-fast-healthcare-interoperability-resources:
   acronym: FHIR
   field_of_science:
-  - clinical medicine
   - medical and health sciences
+  - clinical medicine
   identifier:
   - type: local
     value: fuji:m47
@@ -2074,11 +2086,11 @@ fits-world-coordinate-system-wcs:
 gbif-metadata-profile:
   acronym:
   field_of_science:
-  - ecology
   - zoology
+  - ecology
   - botany
-  - biological sciences
   - natural sciences
+  - biological sciences
   identifier:
   - type: local
     value: msc:m61
@@ -2138,8 +2150,8 @@ geodcat:
 geodesyml:
   acronym: GeodesyML
   field_of_science:
-  - earth and related environmental sciences
   - geophysics
+  - earth and related environmental sciences
   - natural sciences
   identifier:
   - type: local
@@ -2209,8 +2221,8 @@ gesmests-generic-statistical-message-time-series:
 gsim-generic-statistical-information-model:
   acronym:
   field_of_science:
-  - statistics and probability
   - natural sciences
+  - statistics and probability
   identifier:
   - type: local
     value: msc:m63
@@ -2268,8 +2280,8 @@ idf-international-doi-foundation-metadata-kernel:
 imdi-metadata-schema:
   acronym: IMDI
   field_of_science:
-  - humanities
   - linguistics
+  - humanities
   identifier:
   - type: local
     value: fuji:m15
@@ -2316,16 +2328,16 @@ impex-data-model:
 inspire-metadata-regulation:
   acronym:
   field_of_science:
-  - glaciology
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
-  - meteorology
-  - cartography
-  - hydrogeology
-  - oceanography
   - physical geography
+  - meteorology
+  - earth and related environmental sciences
+  - hydrogeology
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
+  - cartography
   identifier:
   - type: local
     value: msc:m66
@@ -2379,15 +2391,15 @@ international-virtual-observatory-alliance-technical-specifications:
 isa-tab:
   acronym:
   field_of_science:
-  - genetics
-  - biophysics
-  - molecular biology
-  - cell biology
-  - biochemistry
-  - biological sciences
   - engineering and technology
-  - cell metabolism
+  - genetics
+  - biochemistry
+  - biophysics
+  - cell biology
   - natural sciences
+  - biological sciences
+  - cell metabolism
+  - molecular biology
   identifier:
   - type: local
     value: msc:m21
@@ -2417,9 +2429,9 @@ isa-tab:
 isa-tab-nano:
   acronym:
   field_of_science:
+  - engineering and technology
   - biological sciences
   - biochemistry
-  - engineering and technology
   - natural sciences
   identifier:
   - type: local
@@ -2440,9 +2452,9 @@ isa-tab-nano:
 isaconfig-dixa:
   acronym:
   field_of_science:
-  - genetics
-  - toxicology
   - medical and health sciences
+  - toxicology
+  - genetics
   - natural sciences
   identifier:
   - type: local
@@ -2460,17 +2472,17 @@ isaconfig-dixa:
 iso-19115:
   acronym: ISO19115
   field_of_science:
-  - glaciology
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
+  - physical geography
   - meteorology
-  - cartography
+  - earth and related environmental sciences
   - hydrogeology
   - geology
-  - oceanography
-  - physical geography
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
+  - cartography
   identifier:
   - type: local
     value: msc:m22
@@ -2529,17 +2541,17 @@ iso-19115:
 iso-19115-2-imagery-and-gridded-data:
   acronym:
   field_of_science:
-  - glaciology
   - social sciences
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
-  - meteorology
-  - social geography
-  - cartography
-  - oceanography
   - physical geography
+  - meteorology
+  - earth and related environmental sciences
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
+  - cartography
+  - social geography
   identifier:
   - type: local
     value: msc:m69
@@ -2590,17 +2602,17 @@ iso-19115-north-american-profile:
 iso-19136:
   acronym:
   field_of_science:
-  - glaciology
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
+  - physical geography
   - meteorology
-  - cartography
+  - earth and related environmental sciences
   - hydrogeology
   - geology
-  - oceanography
-  - physical geography
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
+  - cartography
   identifier:
   - type: local
     value: fuji:m3
@@ -2811,13 +2823,13 @@ marc-machine-readable-cataloging:
 marine-community-profile:
   acronym: AODN
   field_of_science:
-  - glaciology
-  - earth and related environmental sciences
-  - hydrology
-  - climatology
   - meteorology
-  - oceanography
+  - earth and related environmental sciences
+  - glaciology
+  - hydrology
   - natural sciences
+  - oceanography
+  - climatology
   identifier:
   - type: local
     value: msc:m71
@@ -2851,8 +2863,8 @@ marine-community-profile:
 metashare-metadata:
   acronym: META-SHARE
   field_of_science:
-  - humanities
   - linguistics
+  - humanities
   identifier:
   - type: local
     value: fuji:m12
@@ -2907,16 +2919,16 @@ mets-metadata-encoding-and-transmission-standard:
 mibbi-minimum-information-biological-and-biomedical-investigations:
   acronym:
   field_of_science:
-  - genetics
-  - computer and information sciences
-  - cell biology
-  - environmental sciences
-  - biochemistry
   - engineering and technology
-  - biological sciences
+  - computer and information sciences
   - proteins
-  - cell metabolism
+  - genetics
+  - biochemistry
+  - environmental sciences
+  - cell biology
   - natural sciences
+  - biological sciences
+  - cell metabolism
   identifier:
   - type: local
     value: msc:m23
@@ -2952,10 +2964,10 @@ mibbi-minimum-information-biological-and-biomedical-investigations:
 midas-heritage:
   acronym: MIDAS
   field_of_science:
-  - architectural design
-  - humanities
-  - archaeology
   - history
+  - humanities
+  - architectural design
+  - archaeology
   identifier:
   - type: local
     value: msc:m24
@@ -3086,10 +3098,10 @@ nexus:
   acronym:
   field_of_science:
   - chemical sciences
-  - crystallography
   - engineering and technology
-  - materials engineering
   - natural sciences
+  - crystallography
+  - materials engineering
   identifier:
   - type: local
     value: msc:m25
@@ -3142,10 +3154,10 @@ oai-ore-open-archives-initiative-object-reuse-and-exchange:
   acronym: OAI-ORE
   field_of_science:
   - social sciences
-  - history
-  - anthropology
   - humanities
+  - anthropology
   - sciences
+  - history
   identifier:
   - type: local
     value: msc:m26
@@ -3222,12 +3234,12 @@ observ-om:
 observations-and-measurements:
   acronym:
   field_of_science:
-  - remote sensing
   - chemical sciences
-  - meteorology
   - engineering and technology
-  - natural sciences
+  - remote sensing
+  - meteorology
   - geology
+  - natural sciences
   identifier:
   - type: local
     value: msc:m28
@@ -3285,8 +3297,8 @@ odam-datapackage:
 olac-metadata:
   acronym: OLAC
   field_of_science:
-  - humanities
   - linguistics
+  - humanities
   identifier:
   - type: local
     value: fuji:m14
@@ -3311,15 +3323,15 @@ olac-metadata:
 ome-tiff-open-microscopy-environment-tiff:
   acronym:
   field_of_science:
-  - physiology
-  - zoology
-  - cell biology
-  - botany
-  - plant protection
   - medical and health sciences
-  - agricultural sciences
   - veterinary sciences
+  - zoology
+  - botany
+  - cell biology
   - natural sciences
+  - physiology
+  - agricultural sciences
+  - plant protection
   identifier:
   - type: local
     value: msc:m73
@@ -3343,15 +3355,15 @@ ome-tiff-open-microscopy-environment-tiff:
 ome-xml-open-microscopy-environment-xml:
   acronym:
   field_of_science:
-  - physiology
-  - zoology
-  - cell biology
-  - botany
-  - plant protection
   - medical and health sciences
-  - agricultural sciences
   - veterinary sciences
+  - zoology
+  - botany
+  - cell biology
   - natural sciences
+  - physiology
+  - agricultural sciences
+  - plant protection
   identifier:
   - type: local
     value: msc:m29
@@ -3592,13 +3604,13 @@ openurl-contextobject:
 pdbx-mmcif:
   acronym:
   field_of_science:
+  - chemical sciences
   - physical sciences
   - computer and information sciences
-  - chemical sciences
+  - natural sciences
+  - biological sciences
   - crystallography
   - molecular biology
-  - biological sciences
-  - natural sciences
   identifier:
   - type: local
     value: msc:m30
@@ -3744,8 +3756,8 @@ prism-publishing-industry-standard-metadata:
 protocol-data-element-definitions:
   acronym:
   field_of_science:
-  - clinical medicine
   - medical and health sciences
+  - clinical medicine
   identifier:
   - type: local
     value: msc:m32
@@ -3810,8 +3822,8 @@ prov:
 quakeml:
   acronym: QuakeML
   field_of_science:
-  - earth and related environmental sciences
   - geophysics
+  - earth and related environmental sciences
   - natural sciences
   identifier:
   - type: local
@@ -3876,8 +3888,8 @@ qudex-qualitative-data-exchange-format:
 rdf-data-cube-vocabulary:
   acronym:
   field_of_science:
-  - statistics and probability
   - natural sciences
+  - statistics and probability
   identifier:
   - type: local
     value: msc:m35
@@ -4084,12 +4096,12 @@ sdmx-statistical-data-and-metadata-exchange:
   acronym:
   field_of_science:
   - social sciences
-  - demography
+  - natural sciences
   - statistics and probability
-  - social geography
   - economics
   - political sciences
-  - natural sciences
+  - demography
+  - social geography
   identifier:
   - type: local
     value: msc:m38
@@ -4136,8 +4148,8 @@ shoreline-metadata-profile:
   acronym:
   field_of_science:
   - hydrology
-  - oceanography
   - natural sciences
+  - oceanography
   identifier:
   - type: local
     value: msc:m75
@@ -4303,8 +4315,8 @@ tei-text-encoding-initiative-guidelines:
   acronym: TEI
   field_of_science:
   - languages and literature
-  - humanities
   - history
+  - humanities
   identifier:
   - type: local
     value: msc:m99
@@ -4396,16 +4408,16 @@ uk-gemini:
 ukeof:
   acronym:
   field_of_science:
-  - ecology
+  - engineering and technology
   - remote sensing
+  - meteorology
   - soil sciences
+  - ecology
+  - geology
   - hydrology
+  - natural sciences
   - climatology
   - biological sciences
-  - natural sciences
-  - meteorology
-  - engineering and technology
-  - geology
   identifier:
   - type: local
     value: msc:m40
