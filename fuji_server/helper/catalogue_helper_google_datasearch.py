@@ -55,7 +55,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                 samplef = pd.read_sql_query("SELECT uri FROM google_links ORDER BY RANDOM() LIMIT " + str(limit), con)
                 sample = samplef["uri"].values.tolist()
         except Exception as e:
-            print(e)
+            print("random_sample error: ", e)
         return sample
 
     def query(self, pidlist):
