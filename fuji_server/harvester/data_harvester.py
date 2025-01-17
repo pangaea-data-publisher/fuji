@@ -5,6 +5,7 @@
 import io
 import os
 import re
+import ssl
 import threading
 import urllib
 
@@ -12,6 +13,7 @@ import idutils
 from tika import parser
 
 from fuji_server.helper.identifier_helper import IdentifierHelper
+from fuji_server.helper.request_helper import FUJIHTTPRedirectHandler
 
 
 class DataHarvester:
@@ -161,16 +163,33 @@ class DataHarvester:
                 url = self.expand_url(url)
             # print("Downloading.. ", url)
             response = None
+            redirect_status_list = []
             try:
+                context = ssl._create_unverified_context()
+                context.set_ciphers("DEFAULT@SECLEVEL=0")
+                redirect_handler = FUJIHTTPRedirectHandler()
+                opener = urllib.request.build_opener(
+                    urllib.request.HTTPSHandler(context=context),
+                    urllib.request.HTTPHandler(),
+                    redirect_handler,
+                )
+                urllib.request.install_opener(opener)
                 request = urllib.request.Request(url, headers=header)
-                response = urllib.request.urlopen(request, timeout=timeout)
+                response = opener.open(request, timeout=10)
+                # redirect_list = redirect_handler.redirect_list
+                # redirect_status_list = redirect_handler.redirect_status_list
+                # redirect_url = redirect_handler.redirect_url
+                # request = urllib.request.Request(url, headers=header)
+                # response = urllib.request.urlopen(request, timeout=timeout)
                 self.responses[url] = response
+                redirect_status_list = redirect_handler.status_list
             except urllib.error.HTTPError as e:
                 self.logger.warning(f"FsF-F3-01M : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
                 self.logger.warning(f"FsF-R1-01MD : Content identifier inaccessible -: {url}, HTTPError code {e.code} ")
                 self.logger.warning(
                     f"FsF-R1.3-02D : Content identifier inaccessible -: {url}, HTTPError code {e.code} "
                 )
+                redirect_status_list = [int(e.code)]
             except urllib.error.URLError as e:
                 self.logger.exception(e.reason)
                 self.logger.warning(
@@ -182,13 +201,15 @@ class DataHarvester:
                 self.logger.warning(
                     f"FsF-R1.3-02D : Content identifier inaccessible -: {url}, URLError reason {e.reason} "
                 )
+                redirect_status_list = redirect_handler.status_list
             except Exception as e:
                 self.logger.warning("FsF-F3-01M : Content identifier inaccessible -:" + url + " " + str(e))
                 self.logger.warning("FsF-R1-01MD : Content identifier inaccessible -:" + url + " " + str(e))
                 self.logger.warning("FsF-R1.3-02D : Content identifier inaccessible -:" + url + " " + str(e))
-            self.set_data_info(urldict, response)
+                redirect_status_list = redirect_handler.status_list
+            self.set_data_info(urldict, response, redirect_status_list)
 
-    def set_data_info(self, urldict, response):
+    def set_data_info(self, urldict, response, redirect_status_list=[]):
         fileinfo = {}
         if isinstance(urldict, dict):
             fileinfo = {
@@ -197,12 +218,14 @@ class DataHarvester:
                 "claimed_type": urldict.get("type"),
                 "claimed_service": urldict.get("service"),
                 "claimed_profile": urldict.get("profile"),
+                "content_size": 0,
                 "truncated": False,
                 "is_persistent": False,
+                "status_list": redirect_status_list,
             }
             idhelper = IdentifierHelper(urldict.get("url"))
             if idhelper.preferred_schema:
-                fileinfo["schema"] = idhelper.preferred_schema
+                fileinfo["scheme"] = idhelper.preferred_schema
             if idhelper.is_persistent:
                 fileinfo["is_persistent"] = True
             # response related info
@@ -240,7 +263,9 @@ class DataHarvester:
                         fileinfo["truncated"] = True
                 if fileinfo["content_size"] > 0:
                     fileinfo.update(self.tika(file_buffer_object, urldict.get("url")))
-
+            else:
+                if len(fileinfo["status_list"]) > 0:
+                    fileinfo["status_code"] = fileinfo["status_list"][-1]
             self.data[urldict.get("url")] = fileinfo
         return fileinfo
 
