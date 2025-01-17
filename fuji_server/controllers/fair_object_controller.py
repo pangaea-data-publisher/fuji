@@ -82,7 +82,6 @@ async def assess_by_id(body):
         print("starting harvesting ")
         ft.harvest_all_metadata()
         ft.set_harvested_metadata()
-        uid_result, pid_result = ft.check_unique_persistent_metadata_identifier()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
             ft.set_harvested_metadata()
@@ -91,7 +90,6 @@ async def assess_by_id(body):
         ft.harvest_github()
         core_metadata_result = ft.check_minimal_metatadata()
         # print(ft.metadata_unmerged)
-        content_identifier_included_result = ft.check_data_identifier_included_in_metadata()
         # print('F-UJI checks: access level')
         access_level_result = ft.check_data_access_level()
         # print('F-UJI checks: license')
@@ -103,8 +101,15 @@ async def assess_by_id(body):
         check_searchable_result = ft.check_searchable()
         # print('F-UJI checks: data content')
         ft.harvest_all_data()
-        uid_data_result = ft.check_unique_content_identifier()
-        pid_data_result = ft.check_persistent_data_identifier()
+        uid_result, pid_result = ft.check_unique_persistent_metadata_identifier()
+        # uid_data_result = ft.check_unique_content_identifier()
+        # pid_data_result = ft.check_persistent_data_identifier()
+        content_identifier_included_result = ft.check_data_identifier_included_in_metadata()
+        retrievable_result = ft.check_metadata_data_retrievable()
+        data_identifier_included_result = ft.check_data_content_metadata()
+
+        metadata_identifier_included_result = ft.check_metadata_identifier_included_in_metadata()
+        data_file_format_result = ft.check_data_file_format()
         upid_software_result = ft.check_unique_persistent_software_identifier()
         software_component_result = ft.check_software_component_identifier()
         version_identifier_result = ft.check_version_identifier()
@@ -112,9 +117,6 @@ async def assess_by_id(body):
         open_api_result = ft.check_open_api()
         requirements_result = ft.check_requirements()
         test_cases_result = ft.check_test_cases()
-        data_identifier_included_result = ft.check_data_content_metadata()
-        metadata_identifier_included_result = ft.check_metadata_identifier_included_in_metadata()
-        data_file_format_result = ft.check_data_file_format()
         # print('F-UJI checks: data file format')
         community_standards_result = ft.check_community_metadatastandards()
         data_provenance_result = ft.check_data_provenance()
@@ -125,14 +127,17 @@ async def assess_by_id(body):
         metadata_preserved_result = ft.check_metadata_preservation()
         standard_protocol_data_result = ft.check_standardised_protocol_data()
         standard_protocol_metadata_result = ft.check_standardised_protocol_metadata()
+        standard_protocol_auth_result = ft.check_standardised_protocol_authentication()
         if uid_result:
             results.append(uid_result)
         if pid_result:
             results.append(pid_result)
-        if uid_data_result:
-            results.append(uid_data_result)
-        if pid_data_result:
-            results.append(pid_data_result)
+        # if uid_data_result:
+        #    results.append(uid_data_result)
+        # if pid_data_result:
+        #    results.append(pid_data_result)
+        if retrievable_result:
+            results.append(retrievable_result)
         if upid_software_result:
             results.append(upid_software_result)
         if software_component_result:
@@ -181,6 +186,8 @@ async def assess_by_id(body):
             results.append(standard_protocol_data_result)
         if standard_protocol_metadata_result:
             results.append(standard_protocol_metadata_result)
+        if standard_protocol_auth_result:
+            results.append(standard_protocol_auth_result)
         if metadata_preserved_result:
             results.append(metadata_preserved_result)
         debug_messages = ft.get_log_messages_dict()
