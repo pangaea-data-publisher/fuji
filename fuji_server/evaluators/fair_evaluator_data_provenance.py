@@ -128,7 +128,10 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
             used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.fuji.namespace_uri)))
             if used_provenance_namespace:
                 test_status = True
-                self.score.earned += test_score
+                if self.fuji.metric_helper.get_metric_version() > 0.5:
+                    self.score.earned = test_score
+                else:
+                    self.score.earned += test_score
                 structured_metadata_output.is_available = True
                 for used_prov_ns in used_provenance_namespace:
                     structured_metadata_output.provenance_metadata.append({"namespace": used_prov_ns})
