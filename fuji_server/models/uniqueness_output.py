@@ -8,6 +8,7 @@ from datetime import date, datetime  # noqa: F401
 
 from fuji_server import util
 from fuji_server.models.base_model_ import Model
+from fuji_server.models.uniqueness_output_inner import UniquenessOutputInner
 
 
 class UniquenessOutput(Model):
@@ -16,17 +17,25 @@ class UniquenessOutput(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, guid: str | None = None, guid_scheme: str | None = None):
+    def __init__(
+        self,
+        unique_identifiers: list[UniquenessOutputInner] = None | None,
+        guid: str = None | None,
+        guid_scheme: str = None | None,
+    ):
         """UniquenessOutput - a model defined in Swagger
 
+        :param unique_identifiers: The unique_identifiers of this UniquenessOutput.  # noqa: E501
+        :type unique_identifiers: List[UniquenessOutputInner]
         :param guid: The guid of this UniquenessOutput.  # noqa: E501
         :type guid: str
         :param guid_scheme: The guid_scheme of this UniquenessOutput.  # noqa: E501
         :type guid_scheme: str
         """
-        self.swagger_types = {"guid": str, "guid_scheme": str}
+        self.swagger_types = {"unique_identifiers": list[UniquenessOutputInner], "guid": str, "guid_scheme": str}
 
-        self.attribute_map = {"guid": "guid", "guid_scheme": "guid_scheme"}
+        self.attribute_map = {"unique_identifiers": "unique_identifiers", "guid": "guid", "guid_scheme": "guid_scheme"}
+        self._unique_identifiers = unique_identifiers
         self._guid = guid
         self._guid_scheme = guid_scheme
 
@@ -40,6 +49,27 @@ class UniquenessOutput(Model):
         :rtype: UniquenessOutput
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def unique_identifiers(self) -> list[UniquenessOutputInner]:
+        """Gets the unique_identifiers of this UniquenessOutput.
+
+
+        :return: The unique_identifiers of this UniquenessOutput.
+        :rtype: List[UniquenessOutputInner]
+        """
+        return self._unique_identifiers
+
+    @unique_identifiers.setter
+    def unique_identifiers(self, unique_identifiers: list[UniquenessOutputInner]):
+        """Sets the unique_identifiers of this UniquenessOutput.
+
+
+        :param unique_identifiers: The unique_identifiers of this UniquenessOutput.
+        :type unique_identifiers: List[UniquenessOutputInner]
+        """
+
+        self._unique_identifiers = unique_identifiers
 
     @property
     def guid(self) -> str:
