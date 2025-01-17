@@ -49,6 +49,7 @@ class FAIREvaluator:
         self.metric_number = None
         self.metric_name = None
         self.result = None
+        self.outcomes = {}
         self.maturity = 0
         self.metric_tests = dict()
         self.isDebug = self.fuji.isDebug
@@ -106,6 +107,11 @@ class FAIREvaluator:
         else:
             return {}
 
+    # outcomes: found vs. expected
+    def addOutComeFound(self, testid, found):
+        if self.outcomes.get(testid):
+            self.outcomes[testid]["found"].append(found)
+
     def isTestDefined(self, testid):
         if testid in self.metric_tests:
             return True
@@ -135,9 +141,15 @@ class FAIREvaluator:
                         test_req = {}
                         test_req["modality"] = test_requirements.get("modality")
                         test_req["required"] = test_requirements.get("required")
+                        testid = metric_test.get("agnostic_test_identifier")
+                        if testid:
+                            self.outcomes[testid] = {"expected": test_req["required"], "found": []}
                         test_req["tested_on"] = test_requirements.get("tested_on")
                         test_req["comment"] = test_requirements.get("comment")
-                        test_req["target"] = test_requirements.get("target")
+                        if test_requirements.get("target"):
+                            test_req["target"] = test_requirements.get("target")
+                        else:
+                            test_req["target"] = test_requirements.get("expected_values")  # v0.6
                         evaluation_criterium.metric_test_requirements.append(test_req)
                 evaluation_criterium.metric_test_score.earned = 0
                 evaluation_criterium.metric_test_score.total = metric_test.get("metric_test_score")
