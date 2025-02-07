@@ -76,7 +76,11 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                     self.fuji.LOG_SUCCESS,
                     f"{self.metric_identifier} : Found structured data (RDF serialization) in the data page",
                 )
-                self.score.earned += test_score
+                if self.fuji.metric_helper.get_metric_version() > 0.5:
+                    self.score.earned = test_score
+                else:
+                    self.score.earned += test_score
+                # self.score.earned += test_score
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-1")
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
 
@@ -180,7 +184,11 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
                         )
                     )
             if test_status:
-                self.score.earned += self.getTestConfigScore(self.metric_identifier + "-2")
+                if self.fuji.metric_helper.get_metric_version() > 0.5:
+                    self.score.earned = test_score
+                else:
+                    self.score.earned += test_score
+                # self.score.earned += self.getTestConfigScore(self.metric_identifier + "-2")
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
 
