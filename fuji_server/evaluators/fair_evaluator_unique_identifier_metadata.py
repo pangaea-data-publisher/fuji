@@ -187,7 +187,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             self.output.unique_identifiers = []
             self.result.test_status = "fail"
             self.score.earned = 0
-            print("METRIC VERS : ", type(self.fuji.metric_helper.get_metric_version()))
+            print("METRIC VERS : ", self.fuji.metric_helper.get_metric_version())
             if self.fuji.metric_helper.get_metric_version() <= 0.5:
                 if self.testMetadataIdentifierCompliesWithUUIDorHASH():
                     self.result.test_status = "pass"
@@ -196,8 +196,8 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             else:
                 if self.testMetadataIdentifierCompliesWithUUIDorHASHorIdutilsScheme():
                     self.result.test_status = "pass"
-                if self.testDataIdentifierCompliesWithUUIDorHASHorIdutilsScheme():
-                    self.result.test_status = "pass"
+                self.testDataIdentifierCompliesWithUUIDorHASHorIdutilsScheme()
+                # self.result.test_status = "pass"
             self.result.score = self.score
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
