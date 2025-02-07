@@ -220,6 +220,20 @@ class RequestHelper:
                         except Exception as e:
                             print("Redirect fix error:" + str(e))
                             pass
+                    elif e.code == 410:
+                        self.logger.warning(
+                            "{} : Content GONE, this could be a tombstone page, status code -: {}, {} - {}".format(
+                                metric_id, self.request_url, self.accept_type, str(e.code)
+                            )
+                        )
+                        try:
+                            tp_response = e  # so take the error response as response instead
+                            self.redirect_list = redirect_handler.redirect_list
+                            self.redirect_status_list = redirect_handler.redirect_status_list
+                            self.status_list = redirect_handler.status_list
+                            self.redirect_url = redirect_handler.redirect_url
+                        except Exception as e:
+                            print("ERROR ", e)
                     else:
                         self.logger.warning(
                             "{} : Request failed, status code -: {}, {} - {}".format(
@@ -317,7 +331,6 @@ class RequestHelper:
             self.content_type = self.getResponseHeader().get("Content-Type")
             if not self.content_type:
                 self.content_type = self.getResponseHeader().get("content-type")
-            # print(self.accept_type,self.content_type)
             # key for content cache
             checked_content_id = hash(str(self.redirect_url) + str(self.content_type))
 
@@ -334,7 +347,7 @@ class RequestHelper:
             else:
                 self.logger.info("%s : Creating Cached response content" % metric_id)
                 content_truncated = False
-                if status_code == 200:
+                if status_code in [200]:
                     try:
                         self.content_size = int(self.getResponseHeader().get("Content-Length"))
                         if not self.content_size:
