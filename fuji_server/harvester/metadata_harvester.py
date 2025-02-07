@@ -747,6 +747,9 @@ class MetadataHarvester:
                         self.pid_collector[self.pid_url]["verified"] = True
                         self.pid_collector[self.pid_url]["resolved_url"] = self.landing_url
                         self.pid_collector[self.pid_url]["status_list"] = requestHelper.status_list
+                elif requestHelper.redirect_url and requestHelper.response_status in [410]:
+                    # eventually a tombstone page
+                    self.landing_url = requestHelper.redirect_url
                 else:
                     self.logger.warning(
                         "FsF-F2-01M : Could not resolve input URL, status -: " + (str(requestHelper.response_status))
@@ -778,12 +781,18 @@ class MetadataHarvester:
                     self.landing_redirect_list = requestHelper.redirect_list
                     self.landing_redirect_status_list = requestHelper.redirect_status_list
                 elif response_status in [401, 402, 403]:
-                    self.isLandingPageAccessible = False
                     self.logger.warning(
                         f"FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {response_status}"
                     )
+                elif response_status in [410]:
+                    # in case these are tombstone pages ...
+                    self.landing_content_type = requestHelper.content_type
+                    self.landing_redirect_list = requestHelper.redirect_list
+                    self.landing_redirect_status_list = requestHelper.redirect_status_list
+                    self.logger.warning(
+                        f"FsF-F1-02D : Resource GONE, potential tombstone page, identifier returned http status code -: {response_status}"
+                    )
                 else:
-                    self.isLandingPageAccessible = False
                     self.logger.warning(
                         f"FsF-F1-02D : Resource inaccessible, identifier returned http status code -: {response_status}"
                     )
