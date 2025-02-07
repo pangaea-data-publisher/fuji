@@ -733,5 +733,4 @@ class FAIRCheck:
                 repoharvester.allowed_harvesting_methods = ["json_in_html", "rdfa", "signposting", "typed_links"]
                 repoharvester.retrieve_metadata_embedded()
                 repoharvester.retrieve_metadata_external()
-                print("########################### REPO METADATA")
-                print(repoharvester.metadata_merged)
+                # print(repoharvester.metadata_merged)
