@@ -435,7 +435,7 @@ metrics:
   evaluation_mechanism: Metric is evaluated using the resource type given in the metadata as well as data object specific properties file size and file type. Further presence of measured variables is tested.
   test_scoring_mechanism: cumulative
   metric_tests:
-  - metric_test_identifier: FsF-R1-01MD-1_ss
+  - metric_test_identifier: FsF-R1-01MD-1
     metric_test_name: Minimal information about available data content is given in metadata
     metric_test_score: 1
     metric_test_maturity: 1
