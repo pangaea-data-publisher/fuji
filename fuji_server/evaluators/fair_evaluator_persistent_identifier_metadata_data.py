@@ -225,7 +225,6 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
         input_pid_dict = self.fuji.pid_collector
         rest_pid_dict = {}
         metadata_test_status, rest_pid_dict = self.testMetadataIdentifierCompliesWithPIDScheme(input_pid_dict)
-
         if metadata_test_status:
             self.result.test_status = "pass"
         metadata_test_status, rest_pid_dict = self.testIfMetadataPersistentIdentifierIsRegistered(rest_pid_dict)
