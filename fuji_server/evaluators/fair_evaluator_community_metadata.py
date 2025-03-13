@@ -280,7 +280,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             generic_found = False
             found_metadata_standards = self.filter_community_metadata_standards("-3", self.found_metadata_standards)
             for found_standard in found_metadata_standards:
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     if found_standard.get("type") == "generic":
                         generic_found = True
                         if found_standard not in self.valid_metadata_standards:
@@ -291,7 +291,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                         if found_standard not in self.valid_metadata_standards:
                             self.valid_metadata_standards.append(found_standard)
             if generic_found:
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
                         "FsF-R1.3-01M : Found non-disciplinary standards (but RDA listed) using namespaces or schemas found in re3data record or via provided metadata or metadata services outputs",
@@ -335,7 +335,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             specific_found = False
             found_metadata_standards = self.filter_community_metadata_standards("-1", self.found_metadata_standards)
             for found_standard in found_metadata_standards:
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     if found_standard.get("type") == "disciplinary" and found_standard.get("source") != "re3data":
                         specific_found = True
                         if found_standard not in self.valid_metadata_standards:
@@ -347,7 +347,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                             self.valid_metadata_standards.append(found_standard)
 
             if specific_found:
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     self.logger.log(
                         self.fuji.LOG_SUCCESS,
                         "FsF-R1.3-01M : Found disciplinary standard using namespaces or schemas found in provided metadata or metadata services outputs ",

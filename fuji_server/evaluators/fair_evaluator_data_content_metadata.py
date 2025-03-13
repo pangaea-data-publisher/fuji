@@ -25,7 +25,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         # self.set_metric("FsF-R1-01MD")
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             metric = "FsF-R1-01M"
         else:
             metric = "FsF-R1-01MD"
@@ -114,7 +114,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if self.subtestResourceTypeGiven():
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-            if self.fuji.metric_helper.get_metric_version() <= 0.5:
+            if self.fuji.metric_helper.get_metric_version() < 0.8:
                 if self.subtestDataContentInfoGiven():
                     test_result = True
                     self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
@@ -205,7 +205,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     test_result = True
                 if self.subtestServiceProtocolServiceEndpointGiven(test_data_content_url):
                     test_result = True
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     if self.subtestMeasuredVariablesGiven():
                         test_result = True
             if test_result and self.metric_identifier + "-2" not in self.test_passed:
@@ -220,7 +220,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         size_matches = False
         type_matches = False
         do_score = True
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             do_score = False
         protocol_matches = False
         if self.isTestDefined(self.metric_identifier + "-3") or not do_score:
@@ -360,7 +360,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def testVariablesMatchMetadata(self, test_data_content_url):
         test_result = False
         do_score = True
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             do_score = False
         if self.isTestDefined(self.metric_identifier + "-4") or do_score:
             test_score = self.getTestConfigScore(self.metric_identifier + "-4")
@@ -422,7 +422,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 for test_data_content_url in test_data_content_urls:
                     if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
                         test_status = "pass"
-                    if self.fuji.metric_helper.get_metric_version() > 0.5:
+                    if self.fuji.metric_helper.get_metric_version() >= 0.8:
                         if self.testMeasuredVariablesGiven():
                             test_status = "pass"
                     if self.testSizeAndTypeOrProtocolMatchesMetadata(test_data_content_url):

@@ -23,7 +23,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             metric = "FsF-F1-01MD"
         else:
             metric = "FsF-F1-01D"
@@ -188,7 +188,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             self.result.test_status = "fail"
             self.score.earned = 0
             print("METRIC VERS : ", self.fuji.metric_helper.get_metric_version())
-            if self.fuji.metric_helper.get_metric_version() <= 0.5:
+            if self.fuji.metric_helper.get_metric_version() < 0.8:
                 if self.testMetadataIdentifierCompliesWithUUIDorHASH():
                     self.result.test_status = "pass"
                 if self.testMetadataIdentifierCompliesWithIdutilsScheme():

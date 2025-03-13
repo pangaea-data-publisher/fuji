@@ -22,7 +22,7 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             metric = "FsF-F1-01MD"
         else:
             metric = "FsF-F1-01DD"
