@@ -259,7 +259,7 @@ metrics:
   date_created: 2024-12-13
   date_updated: 2025-02-05
   version: 0.6
-  total_score: 1
+  total_score: 2
 
 - metric_identifier: FsF-A1.1-01MD
   metric_number: 11
