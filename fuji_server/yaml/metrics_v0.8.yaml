@@ -27,6 +27,11 @@ metrics:
     metric_test_name: Data identifier follows a defined unique identifier syntax (IRI, URL, UUID, HASH or PID)
     metric_test_score: 0
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/identifier/unique
+      tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
+      modality: any
+      comment: For backwards compatibility reasons this test is not scored
   created_by: FAIRsFAIR
   date_created: 2024-12-13
   date_updated: 2024-12-13
@@ -51,13 +56,13 @@ metrics:
     - expected_values: https://f-uji.net/vocab/identifier/persistent
       modality: any
       tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-      comment: identifier can be given as user input
+      comment: Identifier can be given as user input
   - metric_test_identifier: FsF-F1-02MD-2
     metric_test_name: Persistent identifier for metadata is registered and maintained by a PID authority
     metric_test_requirements:
     - expected_values: https://f-uji.net/vocab/identifier/persistent
       tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-      comment: identifier has to be redirected which verifies it is registered in a PID system
+      comment: Identifier has to be redirected which verifies it is registered in a PID system
     metric_test_score: 0.5
     metric_test_maturity: 3
   - metric_test_identifier: FsF-F1-02MD-4
@@ -68,7 +73,7 @@ metrics:
     - expected_values: https://f-uji.net/vocab/identifier/persistent
       tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
       modality: any
-      comment: test is not scored
+      comment: For backwards compatibility reasons this test is not scored
   - metric_test_identifier: FsF-F1-02MD-5
     metric_test_name: Persistent identifier for data is registered and maintained by a PID authority
     metric_test_score: 0
@@ -76,7 +81,7 @@ metrics:
     metric_test_requirements:
     - expected_values: https://f-uji.net/vocab/identifier/persistent
       tested_on: https://f-uji.net/vocab/metadata/property/object_identifier
-      comment: identifier has to be redirected which verifies it is registered in a PID system; test is not scored
+      comment: Identifier has to be redirected which verifies it is registered in a PID system; test is not scored
   created_by: FAIRsFAIR
   date_created: 2024-12-13
   date_updated: 2024-12-13
@@ -149,7 +154,7 @@ metrics:
     metric_test_maturity: 3
     metric_test_requirements:
     - expected_values: https://f-uji.net/vocab/data/property
-      expected_property: https://f-uji.net/vocab/metadata/property/object_content_identifier
+      tested_on: https://f-uji.net/vocab/metadata/property/object_content_identifier
       modality: any
       required:
         name:
@@ -176,6 +181,7 @@ metrics:
     metric_test_requirements:
     - expected_values: http://f-uji.net/vocab/metadata/standard
       modality: any
+      tested_on: http://f-uji.net/vocab/metadata
       required:
         name:
         - dublin-core
@@ -183,6 +189,7 @@ metrics:
         - dcat-data-catalog-vocabulary
     - expected_values: http://f-uji.net/vocab/metadata/offering_method
       modality: any
+      tested_on: http://f-uji.net/vocab/metadata
       required:
         name:
         - rdfa
@@ -232,10 +239,22 @@ metrics:
     metric_test_name: Metadata are retrievable via their specified identifier
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - tested_on: https://f-uji.net/vocab/transport_protocol
+      comment: expected is e.g. http code 20x
+    - expected_values: https://f-uji.net/vocab/metadata/property
+      tested_on: https://f-uji.net/vocab/metadata
+      modality: any
   - metric_test_identifier: FsF-A1-02MD-2
     metric_test_name: Data are retrievable via the identifiers given in metadata
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - tested_on: https://f-uji.net/vocab/transport_protocol
+      comment: expected is e.g. http code 20x
+    - expected_values: https://f-uji.net/vocab/data/property/url
+      tested_on: https://f-uji.net/vocab/data
+      modality: any
   created_by: FAIRsFAIR
   date_created: 2024-12-13
   date_updated: 2025-02-05
@@ -256,10 +275,16 @@ metrics:
     metric_test_name: Identifier leading to metadata matches a scheme indicating a standardized web communication protocol.
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/transport_protocol
+      modality: any
   - metric_test_identifier: FsF-A1.1-01MD-2
     metric_test_name: Identifier leading to data are matching a schema indicating a standardized web communication protocol.
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/transport_protocol
+      modality: any
   created_by: FAIRsFAIR
   date_created: 2024-12-16
   date_updated: 2025-02-05
@@ -280,10 +305,18 @@ metrics:
     metric_test_name: The communication protocol found in identifiers (IRIs) leading to metadata supports authentication.
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/authentication_method
+      tested_on: https://f-uji.net/vocab/transport_protocol
+      modality: any
   - metric_test_identifier: FsF-A1.2-01MD-2
     metric_test_name: The communication protocol identified in data links (IRIs) supports authentication.
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/authentication_method
+      tested_on: https://f-uji.net/vocab/transport_protocol
+      modality: any
   created_by: FAIRsFAIR
   date_created: 2024-12-16
   date_updated: 2024-12-16
@@ -385,6 +418,7 @@ metrics:
     metric_test_requirements:
     - expected_values: http://f-uji.net/vocab/semantic_resource
       modality: any
+      comment: Semantic resources listed here are registered or indexed
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2025-02-05
@@ -466,6 +500,13 @@ metrics:
     metric_test_name: Licence information is given in an appropriate metadata element
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/metadata/property
+      modality: all
+      tested_on: https://f-uji.net/vocab/metadata/property
+      required:
+        name:
+        - license
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2025-02-05
@@ -498,10 +539,45 @@ metrics:
     metric_test_name: Metadata contains elements which hold provenance information which can be mapped to PROV based on PROV-DC.
     metric_test_score: 1
     metric_test_maturity: 2
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/metadata/property
+      modality: any
+      tested_on: https://f-uji.net/vocab/metadata/property
+      required:
+        name:
+        - contributor
+        - creator-
+        - publisher
+        - right_holder
+        - created_date
+        - publication_date
+        - accepted_date
+        - submitted_date
+        - modified_date
+        - hasFormat
+        - isFormatOf
+        - isVersionOf
+        - isNewVersionOf
+        - isReferencedBy
+        - isReplacedBy
+        - References
+        - IsDerivedFrom
+        - isBasedOn
+        - hasVersion
+        - Obsoletes
+        - Replaces
+      comment: PROV-O mapping based on https://www.w3.org/TR/prov-dc/
   - metric_test_identifier: FsF-R1.2-01M-2
     metric_test_name: Metadata contains elements which hold provenance information using formal provenance ontologies (PROV, PAV).
     metric_test_score: 1
     metric_test_maturity: 2
+    metric_test_requirements:
+    - expected_values: https://f-uji.net/vocab/semantic_resource
+      modality: any
+      required:
+        uri:
+        - http://www.w3.org/ns/prov
+        - http://purl.org/pav
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2025-02-05
@@ -565,6 +641,10 @@ metrics:
     metric_test_name: Data is available in a file format recommended by the research community (long term file formats, open file formats or scientific file format)
     metric_test_score: 1
     metric_test_maturity: 3
+    metric_test_requirements:
+    - modality: any
+      expected_values: https://f-uji.net/vocab/data/format
+      comment: format has to be tagged as open, long term or scientific, including all text based formats (though some may not be listed here)
   created_by: FAIRsFAIR
   date_created: 2020-07-08
   date_updated: 2020-12-03
