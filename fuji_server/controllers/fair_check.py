@@ -292,6 +292,7 @@ class FAIRCheck:
     def clean_metadata(self):
         # replace nasty "None" strings by real  None
         try:
+            # print(self.metadata_merged)
             nonerepdict = json.dumps(self.metadata_merged).replace('"None"', "null")
             self.metadata_merged = json.loads(nonerepdict)
         except Exception as e:
