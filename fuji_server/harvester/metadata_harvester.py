@@ -444,7 +444,7 @@ class MetadataHarvester:
                             "api-catalog",
                         ]:
                             if rel in self.signposting_relation_types:
-                                source = MetadataOfferingMethods.SIGNPOSTING
+                                source = MetadataOfferingMethods.SIGNPOSTING.name
                             self.typed_links.append(
                                 {"url": href, "type": type, "rel": rel, "profile": profile, "source": source}
                             )
@@ -511,7 +511,7 @@ class MetadataHarvester:
                                                     "type": link.get("type"),
                                                     "rel": linktype,
                                                     "profile": link.get("profile"),
-                                                    "source": MetadataOfferingMethods.SIGNPOSTING,
+                                                    "source": MetadataOfferingMethods.SIGNPOSTING.name,
                                                 }
                                             )
                             self.logger.info(
@@ -661,7 +661,7 @@ class MetadataHarvester:
                 "type": str(found_type).strip(),
                 "rel": str(found_rel).strip(),
                 "profile": found_formats,
-                "source": MetadataOfferingMethods.SIGNPOSTING,
+                "source": MetadataOfferingMethods.SIGNPOSTING.name,
             }
             if anchor_match:
                 signposting_link_dict["anchor"] = anchor_match[1]
@@ -1567,7 +1567,7 @@ class MetadataHarvester:
                             + str(metadata_link["url"])
                             + ")"
                         )
-                        if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING:
+                        if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING.name:
                             source = MetadataSources.RDF_SIGNPOSTING_LINKS
                         else:
                             source = MetadataSources.RDF_TYPED_LINKS
@@ -1640,7 +1640,7 @@ class MetadataHarvester:
 
                                 if linked_xml_dict:
                                     # self.metadata_sources.append((MetaDataCollector.Sources.XML_TYPED_LINKS.value.get('label'), metadata_link['source']))
-                                    if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING:
+                                    if metadata_link.get("source") == MetadataOfferingMethods.SIGNPOSTING.name:
                                         self.add_metadata_source(MetadataSources.XML_SIGNPOSTING_LINKS)
                                     else:
                                         self.add_metadata_source(MetadataSources.XML_TYPED_LINKS)
