@@ -46,10 +46,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         test_score = self.getTestConfigScore(self.metric_identifier + "-1a")
         is_dataset = False
         valid_type_found = False
+        any_type_found = False
         resource_types = self.fuji.metadata_merged.get("object_type")
         found_resource_types = []
         valid_resource_types = []
         if resource_types:
+            any_type_found = True
             if not isinstance(resource_types, list):
                 resource_types = [resource_types]
 
@@ -64,13 +66,23 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     valid_type_found = True
                 if (
                     str(resource_type).lower() in self.fuji.VALID_RESOURCE_TYPES
-                    or resource_type in self.fuji.SCHEMA_ORG_CONTEXT
+                    # or resource_type in self.fuji.SCHEMA_ORG_CONTEXT
                 ):
                     valid_type_found = True
                     valid_resource_types.append(resource_type)
-                    self.output.object_type = resource_type
-                    self.setEvaluationCriteriumScore(self.metric_identifier + "-1a", test_score, "pass")
+
+            if self.fuji.metric_helper.get_metric_version() < 0.8:
+                if valid_type_found:
                     test_result = True
+                    output_types = valid_resource_types
+            else:
+                if any_type_found:
+                    test_result = True
+                    output_types = resource_types
+
+            if test_result:
+                self.output.object_type = str(output_types)
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-1a", test_score, "pass")
 
             if valid_type_found:
                 self.logger.log(
@@ -83,7 +95,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             else:
                 self.logger.info(
                     self.metric_identifier
-                    + " : Invalid resource type (expected: subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: "
+                    + " : Unknown resource type (expected: subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: "
                     + str(found_resource_types)
                 )
             if not is_dataset:
