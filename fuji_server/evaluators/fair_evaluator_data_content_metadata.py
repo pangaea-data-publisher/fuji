@@ -70,11 +70,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 ):
                     valid_type_found = True
                     valid_resource_types.append(resource_type)
-
+            # in case a selection of valid resource types are give in config file this would have to be changed
             if self.fuji.metric_helper.get_metric_version() < 0.8:
                 if valid_type_found:
                     test_result = True
                     output_types = valid_resource_types
+            # after version 0.8 this is no longer tested
             else:
                 if any_type_found:
                     test_result = True
@@ -83,7 +84,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if test_result:
                 self.output.object_type = str(output_types)
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1a", test_score, "pass")
-
+            # actually another subtest...
             if valid_type_found:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
