@@ -440,7 +440,7 @@ metrics:
     metric_test_score: 1
     metric_test_maturity: 1
   - metric_test_identifier: FsF-R1-01MD-1a
-    metric_test_name: Resource type (e.g. dataset) is given in metadata
+    metric_test_name: Resource type (valid DC, schema.org (Creative Work) or DataCite type e.g. dataset) is given in metadata
     metric_test_score: 0
   - metric_test_identifier: FsF-R1-01MD-1b
     metric_test_name: Information about data content (e.g. links) is given in metadata
