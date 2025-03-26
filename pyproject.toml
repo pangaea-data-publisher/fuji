@@ -41,7 +41,8 @@ dependencies = [
   "tika~=2.6.0",
   "tldextract~=5.0",
   "urlextract~=1.8",
-  "pygithub~=2.1"
+  "pygithub~=2.1",
+  "numpy==1.26.4"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
