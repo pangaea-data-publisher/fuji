@@ -221,6 +221,10 @@ class MetaDataCollectorXML(MetaDataCollector):
                         if "datacite.org/schema" in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info("FsF-F2-01M : Identified DataCite XML based on namespace")
+                    elif root_element == "ead":
+                        xml_mapping = Mapper.XML_MAPPING_EAD.value
+                        self.logger.info("FsF-F2-01M : Identified EAD XML based on root tag")
+                        self.namespaces.append("http://ead3.archivists.org/schema/")
                     # print('XML Details: ',(self.target_url,root_namespace, root_element))
                     linkeduris = self.getAllURIs(metatree)
                     self.setLinkedNamespaces(linkeduris)

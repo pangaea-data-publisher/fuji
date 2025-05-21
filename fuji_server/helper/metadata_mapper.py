@@ -60,7 +60,11 @@ class Mapper(Enum):
         "modified_date": {"label": "Date Modified", "sameAs": "http://purl.org/dc/terms/modified"},
         "created_date": {"label": "Date Created", "sameAs": "http://purl.org/dc/terms/created"},
         "right_holder": {"label": "License", "sameAs": "http://purl.org/dc/terms/rightsHolder"},
-        "object_size": {"label": "Object Size", "sameAs": "http://purl.org/dc/terms/extent"},
+        "object_size": {
+            "label": "Object Size",
+            "sameAs": "http://purl.org/dc/terms/extent",
+        },  # in case metadata describes a single file e.g. zip file => for DC and DataCite
+        "object_format": {"label": "Object Format", "sameAs": "http://purl.org/dc/terms/format"},
         "language": {"label": "Language", "sameAs": "http://purl.org/dc/terms/language"},
         # required for Github etc. software FAIR assessment
         "license_path": {"label": "License Path", "sameAs": None},
@@ -260,6 +264,7 @@ class Mapper(Enum):
         "created_date: dates[?dateType == 'Created'].date,"
         "accepted_date: dates[?dateType == 'Accepted'].date,"
         "submitted_date: dates[?dateType == 'Submitted'].date,"
+        "object_size:sizes[0], object_format: formats[0], "
         "object_content_identifier:  {url: contentUrl} , "
         "access_level: rightsList[*].rightsUri || rightsList[*].rights, "
         "language: language,"
@@ -361,6 +366,8 @@ class Mapper(Enum):
         "license": {"path": "./{*}license"},
         "access_level": {"path": ["./{*}rights", "./{*}accessRights"]},
         "object_type": {"path": "./{*}type"},
+        "object_size": {"path": "./{*}extent"},
+        "object_format": {"path": "./{*}format"},
         "provenance_general": {"path": "./{*}provenance"},
         "language": {"path": "./{*}language"},
     }
@@ -375,6 +382,8 @@ class Mapper(Enum):
         "publisher": {"path": "./{*}publisher"},
         "summary": {"path": "./{*}descriptions/{*}description"},
         "object_type": {"path": "./{*}resourceType@@resourceTypeGeneral"},
+        "object_size": {"path": "./{*}sizes/{*}size"},
+        "object_format": {"path": "./{*}formats/{*}format"},
         "related_resource": {"path": "./{*}relatedIdentifiers/{*}relatedIdentifier"},
         "related_resource_type": {"path": "./{*}relatedIdentifiers/{*}relatedIdentifier@@relationType"},
         "license": {"path": ["./{*}rightsList/{*}rights", "./{*}rightsList/{*}rights@@rightsURI"]},
@@ -749,4 +758,24 @@ class Mapper(Enum):
             ]
         },
         # "./{*}identificationInfo//{*}geographicElement//{*}posList"]
+    }
+
+    # Mapping: https://www.loc.gov/ead/ag/agappb.html
+    XML_MAPPING_EAD = {
+        "title": {
+            "path": ["./{*}archdesc/{*}did/{*}unittitle", "./{*}eadheader/{*}filedesc/{*}titlestmt/{*}titleproper"]
+        },
+        "publication_date": {"path": ["./{*}archdesc/{*}did/{*}unitdate"]},
+        "creator": {
+            "path": [
+                "./{*}archdesc/{*}did/{*}corpname[@role='creator']",
+                "./{*}archdesc/{*}did/{*}persname[@role='creator']",
+                "./{*}archdesc/{*}did/{*}famname[@role='creator']",
+            ]
+        },
+        "summary": {"path": "./{*}archdesc/{*}did/{*}abstract"},
+        "publisher": {"path": "./{*}eadheader/{*}filedesc/{*}publicationstmt/{*}publisher"},
+        "object_identifier": {"path": "./{*}eadid"},
+        "keywords": {"path": ".//{*}subject"},
+        "language": {"path": "./{*}eadheader/{*}profiledesc/{*}language"},
     }
