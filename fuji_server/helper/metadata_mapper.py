@@ -811,8 +811,17 @@ class Mapper(Enum):
         "summary": {"path": "./{*}archdesc/{*}did/{*}abstract"},
         "publisher": {"path": "./{*}eadheader/{*}filedesc/{*}publicationstmt/{*}publisher"},
         "object_identifier": {"path": "./{*}eadid"},
-        "keywords": {"path": ".//{*}subject"},
+        "keywords": {
+            "path": [
+                ".//{*}subject",
+            ]
+        },
         "language": {"path": "./{*}eadheader/{*}profiledesc/{*}language"},
+        "license": {"path": "./{*}archdesc//{*}userestrict"},
+        "access_level": {"path": "./{*}archdesc//{*}accessrestrict"},
+        "object_type": {"path": "./{*}archdesc@@level"},
+        "object_content_identifier_url": {"path": ["./{*}archdesc//{*}daoloc@@href", "./{*}archdesc//{*}dao@@href"]},
+        "object_content_identifier_type": {"path": ["./{*}archdesc//{*}dao@@linkrole"]},
     }
     XML_MAPPING_TEI = {
         "title": {"path": ["./{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}title"]},

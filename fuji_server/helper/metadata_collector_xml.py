@@ -337,7 +337,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                 for mappath in pathlist:
                     subtrees, attribute = self.path_query(mappath, tree)
                     for subtree in subtrees:
-                        """if mapping.get(prop).get("subpath"):
+                        if mapping.get(prop).get("subpath"):
                             subpathdict = mapping.get(prop).get("subpath")
                             if isinstance(subpathdict, list):
                                 if len(subpathdict) > path_no:
@@ -358,9 +358,8 @@ class MetaDataCollectorXML(MetaDataCollector):
                                 if subpropcontent:
                                     # print('SUBPROP: ',subprop, self.get_tree_property_list(subpropcontent))
                                     res[prop + "_" + subprop].extend(self.get_tree_property_list(subpropcontent))
-                                # print(res)"""
-                        # else:
-                        propcontent.append({"tree": subtree, "attribute": attribute})
+                        else:
+                            propcontent.append({"tree": subtree, "attribute": attribute})
                         if propcontent:
                             res[prop] = self.get_tree_property_list(propcontent)
                     path_no += 1
