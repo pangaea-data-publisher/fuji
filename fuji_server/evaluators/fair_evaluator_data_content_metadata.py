@@ -165,6 +165,31 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 )
         return test_result
 
+    def testRessourceDataTypeAndSizeGiven(self):  # testind data set level mime and file size e.g. in DC or DataCite
+        test_result = False
+        if self.isTestDefined(self.metric_identifier + "-2"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
+        if self.fuji.metadata_merged.get("object_size") and self.fuji.metadata_merged.get("object_format"):
+            test_result = True
+            self.logger.log(
+                self.fuji.LOG_SUCCESS,
+                self.metric_identifier + " : Found file size and type specified in metadata at object (resource level)",
+            )
+        if test_result and self.metric_identifier + "-2" not in self.test_passed:
+            resource_filesize_inner = DataContentMetadataOutputInner()
+            resource_filesize_inner.descriptor = "file size"
+            resource_filesize_inner.descriptor_value = self.fuji.metadata_merged.get("object_size")
+            self.data_content_descriptors.append(resource_filesize_inner)
+            resource_filetype_inner = DataContentMetadataOutputInner()
+            resource_filetype_inner.descriptor = "file size"
+            resource_filetype_inner.descriptor_value = self.fuji.metadata_merged.get("object_format")
+            self.data_content_descriptors.append(resource_filetype_inner)
+            self.test_passed.append(self.metric_identifier + "-2")
+            self.score.earned += test_score
+            self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+            self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
+        return test_result
+
     def subtestServiceProtocolServiceEndpointGiven(self, test_data_content_url):
         test_result = False
         if test_data_content_url:
@@ -449,6 +474,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.metric_identifier
                     + " : NO data object content available/accessible to perform file descriptors (type and size) tests"
                 )
+                if self.testRessourceDataTypeAndSizeGiven():
+                    test_status = "pass"
 
         self.output.data_content_descriptor = self.data_content_descriptors
         self.result.output = self.output
