@@ -8,7 +8,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 3.5.0
+  version: 3.5.1
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji

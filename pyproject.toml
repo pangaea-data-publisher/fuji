@@ -61,7 +61,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
-version = "3.5.0"
+version = "3.5.1"
 
 [project.optional-dependencies]
 docs = [
