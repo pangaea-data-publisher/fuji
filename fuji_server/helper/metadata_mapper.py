@@ -484,16 +484,50 @@ class Mapper(Enum):
         },
     }
     # CLARIN CMDI
+    # check https://office.clarin.eu/v/CE-2016-0880-CMDI_12_specification.pdf
+    # most metadata starts at "Components" but depends on many, many separate specs (profiles & components)
+    # Used here: Clarin core components mappings: https://github.com/clarin-eric/VLO-mapping/blob/master/mapping/facetConcepts.xml
     XML_MAPPING_CMD = {
-        "object_identifier": {"path": "./{*}Header/{*}MdSelfLink"},
-        "creator": {"path": "./{*}Header/{*}MdCreator"},
-        "publication_date": {"path": "./{*}Header/{*}MdCreationDate"},
+        "object_identifier": {"path": [".//{*}Header/{*}MdSelfLink"]},
+        "object_type": {"path": [".//{*}Components//{*}ResourceType/{*}label"]},
+        "title": {
+            "path": [
+                ".//{*}Components//{*}TitleInfo/{*}title",
+            ]
+        },
+        "summary": {"path": [".//{*}Components//{*}Description/{*}description"]},
+        "keywords": {"path": [".//{*}Components//{*}Subject/{*}label", ".//{*}Components//{*}Keyword/{*}label"]},
+        "publication_date": {
+            "path": [
+                "./{*}Header/{*}MdCreationDate",
+            ]
+        },
+        "creator": {
+            "path": [
+                ".//{*}Components//{*}Creator/{*}label",
+                ".//{*}Components//{*}Creator/{*}AgentInfo/{*}PersonInfo/{*}name",
+                "./{*}Header/{*}MdCreator",
+            ]
+        },
         "publisher": {"path": "./{*}Header/{*}MdCollectionDisplayName"},
         "object_content_identifier_url": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceRef"
+            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceRef"
         },
         "object_content_identifier_type": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceType@@mimetype"
+            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceType@@mimetype"
+        },
+        "license": {
+            "path": [
+                ".//{*}Components//{*}licenceInfo//{*}licenceURL",
+                ".//{*}Components//{*}licenceInfo//{*}licenceName",
+                ".//{*}Components//{*}licenceInfo//{*}licenceFamily",
+            ]
+        },
+        "access_level": {"path": [".//{*}Components//{*}AccessInfo/{*}condition"]},
+        "language": {"path": ".//{*}Components//{*}Language/{*}code"},
+        "related_resource_isPartOf": {"path": [".//{*}Resources//{*}IsPartOf"]},
+        "related_resource_hasPart": {
+            "path": ["./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Metadata']/{*}ResourceRef"]
         },
     }
     """
@@ -548,6 +582,7 @@ class Mapper(Enum):
         "object_content_identifier_size": {
             "path": ".//{*}StudyUnit/{*}PhysicalInstance/{*}DataFileIdentification/{*}SizeInBytes"
         },
+        "object_type": {"value": "StudyUnit"},
     }
 
     XML_MAPPING_DDI_CODEBOOK = {
@@ -778,4 +813,20 @@ class Mapper(Enum):
         "object_identifier": {"path": "./{*}eadid"},
         "keywords": {"path": ".//{*}subject"},
         "language": {"path": "./{*}eadheader/{*}profiledesc/{*}language"},
+    }
+    XML_MAPPING_TEI = {
+        "title": {"path": ["./{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}title"]},
+        "creator": {"path": "./{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}author"},
+        "publisher": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}publisher"},
+        "publication_date": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}date"},
+        "keywords": {
+            "path": [
+                "./{*}teiHeader/{*}encodingDesc//{*}category/{*}catDesc",
+                "./{*}teiHeader/{*}profileDesc//{*}keywords/{*}list/{*}item",
+            ]
+        },
+        "summary": {"path": "./{*}teiHeader/{*}fileDesc/{*}notesStmt/{*}note"},
+        "license": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability/{*}licence"},
+        "access_level": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability@@status"},
+        "object_type": {"value": "EncodedText"},
     }
