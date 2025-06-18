@@ -28,6 +28,11 @@ An R client package that was generated from the F-UJI OpenAPI definition is avai
 
 An open source web client for F-UJI is available at <https://github.com/MaastrichtU-IDS/fairificator>.
 
+### Output Formats
+
+As as REST servuce the default output of F-UJI is JSON. Since version 3.5.0 F-UJI additionally offers output of results in various RDF formats following the DQV specifications. Content negotiation can be used to retrieve a RDF DQV result output.
+Supported RDF serialisations are: application/rdf+xml, application/x-turtle, text/turtle, application/ld+json, text/n3
+
 ## Assessment Scope, Constraint and Limitation
 The service is **in development** and its assessment depends on several factors.
 - In the FAIR ecosystem, FAIR assessment must go beyond the object itself. FAIR enabling services and repositories are vital to ensure that research data objects remain FAIR over time. Importantly, machine-readable services (e.g., registries) and documents (e.g., policies) are required to enable automated tests.
@@ -41,6 +46,7 @@ The service is **in development** and its assessment depends on several factors.
 [Python](https://www.python.org/downloads/) `3.11`
 
 ### Google Dataset Search
+Since FsF metric 0.8, The Google Corpus is no longer used, the following steps are therefore not required anymore.
 * Download the latest Dataset Search corpus file from: <https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets>
 * Open file `fuji_server/helper/create_google_cache_db.py` and set variable 'google_file_location' according to the file location of the corpus file
 * Run `create_google_cache_db.py` which creates a SQLite database in the data directory. From root directory run `python3 -m fuji_server.helper.create_google_cache_db`.
