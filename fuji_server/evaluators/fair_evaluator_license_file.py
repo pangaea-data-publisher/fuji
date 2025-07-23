@@ -127,7 +127,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
         id = None
         ul = None
         if "spdx.org/licenses" in u:
-            ul = u.split("/")[-1]
+            ul = u.split("/")[-1].replace(".html", "")
         for item in self.fuji.SPDX_LICENSES:
             # u = u.lower()
             # if any(u in v.lower() for v in item.values()):
