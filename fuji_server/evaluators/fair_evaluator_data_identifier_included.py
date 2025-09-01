@@ -45,7 +45,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                 test_defined = True
                 break
         test_result = False
-        if test_defined and self.fuji.metric_helper.get_metric_version() < 0.6:
+        if test_defined and self.fuji.metric_helper.get_metric_version() < 0.8:
             test_score = self.getTestConfigScore(test_id)
             if datainfolist:
                 for datainfo in datainfolist:

@@ -41,7 +41,8 @@ dependencies = [
   "tika~=2.6.0",
   "tldextract~=5.0",
   "urlextract~=1.8",
-  "pygithub~=2.1"
+  "pygithub~=2.1",
+  "numpy==1.26.4"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -60,7 +61,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
-version = "3.5.0"
+version = "3.5.1"
 
 [project.optional-dependencies]
 docs = [

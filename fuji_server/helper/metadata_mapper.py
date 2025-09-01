@@ -60,7 +60,11 @@ class Mapper(Enum):
         "modified_date": {"label": "Date Modified", "sameAs": "http://purl.org/dc/terms/modified"},
         "created_date": {"label": "Date Created", "sameAs": "http://purl.org/dc/terms/created"},
         "right_holder": {"label": "License", "sameAs": "http://purl.org/dc/terms/rightsHolder"},
-        "object_size": {"label": "Object Size", "sameAs": "http://purl.org/dc/terms/extent"},
+        "object_size": {
+            "label": "Object Size",
+            "sameAs": "http://purl.org/dc/terms/extent",
+        },  # in case metadata describes a single file e.g. zip file => for DC and DataCite
+        "object_format": {"label": "Object Format", "sameAs": "http://purl.org/dc/terms/format"},
         "language": {"label": "Language", "sameAs": "http://purl.org/dc/terms/language"},
         # required for Github etc. software FAIR assessment
         "license_path": {"label": "License Path", "sameAs": None},
@@ -260,6 +264,7 @@ class Mapper(Enum):
         "created_date: dates[?dateType == 'Created'].date,"
         "accepted_date: dates[?dateType == 'Accepted'].date,"
         "submitted_date: dates[?dateType == 'Submitted'].date,"
+        "object_size:sizes[0], object_format: formats[0], "
         "object_content_identifier:  {url: contentUrl} , "
         "access_level: rightsList[*].rightsUri || rightsList[*].rights, "
         "language: language,"
@@ -361,6 +366,8 @@ class Mapper(Enum):
         "license": {"path": "./{*}license"},
         "access_level": {"path": ["./{*}rights", "./{*}accessRights"]},
         "object_type": {"path": "./{*}type"},
+        "object_size": {"path": "./{*}extent"},
+        "object_format": {"path": "./{*}format"},
         "provenance_general": {"path": "./{*}provenance"},
         "language": {"path": "./{*}language"},
     }
@@ -375,6 +382,8 @@ class Mapper(Enum):
         "publisher": {"path": "./{*}publisher"},
         "summary": {"path": "./{*}descriptions/{*}description"},
         "object_type": {"path": "./{*}resourceType@@resourceTypeGeneral"},
+        "object_size": {"path": "./{*}sizes/{*}size"},
+        "object_format": {"path": "./{*}formats/{*}format"},
         "related_resource": {"path": "./{*}relatedIdentifiers/{*}relatedIdentifier"},
         "related_resource_type": {"path": "./{*}relatedIdentifiers/{*}relatedIdentifier@@relationType"},
         "license": {"path": ["./{*}rightsList/{*}rights", "./{*}rightsList/{*}rights@@rightsURI"]},
@@ -475,16 +484,50 @@ class Mapper(Enum):
         },
     }
     # CLARIN CMDI
+    # check https://office.clarin.eu/v/CE-2016-0880-CMDI_12_specification.pdf
+    # most metadata starts at "Components" but depends on many, many separate specs (profiles & components)
+    # Used here: Clarin core components mappings: https://github.com/clarin-eric/VLO-mapping/blob/master/mapping/facetConcepts.xml
     XML_MAPPING_CMD = {
-        "object_identifier": {"path": "./{*}Header/{*}MdSelfLink"},
-        "creator": {"path": "./{*}Header/{*}MdCreator"},
-        "publication_date": {"path": "./{*}Header/{*}MdCreationDate"},
+        "object_identifier": {"path": [".//{*}Header/{*}MdSelfLink"]},
+        "object_type": {"path": [".//{*}Components//{*}ResourceType/{*}label"]},
+        "title": {
+            "path": [
+                ".//{*}Components//{*}TitleInfo/{*}title",
+            ]
+        },
+        "summary": {"path": [".//{*}Components//{*}Description/{*}description"]},
+        "keywords": {"path": [".//{*}Components//{*}Subject/{*}label", ".//{*}Components//{*}Keyword/{*}label"]},
+        "publication_date": {
+            "path": [
+                "./{*}Header/{*}MdCreationDate",
+            ]
+        },
+        "creator": {
+            "path": [
+                ".//{*}Components//{*}Creator/{*}label",
+                ".//{*}Components//{*}Creator/{*}AgentInfo/{*}PersonInfo/{*}name",
+                "./{*}Header/{*}MdCreator",
+            ]
+        },
         "publisher": {"path": "./{*}Header/{*}MdCollectionDisplayName"},
         "object_content_identifier_url": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceRef"
+            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceRef"
         },
         "object_content_identifier_type": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy/{*}ResourceType@@mimetype"
+            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceType@@mimetype"
+        },
+        "license": {
+            "path": [
+                ".//{*}Components//{*}licenceInfo//{*}licenceURL",
+                ".//{*}Components//{*}licenceInfo//{*}licenceName",
+                ".//{*}Components//{*}licenceInfo//{*}licenceFamily",
+            ]
+        },
+        "access_level": {"path": [".//{*}Components//{*}AccessInfo/{*}condition"]},
+        "language": {"path": ".//{*}Components//{*}Language/{*}code"},
+        "related_resource_isPartOf": {"path": [".//{*}Resources//{*}IsPartOf"]},
+        "related_resource_hasPart": {
+            "path": ["./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Metadata']/{*}ResourceRef"]
         },
     }
     """
@@ -539,6 +582,7 @@ class Mapper(Enum):
         "object_content_identifier_size": {
             "path": ".//{*}StudyUnit/{*}PhysicalInstance/{*}DataFileIdentification/{*}SizeInBytes"
         },
+        "object_type": {"value": "StudyUnit"},
     }
 
     XML_MAPPING_DDI_CODEBOOK = {
@@ -749,4 +793,49 @@ class Mapper(Enum):
             ]
         },
         # "./{*}identificationInfo//{*}geographicElement//{*}posList"]
+    }
+
+    # Mapping: https://www.loc.gov/ead/ag/agappb.html
+    XML_MAPPING_EAD = {
+        "title": {
+            "path": ["./{*}archdesc/{*}did/{*}unittitle", "./{*}eadheader/{*}filedesc/{*}titlestmt/{*}titleproper"]
+        },
+        "publication_date": {"path": ["./{*}archdesc/{*}did/{*}unitdate"]},
+        "creator": {
+            "path": [
+                "./{*}archdesc/{*}did/{*}corpname[@role='creator']",
+                "./{*}archdesc/{*}did/{*}persname[@role='creator']",
+                "./{*}archdesc/{*}did/{*}famname[@role='creator']",
+            ]
+        },
+        "summary": {"path": "./{*}archdesc/{*}did/{*}abstract"},
+        "publisher": {"path": "./{*}eadheader/{*}filedesc/{*}publicationstmt/{*}publisher"},
+        "object_identifier": {"path": "./{*}eadid"},
+        "keywords": {
+            "path": [
+                ".//{*}subject",
+            ]
+        },
+        "language": {"path": "./{*}eadheader/{*}profiledesc/{*}language"},
+        "license": {"path": "./{*}archdesc//{*}userestrict"},
+        "access_level": {"path": "./{*}archdesc//{*}accessrestrict"},
+        "object_type": {"path": "./{*}archdesc@@level"},
+        "object_content_identifier_url": {"path": ["./{*}archdesc//{*}daoloc@@href", "./{*}archdesc//{*}dao@@href"]},
+        "object_content_identifier_type": {"path": ["./{*}archdesc//{*}dao@@linkrole"]},
+    }
+    XML_MAPPING_TEI = {
+        "title": {"path": ["./{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}title"]},
+        "creator": {"path": "./{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}author"},
+        "publisher": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}publisher"},
+        "publication_date": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}date"},
+        "keywords": {
+            "path": [
+                "./{*}teiHeader/{*}encodingDesc//{*}category/{*}catDesc",
+                "./{*}teiHeader/{*}profileDesc//{*}keywords/{*}list/{*}item",
+            ]
+        },
+        "summary": {"path": "./{*}teiHeader/{*}fileDesc/{*}notesStmt/{*}note"},
+        "license": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability/{*}licence"},
+        "access_level": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability@@status"},
+        "object_type": {"value": "EncodedText"},
     }

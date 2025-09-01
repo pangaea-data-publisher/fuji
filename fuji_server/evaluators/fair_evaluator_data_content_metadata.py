@@ -25,7 +25,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
         # self.set_metric("FsF-R1-01MD")
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             metric = "FsF-R1-01M"
         else:
             metric = "FsF-R1-01MD"
@@ -46,10 +46,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         test_score = self.getTestConfigScore(self.metric_identifier + "-1a")
         is_dataset = False
         valid_type_found = False
+        any_type_found = False
         resource_types = self.fuji.metadata_merged.get("object_type")
         found_resource_types = []
         valid_resource_types = []
         if resource_types:
+            any_type_found = True
             if not isinstance(resource_types, list):
                 resource_types = [resource_types]
 
@@ -64,14 +66,25 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     valid_type_found = True
                 if (
                     str(resource_type).lower() in self.fuji.VALID_RESOURCE_TYPES
-                    or resource_type in self.fuji.SCHEMA_ORG_CONTEXT
+                    # or resource_type in self.fuji.SCHEMA_ORG_CONTEXT
                 ):
                     valid_type_found = True
                     valid_resource_types.append(resource_type)
-                    self.output.object_type = resource_type
-                    self.setEvaluationCriteriumScore(self.metric_identifier + "-1a", test_score, "pass")
+            # in case a selection of valid resource types are give in config file this would have to be changed
+            if self.fuji.metric_helper.get_metric_version() < 0.8:
+                if valid_type_found:
                     test_result = True
+                    output_types = valid_resource_types
+            # after version 0.8 this is no longer tested
+            else:
+                if any_type_found:
+                    test_result = True
+                    output_types = resource_types
 
+            if test_result:
+                self.output.object_type = str(output_types)
+                self.setEvaluationCriteriumScore(self.metric_identifier + "-1a", test_score, "pass")
+            # actually another subtest...
             if valid_type_found:
                 self.logger.log(
                     self.fuji.LOG_SUCCESS,
@@ -83,7 +96,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             else:
                 self.logger.info(
                     self.metric_identifier
-                    + " : Invalid resource type (expected: subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: "
+                    + " : Unknown resource type (expected: subtype of schema.org/CreativeWork, DCMI Type  or DataCite resourceType) specified -: "
                     + str(found_resource_types)
                 )
             if not is_dataset:
@@ -114,7 +127,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             if self.subtestResourceTypeGiven():
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
-            if self.fuji.metric_helper.get_metric_version() <= 0.5:
+            if self.fuji.metric_helper.get_metric_version() < 0.8:
                 if self.subtestDataContentInfoGiven():
                     test_result = True
                     self.setEvaluationCriteriumScore(self.metric_identifier + "-1", test_score, "pass")
@@ -150,6 +163,31 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 self.logger.info(
                     f"{self.metric_identifier} : NO info about file size available in given metadata for -: {test_data_content_url}"
                 )
+        return test_result
+
+    def testRessourceDataTypeAndSizeGiven(self):  # testind data set level mime and file size e.g. in DC or DataCite
+        test_result = False
+        if self.isTestDefined(self.metric_identifier + "-2"):
+            test_score = self.getTestConfigScore(self.metric_identifier + "-2")
+        if self.fuji.metadata_merged.get("object_size") and self.fuji.metadata_merged.get("object_format"):
+            test_result = True
+            self.logger.log(
+                self.fuji.LOG_SUCCESS,
+                self.metric_identifier + " : Found file size and type specified in metadata at object (resource level)",
+            )
+        if test_result and self.metric_identifier + "-2" not in self.test_passed:
+            resource_filesize_inner = DataContentMetadataOutputInner()
+            resource_filesize_inner.descriptor = "file size"
+            resource_filesize_inner.descriptor_value = self.fuji.metadata_merged.get("object_size")
+            self.data_content_descriptors.append(resource_filesize_inner)
+            resource_filetype_inner = DataContentMetadataOutputInner()
+            resource_filetype_inner.descriptor = "file size"
+            resource_filetype_inner.descriptor_value = self.fuji.metadata_merged.get("object_format")
+            self.data_content_descriptors.append(resource_filetype_inner)
+            self.test_passed.append(self.metric_identifier + "-2")
+            self.score.earned += test_score
+            self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
+            self.maturity = self.metric_tests.get(self.metric_identifier + "-2").metric_test_maturity_config
         return test_result
 
     def subtestServiceProtocolServiceEndpointGiven(self, test_data_content_url):
@@ -205,7 +243,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     test_result = True
                 if self.subtestServiceProtocolServiceEndpointGiven(test_data_content_url):
                     test_result = True
-                if self.fuji.metric_helper.get_metric_version() <= 0.5:
+                if self.fuji.metric_helper.get_metric_version() < 0.8:
                     if self.subtestMeasuredVariablesGiven():
                         test_result = True
             if test_result and self.metric_identifier + "-2" not in self.test_passed:
@@ -220,7 +258,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         size_matches = False
         type_matches = False
         do_score = True
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             do_score = False
         protocol_matches = False
         if self.isTestDefined(self.metric_identifier + "-3") or not do_score:
@@ -360,7 +398,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
     def testVariablesMatchMetadata(self, test_data_content_url):
         test_result = False
         do_score = True
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             do_score = False
         if self.isTestDefined(self.metric_identifier + "-4") or do_score:
             test_score = self.getTestConfigScore(self.metric_identifier + "-4")
@@ -422,7 +460,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 for test_data_content_url in test_data_content_urls:
                     if self.testVerifiableDataDescriptorsAvailable(test_data_content_url):
                         test_status = "pass"
-                    if self.fuji.metric_helper.get_metric_version() > 0.5:
+                    if self.fuji.metric_helper.get_metric_version() >= 0.8:
                         if self.testMeasuredVariablesGiven():
                             test_status = "pass"
                     if self.testSizeAndTypeOrProtocolMatchesMetadata(test_data_content_url):
@@ -436,6 +474,8 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.metric_identifier
                     + " : NO data object content available/accessible to perform file descriptors (type and size) tests"
                 )
+                if self.testRessourceDataTypeAndSizeGiven():
+                    test_status = "pass"
 
         self.output.data_content_descriptor = self.data_content_descriptors
         self.result.output = self.output

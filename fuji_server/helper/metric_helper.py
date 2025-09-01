@@ -102,7 +102,7 @@ class MetricHelper:
                 else:
                     self.logger.error("Invalid YAML defined Metric: " + str(dictm.get("metric_identifier")))
         else:
-            self.logger.error("No YAML defined Metric seems to exist: ")
+            self.logger.error("No YAML defined Metric seems to exist: metric yaml could be malformed")
         return new_dict
 
     def get_metric_version(self):

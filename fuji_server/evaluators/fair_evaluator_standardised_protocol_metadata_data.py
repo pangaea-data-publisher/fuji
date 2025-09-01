@@ -26,7 +26,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             self.set_metric("FsF-A1.1-01MD")
         else:
             self.set_metric("FsF-A1-02M")

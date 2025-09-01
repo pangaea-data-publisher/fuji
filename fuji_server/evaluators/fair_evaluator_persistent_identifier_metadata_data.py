@@ -23,7 +23,7 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
     def __init__(self, fuji_instance):
         self.pids_which_resolve = {}
         FAIREvaluator.__init__(self, fuji_instance)
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             metric = "FsF-F1-02MD"
         else:
             metric = "FsF-F1-02D"
@@ -225,7 +225,6 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
         input_pid_dict = self.fuji.pid_collector
         rest_pid_dict = {}
         metadata_test_status, rest_pid_dict = self.testMetadataIdentifierCompliesWithPIDScheme(input_pid_dict)
-
         if metadata_test_status:
             self.result.test_status = "pass"
         metadata_test_status, rest_pid_dict = self.testIfMetadataPersistentIdentifierIsRegistered(rest_pid_dict)
@@ -234,7 +233,7 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
         if self.testIfMetadataIdentifierPersistentIdentifierResolvestoDomain(rest_pid_dict):
             self.result.test_status = "pass"
 
-        if self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.fuji.metric_helper.get_metric_version() >= 0.8:
             self.result.test_status = "fail"
             data_test_status = self.testDataIdentifierCompliesWithPIDScheme()
             if data_test_status and metadata_test_status:

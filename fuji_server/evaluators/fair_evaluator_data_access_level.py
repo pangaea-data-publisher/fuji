@@ -25,7 +25,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def __init__(self, fuji_instance):
         FAIREvaluator.__init__(self, fuji_instance)
-        # if self.fuji.metric_helper.get_metric_version() <= 0.5:
+        # if self.fuji.metric_helper.get_metric_version() < 0.8:
         self.set_metric("FsF-A1-01M")
         # else:
         #    self.set_metric('FsF-R1.1-02M')
@@ -105,7 +105,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def testAccessRightsStandardTerms(self, access_rights):
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-3") or self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.isTestDefined(self.metric_identifier + "-3") or self.fuji.metric_helper.get_metric_version() >= 0.8:
             test_score = self.getTestConfigScore(self.metric_identifier + "-3")
             if access_rights:
                 for access_right in access_rights:
@@ -152,7 +152,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
 
     def testAccessRightsMachineReadable(self, access_rights):
         test_result = False
-        if self.isTestDefined(self.metric_identifier + "-2") or self.fuji.metric_helper.get_metric_version() > 0.5:
+        if self.isTestDefined(self.metric_identifier + "-2") or self.fuji.metric_helper.get_metric_version() >= 0.8:
             test_score = self.getTestConfigScore(self.metric_identifier + "-2")
             # Hier stimmt was nicht!!!
             rights_regex = r"((info\:eu\-repo\/semantics|schema.org\/isAccessibleForFree|purl.org\/coar\/access_right|vocabularies\.coar-repositories\.org\/access_rights|purl\.org\/eprint\/accessRights|europa\.eu\/resource\/authority\/access-right)[\/#]{1}(\S*))"

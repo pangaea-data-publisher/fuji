@@ -128,7 +128,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
             used_provenance_namespace = list(set(provenance_namespaces).intersection(set(self.fuji.namespace_uri)))
             if used_provenance_namespace:
                 test_status = True
-                if self.fuji.metric_helper.get_metric_version() > 0.5:
+                if self.fuji.metric_helper.get_metric_version() >= 0.8:
                     self.score.earned = test_score
                 else:
                     self.score.earned += test_score

@@ -227,6 +227,7 @@ class FAIRCheck:
             logger=self.logger,
             allowed_harvesting_methods=allowed_harvesting_methods,
             allowed_metadata_standards=allowed_metadata_standards,
+            metric_version=self.metric_helper.get_metric_version(),
         )
         self.repo_helper = None
         RequestHelper.reset_cache()
@@ -292,6 +293,7 @@ class FAIRCheck:
     def clean_metadata(self):
         # replace nasty "None" strings by real  None
         try:
+            # print(self.metadata_merged)
             nonerepdict = json.dumps(self.metadata_merged).replace('"None"', "null")
             self.metadata_merged = json.loads(nonerepdict)
         except Exception as e:
@@ -730,9 +732,8 @@ class FAIRCheck:
         self.set_repository_uris()
         if self.repository_urls:
             for repo_uri in self.repository_urls:
-                repoharvester = MetadataHarvester(repo_uri)
+                repoharvester = MetadataHarvester(repo_uri, metric_version=self.metric_helper.get_metric_version())
                 repoharvester.allowed_harvesting_methods = ["json_in_html", "rdfa", "signposting", "typed_links"]
                 repoharvester.retrieve_metadata_embedded()
                 repoharvester.retrieve_metadata_external()
-                print("########################### REPO METADATA")
-                print(repoharvester.metadata_merged)
+                # print(repoharvester.metadata_merged)

@@ -302,6 +302,10 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                                 self.namespaces.extend(j_ctx.values())
                                     elif isinstance(json_.get("@context"), str):
                                         self.namespaces.append(str(json_.get("@context")))
+                                    # pre check for invalid reverse
+                                    if isinstance(json_.get("@reverse"), list):
+                                        json_valid = False
+                                        self.logger.warning("FsF-F2-01M : JSON-LD contains invalid @reverse properties")
                                 json_valid = True
                             except Exception:
                                 self.logger.warning("FsF-F2-01M : Given JSON-LD seems to be invalid JSON")
@@ -314,10 +318,9 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
                                 # rdf_response_graph = jsonldgraph
                                 self.setLinkedNamespaces(self.getAllURIS(jsonldgraph))
-                        except Exception as e:
-                            print("JSON-LD parsing error", e, rdf_response[:100])
-                            self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
 
+                        except Exception as e:
+                            self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
             elif self.accept_type == AcceptTypes.rdf:
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))

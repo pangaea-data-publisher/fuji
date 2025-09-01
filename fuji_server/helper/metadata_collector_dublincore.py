@@ -85,6 +85,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
             "issued",
             "description",
             "format",
+            "extent",
             "identifier",
             "language",
             "publisher",

@@ -154,6 +154,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         metatree = tree
                 except Exception as e:
                     self.logger.info("FsF-F2-01M : XML parsing failed -: " + str(e))
+                    print("FsF-F2-01M : XML parsing failed -: " + str(e))
                 if metatree is not None:
                     # self.setURIValues(metatree)
                     # print(list(set(self.getURIValues())))
@@ -175,7 +176,6 @@ class MetaDataCollectorXML(MetaDataCollector):
                     if nsmatch:
                         root_namespace = nsmatch[1]
                         root_element = nsmatch[2]
-                        # print('#' + root_element + '#', root_namespace)
                         # put the root namespace at the start f list
                         self.namespaces.insert(0, root_namespace)
                     if root_element == "codeBook":
@@ -188,7 +188,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                         self.namespaces.append("ddi:studyunit:3_2")
                     elif root_element == "CMD":
                         xml_mapping = Mapper.XML_MAPPING_CMD.value
-                        self.logger.info("FsF-F2-01M : Identified DDI CMD XML based on root tag")
+                        self.logger.info("FsF-F2-01M : Identified Clarin CMDI XML based on root tag")
                         self.namespaces.append("http://www.clarin.eu/cmd/")
                     elif root_element == "DIF":
                         xml_mapping = Mapper.XML_MAPPING_DIF.value
@@ -217,11 +217,19 @@ class MetaDataCollectorXML(MetaDataCollector):
                     elif root_element == "rss":
                         self.logger.info("FsF-F2-01M : Identified RSS/GEORSS XML based on root tag")
                         self.namespaces.append("http://www.georss.org/georss/")
+                    elif root_element == "ead":
+                        xml_mapping = Mapper.XML_MAPPING_EAD.value
+                        self.logger.info("FsF-F2-01M : Identified EAD XML based on root tag")
+                        self.namespaces.append("http://ead3.archivists.org/schema/")
+                    elif root_element == "TEI":
+                        xml_mapping = Mapper.XML_MAPPING_TEI.value
+                        self.logger.info("FsF-F2-01M : Identified TEI XML based on root tag")
+                        self.namespaces.append("http://www.tei-c.org/ns/1.0")
                     elif root_namespace:
                         if "datacite.org/schema" in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
                             self.logger.info("FsF-F2-01M : Identified DataCite XML based on namespace")
-                    # print('XML Details: ',(self.target_url,root_namespace, root_element))
+                    # print('XML Details: ',(self.target_url,root_namespace, root_element, type(root_element),xml_mapping))
                     linkeduris = self.getAllURIs(metatree)
                     self.setLinkedNamespaces(linkeduris)
                     if xml_mapping is None:
@@ -321,36 +329,40 @@ class MetaDataCollectorXML(MetaDataCollector):
 
             propcontent = []
             path_no = 0
-            for mappath in pathlist:
-                subtrees, attribute = self.path_query(mappath, tree)
-                for subtree in subtrees:
-                    if mapping.get(prop).get("subpath"):
-                        subpathdict = mapping.get(prop).get("subpath")
-                        if isinstance(subpathdict, list):
-                            if len(subpathdict) > path_no:
-                                subpathdict = subpathdict[path_no]
+            # in case a fixed value is given in mapping
+            if mapping.get(prop).get("value"):
+                res[prop] = [mapping.get(prop).get("value")]
+            # otherwise as xpath is checked
+            else:
+                for mappath in pathlist:
+                    subtrees, attribute = self.path_query(mappath, tree)
+                    for subtree in subtrees:
+                        if mapping.get(prop).get("subpath"):
+                            subpathdict = mapping.get(prop).get("subpath")
+                            if isinstance(subpathdict, list):
+                                if len(subpathdict) > path_no:
+                                    subpathdict = subpathdict[path_no]
+                                else:
+                                    subpathdict = subpathdict[0]
                             else:
-                                subpathdict = subpathdict[0]
+                                subpathdict = subpathdict
+                            for subprop, subpath in subpathdict.items():
+                                if not res.get(prop + "_" + subprop):
+                                    res[prop + "_" + subprop] = []
+                                subsubtrees, subattribute = self.path_query(subpath, subtree)
+                                if not subsubtrees:
+                                    subsubtrees = [lxml.etree.Element("none")]
+                                    subattribute = None
+                                # print(prop+'_'+subprop,subsubtrees[0], ' -#- ',lxml.etree.tostring(subsubtrees[0], method="text", encoding="unicode"),' -#- ', subattribute)
+                                subpropcontent = [{"tree": subsubtrees[0], "attribute": subattribute}]
+                                if subpropcontent:
+                                    # print('SUBPROP: ',subprop, self.get_tree_property_list(subpropcontent))
+                                    res[prop + "_" + subprop].extend(self.get_tree_property_list(subpropcontent))
                         else:
-                            subpathdict = subpathdict
-                        for subprop, subpath in subpathdict.items():
-                            if not res.get(prop + "_" + subprop):
-                                res[prop + "_" + subprop] = []
-                            subsubtrees, subattribute = self.path_query(subpath, subtree)
-                            if not subsubtrees:
-                                subsubtrees = [lxml.etree.Element("none")]
-                                subattribute = None
-                            # print(prop+'_'+subprop,subsubtrees[0], ' -#- ',lxml.etree.tostring(subsubtrees[0], method="text", encoding="unicode"),' -#- ', subattribute)
-                            subpropcontent = [{"tree": subsubtrees[0], "attribute": subattribute}]
-                            if subpropcontent:
-                                # print('SUBPROP: ',subprop, self.get_tree_property_list(subpropcontent))
-                                res[prop + "_" + subprop].extend(self.get_tree_property_list(subpropcontent))
-                            # print(res)
-                    else:
-                        propcontent.append({"tree": subtree, "attribute": attribute})
-                    if propcontent:
-                        res[prop] = self.get_tree_property_list(propcontent)
-                path_no += 1
+                            propcontent.append({"tree": subtree, "attribute": attribute})
+                        if propcontent:
+                            res[prop] = self.get_tree_property_list(propcontent)
+                    path_no += 1
 
         # related resources
         for kres, vres in res.items():
