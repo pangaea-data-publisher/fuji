@@ -211,6 +211,7 @@ async def assess_by_id(body):
             datetime.datetime.now().replace(microsecond=0).isoformat() + "Z"
         )  # use timestamp format from RFC 3339 as specified in openapi3
         metric_spec = ft.metric_helper.metric_specification
+        metric_version = ft.metric_helper.metric_version
         resolved_url = ft.landing_url
         if not resolved_url:
             resolved_url = "not defined"
