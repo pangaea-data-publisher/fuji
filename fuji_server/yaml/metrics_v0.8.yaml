@@ -570,7 +570,7 @@ metrics:
   - metric_test_identifier: FsF-R1.2-01M-2
     metric_test_name: Metadata contains elements which hold provenance information using formal provenance ontologies (PROV, PAV).
     metric_test_score: 1
-    metric_test_maturity: 2
+    metric_test_maturity: 3
     metric_test_requirements:
     - expected_values: https://f-uji.net/vocab/semantic_resource
       modality: any
