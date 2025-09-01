@@ -195,15 +195,16 @@ class FAIRCheck:
 
         self.pid_collector = {}
         if not metric_version:
-            metric_version = "metrics_v0.5"
-            self.logger.warning("FsF-F1-02 : Metrics version not given, therefore loading default metrics v0.5")
+            # metric_version = "metrics_v0.5"
+            metric_version = "metrics_v0.8"
+            self.logger.warning("FsF-F1-02 : Metrics version not given, therefore loading default metrics v0.8")
         self.metric_helper = MetricHelper(metric_version)
         self.METRICS = self.metric_helper.get_custom_metrics(
             ["metric_name", "total_score", "metric_tests", "metric_number"]
         )
         self.METRIC_VERSION = metric_version
         self.metrics_config = self.metric_helper.get_metrics_config()
-        print("METRICS CONFIG: ", self.metrics_config)
+        print("METRICS CONFIG: ", self.metrics_config, self.metric_helper.get_metric_version())
         allowed_harvesting_methods = self.metrics_config.get("allowed_harvesting_methods")
         allowed_metadata_standards = self.metrics_config.get("allowed_metadata_standards")
         if not isinstance(allowed_metadata_standards, list):
