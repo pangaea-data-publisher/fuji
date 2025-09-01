@@ -1,9 +1,9 @@
 # LIST OF FAIRSFAIR METRICS AND THEIR RESPONSE OUTPUT FORMATS
 config:
-  metric_specification: https://doi.org/10.5281/zenodo.4081213
+  metric_specification: https://doi.org/10.5281/zenodo.6461229
   metric_status: valid
 metrics:
-  ## ---------------- FINDABILITY ---------------- ##
+  ## ---------------- FINDABILITY ----------------
 - metric_identifier: FsF-F1-01D
   metric_number: 1
   metric_short_name: Unique Identifier
