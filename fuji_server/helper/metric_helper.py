@@ -56,9 +56,9 @@ class MetricHelper:
                 print("ERROR: YAML LOADING ERROR - YAML ERROR")
                 self.logger.error(e)
             if specification:
-                if specification.get("metric_specification"):
-                    self.metric_specification = specification.get("metric_specification")
                 self.config = specification.get("config")
+                if self.config.get("metric_specification"):
+                    self.metric_specification = self.config.get("metric_specification")
                 self.all_metrics_list = specification["metrics"]
                 self.total_metrics = len(self.all_metrics_list)
                 print("NUMBER OF LOADED METRICS  ", self.total_metrics)
