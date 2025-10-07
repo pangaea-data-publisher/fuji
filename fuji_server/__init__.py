@@ -84,5 +84,25 @@ from fuji_server.models.version_identifier import VersionIdentifier
 from fuji_server.models.version_identifier_output import VersionIdentifierOutput
 
 from importlib.metadata import version
+from pathlib import Path
+import tomllib  # Python 3.12 built-in
 
-__version__ = version("fuji")
+__version__ = "0.0.0"  # fallback
+
+try:
+    pyproject_path = Path(__file__).resolve().parent.parent / "pyproject.toml"
+    with open(pyproject_path, "rb") as f:
+        pyproject = tomllib.load(f)
+        # PEP 621 style
+        if "project" in pyproject and "version" in pyproject["project"]:
+            __version__ = pyproject["project"]["version"]
+        # Poetry style
+        elif "tool" in pyproject and "poetry" in pyproject["tool"]:
+            __version__ = pyproject["tool"]["poetry"]["version"]
+except Exception as e:
+    print(f"Could not read version from pyproject.toml: {e}")
+
+print(__version__)
+
+
+# __version__ = version("fuji")
