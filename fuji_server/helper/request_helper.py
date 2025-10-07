@@ -198,7 +198,7 @@ class RequestHelper:
                             )
                         else:
                             self.logger.error(
-                                "{} : Request failed, status code -: {}, {} - {}".format(
+                                "{} : Request failed (status code >=500), status code -: {}, {} - {}".format(
                                     metric_id, self.request_url, self.accept_type, str(e.code)
                                 )
                             )
