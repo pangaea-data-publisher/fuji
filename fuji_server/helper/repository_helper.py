@@ -65,7 +65,6 @@ class RepositoryHelper:
                     self.logger.warning(
                         "FsF-R1.3-01M : Malformed or none re3data (DOI-based) record received: " + str(e)
                     )
-                    # print('DATACITE XML: ',xml)
             else:
                 self.logger.warning("FsF-R1.3-01M : No DOI of client id is available from datacite api")
 
