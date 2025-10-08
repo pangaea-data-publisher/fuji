@@ -11,12 +11,13 @@ import logging
 import mimetypes
 import re
 import urllib
+import warnings
 from urllib.parse import urljoin, urlparse
 
 import extruct
 import lxml
 import rdflib
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz, process
 from tldextract import extract
@@ -35,6 +36,8 @@ from fuji_server.helper.metadata_collector_xml import MetaDataCollectorXML
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 
 class MetadataHarvester:

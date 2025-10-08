@@ -3,11 +3,15 @@
 # SPDX-License-Identifier: MIT
 
 import re
+import warnings
 
-from bs4 import BeautifulSoup
+# from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats
 from fuji_server.helper.metadata_mapper import Mapper
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 
 class MetaDataCollectorHighwireEprints(MetaDataCollector):
