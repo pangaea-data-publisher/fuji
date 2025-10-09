@@ -173,15 +173,16 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             test_result = True
             self.logger.log(
                 self.fuji.LOG_SUCCESS,
-                self.metric_identifier + " : Found file size and type specified in metadata at object (resource level)",
+                self.metric_identifier
+                + " : Found file size and type specified in metadata at object (whole resource) level",
             )
         if test_result and self.metric_identifier + "-2" not in self.test_passed:
             resource_filesize_inner = DataContentMetadataOutputInner()
-            resource_filesize_inner.descriptor = "file size"
+            resource_filesize_inner.descriptor = "file (object) size"
             resource_filesize_inner.descriptor_value = self.fuji.metadata_merged.get("object_size")
             self.data_content_descriptors.append(resource_filesize_inner)
             resource_filetype_inner = DataContentMetadataOutputInner()
-            resource_filetype_inner.descriptor = "file size"
+            resource_filetype_inner.descriptor = "file (object) type"
             resource_filetype_inner.descriptor_value = self.fuji.metadata_merged.get("object_format")
             self.data_content_descriptors.append(resource_filetype_inner)
             self.test_passed.append(self.metric_identifier + "-2")

@@ -327,6 +327,7 @@ class FAIRCheck:
             # if self.metadata_merged.get("object_content_identifier"):
             oi = 0
             for c in self.metadata_merged["object_content_identifier"]:
+                # check special case if only one file is given but a size value is available via object_size:
                 if (
                     not c.get("size")
                     and self.metadata_merged.get("object_size")
@@ -336,6 +337,10 @@ class FAIRCheck:
                     self.metadata_merged["object_content_identifier"][oi]["size"] = self.metadata_merged.get(
                         "object_size"
                     )
+                    self.logger.info(
+                        "FsF-R1-01M : File info about exactly one object found for which no size is given but since size at object level is given, will take this for file level testing"
+                    )
+
                 # clean mime types in case these are in URI form:
                 if c.get("type"):
                     if isinstance(c["type"], list):
