@@ -689,6 +689,7 @@ class MetadataHarvester:
                     self.logger_target.get("metadata_properties")
                     + " : Landing page seems to be CAPTCHA protected, probably could not detect enough content"
                 )
+
             if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
                 self.logger.warning(
                     self.logger_target.get("pid")
@@ -816,9 +817,9 @@ class MetadataHarvester:
                     # eventually a tombstone page
                     self.landing_url = requestHelper.redirect_url
                 else:
-                    self.logger.warning(
+                    self.logger.error(
                         self.logger_target.get("metadata_properties")
-                        + " : Could not resolve input URL, status -: "
+                        + " : Resource inaccessible. Could not resolve input URL, status -: "
                         + (str(requestHelper.response_status))
                     )
                 self.redirect_url = requestHelper.redirect_url
@@ -833,7 +834,6 @@ class MetadataHarvester:
         except Exception as e:
             self.logger.error(self.logger_target.get("metadata_properties") + " : Resource inaccessible -: " + str(e))
             pass
-
         if self.landing_url:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
