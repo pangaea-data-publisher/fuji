@@ -51,7 +51,7 @@ class OAIMetadataProvider(MetadataProvider):
         oai_listmetadata_url = oai_endpoint + "?verb=ListMetadataFormats"
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
-        response_type, xml = requestHelper.content_negotiate(self.metric_id)
+        _response_type, xml = requestHelper.content_negotiate(self.metric_id)
         schemas = {}
         if xml:
             try:

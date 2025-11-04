@@ -39,7 +39,7 @@ class OGCCSWMetadataProvider(MetadataProvider):
         csw_listmetadata_url = csw_endpoint + "?service=CSW&request=GetCapabilities"
         requestHelper = RequestHelper(url=csw_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
-        response_type, xml = requestHelper.content_negotiate(self.metric_id)
+        _response_type, xml = requestHelper.content_negotiate(self.metric_id)
         schemas = {}
         if xml:
             try:

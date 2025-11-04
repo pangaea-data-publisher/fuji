@@ -45,7 +45,7 @@ class RepositoryHelper:
                 )  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url)
                 q.setAcceptType(AcceptTypes.xml)
-                re_source, xml = q.content_negotiate(metric_id="FsF-R1.3-01M")
+                _re_source, xml = q.content_negotiate(metric_id="FsF-R1.3-01M")
                 try:
                     if isinstance(xml, bytes):
                         xml = xml.decode().encode()
@@ -58,7 +58,7 @@ class RepositoryHelper:
                         # query reposiroty metadata
                         q2 = RequestHelper(url=re3link)
                         q2.setAcceptType(AcceptTypes.xml)
-                        re3_source, re3_response = q2.content_negotiate(metric_id="FsF-R1.3-01M")
+                        _re3_source, re3_response = q2.content_negotiate(metric_id="FsF-R1.3-01M")
                         self.re3metadata_raw = re3_response
                         self.parseRe3data()
                 except Exception as e:
