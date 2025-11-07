@@ -134,7 +134,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             namespacedict = {}
             sortedns = {}
             for predicate in possible:
-                prefix, namespace, local = nm.compute_qname(predicate)
+                prefix, namespace, _local = nm.compute_qname(predicate)
                 if namespace in namespacedict:
                     namespacedict[str(namespace)] += 1
                 else:
@@ -1059,7 +1059,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         LOCN = Namespace("http://www.w3.org/ns/locn#")
         dcat_root_type = "Dataset"
         datasets = []
-        main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
+        main_entity_id, _main_entity_type, _main_entity_namespace = self.get_main_entity(graph)
         if main_entity_id:
             if dcat_root_type == "Catalog":
                 self.logger.info(

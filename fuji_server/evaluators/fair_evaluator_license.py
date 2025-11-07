@@ -121,13 +121,13 @@ class FAIREvaluatorLicense(FAIREvaluator):
         spdx_html = None
         spdx_osi = None
         if isurl:
-            iscc, generic_cc = self.isCreativeCommonsLicense(value, metric_id)
+            iscc, _generic_cc = self.isCreativeCommonsLicense(value, metric_id)
             if iscc:
                 islicense = True
             else:
-                spdx_html, spdx_osi, spdx_id = self.lookup_license_by_url(value, metric_id)
+                spdx_html, spdx_osi, _spdx_id = self.lookup_license_by_url(value, metric_id)
         else:
-            spdx_html, spdx_osi, spdx_id = self.lookup_license_by_name(value, metric_id)
+            spdx_html, spdx_osi, _spdx_id = self.lookup_license_by_name(value, metric_id)
         if spdx_html or spdx_osi:
             islicense = True
         return islicense

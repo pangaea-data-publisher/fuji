@@ -161,9 +161,9 @@ class FAIREvaluatorRequirements(FAIREvaluator):
             # Check for presence of machine-readable dependency files
             dependency_present = False
             dependency_requirements = self.metric_tests[test_id].metric_test_requirements[0]
-            assert (
-                dependency_requirements["modality"] == "any"
-            ), f"Found requirement modality {dependency_requirements['modality']}, please choose 'any' instead. Any other modality is too strict for this test layout."
+            assert dependency_requirements["modality"] == "any", (
+                f"Found requirement modality {dependency_requirements['modality']}, please choose 'any' instead. Any other modality is too strict for this test layout."
+            )
             required_dependency_files = dependency_requirements["required"]["dependency_file"]
             self.logger.info(
                 f"{self.metric_identifier} : Checking presence of any of {required_dependency_files} ({test_id})."
