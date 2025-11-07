@@ -64,6 +64,7 @@ class Preprocessor:
     max_content_size = 5000000
     google_custom_search_id = None
     google_custom_search_api_key = None
+    doi_prefixes = {}
 
     def __new__(cls):
         if cls._instance is None:
@@ -417,6 +418,17 @@ class Preprocessor:
         cls.linked_vocabs = list(set(lov_helper.namespaces))
         cls.linked_vocab_index = lov_helper.linked_vocab_index
 
+    @classmethod
+    def retrieve_doi_prefixes(cls):
+        data = {}
+        prf_path = cls.data_dir / "doi_prefixes.tsv"
+        with open(prf_path) as f:
+            for line in f:
+                key, value = line.strip().split("\t")
+                data[key] = value
+        if data:
+            cls.doi_prefixes = data
+
     @staticmethod
     def uri_validator(u):
         try:
@@ -520,3 +532,18 @@ class Preprocessor:
         if not cls.standard_protocols:
             cls.retrieve_standard_protocols(True)
         return cls.standard_protocols
+
+    @classmethod
+    def get_doi_prefixes(cls) -> object:
+        if not cls.doi_prefixes:
+            cls.retrieve_doi_prefixes()
+        return cls.doi_prefixes
+
+    @classmethod
+    def add_doi_prefix(cls, prefix, authority) -> object:
+        prf_path = cls.data_dir / "doi_prefixes.tsv"
+        if prefix not in cls.doi_prefixes:
+            cls.doi_prefixes[prefix] = authority
+            with open(prf_path, "a+") as f:
+                f.write("\n" + prefix + "\t" + authority)
+        return True

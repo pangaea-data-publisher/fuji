@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
-
+import json
 import re
 import urllib
 import uuid
@@ -41,6 +41,7 @@ class IdentifierHelper:
     IDENTIFIERS_PIDS = r"https://identifiers.org/[provider_code/]namespace:accession"
 
     IDENTIFIERS_ORG_DATA = Preprocessor.get_identifiers_org_data()
+    DOI_PREFIXES = Preprocessor.get_doi_prefixes()
     identifier_schemes = []
     preferred_schema = None  # the preferred schema
     identifier_url = None
@@ -280,7 +281,25 @@ class IdentifierHelper:
     def get_normalized_id(self):
         return self.normalized_id
 
+    def get_agency(self):  # registration agency for doi
+        agency = None
+        if self.preferred_schema == "doi":
+            prefix = self.normalized_id.split("/")[0]
+            if prefix not in self.DOI_PREFIXES:
+                try:
+                    requestHelper = RequestHelper("https://doi.org/ra/" + prefix, self.logger)
+                    requestHelper.setAcceptType(AcceptTypes.default)  # request
+                    requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
+                    if requestHelper.response_content:
+                        auth_json = json.loads(requestHelper.response_content)
+                        agency = auth_json[0].get("RA")
+                        Preprocessor.add_doi_prefix(prefix, agency)
+                except Exception as e:
+                    print("DOI authority lookup error", e)
+        return agency
+
     def get_identifier_info(self, pidcollector={}, resolve=True):
+        agency = self.get_agency()
         if resolve:
             resolved_url, status_list = self.get_resolved_url(pidcollector)
         else:
@@ -293,4 +312,5 @@ class IdentifierHelper:
             "is_persistent": self.is_persistent,
             "resolved_url": resolved_url,
             "status_list": status_list,
+            "agency": agency,
         }
