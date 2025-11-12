@@ -19,7 +19,11 @@ def fair_check() -> FAIRCheck:
 @pytest.mark.vcr
 def test_check_unique_metadata_identifier(fair_check: FAIRCheck) -> None:
     result = fair_check.check_unique_metadata_identifier()
-    expected = {"guid": UID, "guid_scheme": "doi"}
+    expected = {
+        "unique_identifiers": [{"guid": UID, "guid_scheme": "doi", "target": "metadata"}],
+        "guid": UID,
+        "guid_scheme": "doi",
+    }
     assert result["output"] == expected
 
 
