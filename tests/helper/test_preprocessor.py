@@ -62,11 +62,6 @@ def repodois():
 
 
 @pytest.fixture(scope="session")
-def metadata_standards_uris():
-    return load_yaml_from_data_directory("metadata_standards_uris.yaml")
-
-
-@pytest.fixture(scope="session")
 def linked_vocab():
     return load_yaml_from_data_directory("linked_vocab.yaml")
 
@@ -147,17 +142,6 @@ def test_retrieve_datacite_re3repos(temporary_preprocessor: Preprocessor, repodo
     assert len(temporary_preprocessor.re3repositories) == expected
 
 
-def test_retrieve_linkedvocabs(
-    temporary_preprocessor: Preprocessor, test_config: dict, linked_vocab: list[dict[str, str]]
-) -> None:
-    LOV_API = test_config["EXTERNAL"]["lov_api"]
-    LOD_CLOUDNET = test_config["EXTERNAL"]["lod_cloudnet"]
-    assert not temporary_preprocessor.linked_vocabs
-    temporary_preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
-    expected = len(linked_vocab)
-    assert len(temporary_preprocessor.linked_vocabs) == expected
-
-
 def test_retrieve_default_namespaces(temporary_preprocessor: Preprocessor, default_namespaces) -> None:
     assert not temporary_preprocessor.default_namespaces
     temporary_preprocessor.retrieve_default_namespaces()
@@ -192,13 +176,6 @@ def test_get_metadata_standards(temporary_preprocessor: Preprocessor, metadata_s
     result = temporary_preprocessor.get_metadata_standards()
     assert result == metadata_standards
     assert temporary_preprocessor.metadata_standards == metadata_standards
-
-
-def test_get_metadata_standards_uris(temporary_preprocessor: Preprocessor, metadata_standards_uris):
-    assert not temporary_preprocessor.metadata_standards_uris
-    result = temporary_preprocessor.get_metadata_standards_uris()
-    assert result == metadata_standards_uris
-    assert temporary_preprocessor.metadata_standards_uris == metadata_standards_uris
 
 
 def test_get_schema_org_context(temporary_preprocessor: Preprocessor):

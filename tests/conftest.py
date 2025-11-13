@@ -68,8 +68,6 @@ def temporary_data_directory(tmp_path):
 def preprocessor(test_config) -> Preprocessor:
     YAML_DIR = test_config["SERVICE"]["yaml_directory"]
     METRIC_YML_PATH = SRC_DIR.joinpath(YAML_DIR)
-    LOV_API = test_config["EXTERNAL"]["lov_api"]
-    LOD_CLOUDNET = test_config["EXTERNAL"]["lod_cloudnet"]
 
     preprocessor = Preprocessor()
 
@@ -84,7 +82,6 @@ def preprocessor(test_config) -> Preprocessor:
         preprocessor.retrieve_datacite_re3repos()
 
     preprocessor.retrieve_metadata_standards()
-    preprocessor.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
     preprocessor.retrieve_default_namespaces()
     preprocessor.set_remote_log_info(
         test_config["SERVICE"]["remote_log_host"],
