@@ -116,6 +116,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
 
             communityspecsdefined = self.setCommunityRequirements()
             if self.knownnamespaceuris:
+                test_status = True
                 self.score.earned += test_score
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
