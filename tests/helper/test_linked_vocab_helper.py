@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-from fuji_server.helper.linked_vocab_helper import linked_vocab_helper
+from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
 
 
 def test_linked_vocab_helper():
-    linked_vocab_helper_ = linked_vocab_helper()
+    linked_vocab_helper_ = LinkedVocabHelper()
     assert not linked_vocab_helper_.linked_vocab_dict
     linked_vocab_helper_.set_linked_vocab_dict()
     assert linked_vocab_helper_.linked_vocab_dict

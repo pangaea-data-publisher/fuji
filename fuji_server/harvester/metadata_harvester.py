@@ -486,7 +486,7 @@ class MetadataHarvester:
             if linksetlink.get("url"):
                 requestHelper = RequestHelper(linksetlink.get("url"), self.logger)
                 requestHelper.setAcceptType(AcceptTypes.linkset)
-                neg_source, linkset_data = requestHelper.content_negotiate(self.logger_target.get("pid"))
+                _neg_source, linkset_data = requestHelper.content_negotiate(self.logger_target.get("pid"))
                 # print(requestHelper.request_url, requestHelper.content_type)
                 if isinstance(linkset_data, dict):
                     if isinstance(linkset_data.get("linkset"), list):
@@ -794,7 +794,7 @@ class MetadataHarvester:
                 requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
                 # requestHelper.setAcceptType(AcceptTypes.html_xml)  # request
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
-                neg_source, landingpage_html = requestHelper.content_negotiate(
+                _neg_source, _landingpage_html = requestHelper.content_negotiate(
                     self.logger_target.get("pid"), ignore_html=False
                 )
                 if "html" not in str(requestHelper.content_type):

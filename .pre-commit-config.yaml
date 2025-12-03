@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v6.0.0
   hooks:
   - id: end-of-file-fixer
     exclude_types: [svg]
@@ -15,7 +15,7 @@ repos:
   - id: file-contents-sorter
     files: ^fuji_server\/data\/.*.txt$
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.13.0
+  rev: v2.15.0
   hooks:
   - id: pretty-format-ini
     args: [--autofix]
@@ -31,8 +31,10 @@ repos:
     args: [--license-filepath=docs/license_header.txt]
     exclude: docs
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.5.1
+  rev: v0.14.3
   hooks:
-  - id: ruff
+  - id: ruff-check
+    types: [python]
     args: [--fix, --show-fixes, --exit-non-zero-on-fix]
   - id: ruff-format
+    types: [python]

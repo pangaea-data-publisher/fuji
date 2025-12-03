@@ -19,22 +19,19 @@ jobs:
   lint:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python 3.11
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: '3.11'
-        cache: pip
-    - uses: pre-commit/action@v3.0.1
-      with:
-        extra_args: --all-files --color=always
+    - uses: tox-dev/action-pre-commit-uv@246b66536e366bb885f52d61983bf32f7c95e8b1 # v1.0.3
 
   tests:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python 3.11
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: '3.11'
         cache: pip
@@ -44,4 +41,4 @@ jobs:
     - name: Run test suite in parallel with measuring code coverage
       run: hatch test --cover-quiet --parallel
     - name: Upload coverage data to coveralls.io
-      uses: coverallsapp/github-action@643bc377ffa44ace6394b2b5d0d3950076de9f63 # v2.3.0
+      uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b # v2.3.6
