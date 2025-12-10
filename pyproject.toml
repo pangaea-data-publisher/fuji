@@ -67,7 +67,7 @@ version = "3.5.1"
 docs = [
   "myst-parser~=4.0",
   "sphinx~=8.0",
-  "sphinx-rtd-theme~=2.0"
+  "sphinx-rtd-theme~=3.0"
 ]
 report = [
   "bokeh~=3.2",
