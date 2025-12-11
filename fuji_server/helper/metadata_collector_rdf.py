@@ -270,7 +270,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     if isinstance(rdf_response, str) and rdf_response not in ["null", "None"]:
                         # url escape malformed (spaces) URIs
                         try:
-                            suris = re.findall('"http[s]?:\/\/(.*?)"', rdf_response)
+                            suris = re.findall(r'"http[s]?:\/\/(.*?)"', rdf_response)
                             for suri in suris:
                                 if " " in suri:
                                     rsuri = urllib.parse.quote(suri)
