@@ -26,7 +26,7 @@ class MetricHelper:
             self.logger = logger
         else:
             self.logger = logging.getLogger()
-        ym = re.match("(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?", metric_input_file_name)
+        ym = re.match(r"(metrics_v)?([0-9]+\.[0-9]+)(_[a-z]+)?(\.yaml)?", metric_input_file_name)
         if ym:
             # print(ym.groups())
             metric_file_name = ""
