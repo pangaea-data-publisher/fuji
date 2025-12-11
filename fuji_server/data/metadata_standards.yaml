@@ -1,18 +1,18 @@
 abcd-access-biological-collection-data:
   acronym: ABCD
   field_of_science:
-  - zoology
-  - genetics
-  - earth and related environmental sciences
   - botany
+  - earth and related environmental sciences
   - geology
+  - genetics
   - natural sciences
-  - biological sciences
   - palaeontology
+  - zoology
+  - biological sciences
   identifier:
   - type: local
     value: msc:m1
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.kr3215
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/abcd-access-biological-collection-data
@@ -62,7 +62,7 @@ abcddna:
   identifier:
   - type: local
     value: msc:m42
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.7tx4ac
   - type: homepage
     value: http://www.tdwg.org/standards/640/
@@ -83,14 +83,14 @@ abcddna:
 abcdefg-access-biological-collection-databases-extended-geosciences:
   acronym: ABCDEFG
   field_of_science:
+  - natural sciences
   - palaeontology
   - mineralogy
   - earth and related environmental sciences
-  - natural sciences
   identifier:
   - type: local
     value: msc:m43
-  - type: local
+  - type: registry
     value: https://fairsharing.org/1396
   - type: homepage
     value: http://www.geocase.eu/efg
@@ -117,7 +117,7 @@ agls-metadata-profile:
   identifier:
   - type: local
     value: msc:m44
-  - type: local
+  - type: registry
     value: https://fairsharing.org/751
   - type: homepage
     value: http://www.agls.gov.au
@@ -135,14 +135,14 @@ agls-metadata-profile:
 agmes-agricultural-metadata-element-set:
   acronym: AgMES
   field_of_science:
-  - agriculture
-  - agricultural sciences
-  - animal and dairy science
   - fisheries
+  - animal and dairy science
+  - agricultural sciences
+  - agriculture
   identifier:
   - type: local
     value: msc:m2
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.vd694s
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/agmes-agricultural-metadata-element-set
@@ -168,14 +168,14 @@ agmes-agricultural-metadata-element-set:
 agris-application-profile:
   acronym: AGRIS
   field_of_science:
-  - agriculture
-  - agricultural sciences
-  - animal and dairy science
   - fisheries
+  - animal and dairy science
+  - agricultural sciences
+  - agriculture
   identifier:
   - type: local
     value: msc:m45
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.32e620
   - type: homepage
     value: http://www.fao.org/docrep/008/ae909e/ae909e00.htm
@@ -201,7 +201,7 @@ amf-academic-metadata-format:
   identifier:
   - type: local
     value: fuji:m25
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4646
   - type: namespace
     value: http://amf.openlib.org
@@ -222,13 +222,13 @@ amf-academic-metadata-format:
 anzlic-metadata-profile:
   acronym: ANZLIC
   field_of_science:
-  - cartography
-  - physical geography
   - natural sciences
+  - physical geography
+  - cartography
   identifier:
   - type: local
     value: msc:m46
-  - type: local
+  - type: registry
     value: https://fairsharing.org/820
   - type: homepage
     value: https://www.anzlic.gov.au/resources/anzlic-metadata-profile
@@ -251,7 +251,7 @@ apple-core:
   identifier:
   - type: local
     value: msc:m47
-  - type: local
+  - type: registry
     value: https://fairsharing.org/726
   - type: homepage
     value: http://code.google.com/p/applecore/wiki/Introduction
@@ -266,12 +266,12 @@ apple-core:
 ariadne-dataset-catalogue-model:
   acronym: ACDM
   field_of_science:
-  - humanities
   - archaeology
+  - humanities
   identifier:
   - type: local
     value: fuji:m19
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4647
   - type: schema
     value: http://ariadne-registry.dcu.gr/schema_definition/6.7/acdm.xsd
@@ -317,7 +317,7 @@ asset-description-metadata-schema-adms:
   identifier:
   - type: local
     value: msc:m48
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.es2t25
   - type: homepage
     value: http://www.w3.org/TR/vocab-adms/
@@ -339,7 +339,7 @@ atom-syndication-format:
   identifier:
   - type: local
     value: fuji:m13
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4648
   - type: namespace
     value: https://www.w3.org/2005/Atom
@@ -365,7 +365,7 @@ avm-astronomy-visualization-metadata:
   identifier:
   - type: local
     value: msc:m3
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.338ze0
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/avm-astronomy-visualization-metadata
@@ -390,7 +390,7 @@ bibtex-format:
   identifier:
   - type: local
     value: fuji:m34
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.bdf2fe
   - type: homepage
     value: http://www.bibtex.org/
@@ -412,14 +412,14 @@ bibtex-format:
 carare-metadata-schema:
   acronym: CARARE
   field_of_science:
-  - history
-  - humanities
   - architectural design
   - archaeology
+  - history
+  - humanities
   identifier:
   - type: local
     value: msc:m49
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.ba7c93
   - type: homepage
     value: https://pro.carare.eu/doku.php?id=support:metadata-schema
@@ -448,7 +448,7 @@ cdwa-lite-schema:
   identifier:
   - type: local
     value: fuji:m30
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4649
   - type: homepage
     value: https://www.getty.edu/research/publications/electronic_publications/cdwa/cdwalite.html
@@ -473,20 +473,20 @@ cdwa-lite-schema:
 cedar-template-model:
   acronym: CEDAR
   field_of_science:
-  - medical and health sciences
-  - social sciences
-  - engineering and technology
-  - medical engineering
-  - earth and related environmental sciences
-  - clinical medicine
-  - agriculture
   - public administration
-  - natural sciences
   - agricultural sciences
+  - social sciences
+  - agriculture
+  - earth and related environmental sciences
+  - medical engineering
+  - clinical medicine
+  - engineering and technology
+  - natural sciences
+  - medical and health sciences
   identifier:
   - type: local
     value: msc:m94
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.V527H4
   - type: homepage
     value: https://more.metadatacenter.org/tools-training/outreach/cedar-template-model
@@ -509,7 +509,7 @@ cerif:
   identifier:
   - type: local
     value: msc:m4
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.6945dq
   - type: homepage
     value: http://www.eurocris.org/cerif/main-features-cerif
@@ -553,13 +553,13 @@ cessda-mli-council-european-social-science-data-archives-minimum-level-inf:
   field_of_science:
   - social sciences
   - sociology
-  - economics
   - demography
+  - economics
   - social geography
   identifier:
   - type: local
     value: msc:m50
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4272
   - type: homepage
     value: http://www.cessda.org/sharing/managing/3/
@@ -577,14 +577,14 @@ cessda-mli-council-european-social-science-data-archives-minimum-level-inf:
 cf-climate-and-forecast-metadata-conventions:
   acronym: CF
   field_of_science:
+  - oceanography
+  - natural sciences
   - climatology
   - meteorology
-  - natural sciences
-  - oceanography
   identifier:
   - type: local
     value: msc:m5
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.f8cd83
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/cf-climate-and-forecast-metadata-conventions
@@ -614,7 +614,7 @@ chardm-astronomical-dataset-characterisation:
   identifier:
   - type: local
     value: fuji:m29
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.yYjZWb
   - type: homepage
     value: https://www.ivoa.net/documents/cover/CharacterisationDM-20070530.html
@@ -630,15 +630,15 @@ chardm-astronomical-dataset-characterisation:
 cif-crystallographic-information-framework:
   acronym: CIF
   field_of_science:
-  - chemical sciences
+  - materials engineering
+  - crystallography
   - engineering and technology
   - natural sciences
-  - crystallography
-  - materials engineering
+  - chemical sciences
   identifier:
   - type: local
     value: msc:m6
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.zr52g5
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/cif-crystallographic-information-framework
@@ -661,12 +661,12 @@ cif-crystallographic-information-framework:
 cim-common-information-model:
   acronym: CIM
   field_of_science:
-  - climatology
   - natural sciences
+  - climatology
   identifier:
   - type: local
     value: msc:m7
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.k3z4q9
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/cim-common-information-model
@@ -710,13 +710,13 @@ clarivate-data-citation-index-schema:
 cmd-component-metadata:
   acronym: CMDI
   field_of_science:
-  - linguistics
   - languages and literature
+  - linguistics
   - humanities
   identifier:
   - type: local
     value: fuji:m6
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.2e0599
   - type: namespace
     value: http://www.clarin.eu/cmd/
@@ -756,14 +756,14 @@ cmd-component-metadata:
 coards-conventions:
   acronym:
   field_of_science:
+  - oceanography
+  - natural sciences
   - climatology
   - meteorology
-  - natural sciences
-  - oceanography
   identifier:
   - type: local
     value: msc:m51
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.9614ca
   - type: homepage
     value: http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html
@@ -784,7 +784,7 @@ crossref-schema:
   identifier:
   - type: local
     value: fuji:m40
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.bbQbSW
   - type: homepage
     value: http://www.crossref.org/schema
@@ -836,15 +836,15 @@ cruise-summary-reports:
   field_of_science:
   - meteorology
   - earth and related environmental sciences
-  - glaciology
   - hydrology
-  - natural sciences
   - oceanography
+  - natural sciences
+  - glaciology
   - climatology
   identifier:
   - type: local
     value: msc:m52
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.e36460
   - type: homepage
     value: http://www.seadatanet.org/Metadata/CSR
@@ -875,13 +875,13 @@ csdgm-extensions-remote-sensing-metadata:
   field_of_science:
   - meteorology
   - hydrology
-  - natural sciences
   - oceanography
+  - natural sciences
   - climatology
   identifier:
   - type: local
     value: msc:m53
-  - type: local
+  - type: registry
     value: https://fairsharing.org/1445
   - type: homepage
     value: http://www.fgdc.gov/standards/projects/FGDC-standards-projects/csdgm_rs_ex/MetadataRemoteSensingExtens.pdf
@@ -899,16 +899,16 @@ csdgm-extensions-remote-sensing-metadata:
 csmd-cclrc-core-scientific-metadata-model:
   acronym: CSMD
   field_of_science:
-  - chemical sciences
-  - engineering and technology
-  - biochemistry
-  - natural sciences
-  - crystallography
   - materials engineering
+  - crystallography
+  - biochemistry
+  - engineering and technology
+  - natural sciences
+  - chemical sciences
   identifier:
   - type: local
     value: msc:m8
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.30fk89
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/csmd-cclrc-core-scientific-metadata-model
@@ -936,13 +936,13 @@ csmd-cclrc-core-scientific-metadata-model:
 csw-catalogue-schema:
   acronym: CSW
   field_of_science:
-  - cartography
   - earth and related environmental sciences
   - natural sciences
+  - cartography
   identifier:
   - type: local
     value: fuji:m32
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4650
   - type: schema
     value: http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd
@@ -975,7 +975,7 @@ dara-metadata-schema:
   identifier:
   - type: local
     value: fuji:m10
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4651
   - type: namespace
     value: http://da-ra.de/schema/kernel-4
@@ -1003,21 +1003,21 @@ dara-metadata-schema:
 darwin-core:
   acronym: DwC
   field_of_science:
-  - zoology
+  - botany
+  - ecology
   - physical geography
   - earth and related environmental sciences
-  - ecology
-  - botany
-  - marine biology
-  - natural sciences
   - cartography
-  - biological sciences
   - oceanography
+  - natural sciences
   - palaeontology
+  - marine biology
+  - zoology
+  - biological sciences
   identifier:
   - type: local
     value: msc:m9
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.xvf5y3
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/darwin-core
@@ -1061,13 +1061,13 @@ darwin-core-geospatial-extension:
   acronym: DwC-S
   field_of_science:
   - biological sciences
-  - physical geography
   - natural sciences
+  - physical geography
   - cartography
   identifier:
   - type: local
     value: msc:m54
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.76c06d
   - type: homepage
     value: http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension
@@ -1088,7 +1088,7 @@ data-package:
   identifier:
   - type: local
     value: msc:m10
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.3b861d
   - type: homepage
     value: https://frictionlessdata.io/data-packages/
@@ -1109,7 +1109,7 @@ datacite-metadata-schema:
   identifier:
   - type: local
     value: msc:m11
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.me4qwe
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/datacite-metadata-schema
@@ -1161,12 +1161,12 @@ datacite-metadata-schema:
 dats-data-tag-suite:
   acronym: DATS
   field_of_science:
-  - medical and health sciences
   - biological sciences
+  - medical and health sciences
   identifier:
   - type: local
     value: fuji:m50
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.e20vsd
   - type: namespace
     value: https://w3id.org/dats/context/sdo/dataset_sdo_context.jsonld
@@ -1187,7 +1187,7 @@ dcat-data-catalog-vocabulary:
   identifier:
   - type: local
     value: msc:m12
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.h4j3qm
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/dcat-data-catalog-vocabulary
@@ -1215,25 +1215,25 @@ dcat-data-catalog-vocabulary:
 ddi-data-documentation-initiative:
   acronym: DDI
   field_of_science:
-  - medical and health sciences
+  - statistics and probability
   - social sciences
-  - humanities
-  - law
   - sociology
   - public health
-  - natural sciences
-  - statistics and probability
-  - economics
   - political sciences
+  - law
+  - natural sciences
   - demography
+  - economics
+  - medical and health sciences
   - history
   - social geography
+  - humanities
   identifier:
   - type: local
     value: msc:m13
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.1t5ws6
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.EZCpPd
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/ddi-data-documentation-initiative
@@ -1336,7 +1336,7 @@ didl-digital-item-declaration-language:
   identifier:
   - type: local
     value: fuji:m4
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4652
   - type: namespace
     value: urn:mpeg:mpeg21:2002:02-DIDL-NS
@@ -1354,21 +1354,21 @@ didl-digital-item-declaration-language:
 dif-directory-interchange-format:
   acronym: DIF
   field_of_science:
+  - agricultural sciences
   - meteorology
+  - agriculture
   - biochemistry
   - ecology
-  - agriculture
-  - glaciology
   - hydrology
+  - oceanography
   - natural sciences
   - marine biology
+  - glaciology
   - climatology
-  - oceanography
-  - agricultural sciences
   identifier:
   - type: local
     value: msc:m14
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.esxaaq
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/dif-directory-interchange-format
@@ -1466,7 +1466,7 @@ dublin-core:
   identifier:
   - type: local
     value: msc:m15
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.3nx7t
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/dublin-core
@@ -1535,7 +1535,7 @@ dublin-core-qualified:
   identifier:
   - type: local
     value: fuji:m22
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.3nx7t
   - type: homepage
     value: https://www.dublincore.org/specifications/dublin-core/dcmes-qualifiers/
@@ -1582,7 +1582,7 @@ dwc-germplasm:
   identifier:
   - type: local
     value: msc:m56
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.hgsFLe
   - type: homepage
     value: http://code.google.com/p/darwincore-germplasm/
@@ -1608,7 +1608,7 @@ ead-encoded-archival-description:
   identifier:
   - type: local
     value: msc:m96
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.95f59a
   - type: homepage
     value: https://www.loc.gov/ead/
@@ -1642,12 +1642,12 @@ ead-encoded-archival-description:
 ebank-uk-metadata-application-profile:
   acronym:
   field_of_science:
-  - crystallography
   - natural sciences
+  - crystallography
   identifier:
   - type: local
     value: msc:m57
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.ad4856
   - type: homepage
     value: http://ecrystals.chem.soton.ac.uk
@@ -1672,7 +1672,7 @@ edm-europeana-data-model:
   identifier:
   - type: local
     value: fuji:m33
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4653
   - type: homepage
     value: https://pro.europeana.eu/page/edm-documentation
@@ -1696,20 +1696,20 @@ edm-europeana-data-model:
 edmed-metadata-profile:
   acronym:
   field_of_science:
-  - meteorology
   - soil sciences
+  - meteorology
   - ecology
-  - hydrogeology
-  - environmental sciences
-  - glaciology
   - hydrology
-  - natural sciences
   - oceanography
+  - natural sciences
+  - environmental sciences
+  - hydrogeology
+  - glaciology
   - climatology
   identifier:
   - type: local
     value: msc:m58
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.ed7f20
   - type: homepage
     value: https://www.bodc.ac.uk/data/information_and_inventories/edmed/
@@ -1739,7 +1739,7 @@ emblem-metadata-schema:
   identifier:
   - type: local
     value: fuji:m16
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4654
   - type: homepage
     value: http://diglib.hab.de/rules/schema/emblem/
@@ -1762,15 +1762,15 @@ emblem-metadata-schema:
 eml-ecological-metadata-language:
   acronym: EML
   field_of_science:
-  - zoology
-  - ecology
   - botany
+  - ecology
   - natural sciences
+  - zoology
   - biological sciences
   identifier:
   - type: local
     value: msc:m16
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.r3vtvx
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/eml-ecological-metadata-language
@@ -1824,7 +1824,7 @@ epicur-metadata-schema:
   identifier:
   - type: local
     value: fuji:m21
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4659
   - type: namespace
     value: urn:nbn:de:1111-2004033116
@@ -1865,7 +1865,7 @@ etdms-metadata-schema:
   identifier:
   - type: local
     value: fuji:m17
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4660
   - type: homepage
     value: https://ndltd.org/metadata/
@@ -1914,13 +1914,13 @@ eurisco-descriptors:
 fdsn-seismograph:
   acronym:
   field_of_science:
+  - natural sciences
   - geophysics
   - earth and related environmental sciences
-  - natural sciences
   identifier:
   - type: local
     value: fuji:m8
-  - type: local
+  - type: registry
     value: https://fairsharing.org/1434
   - type: namespace
     value: http://www.fdsn.org/xml/station/1
@@ -1958,19 +1958,19 @@ fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge:
   field_of_science:
   - social sciences
   - physical geography
-  - meteorology
   - biochemistry
+  - social geography
+  - meteorology
   - hydrology
+  - cartography
+  - oceanography
   - natural sciences
   - marine biology
   - climatology
-  - cartography
-  - oceanography
-  - social geography
   identifier:
   - type: local
     value: msc:m17
-  - type: local
+  - type: registry
     value: https://fairsharing.org/1445
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/fgdccsdgm-federal-geographic-data-committee-content-standard-digital-ge
@@ -2016,7 +2016,7 @@ fhir-fast-healthcare-interoperability-resources:
   identifier:
   - type: local
     value: fuji:m47
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.25k4yp
   - type: homepage
     value: https://hl7.org/fhir/
@@ -2039,7 +2039,7 @@ fits-flexible-image-transport-system:
   identifier:
   - type: local
     value: msc:m18
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.xvash1
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/fits-flexible-image-transport-system
@@ -2086,10 +2086,10 @@ fits-world-coordinate-system-wcs:
 gbif-metadata-profile:
   acronym:
   field_of_science:
-  - zoology
-  - ecology
   - botany
+  - ecology
   - natural sciences
+  - zoology
   - biological sciences
   identifier:
   - type: local
@@ -2131,8 +2131,8 @@ genome-metadata:
 geodcat:
   acronym: GeoDCAT
   field_of_science:
-  - earth and related environmental sciences
   - natural sciences
+  - earth and related environmental sciences
   identifier:
   - type: local
     value: fuji:m49
@@ -2150,9 +2150,9 @@ geodcat:
 geodesyml:
   acronym: GeodesyML
   field_of_science:
+  - natural sciences
   - geophysics
   - earth and related environmental sciences
-  - natural sciences
   identifier:
   - type: local
     value: fuji:m48
@@ -2174,12 +2174,12 @@ geodesyml:
 georss-encoding-standard:
   acronym:
   field_of_science:
-  - earth and related environmental sciences
   - natural sciences
+  - earth and related environmental sciences
   identifier:
   - type: local
     value: fuji:m1
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4663
   - type: homepage
     value: http://www.georss.org
@@ -2200,9 +2200,9 @@ gesmests-generic-statistical-message-time-series:
   acronym:
   field_of_science:
   - social sciences
+  - political sciences
   - natural sciences
   - economics
-  - political sciences
   - statistics and probability
   identifier:
   - type: local
@@ -2226,7 +2226,7 @@ gsim-generic-statistical-information-model:
   identifier:
   - type: local
     value: msc:m63
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.22bb25
   - type: homepage
     value: http://www1.unece.org/stat/platform/display/metis/Generic+Statistical+Information+Model
@@ -2246,7 +2246,7 @@ hispid-herbarium-information-standards-and-protocols-interchange-data:
   identifier:
   - type: local
     value: msc:m64
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.y49yj6
   - type: homepage
     value: http://www.rbg.vic.gov.au/wiki/hiscom/index.php/HISPID_5
@@ -2285,7 +2285,7 @@ imdi-metadata-schema:
   identifier:
   - type: local
     value: fuji:m15
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.2cfb88
   - type: namespace
     value: http://www.mpi.nl/IMDI/Schema/IMDI
@@ -2328,20 +2328,20 @@ impex-data-model:
 inspire-metadata-regulation:
   acronym:
   field_of_science:
-  - physical geography
   - meteorology
+  - physical geography
   - earth and related environmental sciences
+  - hydrology
+  - cartography
+  - oceanography
+  - natural sciences
   - hydrogeology
   - glaciology
-  - hydrology
-  - natural sciences
-  - oceanography
   - climatology
-  - cartography
   identifier:
   - type: local
     value: msc:m66
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.nrx5kk
   - type: homepage
     value: http://inspire.ec.europa.eu/
@@ -2391,15 +2391,15 @@ international-virtual-observatory-alliance-technical-specifications:
 isa-tab:
   acronym:
   field_of_science:
-  - engineering and technology
-  - genetics
   - biochemistry
-  - biophysics
-  - cell biology
+  - genetics
+  - engineering and technology
   - natural sciences
-  - biological sciences
   - cell metabolism
+  - biological sciences
+  - cell biology
   - molecular biology
+  - biophysics
   identifier:
   - type: local
     value: msc:m21
@@ -2429,14 +2429,14 @@ isa-tab:
 isa-tab-nano:
   acronym:
   field_of_science:
-  - engineering and technology
-  - biological sciences
   - biochemistry
+  - biological sciences
   - natural sciences
+  - engineering and technology
   identifier:
   - type: local
     value: msc:m67
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.njqq5b
   - type: homepage
     value: https://wiki.nci.nih.gov/display/ICR/ISA-TAB-Nano#ISA-TAB-Nano-title
@@ -2452,10 +2452,10 @@ isa-tab-nano:
 isaconfig-dixa:
   acronym:
   field_of_science:
-  - medical and health sciences
-  - toxicology
   - genetics
   - natural sciences
+  - medical and health sciences
+  - toxicology
   identifier:
   - type: local
     value: msc:m68
@@ -2472,21 +2472,21 @@ isaconfig-dixa:
 iso-19115:
   acronym: ISO19115
   field_of_science:
-  - physical geography
   - meteorology
+  - physical geography
   - earth and related environmental sciences
-  - hydrogeology
   - geology
-  - glaciology
   - hydrology
-  - natural sciences
-  - oceanography
-  - climatology
   - cartography
+  - oceanography
+  - natural sciences
+  - hydrogeology
+  - glaciology
+  - climatology
   identifier:
   - type: local
     value: msc:m22
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.t7mby9
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/iso-19115
@@ -2543,19 +2543,19 @@ iso-19115-2-imagery-and-gridded-data:
   field_of_science:
   - social sciences
   - physical geography
+  - social geography
   - meteorology
   - earth and related environmental sciences
-  - glaciology
   - hydrology
-  - natural sciences
-  - oceanography
-  - climatology
   - cartography
-  - social geography
+  - oceanography
+  - natural sciences
+  - glaciology
+  - climatology
   identifier:
   - type: local
     value: msc:m69
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.a6b18c
   - type: homepage
     value: http://www.iso.org/iso/catalogue_detail.htm?csnumber=39229
@@ -2579,13 +2579,13 @@ iso-19115-2-imagery-and-gridded-data:
 iso-19115-north-american-profile:
   acronym:
   field_of_science:
-  - cartography
-  - physical geography
   - natural sciences
+  - physical geography
+  - cartography
   identifier:
   - type: local
     value: msc:m70
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.b4af3c
   - type: homepage
     value: http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata
@@ -2602,21 +2602,21 @@ iso-19115-north-american-profile:
 iso-19136:
   acronym:
   field_of_science:
-  - physical geography
   - meteorology
+  - physical geography
   - earth and related environmental sciences
-  - hydrogeology
   - geology
-  - glaciology
   - hydrology
-  - natural sciences
-  - oceanography
-  - climatology
   - cartography
+  - oceanography
+  - natural sciences
+  - hydrogeology
+  - glaciology
+  - climatology
   identifier:
   - type: local
     value: fuji:m3
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.d69ee0
   - type: homepage
     value: www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=32554
@@ -2652,7 +2652,7 @@ ivoa-registry-metdata:
   identifier:
   - type: local
     value: fuji:m35
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.RycpEU
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/international-virtual-observatory-alliance-technical-specifications
@@ -2681,7 +2681,7 @@ jats-schema:
   identifier:
   - type: local
     value: fuji:m41
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.smr0rh
   - type: homepage
     value: http://jats.nlm.nih.gov/publishing/
@@ -2706,7 +2706,7 @@ lido-lightweight-information-describing-objects:
   identifier:
   - type: local
     value: fuji:m18
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.73558b
   - type: schema
     value: www.lido-schema.org/schema/latest/lido.xsd
@@ -2740,7 +2740,7 @@ lom-higher-education-schema:
   identifier:
   - type: local
     value: fuji:m24
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4664
   - type: homepage
     value: http://www.imsglobal.org/metadata/index.html
@@ -2773,7 +2773,7 @@ mage-tab:
   identifier:
   - type: local
     value: msc:m87
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4680
   - type: homepage
     value: https://psidev.info/magetab
@@ -2792,7 +2792,7 @@ marc-machine-readable-cataloging:
   identifier:
   - type: local
     value: msc:m88
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.217b1b
   - type: homepage
     value: http://www.loc.gov/marc/
@@ -2825,15 +2825,15 @@ marine-community-profile:
   field_of_science:
   - meteorology
   - earth and related environmental sciences
-  - glaciology
   - hydrology
-  - natural sciences
   - oceanography
+  - natural sciences
+  - glaciology
   - climatology
   identifier:
   - type: local
     value: msc:m71
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.18b8b4
   - type: homepage
     value: http://www.aodc.org.au/index.php?id=37
@@ -2868,7 +2868,7 @@ metashare-metadata:
   identifier:
   - type: local
     value: fuji:m12
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4665
   - type: homepage
     value: http://www.meta-share.org/p/93/Documentation#model
@@ -2893,7 +2893,7 @@ mets-metadata-encoding-and-transmission-standard:
   identifier:
   - type: local
     value: fuji:m11
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.921056
   - type: namespace
     value: http://www.loc.gov/METS/
@@ -2919,20 +2919,20 @@ mets-metadata-encoding-and-transmission-standard:
 mibbi-minimum-information-biological-and-biomedical-investigations:
   acronym:
   field_of_science:
-  - engineering and technology
-  - computer and information sciences
   - proteins
-  - genetics
   - biochemistry
-  - environmental sciences
-  - cell biology
+  - computer and information sciences
+  - genetics
+  - engineering and technology
   - natural sciences
-  - biological sciences
+  - environmental sciences
   - cell metabolism
+  - biological sciences
+  - cell biology
   identifier:
   - type: local
     value: msc:m23
-  - type: local
+  - type: registry
     value: https://fairsharing.org/3518
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/mibbi-minimum-information-biological-and-biomedical-investigations
@@ -2964,14 +2964,14 @@ mibbi-minimum-information-biological-and-biomedical-investigations:
 midas-heritage:
   acronym: MIDAS
   field_of_science:
-  - history
-  - humanities
   - architectural design
   - archaeology
+  - history
+  - humanities
   identifier:
   - type: local
     value: msc:m24
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.q0hgq
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/midas-heritage
@@ -3003,7 +3003,7 @@ mods-metadata-object-description-schema:
   identifier:
   - type: local
     value: msc:m97
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.o67X7e
   - type: homepage
     value: http://www.loc.gov/standards/mods/
@@ -3040,7 +3040,7 @@ museumdat-schema:
   identifier:
   - type: local
     value: fuji:m31
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4671
   - type: schema
     value: http://museum.zib.de/museumdat/museumdat-v1.0.xsd
@@ -3076,7 +3076,7 @@ nexml:
   identifier:
   - type: local
     value: fuji:m45
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.knrb06
   - type: homepage
     value: http://www.nexusformat.org/
@@ -3097,15 +3097,15 @@ nexml:
 nexus:
   acronym:
   field_of_science:
-  - chemical sciences
+  - materials engineering
+  - crystallography
   - engineering and technology
   - natural sciences
-  - crystallography
-  - materials engineering
+  - chemical sciences
   identifier:
   - type: local
     value: msc:m25
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.eq2pdx
   - type: homepage
     value: http://www.nexusformat.org/
@@ -3127,7 +3127,7 @@ oai-dublin-core-schema:
   identifier:
   - type: local
     value: fuji:m44
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.0417cf
   - type: namespace
     value: https://resources.bepress.com/OAI/2.0/qualified-dublin-core/
@@ -3154,14 +3154,14 @@ oai-ore-open-archives-initiative-object-reuse-and-exchange:
   acronym: OAI-ORE
   field_of_science:
   - social sciences
-  - humanities
   - anthropology
-  - sciences
+  - humanities
   - history
+  - sciences
   identifier:
   - type: local
     value: msc:m26
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.3mtaee
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/oai-ore-open-archives-initiative-object-reuse-and-exchange
@@ -3212,7 +3212,7 @@ observ-om:
   identifier:
   - type: local
     value: msc:m27
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4682
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/observ-om
@@ -3234,16 +3234,16 @@ observ-om:
 observations-and-measurements:
   acronym:
   field_of_science:
-  - chemical sciences
-  - engineering and technology
-  - remote sensing
   - meteorology
+  - remote sensing
   - geology
+  - engineering and technology
   - natural sciences
+  - chemical sciences
   identifier:
   - type: local
     value: msc:m28
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.4ehmy9
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/observations-and-measurements
@@ -3280,7 +3280,7 @@ odam-datapackage:
   acronym:
   field_of_science: []
   identifier:
-  - type: local
+  - type: registry
     value: 10.25504/FAIRsharing.ld9wne
   - type: homepage
     value:
@@ -3302,7 +3302,7 @@ olac-metadata:
   identifier:
   - type: local
     value: fuji:m14
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.17fbae
   - type: namespace
     value: http://www.language-archives.org/OLAC/1.1/
@@ -3323,19 +3323,19 @@ olac-metadata:
 ome-tiff-open-microscopy-environment-tiff:
   acronym:
   field_of_science:
-  - medical and health sciences
-  - veterinary sciences
-  - zoology
   - botany
-  - cell biology
-  - natural sciences
-  - physiology
   - agricultural sciences
+  - physiology
+  - veterinary sciences
+  - natural sciences
+  - zoology
   - plant protection
+  - medical and health sciences
+  - cell biology
   identifier:
   - type: local
     value: msc:m73
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.cq8tg2
   - type: homepage
     value: http://www.openmicroscopy.org/site/support/file-formats/ome-tiff
@@ -3355,19 +3355,19 @@ ome-tiff-open-microscopy-environment-tiff:
 ome-xml-open-microscopy-environment-xml:
   acronym:
   field_of_science:
-  - medical and health sciences
-  - veterinary sciences
-  - zoology
   - botany
-  - cell biology
-  - natural sciences
-  - physiology
   - agricultural sciences
+  - physiology
+  - veterinary sciences
+  - natural sciences
+  - zoology
   - plant protection
+  - medical and health sciences
+  - cell biology
   identifier:
   - type: local
     value: msc:m29
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.zk8p4g
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/ome-xml-open-microscopy-environment-xml
@@ -3463,7 +3463,7 @@ onix-metadata-schema:
   identifier:
   - type: local
     value: fuji:m42
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4683
   - type: homepage
     value: https://www.editeur.org/8/ONIX/
@@ -3489,7 +3489,7 @@ openaire-guidelines:
   identifier:
   - type: local
     value: msc:m92
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.123197
   - type: homepage
     value: https://guidelines.openaire.eu/
@@ -3523,7 +3523,7 @@ openaire-research-graph:
   identifier:
   - type: local
     value: fuji:m20
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4684
   - type: namespace
     value: http://namespace.openaire.eu/oaf
@@ -3563,7 +3563,7 @@ opensearch:
   identifier:
   - type: local
     value: fuji:m2
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4685
   - type: namespace
     value: http://a9.com/-/spec/opensearch/1.1/
@@ -3583,7 +3583,7 @@ openurl-contextobject:
   identifier:
   - type: local
     value: fuji:m7
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4686
   - type: namespace
     value: info:ofi/fmt:xml:xsd:ctx
@@ -3604,17 +3604,17 @@ openurl-contextobject:
 pdbx-mmcif:
   acronym:
   field_of_science:
-  - chemical sciences
-  - physical sciences
-  - computer and information sciences
-  - natural sciences
-  - biological sciences
   - crystallography
+  - computer and information sciences
+  - physical sciences
+  - natural sciences
+  - chemical sciences
+  - biological sciences
   - molecular biology
   identifier:
   - type: local
     value: msc:m30
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.fd28en
   - type: homepage
     value: http://mmcif.wwpdb.org/
@@ -3666,7 +3666,7 @@ premis:
   identifier:
   - type: local
     value: msc:m31
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.27a0f4
   - type: homepage
     value: http://www.loc.gov/standards/premis/
@@ -3710,7 +3710,7 @@ prism-publishing-industry-standard-metadata:
   identifier:
   - type: local
     value: fuji:m27
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4689
   - type: homepage
     value: https://www.w3.org/Submission/prism
@@ -3763,7 +3763,7 @@ protocol-data-element-definitions:
     value: msc:m32
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/protocol-data-element-definitions
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.7e962d
   - type: homepage
     value: http://clinicaltrials.gov/ct2/manage-recs/resources
@@ -3798,7 +3798,7 @@ prov:
     value: msc:m33
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/prov
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.fe7cda
   - type: homepage
     value: http://www.w3.org/2001/sw/wiki/PROV
@@ -3822,13 +3822,13 @@ prov:
 quakeml:
   acronym: QuakeML
   field_of_science:
+  - natural sciences
   - geophysics
   - earth and related environmental sciences
-  - natural sciences
   identifier:
   - type: local
     value: fuji:m9
-  - type: local
+  - type: registry
     value: https://fairsharing.org/1444
   - type: namespace
     value: http://quakeml.org/xmlns/quakeml/2.0
@@ -3865,7 +3865,7 @@ qudex-qualitative-data-exchange-format:
     value: msc:m34
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/qudex-qualitative-data-exchange-format
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.d42cb9
   - type: homepage
     value: http://www.data-archive.ac.uk/create-manage/projects/qudex?index=1
@@ -3895,7 +3895,7 @@ rdf-data-cube-vocabulary:
     value: msc:m35
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/rdf-data-cube-vocabulary
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.c3b573
   - type: homepage
     value: http://www.w3.org/TR/vocab-data-cube/
@@ -3921,7 +3921,7 @@ resource-metadata-virtual-observatory:
   identifier:
   - type: local
     value: msc:m74
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.qSULus
   - type: homepage
     value: http://www.ivoa.net/documents/latest/RM.html
@@ -3941,7 +3941,7 @@ rif-cs-registry-interchange-format-collections-and-services:
   identifier:
   - type: local
     value: msc:m98
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.reybx2
   - type: homepage
     value: https://www.ands.org.au/online-services/rif-cs-schema
@@ -3970,7 +3970,7 @@ rioxx-metadata-application-profile:
   identifier:
   - type: local
     value: fuji:m5
-  - type: local
+  - type: registry
     value: https://fairsharing.org/4690
   - type: namespace
     value: http://www.rioxx.net/schema/v2.0/rioxx/
@@ -3995,7 +3995,7 @@ ro-crate:
   field_of_science:
   - sciences
   identifier:
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.wUoZKE
   - type: local
     value: msc:m102
@@ -4023,7 +4023,7 @@ schemaorg:
   field_of_science:
   - sciences
   identifier:
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.hzdzq8
   - type: local
     value: msc:m101
@@ -4049,7 +4049,7 @@ scholix-metadata-schema:
   identifier:
   - type: local
     value: fuji:m28
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.B0d5Kn
   - type: homepage
     value: http://www.scholix.org/schema
@@ -4077,7 +4077,7 @@ sdac:
   identifier:
   - type: local
     value: msc:m37
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.zcjkc7
   - type: homepage
     value: http://cds.u-strasbg.fr/doc/catstd.htx
@@ -4096,18 +4096,18 @@ sdmx-statistical-data-and-metadata-exchange:
   acronym:
   field_of_science:
   - social sciences
-  - natural sciences
-  - statistics and probability
-  - economics
   - political sciences
+  - natural sciences
   - demography
+  - economics
+  - statistics and probability
   - social geography
   identifier:
   - type: local
     value: msc:m38
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/sdmx-statistical-data-and-metadata-exchange
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.cea9zc
   - type: homepage
     value: http://sdmx.org
@@ -4147,13 +4147,13 @@ sdmx-statistical-data-and-metadata-exchange:
 shoreline-metadata-profile:
   acronym:
   field_of_science:
-  - hydrology
-  - natural sciences
   - oceanography
+  - natural sciences
+  - hydrology
   identifier:
   - type: local
     value: msc:m75
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.22041b
   - type: homepage
     value: http://www.fgdc.gov/standards/projects/FGDC-standards-projects/metadata/shoreline-metadata/
@@ -4169,9 +4169,9 @@ shoreline-metadata-profile:
 snrnasm-isa-tab:
   acronym:
   field_of_science:
-  - cell biology
   - biochemistry
   - natural sciences
+  - cell biology
   identifier:
   - type: local
     value: msc:m76
@@ -4195,7 +4195,7 @@ spase-data-model:
     value: msc:m39
   - type: local
     value: http://www.dcc.ac.uk/resources/metadata-standards/spase-data-model
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.f5d440
   - type: homepage
     value: http://www.spase-group.org/data/
@@ -4299,7 +4299,7 @@ tabular-data-package:
   identifier:
   - type: local
     value: msc:m77
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.082881
   - type: homepage
     value: http://frictionlessdata.io/guides/tabular-data-package/
@@ -4320,7 +4320,7 @@ tei-text-encoding-initiative-guidelines:
   identifier:
   - type: local
     value: msc:m99
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.87b86e
   - type: homepage
     value: http://www.tei-c.org/Guidelines/P5/
@@ -4345,12 +4345,12 @@ tei-text-encoding-initiative-guidelines:
 tidcc-towards-international-data-commons-crystallography:
   acronym:
   field_of_science:
-  - crystallography
   - natural sciences
+  - crystallography
   identifier:
   - type: local
     value: msc:m78
-  - type: local
+  - type: registry
     value: https://fairsharing.org/208
   - type: homepage
     value: http://wiki.ecrystals.chem.soton.ac.uk/images/9/9d/ECrystals-WP4-PM-Final.pdf
@@ -4365,9 +4365,9 @@ tidcc-towards-international-data-commons-crystallography:
 uk-agmap-academic-geospatial-metadata-application-profile:
   acronym:
   field_of_science:
-  - cartography
-  - physical geography
   - natural sciences
+  - physical geography
+  - cartography
   identifier:
   - type: local
     value: msc:m79
@@ -4385,13 +4385,13 @@ uk-agmap-academic-geospatial-metadata-application-profile:
 uk-gemini:
   acronym:
   field_of_science:
-  - cartography
-  - physical geography
   - natural sciences
+  - physical geography
+  - cartography
   identifier:
   - type: local
     value: msc:m80
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.b49fab
   - type: homepage
     value: http://www.agi.org.uk/uk-gemini/
@@ -4408,20 +4408,20 @@ uk-gemini:
 ukeof:
   acronym:
   field_of_science:
-  - engineering and technology
-  - remote sensing
-  - meteorology
   - soil sciences
+  - meteorology
   - ecology
+  - remote sensing
   - geology
   - hydrology
+  - engineering and technology
   - natural sciences
-  - climatology
   - biological sciences
+  - climatology
   identifier:
   - type: local
     value: msc:m40
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.9xytp6
   - type: homepage
     value: http://www.ukeof.org.uk/
@@ -4457,12 +4457,12 @@ ukeof:
 usgin-iso-profile:
   acronym:
   field_of_science:
-  - earth and related environmental sciences
   - natural sciences
+  - earth and related environmental sciences
   identifier:
   - type: local
     value: msc:m81
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.c82136
   - type: homepage
     value: http://repository.stategeothermaldata.org/repository/resource/98ddf901b9782a25982e01af3b0bda50/
@@ -4485,7 +4485,7 @@ varioml:
   identifier:
   - type: local
     value: msc:m82
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.pxvkt0
   - type: homepage
     value: http://www.ncbi.nlm.nih.gov/pubmed/23031277
@@ -4503,12 +4503,12 @@ varioml:
 waterml:
   acronym:
   field_of_science:
-  - hydrology
   - natural sciences
+  - hydrology
   identifier:
   - type: local
     value: msc:m83
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.e07e1b
   - type: homepage
     value: http://www.opengeospatial.org/standards/waterml
@@ -4529,12 +4529,12 @@ waterml:
 wmo-core-metadata-profile:
   acronym:
   field_of_science:
-  - meteorology
   - natural sciences
+  - meteorology
   identifier:
   - type: local
     value: msc:m84
-  - type: local
+  - type: registry
     value: https://doi.org/10.25504/FAIRsharing.5e7bdc
   - type: homepage
     value: https://wis.wmo.int/2012/metadata/
