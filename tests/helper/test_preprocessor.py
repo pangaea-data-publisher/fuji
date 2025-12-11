@@ -33,7 +33,7 @@ isDebug = True
 
 def load_yaml_from_data_directory(filename: str):
     path = DATA_DIR.joinpath(filename)
-    return yaml.safe_load(path.read_text())
+    return yaml.safe_load(path.read_text(encoding="utf-8", errors="replace"))
 
 
 def load_txt_from_data_directory(filename: str):
