@@ -30,7 +30,7 @@ An open source web client for F-UJI is available at <https://github.com/Maastric
 
 ### Output Formats
 
-As as REST servuce the default output of F-UJI is JSON. Since version 3.5.0 F-UJI additionally offers output of results in various RDF formats following the DQV specifications. Content negotiation can be used to retrieve a RDF DQV result output.
+As as REST service the default output of F-UJI is JSON. Since version 3.5.0 F-UJI additionally offers output of results in various RDF formats following the DQV specifications. Content negotiation can be used to retrieve a RDF DQV result output.
 Supported RDF serialisations are: application/rdf+xml, application/x-turtle, text/turtle, application/ld+json, text/n3
 
 ## Assessment Scope, Constraint and Limitation
