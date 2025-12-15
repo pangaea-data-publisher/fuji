@@ -21,10 +21,12 @@ class IdentifierHelper:
         "bioproject": {"label": "BioProject ID", "source": "identifiers.org"},
         "biosample": {"label": "BioSample ID", "source": "identifiers.org"},
         "doi": {"label": "Digital Object Identifier (DOI)", "source": "datacite.org"},
+        "dpid": {"label": "Decentralized Persistent Identifier (dPID)", "source": "dpid.org"},
         "ensembl": {"label": "Ensembl ID", "source": "identifiers.org"},
         "genome": {"label": "GenBank or RefSeq genome", "source": "identifiers.org"},
         "gnd": {"label": "Gemeinsame Normdatei (GND) ID", "source": "f-uji.net"},
         "handle": {"label": "Handle System ID", "source": "datacite.org"},
+        "ipfs": {"label": "InterPlanetary File System Content Identifier (IPFS CID)", "source": "ipfs.io"},
         "lsid": {"label": "Life Science Identifier", "source": "datacite.org"},
         "pmid": {"label": "PubMed ID", "source": "datacite.org"},
         "pmcid": {"label": "PubMed Central ID", "source": "identifiers.org"},
@@ -36,6 +38,10 @@ class IdentifierHelper:
         "identifiers.org": {"label": "Identifiers.org Identifier", "source": "identifiers.org"},
         "w3id": {"label": "Permanent Identifier for the Web (W3ID)", "source": "identifiers.org"},
     }
+    # IPFS gateway domains for CID resolution
+    IPFS_GATEWAYS = ["ipfs.io", "ipfs.desci.com", "dweb.link", "cloudflare-ipfs.com", "gateway.pinata.cloud"]
+    # dPID resolver domains (production and development)
+    DPID_DOMAINS = ["dpid.org", "beta.dpid.org", "dev.dpid.org", "localhost"]
     # identifiers.org pattern
     # TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS = r"https://identifiers.org/[provider_code/]namespace:accession"
@@ -125,6 +131,33 @@ class IdentifierHelper:
                         self.preferred_schema = "w3id"
                         self.identifier_url = self.identifier
                         self.normalized_id = self.identifier
+                    
+                    # dPID check - support dpid:// scheme and dpid.org URLs
+                    elif self.is_dpid():
+                        dpid_id = self.extract_dpid_id()
+                        if dpid_id:
+                            self.identifier_schemes = ["dpid", "url"]
+                            self.preferred_schema = "dpid"
+                            # For localhost URLs, keep the original URL (local testing)
+                            # For production, normalize to canonical dpid.org URL
+                            if "localhost" in self.identifier or "127.0.0.1" in self.identifier:
+                                self.identifier_url = self.identifier
+                            else:
+                                self.identifier_url = f"https://dpid.org/{dpid_id}"
+                            self.normalized_id = f"dpid://{dpid_id}"
+                            self.is_persistent = True
+                    
+                    # IPFS CID check - support ipfs:// scheme and IPFS gateway URLs
+                    elif self.is_ipfs_cid():
+                        cid = self.extract_ipfs_cid()
+                        if cid:
+                            self.identifier_schemes = ["ipfs", "url"]
+                            self.preferred_schema = "ipfs"
+                            # Use ipfs.io as the canonical gateway for resolution
+                            self.identifier_url = f"https://ipfs.io/ipfs/{cid}"
+                            self.normalized_id = f"ipfs://{cid}"
+                            self.is_persistent = True
+                    
                     # identifiers.org
 
                     elif idparts.netloc == "identifiers.org":
@@ -205,6 +238,141 @@ class IdentifierHelper:
             return validhash
         except Exception:
             return False
+
+    def is_dpid(self):
+        """Check if the identifier is a dPID (Decentralized Persistent Identifier).
+        
+        Supports:
+        - dpid:// scheme (e.g., dpid://500, dpid://beta/500)
+        - dpid.org URLs (e.g., https://dpid.org/500, https://beta.dpid.org/500)
+        - localhost with port (e.g., http://localhost:5460/500)
+        """
+        if not self.identifier:
+            return False
+        try:
+            # Check for dpid:// scheme
+            if self.identifier.startswith("dpid://"):
+                return True
+            
+            # Check for dpid.org URLs
+            idparts = urllib.parse.urlparse(self.identifier)
+            netloc = idparts.netloc.lower()
+            # Remove port if present for comparison
+            netloc_no_port = netloc.split(":")[0]
+            
+            if netloc_no_port in self.DPID_DOMAINS or netloc_no_port.endswith(".dpid.org"):
+                # Check that there's a path with an ID
+                path = idparts.path.strip("/")
+                if path and (path.isdigit() or re.match(r"^\d+(/v\d+)?$", path)):
+                    return True
+            return False
+        except Exception:
+            return False
+
+    def extract_dpid_id(self):
+        """Extract the dPID number from a dPID URL or scheme.
+        
+        Returns the dPID ID (e.g., "500" from "https://dpid.org/500" or "dpid://500")
+        """
+        if not self.identifier:
+            return None
+        try:
+            # Handle dpid:// scheme
+            if self.identifier.startswith("dpid://"):
+                # dpid://500 or dpid://beta/500
+                parts = self.identifier[7:].split("/")
+                # Filter out environment prefixes like 'beta', 'dev'
+                for part in parts:
+                    if part.isdigit():
+                        return part
+                return parts[-1] if parts else None
+            
+            # Handle HTTP URLs
+            idparts = urllib.parse.urlparse(self.identifier)
+            path = idparts.path.strip("/")
+            # Extract numeric ID, handling version suffixes like /v1
+            match = re.match(r"^(\d+)(?:/v\d+)?$", path)
+            if match:
+                return match.group(1)
+            return path if path.isdigit() else None
+        except Exception:
+            return None
+
+    def is_ipfs_cid(self):
+        """Check if the identifier is an IPFS Content Identifier (CID).
+        
+        Supports:
+        - ipfs:// scheme (e.g., ipfs://bafybeic...)
+        - IPFS gateway URLs (e.g., https://ipfs.io/ipfs/bafybeic...)
+        - Raw CIDv0 (Qm...) and CIDv1 (bafy...) identifiers
+        """
+        if not self.identifier:
+            return False
+        try:
+            # CIDv0 pattern: starts with 'Qm' followed by 44 base58 chars (total 46 chars)
+            cidv0_pattern = r"^Qm[1-9A-HJ-NP-Za-km-z]{44}$"
+            # CIDv1 pattern: starts with 'bafy' or 'bafk' followed by base32 chars
+            cidv1_pattern = r"^baf[yk][a-z2-7]{50,}$"
+            
+            # Check for ipfs:// scheme
+            if self.identifier.startswith("ipfs://"):
+                cid = self.identifier[7:].split("/")[0]
+                return bool(re.match(cidv0_pattern, cid) or re.match(cidv1_pattern, cid))
+            
+            # Check for IPFS gateway URLs
+            idparts = urllib.parse.urlparse(self.identifier)
+            netloc = idparts.netloc.lower()
+            path = idparts.path
+            
+            # Check if it's an IPFS gateway URL
+            if any(gateway in netloc for gateway in self.IPFS_GATEWAYS) or "/ipfs/" in path:
+                # Extract CID from path
+                if "/ipfs/" in path:
+                    cid = path.split("/ipfs/")[1].split("/")[0]
+                    return bool(re.match(cidv0_pattern, cid) or re.match(cidv1_pattern, cid))
+            
+            # Check if raw identifier is a CID
+            raw_id = self.identifier.strip()
+            return bool(re.match(cidv0_pattern, raw_id) or re.match(cidv1_pattern, raw_id))
+            
+        except Exception:
+            return False
+
+    def extract_ipfs_cid(self):
+        """Extract the IPFS CID from an IPFS URL, scheme, or raw identifier.
+        
+        Returns the CID (e.g., "bafybeic..." from "https://ipfs.io/ipfs/bafybeic...")
+        """
+        if not self.identifier:
+            return None
+        try:
+            # CIDv0 pattern
+            cidv0_pattern = r"(Qm[1-9A-HJ-NP-Za-km-z]{44})"
+            # CIDv1 pattern
+            cidv1_pattern = r"(baf[yk][a-z2-7]{50,})"
+            
+            # Handle ipfs:// scheme
+            if self.identifier.startswith("ipfs://"):
+                cid = self.identifier[7:].split("/")[0]
+                return cid
+            
+            # Handle IPFS gateway URLs
+            if "/ipfs/" in self.identifier:
+                parts = self.identifier.split("/ipfs/")
+                if len(parts) > 1:
+                    cid = parts[1].split("/")[0]
+                    return cid
+            
+            # Check if raw identifier is a CID
+            raw_id = self.identifier.strip()
+            if re.match(cidv0_pattern, raw_id):
+                return re.match(cidv0_pattern, raw_id).group(1)
+            if re.match(cidv1_pattern, raw_id):
+                return re.match(cidv1_pattern, raw_id).group(1)
+            
+            return None
+        except Exception:
+            return None
 
     def verify_handle(self, val, includeparams=True):
         # additional checks for handles since the syntax is very generic
