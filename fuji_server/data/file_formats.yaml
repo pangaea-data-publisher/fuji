@@ -963,6 +963,7 @@ mpeg_2_file_format:
   - video/x-mpeg2a
   - video/mpeg2
   - video/mp2t
+  - video/x-mpeg2
   - application/x-pn-mpg
   name: MPEG-2 File Format
   reason:
@@ -1018,6 +1019,7 @@ mpeg_file_format:
   - video/mp1s
   - audio/mpeg
   - application/x-pn-mpg
+  - video/x-mpeg1
   name: MPEG File Format
   reason:
   - long term format
