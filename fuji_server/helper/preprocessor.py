@@ -424,8 +424,12 @@ class Preprocessor:
         prf_path = cls.data_dir / "doi_prefixes.tsv"
         with open(prf_path) as f:
             for line in f:
-                key, value = line.strip().split("\t")
-                data[key] = value
+                try:
+                    if "\t" in line:
+                        key, value = line.strip().split("\t")
+                        data[key] = value
+                except:
+                    pass
         if data:
             cls.doi_prefixes = data
 
