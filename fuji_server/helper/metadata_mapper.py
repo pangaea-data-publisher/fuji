@@ -486,45 +486,153 @@ class Mapper(Enum):
     # CLARIN CMDI
     # check https://office.clarin.eu/v/CE-2016-0880-CMDI_12_specification.pdf
     # most metadata starts at "Components" but depends on many, many separate specs (profiles & components)
+    # more than CLARIN 150 profiles are listed here: https://curation.clarin.eu/profile
+    # see also https://aclanthology.org/L16-1395.pdf the authors conclude: 'The framework character of CMDI prevents us from defining a general mapping of CMDI-based metadata to bibliographic standards such as DC'
+    # This mapping therefore is a simplification and will only check the most widely used metadata components
     # Used here: Clarin core components mappings: https://github.com/clarin-eric/VLO-mapping/blob/master/mapping/facetConcepts.xml
     XML_MAPPING_CMD = {
         "object_identifier": {"path": [".//{*}Header/{*}MdSelfLink"]},
-        "object_type": {"path": [".//{*}Components//{*}ResourceType/{*}label"]},
-        "title": {
+        "object_type": {
             "path": [
-                ".//{*}Components//{*}TitleInfo/{*}title",
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}type",
+                ".//{*}Components//{*}DcmiTerms/{*}type",
+                ".//{*}Components//{*}ResourceType/{*}label"
+                ".//{*}Components//{*}dataInfo/{*}type"
+                ".//{*}Components/*[1]/{*}type",
+                "./{*}Header/{*}MdProfile",
             ]
         },
-        "summary": {"path": [".//{*}Components//{*}Description/{*}description"]},
-        "keywords": {"path": [".//{*}Components//{*}Subject/{*}label", ".//{*}Components//{*}Keyword/{*}label"]},
+        "title": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}title",
+                ".//{*}Components//{*}DcmiTerms/{*}title",
+                ".//{*}Components//{*}teiHeader/{*}titleStmt/{*}title",
+                ".//{*}Components//{*}bibliographicInfo/{*}titles/{*}title",
+                ".//{*}Components//{*}DataCiteRecord/{*}TitleInfo/{*}title",
+                ".//{*}Components/*[1]/{*}Title",  # first child of compoments => MPI lat-corpus, lat-session
+                ".//{*}Components/*[1]/{*}title",
+            ]
+        },
+        "summary": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}description",
+                ".//{*}Components//{*}DcmiTerms/{*}description",
+                ".//{*}Components//{*}teiHeader/{*}profileDesc/{*}abstract",
+                ".//{*}Components//{*}dataInfo/{*}description",
+                ".//{*}Components//{*}DataCiteRecord/{*}Description/{*}description",
+                ".//{*}Components/*[1]/{*}descriptions/{*}Description",  # MPI lat-corpus, lat-session
+                ".//{*}Components/*[1]/{*}description",
+                ".//{*}Components/*[1]/{*}Description",
+            ]
+        },
+        "keywords": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}subject",
+                ".//{*}Components//{*}DcmiTerms/{*}subject",
+                ".//{*}Components//{*}DataCiteRecord/{*}Subject/{*}label",
+                ".//{*}Components//{*}teiHeader/{*}profileDesc/{*}textClass/{*}classCode",
+                ".//{*}Components//{*}dataInfo/{*}keywords/{*}keyword",
+                ".//{*}Components//{*}Keyword/{*}label",
+                ".//{*}Components/*[1]/{*}Content/{*}Genre",
+                ".//{*}Components/*[1]/{*}Content/{*}SubGenre",
+                ".//{*}Components/*[1]/{*}Keys/{*}Key",
+                ".//{*}Components/*[1]/{*}subject",
+                ".//{*}Components/*[1]/{*}keyword",
+                ".//{*}Components/*[1]/{*}Subject",
+            ]
+        },
         "publication_date": {
             "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}date",
+                ".//{*}Components//{*}DcmiTerms/{*}date",
+                ".//{*}Components//{*}DataCiteRecord/{*}ProvenanceInfo/{*}Creation//{*}date",
+                ".//{*}Components//{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}date",
+                ".//{*}Components//bibliographicInfo/{*}dates/{*}dateIssued",
+                ".//{*}Components/*[1]/{*}date",
+                ".//{*}Components/*[1]/{*}Date",
+                ".//{*}Components/*[1]/{*}issued",
                 "./{*}Header/{*}MdCreationDate",
             ]
         },
         "creator": {
             "path": [
-                ".//{*}Components//{*}Creator/{*}label",
-                ".//{*}Components//{*}Creator/{*}AgentInfo/{*}PersonInfo/{*}name",
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}creator",
+                ".//{*}Components//{*}DcmiTerms/{*}creator",
+                ".//{*}Components//{*}DataCiteRecord/{*}Creator/{*}label",
+                ".//{*}Components//{*}teiHeader/{*}fileDesc/{*}titleStmt/{*}author",
+                ".//{*}Components//bibliographicInfo/{*}authors/{*}author",
+                ".//{*}Components/*[1]/{*}creator",
+                ".//{*}Components/*[1]/{*}Creator",
                 "./{*}Header/{*}MdCreator",
             ]
         },
-        "publisher": {"path": "./{*}Header/{*}MdCollectionDisplayName"},
+        "publisher": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}publisher",
+                ".//{*}Components//{*}DcmiTerms/{*}publisher",
+                ".//{*}Components//{*}DataCiteRecord/{*}Publisher/{*}name",
+                ".//{*}Components//{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}publisher",
+                ".//{*}Components//bibliographicInfo/{*}publishers/{*}publisher",
+                ".//{*}Components/*[1]/{*}publisher",
+                ".//{*}Components/*[1]/{*}Publisher",
+                "./{*}Header/{*}MdCollectionDisplayName",
+            ]
+        },
+        # ResourceProxyList is also referring to related metadata etc.
+        # Valid resource types are resource, landingpage, metadata, searchpage
+        # its content only if resource type = Resource
+        # TODO: make sure self-references (landing page == content) are avoided
+        # its partOf in case resource type = metadata
         "object_content_identifier_url": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceRef"
+            "path": [
+                "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceRef",
+                # ".//{*}Components/*[1]/MediaFile@@cmd:ref"
+            ]
         },
         "object_content_identifier_type": {
-            "path": "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceType@@mimetype"
+            "path": [
+                "./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Resource']/{*}ResourceType@@mimetype"
+            ]
         },
         "license": {
             "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}license",
+                ".//{*}Components//{*}DcmiTerms/{*}license",
+                ".//{*}Components//{*}DataCiteRecord/{*}Licence",  # label, identifier or
+                ".//{*}Components//{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability/{*}licence",
+                ".//{*}Components/*[1]/{*}licenseInfo/{*}license",
+                ".//{*}Components/*[1]/{*}license",
+                ".//{*}Components/*[1]/{*}licence",
+                ".//{*}Components/*[1]/{*}License",
                 ".//{*}Components//{*}licenceInfo//{*}licenceURL",
                 ".//{*}Components//{*}licenceInfo//{*}licenceName",
                 ".//{*}Components//{*}licenceInfo//{*}licenceFamily",
             ]
         },
-        "access_level": {"path": [".//{*}Components//{*}AccessInfo/{*}condition"]},
-        "language": {"path": ".//{*}Components//{*}Language/{*}code"},
+        "access_level": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}rights",
+                ".//{*}Components//{*}DcmiTerms/{*}rights",
+                ".//{*}Components//{*}DataCiteRecord/{*}AccessInfo/{*}accessRights"
+                ".//{*}Components//{*}teiHeader/{*}{*}publicationStmt/{*}availability@@status",
+                ".//{*}Components//{*}Access/{*}Availability",
+                ".//{*}Components/*[1]/{*}rights",
+                ".//{*}Components/*[1]/{*}Rights",
+                ".//{*}Components//{*}AccessInfo/{*}condition",
+            ]
+        },
+        "language": {
+            "path": [
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}language",
+                ".//{*}Components//{*}OLAC-DcmiTerms/{*}subject@@olac-language",
+                ".//{*}Components//{*}DcmiTerms/{*}language",
+                ".//{*}Components//{*}teiHeader/{*}profileDesc/{*}langUsage/{*}language",
+                ".//{*}Components//{*}dataInfo/{*}languages/{*}language",
+                ".//{*}Components/*[1]/{*}Content/{*}Content_Languages/{*}Content_Language",  # MPI lat-corpus, lat-session
+                ".//{*}Components/*[1]/{*}language",
+                ".//{*}Components//{*}Language/{*}code",
+            ]
+        },
         "related_resource_isPartOf": {"path": [".//{*}Resources//{*}IsPartOf"]},
         "related_resource_hasPart": {
             "path": ["./{*}Resources/{*}ResourceProxyList/{*}ResourceProxy[{*}ResourceType='Metadata']/{*}ResourceRef"]
