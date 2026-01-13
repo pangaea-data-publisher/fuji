@@ -303,6 +303,31 @@ class RequestHelper:
                 self.logger.warning(f"{metric_id} : Request Failed -: {e!s} : {self.request_url}")
         return tp_response
 
+    def render_page(self, metric_id=""):
+        # render page using Javascript
+        self.logger.warning(
+            f"{metric_id} : Trying to render JS generated page using a headless browser, this may not be supported by other FAIR expecting clients"
+        )
+        try:
+            url = self.request_url
+            if self.redirect_url:
+                url = self.redirect_url
+            context = Preprocessor.browser.new_context()
+            page = context.new_page()
+            # Navigate to the URL (this executes JS)
+            page.goto(url, wait_until="networkidle")
+            page.wait_for_timeout(1000)  # wait 1 second
+            # Get the final rendered HTML
+            rendered_html = page.content()
+            self.response_content = rendered_html
+        except Exception as e:
+            self.logger.warning(
+                f"{metric_id} : Rendering JS generated page using headless browser failed -: {e!s} : {self.request_url}"
+            )
+
+        page.close()
+        context.close()
+
     def handle_content(self, tp_response, metric_id, ignore_html):
         format = MetadataFormats.HTML
         status_code = None

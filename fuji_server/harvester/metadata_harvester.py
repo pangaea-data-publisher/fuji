@@ -674,6 +674,7 @@ class MetadataHarvester:
 
     def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
+        ret = False
         try:
             soup = BeautifulSoup(response_content, features="html.parser")
             script_content = soup.findAll("script")
@@ -690,7 +691,22 @@ class MetadataHarvester:
                     + " : Landing page seems to be CAPTCHA protected, probably could not detect enough content"
                 )
 
-            if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150:
+            meta_refresh = soup.find("meta", attrs={"http-equiv": re.compile(r"refresh", re.I)})
+            if meta_refresh:
+                content_attr = meta_refresh.get("content", "")
+                match = re.search(r"URL=(.+)", content_attr, re.I)
+                redirect_url = match.group(1) if match else None
+                if redirect_url:
+                    self.logger.warning(
+                        self.logger_target.get("pid")
+                        + f" : Landing page contains a meta-refresh redirect to {redirect_url}"
+                    )
+                    self.logger.warning(
+                        self.logger_target.get("metadata_properties")
+                        + f" : Landing page contains a meta-refresh redirect to {redirect_url}"
+                    )
+
+            if (len(str(script_content)) > len(str(text_content))) and len(text_content) <= 150 and not meta_refresh:
                 self.logger.warning(
                     self.logger_target.get("pid")
                     + " : Landing page seems to be JavaScript generated, could not detect enough content"
@@ -699,9 +715,11 @@ class MetadataHarvester:
                     self.logger_target.get("metadata_properties")
                     + " : Landing page seems to be JavaScript generated, could not detect enough content"
                 )
+                ret = True
 
         except Exception:
             pass
+        return ret
 
     def clean_html_language_tag(self, response_content):
         # avoid RDFa errors
@@ -838,7 +856,8 @@ class MetadataHarvester:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
                     if "html" in requestHelper.content_type:
-                        self.raise_warning_if_javascript_page(requestHelper.response_content)
+                        if self.raise_warning_if_javascript_page(requestHelper.response_content):
+                            requestHelper.render_page()
                     up = urlparse(self.landing_url)
                     upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"

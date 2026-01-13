@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+from playwright.sync_api import sync_playwright
 
 import yaml
 from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
@@ -65,6 +66,7 @@ class Preprocessor:
     google_custom_search_id = None
     google_custom_search_api_key = None
     doi_prefixes = {}
+    browser = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -551,3 +553,12 @@ class Preprocessor:
             with open(prf_path, "a+") as f:
                 f.write("\n" + prefix + "\t" + authority)
         return True
+
+    @classmethod
+    def init_browser(cls):
+        try:
+            if not cls.browser:
+                playwright = sync_playwright().start()
+                cls.browser = playwright.chromium.launch(headless=True)
+        except Exception as e:
+            cls.logger.error("Loading headless browser failed: " + str(e))

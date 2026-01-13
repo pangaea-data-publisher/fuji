@@ -42,6 +42,9 @@ def main():
     preproc.retrieve_licenses(isDebug)
     preproc.retrieve_datacite_re3repos()
 
+    logger.info("Loading Headless Browser")
+    preproc.init_browser()
+
     preproc.retrieve_metadata_standards()
     # preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, bioportal_api=BIOPORTAL_REST, bioportal_key=BIOPORTAL_APIKEY, isDebugMode=False)
     # preproc.retrieve_linkedvocabs(lov_api=LOV_API, lodcloud_api=LOD_CLOUDNET, isDebugMode=isDebug)
