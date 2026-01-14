@@ -80,7 +80,7 @@ async def assess_by_id(body):
                 ft.logger.removeHandler(ft.weblogger)
         print("F-UJI Version: ", ft.FUJI_VERSION)
         print("starting harvesting ")
-        ft.harvest_all_metadata()
+        await ft.harvest_all_metadata()
         ft.set_harvested_metadata()
         if ft.repeat_pid_check:
             ft.retrieve_metadata_external(ft.pid_url, repeat_mode=True)
@@ -261,7 +261,7 @@ async def assess_by_id(body):
             return rdf, 200, {"content-type": connexion.request.headers.get("Accept")}
         # Standard JSON
         elif connexion.request.headers.get("Accept") in ["application/json", "*/*"]:
-            return final_response, 200, {"content-type": "application/json"}
+            return final_response.to_dict(), 200, {"content-type": "application/json"}
         else:
             return "", 400, {"content-type": "application/json"}
     else:
