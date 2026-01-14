@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
-
 import logging
 import mimetypes
 import time
@@ -9,7 +8,6 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
-from playwright.sync_api import sync_playwright
 
 import yaml
 from fuji_server.helper.linked_vocab_helper import LinkedVocabHelper
@@ -57,6 +55,15 @@ class Preprocessor:
     data_dir = fuji_server_dir / "data"
     header = {"Accept": "application/json"}
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)  # allow debug+ messages
+
+    if not logger.hasHandlers():
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        ch.setFormatter(formatter)
+        logger.addHandler(ch)
+
     data_files_limit = 3
     metric_specification = None
     remote_log_host = None
@@ -553,12 +560,3 @@ class Preprocessor:
             with open(prf_path, "a+") as f:
                 f.write("\n" + prefix + "\t" + authority)
         return True
-
-    @classmethod
-    def init_browser(cls):
-        try:
-            if not cls.browser:
-                playwright = sync_playwright().start()
-                cls.browser = playwright.chromium.launch(headless=True)
-        except Exception as e:
-            cls.logger.error("Loading headless browser failed: " + str(e))
