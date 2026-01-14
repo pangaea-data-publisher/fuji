@@ -230,9 +230,6 @@ components:
         end_timestamp:
           type: string
           format: date-time
-        expiry_timestamp:
-          type: string
-          format: date-time
         metric_specification:
           type: string
           format: uri

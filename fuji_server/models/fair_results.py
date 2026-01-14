@@ -25,7 +25,6 @@ class FAIRResults(Model):
         resolved_url: str | None = None,
         start_timestamp: datetime | None = None,
         end_timestamp: datetime | None = None,
-        expiry_timestamp: datetime | None = None,
         metric_specification: str | None = None,
         metric_version: str | None = None,
         software_version: str | None = None,
@@ -46,8 +45,6 @@ class FAIRResults(Model):
         :type start_timestamp: datetime
         :param end_timestamp: The end_timestamp of this FAIRResults.  # noqa: E501
         :type end_timestamp: datetime
-        :param expiry_timestamp: The expiry_timestamp of this FAIRResults.  # noqa: E501
-        :type expiry_timestamp: datetime
         :param metric_specification: The metric_specification of this FAIRResults.  # noqa: E501
         :type metric_specification: str
         :param metric_version: The metric_version of this FAIRResults.  # noqa: E501
@@ -69,7 +66,6 @@ class FAIRResults(Model):
             "resolved_url": str,
             "start_timestamp": datetime,
             "end_timestamp": datetime,
-            "expiry_timestamp": datetime,
             "metric_specification": str,
             "metric_version": str,
             "software_version": str,
@@ -85,7 +81,6 @@ class FAIRResults(Model):
             "resolved_url": "resolved_url",
             "start_timestamp": "start_timestamp",
             "end_timestamp": "end_timestamp",
-            "expiry_timestamp": "expiry_timestamp",
             "metric_specification": "metric_specification",
             "metric_version": "metric_version",
             "software_version": "software_version",
@@ -99,7 +94,6 @@ class FAIRResults(Model):
         self._resolved_url = resolved_url
         self._start_timestamp = start_timestamp
         self._end_timestamp = end_timestamp
-        self._expiry_timestamp = expiry_timestamp
         self._metric_specification = metric_specification
         self._metric_version = metric_version
         self._software_version = software_version
@@ -223,27 +217,6 @@ class FAIRResults(Model):
         """
 
         self._end_timestamp = end_timestamp
-
-    @property
-    def expiry_timestamp(self) -> datetime:
-        """Gets the expiry_timestamp of this FAIRResults.
-
-
-        :return: The expiry_timestamp of this FAIRResults.
-        :rtype: datetime
-        """
-        return self._expiry_timestamp
-
-    @expiry_timestamp.setter
-    def expiry_timestamp(self, expiry_timestamp: datetime):
-        """Sets the expiry_timestamp of this FAIRResults.
-
-
-        :param expiry_timestamp: The expiry_timestamp of this FAIRResults.
-        :type expiry_timestamp: datetime
-        """
-
-        self._expiry_timestamp = expiry_timestamp
 
     @property
     def metric_specification(self) -> str:
