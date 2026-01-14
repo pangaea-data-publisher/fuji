@@ -369,9 +369,9 @@ class FAIRCheck:
             if mv == "" or mv is None:
                 del self.metadata_merged[mk]
 
-    def harvest_all_metadata(self):
+    async def harvest_all_metadata(self):
         # ========= clean merged metadata, delete all entries which are None or ''
-        self.retrieve_metadata_embedded()
+        await self.retrieve_metadata_embedded()
         self.retrieve_metadata_external()
         self.logger.info(
             "FsF-F2-01M : Type of object described by the metadata -: {}".format(
@@ -419,8 +419,8 @@ class FAIRCheck:
             for m in ["FRSM-15-R1.1"]:
                 self.logger.warning(f"{m} : Github support disabled, therefore skipping harvesting through Github API")
 
-    def retrieve_metadata_embedded(self):
-        self.metadata_harvester.retrieve_metadata_embedded()
+    async def retrieve_metadata_embedded(self):
+        await self.metadata_harvester.retrieve_metadata_embedded()
         # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
         # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
