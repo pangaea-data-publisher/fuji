@@ -781,7 +781,7 @@ class MetadataHarvester:
             print("NO LANDING HTML")
         return extracted
 
-    def retrieve_metadata_embedded(self):
+    async def retrieve_metadata_embedded(self):
         # print('EMBEDDED #############')
         # ======= RETRIEVE METADATA FROM LANDING PAGE =======
         response_status = None
@@ -855,15 +855,15 @@ class MetadataHarvester:
         if self.landing_url:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
                 if response_status == 200:
-                    if "html" in requestHelper.content_type:
-                        if self.raise_warning_if_javascript_page(requestHelper.response_content):
-                            requestHelper.render_page()
                     up = urlparse(self.landing_url)
                     upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
                     self.landing_domain = upp.domain + "." + upp.suffix
                     if self.is_html_page:
                         self.landing_html = requestHelper.getResponseContent()
+                        # check if page was JS generated, if so use a headless browser and replace the html to investigate
+                        if self.raise_warning_if_javascript_page(requestHelper.response_content):
+                            self.landing_html = await requestHelper.render_page()
                     self.landing_content_type = requestHelper.content_type
                     self.landing_redirect_list = requestHelper.redirect_list
                     self.landing_redirect_status_list = requestHelper.redirect_status_list
@@ -980,190 +980,17 @@ class MetadataHarvester:
                         )
 
                     # ========= retrieve dublin core embedded in html page =========
-                    self.logger.info(
-                        self.logger_target.get("metadata_properties")
-                        + " : Trying to retrieve Dublin Core metadata from html page"
-                    )
-                    dc_collector = MetaDataCollectorDublinCore(
-                        loggerinst=self.logger, sourcemetadata=self.landing_html, mapping=Mapper.DC_MAPPING
-                    )
-                    source_dc, dc_dict = dc_collector.parse_metadata()
-                    dc_dict = self.exclude_null(dc_dict)
-                    if dc_dict:
-                        self.namespace_uri.extend(dc_collector.namespaces)
-                        # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                        # self.metadata_sources.append((source_dc, 'embedded'))
-                        self.add_metadata_source(source_dc)
-                        # if dc_dict.get("related_resources"):
-                        #    self.related_resources.extend(dc_dict.get("related_resources"))
-                        self.merge_metadata(
-                            dc_dict,
-                            self.landing_url,
-                            source_dc,
-                            dc_collector.metadata_format,
-                            "text/html",
-                            "http://purl.org/dc/elements/1.1/",
-                            dc_collector.namespaces,
-                        )
-
-                        self.logger.log(
-                            self.LOG_SUCCESS,
-                            self.logger_target.get("metadata_properties")
-                            + " : Found DublinCore metadata -: "
-                            + str(dc_dict.keys()),
-                        )
-                    else:
-                        self.logger.info(
-                            self.logger_target.get("metadata_properties") + " : DublinCore metadata UNAVAILABLE"
-                        )
+                    self.extract_embedded_dublin_core(self.landing_html)
 
                     # ========= retrieve embedded rdfa and microdata metadata ========
 
-                    self.logger.info(
-                        self.logger_target.get("metadata_properties")
-                        + " : Trying to retrieve Microdata metadata from html page"
-                    )
+                    self.extract_embedded_rdfa(self.landing_html)
+                    self.extract_embedded_microdata(extruct_metadata)
 
-                    micro_meta = extruct_metadata.get("microdata")
-                    microdata_collector = MetaDataCollectorMicroData(
-                        loggerinst=self.logger, sourcemetadata=micro_meta, mapping=Mapper.MICRODATA_MAPPING
-                    )
-                    source_micro, micro_dict = microdata_collector.parse_metadata()
-                    if micro_dict:
-                        # self.metadata_sources.append((source_micro, 'embedded'))
-                        self.add_metadata_source(source_micro)
-                        self.namespace_uri.extend(microdata_collector.getNamespaces())
-                        micro_dict = self.exclude_null(micro_dict)
-                        self.merge_metadata(
-                            micro_dict,
-                            self.landing_url,
-                            source_micro,
-                            microdata_collector.metadata_format,
-                            "text/html",
-                            "http://www.w3.org/TR/microdata",
-                            microdata_collector.getNamespaces(),
-                        )
-                        self.logger.log(
-                            self.LOG_SUCCESS,
-                            self.logger_target.get("metadata_properties")
-                            + " : Found microdata metadata -: "
-                            + str(micro_dict.keys()),
-                        )
-
-                    # ================== RDFa
-                    self.logger.info(
-                        self.logger_target.get("metadata_properties")
-                        + " : Trying to retrieve RDFa metadata from html page"
-                    )
-                    rdfasource = MetadataSources.RDFA_EMBEDDED
-                    try:
-                        rdfa_dict = {}
-                        rdflib_logger = logging.getLogger("rdflib")
-                        rdflib_logger.setLevel(logging.ERROR)
-                        try:
-                            rdfa_html = self.landing_html.decode("utf-8")
-                        except Exception:
-                            rdfa_html = self.landing_html
-                            pass
-                        rdfa_html = self.clean_html_language_tag(rdfa_html)
-                        rdfabuffer = io.StringIO(rdfa_html)
-                        # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
-                        # https://github.com/RDFLib/rdflib/discussions/1582
-
-                        rdfa_graph = pyRdfa(media_type="text/html").graph_from_source(rdfabuffer)
-                        # rdfa_graph = rdflib.Graph().parse(data=rdfa_html, format='rdfa')
-                        # filter rdfagraph drop images
-                        clean_rdfa_graph = rdflib.Graph()
-                        img_triple_found = False
-                        image_suffix = [".jpg", ".jpeg", ".png", ".tif", ".gif", ".svg", ".png"]
-                        for s, o, p in list(rdfa_graph):
-                            if not any(x in s for x in image_suffix):
-                                clean_rdfa_graph.add((s, o, p))
-                            else:
-                                img_triple_found
-                        if img_triple_found:
-                            self.logger.info(
-                                self.logger_target.get("metadata_properties")
-                                + " : Ignoring RDFa triples indicating image links in HTML"
-                            )
-                        rdfa_graph = clean_rdfa_graph
-                        rdfa_collector = MetaDataCollectorRdf(
-                            loggerinst=self.logger, target_url=self.landing_url, source=rdfasource
-                        )
-                        try:
-                            rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
-                        except Exception as e:
-                            print("RDFa Graph error: ", e)
-                        if len(rdfa_dict) > 0:
-                            # self.metadata_sources.append((rdfasource, 'embedded'))
-                            self.add_metadata_source(rdfasource)
-                            self.namespace_uri.extend(rdfa_collector.getNamespaces())
-                            # rdfa_dict['object_identifier']=self.pid_url
-                            rdfa_dict = self.exclude_null(rdfa_dict)
-                            # print(method, url, offering_method, format, mimetype, schema)
-
-                            self.merge_metadata(
-                                rdfa_dict,
-                                self.landing_url,
-                                rdfasource,
-                                rdfa_collector.metadata_format,
-                                rdfa_collector.getContentType(),
-                                rdfa_collector.main_entity_format,
-                                rdfa_collector.getNamespaces(),
-                            )
-
-                            self.logger.log(
-                                self.LOG_SUCCESS,
-                                self.logger_target.get("metadata_properties")
-                                + " : Found RDFa metadata -: "
-                                + str(rdfa_dict.keys()),
-                            )
-                    except Exception as e:
-                        print("RDFa parsing error", str(e))
-                        self.logger.info(
-                            self.logger_target.get("metadata_properties")
-                            + " : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:"
-                            + str(e)
-                        )
                     # ========= retrieve highwire and eprints embedded in html page =========
-                    self.logger.info(
-                        self.logger_target.get("metadata_properties")
-                        + " : Trying to retrieve Highwire and eprints metadata from html page"
-                    )
-                    hw_collector = MetaDataCollectorHighwireEprints(
-                        loggerinst=self.logger, sourcemetadata=self.landing_html
-                    )
-                    source_hw, hw_dict = hw_collector.parse_metadata()
-                    hw_metaformat = hw_collector.metadata_format
-                    hw_dict = self.exclude_null(hw_dict)
-                    if hw_dict:
-                        self.namespace_uri.extend(hw_collector.namespaces)
-                        # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
-                        self.add_metadata_source(source_hw)
-                        # self.metadata_sources.append((source_hw, 'embedded'))
-                        # if hw_dict.get("related_resources"):
-                        #    self.related_resources.extend(hw_dict.get("related_resources"))
-                        self.merge_metadata(
-                            hw_dict,
-                            self.landing_url,
-                            source_hw,
-                            hw_metaformat,
-                            "text/html",
-                            "highwire_eprints",
-                            hw_collector.namespaces,
-                        )
 
-                        self.logger.log(
-                            self.LOG_SUCCESS,
-                            self.logger_target.get("metadata_properties")
-                            + " : Found Highwire or eprints metadata -: "
-                            + str(hw_dict.keys()),
-                        )
-                    else:
-                        self.logger.info(
-                            self.logger_target.get("metadata_properties")
-                            + " : Highwire or eprints metadata UNAVAILABLE"
-                        )
+                    self.extract_embedded_highwire(self.landing_html)
+
                     # ======== retrieve OpenGraph metadata
                     self.logger.info(
                         self.logger_target.get("metadata_properties")
@@ -1552,13 +1379,6 @@ class MetadataHarvester:
                 html_typed_links = self.get_html_typed_links(["meta", "alternate meta", "metadata", "alternate"], False)
                 if html_typed_links:
                     connected_metadata_links.extend(html_typed_links)
-            """if 'guessed' in allowedmethods:
-                guessed_metadata_link = self.get_guessed_xml_link()
-                href_metadata_links = self.get_html_xml_links()
-                if href_metadata_links:
-                    connected_metadata_links.extend(href_metadata_links)
-                if guessed_metadata_link is not None:
-                    connected_metadata_links.append(guessed_metadata_link)"""
         return connected_metadata_links
 
     def retrieve_metadata_external_linked_metadata(self):
@@ -1834,3 +1654,184 @@ class MetadataHarvester:
                 "catalogue": metadatacatalogids,
             }
         return metadata_standard_info
+
+    ##################### embedded metadata extractors from html
+
+    def extract_embedded_dublin_core(self, html):
+        self.logger.info(
+            self.logger_target.get("metadata_properties") + " : Trying to retrieve Dublin Core metadata from html page"
+        )
+        dc_collector = MetaDataCollectorDublinCore(
+            loggerinst=self.logger, sourcemetadata=html, mapping=Mapper.DC_MAPPING
+        )
+        source_dc, dc_dict = dc_collector.parse_metadata()
+        dc_dict = self.exclude_null(dc_dict)
+        if dc_dict:
+            self.namespace_uri.extend(dc_collector.namespaces)
+            # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+            # self.metadata_sources.append((source_dc, 'embedded'))
+            self.add_metadata_source(source_dc)
+            # if dc_dict.get("related_resources"):
+            #    self.related_resources.extend(dc_dict.get("related_resources"))
+            self.merge_metadata(
+                dc_dict,
+                self.landing_url,
+                source_dc,
+                dc_collector.metadata_format,
+                "text/html",
+                "http://purl.org/dc/elements/1.1/",
+                dc_collector.namespaces,
+            )
+
+            self.logger.log(
+                self.LOG_SUCCESS,
+                self.logger_target.get("metadata_properties")
+                + " : Found DublinCore metadata -: "
+                + str(dc_dict.keys()),
+            )
+        else:
+            self.logger.info(self.logger_target.get("metadata_properties") + " : DublinCore metadata UNAVAILABLE")
+
+    def extract_embedded_highwire(self, html):
+        self.logger.info(
+            self.logger_target.get("metadata_properties")
+            + " : Trying to retrieve Highwire and eprints metadata from html page"
+        )
+        hw_collector = MetaDataCollectorHighwireEprints(loggerinst=self.logger, sourcemetadata=html)
+        source_hw, hw_dict = hw_collector.parse_metadata()
+        hw_metaformat = hw_collector.metadata_format
+        hw_dict = self.exclude_null(hw_dict)
+        if hw_dict:
+            self.namespace_uri.extend(hw_collector.namespaces)
+            # not_null_dc = [k for k, v in dc_dict.items() if v is not None]
+            self.add_metadata_source(source_hw)
+            # self.metadata_sources.append((source_hw, 'embedded'))
+            # if hw_dict.get("related_resources"):
+            #    self.related_resources.extend(hw_dict.get("related_resources"))
+            self.merge_metadata(
+                hw_dict,
+                self.landing_url,
+                source_hw,
+                hw_metaformat,
+                "text/html",
+                "highwire_eprints",
+                hw_collector.namespaces,
+            )
+
+            self.logger.log(
+                self.LOG_SUCCESS,
+                self.logger_target.get("metadata_properties")
+                + " : Found Highwire or eprints metadata -: "
+                + str(hw_dict.keys()),
+            )
+        else:
+            self.logger.info(
+                self.logger_target.get("metadata_properties") + " : Highwire or eprints metadata UNAVAILABLE"
+            )
+
+    def extract_embedded_microdata(self, extruct_metadata):
+        self.logger.info(
+            self.logger_target.get("metadata_properties") + " : Trying to retrieve Microdata metadata from html page"
+        )
+
+        micro_meta = extruct_metadata.get("microdata")
+        microdata_collector = MetaDataCollectorMicroData(
+            loggerinst=self.logger, sourcemetadata=micro_meta, mapping=Mapper.MICRODATA_MAPPING
+        )
+        source_micro, micro_dict = microdata_collector.parse_metadata()
+        if micro_dict:
+            # self.metadata_sources.append((source_micro, 'embedded'))
+            self.add_metadata_source(source_micro)
+            self.namespace_uri.extend(microdata_collector.getNamespaces())
+            micro_dict = self.exclude_null(micro_dict)
+            self.merge_metadata(
+                micro_dict,
+                self.landing_url,
+                source_micro,
+                microdata_collector.metadata_format,
+                "text/html",
+                "http://www.w3.org/TR/microdata",
+                microdata_collector.getNamespaces(),
+            )
+            self.logger.log(
+                self.LOG_SUCCESS,
+                self.logger_target.get("metadata_properties")
+                + " : Found microdata metadata -: "
+                + str(micro_dict.keys()),
+            )
+
+    def extract_embedded_rdfa(self, html):
+        # ================== RDFa
+        self.logger.info(
+            self.logger_target.get("metadata_properties") + " : Trying to retrieve RDFa metadata from html page"
+        )
+        rdfasource = MetadataSources.RDFA_EMBEDDED
+        try:
+            rdfa_dict = {}
+            rdflib_logger = logging.getLogger("rdflib")
+            rdflib_logger.setLevel(logging.ERROR)
+            try:
+                rdfa_html = html.decode("utf-8")
+            except Exception:
+                rdfa_html = html
+                pass
+            rdfa_html = self.clean_html_language_tag(rdfa_html)
+            rdfabuffer = io.StringIO(rdfa_html)
+            # rdflib is no longer supporting RDFa: https://stackoverflow.com/questions/68500028/parsing-htmlrdfa-in-rdflib
+            # https://github.com/RDFLib/rdflib/discussions/1582
+
+            rdfa_graph = pyRdfa(media_type="text/html").graph_from_source(rdfabuffer)
+            # rdfa_graph = rdflib.Graph().parse(data=rdfa_html, format='rdfa')
+            # filter rdfagraph drop images
+            clean_rdfa_graph = rdflib.Graph()
+            img_triple_found = False
+            image_suffix = [".jpg", ".jpeg", ".png", ".tif", ".gif", ".svg", ".png"]
+            for s, o, p in list(rdfa_graph):
+                if not any(x in s for x in image_suffix):
+                    clean_rdfa_graph.add((s, o, p))
+                else:
+                    img_triple_found
+            if img_triple_found:
+                self.logger.info(
+                    self.logger_target.get("metadata_properties")
+                    + " : Ignoring RDFa triples indicating image links in HTML"
+                )
+            rdfa_graph = clean_rdfa_graph
+            rdfa_collector = MetaDataCollectorRdf(
+                loggerinst=self.logger, target_url=self.landing_url, source=rdfasource
+            )
+            try:
+                rdfa_dict = rdfa_collector.get_metadata_from_graph(rdfa_graph)
+            except Exception as e:
+                print("RDFa Graph error: ", e)
+            if len(rdfa_dict) > 0:
+                # self.metadata_sources.append((rdfasource, 'embedded'))
+                self.add_metadata_source(rdfasource)
+                self.namespace_uri.extend(rdfa_collector.getNamespaces())
+                # rdfa_dict['object_identifier']=self.pid_url
+                rdfa_dict = self.exclude_null(rdfa_dict)
+                # print(method, url, offering_method, format, mimetype, schema)
+
+                self.merge_metadata(
+                    rdfa_dict,
+                    self.landing_url,
+                    rdfasource,
+                    rdfa_collector.metadata_format,
+                    rdfa_collector.getContentType(),
+                    rdfa_collector.main_entity_format,
+                    rdfa_collector.getNamespaces(),
+                )
+
+                self.logger.log(
+                    self.LOG_SUCCESS,
+                    self.logger_target.get("metadata_properties")
+                    + " : Found RDFa metadata -: "
+                    + str(rdfa_dict.keys()),
+                )
+        except Exception as e:
+            print("RDFa parsing error", str(e))
+            self.logger.info(
+                self.logger_target.get("metadata_properties")
+                + " : RDFa metadata parsing exception, probably no RDFa embedded in HTML -:"
+                + str(e)
+            )
