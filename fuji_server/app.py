@@ -3,44 +3,43 @@
 # SPDX-License-Identifier: MIT
 
 import json
-import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 import connexion
 from connexion.jsonifier import Jsonifier
-from connexion.middleware import MiddlewarePosition
-from starlette.middleware.cors import CORSMiddleware
-from werkzeug.middleware.proxy_fix import ProxyFix
 
-from fuji_server import encoder
+import yaml
+from fuji_server.helper.browser_manager import BrowserManager
+
+
+@asynccontextmanager
+async def lifespan(app):
+    # Startup
+    await BrowserManager.init_browser()
+    try:
+        yield
+    finally:
+        # Shutdown
+        await BrowserManager.stop_browser()
 
 
 def create_app(config):
-    """
-    Function which initializes the FUJI connexion flask app and returns it
-    """
-    # you can also use Tornado or gevent as the HTTP server, to do so set server to tornado or gevent
+    myjsonifier = Jsonifier(json, cls=None)
+
     ROOT_DIR = Path(__file__).parent
-    YAML_DIR = config["SERVICE"]["yaml_directory"]
-    myjsonifier = Jsonifier(json, cls=encoder.CustomJSONEncoder)
-    # app = connexion.FlaskApp(__name__, specification_dir=YAML_DIR, jsonifier=encoder.CustomJsonifier)
-    app = connexion.App(__name__, specification_dir=YAML_DIR, jsonifier=myjsonifier)
+    yaml_dir = ROOT_DIR / config["SERVICE"]["yaml_directory"]
+    api_file = yaml_dir / config["SERVICE"]["openapi_yaml"]
 
-    API_YAML = ROOT_DIR.joinpath(YAML_DIR, config["SERVICE"]["openapi_yaml"])
+    print("YAML absolute path:", api_file)
+    print("YAML exists?", api_file.exists())
 
-    # Ref: https://connexion.readthedocs.io/en/latest/cookbook.html#cors
-    if os.getenv("ENABLE_CORS", "False").lower() == "true":
-        app.add_middleware(
-            CORSMiddleware,
-            position=MiddlewarePosition.BEFORE_EXCEPTION,
-            allow_origins=["*"],
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-        )
+    with open(api_file, encoding="utf-8") as f:
+        openapi_spec = yaml.safe_load(f)
 
-    app.add_api(API_YAML, validate_responses=True, jsonifier=myjsonifier)
+    # 👇 lifespan registered HERE
+    app = connexion.AsyncApp(__name__, jsonifier=myjsonifier, lifespan=lifespan)
 
-    app.app.wsgi_app = ProxyFix(app.app.wsgi_app, x_for=1, x_host=1)
+    app.add_api(specification=openapi_spec, validate_responses=True)
 
     return app
