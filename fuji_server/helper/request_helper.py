@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
-
 import gzip
 import http.cookiejar
 import json
@@ -16,6 +15,7 @@ import lxml
 import rdflib
 from tika import parser
 
+from fuji_server.helper.browser_manager import BrowserManager
 from fuji_server.helper.metadata_collector import MetadataFormats
 from fuji_server.helper.preprocessor import Preprocessor
 
@@ -68,10 +68,7 @@ class RequestHelper:
     def __init__(self, url, logInst: object = None):
         self.user_agent = "F-UJI"
         self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
-        if logInst:
-            self.logger = logInst
-        else:
-            self.logger = Preprocessor.logger  # logging.getLogger(__name__)
+        self.logger = logInst if logInst else Preprocessor.logger
         self.format = None  # Guessed Metadata Format
         self.request_url = url.split("#")[0]
         self.redirect_url = None
@@ -303,30 +300,46 @@ class RequestHelper:
                 self.logger.warning(f"{metric_id} : Request Failed -: {e!s} : {self.request_url}")
         return tp_response
 
-    def render_page(self, metric_id=""):
-        # render page using Javascript
-        self.logger.warning(
-            f"{metric_id} : Trying to render JS generated page using a headless browser, this may not be supported by other FAIR expecting clients"
-        )
-        try:
-            url = self.request_url
-            if self.redirect_url:
-                url = self.redirect_url
-            context = Preprocessor.browser.new_context()
-            page = context.new_page()
-            # Navigate to the URL (this executes JS)
-            page.goto(url, wait_until="networkidle")
-            page.wait_for_timeout(1000)  # wait 1 second
-            # Get the final rendered HTML
-            rendered_html = page.content()
-            self.response_content = rendered_html
-        except Exception as e:
-            self.logger.warning(
-                f"{metric_id} : Rendering JS generated page using headless browser failed -: {e!s} : {self.request_url}"
-            )
+    async def render_page(self, metric_id=""):
+        print("################ JS rendering starting ################")
+        self.logger.warning(f"{metric_id}: Trying to render JS generated page using a headless browser")
 
-        page.close()
-        context.close()
+        async def _run():
+            page = None
+            context = None
+            try:
+                # get a new browser context + page
+                context = await BrowserManager._browser.new_context()
+                page = await context.new_page()
+
+                # await page.goto(self.request_url, wait_until="domcontentloaded")
+                await page.goto(self.request_url)  # do not force wait strategy here
+                try:
+                    await page.wait_for_load_state("networkidle", timeout=3000)
+                except:
+                    pass  # many SPAs never become idle (polling / websockets)
+
+                html = await page.content()
+                return html
+            except Exception as e:
+                print("############ page rendering error: ", e)
+
+            finally:
+                # clean up properly
+                if page:
+                    await page.close()
+                if context:
+                    await context.close()
+
+        try:
+            html = await _run()
+            print("################ JS rendering finished ################")
+            return html
+
+        except Exception as e:
+            print("################ JS rendering failed ################", e)
+            self.logger.warning(f"{metric_id}: Rendering JS generated page failed: {e!s} : {self.request_url}")
+            return None
 
     def handle_content(self, tp_response, metric_id, ignore_html):
         format = MetadataFormats.HTML
