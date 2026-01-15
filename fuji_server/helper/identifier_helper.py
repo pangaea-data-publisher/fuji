@@ -38,10 +38,10 @@ class IdentifierHelper:
         "identifiers.org": {"label": "Identifiers.org Identifier", "source": "identifiers.org"},
         "w3id": {"label": "Permanent Identifier for the Web (W3ID)", "source": "identifiers.org"},
     }
-    # IPFS gateway domains for CID resolution
-    IPFS_GATEWAYS = ["ipfs.io", "ipfs.desci.com", "dweb.link", "cloudflare-ipfs.com", "gateway.pinata.cloud"]
-    # dPID resolver domains (production and development)
-    DPID_DOMAINS = ["dpid.org", "beta.dpid.org", "dev.dpid.org", "localhost"]
+    # IPFS gateway domains for CID resolution (ordered by resolution reliability for DeSci content)
+    IPFS_GATEWAYS = ["ipfs.desci.com", "pub.desci.com", "dweb.link", "ipfs.io", "cloudflare-ipfs.com", "gateway.pinata.cloud"]
+    # dPID resolver domains
+    DPID_DOMAINS = ["dpid.org", "beta.dpid.org", "dev.dpid.org"]
     # identifiers.org pattern
     # TODO: check if this is needed.. if so ..complete and add check to FAIRcheck
     IDENTIFIERS_PIDS = r"https://identifiers.org/[provider_code/]namespace:accession"
@@ -138,12 +138,8 @@ class IdentifierHelper:
                         if dpid_id:
                             self.identifier_schemes = ["dpid", "url"]
                             self.preferred_schema = "dpid"
-                            # For localhost URLs, keep the original URL (local testing)
-                            # For production, normalize to canonical dpid.org URL
-                            if "localhost" in self.identifier or "127.0.0.1" in self.identifier:
-                                self.identifier_url = self.identifier
-                            else:
-                                self.identifier_url = f"https://dpid.org/{dpid_id}"
+                            # Normalize to canonical dpid.org URL
+                            self.identifier_url = f"https://dpid.org/{dpid_id}"
                             self.normalized_id = f"dpid://{dpid_id}"
                             self.is_persistent = True
                     
@@ -243,16 +239,17 @@ class IdentifierHelper:
         """Check if the identifier is a dPID (Decentralized Persistent Identifier).
         
         Supports:
-        - dpid:// scheme (e.g., dpid://500, dpid://beta/500)
+        - dpid:// scheme (e.g., dpid://500)
         - dpid.org URLs (e.g., https://dpid.org/500, https://beta.dpid.org/500)
-        - localhost with port (e.g., http://localhost:5460/500)
         """
         if not self.identifier:
             return False
         try:
-            # Check for dpid:// scheme
+            # Check for dpid:// scheme (e.g., dpid://500)
             if self.identifier.startswith("dpid://"):
-                return True
+                # Extract and validate the numeric ID
+                path = self.identifier[7:].split("/")[0]
+                return path.isdigit()
             
             # Check for dpid.org URLs
             idparts = urllib.parse.urlparse(self.identifier)
@@ -277,15 +274,11 @@ class IdentifierHelper:
         if not self.identifier:
             return None
         try:
-            # Handle dpid:// scheme
+            # Handle dpid:// scheme (e.g., dpid://500)
             if self.identifier.startswith("dpid://"):
-                # dpid://500 or dpid://beta/500
-                parts = self.identifier[7:].split("/")
-                # Filter out environment prefixes like 'beta', 'dev'
-                for part in parts:
-                    if part.isdigit():
-                        return part
-                return parts[-1] if parts else None
+                # Extract the first path component which should be the numeric ID
+                path = self.identifier[7:].split("/")[0]
+                return path if path.isdigit() else None
             
             # Handle HTTP URLs
             idparts = urllib.parse.urlparse(self.identifier)
