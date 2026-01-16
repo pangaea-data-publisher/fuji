@@ -5,6 +5,7 @@
 from tldextract import extract
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
+from fuji_server.helper.metadata_helper import MetadataHelper
 from fuji_server.helper.metadata_provider_csw import OGCCSWMetadataProvider
 from fuji_server.helper.metadata_provider_oai import OAIMetadataProvider
 from fuji_server.helper.metadata_provider_sparql import SPARQLMetadataProvider
@@ -33,6 +34,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         self.community_standards_output = []
         self.found_metadata_standards = []
         self.valid_metadata_standards = []
+        self.metadata_helper = MetadataHelper()
 
     def validate_service_url(self):
         # checks if service url and landing page url have same domain in order to avoid manipulations
@@ -364,9 +366,9 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         return test_status
 
     def get_metadata_standards_info(self, uri, source):
-        standard_found = self.fuji.metadata_harvester.lookup_metadatastandard_by_uri(uri)
+        standard_found = self.metadata_helper.lookup_metadatastandard_by_uri(uri)
         if standard_found:
-            metadata_info = self.fuji.metadata_harvester.get_metadata_standard_info(standard_found)
+            metadata_info = self.metadata_helper.get_metadata_standard_info(standard_found)
             if metadata_info.get("type") == "generic":
                 self.logger.info(
                     "FsF-R1.3-01M : Found non-disciplinary standard (but RDA listed) -: via {}:  {} - {}".format(
