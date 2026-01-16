@@ -45,7 +45,7 @@ class AcceptTypes(Enum):
     html_xml = "text/html, application/xhtml+xml, application/xml;q=0.5, text/xml;q=0.5, application/rdf+xml;q=0.5"
     xml = "application/xml, text/xml;q=0.5"
     # linkset = 'application/linkset+json, application/json, application/linkset'  <-- causes bug #329
-    linkset = "application/linkset+json, application/linkset"
+    linkset = "application/linkset, application/linkset+json"
     json = "application/json, text/json;q=0.5"
     jsonld = "application/ld+json"
     atom = "application/atom+xml"
@@ -200,23 +200,29 @@ class RequestHelper:
                                 )
                             )
                     elif e.code == 400:
-                        try:
-                            # browsers automatically redirect to https in case a 400 occured for a http URL
-                            if redirect_handler.redirect_list:
-                                last_redirect_url = redirect_handler.redirect_list[-1]
-                                if "http://" in last_redirect_url:
-                                    self.logger.warning(
-                                        "{} : HTTP 400 Error after redirect to http page , trying to redirect to https page for -: {}".format(
-                                            metric_id, redirect_handler.redirect_list[-1]
+                        self.logger.warning(
+                            "{} : Request failed, server did not understand it, status code -: {}, {} - {}".format(
+                                metric_id, self.request_url, self.accept_type, str(e.code)
+                            )
+                        )
+                        if "html" in self.accept_type:
+                            try:
+                                # browsers automatically redirect to https in case a 400 occured for a http URL
+                                if redirect_handler.redirect_list:
+                                    last_redirect_url = redirect_handler.redirect_list[-1]
+                                    if "http://" in last_redirect_url:
+                                        self.logger.warning(
+                                            "{} : HTTP 400 Error after redirect to http page , trying to redirect to https page for -: {}".format(
+                                                metric_id, redirect_handler.redirect_list[-1]
+                                            )
                                         )
-                                    )
-                                    # This is what Browsers sometimes do:
-                                    last_redirect_url = last_redirect_url.replace("http:", "https:")
-                                    tp_request = urllib.request.Request(last_redirect_url, headers=request_headers)
-                                    tp_response = opener.open(tp_request, timeout=10)
-                        except Exception as e:
-                            print("Redirect fix error:" + str(e))
-                            pass
+                                        # This is what Browsers sometimes do:
+                                        last_redirect_url = last_redirect_url.replace("http:", "https:")
+                                        tp_request = urllib.request.Request(last_redirect_url, headers=request_headers)
+                                        tp_response = opener.open(tp_request, timeout=10)
+                            except Exception as e:
+                                print("Redirect fix error:" + str(e))
+                                pass
                     elif e.code == 410:
                         self.logger.warning(
                             "{} : Content GONE, this could be a tombstone page, status code -: {}, {} - {}".format(
@@ -301,7 +307,7 @@ class RequestHelper:
         return tp_response
 
     async def render_page(self, metric_id=""):
-        print("################ JS rendering starting ################")
+        print("################ JS rendering starting ################", metric_id)
         self.logger.warning(f"{metric_id}: Trying to render JS generated page using a headless browser")
 
         async def _run():
@@ -311,8 +317,6 @@ class RequestHelper:
                 # get a new browser context + page
                 context = await BrowserManager._browser.new_context()
                 page = await context.new_page()
-
-                # await page.goto(self.request_url, wait_until="domcontentloaded")
                 await page.goto(self.request_url)  # do not force wait strategy here
                 try:
                     await page.wait_for_load_state("networkidle", timeout=3000)
