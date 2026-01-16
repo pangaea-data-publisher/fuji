@@ -733,12 +733,12 @@ class FAIRCheck:
             self.repository_urls = list(set(self.repository_urls))
         # print("REPOSITORY URIS: ", self.repository_urls)
 
-    def set_repository_info(self):
+    async def set_repository_info(self):
         self.set_repository_uris()
         if self.repository_urls:
             for repo_uri in self.repository_urls:
                 repoharvester = MetadataHarvester(repo_uri, metric_version=self.metric_helper.get_metric_version())
                 repoharvester.allowed_harvesting_methods = ["json_in_html", "rdfa", "signposting", "typed_links"]
-                repoharvester.retrieve_metadata_embedded()
+                await repoharvester.retrieve_metadata_embedded()
                 repoharvester.retrieve_metadata_external()
                 # print(repoharvester.metadata_merged)
