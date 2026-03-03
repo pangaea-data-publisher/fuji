@@ -210,21 +210,33 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         if isinstance(access_rights, str):
             access_rights = [access_rights]
         access_rights = self.excludeLicences(access_rights)
+        try:
+            afreeterm, afreeuri = self.getIsAccessibleForFreeTerm()
+            if afreeuri:
+                if access_rights:
+                    access_rights.append(afreeuri)
+                else:
+                    access_rights = [afreeuri]
+                self.access_level = afreeterm
+        except:
+            pass
+
         # access_rights can be None or []
         if self.testAccessRightsMetadataAvailable(access_rights):
             test_status = "pass"
         if self.testAccessRightsStandardTerms(access_rights):
             test_status = "pass"
-        else:
+        """else:
             try:
                 afreeterm, afreeuri = self.getIsAccessibleForFreeTerm()
                 if afreeuri:
                     access_rights.extend([afreeuri])
                     self.access_level = afreeterm
+                    print('ACCESS TERMS: ',afreeterm, afreeuri)
                 if self.testAccessRightsStandardTerms(access_rights):
                     test_status = "pass"
             except:
-                pass
+                pass"""
 
         if self.testAccessRightsMachineReadable(access_rights):
             test_status = "pass"
