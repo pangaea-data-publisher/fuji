@@ -43,7 +43,7 @@ class RepositoryHelper:
                 query_url = (
                     Preprocessor.RE3DATA_API + "?query=" + short_re3doi
                 )  # https://re3data.org/api/beta/repositories?query=
-                q = RequestHelper(url=query_url)
+                q = RequestHelper(url=query_url, logInst=self.logger)
                 q.setAcceptType(AcceptTypes.xml)
                 _re_source, xml = q.content_negotiate(metric_id="FsF-R1.3-01M")
                 try:
@@ -56,7 +56,7 @@ class RepositoryHelper:
                     if re3link is not None:
                         self.logger.info("FsF-R1.3-01M : Found match re3data metadata record -: " + str(re3link))
                         # query reposiroty metadata
-                        q2 = RequestHelper(url=re3link)
+                        q2 = RequestHelper(url=re3link, logInst=self.logger)
                         q2.setAcceptType(AcceptTypes.xml)
                         _re3_source, re3_response = q2.content_negotiate(metric_id="FsF-R1.3-01M")
                         self.re3metadata_raw = re3_response
