@@ -307,7 +307,7 @@ class RequestHelper:
         return tp_response
 
     async def render_page(self, metric_id=""):
-        print("################ JS rendering starting ################", metric_id)
+        # print("################ JS rendering starting ################", metric_id)
         self.logger.warning(f"{metric_id}: Trying to render JS generated page using a headless browser")
 
         async def _run():
@@ -326,7 +326,8 @@ class RequestHelper:
                 html = await page.content()
                 return html
             except Exception as e:
-                print("############ page rendering error: ", e)
+                # print("############ page rendering error: ", e)
+                self.logger.error(f"{metric_id}: Javascript page rendering error: " + str(e))
 
             finally:
                 # clean up properly
@@ -337,11 +338,13 @@ class RequestHelper:
 
         try:
             html = await _run()
-            print("################ JS rendering finished ################")
+            self.logger.info("FsF-F2-01M : Javascript page rendering finished")
+            # print("################ JS rendering finished ################")
             return html
 
         except Exception as e:
-            print("################ JS rendering failed ################", e)
+            # self.logger.info("FsF-F2-01M : Javascript rendering failed: "+str(e))
+            # print("################ JS rendering failed ################", e)
             self.logger.warning(f"{metric_id}: Rendering JS generated page failed: {e!s} : {self.request_url}")
             return None
 
@@ -387,7 +390,7 @@ class RequestHelper:
                 # print('USING CACHE ...')
                 self.logger.info("%s : Using Cached response content" % metric_id)
             else:
-                self.logger.info("%s : Creating Cached response content" % metric_id)
+                # self.logger.info("%s : Creating Cached response content" % metric_id)
                 content_truncated = False
                 if status_code in [200]:
                     try:
