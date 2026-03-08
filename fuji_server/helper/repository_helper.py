@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-import idutils
+from idutils import is_doi, normalize_pid
 from lxml import etree
 from tldextract import extract
 
@@ -32,8 +32,8 @@ class RepositoryHelper:
         if self.client_id:  # and self.pid_scheme:
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
             if re3doi:
-                if idutils.is_doi(re3doi):
-                    short_re3doi = idutils.normalize_pid(re3doi, scheme="doi")  # https://doi.org/10.17616/R3XS37
+                if is_doi(re3doi):
+                    short_re3doi = normalize_pid(re3doi, scheme="doi")  # https://doi.org/10.17616/R3XS37
                 else:
                     re3doi = None
 

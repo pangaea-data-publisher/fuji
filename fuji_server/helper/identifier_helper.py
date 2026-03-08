@@ -7,7 +7,8 @@ import urllib
 import uuid
 
 import hashid
-import idutils
+from idutils import detect_identifier_schemes, is_urn, normalize_pid
+from idutils import to_url as _to_url
 
 from fuji_server.helper.preprocessor import Preprocessor
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
@@ -74,7 +75,7 @@ class IdentifierHelper:
                     candidateurn = urnid + str(urnsplit[2])
                     candresolver = re.sub(r"https?://", "", urnsplit[0])
                     if candresolver in self.URN_RESOLVER.values():
-                        if idutils.is_urn(candidateurn):
+                        if is_urn(candidateurn):
                             self.identifier_schemes = ["url", "urn"]
                             self.preferred_schema = "urn"
                             self.normalized_id = candidateurn
@@ -152,7 +153,7 @@ class IdentifierHelper:
 
                 # idutils check
                 if not self.identifier_schemes:
-                    self.identifier_schemes = idutils.detect_identifier_schemes(self.identifier)
+                    self.identifier_schemes = detect_identifier_schemes(self.identifier)
                     if "url" not in self.identifier_schemes and idparts.scheme in ["http", "https"]:
                         self.identifier_schemes.append("url")
                 # verify handles
@@ -173,7 +174,7 @@ class IdentifierHelper:
                                     # self.identifier_schemes.remove('url')
                             self.preferred_schema = self.identifier_schemes[0]
                             if not self.normalized_id:
-                                self.normalized_id = idutils.normalize_pid(self.identifier, self.preferred_schema)
+                                self.normalized_id = normalize_pid(self.identifier, self.preferred_schema)
                             if not self.identifier_url:
                                 self.identifier_url = self.to_url(self.identifier, self.preferred_schema)
                             # print('IDURL ',self.identifier_url, self.preferred_schema)
@@ -245,7 +246,7 @@ class IdentifierHelper:
             if schema == "ark":
                 idurl = id
             else:
-                idurl = idutils.to_url(id, schema)
+                idurl = _to_url(id, schema)
             if schema in ["doi", "handle"]:
                 idurl = idurl.replace("http:", "https:")
         except Exception as e:

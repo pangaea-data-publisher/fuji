@@ -6,9 +6,9 @@ import fnmatch
 import re
 from pathlib import Path
 
-import idutils
 import Levenshtein
 import lxml.etree as ET
+from idutils import is_url
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
@@ -64,7 +64,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 licence_valid = False
                 license_output = LicenseOutputInner()
                 if isinstance(license, str):
-                    isurl = idutils.is_url(license)
+                    isurl = is_url(license)
                     if isurl:
                         iscc, generic_cc = self.isCreativeCommonsLicense(license, self.metric_identifier)
                         if iscc:
