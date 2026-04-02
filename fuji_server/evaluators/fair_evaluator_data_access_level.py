@@ -226,18 +226,6 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
             test_status = "pass"
         if self.testAccessRightsStandardTerms(access_rights):
             test_status = "pass"
-        """else:
-            try:
-                afreeterm, afreeuri = self.getIsAccessibleForFreeTerm()
-                if afreeuri:
-                    access_rights.extend([afreeuri])
-                    self.access_level = afreeterm
-                    print('ACCESS TERMS: ',afreeterm, afreeuri)
-                if self.testAccessRightsStandardTerms(access_rights):
-                    test_status = "pass"
-            except:
-                pass"""
-
         if self.testAccessRightsMachineReadable(access_rights):
             test_status = "pass"
 
