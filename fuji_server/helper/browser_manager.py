@@ -21,7 +21,7 @@ class BrowserManager:
         cls.logger.info("Starting Playwright (async)...")
 
         cls._playwright = await async_playwright().start()
-        cls._browser = await cls._playwright.chromium.launch(headless=False)
+        cls._browser = await cls._playwright.chromium.launch(headless=True)
 
         cls.logger.info("Playwright browser launched")
         return cls._browser
