@@ -24,6 +24,7 @@ class Body(Model):
         metadata_service_type: str | None = None,
         use_datacite: bool | None = None,
         use_github: bool | None = None,
+        use_headless: bool | None = None,
         metric_version: str | None = None,
         auth_token: str | None = None,
         auth_token_type: str | None = None,
@@ -43,6 +44,8 @@ class Body(Model):
         :type use_datacite: bool
         :param use_github: The use_github of this Body.  # noqa: E501
         :type use_github: bool
+        :param use_headless: The use_headless of this Body.  # noqa: E501
+        :type use_headless: bool
         :param metric_version: The metric_version of this Body.  # noqa: E501
         :type metric_version: str
         :param auth_token: The auth_token of this Body.  # noqa: E501
@@ -59,6 +62,7 @@ class Body(Model):
             "metadata_service_type": str,
             "use_datacite": bool,
             "use_github": bool,
+            "use_headless": bool,
             "metric_version": str,
             "auth_token": str,
             "auth_token_type": str,
@@ -72,6 +76,7 @@ class Body(Model):
             "metadata_service_type": "metadata_service_type",
             "use_datacite": "use_datacite",
             "use_github": "use_github",
+            "use_headless": "use_headless",
             "metric_version": "metric_version",
             "auth_token": "auth_token",
             "auth_token_type": "auth_token_type",
@@ -83,6 +88,7 @@ class Body(Model):
         self._metadata_service_type = metadata_service_type
         self._use_datacite = use_datacite
         self._use_github = use_github
+        self._use_headless = use_headless
         self._metric_version = metric_version
         self._auth_token = auth_token
         self._auth_token_type = auth_token_type
@@ -236,6 +242,29 @@ class Body(Model):
         """
 
         self._use_github = use_github
+
+    @property
+    def use_headless(self) -> bool:
+        """Gets the use_headless of this Body.
+
+        Indicates if Headless Browser shall be used  # noqa: E501
+
+        :return: The use_datacite of this Body.
+        :rtype: bool
+        """
+        return self._use_headless
+
+    @use_headless.setter
+    def use_headless(self, use_headless: bool):
+        """Sets the use_headless of this Body.
+
+        Indicates if Headless Browser shall be used  # noqa: E501
+
+        :param use_headless: The use_datacite of this Body.
+        :type use_headless: bool
+        """
+
+        self._use_headless = use_headless
 
     @property
     def metric_version(self) -> str:
