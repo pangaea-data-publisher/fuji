@@ -582,13 +582,15 @@ class MetadataHarvester:
                     )
                 else:
                     self.is_html_page = True
+                # always add status list!
+                if self.pid_url in self.pid_collector:
+                    self.pid_collector[self.pid_url]["status_list"] = requestHelper.status_list
                 if requestHelper.redirect_url and requestHelper.response_status in [200, 202, 203]:
                     self.isLandingPageAccessible = True
                     self.landing_url = requestHelper.redirect_url
                     if self.pid_url in self.pid_collector:
                         self.pid_collector[self.pid_url]["verified"] = True
                         self.pid_collector[self.pid_url]["resolved_url"] = self.landing_url
-                        self.pid_collector[self.pid_url]["status_list"] = requestHelper.status_list
                 elif requestHelper.redirect_url and requestHelper.response_status in [410]:
                     # eventually a tombstone page
                     self.landing_url = requestHelper.redirect_url
