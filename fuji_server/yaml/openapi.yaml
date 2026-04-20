@@ -628,7 +628,7 @@ components:
         core_metadata_status:
           type: string
           enum:
-          - insufficent metadata
+          - insufficient metadata
           - partial metadata
           - all metadata
         core_metadata_found:

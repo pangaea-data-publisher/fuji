@@ -289,7 +289,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             if object_size == int(float(data_object.get("content_size"))):
                                 size_matches = True
                                 self.logger.info(
-                                    "{} : Sucessfully verified content size from downloaded file -: (expected: {}, found: {})".format(
+                                    "{} : Successfully verified content size from downloaded file -: (expected: {}, found: {})".format(
                                         self.metric_identifier,
                                         str(data_object.get("claimed_size")),
                                         str(data_object.get("content_size")),
@@ -336,7 +336,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     ) in data_object.get("tika_content_type"):
                         type_matches = True
                         self.logger.info(
-                            "{} : Sucessfully verified content type from downloaded file -: (expected: {}, found: via tika {})".format(
+                            "{} : Successfully verified content type from downloaded file -: (expected: {}, found: via tika {})".format(
                                 self.metric_identifier,
                                 data_object.get("claimed_type"),
                                 str(data_object.get("tika_content_type"))
@@ -361,7 +361,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                             if tika_type in protocol_mime_types:
                                 protocol_matches = True
                                 self.logger.info(
-                                    "{} : Sucessfully verified commonly used protocol mime type -: (expected: {}, found: via tika {})".format(
+                                    "{} : Successfully verified commonly used protocol mime type -: (expected: {}, found: via tika {})".format(
                                         self.metric_identifier,
                                         protocol_mime_types,
                                         str(data_object.get("tika_content_type")),

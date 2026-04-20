@@ -182,7 +182,7 @@ class MetadataHarvester:
                     allow_merge = False
                     self.logger.warning(
                         self.logger_target.get("metadata_properties")
-                        + " : Harvesting of this metadata is explicitely disabled in the metric configuration-:"
+                        + " : Harvesting of this metadata is explicitly disabled in the metric configuration-:"
                         + str(metadata_standard)
                     )
             if isinstance(metadict, dict) and allow_merge is True:

@@ -27,7 +27,7 @@ class SPARQLMetadataProvider(MetadataProvider):
     """
 
     def getMetadataStandards(self):
-        """Method will return the matadata standards in the namespaces
+        """Method will return the metadata standards in the namespaces
 
         Returns
         -------
