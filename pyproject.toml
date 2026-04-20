@@ -179,3 +179,10 @@ known-first-party = ["fuji_server", "tests"]
   "UP031",  # printf-string-formatting
   "UP032"  # f-string
 ]
+
+[tool.codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = '.git,.gitignore,.gitattributes,*.svg'
+check-hidden = true
+ignore-regex = '^\s*"image/\S+": ".*'
+# ignore-words-list = ''
