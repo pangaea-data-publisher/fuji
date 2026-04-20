@@ -182,7 +182,10 @@ known-first-party = ["fuji_server", "tests"]
 
 [tool.codespell]
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
-skip = '.git,.gitignore,.gitattributes,*.svg'
+skip = '.git,.git-meta,.gitignore,.gitattributes,*.svg,*.ipynb,./fuji_server/data/*.yaml,./fuji_server/data/*.json,./fuji_server/data/linked_vocabs,./tests/*/cassettes,./simpleclient'
 check-hidden = true
-ignore-regex = '^\s*"image/\S+": ".*'
-# ignore-words-list = ''
+# Ignore URLs (DOIs, links may contain "typos" we must not fix) and base64 images in notebooks
+ignore-regex = 'https?://\S+|^\s*"image/\S+": ".*'
+# connexion - Python library name (Connexion/connexion)
+# lod, ore - domain abbreviations: Linked Open Data, Object Reuse and Exchange (OAI-ORE)
+ignore-words-list = 'connexion,lod,ore'
