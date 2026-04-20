@@ -841,7 +841,7 @@ components:
           description: Indicates if the GitHub REST API shall be used to collect (meta)data
         metric_version:
           type: string
-          description: The FAIRsFAIR metric version be used fo rthe assessment
+          description: The FAIRsFAIR metric version to be used for the assessment
         auth_token:
           type: string
           description: The authentication token for HTTP authentication

@@ -35,7 +35,7 @@ Generally, these specifications are defined using the YAML property *community_r
 *target_property* additionally defines the property of the *target* object in which matches are searched for, by default the property *name* or *label* is used for this purpose.
 *modality* and *match* are currently not yet implemented, thus still hardcoded :( but may be implemented in future versions.
 
-## Selectin a metric within an API call
+## Selecting a metric within an API call
 
 Within the POST data you need to specify the metric which has to be used. To do this, use the *metric_version* argument:
 ~~~
