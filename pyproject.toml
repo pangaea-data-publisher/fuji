@@ -67,7 +67,7 @@ version = "3.5.1"
 [project.optional-dependencies]
 docs = [
   "myst-parser~=4.0",
-  "sphinx~=8.0",
+  "sphinx~=9.0",
   "sphinx-rtd-theme~=3.0"
 ]
 report = [
