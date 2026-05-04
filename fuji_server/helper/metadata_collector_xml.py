@@ -4,8 +4,8 @@
 
 import re
 
-import idutils
 import lxml
+from idutils import is_url, is_urn
 
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats, MetadataOfferingMethods
 from fuji_server.helper.metadata_mapper import Mapper
@@ -61,13 +61,13 @@ class MetaDataCollectorXML(MetaDataCollector):
             for el in elr:
                 if str(el).strip():
                     if el not in founduris:
-                        if idutils.is_url(el) or idutils.is_urn(el):
+                        if is_url(el) or is_urn(el):
                             founduris.append(str(el))
             # all attribute values
             alr = metatree.xpath("//@*")
             for al in alr:
                 if al not in founduris:
-                    if idutils.is_url(al) or idutils.is_urn(al):
+                    if is_url(al) or is_urn(al):
                         founduris.append(str(al))
             founduris = list(set(founduris))
             # xpath

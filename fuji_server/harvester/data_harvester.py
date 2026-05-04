@@ -9,7 +9,7 @@ import ssl
 import threading
 import urllib
 
-import idutils
+from idutils import is_url
 from tika import parser
 
 from fuji_server.helper.identifier_helper import IdentifierHelper
@@ -40,7 +40,7 @@ class DataHarvester:
         # replace local urls with full path from landing_page URI
         self.logger.info("FsF-R1-01MD : Trying to complete local file name with full path info using landing page URI")
         if self.landing_page:
-            if idutils.is_url(self.landing_page):
+            if is_url(self.landing_page):
                 try:
                     path = os.path.dirname(self.landing_page)
                     url = path + "/" + url
@@ -159,7 +159,7 @@ class DataHarvester:
         # header["Range"] = "bytes=0-" + str(self.max_download_size)
         url = urldict.get("url")
         if url:
-            if not idutils.is_url(url):
+            if not is_url(url):
                 url = self.expand_url(url)
             # print("Downloading.. ", url)
             response = None
