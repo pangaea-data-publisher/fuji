@@ -437,7 +437,7 @@ class MetadataHarvester:
         ret = False
         try:
             soup = BeautifulSoup(response_content, features="html.parser")
-            script_content = soup.findAll("script")
+            script_content = soup.find_all("script")
             for script in soup(["script", "style", "title", "noscript"]):
                 script.extract()
             text_content = soup.get_text(strip=True)

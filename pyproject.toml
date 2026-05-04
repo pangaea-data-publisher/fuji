@@ -117,7 +117,7 @@ lint = "pre-commit run --all-files --color=always {args}"
 # Ref: https://hatch.pypa.io/latest/config/internal/testing/
 extra-dependencies = [
   "pytest-recording~=0.13",
-  "pytest-github-actions-annotate-failures~=0.3"
+  "pytest-github-actions-annotate-failures~=0.4"
 ]
 randomize = true  # run tests in random order
 

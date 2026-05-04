@@ -7,9 +7,9 @@ import re
 import urllib
 
 import dateutil
-import idutils
 import rdflib
 import requests
+from idutils import is_url
 from rdflib import RDFS, SKOS, Namespace
 from rdflib.namespace import (
     DC,
@@ -112,7 +112,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # namespaces from mentioned objects and subjects uris (best try)
             for uri in alluris:
                 uri = str(uri)
-                if idutils.is_url(uri):
+                if is_url(uri):
                     for known_pattern in known_namespace_regex:
                         kpm = re.match(known_pattern, uri)
                         if kpm:
@@ -915,7 +915,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     or graph.value(dist, SDO.fileSize)
                 )
                 if durl or dtype or dsize:
-                    if idutils.is_url(str(durl)):
+                    if is_url(str(durl)):
                         if dtype:
                             dtype = "/".join(str(dtype).split("/")[-2:])
                     schema_metadata["object_content_identifier"].append(
@@ -1144,7 +1144,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     )
                     dsize = graph.value(dist, DCAT.byteSize)
                 if durl or dtype or dsize:
-                    if idutils.is_url(str(durl)):
+                    if is_url(str(durl)):
                         dtype = "/".join(str(dtype).split("/")[-2:])
                     dcat_metadata["object_content_identifier"].append(
                         {"url": str(durl), "type": dtype, "size": str(dsize), "service": str(dservice)}

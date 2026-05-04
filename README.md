@@ -46,7 +46,7 @@ The service is **in development** and its assessment depends on several factors.
 [Python](https://www.python.org/downloads/) `3.11`
 
 ### Google Dataset Search
-Since FsF metric 0.8, The Google Corpus is no longer used, the following steps are therefore not required anymore.
+Since FsF metric 0.8, The Google Corpus is no longer used, **the following steps are therefore not required anymore**.
 * Download the latest Dataset Search corpus file from: <https://www.kaggle.com/googleai/dataset-search-metadata-for-datasets>
 * Open file `fuji_server/helper/create_google_cache_db.py` and set variable 'google_file_location' according to the file location of the corpus file
 * Run `create_google_cache_db.py` which creates a SQLite database in the data directory. From root directory run `python3 -m fuji_server.helper.create_google_cache_db`.

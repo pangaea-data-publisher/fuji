@@ -5,8 +5,8 @@
 import fnmatch
 import re
 
-import idutils
 import Levenshtein
+from idutils import is_url
 
 from fuji_server.evaluators.fair_evaluator import FAIREvaluator
 from fuji_server.models.license import License
@@ -55,7 +55,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
                 licence_valid = False
                 license_output = LicenseOutputInner()
                 if isinstance(license, str):
-                    isurl = idutils.is_url(license)
+                    isurl = is_url(license)
                     if isurl:
                         iscc, generic_cc = self.isCreativeCommonsLicense(license, self.metric_identifier)
                         if iscc:
@@ -117,7 +117,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
 
     def isLicense(self, value, metric_id):
         islicense = False
-        isurl = idutils.is_url(value)
+        isurl = is_url(value)
         spdx_html = None
         spdx_osi = None
         if isurl:
