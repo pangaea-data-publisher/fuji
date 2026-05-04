@@ -113,11 +113,11 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
                 self.content_type = "text/html"
                 try:
                     metasoup = BeautifulSoup(self.source_metadata, "lxml")
-                    meta_dc_soupresult = metasoup.findAll(
+                    meta_dc_soupresult = metasoup.find_all(
                         "meta", attrs={"name": re.compile(r"(DC|dc|DCTERMS|dcterms)\.([A-Za-z]+)")}
                     )
                     if len(meta_dc_soupresult) <= 0:
-                        meta_dc_soupresult = metasoup.findAll(
+                        meta_dc_soupresult = metasoup.find_all(
                             "meta", attrs={"name": re.compile(r"(" + "|".join(dc_core_base_props) + ")")}
                         )
                     for meta_tag in meta_dc_soupresult:

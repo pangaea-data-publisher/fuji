@@ -58,7 +58,7 @@ class MetaDataCollectorHighwireEprints(MetaDataCollector):
             self.metadata_format = MetadataFormats.HTML
             self.content_type = "text/html"
             metasoup = BeautifulSoup(self.source_metadata, "lxml")
-            meta_hw_soupresult = metasoup.findAll(
+            meta_hw_soupresult = metasoup.find_all(
                 "meta", attrs={"name": re.compile(r"(eprints\.|citation_)([A-Z_a-z]+)")}
             )
             flipped_hw = Mapper.flip_dict(Mapper.HIGHWIRE_MAPPING.value)
