@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 import extruct
 import rdflib
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from is_antibot import is_antibot
 from pyRdfa import pyRdfa
 from rapidfuzz import fuzz
 from tldextract import extract
@@ -623,6 +624,23 @@ class MetadataHarvester:
                     rendered_html = ""
                     if self.is_html_page:
                         self.landing_html = requestHelper.getResponseContent()
+                        # check if anti-robot software is in place
+                        try:
+                            antibot_result = is_antibot(
+                                headers=self.landing_headers,
+                                body=self.landing_html.decode(),
+                                status_code=response_status,
+                            )
+                            if antibot_result.detected:
+                                self.logger.error(
+                                    self.ch.get_metric("metadata_properties")
+                                    + " : ANTIBOT PROTECTION detected at landing page. You need to expose SOME metadata to allow FAIR assessment -: "
+                                    + str(antibot_result.detection)
+                                    + ", "
+                                    + str(antibot_result.provider)
+                                )
+                        except Exception as e:
+                            print("antibot detection failed...", e)
                         # check if page was JS generated, if so use a headless browser and replace the html to investigate
                         if (
                             self.raise_warning_if_javascript_page(requestHelper.response_content)
