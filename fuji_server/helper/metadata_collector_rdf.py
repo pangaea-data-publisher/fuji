@@ -844,6 +844,12 @@ class MetaDataCollectorRdf(MetaDataCollector):
         # this is tested by namepace elsewhere
         if "schema.org" in str(main_entity_namespace):
             self.main_entity_format = str(SDO)
+            # for croissant and bioschemas
+            # later add also : list(graph.objects(creative_work, SMA.additionalType)) + list(graph.objects(creative_work, SDO.additionalType)) +
+            conforms_tos = list(graph.objects(creative_work, DCTERMS.conformsTo))
+            for conforms_to in conforms_tos:
+                if "bioschemas" in str(conforms_to) or "croissant" in str(conforms_to):
+                    self.namespaces.append(conforms_to)
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
             # "access_free"
             access_free = graph.value(creative_work, SMA.isAccessibleForFree) or graph.value(
