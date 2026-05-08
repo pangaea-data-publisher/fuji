@@ -1,5 +1,4 @@
 arch.avanjj: https://doi.org/10.17616/R31NJMYW
-arch.igsn: https://doi.org/10.17616/R31NJMYW
 ardcx.aims: https://doi.org/10.17616/R3X908
 ardcx.curtin: https://doi.org/10.17616/R3WM02
 ardcx.griffith: https://doi.org/10.17616/R3FG92
@@ -58,6 +57,7 @@ ccdc.csd: https://doi.org/10.17616/R36011
 cern.hepdata: https://doi.org/10.17616/R30W2H
 cern.inspire: https://doi.org/10.17616/R3JC9Z
 cern.zenodo: https://doi.org/10.17616/R3QP53
+chvf.pbyfos: https://doi.org/10.17616/R31NJNLQ
 clarin.clarin: https://doi.org/10.17616/R3RP5D
 cngb.cga: https://doi.org/10.17616/R31NJMGL
 cngb.gigadb: https://doi.org/10.17616/R3TG83
@@ -70,7 +70,7 @@ cornell.ndacan: https://doi.org/10.17616/R3N90S
 cos.osf: https://doi.org/10.17616/R3N03T
 crui.ogsts: https://doi.org/10.17616/R3TR3Z
 crui.unibo: https://doi.org/10.17616/R3P19R
-crui.unipd: https://doi.org/10.17616/R31NJMHN
+crui.unipd: https://doi.org/10.17616/R3W05R
 csc.nrd: https://doi.org/10.17616/R33649
 csic.digital: https://doi.org/10.17616/R3P34J
 cul.ciesin: https://doi.org/10.17616/R31605
@@ -114,6 +114,7 @@ figshare.ariz: https://doi.org/10.17616/R31NJMSF
 figshare.ars: https://doi.org/10.17616/R3PK5R
 figshare.iastate: https://doi.org/10.17616/R3GV3W
 figshare.uct: https://doi.org/10.17616/R36R4R
+fzct.bexis: https://doi.org/10.17616/R32P9Q
 fzj.b2share: https://doi.org/10.17616/R3VK72
 fzj.tereno: https://doi.org/10.17616/R39G9T
 gbif.ec: https://doi.org/10.17616/R31NJNFS
@@ -181,6 +182,7 @@ lxkc.dskyfi: https://doi.org/10.17616/R3W331
 mdw.repository: https://doi.org/10.17616/R30M00
 mit.physio: https://doi.org/10.17616/R3D06S
 mlbs.skuxgs: https://doi.org/10.17616/R3ZP8D
+mzhu.ioerdata: https://doi.org/10.17616/R31NJNL7
 nasapds.nasapds: https://doi.org/10.17616/R37593
 nbqj.daks: https://doi.org/10.17616/R31NJMZS
 nkn.nkn: https://doi.org/10.17616/R3JK91
@@ -217,7 +219,6 @@ rpak.zvrzin: https://doi.org/10.17616/R31NJNLV
 sagebio.synapse: https://doi.org/10.17616/R3B934
 si.cda: https://doi.org/10.17616/R3201S
 si.si: https://doi.org/10.17616/R3W49N
-sml.tcia: https://doi.org/10.17616/R3NH0V
 sml.tdar: https://doi.org/10.17616/R3HK56
 snd.bolin: https://doi.org/10.17616/R3PP99
 snd.icos: https://doi.org/10.17616/R3235B
