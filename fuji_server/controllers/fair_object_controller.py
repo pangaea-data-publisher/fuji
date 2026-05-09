@@ -28,7 +28,7 @@ async def assess_by_id(body):
     allow_remote_logging = False
     # Request POST BODY has to be JSON
     if connexion.request.content_type == "application/json":
-        # The client has to send this HTTP header (Allow-Remote-Logging:True) explicitely to enable remote logging
+        # The client has to send this HTTP header (Allow-Remote-Logging:True) explicitly to enable remote logging
         # Useful for e.g. web clients..
         allow_remote_logging = connexion.request.headers.get("Allow-Remote-Logging")
         debug = True

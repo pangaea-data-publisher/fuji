@@ -14,7 +14,7 @@ isDebug=False, run harvesting code
 All CI tests should be run with isDebug=True, to not call harvester code
 Alternative one would have to mock the server responses to not make real calls.
 
-To test if the harvesting still works there are tests taked with the -noCI and -manual
+To test if the harvesting still works there are tests tagged with the -noCI and -manual
 markers. These tests can be run prior to a release manually.
 They mock the fuji_server/data path to not override the files under fuji server
 

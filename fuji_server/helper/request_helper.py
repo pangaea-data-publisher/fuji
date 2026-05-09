@@ -204,7 +204,7 @@ class RequestHelper:
                             )
                     elif e.code == 400:
                         try:
-                            # browsers automatically redirect to https in case a 400 occured for a http URL
+                            # browsers automatically redirect to https in case a 400 occurred for a http URL
                             if redirect_handler.redirect_list:
                                 last_redirect_url = redirect_handler.redirect_list[-1]
                                 if "http://" in last_redirect_url:

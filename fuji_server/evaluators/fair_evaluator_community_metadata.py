@@ -230,7 +230,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             self.retrieve_metadata_standards_from_sparql()
         else:
             self.logger.warning(
-                "{} : Skipped external ressources (e.g. OAI, re3data) checks since landing page could not be resolved".format(
+                "{} : Skipped external resources (e.g. OAI, re3data) checks since landing page could not be resolved".format(
                     "FsF-R1.3-01M"
                 )
             )

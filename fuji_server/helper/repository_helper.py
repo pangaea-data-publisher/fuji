@@ -55,7 +55,7 @@ class RepositoryHelper:
                     re3link = root.xpath("//link")[0].attrib["href"]
                     if re3link is not None:
                         self.logger.info("FsF-R1.3-01M : Found match re3data metadata record -: " + str(re3link))
-                        # query reposiroty metadata
+                        # query repository metadata
                         q2 = RequestHelper(url=re3link)
                         q2.setAcceptType(AcceptTypes.xml)
                         _re3_source, re3_response = q2.content_negotiate(metric_id="FsF-R1.3-01M")

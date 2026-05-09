@@ -19,7 +19,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
     Methods
     ------
     evaluate()
-        This method will evaluate the accesibility of the data on whether the URI's scheme is based on
+        This method will evaluate the accessibility of the data on whether the URI's scheme is based on
         a shared application protocol.
     """
 

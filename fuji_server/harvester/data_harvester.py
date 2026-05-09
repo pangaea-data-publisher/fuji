@@ -305,5 +305,5 @@ class DataHarvester:
 
         # Escape any slash # test_data_content_text = parsed_content.replace('\\', '\\\\').replace('"', '\\"')
         if fileinfo["test_data_content_text"]:
-            self.logger.info(f"FsF-R1-01MD : Succesfully parsed data file(s) -: {url}")
+            self.logger.info(f"FsF-R1-01MD : Successfully parsed data file(s) -: {url}")
         return fileinfo

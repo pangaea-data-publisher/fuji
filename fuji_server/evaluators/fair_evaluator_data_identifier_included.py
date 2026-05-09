@@ -100,7 +100,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
                         else:
                             self.logger.warning(
                                 self.metric_identifier
-                                + f" : Object (content) url is empty or not identied as GUID -: {datainfo}"
+                                + f" : Object (content) url is empty or not identified as GUID -: {datainfo}"
                             )
             if test_result:
                 self.score.earned += test_score

@@ -156,7 +156,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 rdflib.term.URIRef("http://www.w3.org/2002/07/owl#"),
             ]
             if isinstance(rdf_response_graph, rdflib.graph.Graph) or isinstance(rdflib.graph.ConjunctiveGraph):
-                self.logger.info("FsF-F2-01M : Found RDF Graph which was sucessfully parsed")
+                self.logger.info("FsF-F2-01M : Found RDF Graph which was successfully parsed")
                 self.logger.info("FsF-F2-01M : Trying to identify namespaces in RDF Graph")
                 graph_namespaces = self.set_namespaces(rdf_response_graph)
                 # self.getNamespacesfromIRIs(graph_text)
@@ -840,8 +840,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
         schema_metadata = {}
         SMA = Namespace("http://schema.org/")
         # use only schema.org properties and create graph using these.
-        # is e.g. important in case schema.org is encoded as RDFa and variuos namespaces are used
-        # this is tested by namepace elsewhere
+        # is e.g. important in case schema.org is encoded as RDFa and various namespaces are used
+        # this is tested by namespace elsewhere
         if "schema.org" in str(main_entity_namespace):
             self.main_entity_format = str(SDO)
             schema_metadata = self.get_core_metadata(graph, creative_work, type=creative_work_type)
