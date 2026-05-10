@@ -335,23 +335,23 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 else:
                     parseformat = re.search(r"[\/+]([a-z0-9]+)$", str(self.content_type))
                 if parseformat:
-                    parse_format = parseformat[1]
+                    parse_format = str(parseformat[1])
                     if parse_format == "rdfa":
                         self.metadata_format = MetadataFormats.RDFA
-                    if parse_format not in [
-                        "xml",
-                        "n3",
-                        "turtle",
-                        "nt",
-                        "pretty-xml",
-                        "trix",
-                        "trig",
-                        "nquads",
-                        "json-ld",
-                        "hext",
-                    ]:
-                        parse_format = "turtle"
-                    if "html" not in str(parse_format) and "zip" not in str(parse_format):
+                    if "html" not in parse_format and "zip" not in parse_format:
+                        if parse_format not in [
+                            "xml",
+                            "n3",
+                            "turtle",
+                            "nt",
+                            "pretty-xml",
+                            "trix",
+                            "trig",
+                            "nquads",
+                            "json-ld",
+                            "hext",
+                        ]:
+                            parse_format = "turtle"  # default
                         RDFparsed = False
                         self.logger.info(f"FsF-F2-01M : Try to parse RDF from -: {self.target_url} as {parse_format}")
                         badline = None
