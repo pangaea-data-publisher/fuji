@@ -43,7 +43,7 @@ dependencies = [
   "urlextract~=1.8",
   "pygithub~=2.1",
   "numpy==1.26.4",
-  "jsonschema<4.18"
+  "jsonschema<4.26"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
