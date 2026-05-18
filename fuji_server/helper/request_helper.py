@@ -368,17 +368,17 @@ class RequestHelper:
             self.response_header = tp_response.getheaders()
             self.redirect_url = tp_response.geturl()
             self.response_status = status_code = tp_response.status
-            self.logger.info(
+            """self.logger.info(
                 "{} : Content negotiation on {} accept={}, status={} ".format(
                     metric_id, self.request_url, self.accept_type, str(status_code)
                 )
-            )
+            )"""
             self.content_type = self.getResponseHeader().get("Content-Type")
             if not self.content_type:
                 self.content_type = self.getResponseHeader().get("content-type")
             # key for content cache
             checked_content_id = hash(str(self.redirect_url) + str(self.content_type))
-
+            # body is only loaded in case it is not yet in the cache for the given content type and url
             if checked_content_id in self.checked_content:
                 self.checked_content_hash = checked_content_id
                 format = self.checked_content.get(checked_content_id).get("format")
@@ -533,7 +533,11 @@ class RequestHelper:
                                             )
                                             format = MetadataFormats.RDF
                                         else:
-                                            self.logger.info("%s : Found XML document!" % metric_id)
+                                            self.logger.info(
+                                                "%s : Found XML document based on responded content type: %s",
+                                                metric_id,
+                                                self.content_type,
+                                            )
                                             format = MetadataFormats.XML
                                         break
                                     if at.name in ["json", "jsonld", "datacite_json", "schemaorg"] or str(
