@@ -150,15 +150,14 @@ class MetaDataCollectorXML(MetaDataCollector):
                             "FsF-F2-01M : Found DIDL (MPEG21) type XML envelope, unpacking metadata element for further processing"
                         )
                         metatree = tree.find(".//{*}Item/{*}Component/{*}Resource/*")
+                    elif root_element.lower() == "html":
+                        self.logger.info("FsF-F2-01M : Found HTML document not XML based on root tag")
                     else:
                         metatree = tree
                 except Exception as e:
                     self.logger.info("FsF-F2-01M : XML parsing failed -: " + str(e))
                     print("FsF-F2-01M : XML parsing failed -: " + str(e))
-                if metatree is not None:
-                    # self.setURIValues(metatree)
-                    # print(list(set(self.getURIValues())))
-
+                if metatree is not None and root_element.lower() != "html":
                     self.logger.info(
                         "FsF-F2-01M : Found some XML properties, trying to identify (domain) specific format to parse"
                     )
@@ -225,6 +224,10 @@ class MetaDataCollectorXML(MetaDataCollector):
                         xml_mapping = Mapper.XML_MAPPING_TEI.value
                         self.logger.info("FsF-F2-01M : Identified TEI XML based on root tag")
                         self.namespaces.append("http://www.tei-c.org/ns/1.0")
+                    elif root_element == "Spase":
+                        xml_mapping = Mapper.XML_MAPPING_SPASE.value
+                        self.namespaces.append("http://www.spase-group.org/data/schema")
+                        self.logger.info("FsF-F2-01M : Identified SPASE XML based on root tag")
                     elif root_namespace:
                         if "datacite.org/schema" in root_namespace:
                             xml_mapping = Mapper.XML_MAPPING_DATACITE.value
@@ -333,6 +336,12 @@ class MetaDataCollectorXML(MetaDataCollector):
             # in case a fixed value is given in mapping
             if mapping.get(prop).get("value"):
                 res[prop] = [mapping.get(prop).get("value")]
+            # in case an element property is required:cehck the name of the element
+            elif mapping.get(prop).get("element"):
+                el_path = mapping.get(prop).get("element")
+                el = tree.find(el_path)
+                if el:
+                    res[prop] = el.tag
             # otherwise as xpath is checked
             else:
                 for mappath in pathlist:
