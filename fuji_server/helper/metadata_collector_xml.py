@@ -393,6 +393,31 @@ class MetaDataCollectorXML(MetaDataCollector):
                         if relres and reltype:
                             res["related_resources"].append({"related_resource": relres, "resource_type": reltype})
                         ri += 1
+        # publisher
+        if res.get("publisher_name") or res.get("publisher_url"):
+            res["publisher"] = []
+            if res.get("publisher_name"):
+                if not isinstance(res["publisher_name"], list):
+                    res["publisher_name"] = [res["publisher_name"]]
+            if res.get("publisher_url"):
+                if not isinstance(res["publisher_url"], list):
+                    res["publisher_url"] = [res["publisher_url"]]
+            pi = 0
+            for publisher_info in res.get("publisher_name") or res.get("publisher_url"):
+                publisher_name = None
+                publisher_url = None
+                if res.get("publisher_name"):
+                    if pi < len(res["publisher_name"]):
+                        publisher_name = res["publisher_name"][pi]
+                if res.get("publisher_url"):
+                    if pi < len(res["publisher_url"]):
+                        publisher_url = res["publisher_url"][pi]
+                res["publisher"].append({"name": publisher_name, "url": publisher_url})
+                pi += 1
+            res.pop("publisher_name", None)
+            res.pop("publisher_id", None)
+            res.pop("publisher_url", None)
+
         # object_content_identifiers
         if res.get("object_content_identifier_url"):
             res["object_content_identifier"] = []
@@ -431,16 +456,17 @@ class MetaDataCollectorXML(MetaDataCollector):
             for temporal_info in res["coverage_temporal_dates"] or res.get("coverage_temporal_names"):
                 temporal_dates = None
                 temporal_name = None
-            if res.get("coverage_temporal_dates"):
-                if ci < len(res["coverage_temporal_dates"]):
-                    temporal_dates = res["coverage_temporal_dates"][ci]
-            if res.get("coverage_temporal_name"):
-                if ci < len(res["coverage_temporal_name"]):
-                    temporal_name = res["coverage_temporal_name"][ci]
-            res["coverage_temporal"].append({"dates": temporal_dates, "name": temporal_name})
-            ci += 1
+                if res.get("coverage_temporal_dates"):
+                    if ci < len(res["coverage_temporal_dates"]):
+                        temporal_dates = res["coverage_temporal_dates"][ci]
+                if res.get("coverage_temporal_name"):
+                    if ci < len(res["coverage_temporal_name"]):
+                        temporal_name = res["coverage_temporal_name"][ci]
+                res["coverage_temporal"].append({"dates": temporal_dates, "name": temporal_name})
+                ci += 1
         res.pop("coverage_temporal_dates", None)
         res.pop("coverage_temporal_name", None)
+
         if res.get("coverage_spatial_coordinates") or res.get("coverage_spatial_names"):
             res["coverage_spatial"] = []
             if not isinstance(res["coverage_spatial_coordinates"], list):

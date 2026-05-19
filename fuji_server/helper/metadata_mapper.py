@@ -254,7 +254,7 @@ class Mapper(Enum):
         "{object_identifier: id, object_type: types.resourceTypeGeneral,  "
         "creator: creators[*].name, creator_first: creators[*].givenName,"
         "creator_last: creators[*].familyName, "
-        "publisher: publisher, "
+        "publisher: {name: publisher.name, id: publisher.publisherIdentifier, url: publisher.publisherIdentifier}"
         "contributor: contributors[*].name || contributors[*].familyName, "
         "right_holder: contributors[?contributorType == 'RightsHolder'], "
         "title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType =='Available'].date || publicationYear,"
@@ -381,7 +381,8 @@ class Mapper(Enum):
         "publication_date": {"path": "./{*}publicationYear"},
         "keywords": {"path": "./{*}subjects/{*}subject"},
         "object_identifier": {"path": "./{*}identifier"},
-        "publisher": {"path": "./{*}publisher"},
+        "publisher_name": {"path": "./{*}publisher"},
+        "publisher_url": {"path": "./{*}publisher@@publisherIdentifier"},
         "summary": {"path": "./{*}descriptions/{*}description"},
         "object_type": {"path": "./{*}resourceType@@resourceTypeGeneral"},
         "object_size": {"path": "./{*}sizes/{*}size"},
@@ -445,13 +446,14 @@ class Mapper(Enum):
         "publication_date": {"path": "./{*}dataset/{*}pubDate"},
         "keywords": {"path": "./{*}dataset/{*}keywordSet/{*}keyword"},
         "summary": {"path": "./{*}dataset/{*}abstract/{*}para"},
-        "publisher": {
+        "publisher_name": {
             "path": [
                 "./{*}dataset/{*}publisher/{*}organizationName",
-                "./{*}dataset/{*}publisher/{*}onlineUrl",
                 "./{*}dataset/{*}metadataProvider/{*}organizationName",
-                "./{*}dataset/{*}metadataProvider/{*}onlineUrl",
             ]
+        },
+        "publisher_url": {
+            "path": ["./{*}dataset/{*}publisher/{*}onlineUrl", "./{*}dataset/{*}metadataProvider/{*}onlineUrl"]
         },
         "measured_variable": {"path": ".//{*}additionalMetadata/{*}metadata/{*}variableName"},
         "license": {
