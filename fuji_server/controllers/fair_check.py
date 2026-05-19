@@ -101,6 +101,7 @@ class FAIRCheck:
         verify_pids=True,
         oaipmh_endpoint=None,
         metric_version=None,
+        use_headless_browser=True,
     ):  # e.g. metrics_v0.5 regex: metrics_v([0-9]+\.[0-9]+)(_[a-z]+)?
         uid_bytes = uid.encode("utf-8")
         self.test_id = hashlib.sha1(uid_bytes).hexdigest()
@@ -228,6 +229,7 @@ class FAIRCheck:
             allowed_harvesting_methods=allowed_harvesting_methods,
             allowed_metadata_standards=allowed_metadata_standards,
             metric_version=self.metric_helper.get_metric_version(),
+            use_headless_browser=use_headless_browser,
         )
         self.repo_helper = None
         RequestHelper.reset_cache()
@@ -372,7 +374,7 @@ class FAIRCheck:
     async def harvest_all_metadata(self):
         # ========= clean merged metadata, delete all entries which are None or ''
         await self.retrieve_metadata_embedded()
-        self.retrieve_metadata_external()
+        await self.retrieve_metadata_external()
         self.logger.info(
             "FsF-F2-01M : Type of object described by the metadata -: {}".format(
                 self.metadata_merged.get("object_type")
@@ -438,8 +440,8 @@ class FAIRCheck:
         self.pid_collector.update(self.metadata_harvester.pid_collector)
         self.isLandingPageAccessible = self.metadata_harvester.isLandingPageAccessible
 
-    def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
-        self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode=repeat_mode)
+    async def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
+        await self.metadata_harvester.retrieve_metadata_external(target_url, repeat_mode=repeat_mode)
         # self.metadata_unmerged.extend(self.metadata_harvester.metadata_unmerged)
         # self.metadata_merged.update(self.metadata_harvester.metadata_merged)
         self.repeat_pid_check = self.metadata_harvester.repeat_pid_check
@@ -740,5 +742,5 @@ class FAIRCheck:
                 repoharvester = MetadataHarvester(repo_uri, metric_version=self.metric_helper.get_metric_version())
                 repoharvester.allowed_harvesting_methods = ["json_in_html", "rdfa", "signposting", "typed_links"]
                 await repoharvester.retrieve_metadata_embedded()
-                repoharvester.retrieve_metadata_external()
+                await repoharvester.retrieve_metadata_external()
                 # print(repoharvester.metadata_merged)
