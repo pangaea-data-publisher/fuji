@@ -1336,7 +1336,7 @@ class MetadataHarvester:
                         + str(metadata_link["type"])
                     )
 
-    def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
+    async def retrieve_metadata_external(self, target_url=None, repeat_mode=False):
         if (
             self.is_harvesting_method_allowed(MetadataOfferingMethods.CONTENT_NEGOTIATION)
             or self.is_harvesting_method_allowed(MetadataOfferingMethods.TYPED_LINKS)
