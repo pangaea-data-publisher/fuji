@@ -40,6 +40,7 @@ class Mapper(Enum):
         "object_identifier": {"label": "Object Identifier", "sameAs": "http://purl.org/dc/terms/identifier"},
         "creator": {"label": "Creator", "sameAs": "http://purl.org/dc/terms/creator"},
         "title": {"label": "Title", "sameAs": "http://purl.org/dc/terms/title"},
+        # TODO: make publisher (list) subproperties: 'url', 'name'...
         "publisher": {"label": "Publisher", "sameAs": "http://purl.org/dc/terms/publisher"},
         "publication_date": {"label": "Publication Date", "sameAs": "http://purl.org/dc/terms/date"},
         "summary": {"label": "Summary", "sameAs": "http://purl.org/dc/terms/abstract"},
@@ -252,7 +253,8 @@ class Mapper(Enum):
     DATACITE_JSON_MAPPING = (
         "{object_identifier: id, object_type: types.resourceTypeGeneral,  "
         "creator: creators[*].name, creator_first: creators[*].givenName,"
-        "creator_last: creators[*].familyName, publisher: publisher, "
+        "creator_last: creators[*].familyName, "
+        "publisher: publisher, "
         "contributor: contributors[*].name || contributors[*].familyName, "
         "right_holder: contributors[?contributorType == 'RightsHolder'], "
         "title: titles[0].title, keywords: subjects[*].subject, publication_date: dates[?dateType =='Available'].date || publicationYear,"
@@ -946,4 +948,25 @@ class Mapper(Enum):
         "license": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability/{*}licence"},
         "access_level": {"path": "./{*}teiHeader/{*}fileDesc/{*}publicationStmt/{*}availability@@status"},
         "object_type": {"value": "EncodedText"},
+    }
+    XML_MAPPING_SPASE = {
+        "title": {"path": "./*/{*}ResourceHeader/{*}ResourceName"},
+        "description": {"path": "./*/{*}ResourceHeader/{*}Description"},
+        "keywords": {"path": ".//{*}Keyword"},
+        # "object_type":{"element":"./*[{*}ResourceID]"},
+        "object_type": {"path": "./*/{*}ResourceType"},
+        "object_identifier": {"path": "./*/{*}ResourceHeader/{*}DOI"},
+        "publisher": {"path": "./*/{*}NamingAuthority"},
+        "license": {"path": "./*/{*}AccessInformation/{*}RightsList/{*}Rights/{*}RightsURI"},
+        "related_resource": {"path": "./*/{*}ResourceHeader/{*}Association/{*}AssociationID"},
+        "related_resource_type": {"path": "./*/{*}ResourceHeader/{*}Association/{*}AssociationType"},
+        "access_level": {"path": "./*/{*}AccessInformation/{*}AccessRights"},
+        "object_content_identifier": {
+            "path": "./*/{*}AccessInformation",
+            "subpath": {
+                "url": "{*}AccessURL/{*}URL",
+                "type": "{*}Format",
+                "size": "{*}DataExtent/{*}Quantity",
+            },
+        },
     }
