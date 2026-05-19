@@ -223,7 +223,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     and "xml" in requestHelper.content_type
                 ):
                     requestHelper.response_content = None
-                    self.logger.info("FsF-F2-01M : Ignoring RDF since content already has been parsed as XML")
+                    self.logger.info("FsF-F2-01M : Ignoring RDF XML since content already has been parsed as XML")
             if requestHelper.response_content is not None:
                 self.content_type = requestHelper.content_type
                 self.resolved_url = requestHelper.redirect_url
@@ -330,6 +330,14 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     "application/n-triples": "nt",
                     "application/n-quads": "nquads",
                 }
+                rdf_parsable = False
+                try:
+                    if str(self.content_type).strip(";")[0] in [
+                        a.strip().split(";")[0] for a in str(AcceptTypes.rdf).split(",")
+                    ]:
+                        rdf_parsable = True
+                except:
+                    pass
                 if self.content_type in format_dict:
                     parseformat = (None, format_dict[self.content_type])
                 else:
@@ -338,7 +346,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     parse_format = str(parseformat[1])
                     if parse_format == "rdfa":
                         self.metadata_format = MetadataFormats.RDFA
-                    if "html" not in parse_format and "zip" not in parse_format:
+                    if rdf_parsable:
                         if parse_format not in [
                             "xml",
                             "n3",
@@ -389,8 +397,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
                                     self.logger.warning(f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {e!s}")
                     else:
                         self.logger.info(
-                            "FsF-F2-01M : Seems to be HTML not RDF, therefore skipped parsing RDF from -: %s"
-                            % (self.target_url)
+                            "FsF-F2-01M : Seems not to be a valid RDF serialisation, therefore skipped parsing RDF from -: %s, %s"
+                            % (self.target_url, self.content_type)
                         )
                 else:
                     self.logger.info(
