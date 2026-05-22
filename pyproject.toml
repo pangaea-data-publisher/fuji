@@ -43,7 +43,9 @@ dependencies = [
   "urlextract~=1.8",
   "pygithub~=2.1",
   "numpy==1.26.4",
-  "jsonschema<4.18"
+  "jsonschema<4.18",
+  "playwright~=1.36",
+  "is-antibot~=0.1.1"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -62,7 +64,7 @@ license = "MIT"
 name = "fuji"
 readme = "README.md"
 requires-python = "~=3.13"  # at the moment only Python 3.13 is supported
-version = "3.5.1"
+version = "4.0.0"
 
 [project.optional-dependencies]
 docs = [
