@@ -331,7 +331,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
 
         if not mime_url_dict:
             self.logger.warning(
-                f"{self.metric_identifier} : Could not perform file format checks as data content identifier(s) unavailable/inaccesible"
+                f"{self.metric_identifier} : Could not perform file format checks as data content identifier(s) unavailable/inaccessible"
             )
 
         self.output = self.data_file_list

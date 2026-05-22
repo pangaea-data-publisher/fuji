@@ -16,7 +16,7 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
     Methods
     ------
     evaluate()
-        This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that folows a proper syntax or
+        This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that follows a proper syntax or
         identifier is resolvable and follows a defined unique identifier syntax (URL, IRI).
     """
 

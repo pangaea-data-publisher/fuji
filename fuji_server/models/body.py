@@ -241,7 +241,7 @@ class Body(Model):
     def metric_version(self) -> str:
         """Gets the metric_version of this Body.
 
-        The FAIRsFAIR metric version be used fo rthe assessment  # noqa: E501
+        The FAIRsFAIR metric version to be used for the assessment  # noqa: E501
 
         :return: The metric_version of this Body.
         :rtype: str
@@ -252,7 +252,7 @@ class Body(Model):
     def metric_version(self, metric_version: str):
         """Sets the metric_version of this Body.
 
-        The FAIRsFAIR metric version be used fo rthe assessment  # noqa: E501
+        The FAIRsFAIR metric version to be used for the assessment  # noqa: E501
 
         :param metric_version: The metric_version of this Body.
         :type metric_version: str

@@ -197,7 +197,7 @@ class MetaDataCollector:
     Sources : enum.Enum
         Enum class to enumerate metadata sources
     source_metadata : dict
-        Metadata souce in a dictionary.
+        Metadata source in a dictionary.
     metadata_mapping : metadata_mapper.Mapper
         Metadata mapping to metadata sources
     logger : logging.Logger
@@ -214,7 +214,7 @@ class MetaDataCollector:
     getLogger()
         Get/return the logger object.
     setLogger(l)
-        Set the logger according to inpur paramter l.
+        Set the logger according to inpur parameter l.
     getSourceMetadata()
         Get source metadata.
     setSourceMetadata(em)
@@ -222,7 +222,7 @@ class MetaDataCollector:
     setTargetMetadata(tm)
         Set the target metadata according to input parameter tm.
     getTargetMetadata()
-        Returm the target metadata.
+        Return the target metadata.
     getNamespaces()
         Return the namespaces of the metadata.
     getNamespacesfromIRIs(meta_source)
@@ -241,7 +241,7 @@ class MetaDataCollector:
         Parameters
         ----------
         sourcemetadata : dict, optional
-            Metadata souce in a dictionary, default is None
+            Metadata source in a dictionary, default is None
         mapping : metadata_mapper.Mapper, optional
             Metadata mapping to metadata sources, default is None
         logger : logging.Logger, optional

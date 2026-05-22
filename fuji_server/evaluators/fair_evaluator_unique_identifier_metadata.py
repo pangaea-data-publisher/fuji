@@ -17,7 +17,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
     Methods
     ------
     evaluate()
-        This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that folows a proper syntax or
+        This method will evaluate whether the data is assigned to a unique identifier (UUID/HASH) that follows a proper syntax or
         identifier is resolvable and follows a defined unique identifier syntax (URL, IRI).
     """
 
@@ -27,7 +27,7 @@ class FAIREvaluatorUniqueIdentifierMetadata(FAIREvaluator):
             metric = "FsF-F1-01MD"
         else:
             metric = "FsF-F1-01D"
-            # after 0.5 seperate metrics for metadata and data
+            # after 0.5 separate metrics for metadata and data
         self.set_metric(metric)
 
     def testMetadataIdentifierCompliesWithIdutilsScheme(self):

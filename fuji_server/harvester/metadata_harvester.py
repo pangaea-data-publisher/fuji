@@ -108,7 +108,7 @@ class MetadataHarvester:
         self.landing_page_status = None
         self.isLandingPageAccessible = False
         self.landing_redirect_list = []  # urlsvisited during redirects
-        self.landing_redirect_status_list = []  # list with stati
+        self.landing_redirect_status_list = []  # list with statuses
         self.landing_content_type = None
         self.origin_url = None
         self.pid_url = None
@@ -182,7 +182,7 @@ class MetadataHarvester:
                     allow_merge = False
                     self.logger.warning(
                         self.logger_target.get("metadata_properties")
-                        + " : Harvesting of this metadata is explicitely disabled in the metric configuration-:"
+                        + " : Harvesting of this metadata is explicitly disabled in the metric configuration-:"
                         + str(metadata_standard)
                     )
             if isinstance(metadict, dict) and allow_merge is True:
@@ -1265,7 +1265,7 @@ class MetadataHarvester:
                 neg_rdf_collector.set_auth_token(self.auth_token, self.auth_token_type)
                 if neg_rdf_collector is not None:
                     source_rdf, rdf_dict = neg_rdf_collector.parse_metadata()
-                    # in case F-UJi was redirected and the landing page content negotiation doesnt return anything try the origin URL
+                    # in case F-UJi was redirected and the landing page content negotiation doesn't return anything try the origin URL
                     if not rdf_dict:
                         if self.origin_url is not None and self.origin_url != targeturl:
                             neg_rdf_collector.target_url = self.origin_url

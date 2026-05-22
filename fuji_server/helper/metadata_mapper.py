@@ -161,7 +161,7 @@ class Mapper(Enum):
         "summary": ["abstract", "description"],
         "keywords": "subject",
         "object_type": "type",
-        "object_size": "exent",
+        "object_size": "extent",
         "modified_date": "modified",
         "created_date": "created",
         "license": "license",
@@ -329,7 +329,7 @@ class Mapper(Enum):
             """
 
     #################  XML Mappings ###############
-    # relations: indicate type using: related_resource_[opional relation type] alternative: define a list 'related_resource_type'
+    # relations: indicate type using: related_resource_[optional relation type] alternative: define a list 'related_resource_type'
     # content identifiers: object_content_identifier_url, object_content_identifier_size, object_content_identifier_type (should have same length)
     # otherwise take a look at the ISO/GCMD mapping
     # attributes: must be indicated like this: tag@@attribute

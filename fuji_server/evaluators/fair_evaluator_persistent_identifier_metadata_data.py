@@ -242,7 +242,7 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
                 self.result.test_status = "pass"
         """else:
             self.score.earned = 0
-            self.logger.warning(self.metric_identifier + ' : Could not identify a valid peristent identifier based on scheme and resolution')"""
+            self.logger.warning(self.metric_identifier + ' : Could not identify a valid persistent identifier based on scheme and resolution')"""
 
         self.result.score = self.score
         self.result.maturity = self.maturity

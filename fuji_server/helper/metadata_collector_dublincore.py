@@ -105,7 +105,7 @@ class MetaDataCollectorDublinCore(MetaDataCollector):
             try:
                 self.metadata_format = MetadataFormats.XHTML
                 # self.logger.info('FsF-F2-01M : Trying to extract DublinCore metadata from html page')
-                # get core metadat from dublin core meta tags:
+                # get core metadata from dublin core meta tags:
                 # < meta name = "DCTERMS.element" content = "Value" / >
                 # meta_dc_matches = re.findall('<meta\s+([^\>]*)name=\"(DC|DCTERMS)?\.([a-z]+)\"(.*?)content=\"(.*?)\"',self.landing_html)
                 # exp = '<\s*meta\s*([^\>]*)name\s*=\s*\"(DC|DCTERMS)?\.([A-Za-z]+)(\.[A-Za-z]+)?\"(.*?)content\s*=\s*\"(.*?)\"'
