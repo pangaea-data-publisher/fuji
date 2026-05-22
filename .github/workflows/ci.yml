@@ -20,20 +20,20 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v5
-    - name: Set up Python 3.11
+    - name: Set up Python 3.13
       uses: actions/setup-python@v6
       with:
-        python-version: '3.11'
+        python-version: '3.13'
     - uses: tox-dev/action-pre-commit-uv@246b66536e366bb885f52d61983bf32f7c95e8b1 # v1.0.3
 
   tests:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v5
-    - name: Set up Python 3.11
+    - name: Set up Python 3.13
       uses: actions/setup-python@v6
       with:
-        python-version: '3.11'
+        python-version: '3.13'
         cache: pip
     - run: |
         python -m pip install --upgrade pip

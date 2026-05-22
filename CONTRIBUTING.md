@@ -46,7 +46,7 @@ If you are proposing a feature:
 
 Ready to contribute?
 
-You need Python 3.11+ and [hatch](https://github.com/pypa/hatch). You can install it globally with [pipx](https://github.com/pypa/pipx):
+You need Python 3.13+ and [hatch](https://github.com/pypa/hatch). You can install it globally with [pipx](https://github.com/pypa/pipx):
 
 ```console
 $ pipx install hatch

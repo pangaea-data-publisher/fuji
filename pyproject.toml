@@ -12,7 +12,7 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Information Analysis"
 ]
 dependencies = [
@@ -29,7 +29,7 @@ dependencies = [
   "idutils~=1.2",
   "jmespath~=1.0",
   "levenshtein~=0.26.1",
-  "lxml==5.3.0",
+  "lxml==6.1.0",
   "pandas~=2.1",
   "pyRdfa3~=3.5",
   "pyld~=2.0",
@@ -38,14 +38,12 @@ dependencies = [
   "rdflib~=7.0",
   "requests~=2.31",
   "sparqlwrapper~=2.0",
-  "tika~=2.6.0",
+  "tika~=3.1.0",
   "tldextract~=5.0",
   "urlextract~=1.8",
   "pygithub~=2.1",
   "numpy==1.26.4",
-  "jsonschema<4.18",
-  "playwright~=1.36",
-  "is-antibot~=0.1.1"
+  "jsonschema<4.18"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -63,13 +61,13 @@ keywords = [
 license = "MIT"
 name = "fuji"
 readme = "README.md"
-requires-python = "~=3.11"  # at the moment only Python 3.11 is supported
-version = "3.5.2"
+requires-python = "~=3.13"  # at the moment only Python 3.13 is supported
+version = "3.5.1"
 
 [project.optional-dependencies]
 docs = [
   "myst-parser~=4.0",
-  "sphinx~=8.0",
+  "sphinx~=9.0",
   "sphinx-rtd-theme~=3.0"
 ]
 report = [

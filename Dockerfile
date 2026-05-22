@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.5
-# at the moment only Python 3.11 is supported
-FROM python:3.11-slim
+# Note: At the moment only Python 3.13 is supported
+FROM python:3.13-slim
 
 WORKDIR /usr/src/app
 
