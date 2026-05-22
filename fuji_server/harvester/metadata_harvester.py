@@ -170,12 +170,29 @@ class MetadataHarvester:
                 for r in metadict.keys():
                     if r in self.reference_elements or r == "datacite_client":
                         # enforce lists
-                        if r in ["keywords", "access_level", "license", "object_type"]:
+                        if r in ["keywords", "access_level", "license", "object_type", "publisher"]:
                             if isinstance(metadict[r], str):
                                 if r == "keywords":
                                     metadict[r] = metadict[r].split(",")
                                 else:
                                     metadict[r] = [metadict[r]]
+
+                        # merging
+                        # publisher special case
+                        if r == "publisher":
+                            if not isinstance(metadict[r], list):
+                                metadict[r] = [metadict[r]]
+                            newpublisher = []
+                            for publisherentry in metadict[r]:
+                                if isinstance(publisherentry, str):
+                                    pubid_helper = IdentifierHelper(publisherentry)
+                                    if pubid_helper.preferred_schema:
+                                        publisherentry = {"url": publisherentry}
+                                    else:
+                                        publisherentry = {"name": publisherentry}
+
+                                newpublisher.append(publisherentry)
+                            metadict[r] = newpublisher
 
                         if self.metadata_merged.get(r):
                             msimilarity = 0
@@ -232,6 +249,7 @@ class MetadataHarvester:
                             )
                             # verified means: it resolves and if a PID isd given in the metadata it shall resolves to an URL which is part of the landing domain
                             self.pid_collector[pid_helper.identifier_url]["verified"] = resolves_to_landing_domain
+
                 if metadict.get("related_resources"):
                     self.related_resources.extend(metadict.get("related_resources"))
                 # uniquify
@@ -419,19 +437,6 @@ class MetadataHarvester:
                             signidhelper.identifier_url
                         )
                         self.pid_collector[signidhelper.identifier_url]["verified"] = resolves_to_landing_domain
-
-    def get_html_typed_links(self, rel="item", allkeys=True):
-        # Use Typed Links in HTTP Link headers to help machines find the resources that make up a publication.
-        # Use links to find domains specific metadata
-        datalinks = []
-        if not isinstance(rel, list):
-            rel = [rel]
-        for typed_link in self.typed_links:
-            if typed_link.get("rel") in rel:
-                if not allkeys:
-                    typed_link = {tlkey: typed_link[tlkey] for tlkey in ["url", "type", "source"]}
-                datalinks.append(typed_link)
-        return datalinks
 
     def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
@@ -873,7 +878,9 @@ class MetadataHarvester:
                     if self.metadata_merged.get("object_content_identifier") is None:
                         self.metadata_merged["object_content_identifier"] = data_sign_links
                 # ========= retrieve signposting or typed data object links =========
-                data_meta_links = self.get_html_typed_links(rel="item")
+                # data_meta_links = self.get_html_typed_links(rel="item")
+                data_meta_links = self.signposting_helper.get_links("item", ["content", "header"])
+
                 if data_meta_links:
                     self.logger.info(
                         "FsF-F3-01M : Found data links in HTML head (link rel=item) -: " + str(len(data_meta_links))
@@ -887,7 +894,8 @@ class MetadataHarvester:
                 )
 
             # ======== retrieve OpenSearch links
-            search_links = self.get_html_typed_links(rel="search")
+            # search_links = self.get_html_typed_links(rel="search")
+            search_links = self.signposting_helper.get_links("search", "content")
             for search in search_links:
                 if search.get("type") in ["application/opensearchdescription+xml"]:
                     self.logger.info(
@@ -1076,7 +1084,8 @@ class MetadataHarvester:
     """
 
     def retrieve_metadata_external_oai_ore(self):
-        oai_link = self.get_html_typed_links("resourcemap")
+        # oai_link = self.get_html_typed_links("resourcemap")
+        oai_link = self.signposting_helper.get_links("resourcemap", ["content", "header"])
         if oai_link:
             if oai_link.get("type") in ["application/atom+xml"]:
                 # elif metadata_link['type'] in ['application/atom+xml'] and metadata_link['rel'] == 'resourcemap':
