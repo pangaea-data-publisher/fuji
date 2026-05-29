@@ -392,8 +392,15 @@ class FAIRCheck:
     def harvest_re3_data(self):
         if self.use_datacite:
             client_id = self.metadata_merged.get("datacite_client")
+            publishers = self.metadata_merged.get("publisher") or []
+            if isinstance(publishers, str):
+                publishers = [publishers]
+            repourls = [
+                v for d in publishers if isinstance(d, dict) for v in (d.get("url"), d.get("id")) if isinstance(v, str)
+            ]
             self.logger.info(f"FsF-R1.3-01M : re3data/datacite client id -: {client_id}")
             self.repo_helper = RepositoryHelper(client_id=client_id, logger=self.logger, landingpage=self.landing_url)
+            self.repo_helper.repourls = repourls
             self.repo_helper.lookup_re3data()
         else:
             self.client_id = None
