@@ -19,6 +19,7 @@ from rdflib.namespace import (
     SDO,  # schema.org
 )
 
+from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.metadata_collector import MetaDataCollector, MetadataFormats, MetadataSources
 from fuji_server.helper.metadata_mapper import Mapper
 from fuji_server.helper.preprocessor import Preprocessor
@@ -321,7 +322,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
                         except Exception as e:
                             self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
-            elif self.accept_type == AcceptTypes.rdf:
+            elif self.content_type in AcceptTypes.rdf.list():
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                 format_dict = {
@@ -330,14 +331,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     "application/n-triples": "nt",
                     "application/n-quads": "nquads",
                 }
-                rdf_parsable = False
-                try:
-                    if str(self.content_type).strip(";")[0] in [
-                        a.strip().split(";")[0] for a in str(AcceptTypes.rdf).split(",")
-                    ]:
-                        rdf_parsable = True
-                except:
-                    pass
+
                 if self.content_type in format_dict:
                     parseformat = (None, format_dict[self.content_type])
                 else:
@@ -346,64 +340,64 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     parse_format = str(parseformat[1])
                     if parse_format == "rdfa":
                         self.metadata_format = MetadataFormats.RDFA
-                    if rdf_parsable:
-                        if parse_format not in [
-                            "xml",
-                            "n3",
-                            "turtle",
-                            "nt",
-                            "pretty-xml",
-                            "trix",
-                            "trig",
-                            "nquads",
-                            "json-ld",
-                            "hext",
-                        ]:
-                            parse_format = "turtle"  # default
-                        RDFparsed = False
-                        self.logger.info(f"FsF-F2-01M : Try to parse RDF from -: {self.target_url} as {parse_format}")
-                        badline = None
-                        while not RDFparsed:
-                            try:
-                                graph = rdflib.Graph(identifier=self.resolved_url)
-                                graph.parse(data=rdf_response, format=parse_format)
-                                rdf_response_graph = graph
-                                self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
-                                RDFparsed = True
-                            except Exception as e:
-                                # <unknown>:74964:92: unclosed token
-                                errorlinematch = re.search(r"\sline\s([0-9]+)", str(e))
-                                if not errorlinematch:
-                                    errorlinematch = re.search(r"<unknown>:([0-9]+)", str(e))
-                                if errorlinematch and parseformat[1] != "xml":
-                                    if int(errorlinematch[1]) + 1 != badline:
-                                        badline = int(errorlinematch[1])
-                                        self.logger.warning(
-                                            "FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s "
-                                            % str(badline)
-                                        )
-                                        splitRDF = rdf_response.splitlines()
-                                        if len(splitRDF) >= 1 and badline <= len(splitRDF) and badline > 1:
-                                            rdf_response = b"\n".join(splitRDF[: badline - 1])
-                                        else:
-                                            RDFparsed = True  # end reached
+                    if parse_format not in [
+                        "xml",
+                        "n3",
+                        "turtle",
+                        "nt",
+                        "pretty-xml",
+                        "trix",
+                        "trig",
+                        "nquads",
+                        "json-ld",
+                        "hext",
+                    ]:
+                        parse_format = "turtle"  # default
+                    RDFparsed = False
+                    self.logger.info(f"FsF-F2-01M : Try to parse RDF from -: {self.target_url} as {parse_format}")
+                    badline = None
+                    while not RDFparsed:
+                        try:
+                            graph = rdflib.Graph(identifier=self.resolved_url)
+                            graph.parse(data=rdf_response, format=parse_format)
+                            rdf_response_graph = graph
+                            self.setLinkedNamespaces(self.getAllURIS(rdf_response_graph))
+                            RDFparsed = True
+                        except Exception as e:
+                            # <unknown>:74964:92: unclosed token
+                            errorlinematch = re.search(r"\sline\s([0-9]+)", str(e))
+                            if not errorlinematch:
+                                errorlinematch = re.search(r"<unknown>:([0-9]+)", str(e))
+                            if errorlinematch and parseformat[1] != "xml":
+                                if int(errorlinematch[1]) + 1 != badline:
+                                    badline = int(errorlinematch[1])
+                                    self.logger.warning(
+                                        "FsF-F2-01M : Failed to parse RDF, trying to fix RDF string and retry parsing everything before line -: %s "
+                                        % str(badline)
+                                    )
+                                    splitRDF = rdf_response.splitlines()
+                                    if len(splitRDF) >= 1 and badline <= len(splitRDF) and badline > 1:
+                                        rdf_response = b"\n".join(splitRDF[: badline - 1])
                                     else:
-                                        RDFparsed = True
+                                        RDFparsed = True  # end reached
                                 else:
-                                    RDFparsed = True  # give up
-                                if not RDFparsed:
-                                    continue
-                                else:
-                                    self.logger.warning(f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {e!s}")
-                    else:
-                        self.logger.info(
-                            "FsF-F2-01M : Seems not to be a valid RDF serialisation, therefore skipped parsing RDF from -: %s, %s"
-                            % (self.target_url, self.content_type)
-                        )
+                                    RDFparsed = True
+                            else:
+                                RDFparsed = True  # give up
+                            if not RDFparsed:
+                                continue
+                            else:
+                                self.logger.warning(f"FsF-F2-01M : Failed to parse RDF -: {self.target_url} {e!s}")
+
                 else:
                     self.logger.info(
                         f"FsF-F2-01M : Could not determine RDF serialisation format for -: {self.target_url}"
                     )
+            else:
+                self.logger.info(
+                    "FsF-F2-01M : Seems not to be a RDF serialisation F-UJI asked for, therefore skipped parsing RDF from -: %s, %s"
+                    % (self.target_url, self.content_type)
+                )
 
         if not rdf_metadata:
             rdf_metadata = self.get_metadata_from_graph(rdf_response_graph)
@@ -596,10 +590,32 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 publisheruri = (
                     g.value(publisher, FOAF.homepage) or (g.value(publisher, SMA.url)) or (g.value(publisher, SDO.url))
                 )
-                if publisheruri:
-                    meta["publisher"].append(str(publisheruri))
-                if publishername:
-                    meta["publisher"].append(str(publishername))
+                publisheridentifiers = (
+                    list(g.objects(publisher, FOAF.homepage))
+                    or list(g.objects(publisher, SMA.identifier))
+                    or list(g.objects(publisher, SDO.identifier))
+                )
+                publishersameas = list(g.objects(publisher, SMA.sameAs)) or list(g.objects(publisher, SDO.sameAs))
+                publisherids = []
+                pubidh = IdentifierHelper(str(publisher))
+                if pubidh.preferred_schema:
+                    publisherids.append(str(publisher))
+
+                for pid in publisheridentifiers:
+                    if pid is None:
+                        continue
+                    val = g.value(pid, SDO.value) or g.value(pid, SMA.value)
+                    if val:
+                        publisherids.append(str(val))
+                    else:
+                        publisherids.append(str(pid))
+
+                for psameas in publishersameas:
+                    publisherids.append(str(psameas))
+
+                if publisheruri or publishername:
+                    meta["publisher"].append({"name": publishername, "url": publisheruri, "id": publisherids})
+
                 if not meta.get("publisher"):
                     meta["publisher"].append(str(publisher))
             # meta['publisher'] = str(g.value(item, DC.publisher) or g.value(item, DCTERMS.publisher) or
@@ -840,6 +856,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
         return cand_creative_work, object_types_dict"""
 
     def get_schemaorg_metadata(self, graph):
+
         main_entity_id, main_entity_type, main_entity_namespace = self.get_main_entity(graph)
         creative_work_type = "Dataset"
         if main_entity_id:
@@ -939,25 +956,30 @@ class MetaDataCollectorRdf(MetaDataCollector):
             potential_action = list(graph.objects(creative_work, SMA.potentialAction)) + list(
                 graph.objects(creative_work, SDO.potentialAction)
             )
-
+            # ESIP style file offering via SearchAction via PotentialAction
             for potaction in potential_action:
                 service_url, service_desc, service_type = None, None, None
                 entry_point = graph.value(potaction, SMA.EntryPoint) or graph.value(potaction, SDO.EntryPoint)
                 if not entry_point:
                     service_url = graph.value(potaction, SMA.target) or graph.value(potaction, SDO.target)
-
                 else:
-                    service_url = graph.value(entry_point, SMA.url) or graph.value(entry_point, SDO.url)
-                    service_desc = graph.value(entry_point, SMA.urlTemplate) or graph.value(
-                        entry_point, SDO.urlTemplate
+                    service_url = (
+                        graph.value(entry_point, SMA.url)
+                        or graph.value(entry_point, SMA.urlTemplate)
+                        or graph.value(entry_point, SDO.url)
+                        or graph.value(entry_point, SDO.urlTemplate)
                     )
-                    service_type = graph.value(entry_point, SMA.additionalType) or graph.value(
-                        entry_point, SDO.additionalType
+                    service_desc = "http - generic web"
+                    service_type = graph.value(entry_point, SMA.contentType) or graph.value(
+                        entry_point, SDO.contentType
                     )
+                    schema_metadata["metadata_service"].append({"url": str(service_url), "type": str(service_desc)})
                 if service_url:
-                    schema_metadata["object_content_identifier"].append(
-                        {"url": service_url, "type": service_type, "service": service_desc}
-                    )
+                    if not isinstance(service_url, rdflib.term.BNode):
+                        schema_metadata["object_content_identifier"].append(
+                            {"url": service_url, "type": service_type, "service": service_desc}
+                        )
+
             # temporalCoverage
             schema_metadata["coverage_temporal"] = []
             for temporal_info in list(graph.objects(creative_work, SMA.temporalCoverage)) + list(
