@@ -8,12 +8,63 @@ import re
 import ssl
 import threading
 import urllib
+from ftplib import FTP_TLS
 
 from idutils import is_url
 from tika import parser
 
 from fuji_server.helper.identifier_helper import IdentifierHelper
 from fuji_server.helper.request_helper import FUJIHTTPRedirectHandler
+
+# Prevent the "unknown url type" validation rejection
+if "ftps" not in urllib.parse.uses_netloc:
+    urllib.parse.uses_netloc.append("ftps")
+
+
+class FTPSHandler(urllib.request.BaseHandler):
+    def ftps_open(self, req):
+        url = req.full_url
+        parsed = urllib.parse.urlparse(url)
+
+        host = parsed.hostname
+        port = parsed.port or 990
+        user = parsed.username or "anonymous"
+        passwd = parsed.password or ""
+        remote_path = urllib.parse.unquote(parsed.path)
+
+        if remote_path.endswith("/") or not remote_path:
+            raise IsADirectoryError("URL points to a directory, not a file.")
+
+        try:
+            ftps = FTP_TLS()
+            timeout = req.timeout
+            if not isinstance(timeout, (int, float)):
+                timeout = 10
+            ftps.connect(host, port, timeout=timeout)
+            ftps.login(user, passwd)
+            ftps.prot_p()
+            ftps.set_pasv(True)
+
+            # Stream the data
+            data_buffer = io.BytesIO()
+            ftp_command = f"RETR {remote_path.lstrip('/')}" if remote_path.startswith("/") else f"RETR {remote_path}"
+            ftps.retrbinary(ftp_command, data_buffer.write)
+
+            try:
+                ftps.quit()
+            except Exception:
+                ftps.close()
+
+            data_buffer.seek(0)
+
+            mock_headers = {
+                "Content-Type": "application/octet-stream",
+                "Content-Length": str(data_buffer.getbuffer().nbytes),
+            }
+            return urllib.request.addinfourl(data_buffer, mock_headers, url)
+
+        except Exception as ftp_err:
+            raise urllib.error.URLError(f"FTPS Transfer Failed: {ftp_err}")
 
 
 class DataHarvester:
@@ -158,6 +209,7 @@ class DataHarvester:
             header["Authorization"] = self.auth_token_type + " " + self.auth_token
         # header["Range"] = "bytes=0-" + str(self.max_download_size)
         url = urldict.get("url")
+        # print('URL: ', url)
         if url:
             if not is_url(url):
                 url = self.expand_url(url)
@@ -171,6 +223,8 @@ class DataHarvester:
                 opener = urllib.request.build_opener(
                     urllib.request.HTTPSHandler(context=context),
                     urllib.request.HTTPHandler(),
+                    urllib.request.FTPHandler(),
+                    FTPSHandler(),
                     redirect_handler,
                 )
                 urllib.request.install_opener(opener)
