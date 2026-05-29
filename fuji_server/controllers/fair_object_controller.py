@@ -47,6 +47,7 @@ async def assess_by_id(body):
         print("BODY METRIC", metric_version)
         auth_token = body.get("auth_token")
         auth_token_type = body.get("auth_token_type")
+        use_headless_browser = body.get("use_headless", False)
         logger = Preprocessor.logger
         # updating re3data
         Preprocessor.retrieve_datacite_re3repos()
@@ -63,6 +64,7 @@ async def assess_by_id(body):
             use_github=usegithub,
             oaipmh_endpoint=oaipmh_endpoint,
             metric_version=metric_version,
+            use_headless_browser=use_headless_browser,
         )
         # dataset level authentication
         if auth_token:

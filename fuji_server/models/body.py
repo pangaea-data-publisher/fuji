@@ -249,7 +249,7 @@ class Body(Model):
 
         Indicates if Headless Browser shall be used  # noqa: E501
 
-        :return: The use_datacite of this Body.
+        :return: The use_headless of this Body.
         :rtype: bool
         """
         return self._use_headless
@@ -260,7 +260,7 @@ class Body(Model):
 
         Indicates if Headless Browser shall be used  # noqa: E501
 
-        :param use_headless: The use_datacite of this Body.
+        :param use_headless: The use_headless of this Body.
         :type use_headless: bool
         """
 

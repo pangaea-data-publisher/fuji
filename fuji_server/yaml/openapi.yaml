@@ -7,7 +7,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
-  version: 3.5.2
+  version: 4.0.0
 externalDocs:
   description: Find out more about F-UJI
   url: https://github.com/pangaea-data-publisher/fuji
@@ -40,6 +40,7 @@ paths:
               metadata_service_type: oai_pmh
               use_datacite: true
               use_github: false
+              use_headless: false
               metric_version: metrics_v0.5
       responses:
         '200':
@@ -835,6 +836,9 @@ components:
         use_github:
           type: boolean
           description: Indicates if the GitHub REST API shall be used to collect (meta)data
+        use_headless:
+          type: boolean
+          description: Indicates if a headless brower should be used which is able to render Javascript generated content
         metric_version:
           type: string
           description: The FAIRsFAIR metric version be used fo rthe assessment
