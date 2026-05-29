@@ -90,17 +90,18 @@ class FAIREvaluatorPersistentIdentifierMetadataData(FAIREvaluator):
                         if isinstance(pid_info.get("status_list"), list):
                             if str(pid_info.get("status_list")[0]).startswith("3"):
                                 test_status = True
-                                self.logger.info(
+                                self.logger.log(
+                                    self.fuji.LOG_SUCCESS,
                                     self.metric_identifier
-                                    + " : Found PID for metadata or landing page which is registered by a PID system (is found and redirected by PID system) -: "
-                                    + str(pid_info.get("url"))
+                                    + " : Found PID for metadata or landing page which is registered by a PID system (is found and redirected by PID system), status -: "
+                                    + str(pid_info.get("status_list")[0]),
                                 )
                                 break
                             else:
                                 self.logger.warning(
                                     self.metric_identifier
-                                    + " : Found PID pointing to metadata or landing page which is NOT registered (does not resolve properly) -: "
-                                    + str(pid_info.get("url"))
+                                    + " : Found PID pointing to metadata or landing page which is NOT registered (does not resolve properly), status -: "
+                                    + str(pid_info.get("status_list")[0])
                                 )
             if test_status:
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2", test_score, "pass")
