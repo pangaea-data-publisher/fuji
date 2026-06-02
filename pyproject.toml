@@ -43,7 +43,7 @@ dependencies = [
   "urlextract~=1.8",
   "pygithub~=2.1",
   "numpy==1.26.4",
-  "jsonschema<4.18",
+  "jsonschema<4.27",
   "playwright~=1.36",
   "is-antibot~=0.1.1"
 ]
