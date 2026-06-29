@@ -70,12 +70,19 @@ class RepositoryHelper:
                 self.logger.warning("FsF-R1.3-01M : No DOI of client id is available from datacite api")
 
     def parseRe3data(self):
-        # http://schema.re3data.org/3-0/re3data-example-V3-0.xml
         root = etree.fromstring(self.re3metadata_raw)
+        # print(self.re3metadata_raw)
         # ns = {k: v for k, v in root.nsmap.items() if k}
         name = root.xpath("//r3d:repositoryName", namespaces=RepositoryHelper.ns)
         url = root.xpath("//r3d:repositoryURL", namespaces=RepositoryHelper.ns)
         re3id = root.xpath("//r3d:re3data.orgIdentifier", namespaces=RepositoryHelper.ns)
+        apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
+        api_domains = []
+        for a in apis:
+            api_url_parts = extract(a.text)
+            api_domain = api_url_parts.domain + "." + api_url_parts.suffix
+            if api_domain not in api_domains:
+                api_domains.append(api_domain)
         if re3id:
             re3id = re3id[0].text
         if name:
@@ -87,15 +94,22 @@ class RepositoryHelper:
         landing_url_parts = extract(self.landing_page_url)
         repo_domain = repo_url_parts.domain + "." + repo_url_parts.suffix
         landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
+
         if landing_domain == repo_domain:
             repo_domain_verified = True
             self.logger.info(
                 "FsF-R1.3-01M : Domain name listed in re3data metadata record matches landing page domain-: "
                 + str(repo_domain)
             )
+        elif landing_domain in api_domains:
+            repo_domain_verified = True
+            self.logger.info(
+                "FsF-R1.3-01M : Domain name listed in re3data metadata record matches one of the given API domains -: "
+                + str(api_domains)
+            )
         else:
             self.logger.info(
-                "FsF-R1.3-01M : Domain name listed in re3data metadata record does not match landing page domain, requires additional check -: "
+                "FsF-R1.3-01M : Domain name listed in re3data metadata record does not match landing page domain or one of the given API domains, requires additional check -: "
                 + str(repo_domain)
                 + " - "
                 + str(landing_domain)
@@ -116,7 +130,7 @@ class RepositoryHelper:
                     break
 
         if repo_domain_verified:
-            apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
+            # apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
             for a in apis:
                 apiType = a.attrib["apiType"]
                 if apiType in RepositoryHelper.RE3DATA_APITYPES:
