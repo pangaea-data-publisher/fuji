@@ -19,17 +19,17 @@ jobs:
   lint:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Set up Python 3.13
       uses: actions/setup-python@v6
       with:
         python-version: '3.13'
-    - uses: tox-dev/action-pre-commit-uv@246b66536e366bb885f52d61983bf32f7c95e8b1 # v1.0.3
+    - uses: tox-dev/action-pre-commit-uv@41a04ab74d5ec7ca33c8db8a59b6e3291d576033 # v1.0.4
 
   tests:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Set up Python 3.13
       uses: actions/setup-python@v6
       with:
