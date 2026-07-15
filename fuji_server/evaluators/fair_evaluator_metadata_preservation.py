@@ -119,7 +119,7 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
             )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = MetadataPreserved(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -140,3 +140,4 @@ class FAIREvaluatorMetadataPreserved(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.test_status = test_status
         self.result.maturity = self.maturity
+        return self.result

@@ -53,7 +53,7 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
                 self.score.earned += test_score
         return test_result
 
-    def evaluate(self):
+    async def evaluate(self):
         number_of_contents = 0
         self.result = IdentifierIncluded(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -79,3 +79,4 @@ class FAIREvaluatorMetadataIdentifierIncluded(FAIREvaluator):
         self.result.output = self.output
         self.result.maturity = self.maturity
         self.result.score = self.score
+        return self.result

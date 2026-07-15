@@ -433,7 +433,7 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
                 self.logger.warning(f"{self.metric_identifier} : Unknown build script configured ({test_id}).")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.setLicenseDataAndOutput()
 
         self.result = License(
@@ -459,3 +459,4 @@ class FAIREvaluatorLicenseFile(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.maturity = self.maturity
+        return self.result
