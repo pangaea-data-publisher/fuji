@@ -35,7 +35,7 @@ class OAIMetadataProvider(MetadataProvider):
         # #The mandatory Dublin Core format provides the identifier element that should be used for this purpose
         return None
 
-    def getMetadataStandards(self):
+    async def getMetadataStandards(self):
         """Method to get the metadata schema from the OAI namespaces
 
         Returns
@@ -51,7 +51,7 @@ class OAIMetadataProvider(MetadataProvider):
         oai_listmetadata_url = oai_endpoint + "?verb=ListMetadataFormats"
         requestHelper = RequestHelper(url=oai_listmetadata_url, logInst=self.logger)
         requestHelper.setAcceptType(AcceptTypes.xml)
-        _response_type, xml = requestHelper.content_negotiate(self.metric_id)
+        _response_type, xml = await requestHelper.content_negotiate(self.metric_id)
         schemas = {}
         if xml:
             try:
