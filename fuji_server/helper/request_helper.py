@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
+import asyncio
 import gzip
 import http.cookiejar
 import json
@@ -13,6 +14,7 @@ from enum import Enum
 
 import lxml
 import rdflib
+from is_antibot import is_antibot
 from tika import parser
 
 from fuji_server.helper.browser_manager import BrowserManager
@@ -66,8 +68,8 @@ class RequestHelper:
     checked_content = {}
 
     def __init__(self, url, logInst: object = None):
-        self.user_agent = "F-UJI"
-        self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
+        self.user_agent = "Mozilla/5.0 (compatible; F-UJI/4.0; +https://github.com/pangaea-data-publisher/fuji)"
+        # self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
         self.logger = logInst if logInst else Preprocessor.logger
         self.format = None  # Guessed Metadata Format
         self.request_url = url.split("#")[0]
@@ -125,14 +127,19 @@ class RequestHelper:
         return self.parse_response
 
     def getResponseHeader(self):
-        return dict(self.response_header)
+        return dict(self.response_header or {})
 
     def content_decode(self, content):
         if isinstance(content, "str"):
             pass
         return True
 
-    def request_content(self, metric_id="", ignore_html=True):
+    async def request_content(self, metric_id="", ignore_html=True, check_antibot=False):
+        return await asyncio.to_thread(self._request_content_sync, metric_id, ignore_html, check_antibot)
+
+    def _request_content_sync(self, metric_id="", ignore_html=True, check_antibot=False):
+
+        # async def request_content(self, metric_id="", ignore_html=True):
         self.metric_id = metric_id
         tp_response = None
         if self.request_url is not None:
@@ -157,12 +164,20 @@ class RequestHelper:
                 tp_request = urllib.request.Request(self.request_url, headers=request_headers)
                 try:
                     tp_response = opener.open(tp_request, timeout=10)
+                    self.response_content = tp_response.read(self.max_content_size)
+                    self.response_header = tp_response.getheaders()
+                    self.response_status = tp_response.status
                     self.redirect_list = redirect_handler.redirect_list
                     self.redirect_status_list = redirect_handler.redirect_status_list
                     self.status_list = redirect_handler.status_list
                     self.redirect_url = redirect_handler.redirect_url
                 except urllib.error.HTTPError as e:
                     self.response_status = int(e.code)
+                    self.response_header = e.getheaders()
+                    self.content_type = e.headers.get("Content-Type")
+                    self.response_content = e.read(
+                        self.max_content_size
+                    )  # since HTTPError itself is a File like object..
                     try:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
@@ -180,12 +195,12 @@ class RequestHelper:
                             "%s : Received a 405 or 403 HTTP error, either a 'method not allowed' error or the host denied the User-Agent used (web scraping detection), retrying..."
                             % metric_id
                         )
-                        try:
+                        """ try:
                             request_headers["User-Agent"] = self.browser_like_user_agent
                             tp_request = urllib.request.Request(self.request_url, headers=request_headers)
                             tp_response = opener.open(tp_request, timeout=10)
                         except:
-                            print("405 fix error:" + str(e))
+                            print("405 fix error:" + str(e))"""
                     elif e.code >= 500:
                         if "doi.org" in self.request_url:
                             self.logger.error(
@@ -304,6 +319,27 @@ class RequestHelper:
                 self.logger.warning(f"{metric_id} : RequestException -: {e.reason} : {self.request_url}")
             except Exception as e:
                 self.logger.warning(f"{metric_id} : Request Failed -: {e!s} : {self.request_url}")
+            # check if anti-robot software is in place
+            if check_antibot:
+                try:
+                    body = self.response_content
+                    if isinstance(body, bytes):
+                        body = body.decode("utf-8", errors="replace")
+                    antibot_result = is_antibot(
+                        headers=self.getResponseHeader(),
+                        body=body,
+                        status_code=self.response_status,
+                    )
+                    if antibot_result.detected:
+                        self.logger.error(
+                            metric_id
+                            + " : ANTIBOT PROTECTION detected. You need to expose SOME metadata to allow FAIR assessment -: "
+                            + str(antibot_result.detection)
+                            + ", "
+                            + str(antibot_result.provider)
+                        )
+                except Exception as e:
+                    print("antibot detection failed...", e)
         return tp_response
 
     async def render_page(self, metric_id=""):
@@ -320,7 +356,8 @@ class RequestHelper:
                 await page.goto(self.request_url)  # do not force wait strategy here
                 try:
                     await page.wait_for_load_state("networkidle", timeout=3000)
-                except:
+                except Exception as e:
+                    self.logger.debug(f"{metric_id}: networkidle timeout ({e})")
                     pass  # many SPAs never become idle (polling / websockets)
 
                 html = await page.content()
@@ -365,10 +402,10 @@ class RequestHelper:
                 # source = 'zip'
             if tp_response.info().get_content_charset():
                 self.response_charset = tp_response.info().get_content_charset()
-            self.response_header = tp_response.getheaders()
+            # self.response_header = tp_response.getheaders()
             self.redirect_url = tp_response.geturl()
             self.response_status = status_code = tp_response.status
-            """self.logger.info(
+            """print(
                 "{} : Content negotiation on {} accept={}, status={} ".format(
                     metric_id, self.request_url, self.accept_type, str(status_code)
                 )
@@ -408,7 +445,7 @@ class RequestHelper:
                                 metric_id, str(self.max_content_size)
                             )
                         )
-                    self.response_content = tp_response.read(self.max_content_size)
+                    # self.response_content = tp_response.read(self.max_content_size)
                     if self.content_size == 0:
                         self.content_size = sys.getsizeof(self.response_content)
                     # try to find out if content type is byte then fix
@@ -588,7 +625,7 @@ class RequestHelper:
             self.logger.warning(f"{metric_id} : No response received from -: {self.request_url}, {self.accept_type}")
         return format
 
-    def content_negotiate(self, metric_id="", ignore_html=True):
-        response = self.request_content(metric_id, ignore_html)
+    async def content_negotiate(self, metric_id="", ignore_html=True, check_antibot=False):
+        response = await self.request_content(metric_id, ignore_html, check_antibot)
         format = self.handle_content(response, metric_id, ignore_html)
         return format, self.parse_response
