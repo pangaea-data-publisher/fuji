@@ -77,7 +77,7 @@ class MetaDataCollectorXML(MetaDataCollector):
             print("getAllURIs XML error: " + str(e))
         return founduris
 
-    def parse_metadata(self):
+    async def parse_metadata(self):
         """Parse the XML metadata from the data.
 
         Returns
@@ -109,7 +109,7 @@ class MetaDataCollectorXML(MetaDataCollector):
         if self.pref_mime_type:
             requestHelper.addAcceptType(self.pref_mime_type)
         # self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
-        neg_format, xml_response = requestHelper.content_negotiate("FsF-F2-01M")
+        neg_format, xml_response = await requestHelper.content_negotiate("FsF-F2-01M")
         self.metadata_format = neg_format
         if requestHelper.response_content is not None:
             self.content_type = requestHelper.content_type
