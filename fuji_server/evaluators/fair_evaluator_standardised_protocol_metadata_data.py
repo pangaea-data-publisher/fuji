@@ -109,7 +109,7 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
                 )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = StandardisedProtocolMetadata(
             id=self.metric_number,
             metric_identifier=self.metric_identifier,
@@ -127,3 +127,4 @@ class FAIREvaluatorStandardisedProtocolMetadata(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
+        return self.result

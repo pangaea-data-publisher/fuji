@@ -146,7 +146,7 @@ class FAIREvaluatorTestCases(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for badge status is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.metric_identifier in self.metrics:
             self.result = TestCase(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -173,3 +173,4 @@ class FAIREvaluatorTestCases(FAIREvaluator):
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
             self.result.maturity = self.maturity
+            return self.result
