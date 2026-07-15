@@ -194,7 +194,7 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
                 )
         return test_result
 
-    def evaluate(self):
+    async def evaluate(self):
         # Focus on machine readable rights -> URIs only
         # 1) http://vocabularies.coar-repositories.org/documentation/access_rights/
         # 2) Eprints AccessRights Vocabulary: check for http://purl.org/eprint/accessRights/
@@ -261,3 +261,4 @@ class FAIREvaluatorDataAccessLevel(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.output
+        return self.result
