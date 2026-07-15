@@ -89,15 +89,15 @@ class FAIREvaluator:
             self.metric_number = self.metrics.get(self.metric_identifier).get("metric_number")
             self.initializeMetricTests()
 
-    def evaluate(self):
+    async def evaluate(self):
         """To be implemented (override) in the child class"""
         # Do the main FAIR check here
         return True
 
-    def getResult(self):
+    async def getResult(self):
         """Get result of evaluation and pack it into dictionary."""
         if self.metric_identifier in self.metrics:
-            self.evaluate()
+            await self.evaluate()
 
         if self.result:
             # self.result.metric_identifier = self.metrics.get(self.result.metric_identifier).get('metric_identifier')
