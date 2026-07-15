@@ -141,7 +141,7 @@ class FAIREvaluatorAPI(FAIREvaluator):
             )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.metric_identifier in self.metrics:
             self.result = API(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
