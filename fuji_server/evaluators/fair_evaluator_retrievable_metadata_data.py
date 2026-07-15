@@ -96,7 +96,7 @@ class FAIREvaluatorMetadataDataRetrievable(FAIREvaluator):
                 self.logger.warning(self.metric_identifier + " : Found NO retrievable data using the given identifier")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.score.earned = 0
         self.result = Retrievable(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -113,3 +113,4 @@ class FAIREvaluatorMetadataDataRetrievable(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.output = self.output
         self.result.maturity = self.maturity
+        return self.result
