@@ -245,7 +245,7 @@ class FAIREvaluatorSearchable(FAIREvaluator):
                 )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = Searchable(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -266,3 +266,4 @@ class FAIREvaluatorSearchable(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.output
+        return self.result

@@ -163,7 +163,7 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
             self.logger.info(f"{self.metric_identifier} : Default vocabulary namespace(s) excluded -: {excluded}")
         return vocablist
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = SemanticVocabulary(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -196,3 +196,4 @@ class FAIREvaluatorSemanticVocabulary(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.output = self.outputs
+        return self.result
