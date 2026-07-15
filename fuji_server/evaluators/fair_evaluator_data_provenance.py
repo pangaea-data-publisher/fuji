@@ -219,7 +219,7 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
             )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = DataProvenance(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -244,3 +244,4 @@ class FAIREvaluatorDataProvenance(FAIREvaluator):
         self.result.maturity = self.maturity
         self.result.output = self.output
         self.result.score = self.score
+        return self.result

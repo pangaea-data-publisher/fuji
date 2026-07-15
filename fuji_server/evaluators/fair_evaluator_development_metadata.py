@@ -120,7 +120,7 @@ class FAIREvaluatorDevelopmentMetadata(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for version numbering format is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.metric_identifier in self.metrics:
             self.result = DevelopmentMetadata(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -145,3 +145,4 @@ class FAIREvaluatorDevelopmentMetadata(FAIREvaluator):
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
             self.result.maturity = self.maturity
+            return self.result

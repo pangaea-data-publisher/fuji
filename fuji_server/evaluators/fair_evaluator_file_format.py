@@ -309,7 +309,7 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for API compliance with OpenAPI is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = DataFileFormat(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -339,3 +339,4 @@ class FAIREvaluatorFileFormat(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.score = self.score
+        return self.result
