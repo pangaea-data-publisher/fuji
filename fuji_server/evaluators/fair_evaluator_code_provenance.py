@@ -118,7 +118,7 @@ class FAIREvaluatorCodeProvenance(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for issues linked to PRs is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = CodeProvenance(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
