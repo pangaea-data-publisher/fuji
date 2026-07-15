@@ -74,7 +74,7 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
 
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         # ======= CHECK IDENTIFIER UNIQUENESS =======
         if self.metric_identifier in self.metrics:
             self.result = Uniqueness(
@@ -93,3 +93,4 @@ class FAIREvaluatorUniqueIdentifierData(FAIREvaluator):
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
             self.result.maturity = self.maturity
+            return self.result
