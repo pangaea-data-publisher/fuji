@@ -274,7 +274,7 @@ class FAIREvaluatorLicense(FAIREvaluator):
             )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.setLicenseDataAndOutput()
 
         self.result = License(
@@ -294,3 +294,4 @@ class FAIREvaluatorLicense(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.score = self.score
         self.result.maturity = self.maturity
+        return self.result

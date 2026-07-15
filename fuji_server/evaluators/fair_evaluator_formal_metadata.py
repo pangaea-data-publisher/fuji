@@ -194,7 +194,7 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
 
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = FormalMetadata(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -212,3 +212,4 @@ class FAIREvaluatorFormalMetadata(FAIREvaluator):
         self.result.score = self.score
         self.result.maturity = self.maturity
         self.result.output = self.outputs
+        return self.result
