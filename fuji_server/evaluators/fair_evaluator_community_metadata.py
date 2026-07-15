@@ -142,7 +142,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             else:
                 self.logger.info("{} : Invalid OGC CSW endpoint".format("FsF-R1.3-01M"))
 
-    def retrieve_metadata_standards_from_oai_pmh(self):
+    async def retrieve_metadata_standards_from_oai_pmh(self):
         if self.fuji.oaipmh_endpoint:
             self.logger.info(
                 "{} : Use OAI-PMH endpoint to retrieve standards used by the repository -: {}".format(
@@ -153,7 +153,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 oai_provider = OAIMetadataProvider(
                     endpoint=self.fuji.oaipmh_endpoint, logger=self.logger, metric_id="FsF-R1.3-01M"
                 )
-                standards_uris = oai_provider.getMetadataStandards()
+                standards_uris = await oai_provider.getMetadataStandards()
                 self.fuji.namespace_uri.extend(oai_provider.getNamespaces())
                 stds = []
                 if standards_uris:
@@ -213,7 +213,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
             # verify the service url by domain matching
         self.validate_service_url()
 
-    def retrieve_metadata_standards_from_apis(self):
+    async def retrieve_metadata_standards_from_apis(self):
         if self.fuji.landing_url is not None:
             self.logger.info("FsF-R1.3-01M : Retrieving API and Standards")
             if self.fuji.metadata_service_url not in [None, ""]:
@@ -225,7 +225,7 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
                 )
             self.retrieve_metadata_standards_from_re3data()
             # retrieve metadata standards info from oai-pmh
-            self.retrieve_metadata_standards_from_oai_pmh()
+            await self.retrieve_metadata_standards_from_oai_pmh()
             # retrieve metadata standards info from OGC CSW
             self.retrieve_metadata_standards_from_csw()
             # retrieve metadata standards info from SPARQL endpoint
@@ -387,11 +387,11 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         else:
             return {}
 
-    def evaluate(self):
+    async def evaluate(self):
         self.community_standards_output: list[CommunityEndorsedStandardOutputInner] = []
 
         self.retrieve_metadata_standards_from_namespaces()
-        self.retrieve_metadata_standards_from_apis()
+        await self.retrieve_metadata_standards_from_apis()
         # print('FOUND STANDARDS: ',self.found_metadata_standards)
         # print('VALID STANDARDS: ',self.valid_metadata_standards)
         self.result = CommunityEndorsedStandard(
@@ -418,3 +418,4 @@ class FAIREvaluatorCommunityMetadata(FAIREvaluator):
         self.result.score = self.score
         self.result.maturity = self.maturity
         self.result.output = self.community_standards_output
+        return self.result
