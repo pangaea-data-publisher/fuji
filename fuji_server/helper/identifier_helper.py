@@ -253,13 +253,13 @@ class IdentifierHelper:
             print("ID helper to_url error " + str(e))
         return idurl
 
-    def get_resolved_url(self, pid_collector={}):
+    async def get_resolved_url(self, pid_collector={}):
         candidate_pid = self.identifier_url
         if candidate_pid not in pid_collector or not pid_collector:
             try:
                 requestHelper = RequestHelper(candidate_pid, self.logger)
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
-                requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
+                await requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
                 if requestHelper.response_content:
                     return requestHelper.redirect_url, requestHelper.status_list
                 else:
@@ -299,10 +299,10 @@ class IdentifierHelper:
                     print("DOI authority lookup error", e)
         return agency
 
-    def get_identifier_info(self, pidcollector={}, resolve=True):
+    async def get_identifier_info(self, pidcollector={}, resolve=True):
         agency = self.get_agency()
         if resolve:
-            resolved_url, status_list = self.get_resolved_url(pidcollector)
+            resolved_url, status_list = await self.get_resolved_url(pidcollector)
         else:
             resolved_url, status_list = None, None
         return {
