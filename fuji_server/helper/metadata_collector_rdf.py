@@ -193,7 +193,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
                 self.logger.info(f"FsF-F2-01M : Expected RDF Graph but received -: {self.content_type}")
         return rdf_metadata
 
-    def parse_metadata(self):
+    async def parse_metadata(self):
         """Parse the metadata given RDF graph.
 
         Returns
@@ -216,7 +216,7 @@ class MetaDataCollectorRdf(MetaDataCollector):
             requestHelper.setAuthToken(self.auth_token, self.auth_token_type)
             if self.pref_mime_type:
                 requestHelper.addAcceptType(self.pref_mime_type)
-            neg_format, rdf_response = requestHelper.content_negotiate("FsF-F2-01M")
+            neg_format, rdf_response = await requestHelper.content_negotiate("FsF-F2-01M")
             self.metadata_format = neg_format
             if requestHelper.checked_content_hash:
                 if (
@@ -322,7 +322,8 @@ class MetaDataCollectorRdf(MetaDataCollector):
 
                         except Exception as e:
                             self.logger.info(f"FsF-F2-01M : Parsing error (RDFLib), failed to extract JSON-LD -: {e}")
-            elif self.content_type in AcceptTypes.rdf.list():
+            # elif self.content_type in AcceptTypes.rdf.list() + ["text/plain"]:
+            elif self.content_type in [*AcceptTypes.rdf.list(), "text/plain"]:
                 # parse all other RDF formats (non JSON-LD schema.org)
                 # parseformat = re.search(r'[\/+]([a-z0-9]+)$', str(requestHelper.content_type))
                 format_dict = {
