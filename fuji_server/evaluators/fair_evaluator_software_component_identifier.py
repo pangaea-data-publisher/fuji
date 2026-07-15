@@ -138,7 +138,7 @@ class FAIREvaluatorSoftwareComponentIdentifier(FAIREvaluator):
             )
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.metric_identifier in self.metrics:
             self.result = ComponentIdentifier(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -165,3 +165,4 @@ class FAIREvaluatorSoftwareComponentIdentifier(FAIREvaluator):
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
             self.result.maturity = self.maturity
+            return self.result
