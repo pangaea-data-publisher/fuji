@@ -119,7 +119,7 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for usage of PRs is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = StandardisedProtocolData(
             id=self.metric_number,
             metric_identifier=self.metric_identifier,
@@ -135,3 +135,4 @@ class FAIREvaluatorStandardisedProtocolData(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
+        return self.result
