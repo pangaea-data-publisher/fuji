@@ -142,7 +142,7 @@ class FAIREvaluatorVersionIdentifier(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for reserved DOIs is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.metric_identifier in self.metrics:
             self.result = VersionIdentifier(
                 id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
@@ -169,3 +169,4 @@ class FAIREvaluatorVersionIdentifier(FAIREvaluator):
             self.result.metric_tests = self.metric_tests
             self.result.output = self.output
             self.result.maturity = self.maturity
+            return self.result
