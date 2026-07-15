@@ -86,7 +86,7 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
                 self.maturity = self.getTestConfigMaturity(self.metric_identifier + "-2")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = RelatedResource(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -102,3 +102,4 @@ class FAIREvaluatorRelatedResources(FAIREvaluator):
         self.result.maturity = self.maturity
         self.result.score = self.score
         self.result.output = self.output
+        return self.result

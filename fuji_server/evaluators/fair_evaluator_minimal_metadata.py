@@ -205,7 +205,7 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for metadata format is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         if self.fuji.landing_url is None:
             self.logger.warning(
                 self.metric_identifier
@@ -252,3 +252,4 @@ class FAIREvaluatorCoreMetadata(FAIREvaluator):
         self.result.score = self.score
         self.result.maturity = self.maturity
         self.result.output = self.output
+        return self.result
