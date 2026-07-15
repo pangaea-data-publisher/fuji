@@ -389,7 +389,7 @@ class FAIRCheck:
             ]
             self.namespace_uri = list(set(self.namespace_uri))
 
-    def harvest_re3_data(self):
+    async def harvest_re3_data(self):
         if self.use_datacite:
             client_id = self.metadata_merged.get("datacite_client")
             publishers = self.metadata_merged.get("publisher") or []
@@ -401,7 +401,7 @@ class FAIRCheck:
             self.logger.info(f"FsF-R1.3-01M : re3data/datacite client id -: {client_id}")
             self.repo_helper = RepositoryHelper(client_id=client_id, logger=self.logger, landingpage=self.landing_url)
             self.repo_helper.repourls = repourls
-            self.repo_helper.lookup_re3data()
+            await self.repo_helper.lookup_re3data()
         else:
             self.client_id = None
             self.logger.warning(
@@ -469,133 +469,133 @@ class FAIRCheck:
         self.metadata_merged = self.metadata_harvester.metadata_merged
         self.clean_metadata()
 
-    def check_unique_metadata_identifier(self):
+    async def check_unique_metadata_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierMetadata(self)
-        return unique_identifier_check.getResult()
+        return await unique_identifier_check.getResult()
 
-    def check_unique_content_identifier(self):
+    async def check_unique_content_identifier(self):
         unique_identifier_check = FAIREvaluatorUniqueIdentifierData(self)
-        return unique_identifier_check.getResult()
+        return await unique_identifier_check.getResult()
 
-    def check_persistent_metadata_identifier(self):
+    async def check_persistent_metadata_identifier(self):
         persistent_identifier_check = FAIREvaluatorPersistentIdentifierMetadataData(self)
-        return persistent_identifier_check.getResult()
+        return await persistent_identifier_check.getResult()
 
     """def check_persistent_data_identifier(self):
         persistent_identifier_check = FAIREvaluatorPersistentIdentifierData(self)
         return persistent_identifier_check.getResult()"""
 
-    def check_unique_persistent_metadata_identifier(self):
-        return self.check_unique_metadata_identifier(), self.check_persistent_metadata_identifier()
+    async def check_unique_persistent_metadata_identifier(self):
+        return await self.check_unique_metadata_identifier(), await self.check_persistent_metadata_identifier()
 
-    def check_unique_persistent_software_identifier(self):
+    async def check_unique_persistent_software_identifier(self):
         unique_persistent_identifier_check = FAIREvaluatorUniquePersistentIdentifierSoftware(self)
-        return unique_persistent_identifier_check.getResult()
+        return await unique_persistent_identifier_check.getResult()
 
-    def check_software_component_identifier(self):
+    async def check_software_component_identifier(self):
         component_identifier_check = FAIREvaluatorSoftwareComponentIdentifier(self)
-        return component_identifier_check.getResult()
+        return await component_identifier_check.getResult()
 
-    def check_version_identifier(self):
+    async def check_version_identifier(self):
         version_identifier_check = FAIREvaluatorVersionIdentifier(self)
-        return version_identifier_check.getResult()
+        return await version_identifier_check.getResult()
 
-    def check_development_metadata(self):
+    async def check_development_metadata(self):
         development_metadata_check = FAIREvaluatorDevelopmentMetadata(self)
-        return development_metadata_check.getResult()
+        return await development_metadata_check.getResult()
 
-    def check_open_api(self):
+    async def check_open_api(self):
         open_api_check = FAIREvaluatorAPI(self)
-        return open_api_check.getResult()
+        return await open_api_check.getResult()
 
-    def check_requirements(self):
+    async def check_requirements(self):
         requirements_check = FAIREvaluatorRequirements(self)
-        return requirements_check.getResult()
+        return await requirements_check.getResult()
 
-    def check_test_cases(self):
+    async def check_test_cases(self):
         test_cases_check = FAIREvaluatorTestCases(self)
-        return test_cases_check.getResult()
+        return await test_cases_check.getResult()
 
-    def check_minimal_metatadata(self, include_embedded=True):
+    async def check_minimal_metatadata(self, include_embedded=True):
         core_metadata_check = FAIREvaluatorCoreMetadata(self)
-        return core_metadata_check.getResult()
+        return await core_metadata_check.getResult()
 
-    def check_data_identifier_included_in_metadata(self):
+    async def check_data_identifier_included_in_metadata(self):
         data_identifier_included_check = FAIREvaluatorDataIdentifierIncluded(self)
-        return data_identifier_included_check.getResult()
+        return await data_identifier_included_check.getResult()
 
-    def check_metadata_identifier_included_in_metadata(self):
+    async def check_metadata_identifier_included_in_metadata(self):
         metadata_identifier_included_check = FAIREvaluatorMetadataIdentifierIncluded(self)
-        return metadata_identifier_included_check.getResult()
+        return await metadata_identifier_included_check.getResult()
 
-    def check_data_access_level(self):
+    async def check_data_access_level(self):
         data_access_level_check = FAIREvaluatorDataAccessLevel(self)
-        return data_access_level_check.getResult()
+        return await data_access_level_check.getResult()
 
-    def check_metadata_data_retrievable(self):
+    async def check_metadata_data_retrievable(self):
         data_retrieve_check = FAIREvaluatorMetadataDataRetrievable(self)
-        return data_retrieve_check.getResult()
+        return await data_retrieve_check.getResult()
 
-    def check_license(self):
+    async def check_license(self):
         license_check = FAIREvaluatorLicense(self)
-        return license_check.getResult()
+        return await license_check.getResult()
 
-    def check_license_file(self):
+    async def check_license_file(self):
         license_check = FAIREvaluatorLicenseFile(self)
-        return license_check.getResult()
+        return await license_check.getResult()
 
-    def check_relatedresources(self):
+    async def check_relatedresources(self):
         related_check = FAIREvaluatorRelatedResources(self)
-        return related_check.getResult()
+        return await related_check.getResult()
 
-    def check_searchable(self):
+    async def check_searchable(self):
         searchable_check = FAIREvaluatorSearchable(self)
-        return searchable_check.getResult()
+        return await searchable_check.getResult()
 
-    def check_data_file_format(self):
+    async def check_data_file_format(self):
         data_file_check = FAIREvaluatorFileFormat(self)
-        return data_file_check.getResult()
+        return await data_file_check.getResult()
 
-    def check_community_metadatastandards(self):
+    async def check_community_metadatastandards(self):
         community_metadata_check = FAIREvaluatorCommunityMetadata(self)
-        return community_metadata_check.getResult()
+        return await community_metadata_check.getResult()
 
-    def check_data_provenance(self):
+    async def check_data_provenance(self):
         data_prov_check = FAIREvaluatorDataProvenance(self)
-        return data_prov_check.getResult()
+        return await data_prov_check.getResult()
 
-    def check_code_provenance(self):
+    async def check_code_provenance(self):
         code_prov_check = FAIREvaluatorCodeProvenance(self)
-        return code_prov_check.getResult()
+        return await code_prov_check.getResult()
 
-    def check_data_content_metadata(self):
+    async def check_data_content_metadata(self):
         data_content_metadata_check = FAIREvaluatorDataContentMetadata(self)
-        return data_content_metadata_check.getResult()
+        return await data_content_metadata_check.getResult()
 
-    def check_formal_metadata(self):
+    async def check_formal_metadata(self):
         formal_metadata_check = FAIREvaluatorFormalMetadata(self)
-        return formal_metadata_check.getResult()
+        return await formal_metadata_check.getResult()
 
-    def check_semantic_vocabulary(self):
+    async def check_semantic_vocabulary(self):
         semantic_vocabulary_check = FAIREvaluatorSemanticVocabulary(self)
-        return semantic_vocabulary_check.getResult()
+        return await semantic_vocabulary_check.getResult()
 
-    def check_metadata_preservation(self):
+    async def check_metadata_preservation(self):
         metadata_preserved_check = FAIREvaluatorMetadataPreserved(self)
-        return metadata_preserved_check.getResult()
+        return await metadata_preserved_check.getResult()
 
     # keep for pre 0.6 versions
-    def check_standardised_protocol_data(self):
+    async def check_standardised_protocol_data(self):
         standardised_protocol_check = FAIREvaluatorStandardisedProtocolData(self)
-        return standardised_protocol_check.getResult()
+        return await standardised_protocol_check.getResult()
 
-    def check_standardised_protocol_metadata(self):
+    async def check_standardised_protocol_metadata(self):
         standardised_protocol_metadata_check = FAIREvaluatorStandardisedProtocolMetadata(self)
-        return standardised_protocol_metadata_check.getResult()
+        return await standardised_protocol_metadata_check.getResult()
 
-    def check_standardised_protocol_authentication(self):
+    async def check_standardised_protocol_authentication(self):
         standardised_protocol_has_auth = FAIREvaluatorStandardisedProtocolAuthentication(self)
-        return standardised_protocol_has_auth.getResult()
+        return await standardised_protocol_has_auth.getResult()
 
     """def raise_warning_if_javascript_page(self, response_content):
         # check if javascript generated content only:
