@@ -47,7 +47,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
         self.exclude_conversion = ["creator", "license", "related_resources", "access_level"]
         self.accept_type = AcceptTypes.datacite_json
 
-    def parse_metadata(self):
+    async def parse_metadata(self):
         """Parse the Datacite metadata from the data
 
         Returns
@@ -63,7 +63,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
             self.logger.info("FsF-F2-01M : Trying to retrieve datacite metadata")
             requestHelper = RequestHelper(self.pid_url, self.logger)
             requestHelper.setAcceptType(self.accept_type)
-            neg_format, ext_meta = requestHelper.content_negotiate("FsF-F2-01M")
+            neg_format, ext_meta = await requestHelper.content_negotiate("FsF-F2-01M")
             self.metadata_format = neg_format
             self.content_type = requestHelper.content_type
             if ext_meta:

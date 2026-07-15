@@ -39,7 +39,7 @@ class MetaDataCollectorOpenGraph(MetaDataCollector):
         """
         super().__init__(logger=loggerinst, mapping=mapping, sourcemetadata=sourcemetadata)
 
-    def parse_metadata(self):
+    async def parse_metadata(self):
         """Parse the Open Graph metadata from the data
 
         Returns
