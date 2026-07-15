@@ -157,7 +157,7 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
             self.logger.warning(f"{self.metric_identifier} : Test for Zenodo DOI in CITATION file is not implemented.")
         return test_status
 
-    def evaluate(self):
+    async def evaluate(self):
         socket.setdefaulttimeout(1)
 
         self.result = IdentifierIncluded(
@@ -202,3 +202,4 @@ class FAIREvaluatorDataIdentifierIncluded(FAIREvaluator):
         self.result.output = self.output
         self.result.maturity = self.maturity
         self.result.score = self.score
+        return self.result

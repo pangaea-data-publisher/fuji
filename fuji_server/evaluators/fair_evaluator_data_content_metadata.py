@@ -439,7 +439,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                     self.maturity = self.metric_tests.get(self.metric_identifier + "-4").metric_test_maturity_config
         return test_result
 
-    def evaluate(self):
+    async def evaluate(self):
         self.result = DataContentMetadata(
             id=self.metric_number, metric_identifier=self.metric_identifier, metric_name=self.metric_name
         )
@@ -484,3 +484,4 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         self.result.metric_tests = self.metric_tests
         self.result.maturity = self.maturity
         self.result.test_status = test_status
+        return self.result
