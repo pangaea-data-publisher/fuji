@@ -29,7 +29,7 @@ class RepositoryHelper:
         # self.logger = logging.getLogger(logger)
         # print(__name__)
 
-    def lookup_re3data(self):
+    async def lookup_re3data(self):
         if self.client_id:  # and self.pid_scheme:
             re3doi = RepositoryHelper.DATACITE_REPOSITORIES.get(self.client_id)  # {client_id,re3doi}
             if re3doi:
@@ -46,7 +46,7 @@ class RepositoryHelper:
                 )  # https://re3data.org/api/beta/repositories?query=
                 q = RequestHelper(url=query_url, logInst=self.logger)
                 q.setAcceptType(AcceptTypes.xml)
-                _re_source, xml = q.content_negotiate(metric_id="FsF-R1.3-01M")
+                _re_source, xml = await q.content_negotiate(metric_id="FsF-R1.3-01M")
                 try:
                     if isinstance(xml, bytes):
                         xml = xml.decode().encode()
@@ -59,7 +59,7 @@ class RepositoryHelper:
                         # query reposiroty metadata
                         q2 = RequestHelper(url=re3link, logInst=self.logger)
                         q2.setAcceptType(AcceptTypes.xml)
-                        _re3_source, re3_response = q2.content_negotiate(metric_id="FsF-R1.3-01M")
+                        _re3_source, re3_response = await q2.content_negotiate(metric_id="FsF-R1.3-01M")
                         self.re3metadata_raw = re3_response
                         self.parseRe3data()
                 except Exception as e:
