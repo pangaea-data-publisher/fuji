@@ -43,14 +43,14 @@ class SignpostingHelper:
         else:
             self.logger = logging.getLogger()
 
-    def set_all_typed_and_signposting_links(self, url, pid, html, headers):
+    async def set_all_typed_and_signposting_links(self, url, pid, html, headers):
         self.url = url
         self.html = html
         self.headers = headers
         # set all typed/signpostinglinks
         self.set_typed_content_links()
         self.set_signposting_header_links()
-        self.set_signposting_linkset_links()
+        await self.set_signposting_linkset_links()
 
     def set_signposting_header_links(self):
         header_link_string = self.headers.get("Link")
@@ -80,19 +80,20 @@ class SignpostingHelper:
                         source = MetadataOfferingMethods.TYPED_LINKS
                         href = link.attrib.get("href")
                         rel = link.attrib.get("rel")
-                        type = link.attrib.get("type")
+                        stype = link.attrib.get("type")
                         profile = link.attrib.get("profile")
-                        type = str(type).strip()
+                        stype = str(stype).strip()
+
                         # handle relative paths
                         linkparts = urlparse(href)
                         if linkparts.scheme == "":
                             href = urljoin(self.url, href)
                         if linkparts.path.endswith(".xml"):
-                            if type not in ["application/xml", "text/xml"] and not type.endswith("+xml"):
-                                type += "+xml"
+                            if stype not in ["application/xml", "text/xml"] and not type.endswith("+xml"):
+                                stype += "+xml"
                         # signposting links
                         # https://www.w3.org/2001/sw/RDFCore/20031212-rdfinhtml/ recommends: link rel="meta" as well as "alternate meta"
-                        if rel in [
+                        if rel.lower() in [
                             "meta",
                             "alternate meta",
                             "metadata",
@@ -114,8 +115,8 @@ class SignpostingHelper:
                             self.typed_links.append(
                                 {
                                     "url": href,
-                                    "type": type,
-                                    "rel": rel,
+                                    "type": stype,
+                                    "rel": rel.lower(),
                                     "profile": profile,
                                     "source": source,
                                     "origin": "content",
@@ -170,7 +171,7 @@ class SignpostingHelper:
                 found_signposting_links.append(signposting_link_dict)
         return found_signposting_links
 
-    def set_signposting_linkset_links(self):
+    async def set_signposting_linkset_links(self):
         linksetlink = {}
         linksetlinks = self.get_links(["linkset", "api-catalog"])
         if linksetlinks:
@@ -179,7 +180,9 @@ class SignpostingHelper:
             if linksetlink.get("url"):
                 requestHelper = RequestHelper(linksetlink.get("url"), self.logger)
                 requestHelper.setAcceptType(AcceptTypes.linkset)
-                _neg_source, linkset_data = requestHelper.content_negotiate(self.ch.get_metric("metadata_properties"))
+                _neg_source, linkset_data = await requestHelper.content_negotiate(
+                    self.ch.get_metric("metadata_properties")
+                )
                 if isinstance(linkset_data, dict):
                     if isinstance(linkset_data.get("linkset"), list):
                         validlinkset = None
@@ -247,7 +250,7 @@ class SignpostingHelper:
                                 self.ch.get_metric("metadata_properties")
                                 + " : Found Signposting Linkset but could not correctly parse the file"
                             )
-                            print(e)
+                            print("Error parsing signposting", e)
                     else:
                         self.logger.warning(
                             self.ch.get_metric("metadata_properties")
