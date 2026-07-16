@@ -64,6 +64,21 @@ class AcceptTypes(Enum):
         return list(set([item.strip().split(";", 1)[0] for sublist in al for item in sublist]))
 
 
+class ResponseData:
+    def __init__(self):
+        self.status = 0
+        self.headers = {}
+        self.content = None
+        self.url = None
+        self.content_type = None
+        self.charset = None
+        self.content_encoding = None
+        self.redirect_url = None
+        self.redirect_list = []
+        self.redirect_status_list = []
+        self.status_list = []
+
+
 class RequestHelper:
     checked_content = {}
 
@@ -178,6 +193,7 @@ class RequestHelper:
                     self.response_content = e.read(
                         self.max_content_size
                     )  # since HTTPError itself is a File like object..
+                    print("Response from HTTPError", e)
                     try:
                         self.redirect_url = redirect_handler.redirect_url
                         self.redirect_list = redirect_handler.redirect_list
@@ -405,14 +421,15 @@ class RequestHelper:
             # self.response_header = tp_response.getheaders()
             self.redirect_url = tp_response.geturl()
             self.response_status = status_code = tp_response.status
-            """print(
-                "{} : Content negotiation on {} accept={}, status={} ".format(
-                    metric_id, self.request_url, self.accept_type, str(status_code)
-                )
-            )"""
+
             self.content_type = self.getResponseHeader().get("Content-Type")
             if not self.content_type:
                 self.content_type = self.getResponseHeader().get("content-type")
+            print(
+                "{} : Content negotiation on {} accept={}, status={}, content-type={} ".format(
+                    metric_id, self.request_url, self.accept_type, str(status_code), str(self.content_type)
+                )
+            )
             # key for content cache
             checked_content_id = hash(str(self.redirect_url) + str(self.content_type))
             # body is only loaded in case it is not yet in the cache for the given content type and url
@@ -425,7 +442,9 @@ class RequestHelper:
                 self.content_size = self.checked_content.get(checked_content_id).get("content_size")
                 content_truncated = self.checked_content.get(checked_content_id).get("content_truncated")
                 # print('USING CACHE ...')
-                self.logger.info("%s : Using Cached response content" % metric_id)
+                self.logger.info(
+                    "{} : Using Cached response content {} - {}".format(metric_id, self.content_type, self.redirect_url)
+                )
             else:
                 # self.logger.info("%s : Creating Cached response content" % metric_id)
                 content_truncated = False
