@@ -223,11 +223,11 @@ class MetaDataCollectorRdf(MetaDataCollector):
                     requestHelper.checked_content.get(requestHelper.checked_content_hash).get("checked")
                     and "xml" in requestHelper.content_type
                 ):
-                    requestHelper.response_content = None
+                    requestHelper.response.content = None
                     self.logger.info("FsF-F2-01M : Ignoring RDF XML since content already has been parsed as XML")
-            if requestHelper.response_content is not None:
-                self.content_type = requestHelper.content_type
-                self.resolved_url = requestHelper.redirect_url
+            if requestHelper.response.content is not None:
+                self.content_type = requestHelper.response.content_type
+                self.resolved_url = requestHelper.response.redirect_url
         else:
             self.content_type = "application/ld+json"
             rdf_response = self.json_ld_content
