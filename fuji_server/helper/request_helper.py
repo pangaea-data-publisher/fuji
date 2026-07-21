@@ -8,7 +8,7 @@ import json
 import mimetypes
 import re
 import ssl
-import sys
+import traceback
 import urllib
 from enum import Enum
 
@@ -70,37 +70,52 @@ class ResponseData:
         self.headers = {}
         self.content = None
         self.url = None
+        self.truncated = False
         self.content_type = None
+        self.content_size = 0
+        self.content_length = 0
         self.charset = None
         self.content_encoding = None
         self.redirect_url = None
         self.redirect_list = []
         self.redirect_status_list = []
         self.status_list = []
+        self.parsed_content = None
+        self.parse_format = None
+
+    def getHeader(self):
+        return dict(self.headers or {})
+
+    def getContent(self):
+        return self.content
+
+    def getParsedResponse(self):
+        return self.parsed_content
 
 
 class RequestHelper:
     checked_content = {}
 
+    rdf_type_dict = {
+        "xml": "application/xml",
+        "json-ld": "application/ld+json",
+        "turtle": "text/ttl",
+        "rdfa": "application/xhtml+xml",
+        "n3": "text/rdf+n3",
+        "nt": "application/n-triples",
+        "nquads": "application/n-quads",
+        "trix": "text/xml",
+    }
+
     def __init__(self, url, logInst: object = None):
-        self.user_agent = "Mozilla/5.0 (compatible; F-UJI/4.0; +https://github.com/pangaea-data-publisher/fuji)"
-        # self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
+        self.user_agent = "F-UJI/4.0 (+https://github.com/pangaea-data-publisher/fuji)"
+        self.browser_like_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
         self.logger = logInst if logInst else Preprocessor.logger
-        self.format = None  # Guessed Metadata Format
+        self.response = ResponseData()
         self.request_url = url.split("#")[0]
         self.redirect_url = None
         self.redirect_list = []
-        self.redirect_status_list = []
-        self.status_list = []
         self.accept_type = AcceptTypes.default.value
-        self.http_response = None
-        self.parse_response = None
-        self.response_status = None
-        self.response_content = None  # normally the response body
-        self.response_header = None
-        self.response_charset = "utf-8"
-        self.content_type = None
-        self.content_size = 0
         # maximum size which will be downloaded and analysed by F-UJU
         self.max_content_size = Preprocessor.max_content_size
         self.checked_content_hash = None
@@ -132,25 +147,71 @@ class RequestHelper:
     def setRequestUrl(self, url):
         self.request_url = url
 
-    # def getHTTPResponse(self):
-    #    return self.http_response
-
-    def getResponseContent(self):
-        return self.response_content
-
-    def getParsedResponse(self):
-        return self.parse_response
-
-    def getResponseHeader(self):
-        return dict(self.response_header or {})
-
-    def content_decode(self, content):
+    """def content_decode(self, content):
         if isinstance(content, "str"):
             pass
-        return True
+        return True"""
 
     async def request_content(self, metric_id="", ignore_html=True, check_antibot=False):
         return await asyncio.to_thread(self._request_content_sync, metric_id, ignore_html, check_antibot)
+
+    def _check_antibot(self, metric_id):
+        try:
+            body = self.response.content
+            if isinstance(body, bytes):
+                body = body.decode("utf-8", errors="replace")
+            antibot_result = is_antibot(
+                headers=self.response.getHeader(),
+                body=body,
+                status_code=self.response.status,
+            )
+            if antibot_result.detected:
+                self.logger.error(
+                    metric_id
+                    + " : ANTIBOT PROTECTION detected. You need to expose SOME metadata to allow FAIR assessment -: "
+                    + str(antibot_result.detection)
+                    + ", "
+                    + str(antibot_result.provider)
+                )
+        except Exception as e:
+            print("antibot detection failed...", e)
+
+    def _set_response_object(self, response, redirect_handler=None):
+        self.response.content = response.read(self.max_content_size + 1)
+        self.response.headers = response.headers
+        self.response.redirect_url = response.url
+        self.response.content_type = self.response.headers.get("Content-Type")
+
+        self.response.content_length = response.headers.get("Content-Length")
+        self.response.content_size = 0
+        self.response.truncated = False
+
+        self.response.status = getattr(response, "status", getattr(response, "code", None))
+        if redirect_handler is not None:
+            if redirect_handler.redirect_list:
+                self.response.redirect_url = redirect_handler.redirect_url
+                self.response.redirect_list = redirect_handler.redirect_list
+                self.response.redirect_status_list = redirect_handler.redirect_status_list
+                self.response.status_list = redirect_handler.status_list
+
+        if self.response.content:
+            try:
+                self.response.content.decode("utf-8")
+            except (UnicodeDecodeError, AttributeError):
+                self.logger.warning("%s : Content UTF-8 encoding problem, trying to fix.. " % self.metric_id)
+                self.response.content = self.response.content.decode("utf-8", errors="replace").encode("utf-8")
+            self.response.content_size = len(self.response.content)
+            if self.response.content_size > self.max_content_size:
+                self.response.truncated = True
+
+            if self.response.truncated is True and self.response.content_size > 0:
+                try:
+                    self.response.content = self.response.content.rsplit(b"\n", 1)[0]
+                except Exception as e:
+                    print("Error: " + str(e))
+
+            self.response.content_type = self._detect_mime_type()
+            self.response.parse_format, self.response.parsed_content = self._set_format_and_parsed_content()
 
     def _request_content_sync(self, metric_id="", ignore_html=True, check_antibot=False):
 
@@ -174,33 +235,15 @@ class RequestHelper:
                 )
                 urllib.request.install_opener(opener)
                 request_headers = {"Accept": self.accept_type, "User-Agent": self.user_agent}
+                # print('HEADERS: ',request_headers)
                 if self.authtoken:
                     request_headers["Authorization"] = self.tokentype + " " + self.authtoken
                 tp_request = urllib.request.Request(self.request_url, headers=request_headers)
                 try:
                     tp_response = opener.open(tp_request, timeout=10)
-                    self.response_content = tp_response.read(self.max_content_size)
-                    self.response_header = tp_response.getheaders()
-                    self.response_status = tp_response.status
-                    self.redirect_list = redirect_handler.redirect_list
-                    self.redirect_status_list = redirect_handler.redirect_status_list
-                    self.status_list = redirect_handler.status_list
-                    self.redirect_url = redirect_handler.redirect_url
+                    self._set_response_object(tp_response, redirect_handler)
                 except urllib.error.HTTPError as e:
-                    self.response_status = int(e.code)
-                    self.response_header = e.getheaders()
-                    self.content_type = e.headers.get("Content-Type")
-                    self.response_content = e.read(
-                        self.max_content_size
-                    )  # since HTTPError itself is a File like object..
-                    print("Response from HTTPError", e)
-                    try:
-                        self.redirect_url = redirect_handler.redirect_url
-                        self.redirect_list = redirect_handler.redirect_list
-                        self.redirect_status_list = redirect_handler.redirect_status_list
-                        self.status_list = redirect_handler.status_list
-                    except:
-                        pass
+                    self._set_response_object(e, redirect_handler)
                     if e.code == 308:
                         self.logger.error(
                             "%s : F-UJI 308 redirect failed, most likely this patch: https://github.com/python/cpython/pull/19588/commits is not installed"
@@ -211,12 +254,6 @@ class RequestHelper:
                             "%s : Received a 405 or 403 HTTP error, either a 'method not allowed' error or the host denied the User-Agent used (web scraping detection), retrying..."
                             % metric_id
                         )
-                        """ try:
-                            request_headers["User-Agent"] = self.browser_like_user_agent
-                            tp_request = urllib.request.Request(self.request_url, headers=request_headers)
-                            tp_response = opener.open(tp_request, timeout=10)
-                        except:
-                            print("405 fix error:" + str(e))"""
                     elif e.code >= 500:
                         if "doi.org" in self.request_url:
                             self.logger.error(
@@ -251,6 +288,7 @@ class RequestHelper:
                                         last_redirect_url = last_redirect_url.replace("http:", "https:")
                                         tp_request = urllib.request.Request(last_redirect_url, headers=request_headers)
                                         tp_response = opener.open(tp_request, timeout=10)
+                                        self._set_response_object(tp_response, redirect_handler)
                             except Exception as e:
                                 print("Redirect fix error:" + str(e))
                                 pass
@@ -262,10 +300,7 @@ class RequestHelper:
                         )
                         try:
                             tp_response = e  # so take the error response as response instead
-                            self.redirect_list = redirect_handler.redirect_list
-                            self.redirect_status_list = redirect_handler.redirect_status_list
-                            self.status_list = redirect_handler.status_list
-                            self.redirect_url = redirect_handler.redirect_url
+                            self._set_response_object(tp_response)
                         except Exception as e:
                             print("ERROR ", e)
                     else:
@@ -280,24 +315,16 @@ class RequestHelper:
                             metric_id, self.request_url, self.accept_type, str(e)
                         )
                     )
-                    self.response_status = 900
-                    try:
-                        urlerrmatch = re.search(r"\[Errno\s+(\-?[0-9]+)", str(e))
-                        # eg urlopen error [Errno 11001] getaddrinfo failed => DNS failed
-                        if urlerrmatch:
-                            print("Request URL Error: ", urlerrmatch[1])
-                            self.response_status = int(urlerrmatch[1])
-                    except:
-                        pass
-
-                    try:
-                        self.redirect_url = redirect_handler.redirect_url
-                        self.redirect_list = redirect_handler.redirect_list
-                        self.redirect_status_list = redirect_handler.redirect_status_list
-                        self.status_list = redirect_handler.status_list
-                    except:
-                        pass
+                    self.response.status = 900
+                    if hasattr(e.reason, "errno"):
+                        self.response.status = e.reason.errno
+                    if redirect_handler:
+                        self.response.redirect_url = getattr(redirect_handler, "redirect_url", None)
+                        self.response.redirect_list = getattr(redirect_handler, "redirect_list", [])
+                        self.response.redirect_status_list = getattr(redirect_handler, "redirect_status_list", [])
+                        self.response.status_list = getattr(redirect_handler, "status_list", [])
                 except Exception as e:
+                    traceback.print_exc()
                     print("Request ERROR: ", e)
                     self.logger.warning(
                         "{} : Request failed, reason -: {}, {} - Error: {}".format(
@@ -306,22 +333,22 @@ class RequestHelper:
                     )
                     # some internal status messages for optional analysis
                     try:
-                        self.redirect_url = redirect_handler.redirect_url
-                        self.redirect_list = redirect_handler.redirect_list
-                        self.redirect_status_list = redirect_handler.redirect_status_list
-                        self.status_list = redirect_handler.status_list
+                        self.response.redirect_url = redirect_handler.redirect_url
+                        self.response.redirect_list = redirect_handler.redirect_list
+                        self.response.redirect_status_list = redirect_handler.redirect_status_list
+                        self.response.status_list = redirect_handler.status_list
                     except:
                         pass
                     if "NewConnectionError" in str(e):
-                        self.response_status = 601
+                        self.response.status = 601
                     elif "RemoteDisconnected" in str(e):
-                        self.response_status = 602
+                        self.response.status = 602
                     elif "Read timed out" in str(e):
-                        self.response_status = 603
+                        self.response.status = 603
                     elif "ConnectionResetError" in str(e):
-                        self.response_status = 604
+                        self.response.status = 604
                     else:
-                        self.response_status = 1000
+                        self.response.status = 1000
                 # redirect logger messages to metadata collection metric
                 if metric_id == "FsF-F1-02D":
                     metric_id = "FsF-F2-01M"
@@ -330,33 +357,15 @@ class RequestHelper:
                 self.logger.warning(
                     f"{metric_id} : Content negotiation failed -: accept={self.accept_type}, status={e.code!s} "
                 )
-                self.response_status = int(e.code)
+                self.response.status = int(e.code)
             except urllib.error.URLError as e:
                 self.logger.warning(f"{metric_id} : RequestException -: {e.reason} : {self.request_url}")
             except Exception as e:
                 self.logger.warning(f"{metric_id} : Request Failed -: {e!s} : {self.request_url}")
+
             # check if anti-robot software is in place
             if check_antibot:
-                try:
-                    body = self.response_content
-                    if isinstance(body, bytes):
-                        body = body.decode("utf-8", errors="replace")
-                    antibot_result = is_antibot(
-                        headers=self.getResponseHeader(),
-                        body=body,
-                        status_code=self.response_status,
-                    )
-                    if antibot_result.detected:
-                        self.logger.error(
-                            metric_id
-                            + " : ANTIBOT PROTECTION detected. You need to expose SOME metadata to allow FAIR assessment -: "
-                            + str(antibot_result.detection)
-                            + ", "
-                            + str(antibot_result.provider)
-                        )
-                except Exception as e:
-                    print("antibot detection failed...", e)
-        return tp_response
+                self._check_antibot(metric_id)
 
     async def render_page(self, metric_id=""):
         # print("################ JS rendering starting ################", metric_id)
@@ -380,7 +389,7 @@ class RequestHelper:
                 return html
             except Exception as e:
                 # print("############ page rendering error: ", e)
-                self.logger.error(f"{metric_id}: Javascript page rendering error: " + str(e))
+                self.logger.error(f"{metric_id}: Javascript page rendering error: E: " + str(e))
 
             finally:
                 # clean up properly
@@ -401,250 +410,190 @@ class RequestHelper:
             self.logger.warning(f"{metric_id}: Rendering JS generated page failed: {e!s} : {self.request_url}")
             return None
 
-    def handle_content(self, tp_response, metric_id, ignore_html):
+    def _detect_mime_type(self):
+        mime_type = self.response.content_type
+        if mime_type is None and self.response.url:
+            # print("RESPONS:", self.response.url, type(self.response.url))
+            mime_type = mimetypes.guess_type(self.response.url, strict=True)[0]
+        if mime_type is None:
+            # just in case tika is not running use this as quick check for the most obvious
+            try:
+                if re.search(b"<!doctype html>|<html", self.response.content.strip(), re.IGNORECASE) is not None:
+                    mime_type = "text/html"
+            except Exception as e:
+                print(e, "Request helper")
+        # TIKA CONTENT TYPE DETECTION
+        if mime_type is None:
+            try:
+                self.logger.info(
+                    "%s : No content type (mime) given by server, trying to identify mime with TIKA " % self.metric_id
+                )
+                parsedFile = parser.from_buffer(self.response.content)
+                mime_type = parsedFile.get("metadata").get("Content-Type")
+            except Exception as e:
+                self.logger.info("{} : TIKA content type guessing failed -: E: {} ".format(self.metric_id, str(e)))
+                mime_type = "application/octet-stream"
+
+        if "application/xhtml+xml" in mime_type:
+            try:
+                if re.search(b"<!doctype html>|<html", self.response.content.strip(), re.IGNORECASE) is None:
+                    mime_type = "text/xml"
+            except Exception as e:
+                print(e, "Request helper")
+
+        if "text/plain" in mime_type:
+            self.logger.info(
+                "%s : Plain text has been responded as content type, could be a RDF document! Trying to verify"
+                % self.metric_id
+            )
+            # try to find type by url using rdflib
+            guessed_format = rdflib.util.guess_format(self.response.url)
+
+            if guessed_format in self.rdf_type_dict:
+                mime_type = self.rdf_type_dict[guessed_format]
+
+            mime_type = mime_type.split(";", 1)[0]
+
+        return mime_type
+
+    def _set_format_and_parsed_content(self):
+        parsed_content = self.response.content
         format = MetadataFormats.HTML
-        status_code = None
-        if tp_response:
+        if self.response.content_type is not None:
+            if "text/plain" in self.response.content_type:
+                format = MetadataFormats.TEXT
+            # elif self.response.content_type in ["application/xml", "text/xml"]:
+            #        format = MetadataFormats.XML
+            elif str(self.response.content_type).endswith("xml"):
+                # in case the such a XML indeed is a RDF:
+                root_element = ""
+                try:
+                    xmlparser = lxml.etree.XMLParser(strip_cdata=False, recover=True)
+                    xmltree = lxml.etree.XML(self.response.content, xmlparser)
+                    root_element = xmltree.tag
+                    parsed_content = lxml.etree.tostring(xmltree)
+                except Exception:
+                    self.logger.warning("%s : Parsing XML document failed !" % self.metric_id)
+                if re.match(r"(\{.+\})?RDF", root_element):
+                    self.logger.info("%s : Expected XML but found RDF document by root tag!" % self.metric_id)
+                    format = MetadataFormats.RDF
+                else:
+                    self.logger.info(
+                        "%s : Found XML document based on responded content type: %s",
+                        self.metric_id,
+                        self.response.content_type,
+                    )
+                    format = MetadataFormats.XML
+            elif self.response.content_type in self.rdf_type_dict.values():
+                format = MetadataFormats.RDF
+            elif "html" in self.response.content_type:
+                format = MetadataFormats.HTML
+            elif "json" in self.response.content_type or "linkset" in self.response.content_type:
+                parsed_content = json.loads(self.response.content)
+                format = MetadataFormats.JSON
+
+            # since we already parse HTML in the landing page we ignore this and do not parse again
+            """if ignore_html is False:
+                self.logger.info("%s : Found HTML page!" % metric_id)
+            else:
+                self.logger.info("%s : Ignoring HTML response" % metric_id)"""
+
+        self.response.parsed_content = parsed_content
+        self.response.parse_format = format
+        return format, parsed_content
+
+    def handle_content(self, metric_id, ignore_html):
+        format = MetadataFormats.HTML
+        if self.response.content:
             # self.http_response = tp_response
-            if tp_response.info().get("Content-Encoding") == "gzip":
+            if self.response.headers.get("Content-Encoding") == "gzip":
                 self.logger.info("FsF-F2-01M : Retrieving gzipped content")
-                self.response_content = gzip.decompress(self.response_content)
-            if tp_response.info().get("Content-Type") == "application/zip":
+                self.response.content = gzip.decompress(self.response.content)
+            if self.response.headers.get("Content-Type") == "application/zip":
                 self.logger.warning(
                     "FsF-F2-01M : Received zipped content which contains several files, therefore skipping tests"
                 )
-                self.response_content = None
+                self.response.content = None
                 format = None
-                # source = 'zip'
-            if tp_response.info().get_content_charset():
-                self.response_charset = tp_response.info().get_content_charset()
-            # self.response_header = tp_response.getheaders()
-            self.redirect_url = tp_response.geturl()
-            self.response_status = status_code = tp_response.status
-
-            self.content_type = self.getResponseHeader().get("Content-Type")
-            if not self.content_type:
-                self.content_type = self.getResponseHeader().get("content-type")
-            print(
+            """print(
                 "{} : Content negotiation on {} accept={}, status={}, content-type={} ".format(
-                    metric_id, self.request_url, self.accept_type, str(status_code), str(self.content_type)
+                    metric_id, self.request_url, self.accept_type, str(self.response.status), str(self.response.content_type)
                 )
-            )
+            )"""
             # key for content cache
-            checked_content_id = hash(str(self.redirect_url) + str(self.content_type))
+            checked_content_id = hash(str(self.response.redirect_url) + str(self.response.content_type))
             # body is only loaded in case it is not yet in the cache for the given content type and url
             if checked_content_id in self.checked_content:
                 self.checked_content_hash = checked_content_id
                 format = self.checked_content.get(checked_content_id).get("format")
-                self.parse_response = self.checked_content.get(checked_content_id).get("parse_response")
-                self.response_content = self.checked_content.get(checked_content_id).get("response_content")
-                self.content_type = self.checked_content.get(checked_content_id).get("content_type")
-                self.content_size = self.checked_content.get(checked_content_id).get("content_size")
-                content_truncated = self.checked_content.get(checked_content_id).get("content_truncated")
+                self.response.parsed_content = self.checked_content.get(checked_content_id).get("parse_response")
+                self.response.content = self.checked_content.get(checked_content_id).get("response_content")
+                self.response.content_type = self.checked_content.get(checked_content_id).get("content_type")
+                self.response.content_size = self.checked_content.get(checked_content_id).get("content_size")
+                # content_truncated = self.checked_content.get(checked_content_id).get("content_truncated")
                 # print('USING CACHE ...')
                 self.logger.info(
-                    "{} : Using Cached response content {} - {}".format(metric_id, self.content_type, self.redirect_url)
+                    "{} : Using Cached response content {} - {}".format(
+                        metric_id, self.response.content_type, self.response.redirect_url
+                    )
                 )
             else:
                 # self.logger.info("%s : Creating Cached response content" % metric_id)
-                content_truncated = False
-                if status_code in [200]:
-                    try:
-                        self.content_size = int(self.getResponseHeader().get("Content-Length"))
-                        if not self.content_size:
-                            self.content_size = int(self.getResponseHeader().get("content-length"))
-                    except Exception:
-                        self.content_size = 0
-                        pass
-                    if self.content_size > self.max_content_size:
-                        content_truncated = True
-                    if sys.getsizeof(self.response_content) >= self.max_content_size or content_truncated:
+                if self.response.status in [200]:
+                    if self.response.truncated:
                         self.logger.warning(
                             "{} : Downloaded content has been TRUNCATED by F-UJI since it is larger than: -: {}".format(
                                 metric_id, str(self.max_content_size)
                             )
                         )
-                    # self.response_content = tp_response.read(self.max_content_size)
-                    if self.content_size == 0:
-                        self.content_size = sys.getsizeof(self.response_content)
-                    # try to find out if content type is byte then fix
-                    if self.response_content:
-                        try:
-                            self.response_content.decode("utf-8")
-                        except (UnicodeDecodeError, AttributeError):
-                            self.logger.warning("%s : Content UTF-8 encoding problem, trying to fix.. " % metric_id)
 
-                            self.response_content = self.response_content.decode("utf-8", errors="replace")
-                            self.response_content = str(self.response_content).encode("utf-8")
-
-                    # Now content should be utf-8 encoded
-                    if content_truncated is True:
-                        try:
-                            self.response_content = self.response_content.rsplit(b"\n", 1)[0]
-                        except Exception as e:
-                            print("Error: " + str(e))
-                    if self.content_type is None:
-                        self.content_type = mimetypes.guess_type(self.request_url, strict=True)[0]
-                    if self.content_type is None:
-                        # just in case tika is not running use this as quick check for the most obvious
-                        try:
-                            if (
-                                re.search(b"<!doctype html>|<html", self.response_content.strip(), re.IGNORECASE)
-                                is not None
-                            ):
-                                self.content_type = "text/html"
-                        except Exception as e:
-                            print(e, "Request helper")
-                    if self.content_type is None:
-                        try:
-                            self.logger.info(
-                                "%s : No content type (mime) given by server, trying to identify mime with TIKA "
-                                % metric_id
-                            )
-                            parsedFile = parser.from_buffer(self.response_content)
-                            self.content_type = parsedFile.get("metadata").get("Content-Type")
-                        except Exception as e:
-                            self.logger.info("{} : TIKA content type guessing failed -: {} ".format(metric_id, str(e)))
-                            self.content_type = "application/octet-stream"
-                    if "application/xhtml+xml" in self.content_type:
-                        try:
-                            if (
-                                re.search(b"<!doctype html>|<html", self.response_content.strip(), re.IGNORECASE)
-                                is None
-                            ):
-                                self.content_type = "text/xml"
-                        except Exception as e:
-                            print(e, "Request helper")
-                    if self.content_type is not None:
-                        if "text/plain" in self.content_type:
-                            format = MetadataFormats.TEXT
-                            self.logger.info(
-                                "%s : Plain text has been responded as content type! Trying to verify" % metric_id
-                            )
-                            # try to find type by url
-                            guessed_format = rdflib.util.guess_format(self.request_url)
-                            guess_format_type_dict = {
-                                "xml": "application/xml",
-                                "json-ld": "application/ld+json",
-                                "turtle": "text/ttl",
-                                "rdfa": "application/xhtml+xml",
-                                "n3": "text/rdf+n3",
-                                "nt": "application/n-triples",
-                                "nquads": "application/n-quads",
-                                "trix": "text/xml",
-                            }
-                            if guessed_format is not None:
-                                if guessed_format in ["xml"]:
-                                    format = MetadataFormats.XML
-                                    self.content_type = "application/xml"
-                                elif guessed_format in guess_format_type_dict:
-                                    format = MetadataFormats.RDF
-                                    self.content_type = guess_format_type_dict.get(guessed_format)
-                                else:
-                                    format = MetadataFormats.RDF
-                                    # not really the true mime types...
-                                    self.content_type = "application/rdf+" + str(guessed_format)
-                                self.logger.info(
-                                    "{} : Expected plain text but identified different content type by file extension -: {}".format(
-                                        metric_id, str(guessed_format)
-                                    )
-                                )
-
-                        self.content_type = self.content_type.split(";", 1)[0]
-                        # init to avoid empty responses
-                        self.parse_response = self.response_content
-                        while True:
-                            for (
-                                at
-                            ) in AcceptTypes:  # e.g., at.name = html, at.value = 'text/html, application/xhtml+xml'
-                                if at.name == "xml" and str(self.content_type).endswith("+xml"):
-                                    self.content_type = "text/xml"
-
-                                if self.content_type in at.value:
-                                    if at.name == "html":
-                                        # since we already parse HTML in the landing page we ignore this and do not parse again
-                                        if ignore_html is False:
-                                            self.logger.info("%s : Found HTML page!" % metric_id)
-                                        else:
-                                            self.logger.info("%s : Ignoring HTML response" % metric_id)
-                                            self.parse_response = None
-                                        format = MetadataFormats.HTML
-                                        break
-                                    if at.name == "xml" or str(self.content_type).endswith("+xml"):
-                                        # in case the XML indeed is a RDF:
-                                        root_element = ""
-                                        try:
-                                            xmlparser = lxml.etree.XMLParser(strip_cdata=False, recover=True)
-                                            xmltree = lxml.etree.XML(self.response_content, xmlparser)
-                                            root_element = xmltree.tag
-                                            if content_truncated:
-                                                self.parse_response = self.response_content = lxml.etree.tostring(
-                                                    xmltree
-                                                )
-                                        except Exception:
-                                            self.logger.warning("%s : Parsing XML document failed !" % metric_id)
-                                        if re.match(r"(\{.+\})?RDF", root_element):
-                                            self.logger.info(
-                                                "%s : Expected XML but found RDF document by root tag!" % metric_id
-                                            )
-                                            format = MetadataFormats.RDF
-                                        else:
-                                            self.logger.info(
-                                                "%s : Found XML document based on responded content type: %s",
-                                                metric_id,
-                                                self.content_type,
-                                            )
-                                            format = MetadataFormats.XML
-                                        break
-                                    if at.name in ["json", "jsonld", "datacite_json", "schemaorg"] or str(
-                                        self.content_type
-                                    ).endswith("+json"):
-                                        try:
-                                            self.parse_response = json.loads(self.response_content)
-                                            format = MetadataFormats.JSON
-                                            break
-                                        except ValueError:
-                                            self.logger.info(
-                                                f"{metric_id} : Retrieved response seems not to be valid JSON"
-                                            )
-
-                                    if at.name in [
-                                        "nt",
-                                        "rdf",
-                                        "rdfjson",
-                                        "ntriples",
-                                        "rdfxml",
-                                        "turtle",
-                                        "ttl",
-                                        "n3",
-                                    ]:
-                                        format = MetadataFormats.RDF
-                                        break
-                                    if at.name in ["linkset"]:
-                                        format = MetadataFormats.JSON
-                                        break
-                            break
+                    if format:
                         # cache downloaded content
                         self.checked_content[checked_content_id] = {
                             "format": format,
-                            "parse_response": self.parse_response,
-                            "response_content": self.response_content,
-                            "content_type": self.content_type,
-                            "content_size": self.content_size,
-                            "content_truncated": content_truncated,
+                            "parse_response": self.response.parsed_content,
+                            "response_content": self.response.content,
+                            "content_type": self.response.content_type,
+                            "content_size": self.response.content_size,
+                            "content_truncated": self.response.truncated,
                         }
                     else:
                         self.logger.warning(f"{metric_id} : Content-type is NOT SPECIFIED")
                 else:
                     self.logger.warning(
-                        f"{metric_id} : NO successful response received, status code -: {status_code!s}"
+                        f"{metric_id} : NO successful response received, status code -: {self.response.status!s}"
                     )
-            tp_response.close()
         else:
             self.logger.warning(f"{metric_id} : No response received from -: {self.request_url}, {self.accept_type}")
-        return format
+        return format, self.response.parsed_content
 
-    async def content_negotiate(self, metric_id="", ignore_html=True, check_antibot=False):
+    """async def content_negotiate(self, metric_id="", ignore_html=True, check_antibot=False):
         response = await self.request_content(metric_id, ignore_html, check_antibot)
         format = self.handle_content(response, metric_id, ignore_html)
-        return format, self.parse_response
+        return format, self.parse_response"""
+
+    async def content_negotiate(
+        self,
+        metric_id="",
+        ignore_html=True,
+        check_antibot=False,
+    ):
+        await self.request_content(
+            metric_id=metric_id,
+            check_antibot=check_antibot,
+        )
+
+        return self.handle_content(
+            metric_id=metric_id,
+            ignore_html=ignore_html,
+        )
+
+
+##################### test ... to be deleted (later)
+"""async def test():
+    r = RequestHelper('http://www.w3id.org/example')
+    r.setAcceptType(AcceptTypes.jsonld)
+    neg_format, xml_response = await r.content_negotiate('Tset')
+    print(r.response.content[:100])
+
+asyncio.run(test())"""
