@@ -260,10 +260,10 @@ class IdentifierHelper:
                 requestHelper = RequestHelper(candidate_pid, self.logger)
                 requestHelper.setAcceptType(AcceptTypes.default)  # request
                 await requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
-                if requestHelper.response_content:
-                    return requestHelper.redirect_url, requestHelper.status_list
+                if requestHelper.response.content:
+                    return requestHelper.response.redirect_url, requestHelper.response.status_list
                 else:
-                    return None, requestHelper.status_list
+                    return None, requestHelper.response.status_list
             except Exception as e:
                 print("PID resolve test error", e)
                 return None
@@ -291,8 +291,8 @@ class IdentifierHelper:
                     requestHelper = RequestHelper("https://doi.org/ra/" + prefix, self.logger)
                     requestHelper.setAcceptType(AcceptTypes.default)  # request
                     requestHelper.content_negotiate("FsF-F1-02D", ignore_html=False)
-                    if requestHelper.response_content:
-                        auth_json = json.loads(requestHelper.response_content)
+                    if requestHelper.response.content:
+                        auth_json = json.loads(requestHelper.response.content)
                         agency = auth_json[0].get("RA")
                         Preprocessor.add_doi_prefix(prefix, agency)
                 except Exception as e:
