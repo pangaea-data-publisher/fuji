@@ -65,7 +65,7 @@ class MetaDataCollectorDatacite(MetaDataCollector):
             requestHelper.setAcceptType(self.accept_type)
             neg_format, ext_meta = await requestHelper.content_negotiate("FsF-F2-01M")
             self.metadata_format = neg_format
-            self.content_type = requestHelper.content_type
+            self.content_type = requestHelper.response.content_type
             if ext_meta:
                 try:
                     if ext_meta.get("agency"):  # should be datacite => DataCite JSON
