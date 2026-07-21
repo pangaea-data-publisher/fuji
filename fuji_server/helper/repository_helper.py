@@ -64,84 +64,89 @@ class RepositoryHelper:
                         self.parseRe3data()
                 except Exception as e:
                     self.logger.warning(
-                        "FsF-R1.3-01M : Malformed or none re3data (DOI-based) record received: " + str(e)
+                        "FsF-R1.3-01M : Malformed or none re3data (DOI-based) record received: E: " + str(e)
                     )
             else:
                 self.logger.warning("FsF-R1.3-01M : No DOI of client id is available from datacite api")
 
     def parseRe3data(self):
-        root = etree.fromstring(self.re3metadata_raw)
-        # print(self.re3metadata_raw)
-        # ns = {k: v for k, v in root.nsmap.items() if k}
-        name = root.xpath("//r3d:repositoryName", namespaces=RepositoryHelper.ns)
-        url = root.xpath("//r3d:repositoryURL", namespaces=RepositoryHelper.ns)
-        re3id = root.xpath("//r3d:re3data.orgIdentifier", namespaces=RepositoryHelper.ns)
-        apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
-        api_domains = []
-        for a in apis:
-            api_url_parts = extract(a.text)
-            api_domain = api_url_parts.domain + "." + api_url_parts.suffix
-            if api_domain not in api_domains:
-                api_domains.append(api_domain)
-        if re3id:
-            re3id = re3id[0].text
-        if name:
-            self.repository_name = name[0].text
-        if url:
-            self.repository_url = url[0].text
-        repo_domain_verified = False
-        repo_url_parts = extract(self.repository_url)
-        landing_url_parts = extract(self.landing_page_url)
-        repo_domain = repo_url_parts.domain + "." + repo_url_parts.suffix
-        landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
-
-        if landing_domain == repo_domain:
-            repo_domain_verified = True
-            self.logger.info(
-                "FsF-R1.3-01M : Domain name listed in re3data metadata record matches landing page domain-: "
-                + str(repo_domain)
-            )
-        elif landing_domain in api_domains:
-            repo_domain_verified = True
-            self.logger.info(
-                "FsF-R1.3-01M : Domain name listed in re3data metadata record matches one of the given API domains -: "
-                + str(api_domains)
-            )
-        else:
-            self.logger.info(
-                "FsF-R1.3-01M : Domain name listed in re3data metadata record does not match landing page domain or one of the given API domains, requires additional check -: "
-                + str(repo_domain)
-                + " - "
-                + str(landing_domain)
-            )
-
-        # now verify against repo urls claimed in publisher property of merged metadata
-        # print('REPOURLS: ',self.repourls)
-        if not repo_domain_verified:
-            for repourl in self.repourls:
-                ext = extract(repourl)
-                repo_domain = ".".join(p for p in (ext.domain, ext.suffix) if p)
-                if landing_domain == repo_domain or re3id in str(repourl):
-                    self.logger.info(
-                        "FsF-R1.3-01M : A re3dataid was claimed by the publisher, therefore re3data metadata will be considered -: "
-                        + str(repo_domain)
-                    )
-                    repo_domain_verified = True
-                    break
-
-        if repo_domain_verified:
-            # apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
+        if self.re3metadata_raw:
+            root = etree.fromstring(self.re3metadata_raw)
+            # print(self.re3metadata_raw)
+            # ns = {k: v for k, v in root.nsmap.items() if k}
+            name = root.xpath("//r3d:repositoryName", namespaces=RepositoryHelper.ns)
+            url = root.xpath("//r3d:repositoryURL", namespaces=RepositoryHelper.ns)
+            re3id = root.xpath("//r3d:re3data.orgIdentifier", namespaces=RepositoryHelper.ns)
+            apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
+            api_domains = []
             for a in apis:
-                apiType = a.attrib["apiType"]
-                if apiType in RepositoryHelper.RE3DATA_APITYPES:
-                    self.repo_apis[a.attrib["apiType"]] = a.text
-            standards = root.xpath("//r3d:metadataStandard/r3d:metadataStandardURL", namespaces=RepositoryHelper.ns)
-            self.repo_standards = [s.text for s in standards]
-            # print('#### ', self.repo_standards)
+                api_url_parts = extract(a.text)
+                api_domain = api_url_parts.domain + "." + api_url_parts.suffix
+                if api_domain not in api_domains:
+                    api_domains.append(api_domain)
+            if re3id:
+                re3id = re3id[0].text
+            if name:
+                self.repository_name = name[0].text
+            if url:
+                self.repository_url = url[0].text
+            repo_domain_verified = False
+            repo_url_parts = extract(self.repository_url)
+            landing_url_parts = extract(self.landing_page_url)
+            repo_domain = repo_url_parts.domain + "." + repo_url_parts.suffix
+            landing_domain = landing_url_parts.domain + "." + landing_url_parts.suffix
+
+            if landing_domain == repo_domain:
+                repo_domain_verified = True
+                self.logger.info(
+                    "FsF-R1.3-01M : Domain name listed in re3data metadata record matches landing page domain-: "
+                    + str(repo_domain)
+                )
+            elif landing_domain in api_domains:
+                repo_domain_verified = True
+                self.logger.info(
+                    "FsF-R1.3-01M : Domain name listed in re3data metadata record matches one of the given API domains -: "
+                    + str(api_domains)
+                )
+            else:
+                self.logger.info(
+                    "FsF-R1.3-01M : Domain name listed in re3data metadata record does not match landing page domain or one of the given API domains, requires additional check -: "
+                    + str(repo_domain)
+                    + " - "
+                    + str(landing_domain)
+                )
+
+            # now verify against repo urls claimed in publisher property of merged metadata
+            # print('REPOURLS: ',self.repourls)
+            if not repo_domain_verified:
+                for repourl in self.repourls:
+                    ext = extract(repourl)
+                    repo_domain = ".".join(p for p in (ext.domain, ext.suffix) if p)
+                    if landing_domain == repo_domain or re3id in str(repourl):
+                        self.logger.info(
+                            "FsF-R1.3-01M : A re3dataid was claimed by the publisher, therefore re3data metadata will be considered -: "
+                            + str(repo_domain)
+                        )
+                        repo_domain_verified = True
+                        break
+
+            if repo_domain_verified:
+                # apis = root.xpath("//r3d:api", namespaces=RepositoryHelper.ns)
+                for a in apis:
+                    apiType = a.attrib["apiType"]
+                    if apiType in RepositoryHelper.RE3DATA_APITYPES:
+                        self.repo_apis[a.attrib["apiType"]] = a.text
+                standards = root.xpath("//r3d:metadataStandard/r3d:metadataStandardURL", namespaces=RepositoryHelper.ns)
+                self.repo_standards = [s.text for s in standards]
+                # print('#### ', self.repo_standards)
+            else:
+                self.logger.warning(
+                    "FsF-R1.3-01M : Domain names listed in re3data metadata record does not match landing page or re3dataid, therefore re3data metadata will be ignored -: "
+                    + str(repo_domain)
+                )
         else:
             self.logger.warning(
-                "FsF-R1.3-01M : Domain names listed in re3data metadata record does not match landing page or re3dataid, therefore re3data metadata will be ignored -: "
-                + str(repo_domain)
+                "FsF-R1.3-01M : No metadata  received for re3data fore client -: " + str(self.client_id)
             )
 
     def getRe3MetadataStandards(self):
