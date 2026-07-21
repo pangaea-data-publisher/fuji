@@ -43,7 +43,7 @@ class OGCCSWMetadataProvider(MetadataProvider):
         schemas = {}
         if xml:
             try:
-                root = etree.fromstring(requestHelper.response_content)
+                root = etree.fromstring(requestHelper.response.content)
                 metadata_nodes = root.xpath(
                     '//ows:Parameter[@name="outputSchema"]/ows:Value', namespaces=OGCCSWMetadataProvider.csw_namespaces
                 )
