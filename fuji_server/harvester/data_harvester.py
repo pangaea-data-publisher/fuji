@@ -73,7 +73,7 @@ class DataHarvester:
 
     def __init__(self, data_links, logger, landing_page=None, auth_token=None, auth_token_type="Basic", metrics=None):
         # self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
-        self.user_agent = "Mozilla/5.0 (compatible; F-UJI/4.0; +https://github.com/pangaea-data-publisher/fuji)"
+        self.user_agent = "F-UJI/4.0 (+https://github.com/pangaea-data-publisher/fuji))"
         self.logger = logger
         self.data_links = data_links
         self.auth_token = auth_token
@@ -258,9 +258,9 @@ class DataHarvester:
                 )
                 redirect_status_list = redirect_handler.status_list
             except Exception as e:
-                self.logger.warning("FsF-F3-01M : Content identifier inaccessible -:" + url + " " + str(e))
-                self.logger.warning("FsF-R1-01MD : Content identifier inaccessible -:" + url + " " + str(e))
-                self.logger.warning("FsF-R1.3-02D : Content identifier inaccessible -:" + url + " " + str(e))
+                self.logger.warning("FsF-F3-01M : Content identifier inaccessible -:" + url + " E: " + str(e))
+                self.logger.warning("FsF-R1-01MD : Content identifier inaccessible -:" + url + " E: " + str(e))
+                self.logger.warning("FsF-R1.3-02D : Content identifier inaccessible -:" + url + " E: " + str(e))
                 redirect_status_list = redirect_handler.status_list
             self.set_data_info(urldict, response, redirect_status_list)
 
