@@ -49,8 +49,8 @@ class RSSAtomMetadataProvider(MetadataProvider):
             requestHelper = RequestHelper(self.endpoint, self.logger)
             requestHelper.setAcceptType(AcceptTypes.default)
             _neg_source, _rss_response = requestHelper.content_negotiate("FsF-F2-01M")
-            if requestHelper.response_content is not None:
-                feed = feedparser.parse(requestHelper.response_content)
+            if requestHelper.response.content is not None:
+                feed = feedparser.parse(requestHelper.response.content)
             # print(feed.namespaces)
             for namespace_pre, namespace_uri in feed.namespaces.items():
                 if namespace_uri not in self.namespaces:
