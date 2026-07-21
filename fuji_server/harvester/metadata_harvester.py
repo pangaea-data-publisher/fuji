@@ -10,6 +10,7 @@ import json
 import logging
 import mimetypes
 import re
+import traceback
 import urllib
 import warnings
 from urllib.parse import urlparse
@@ -534,7 +535,7 @@ class MetadataHarvester:
                 extracted = {}
                 self.logger.warning(
                     "{} : Failed to parse HTML embedded Microdata, OpenGraph or Schema.org -: {}".format(
-                        self.ch.get_metric("metadata_properties"), self.landing_url + " " + str(e)
+                        self.ch.get_metric("metadata_properties"), self.landing_url + " E:" + str(e)
                     )
                 )
             if isinstance(extracted, dict):
@@ -578,35 +579,38 @@ class MetadataHarvester:
                 _neg_source, _landingpage_html = await requestHelper.content_negotiate(
                     self.ch.get_metric("pid"), ignore_html=False, check_antibot=True
                 )
-                if "html" not in str(requestHelper.content_type):
+                if "html" not in str(requestHelper.response.content_type):
                     self.logger.info(
                         self.ch.get_metric("metadata_properties")
                         + " :Content type is "
-                        + str(requestHelper.content_type)
+                        + str(requestHelper.response.content_type)
                         + ", therefore skipping Embedded metadata (microdata, RDFa) tests"
                     )
                 else:
                     self.is_html_page = True
                 # always add status list!
                 if self.pid_url in self.pid_collector:
-                    self.pid_collector[self.pid_url]["status_list"] = requestHelper.status_list
-                if requestHelper.redirect_url and requestHelper.response_status in [200, 202, 203]:
+                    self.pid_collector[self.pid_url]["status_list"] = requestHelper.response.status_list
+                if requestHelper.response.redirect_url and requestHelper.response.status in [200, 202, 203]:
                     self.isLandingPageAccessible = True
-                    self.landing_url = requestHelper.redirect_url
+                    self.landing_url = requestHelper.response.redirect_url
                     if self.pid_url in self.pid_collector:
                         self.pid_collector[self.pid_url]["verified"] = True
                         self.pid_collector[self.pid_url]["resolved_url"] = self.landing_url
-                elif requestHelper.redirect_url and requestHelper.response_status in [410]:
+                elif requestHelper.response.redirect_url and requestHelper.response.status in [410]:
                     # eventually a tombstone page
-                    self.landing_url = requestHelper.redirect_url
+                    self.landing_url = requestHelper.response.redirect_url
                 else:
                     self.logger.error(
                         self.ch.get_metric("metadata_properties")
-                        + " : Resource inaccessible. Could not resolve input URL, status -: "
-                        + (str(requestHelper.response_status))
+                        + " : Resource inaccessible. "
+                        + str(input_url)
+                        + str(requestHelper.response.redirect_url)
+                        + " Could not resolve input URL, status -: "
+                        + (str(requestHelper.response.status))
                     )
-                self.redirect_url = requestHelper.redirect_url
-                response_status = requestHelper.response_status
+                self.redirect_url = requestHelper.response.redirect_url
+                response_status = requestHelper.response.status
                 self.landing_page_status = response_status
             else:
                 self.logger.warning(
@@ -615,7 +619,8 @@ class MetadataHarvester:
                     + (str(self.id))
                 )
         except Exception as e:
-            self.logger.error(self.ch.get_metric("metadata_properties") + " : Resource inaccessible -: " + str(e))
+            traceback.print_exc()
+            self.logger.error(self.ch.get_metric("metadata_properties") + " : Resource inaccessible -: E:" + str(e))
             pass
         if self.landing_url:
             if self.landing_url not in ["https://datacite.org/invalid.html"]:
@@ -624,14 +629,14 @@ class MetadataHarvester:
                     upp = extract(self.landing_url)
                     self.landing_origin = f"{up.scheme}://{up.netloc}"
                     self.landing_domain = upp.domain + "." + upp.suffix
-                    self.landing_headers = requestHelper.getResponseHeader()
+                    self.landing_headers = requestHelper.response.getHeader()
                     rendered_html = ""
                     if self.is_html_page:
-                        self.landing_html = requestHelper.getResponseContent()
+                        self.landing_html = requestHelper.response.getContent()
 
                         # check if page was JS generated, if so use a headless browser and replace the html to investigate
                         if (
-                            self.raise_warning_if_javascript_page(requestHelper.response_content)
+                            self.raise_warning_if_javascript_page(requestHelper.response.content)
                             and self.use_headless_browser
                         ):
                             ## waiting for the headless browser response and its rendered html
@@ -654,9 +659,9 @@ class MetadataHarvester:
                                     )
 
                             self.landing_html = rendered_html
-                    self.landing_content_type = requestHelper.content_type
-                    self.landing_redirect_list = requestHelper.redirect_list
-                    self.landing_redirect_status_list = requestHelper.redirect_status_list
+                    self.landing_content_type = requestHelper.response.content_type
+                    self.landing_redirect_list = requestHelper.response.redirect_list
+                    self.landing_redirect_status_list = requestHelper.response.redirect_status_list
                 elif response_status in [401, 402, 403]:
                     self.logger.warning(
                         self.ch.get_metric("pid")
@@ -665,9 +670,9 @@ class MetadataHarvester:
                     )
                 elif response_status in [410]:
                     # in case these are tombstone pages ...
-                    self.landing_content_type = requestHelper.content_type
-                    self.landing_redirect_list = requestHelper.redirect_list
-                    self.landing_redirect_status_list = requestHelper.redirect_status_list
+                    self.landing_content_type = requestHelper.response.content_type
+                    self.landing_redirect_list = requestHelper.response.redirect_list
+                    self.landing_redirect_status_list = requestHelper.response.redirect_status_list
                     self.logger.warning(
                         self.ch.get_metric("pid")
                         + " : Resource GONE, potential tombstone page, identifier returned http status code -: "
@@ -685,9 +690,9 @@ class MetadataHarvester:
                 )
                 self.landing_url = None
         try:
-            if requestHelper.redirect_list:
-                self.landing_redirect_list = requestHelper.redirect_list
-                self.landing_redirect_status_list = requestHelper.redirect_status_list
+            if requestHelper.response.redirect_list:
+                self.landing_redirect_list = requestHelper.response.redirect_list
+                self.landing_redirect_status_list = requestHelper.response.redirect_status_list
         except:
             pass
 
