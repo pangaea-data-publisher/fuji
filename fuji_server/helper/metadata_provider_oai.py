@@ -55,7 +55,7 @@ class OAIMetadataProvider(MetadataProvider):
         schemas = {}
         if xml:
             try:
-                root = etree.fromstring(requestHelper.response_content)
+                root = etree.fromstring(requestHelper.response.content)
                 metadata_nodes = root.xpath(
                     "//oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat",
                     namespaces=OAIMetadataProvider.oai_namespaces,
@@ -81,7 +81,7 @@ class OAIMetadataProvider(MetadataProvider):
                         )
             except Exception as e:
                 self.logger.info(
-                    f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint: " + str(e)
+                    f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint: E: " + str(e)
                 )
                 print("OAI-PMH Parsing Error: ", e)
 
