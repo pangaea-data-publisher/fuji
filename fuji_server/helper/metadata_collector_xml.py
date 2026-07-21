@@ -111,8 +111,8 @@ class MetaDataCollectorXML(MetaDataCollector):
         # self.logger.info('FsF-F2-01M : Sending request to access metadata from -: {}'.format(self.target_url))
         neg_format, xml_response = await requestHelper.content_negotiate("FsF-F2-01M")
         self.metadata_format = neg_format
-        if requestHelper.response_content is not None:
-            self.content_type = requestHelper.content_type
+        if requestHelper.response.content is not None:
+            self.content_type = requestHelper.response.content_type
             self.logger.info(f"FsF-F2-01M : Trying to extract/parse XML metadata from URL -: {self.target_url}")
             # dom = lxml.html.fromstring(self.landing_html.encode('utf8'))
             if neg_format != MetadataFormats.XML:
@@ -155,7 +155,7 @@ class MetaDataCollectorXML(MetaDataCollector):
                     else:
                         metatree = tree
                 except Exception as e:
-                    self.logger.info("FsF-F2-01M : XML parsing failed -: " + str(e))
+                    self.logger.info("FsF-F2-01M : XML parsing failed -: E: " + str(e))
                     print("FsF-F2-01M : XML parsing failed -: " + str(e))
                 if metatree is not None and root_element.lower() != "html":
                     self.logger.info(
