@@ -4,6 +4,7 @@
 
 from lxml import etree
 
+from fuji_server.helper.metadata_collector import MetadataFormats
 from fuji_server.helper.metadata_provider import MetadataProvider
 from fuji_server.helper.request_helper import AcceptTypes, RequestHelper
 
@@ -53,6 +54,11 @@ class OAIMetadataProvider(MetadataProvider):
         requestHelper.setAcceptType(AcceptTypes.xml)
         _response_type, xml = await requestHelper.content_negotiate(self.metric_id)
         schemas = {}
+        if _response_type == MetadataFormats.HTML:
+            self.logger.info(
+                f"{self.metric_id} : Retrieved HTML content instead of XML from OAI-PMH endpoint: " + str(oai_endpoint)
+            )
+            return schemas
         if xml:
             try:
                 root = etree.fromstring(requestHelper.response.content)
@@ -81,10 +87,12 @@ class OAIMetadataProvider(MetadataProvider):
                         )
             except Exception as e:
                 self.logger.info(
-                    f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint: E: " + str(e)
+                    f"{self.metric_id} : Could not parse XML response retrieved from OAI-PMH endpoint: "
+                    + str(oai_endpoint)
+                    + ";E: "
+                    + str(e)
                 )
                 print("OAI-PMH Parsing Error: ", e)
-
         return schemas
 
     def getNamespaces(self):
