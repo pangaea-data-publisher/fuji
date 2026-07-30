@@ -447,10 +447,11 @@ class RequestHelper:
                 % self.metric_id
             )
             # try to find type by url using rdflib
-            guessed_format = rdflib.util.guess_format(self.response.url)
+            if self.response.url:
+                guessed_format = rdflib.util.guess_format(self.response.url)
 
-            if guessed_format in self.rdf_type_dict:
-                mime_type = self.rdf_type_dict[guessed_format]
+                if guessed_format in self.rdf_type_dict:
+                    mime_type = self.rdf_type_dict[guessed_format]
 
             mime_type = mime_type.split(";", 1)[0]
 
@@ -488,7 +489,7 @@ class RequestHelper:
                 format = MetadataFormats.RDF
             elif "html" in self.response.content_type:
                 format = MetadataFormats.HTML
-            elif "json" in self.response.content_type or "linkset" in self.response.content_type:
+            elif "json" in self.response.content_type:  # or "linkset" in self.response.content_type:
                 parsed_content = json.loads(self.response.content)
                 format = MetadataFormats.JSON
 
