@@ -258,7 +258,7 @@ class SignpostingHelper:
                         )
         except Exception as e:
             self.logger.warning(
-                self.ch.get_metric("metadata_properties") + " : Failed to parse Signposting Linkset -: " + str(e)
+                self.ch.get_metric("metadata_properties") + " : Failed to parse Signposting Linkset -: E: " + str(e)
             )
 
     def get_links(self, rel="item", origin="header", allkeys=True):
