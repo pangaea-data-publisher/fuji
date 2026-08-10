@@ -510,6 +510,7 @@ class MetadataHarvester:
         # keys 'json-ld', 'microdata', 'microformat','opengraph','rdfa'
         syntaxes = ["microdata", "opengraph", "json-ld"]
         extracted = {}
+
         if self.landing_html:
             try:
                 extruct_target = self.landing_html.encode("utf-8")
@@ -529,7 +530,35 @@ class MetadataHarvester:
                 except Exception:
                     pass
 
-                extracted = extruct.extract(extruct_target, syntaxes=syntaxes, encoding="utf-8")
+                for syntax in syntaxes:
+                    try:
+                        self.logger.debug(
+                            "%s : Extracting %s metadata from %s",
+                            self.ch.get_metric("metadata_properties"),
+                            syntax,
+                            self.landing_url,
+                        )
+
+                        result = extruct.extract(
+                            extruct_target,
+                            syntaxes=[syntax],
+                            encoding="utf-8",
+                        )
+
+                        if isinstance(result, dict):
+                            for key, value in result.items():
+                                if value:
+                                    extracted[key] = value
+
+                    except Exception:
+                        self.logger.warning(
+                            "%s : Failed extracting %s metadata (using extruct) from %s",
+                            self.ch.get_metric("metadata_properties"),
+                            syntax,
+                            self.landing_url,
+                        )
+
+                # extracted = extruct.extract(extruct_target, syntaxes=syntaxes, encoding="utf-8")
 
             except Exception as e:
                 extracted = {}
@@ -538,9 +567,9 @@ class MetadataHarvester:
                         self.ch.get_metric("metadata_properties"), self.landing_url + " E:" + str(e)
                     )
                 )
+            # remove empty items
             if isinstance(extracted, dict):
-                extracted = dict([(k, v) for k, v in extracted.items() if len(v) > 0])
-
+                extracted = {k: v for k, v in extracted.items() if v}
                 if len(extracted) == 0:
                     extracted = {}
         else:
@@ -843,6 +872,7 @@ class MetadataHarvester:
             ############## end of embedded metadata content harvesting
             await self.set_typed_links()
         else:
+            # we do not handle non HTML here since this content is discovered via content negotiation
             self.logger.warning(
                 self.ch.get_metric("metadata_properties")
                 + " : Skipped EMBEDDED metadata identification, no landing page URL or HTML content could be determined"
