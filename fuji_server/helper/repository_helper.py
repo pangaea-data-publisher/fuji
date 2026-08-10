@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2020 PANGAEA (https://www.pangaea.de/)
 #
 # SPDX-License-Identifier: MIT
+# import traceback
 
 from idutils import is_doi, normalize_pid
 from lxml import etree
@@ -50,19 +51,20 @@ class RepositoryHelper:
                 try:
                     if isinstance(xml, bytes):
                         xml = xml.decode().encode()
-                    root = etree.fromstring(xml)
-
-                    # <link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
-                    re3link = root.xpath("//link")[0].attrib["href"]
-                    if re3link is not None:
-                        self.logger.info("FsF-R1.3-01M : Found match re3data metadata record -: " + str(re3link))
-                        # query reposiroty metadata
-                        q2 = RequestHelper(url=re3link, logInst=self.logger)
-                        q2.setAcceptType(AcceptTypes.xml)
-                        _re3_source, re3_response = await q2.content_negotiate(metric_id="FsF-R1.3-01M")
-                        self.re3metadata_raw = re3_response
-                        self.parseRe3data()
+                    if isinstance(xml, str):
+                        root = etree.fromstring(xml)
+                        # <link href="https://www.re3data.org/api/beta/repository/r3d100010134" rel="self" />
+                        re3link = root.xpath("//link")[0].attrib["href"]
+                        if re3link is not None:
+                            self.logger.info("FsF-R1.3-01M : Found match re3data metadata record -: " + str(re3link))
+                            # query reposiroty metadata
+                            q2 = RequestHelper(url=re3link, logInst=self.logger)
+                            q2.setAcceptType(AcceptTypes.xml)
+                            _re3_source, re3_response = await q2.content_negotiate(metric_id="FsF-R1.3-01M")
+                            self.re3metadata_raw = re3_response
+                            self.parseRe3data()
                 except Exception as e:
+                    # traceback.print_exc()
                     self.logger.warning(
                         "FsF-R1.3-01M : Malformed or none re3data (DOI-based) record received: E: " + str(e)
                     )
