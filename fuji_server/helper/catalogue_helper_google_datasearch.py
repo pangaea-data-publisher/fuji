@@ -80,7 +80,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                     dbres = con.execute(dbquery)
                     found_google_links = dbres.fetchall()
             except Exception as e:
-                self.logger.warning("FsF-F4-01M : Google Search Cache DB Query Error: -:" + str(e))
+                self.logger.warning("FsF-F4-01M : Google Search Cache DB Query Error: -: E:" + str(e))
 
         if found_google_links:
             self.islisted = True
@@ -150,7 +150,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                     self.add_google_search_record(url_to_save)
                     sleep(randint(5, 20))
         except Exception as e:
-            self.logger.warning("FsF-F4-01M : Google Index Query Error: -:" + str(e))
+            self.logger.warning("FsF-F4-01M : Google Index Query Error: -: E:" + str(e))
         return found_url_in_google
 
     def query_google_custom_search(self, url_to_test, pidlist):
@@ -180,7 +180,7 @@ class MetaDataCatalogueGoogleDataSearch(MetaDataCatalogue):
                         except Exception as e:
                             print(e)
                 except Exception as e:
-                    self.logger.warning("FsF-F4-01M : Google Custom Search Query Error: -:" + str(e))
+                    self.logger.warning("FsF-F4-01M : Google Custom Search Query Error: -: E:" + str(e))
             return found_url_in_google
 
     def init_google_custom_search(self, custom_search_id, api_key):

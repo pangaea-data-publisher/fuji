@@ -70,6 +70,6 @@ class MetaDataCatalogueMendeleyData(MetaDataCatalogue):
                     else:
                         self.logger.error("FsF-F4-01M : Mendeley Data API not available -:" + str(res.status_code))
             except Exception as e:
-                self.logger.error("FsF-F4-01M : Mendeley Data API not available or returns errors: " + str(e))
+                self.logger.error("FsF-F4-01M : Mendeley Data API not available or returns errors: E:" + str(e))
 
         return response

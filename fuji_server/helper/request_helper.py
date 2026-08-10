@@ -11,6 +11,7 @@ import ssl
 import traceback
 import urllib
 from enum import Enum
+from http.client import IncompleteRead
 
 import lxml
 import rdflib
@@ -177,7 +178,16 @@ class RequestHelper:
             print("antibot detection failed...", e)
 
     def _set_response_object(self, response, redirect_handler=None):
-        self.response.content = response.read(self.max_content_size + 1)
+        try:
+            self.response.content = response.read(self.max_content_size + 1)
+        except IncompleteRead as e:
+            content = e.partial
+            self.logger.warning(
+                "%s : Could not create response object, incomplete HTTP response: received %d bytes",
+                self.metric_id,
+                len(content),
+            )
+
         self.response.headers = response.headers
         self.response.redirect_url = response.url
         self.response.content_type = self.response.headers.get("Content-Type")
