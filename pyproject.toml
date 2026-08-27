@@ -108,10 +108,6 @@ packages = ["fuji_server"]
 dependencies = [
   "pre-commit"
 ]
-post-install-commands = [
-  "pre-commit install",
-  "playwright install"
-]
 
 [tool.hatch.envs.default.scripts]
 lint = "pre-commit run --all-files --color=always {args}"
