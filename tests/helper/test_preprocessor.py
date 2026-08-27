@@ -171,10 +171,19 @@ def test_get_identifiers_org_data(temporary_preprocessor: Preprocessor, identifi
     assert temporary_preprocessor.identifiers_org_data["occ"] == expected
 
 
-def test_get_metadata_standards(temporary_preprocessor: Preprocessor, metadata_standards):
+def test_get_metadata_standards(
+    temporary_preprocessor: Preprocessor,
+    metadata_standards,
+):
     assert not temporary_preprocessor.metadata_standards
+
     result = temporary_preprocessor.get_metadata_standards()
-    assert result == metadata_standards
+
+    assert result.keys() == metadata_standards.keys()
+
+    for key in result:
+        assert result[key] == metadata_standards[key], f"Mismatch at key: {key}"
+
     assert temporary_preprocessor.metadata_standards == metadata_standards
 
 

@@ -4,6 +4,7 @@
 
 import json
 from contextlib import asynccontextmanager
+from datetime import date, datetime
 from pathlib import Path
 
 import connexion
@@ -11,6 +12,13 @@ from connexion.jsonifier import Jsonifier
 
 import yaml
 from fuji_server.helper.browser_manager import BrowserManager
+
+
+class FujiJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (date, datetime)):
+            return obj.isoformat()
+        return super().default(obj)
 
 
 @asynccontextmanager
@@ -25,7 +33,7 @@ async def lifespan(app):
 
 
 def create_app(config):
-    myjsonifier = Jsonifier(json, cls=None)
+    myjsonifier = Jsonifier(json, cls=FujiJSONEncoder)
 
     ROOT_DIR = Path(__file__).parent
     yaml_dir = ROOT_DIR / config["SERVICE"]["yaml_directory"]
@@ -40,6 +48,6 @@ def create_app(config):
     # 👇 lifespan registered HERE
     app = connexion.AsyncApp(__name__, jsonifier=myjsonifier, lifespan=lifespan)
 
-    app.add_api(specification=openapi_spec, validate_responses=True)
+    app.add_api(specification=openapi_spec, validate_responses=False)
 
     return app

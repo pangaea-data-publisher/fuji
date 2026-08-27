@@ -27,6 +27,10 @@ def test_schema_returns_200(client: FlaskClient) -> None:
 def test_all_metrics_returns_200(client: FlaskClient) -> None:
     valid_url = "/fuji/api/v1/metrics/0.5"
     response = client.get(valid_url)
+
+    print("STATUS:", response.status_code)
+    print("BODY:", response.text)
+
     assert response.status_code == HTTP_200_OK
 
 
