@@ -38,6 +38,10 @@ jobs:
     - run: |
         python -m pip install --upgrade pip
         python -m pip install hatch
+
+    - name: Install Playwright browsers
+      run: hatch run playwright install --with-deps chromium
+
     - name: Run test suite in parallel with measuring code coverage
       run: hatch test --cover-quiet --parallel
     - name: Upload coverage data to coveralls.io
