@@ -68,11 +68,12 @@ F-UJI uses [Apache Tika](https://tika.apache.org/) for detecting and analysing
 file formats during data object assessment.
 
 The `tika` Python package is installed automatically as part of F-UJI's
-Python dependencies. Tika requires a Java runtime.
+Python dependencies.
+
+However, **Apache Tika itself must be installed separately** and requires a Java runtime.Tika requires a Java runtime.
 
 If necessary, a custom Tika log path can be configured using the
 `TIKA_LOG_PATH` environment variable.
-
 
 ## Usage
 Before running the service, please set user details in the configuration file, see config/users.py.
