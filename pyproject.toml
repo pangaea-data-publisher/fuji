@@ -20,19 +20,18 @@ dependencies = [
   # major.minor.patch, because they can potentially introduce breaking changes
   # in minor version updates anytime
   "beautifulsoup4~=4.12",
-  "configparser~=7.0",
   "connexion[flask,uvicorn,swagger-ui]~=3.0",
+  "uvicorn~=0.52.4",
+  "python-dateutil~=2.9.0",
   "extruct~=0.18.0",
   "feedparser~=6.0",
-  "flask-limiter~=3.5",
   "hashid~=3.1.4",
   "idutils~=1.2",
   "jmespath~=1.0",
   "levenshtein~=0.26.1",
-  "lxml==6.1.0",
-  "pandas~=2.1",
+  "lxml~=6.1.0",
+  "pandas~=2.2.3",
   "pyRdfa3~=3.5",
-  "pyld~=2.0",
   "pyyaml~=6.0",
   "rapidfuzz~=3.3",
   "rdflib~=7.0",
@@ -42,10 +41,9 @@ dependencies = [
   "tldextract~=5.0",
   "urlextract~=1.8",
   "pygithub~=2.1",
-  "numpy==1.26.4",
-  "jsonschema<4.18",
   "playwright~=1.36",
-  "is-antibot~=0.1.1"
+  "is-antibot~=0.1.1",
+  "six~=1.17"
 ]
 description = "FUJI (FAIRsFAIR Data Objects Assessment Service), A service to evaluate FAIR data objects based on FAIRsFAIR Metrics"
 keywords = [
@@ -63,13 +61,13 @@ keywords = [
 license = "MIT"
 name = "fuji"
 readme = "README.md"
-requires-python = "~=3.13"  # at the moment only Python 3.13 is supported
+requires-python = "~=3.13.0"  # at the moment only Python 3.13 is supported
 version = "4.0.0"
 
 [project.optional-dependencies]
 docs = [
   "myst-parser~=4.0",
-  "sphinx~=9.0",
+  "sphinx>=7,<9",
   "sphinx-rtd-theme~=3.0"
 ]
 report = [
