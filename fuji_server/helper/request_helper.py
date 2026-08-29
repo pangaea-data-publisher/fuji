@@ -514,7 +514,8 @@ class RequestHelper:
         return format, parsed_content
 
     def handle_content(self, metric_id, ignore_html):
-        format = MetadataFormats.HTML
+        # format = MetadataFormats.HTML
+        format = self.response.parse_format or MetadataFormats.HTML
         if self.response.content:
             # self.http_response = tp_response
             if self.response.headers.get("Content-Encoding") == "gzip":
@@ -594,10 +595,12 @@ class RequestHelper:
             check_antibot=check_antibot,
         )
 
-        return self.handle_content(
+        result = self.handle_content(
             metric_id=metric_id,
             ignore_html=ignore_html,
         )
+
+        return result
 
 
 ##################### test ... to be deleted (later)
