@@ -11,7 +11,8 @@ Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his con
 
 ## Overview
 
-F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed during the [FAIRsFAIR](https://www.fairsfair.eu/) and the [FAIR-IMPACT](https://fair-impact.eu/) projects.
+F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed during the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
+
 The service will be applied to demonstrate the evaluation of objects in repositories selected for in-depth collaboration with the project.
 
 The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
@@ -290,6 +291,6 @@ Versions **up to and including v4.0.0** are licensed under the MIT License. See 
 
 ## Acknowledgements
 
-F-UJI is a result of the [FAIRsFAIR](https://www.fairsfair.eu/) “Fostering FAIR Data Practices In Europe” project which received funding from the European Union’s Horizon 2020 project call H2020-INFRAEOSC-2018-2020 (grant agreement 831558).
+F-UJI is a result of the [FAIRsFAIR](https://www.fairsfair.eu/) “Fostering FAIR Data Practices In Europe” project which received funding from the European Union’s Horizon 2020 project call H2020-INFRAEOSC-2018-2020 (grant agreement 831558). And the [FAIR-IMPACT](https://fair-impact.eu/) "Expanding FAIR Solutions across EOSC" project which received funding from the European Union (grant agreement 101057344). Further, development is supported through funding of the European Union's project [EOSC EDEN](https://eden-fidelis.eu/) "Enhancing Digital preservation strategies at European and National level" (grant agreement 101188015)
 
 The project was also supported through our contributors by the [Helmholtz Metadata Collaboration (HMC)](https://www.helmholtz-metadaten.de/en), an incubator-platform of the Helmholtz Association within the framework of the Information and Data Science strategic initiative.
