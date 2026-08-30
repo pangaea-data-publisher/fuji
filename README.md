@@ -11,12 +11,16 @@ Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his con
 
 ## Overview
 
-F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project.
+F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed during the [FAIRsFAIR](https://www.fairsfair.eu/) and the [FAIR-IMPACT](https://fair-impact.eu/) projects.
 The service will be applied to demonstrate the evaluation of objects in repositories selected for in-depth collaboration with the project.
 
 The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
 
 **Cite as**
+
+Huber, R., & Devaraju, A. (2026). F-UJI - An Automated FAIR Data Assessment Tool (Version v4.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22159621
+
+or
 
 Devaraju, A. and Huber, R. (2021). An automated solution for measuring the progress toward FAIR research data. Patterns, vol 2(11), https://doi.org/10.1016/j.patter.2021.100370
 
