@@ -285,7 +285,7 @@ Unfortunately, the Swagger Editor doesn't always produce code that is compliant 
 Run `pre-commit run` (or try to commit) and fix any errors that cannot be automatically fixed.
 
 ## License
-This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
+Versions **up to and including v4.0.0** are licensed under the MIT License. See the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file for the terms applicable to these versions.
 
 
 ## Acknowledgements
