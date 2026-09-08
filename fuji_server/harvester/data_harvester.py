@@ -73,7 +73,7 @@ class DataHarvester:
 
     def __init__(self, data_links, logger, landing_page=None, auth_token=None, auth_token_type="Basic", metrics=None):
         # self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; F-UJI)"
-        self.user_agent = "F-UJI/4.0 (+https://github.com/pangaea-data-publisher/fuji))"
+        self.user_agent = "F-UJI/4.0 (+https://github.com/pangaea-data-publisher/fuji)"
         self.logger = logger
         self.data_links = data_links
         self.auth_token = auth_token
