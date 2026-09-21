@@ -960,26 +960,35 @@ class MetaDataCollectorRdf(MetaDataCollector):
             # ESIP style file offering via SearchAction via PotentialAction
             for potaction in potential_action:
                 service_url, service_desc, service_type = None, None, None
-                entry_point = graph.value(potaction, SMA.EntryPoint) or graph.value(potaction, SDO.EntryPoint)
-                if not entry_point:
+                action_target = graph.value(potaction, SMA.target) or graph.value(potaction, SDO.target)
+                if not action_target:
                     service_url = graph.value(potaction, SMA.target) or graph.value(potaction, SDO.target)
                 else:
+                    url_template = graph.value(action_target, SMA.urlTemplate) or graph.value(
+                        action_target, SDO.urlTemplate
+                    )
                     service_url = (
-                        graph.value(entry_point, SMA.url)
-                        or graph.value(entry_point, SMA.urlTemplate)
-                        or graph.value(entry_point, SDO.url)
-                        or graph.value(entry_point, SDO.urlTemplate)
+                        graph.value(action_target, SMA.url) or graph.value(action_target, SDO.url) or url_template
                     )
-                    service_desc = "http - generic web"
-                    service_type = graph.value(entry_point, SMA.contentType) or graph.value(
-                        entry_point, SDO.contentType
+
+                    service_type = graph.value(action_target, SMA.contentType) or graph.value(
+                        action_target, SDO.contentType
                     )
-                    schema_metadata["metadata_service"].append({"url": str(service_url), "type": str(service_desc)})
+
                 if service_url:
+                    data_info = {"url": str(service_url), "type": str(service_type)}
+                    if url_template:
+                        # add a searchaction as service
+                        data_info = {
+                            "url": str(service_url),
+                            "type": str(service_desc),
+                            "service": "http - searchAction",
+                        }
+
                     if not isinstance(service_url, rdflib.term.BNode):
-                        schema_metadata["object_content_identifier"].append(
-                            {"url": service_url, "type": service_type, "service": service_desc}
-                        )
+                        if not schema_metadata.get("object_content_identifier"):
+                            schema_metadata["object_content_identifier"] = []
+                        schema_metadata["object_content_identifier"].append(data_info)
 
             # temporalCoverage
             schema_metadata["coverage_temporal"] = []
