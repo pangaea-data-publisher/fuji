@@ -195,7 +195,6 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
         test_result = False
         if test_data_content_url:
             data_object = self.fuji.content_identifier.get(test_data_content_url)
-            # print(data_object)
             if data_object.get("claimed_service") and data_object.get("url"):
                 test_result = True
                 self.setEvaluationCriteriumScore(self.metric_identifier + "-2c", 0, "pass")
@@ -384,6 +383,12 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
                 data_content_endpoint_inner.descriptor_value = data_object.get("url")
                 data_content_endpoint_inner.matches_content = True
                 self.data_content_descriptors.append(data_content_endpoint_inner)
+                data_content_endpoint_type = DataContentMetadataOutputInner()
+                data_content_endpoint_type.descriptor = "endpoint type"
+                data_content_endpoint_type.descriptor_value = data_object.get("claimed_service")
+                data_content_endpoint_type.matches_content = True
+                self.data_content_descriptors.append(data_content_endpoint_type)
+
             if (
                 ((size_matches and type_matches) or protocol_matches)
                 and self.metric_identifier + "-3" not in self.test_passed
@@ -453,7 +458,7 @@ class FAIREvaluatorDataContentMetadata(FAIREvaluator):
             test_status = "pass"
         if isinstance(self.fuji.content_identifier, dict):
             if len(self.fuji.content_identifier) > 0:
-                verified_urls = [e for e, v in self.fuji.content_identifier.items() if v.get("verified")]
+                verified_urls = []  # [e for e, v in self.fuji.content_identifier.items() if v.get("verified")]
                 if verified_urls:
                     test_data_content_urls = verified_urls
                 else:
