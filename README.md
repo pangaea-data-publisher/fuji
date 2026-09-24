@@ -11,12 +11,17 @@ Thanks to [Heinz-Alexander Fuetterer](https://github.com/afuetterer) for his con
 
 ## Overview
 
-F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed by the [FAIRsFAIR](https://www.fairsfair.eu/) project.
+F-UJI is a web service to programmatically assess FAIRness of research data objects based on [metrics](https://doi.org/10.5281/zenodo.3775793) developed during the [FAIRsFAIR](https://www.fairsfair.eu/) project. 
+
 The service will be applied to demonstrate the evaluation of objects in repositories selected for in-depth collaboration with the project.
 
 The '__F__' stands for FAIR (of course) and '__UJI__' means 'Test' in Malay. So __F-UJI__ is a FAIR testing tool.
 
 **Cite as**
+
+Huber, R., & Devaraju, A. (2026). F-UJI - An Automated FAIR Data Assessment Tool (Version v4.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22159621
+
+or
 
 Devaraju, A. and Huber, R. (2021). An automated solution for measuring the progress toward FAIR research data. Patterns, vol 2(11), https://doi.org/10.1016/j.patter.2021.100370
 
@@ -281,11 +286,11 @@ Unfortunately, the Swagger Editor doesn't always produce code that is compliant 
 Run `pre-commit run` (or try to commit) and fix any errors that cannot be automatically fixed.
 
 ## License
-This project is licensed under the MIT License; for more details, see the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file.
+Versions **up to and including v4.0.0** are licensed under the MIT License. See the [LICENSE](https://github.com/pangaea-data-publisher/fuji/blob/master/LICENSE) file for the terms applicable to these versions.
 
 
 ## Acknowledgements
 
-F-UJI is a result of the [FAIRsFAIR](https://www.fairsfair.eu/) “Fostering FAIR Data Practices In Europe” project which received funding from the European Union’s Horizon 2020 project call H2020-INFRAEOSC-2018-2020 (grant agreement 831558).
+F-UJI is a result of the [FAIRsFAIR](https://www.fairsfair.eu/) “Fostering FAIR Data Practices In Europe” project which received funding from the European Union’s Horizon 2020 project call H2020-INFRAEOSC-2018-2020 (grant agreement 831558). And the [FAIR-IMPACT](https://fair-impact.eu/) "Expanding FAIR Solutions across EOSC" project which received funding from the European Union (grant agreement 101057344). Further, development is supported through funding of the European Union's project [EOSC EDEN](https://eden-fidelis.eu/) "Enhancing Digital preservation strategies at European and National level" (grant agreement 101188015)
 
 The project was also supported through our contributors by the [Helmholtz Metadata Collaboration (HMC)](https://www.helmholtz-metadaten.de/en), an incubator-platform of the Helmholtz Association within the framework of the Information and Data Science strategic initiative.
