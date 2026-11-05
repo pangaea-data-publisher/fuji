@@ -463,7 +463,7 @@ class RequestHelper:
                 if guessed_format in self.rdf_type_dict:
                     mime_type = self.rdf_type_dict[guessed_format]
 
-            mime_type = mime_type.split(";", 1)[0]
+        mime_type = mime_type.split(";", 1)[0]
 
         return mime_type
 
